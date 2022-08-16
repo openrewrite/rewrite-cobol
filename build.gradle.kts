@@ -24,13 +24,48 @@ configure<nebula.plugin.release.git.base.ReleasePluginExtension> {
     defaultVersionStrategy = nebula.plugin.release.NetflixOssStrategies.SNAPSHOT(project)
 }
 
-group = "org.openrewrite.recipe"
-description = "Rewrite recipes."
+group = "io.moderne"
+description = "Rewrite support for the COBOL language"
+
+// run manually with -x compileKotlin when you need to regenerate
+tasks.register<JavaExec>("generateAntlrSources") {
+    mainClass.set("org.antlr.v4.Tool")
+    args = listOf(
+        "-o", "src/main/java/org/openrewrite/cobol/internal/grammar",
+        "-package", "org.openrewrite.cobol.internal.grammar",
+        "-visitor"
+    ) + fileTree("src/main/antlr").matching { include("**/*.g4") }.map { it.path }
+
+    classpath = sourceSets["main"].runtimeClasspath
+}
+
+sourceSets {
+    create("model") {
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
+}
+val modelImplementation: Configuration by configurations.getting {
+    extendsFrom(configurations.implementation.get())
+}
+val modelAnnotationProcessor: Configuration by configurations.getting
+val modelCompileOnly: Configuration by configurations.getting
+
+configurations["modelRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+
+
+val latest = if (project.hasProperty("releasing")) {
+    "latest.release"
+} else {
+    "latest.integration"
+}
 
 repositories {
-    mavenLocal()
-    maven {
-        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+    if(!project.hasProperty("releasing")) {
+        mavenLocal()
+        maven {
+            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+        }
     }
     mavenCentral()
 }
@@ -42,17 +77,20 @@ configurations.all {
     }
 }
 
-//The bom version can also be set to a specific version or latest.release.
-val rewriteBomVersion = "latest.integration"
-
 dependencies {
     compileOnly("org.projectlombok:lombok:latest.release")
     compileOnly("com.google.code.findbugs:jsr305:latest.release")
+    compileOnly("org.openrewrite:rewrite-test")
     annotationProcessor("org.projectlombok:lombok:latest.release")
-    implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${rewriteBomVersion}"))
+    implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${latest}"))
+    implementation("org.openrewrite:rewrite-core")
+    implementation("org.antlr:antlr4:4.9.+")
+    implementation("io.micrometer:micrometer-core:1.+")
 
-    implementation("org.openrewrite:rewrite-java")
-    runtimeOnly("org.openrewrite:rewrite-java-11")
+    modelImplementation("org.openrewrite:rewrite-java-17")
+    modelAnnotationProcessor("org.projectlombok:lombok:latest.release")
+    modelCompileOnly("org.projectlombok:lombok:latest.release")
+    modelImplementation("ch.qos.logback:logback-classic:latest.release")
 
     testImplementation(platform(kotlin("bom", "1.6.21")))
     testImplementation(kotlin("reflect"))
@@ -63,6 +101,7 @@ dependencies {
 
     testImplementation("org.openrewrite:rewrite-test")
     testImplementation("org.assertj:assertj-core:latest.release")
+    testImplementation("io.github.classgraph:classgraph:latest.release")
 }
 
 tasks.named<Test>("test") {
@@ -71,8 +110,27 @@ tasks.named<Test>("test") {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+tasks.withType<JavaCompile>().configureEach {
+    options.encoding = "UTF-8"
+    options.compilerArgs.add("-parameters")
+    options.isFork = true
+    options.release.set(8)
+    sourceCompatibility = "1.8"
+    targetCompatibility = "1.8"
+}
+tasks.withType<Javadoc>().configureEach {
+    isVerbose = false
+
+    options {
+        this as CoreJavadocOptions
+        addStringOption("Xdoclint:none", "-quiet")
+        encoding("UTF-8")
+    }
 }
 
 configure<ContactsExtension> {
