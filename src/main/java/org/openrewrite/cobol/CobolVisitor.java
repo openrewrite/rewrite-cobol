@@ -1001,7 +1001,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.EvaluateWhenPhrase e = evaluateWhenPhrase;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
-        e = e.withWhens(ListUtils.map(e.getWhens(), t -> (Cobol.EvaluateWhenPhrase) visit(t, p)));
+        e = e.withWhens(ListUtils.map(e.getWhens(), t -> (Cobol.EvaluateWhen) visit(t, p)));
         e = e.withStatements(ListUtils.map(e.getStatements(), t -> (Statement) visit(t, p)));
         return e;
     }

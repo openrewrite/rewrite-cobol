@@ -3166,10 +3166,9 @@ public interface Cobol extends Tree {
 
         @EqualsAndHashCode.Include
         UUID id;
-
         Space prefix;
         Markers markers;
-        List<EvaluateWhenPhrase> whens;
+        List<EvaluateWhen> whens;
 
         @Nullable
         List<Statement> statements;

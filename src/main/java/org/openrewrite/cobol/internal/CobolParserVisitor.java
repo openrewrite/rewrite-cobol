@@ -958,8 +958,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     @Override
-    public Cobol.ConditionNameSubscriptReference visitConditionNameSubscriptReference(CobolParser.ConditionNameSubscriptReferenceContext ctx) {
-        return new Cobol.ConditionNameSubscriptReference(
+    public Cobol visitConditionNameSubscriptReference(CobolParser.ConditionNameSubscriptReferenceContext ctx) {
+        return new Cobol.Parenthesized(
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,

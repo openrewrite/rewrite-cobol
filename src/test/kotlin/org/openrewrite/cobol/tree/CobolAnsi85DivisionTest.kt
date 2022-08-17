@@ -399,231 +399,204 @@ class CobolAnsi85DivisionTest : RewriteTest {
     @Disabled("Potential lexer issue: The REVERSE-VIDEO token maps to RESERVE-VIDEO")
     @Test
     fun reverseVideo() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. DBSection.
-            DATA DIVISION.
-            SCREEN SECTION.
-            01 REVERSE-VIDEO.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. DBSection.                                           C_AREA.02
+            000003 DATA DIVISION.                                                   C_AREA.03
+            000004 SCREEN SECTION.                                                  C_AREA.04
+            000005 01 REVERSE-VIDEO.                                                C_AREA.05
+        """)
     )
 
     @Test
     fun acceptStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            PARAGRAPH_NAME.
-            ACCEPT identifier FROM DATE YYYYMMDD END-ACCEPT
-            ACCEPT identifier FROM ESCAPE KEY
-            ACCEPT identifier FROM mnemonicName
-            ACCEPT identifier MESSAGE COUNT.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 PARAGRAPH_NAME.                                                  C_AREA.04
+            000005 ACCEPT identifier FROM DATE YYYYMMDD END-ACCEPT                  C_AREA.05
+            000006 ACCEPT identifier FROM ESCAPE KEY                                C_AREA.06
+            000007 ACCEPT identifier FROM mnemonicName                              C_AREA.07
+            000008 ACCEPT identifier MESSAGE COUNT.                                 C_AREA.08
+        """)
     )
 
     @Test
     fun alterStatement() = rewriteRun(
-        cobol(
-            """
-                IDENTIFICATION DIVISION .
-                PROGRAM-ID . HELLO-WORLD .
-                PROCEDURE DIVISION .
-                ALTER PARA-54 TO PROCEED TO PARA-54B.
-                ALTER PARA-23 TO PARA-24.
-            """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION .                                        C_AREA.01
+            000002 PROGRAM-ID . HELLO-WORLD .                                       C_AREA.02
+            000003 PROCEDURE DIVISION .                                             C_AREA.03
+            000004 ALTER PARA-54 TO PROCEED TO PARA-54B.                            C_AREA.04
+            000005 ALTER PARA-23 TO PARA-24.                                        C_AREA.05
+        """)
     )
 
     @Test
     fun cancelStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            PARAGRAPH_NAME.
-            CANCEL "literal"
-            CANCEL identifier
-            CANCEL libraryName BYTITLE.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 PARAGRAPH_NAME.                                                  C_AREA.04
+            000005 CANCEL "literal"                                                 C_AREA.05
+            000006 CANCEL identifier                                                C_AREA.06
+            000007 CANCEL libraryName BYTITLE.                                      C_AREA.07
+        """)
     )
 
     @Test
     fun closeStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            PARAGRAPH_NAME.
-            CLOSE fileName UNIT FOR REMOVAL WITH LOCK
-            CLOSE fileName WITH NO REWIND
-            CLOSE fileName NO WAIT USING CLOSE-DISPOSITION OF ABORT
-            CLOSE fileName NO WAIT USING ASSOCIATED-DATA identifier
-            CLOSE fileName NO WAIT USING ASSOCIATED-DATA-LENGTH OF identifier.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 PARAGRAPH_NAME.                                                  C_AREA.04
+            000005 CLOSE fileName UNIT FOR REMOVAL WITH LOCK                        C_AREA.05
+            000006 CLOSE fileName WITH NO REWIND                                    C_AREA.06
+            000007 CLOSE fileName NO WAIT USING CLOSE-DISPOSITION OF ABORT          C_AREA.07
+            000008 CLOSE fileName NO WAIT USING ASSOCIATED-DATA identifier          C_AREA.08
+            000009 CLOSE fileName NO WAIT USING ASSOCIATED-DATA-LENGTH              C_AREA.09
+            000010 OF identifier.                                                   C_AREA.10
+        """)
     )
 
     @Test
     fun rewriteStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            PARAGRAPH_NAME.
-            REWRITE dataName IN fileName END-REWRITE.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 PARAGRAPH_NAME.                                                  C_AREA.04
+            000005 REWRITE dataName IN fileName END-REWRITE.                        C_AREA.05
+        """)
     )
 
     @Test
     fun callStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION USING GRP-01.
-            SECT-IC109-0001 SECTION.
-            PARA-IC109.
-                CALL "IC110A" USING BY REFERENCE WS1 GRP-01.
-                CALL "IC110A" USING BY VALUE ADDRESS OF GRP-01.
-                CALL "IC110A" USING BY CONTENT LENGTH OF GRP-01.
-                CALL "IC110A" GIVING GRP-01.
-                CALL "IC110A" ON OVERFLOW CONTINUE.
-                CALL "IC110A" ON EXCEPTION CONTINUE.
-                CALL "IC110A" NOT ON EXCEPTION CONTINUE.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.03
+            000004 SECT-IC109-0001 SECTION.                                         C_AREA.04
+            000005 PARA-IC109.                                                      C_AREA.05
+            000006     CALL "IC110A" USING BY REFERENCE WS1 GRP-01.                 C_AREA.06
+            000007     CALL "IC110A" USING BY VALUE ADDRESS OF GRP-01.              C_AREA.07
+            000008     CALL "IC110A" USING BY CONTENT LENGTH OF GRP-01.             C_AREA.08
+            000009     CALL "IC110A" GIVING GRP-01.                                 C_AREA.09
+            000010     CALL "IC110A" ON OVERFLOW CONTINUE.                          C_AREA.10
+            000011     CALL "IC110A" ON EXCEPTION CONTINUE.                         C_AREA.11
+            000012     CALL "IC110A" NOT ON EXCEPTION CONTINUE.                     C_AREA.12
+        """)
     )
 
     @Test
     fun writeStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION USING GRP-01.
-            PARA-IC109.
-                WRITE IC110A FROM GRP-01.
-                WRITE IC110A BEFORE ADVANCING PAGE.
-                WRITE IC110A BEFORE ADVANCING 10 LINES.
-                WRITE IC110A BEFORE ADVANCING GRP-01.
-                WRITE IC110A AT END-OF-PAGE CONTINUE.
-                WRITE IC110A NOT AT END-OF-PAGE CONTINUE.
-                WRITE IC110A INVALID KEY CONTINUE.
-                WRITE IC110A NOT INVALID KEY CONTINUE.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.03
+            000004 PARA-IC109.                                                      C_AREA.04
+            000005     WRITE IC110A FROM GRP-01.                                    C_AREA.05
+            000006     WRITE IC110A BEFORE ADVANCING PAGE.                          C_AREA.06
+            000007     WRITE IC110A BEFORE ADVANCING 10 LINES.                      C_AREA.07
+            000008     WRITE IC110A BEFORE ADVANCING GRP-01.                        C_AREA.08
+            000009     WRITE IC110A AT END-OF-PAGE CONTINUE.                        C_AREA.09
+            000010     WRITE IC110A NOT AT END-OF-PAGE CONTINUE.                    C_AREA.10
+            000011     WRITE IC110A INVALID KEY CONTINUE.                           C_AREA.11
+            000012     WRITE IC110A NOT INVALID KEY CONTINUE.                       C_AREA.12
+        """)
     )
 
     @Test
     fun computeStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION .
-            PROGRAM-ID . HELLO-WORLD .
-            PROCEDURE DIVISION .
-                COMPUTE V = (1 + 2) .
-                COMPUTE LAG-TIME =
-                    ((SYS-HRS * 3600) + (SYS-MINS * 60) + SYS-SECS) -
-                    ((HOURS OF MSG-TIME * 3600) + (MINUTES OF MSG-TIME * 60)
-                    + SECONDS OF MSG-TIME)
-                    END-COMPUTE .
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION .                                        C_AREA.01
+            000002 PROGRAM-ID . HELLO-WORLD .                                       C_AREA.02
+            000003 PROCEDURE DIVISION .                                             C_AREA.03
+            000004     COMPUTE V = (1 + 2) .                                        C_AREA.04
+            000005     COMPUTE LAG-TIME =                                           C_AREA.05
+            000006         ((SYS-HRS * 3600) + (SYS-MINS * 60) + SYS-SECS) -        C_AREA.06
+            000007         ((HOURS OF MSG-TIME * 3600) + (MINUTES OF MSG-TIME * 60) C_AREA.07
+            000008         + SECONDS OF MSG-TIME)                                   C_AREA.08
+            000009         END-COMPUTE .                                            C_AREA.09
+        """)
     )
 
     @Test
     fun divideStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION USING GRP-01.
-            SIG-TEST-GF-5-0.
-                DIVIDE 0.097 INTO DIV7 ROUNDED.
-                DIVIDE 0.097 INTO DIV7 GIVING DIV8 ROUNDED.
-                DIVIDE 0.097 BY DIV7 GIVING DIV8 ROUNDED.
-                DIVIDE 0.097 INTO DIV7 REMAINDER DIV9.
-                DIVIDE 0.097 INTO DIV7 ON SIZE ERROR CONTINUE.
-                DIVIDE 0.097 INTO DIV7 NOT ON SIZE ERROR CONTINUE.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.03
+            000004 SIG-TEST-GF-5-0.                                                 C_AREA.04
+            000005     DIVIDE 0.097 INTO DIV7 ROUNDED.                              C_AREA.05
+            000006     DIVIDE 0.097 INTO DIV7 GIVING DIV8 ROUNDED.                  C_AREA.06
+            000007     DIVIDE 0.097 BY DIV7 GIVING DIV8 ROUNDED.                    C_AREA.07
+            000008     DIVIDE 0.097 INTO DIV7 REMAINDER DIV9.                       C_AREA.08
+            000009     DIVIDE 0.097 INTO DIV7 ON SIZE ERROR CONTINUE.               C_AREA.09
+            000010     DIVIDE 0.097 INTO DIV7 NOT ON SIZE ERROR CONTINUE.           C_AREA.10
+        """)
     )
 
     @Test
     fun evaluateStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION USING GRP-01.
-            F-ANNUITY-02.
-            EVALUATE IC110A END-EVALUATE.
-            EVALUATE IC110A ALSO IC110B.
-            EVALUATE IC110A
-            WHEN ANY ALSO ANY
-                CONTINUE
-            WHEN IDENTIFIER THRU IDENTIFIER
-                CONTINUE
-            WHEN TRUE
-                CONTINUE
-            WHEN OTHER
-                CONTINUE.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.03
+            000004 F-ANNUITY-02.                                                    C_AREA.04
+            000005 EVALUATE IC110A END-EVALUATE.                                    C_AREA.05
+            000006 EVALUATE IC110A ALSO IC110B.                                     C_AREA.06
+            000007 EVALUATE IC110A                                                  C_AREA.07
+            000008 WHEN ANY ALSO ANY                                                C_AREA.08
+            000009     CONTINUE                                                     C_AREA.09
+            000010 WHEN IDENTIFIER THRU IDENTIFIER                                  C_AREA.10
+            000011     CONTINUE                                                     C_AREA.11
+            000012 WHEN TRUE                                                        C_AREA.12
+            000013     CONTINUE                                                     C_AREA.13
+            000014 WHEN OTHER                                                       C_AREA.14
+            000015     CONTINUE.                                                    C_AREA.15
+        """)
     )
 
     @Test
     fun conditions() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION USING GRP-01.
-            F-ANNUITY-02.
-            EVALUATE IC110A
-            WHEN IDENTIFIER IS NOT ALPHABETIC-LOWER
-                CONTINUE
-            WHEN IDENTIFIER IN IDENTIFIER
-                CONTINUE.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.03
+            000004 F-ANNUITY-02.                                                    C_AREA.04
+            000005 EVALUATE IC110A                                                  C_AREA.05
+            000006 WHEN IDENTIFIER IS NOT ALPHABETIC-LOWER                          C_AREA.06
+            000007     CONTINUE                                                     C_AREA.07
+            000008 WHEN IDENTIFIER IN IDENTIFIER                                    C_AREA.08
+            000009     CONTINUE.                                                    C_AREA.09
+        """)
     )
 
     @Test
     fun conditionNameSubscriptReference() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            COMMA-SUBSCRIPT-TEST.
-            EVALUATE NOT IDENTIFIER (IDENTIFIER, IDENTIFIER IDENTIFIER)
-            .
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 COMMA-SUBSCRIPT-TEST.                                            C_AREA.04
+            000005 EVALUATE NOT IDENTIFIER (IDENTIFIER, IDENTIFIER IDENTIFIER)      C_AREA.05
+            000006 .                                                                C_AREA.06
+        """)
     )
 
     @Test
     fun sendStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            SEND CM-OUTQUE-1 FROM MSG-70 WITH EMI
-                AFTER ADVANCING PAGE.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 SEND CM-OUTQUE-1 FROM MSG-70 WITH EMI                            C_AREA.04
+            000005     AFTER ADVANCING PAGE.                                        C_AREA.05
+        """)
     )
 
     @Test
