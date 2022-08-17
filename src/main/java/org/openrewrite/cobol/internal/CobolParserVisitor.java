@@ -6116,14 +6116,17 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     Cobol.CobolWord cw = null;
                     for (String delimiter : delimiters) {
                         if (source.substring(cursor).startsWith(delimiter)) {
+                            List<Marker> markers = new ArrayList<>();
+                            Space delimiterPrefix = processTokenText(delimiter, markers);
+                            delimiterPrefix = delimiterPrefix.withWhitespace(prefix.getWhitespace() + delimiterPrefix.getWhitespace());
                             cw = new Cobol.CobolWord(
                                     randomId(),
-                                    prefix,
-                                    Markers.EMPTY,
+                                    delimiterPrefix,
+                                    markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
                                     delimiter
                             );
-                            // TODO: fix me. handle source code.
-                            cursor += delimiter.length(); // skip the delimiter
+                            // TODO: confirm cursor should automatically be incremented by matched text.
+//                            cursor += delimiter.length(); // skip the delimiter
                             break;
                         }
                     }
