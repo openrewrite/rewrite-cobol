@@ -503,7 +503,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.ConfigurationSection c = configurationSection;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
-        c = c.getPadding().withParagraphs(visitContainer(c.getPadding().getParagraphs(), p));
+        c = c.withWords(ListUtils.map(c.getWords(), it -> (Cobol.CobolWord) visit(it, p)));
+        c = c.withDot((Cobol.CobolWord) visit(c.getDot(), p));
+        c = c.withParagraphs(ListUtils.map(c.getParagraphs(), it -> visit(it, p)));
         return c;
     }
 
@@ -3252,7 +3254,10 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.SpecialNames s = specialNames;
         s = s.withPrefix(visitSpace(s.getPrefix(), p));
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
-        s = s.getPadding().withClauses(visitContainer(s.getPadding().getClauses(), p));
+        s = s.withWords((Cobol.CobolWord) visit(s.getWords(), p));
+        s = s.withDot((Cobol.CobolWord) visit(s.getDot(), p));
+        s = s.withClauses(ListUtils.map(s.getClauses(), it -> visit(it, p)));
+        s = s.withDot2((Cobol.CobolWord) visit(s.getDot2(), p));
         return s;
     }
 
