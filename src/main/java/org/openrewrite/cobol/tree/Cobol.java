@@ -1886,75 +1886,23 @@ public interface Cobol extends Tree {
         }
     }
 
-    @ToString
-    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @RequiredArgsConstructor
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    class DataBaseSection implements Cobol {
-        @Nullable
-        @NonFinal
-        transient WeakReference<Padding> padding;
+    @With
+    class DataBaseSection implements DataDivisionSection {
 
-        @Getter
         @EqualsAndHashCode.Include
-        @With
         UUID id;
 
-        @Getter
-        @With
         Space prefix;
-
-        @Getter
-        @With
         Markers markers;
-
-        @Getter
-        @With
         List<CobolWord> words;
-
-        CobolContainer<DataBaseSectionEntry> entries;
+        CobolWord dot;
+        List<DataBaseSectionEntry> entries;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitDataBaseSection(this, p);
-        }
-
-        public List<Cobol.DataBaseSectionEntry> getEntries() {
-            return entries.getElements();
-        }
-
-        public DataBaseSection withEntries(List<Cobol.DataBaseSectionEntry> entries) {
-            return getPadding().withEntries(this.entries.getPadding().withElements(CobolRightPadded.withElements(
-                    this.entries.getPadding().getElements(), entries)));
-        }
-
-        public Padding getPadding() {
-            Padding p;
-            if (this.padding == null) {
-                p = new Padding(this);
-                this.padding = new WeakReference<>(p);
-            } else {
-                p = this.padding.get();
-                if (p == null || p.t != this) {
-                    p = new Padding(this);
-                    this.padding = new WeakReference<>(p);
-                }
-            }
-            return p;
-        }
-
-        @RequiredArgsConstructor
-        public static class Padding {
-            private final DataBaseSection t;
-
-            public CobolContainer<Cobol.DataBaseSectionEntry> getEntries() {
-                return t.entries;
-            }
-
-            public DataBaseSection withEntries(CobolContainer<Cobol.DataBaseSectionEntry> entries) {
-                return t.entries == entries ? t : new DataBaseSection(t.padding, t.id, t.prefix, t.markers, t.words, entries);
-            }
         }
     }
 
@@ -4922,85 +4870,32 @@ public interface Cobol extends Tree {
         }
     }
 
-    @ToString
-    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @RequiredArgsConstructor
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    class LocalStorageSection implements Cobol {
-        @Nullable
-        @NonFinal
-        transient WeakReference<Padding> padding;
+    @With
+    class LocalStorageSection implements DataDivisionSection {
 
-        @Getter
         @EqualsAndHashCode.Include
-        @With
         UUID id;
 
-        @Getter
-        @With
         Space prefix;
-
-        @Getter
-        @With
         Markers markers;
-
-        @Getter
-        @With
         List<CobolWord> words;
+        CobolWord dot;
 
-        @Getter
         @Nullable
-        @With
         CobolWord localData;
 
-        @Getter
         @Nullable
-        @With
         Name localName;
 
-        CobolContainer<DataDescriptionEntry> dataDescriptions;
+        @Nullable
+        CobolWord dot2;
+        List<DataDescriptionEntry> dataDescriptions;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitLocalStorageSection(this, p);
-        }
-
-        public List<Cobol.DataDescriptionEntry> getDataDescriptions() {
-            return dataDescriptions.getElements();
-        }
-
-        public LocalStorageSection withDataDescriptions(List<Cobol.DataDescriptionEntry> dataDescriptions) {
-            return getPadding().withDataDescriptions(this.dataDescriptions.getPadding().withElements(CobolRightPadded.withElements(
-                    this.dataDescriptions.getPadding().getElements(), dataDescriptions)));
-        }
-
-        public Padding getPadding() {
-            Padding p;
-            if (this.padding == null) {
-                p = new Padding(this);
-                this.padding = new WeakReference<>(p);
-            } else {
-                p = this.padding.get();
-                if (p == null || p.t != this) {
-                    p = new Padding(this);
-                    this.padding = new WeakReference<>(p);
-                }
-            }
-            return p;
-        }
-
-        @RequiredArgsConstructor
-        public static class Padding {
-            private final LocalStorageSection t;
-
-            public CobolContainer<Cobol.DataDescriptionEntry> getDataDescriptions() {
-                return t.dataDescriptions;
-            }
-
-            public LocalStorageSection withDataDescriptions(CobolContainer<Cobol.DataDescriptionEntry> dataDescriptions) {
-                return t.dataDescriptions == dataDescriptions ? t : new LocalStorageSection(t.padding, t.id, t.prefix, t.markers, t.words, t.localData, t.localName, dataDescriptions);
-            }
         }
     }
 

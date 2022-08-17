@@ -273,104 +273,94 @@ class CobolAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun receiveStatement() = rewriteRun(
-        cobol(
-            """
+        cobol("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.1
             000002 PROGRAM-ID. MERGETEST.                                           C_AREA.2
             000003 PROCEDURE DIVISION.                                              C_AREA.3
             000004 RECEIVE CM-INQUE-1 MESSAGE INTO MSG-72                           C_AREA.4
             000005     NO DATA.                                                     C_AREA.5
-        """.trimIndent()
-        )
+        """)
     )
 
     @Test
     fun fileSection() = rewriteRun(
-        cobol(
-            """
-                IDENTIFICATION DIVISION.
-                PROGRAM-ID.
-                    IC109A.
-                DATA DIVISION.
-                FILE SECTION.
-                FD  PRINT-FILE.
-                IS EXTERNAL.
-                IS GLOBAL.
-                BLOCK CONTAINS 1 TO 10 RECORDS.
-                RECORD CONTAINS 10 CHARACTERS.
-                RECORD IS VARYING IN SIZE FROM 1 TO 10 CHARACTERS DEPENDING ON IDENTIFIER IN IDENTIFIER.
-                RECORD CONTAINS 1 TO 10 CHARACTERS.
-                LABEL RECORD IS OMITTED.
-                VALUE OF IDENTIFIER IS 10.
-                LINAGE IS 10 LINES WITH FOOTING AT 10.
-                LINAGE IS 10 LINES AT TOP 10.
-                LINAGE IS 10 LINES AT BOTTOM 10.
-                CODE-SET IS IDENTIFIER.
-                RECORDING MODE IS IDENTIFIER.
-                DATA RECORD IS IDENTIFIER.
-                REPORT IS IDENTIFIER.
-                01  PRINT-REC PICTURE X(120).
-                01  DUMMY-RECORD PICTURE X(120).
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID.                                                      C_AREA.02
+            000003     IC109A.                                                      C_AREA.03
+            000004 DATA DIVISION.                                                   C_AREA.04
+            000005 FILE SECTION.                                                    C_AREA.05
+            000006 FD  PRINT-FILE.                                                  C_AREA.06
+            000007 IS EXTERNAL.                                                     C_AREA.07
+            000008 IS GLOBAL.                                                       C_AREA.08
+            000009 BLOCK CONTAINS 1 TO 10 RECORDS.                                  C_AREA.09
+            000010 RECORD CONTAINS 10 CHARACTERS.                                   C_AREA.10
+            000011 RECORD IS VARYING IN SIZE FROM 1 TO 10 CHARACTERS                C_AREA.11
+            000012     DEPENDING ON IDENTIFIER IN IDENTIFIER.                       C_AREA.12
+            000013 RECORD CONTAINS 1 TO 10 CHARACTERS.                              C_AREA.13
+            000014 LABEL RECORD IS OMITTED.                                         C_AREA.14
+            000015 VALUE OF IDENTIFIER IS 10.                                       C_AREA.15
+            000016 LINAGE IS 10 LINES WITH FOOTING AT 10.                           C_AREA.16
+            000017 LINAGE IS 10 LINES AT TOP 10.                                    C_AREA.17
+            000018 LINAGE IS 10 LINES AT BOTTOM 10.                                 C_AREA.18
+            000019 CODE-SET IS IDENTIFIER.                                          C_AREA.19
+            000020 RECORDING MODE IS IDENTIFIER.                                    C_AREA.20
+            000021 DATA RECORD IS IDENTIFIER.                                       C_AREA.21
+            000022 REPORT IS IDENTIFIER.                                            C_AREA.22
+            000023 01  PRINT-REC PICTURE X(120).                                    C_AREA.23
+            000024 01  DUMMY-RECORD PICTURE X(120).                                 C_AREA.24
+        """)
     )
 
     @Test
     fun linkageSection() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-                PROGRAM-ID.
-                    IC109A.
-                DATA DIVISION.
-                LINKAGE SECTION.                
-                01  GRP-01.                     
-                    02  SUB-CALLED.             
-                        03  DN1  PICTURE X(6).  
-                        03  DN2  PICTURE X(6).  
-                        03  DN3  PICTURE X(6).  
-                    02  TIMES-CALLED.           
-                        03  DN4  PICTURE S999.  
-                        03  DN5  PICTURE S999.  
-                        03  DN6  PICTURE S999.  
-                    02  SPECIAL-FLAGS.          
-                        03  DN7 PICTURE X.      
-                        03  DN8 PICTURE X.      
-                        03  DN9 PICTURE X.      
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002     PROGRAM-ID.                                                  C_AREA.02
+            000003         IC109A.                                                  C_AREA.03
+            000004     DATA DIVISION.                                               C_AREA.04
+            000005     LINKAGE SECTION.                                             C_AREA.05
+            000006     01  GRP-01.                                                  C_AREA.06
+            000007         02  SUB-CALLED.                                          C_AREA.07
+            000008             03  DN1  PICTURE X(6).                               C_AREA.08
+            000009             03  DN2  PICTURE X(6).                               C_AREA.09
+            000010             03  DN3  PICTURE X(6).                               C_AREA.10
+            000011         02  TIMES-CALLED.                                        C_AREA.11
+            000012             03  DN4  PICTURE S999.                               C_AREA.12
+            000013             03  DN5  PICTURE S999.                               C_AREA.13
+            000014             03  DN6  PICTURE S999.                               C_AREA.14
+            000015         02  SPECIAL-FLAGS.                                       C_AREA.15
+            000016             03  DN7 PICTURE X.                                   C_AREA.16
+            000017             03  DN8 PICTURE X.                                   C_AREA.17
+            000018             03  DN9 PICTURE X.                                   C_AREA.18
+        """)
     )
 
     @Test
     fun localStorageSection() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. LocalStorage.
-            DATA DIVISION.
-            LOCAL-STORAGE Section.
-            01  NUM  PIC 9(4).
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. LocalStorage.                                        C_AREA.02
+            000003 DATA DIVISION.                                                   C_AREA.03
+            000004 LOCAL-STORAGE Section.                                           C_AREA.04
+            000005 01  NUM  PIC 9(4).                                               C_AREA.05
+        """)
     )
 
     @Test
     fun dataBaseSection() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. DBSection.
-            DATA DIVISION.
-            DATA-BASE SECTION.
-            01 TRUE INVOKE TRUE
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. DBSection.                                           C_AREA.02
+            000003 DATA DIVISION.                                                   C_AREA.03
+            000004 DATA-BASE SECTION.                                               C_AREA.04
+            000005 01 TRUE INVOKE TRUE                                              C_AREA.05
+        """)
     )
 
     @Test
     fun screenSection() = rewriteRun(
-        cobol(
-            """
+        cobol("""
             IDENTIFICATION DIVISION.
             PROGRAM-ID. DBSection.
             DATA DIVISION.
@@ -403,8 +393,7 @@ class CobolAnsi85DivisionTest : RewriteTest {
             FULL
             ZERO-FILL
             .
-        """
-        )
+        """)
     )
 
     @Disabled("Potential lexer issue: The REVERSE-VIDEO token maps to RESERVE-VIDEO")

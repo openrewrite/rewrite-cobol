@@ -539,7 +539,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.DataBaseSection d = dataBaseSection;
         d = d.withPrefix(visitSpace(d.getPrefix(), p));
         d = d.withMarkers(visitMarkers(d.getMarkers(), p));
-        d = d.getPadding().withEntries(visitContainer(d.getPadding().getEntries(), p));
+        d = d.withWords(ListUtils.map(d.getWords(), it -> (Cobol.CobolWord) visit(it, p)));
+        d = d.withDot((Cobol.CobolWord) visit(d.getDot(), p));
+        d = d.withEntries(ListUtils.map(d.getEntries(), it -> (Cobol.DataBaseSectionEntry) visit(it, p)));
         return d;
     }
 
@@ -1570,7 +1572,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         l = l.withPrefix(visitSpace(l.getPrefix(), p));
         l = l.withMarkers(visitMarkers(l.getMarkers(), p));
         l = l.withWords(ListUtils.map(l.getWords(), t -> (Cobol.CobolWord) visit(t, p)));
-        l = l.withDot((Cobol.CobolWord)visit(l.getDot(), p));
+        l = l.withDot((Cobol.CobolWord) visit(l.getDot(), p));
         l = l.withDataDescriptions(ListUtils.map(l.getDataDescriptions(), t -> (Cobol.DataDescriptionEntry) visit(t, p)));
         return l;
     }
@@ -1579,7 +1581,11 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.LocalStorageSection l = localStorageSection;
         l = l.withPrefix(visitSpace(l.getPrefix(), p));
         l = l.withMarkers(visitMarkers(l.getMarkers(), p));
-        l = l.getPadding().withDataDescriptions(visitContainer(l.getPadding().getDataDescriptions(), p));
+        l = l.withWords(ListUtils.map(l.getWords(), t -> (Cobol.CobolWord) visit(t, p)));
+        l = l.withDot((Cobol.CobolWord) visit(l.getDot(), p));
+        l = l.withLocalName((Name) visit(l.getLocalName(), p));
+        l = l.withDot2((Cobol.CobolWord) visit(l.getDot2(), p));
+        l = l.withDataDescriptions(ListUtils.map(l.getDataDescriptions(), t -> (Cobol.DataDescriptionEntry) visit(t, p)));
         return l;
     }
 

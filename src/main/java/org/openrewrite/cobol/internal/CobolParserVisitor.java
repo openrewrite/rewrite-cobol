@@ -1021,7 +1021,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.DATA_BASE(), ctx.SECTION()),
-                convertAllContainer(sourceBefore("."), ctx.dataBaseSectionEntry())
+                (Cobol.CobolWord) visit(ctx.DOT_FS()),
+                convertAll(ctx.dataBaseSectionEntry())
         );
     }
 
@@ -2595,9 +2596,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.LOCAL_STORAGE(), ctx.SECTION()),
+                (Cobol.CobolWord) visit(ctx.DOT_FS().get(0)),
                 visitNullable(ctx.LD()),
                 visitNullable(ctx.localName()),
-                convertAllContainer(sourceBefore("."), ctx.dataDescriptionEntry())
+                ctx.DOT_FS().size() == 1 ? null : (Cobol.CobolWord) visit(ctx.DOT_FS().get(1)),
+                convertAll(ctx.dataDescriptionEntry())
         );
     }
 
