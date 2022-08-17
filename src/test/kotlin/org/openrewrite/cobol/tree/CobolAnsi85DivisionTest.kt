@@ -230,7 +230,6 @@ class CobolAnsi85DivisionTest : RewriteTest {
     )
 
     @Test
-
     fun multiplyStatement() = rewriteRun(
         cobol("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.1

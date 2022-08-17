@@ -1589,7 +1589,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         m = m.withMarkers(visitMarkers(m.getMarkers(), p));
         m = m.withMergeOnKeyClause(ListUtils.map(m.getMergeOnKeyClause(), t -> (Cobol.MergeOnKeyClause) visit(t, p)));
         m = m.withMergeCollatingSequencePhrase((Cobol.MergeCollatingSequencePhrase) visit(m.getMergeCollatingSequencePhrase(), p));
-        m = m.withMergeUsing(ListUtils.map(m.getMergeUsing(), t -> (Name) visit(t, p)));
+        m = m.withMergeUsing(ListUtils.map(m.getMergeUsing(), t -> (Cobol.MergeUsing) visit(t, p)));
         m = m.withMergeOutputProcedurePhrase((Cobol.MergeOutputProcedurePhrase) visit(m.getMergeOutputProcedurePhrase(), p));
         m = m.withMergeGivingPhrase(ListUtils.map(m.getMergeGivingPhrase(), t -> (Cobol.MergeGivingPhrase) visit(t, p)));
         return m;

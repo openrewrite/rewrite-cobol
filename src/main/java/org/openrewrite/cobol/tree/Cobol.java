@@ -5021,7 +5021,7 @@ public interface Cobol extends Tree {
         @Nullable
         MergeCollatingSequencePhrase mergeCollatingSequencePhrase;
 
-        List<Name> mergeUsing;
+        List<MergeUsing> mergeUsing;
 
         @Nullable
         MergeOutputProcedurePhrase mergeOutputProcedurePhrase;
@@ -5033,7 +5033,6 @@ public interface Cobol extends Tree {
             return v.visitMerge(this, p);
         }
     }
-
 
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
