@@ -24,8 +24,8 @@ import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
 
-@Disabled("Add configuration to run with different dialect.")
-class CobolDivisionTest : RewriteTest {
+@Disabled("fix source before")
+class CobolAnsi85DivisionTest : RewriteTest {
 
     override fun defaults(spec: RecipeSpec) {
         spec.recipe(toRecipe {
@@ -44,11 +44,11 @@ class CobolDivisionTest : RewriteTest {
     fun helloWorld() = rewriteRun(
         cobol(
             """
-                IDENTIFICATION  DIVISION .
-                PROGRAM-ID    . HELLO     .
-                PROCEDURE DIVISION.
-                DISPLAY 'Hello world!'.
-                STOP RUN.
+                000001 IDENTIFICATION  DIVISION .                                       C_AREA.1
+                000002 PROGRAM-ID    . HELLO     .                                      C_AREA.2
+                000003 PROCEDURE DIVISION.                                              C_AREA.3
+                000004 DISPLAY 'Hello world!'.                                          C_AREA.4
+                000005 STOP RUN.                                                        C_AREA.5
             """
         )
     )
@@ -57,19 +57,19 @@ class CobolDivisionTest : RewriteTest {
     fun arithmetic() = rewriteRun(
         cobol(
             """
-                IDENTIFICATION DIVISION .
-                PROGRAM-ID . HELLO-WORLD .
-                DATA DIVISION .
-                    WORKING-STORAGE SECTION .
-                        77 X PIC 99.
-                        77 Y PIC 99.
-                        77 Z PIC 99.
-                PROCEDURE DIVISION .
-                    SET X TO 10 .
-                    SET Y TO 25 .
-                    ADD X Y GIVING Z .
-                    DISPLAY "X + Y = "Z .
-                STOP RUN .
+                000001 IDENTIFICATION DIVISION .                                        C_AREA.1
+                000002 PROGRAM-ID . HELLO-WORLD .                                       C_AREA.2
+                000003 DATA DIVISION .                                                  C_AREA.3
+                000004     WORKING-STORAGE SECTION .                                    C_AREA.4
+                000005         77 X PIC 99.                                             C_AREA.5
+                000006         77 Y PIC 99.                                             C_AREA.6
+                000007         77 Z PIC 99.                                             C_AREA.7
+                000008 PROCEDURE DIVISION .                                             C_AREA.8
+                000009     SET X TO 10 .                                                C_AREA.9
+                000010     SET Y TO 25 .                                                C_AREA.10
+                000011     ADD X Y GIVING Z .                                           C_AREA.11
+                000012     DISPLAY "X + Y = "Z .                                        C_AREA.12
+                000013 STOP RUN .                                                       C_AREA.13
             """
         )
     )
@@ -78,27 +78,27 @@ class CobolDivisionTest : RewriteTest {
     fun environmentDivision() = rewriteRun(
         cobol(
             """
-                IDENTIFICATION DIVISION.
-                PROGRAM-ID.
-                    IC109A.
-                ENVIRONMENT DIVISION.
-                CONFIGURATION SECTION.
-                SOURCE-COMPUTER.
-                    XXXXX082.
-                OBJECT-COMPUTER.
-                    XXXXX083
-                    MEMORY SIZE XXXXX068 CHARACTERS
-                    PROGRAM COLLATING SEQUENCE IS COLLATING-SEQ-1.
-                SPECIAL-NAMES.
-                    ALPHABET PRG-COLL-SEQ IS
-                    STANDARD-2.
-                INPUT-OUTPUT SECTION.
-                FILE-CONTROL. SELECT OPTIONAL IDENTIFIER ASSIGN TO DISK.
-                I-O-CONTROL. IDENTIFIER.
-                RERUN ON IDENTIFIER EVERY 10 RECORDS
-                SAME RECORD AREA FOR IDENTIFIER
-                MULTIPLE FILE TAPE CONTAINS IDENTIFIER POSITION 10
-                COMMITMENT CONTROL FOR IDENTIFIER.
+                000001 IDENTIFICATION DIVISION.                                         C_AREA.1
+                000002 PROGRAM-ID.                                                      C_AREA.2
+                000003     IC109A.                                                      C_AREA.3
+                000004 ENVIRONMENT DIVISION.                                            C_AREA.4
+                000005 CONFIGURATION SECTION.                                           C_AREA.5
+                000006 SOURCE-COMPUTER.                                                 C_AREA.6
+                000007     XXXXX082.                                                    C_AREA.7
+                000008 OBJECT-COMPUTER.                                                 C_AREA.8
+                000009     XXXXX083                                                     C_AREA.9
+                000010     MEMORY SIZE XXXXX068 CHARACTERS                              C_AREA.10
+                000011     PROGRAM COLLATING SEQUENCE IS COLLATING-SEQ-1.               C_AREA.11
+                000012 SPECIAL-NAMES.                                                   C_AREA.12
+                000013     ALPHABET PRG-COLL-SEQ IS                                     C_AREA.13
+                000014     STANDARD-2.                                                  C_AREA.14
+                000015 INPUT-OUTPUT SECTION.                                            C_AREA.15
+                000016 FILE-CONTROL. SELECT OPTIONAL IDENTIFIER ASSIGN TO DISK.         C_AREA.16
+                000017 I-O-CONTROL. IDENTIFIER.                                         C_AREA.17
+                000018 RERUN ON IDENTIFIER EVERY 10 RECORDS                             C_AREA.18
+                000019 SAME RECORD AREA FOR IDENTIFIER                                  C_AREA.19
+                000020 MULTIPLE FILE TAPE CONTAINS IDENTIFIER POSITION 10               C_AREA.20
+                000021 COMMITMENT CONTROL FOR IDENTIFIER.                               C_AREA.21
             """
         )
     )
@@ -107,32 +107,37 @@ class CobolDivisionTest : RewriteTest {
     fun inputOutputSection() = rewriteRun(
         cobol(
             """
-                IDENTIFICATION DIVISION.
-                PROGRAM-ID.
-                    IC109A.
-                ENVIRONMENT DIVISION.
-                INPUT-OUTPUT SECTION.
-                FILE-CONTROL.
-                    SELECT PRINT-FILE ASSIGN TO
-                        XXXXX055.
-                    SELECT SEQ-FILE ASSIGN TO
-                        XXXXX014.
-                    SELECT SEQ-FILE RESERVE NO ALTERNATE AREA.
-                    SELECT SEQ-FILE ORGANIZATION IS RECORD BINARY INDEXED.
-                    SELECT SEQ-FILE PADDING CHARACTER IS IDENTIFIER IN IDENTIFIER.
-                    SELECT SEQ-FILE RECORD DELIMITER IS STANDAR-1.
-                    SELECT SEQ-FILE ACCESS MODE IS SEQUENTIAL.
-                    SELECT SEQ-FILE RECORD KEY IS IDENTIFIER IN IDENTIFIER PASSWORD IS IDENTIFIER WITH DUPLICATES.
-                    SELECT SEQ-FILE ALTERNATE RECORD KEY IS IDENTIFIER IN IDENTIFIER PASSWORD IS IDENTIFIER WITH DUPLICATES.
-                    SELECT SEQ-FILE FILE STATUS IS IDENTIFIER IN IDENTIFIER IDENTIFIER IN IDENTIFIER.
-                    SELECT SEQ-FILE RELATIVE KEY IS IDENTIFIER IN IDENTIFIER.
+                000001 IDENTIFICATION DIVISION.                                         C_AREA.1
+                000002 PROGRAM-ID.                                                      C_AREA.2
+                000003     IC109A.                                                      C_AREA.3
+                000004 ENVIRONMENT DIVISION.                                            C_AREA.4
+                000005 INPUT-OUTPUT SECTION.                                            C_AREA.5
+                000006 FILE-CONTROL.                                                    C_AREA.6
+                000007     SELECT PRINT-FILE ASSIGN TO                                  C_AREA.7
+                000008         XXXXX055.                                                C_AREA.8 
+                000009     SELECT SEQ-FILE ASSIGN TO                                    C_AREA.9 
+                000010         XXXXX014.                                                C_AREA.10
+                000011     SELECT SEQ-FILE RESERVE NO ALTERNATE AREA.                   C_AREA.11
+                000012     SELECT SEQ-FILE ORGANIZATION IS RECORD BINARY INDEXED.       C_AREA.12
+                000013     SELECT SEQ-FILE PADDING CHARACTER IS IDENTIFIER              C_AREA.13
+                000014         IN IDENTIFIER.                                           C_AREA.14
+                000015     SELECT SEQ-FILE RECORD DELIMITER IS STANDAR-1.               C_AREA.15
+                000016     SELECT SEQ-FILE ACCESS MODE IS SEQUENTIAL.                   C_AREA.16
+                000017     SELECT SEQ-FILE RECORD KEY IS IDENTIFIER IN IDENTIFIER       C_AREA.18
+                000018         PASSWORD IS IDENTIFIER WITH DUPLICATES.                  C_AREA.18
+                000019     SELECT SEQ-FILE ALTERNATE RECORD KEY IS IDENTIFIER IN        C_AREA.19
+                000020         IDENTIFIER PASSWORD IS IDENTIFIER WITH DUPLICATES.       C_AREA.20
+                000021     SELECT SEQ-FILE FILE STATUS IS IDENTIFIER IN IDENTIFIER      C_AREA.21
+                000022         IDENTIFIER IN IDENTIFIER.                                C_AREA.22
+                000023     SELECT SEQ-FILE RELATIVE KEY IS IDENTIFIER IN IDENTIFIER.    C_AREA.23
             """
         )
     )
 
     @Test
     fun procedureDivision() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION  DIVISION .
             PROGRAM-ID    . HELLO     .
             PROCEDURE DIVISION USING GRP-01 GIVING dataName.
@@ -140,17 +145,20 @@ class CobolDivisionTest : RewriteTest {
             sectionName SECTION 77.
             USE GLOBAL AFTER STANDARD ERROR PROCEDURE ON INPUT.
             END DECLARATIVES.
-        """)
+        """
+        )
     )
 
     @Test
     fun divisionUsing() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION  DIVISION .
             PROGRAM-ID    . HELLO     .
             PROCEDURE DIVISION USING GRP-01.
             STOP RUN.
-        """)
+        """
+        )
     )
 
     @Disabled("Not yet implemented")
@@ -209,7 +217,8 @@ class CobolDivisionTest : RewriteTest {
 
     @Test
     fun moveStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. MOVETEST.
             DATA DIVISION.
@@ -217,12 +226,14 @@ class CobolDivisionTest : RewriteTest {
             PARA-MOVETEST.
                 MOVE "MOVETEST" TO DN1.
                 MOVE SPACE TO WS1.
-        """)
+        """
+        )
     )
 
     @Test
     fun mergeStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. MERGETEST.
             PROCEDURE DIVISION.
@@ -230,66 +241,78 @@ class CobolDivisionTest : RewriteTest {
                 MERGE ST-FS4  ON ASCENDING KEY SORT-KEY
                     USING  SQ-FS1  SQ-FS2
                     OUTPUT PROCEDURE IS MERGE-OUTPUT-PROC.
-        """)
+        """
+        )
     )
 
     @Test
 
     fun multiplyStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. MULTIPLYTEST.
             PROCEDURE DIVISION.
             MULTIPLY -1.3 BY MULT4 ROUNDED.
-        """)
+        """
+        )
     )
 
     @Test
     fun openStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. OPENTEST.
             PROCEDURE DIVISION.
             OPEN OUTPUT SQ-FS2.
             OPEN INPUT TFIL REVERSED.
             OPEN INPUT TFIL WITH NO REWIND.
-        """)
+        """
+        )
     )
 
     @Test
     fun performStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. PARSERTEST.
             PROCEDURE DIVISION.
             PERFORM ST301M-MERGE THRU ST301M-SORT 1 TIMES.            
-        """)
+        """
+        )
     )
 
     @Test
     fun readStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. READTEST.
             PROCEDURE DIVISION.
             READ SQ-FS3 END .
-        """)
+        """
+        )
     )
 
     @Test
     fun receiveStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. MERGETEST.
             PROCEDURE DIVISION.
             RECEIVE CM-INQUE-1 MESSAGE INTO MSG-72
                 NO DATA.
-        """.trimIndent())
+        """.trimIndent()
+        )
     )
 
     @Test
     fun fileSection() = rewriteRun(
-        cobol("""
+        cobol(
+            """
                 IDENTIFICATION DIVISION.
                 PROGRAM-ID.
                     IC109A.
@@ -313,12 +336,14 @@ class CobolDivisionTest : RewriteTest {
                 REPORT IS IDENTIFIER.
                 01  PRINT-REC PICTURE X(120).
                 01  DUMMY-RECORD PICTURE X(120).
-        """)
+        """
+        )
     )
 
     @Test
     fun linkageSection() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
                 PROGRAM-ID.
                     IC109A.
@@ -337,34 +362,40 @@ class CobolDivisionTest : RewriteTest {
                         03  DN7 PICTURE X.      
                         03  DN8 PICTURE X.      
                         03  DN9 PICTURE X.      
-        """)
+        """
+        )
     )
 
     @Test
     fun localStorageSection() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. LocalStorage.
             DATA DIVISION.
             LOCAL-STORAGE Section.
             01  NUM  PIC 9(4).
-        """)
+        """
+        )
     )
 
     @Test
     fun dataBaseSection() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. DBSection.
             DATA DIVISION.
             DATA-BASE SECTION.
             01 TRUE INVOKE TRUE
-        """)
+        """
+        )
     )
 
     @Test
     fun screenSection() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. DBSection.
             DATA DIVISION.
@@ -397,24 +428,28 @@ class CobolDivisionTest : RewriteTest {
             FULL
             ZERO-FILL
             .
-        """)
+        """
+        )
     )
 
     @Disabled("Potential lexer issue: The REVERSE-VIDEO token maps to RESERVE-VIDEO")
     @Test
     fun reverseVideo() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. DBSection.
             DATA DIVISION.
             SCREEN SECTION.
             01 REVERSE-VIDEO.
-        """)
+        """
+        )
     )
 
     @Test
     fun acceptStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
@@ -423,7 +458,8 @@ class CobolDivisionTest : RewriteTest {
             ACCEPT identifier FROM ESCAPE KEY
             ACCEPT identifier FROM mnemonicName
             ACCEPT identifier MESSAGE COUNT.
-        """)
+        """
+        )
     )
 
     @Test
@@ -441,7 +477,8 @@ class CobolDivisionTest : RewriteTest {
 
     @Test
     fun cancelStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
@@ -449,12 +486,14 @@ class CobolDivisionTest : RewriteTest {
             CANCEL "literal"
             CANCEL identifier
             CANCEL libraryName BYTITLE.
-        """)
+        """
+        )
     )
 
     @Test
     fun closeStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
@@ -464,23 +503,27 @@ class CobolDivisionTest : RewriteTest {
             CLOSE fileName NO WAIT USING CLOSE-DISPOSITION OF ABORT
             CLOSE fileName NO WAIT USING ASSOCIATED-DATA identifier
             CLOSE fileName NO WAIT USING ASSOCIATED-DATA-LENGTH OF identifier.
-        """)
+        """
+        )
     )
 
     @Test
     fun rewriteStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
             PARAGRAPH_NAME.
             REWRITE dataName IN fileName END-REWRITE.
-        """)
+        """
+        )
     )
 
     @Test
     fun callStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION USING GRP-01.
@@ -493,12 +536,14 @@ class CobolDivisionTest : RewriteTest {
                 CALL "IC110A" ON OVERFLOW CONTINUE.
                 CALL "IC110A" ON EXCEPTION CONTINUE.
                 CALL "IC110A" NOT ON EXCEPTION CONTINUE.
-        """)
+        """
+        )
     )
 
     @Test
     fun writeStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION USING GRP-01.
@@ -511,12 +556,14 @@ class CobolDivisionTest : RewriteTest {
                 WRITE IC110A NOT AT END-OF-PAGE CONTINUE.
                 WRITE IC110A INVALID KEY CONTINUE.
                 WRITE IC110A NOT INVALID KEY CONTINUE.
-        """)
+        """
+        )
     )
 
     @Test
     fun computeStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION .
             PROGRAM-ID . HELLO-WORLD .
             PROCEDURE DIVISION .
@@ -526,12 +573,14 @@ class CobolDivisionTest : RewriteTest {
                     ((HOURS OF MSG-TIME * 3600) + (MINUTES OF MSG-TIME * 60)
                     + SECONDS OF MSG-TIME)
                     END-COMPUTE .
-        """)
+        """
+        )
     )
 
     @Test
     fun divideStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION USING GRP-01.
@@ -542,12 +591,14 @@ class CobolDivisionTest : RewriteTest {
                 DIVIDE 0.097 INTO DIV7 REMAINDER DIV9.
                 DIVIDE 0.097 INTO DIV7 ON SIZE ERROR CONTINUE.
                 DIVIDE 0.097 INTO DIV7 NOT ON SIZE ERROR CONTINUE.
-        """)
+        """
+        )
     )
 
     @Test
     fun evaluateStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION USING GRP-01.
@@ -563,12 +614,14 @@ class CobolDivisionTest : RewriteTest {
                 CONTINUE
             WHEN OTHER
                 CONTINUE.
-        """)
+        """
+        )
     )
 
     @Test
     fun conditions() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION USING GRP-01.
@@ -578,35 +631,41 @@ class CobolDivisionTest : RewriteTest {
                 CONTINUE
             WHEN IDENTIFIER IN IDENTIFIER
                 CONTINUE.
-        """)
+        """
+        )
     )
 
     @Test
     fun conditionNameSubscriptReference() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
             COMMA-SUBSCRIPT-TEST.
             EVALUATE NOT IDENTIFIER (IDENTIFIER, IDENTIFIER IDENTIFIER)
             .
-        """)
+        """
+        )
     )
 
     @Test
     fun sendStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
             SEND CM-OUTQUE-1 FROM MSG-70 WITH EMI
                 AFTER ADVANCING PAGE.
-        """)
+        """
+        )
     )
 
     @Test
     fun tableCallTest() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
@@ -614,12 +673,14 @@ class CobolDivisionTest : RewriteTest {
             EVALUATE SUBSCRIPT
             WHEN IDENTIFIER (IDENTIFIER, IDENTIFIER IDENTIFIER)
                 CONTINUE.
-        """)
+        """
+        )
     )
 
     @Test
     fun functionCallTest() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
@@ -627,12 +688,14 @@ class CobolDivisionTest : RewriteTest {
             EVALUATE SUBSCRIPT
             WHEN IDENTIFIER (FUNCTION INTEGER (IDENTIFIER, IDENTIFIER IDENTIFIER) (1: 10))
                 CONTINUE.
-        """)
+        """
+        )
     )
 
     @Test
     fun relationConditions() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
@@ -642,34 +705,40 @@ class CobolDivisionTest : RewriteTest {
             WHEN NOT +IDENTIFIER IS GREATER OR EQUAL +IDENTIFIER
             WHEN NOT +ZERO GREATER THAN (IDENTIFIER AND IDENTIFIER OR IDENTIFIER)
             .
-        """)
+        """
+        )
     )
 
     @Test
     fun multiElementLiteral() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
             Literal-Test.
             EVALUATE DFHRESP (IDENTIFIER).
-        """)
+        """
+        )
     )
 
     @Test
     fun multiElementIdentifier() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
             Identifier-Test.
             EVALUATE IDENTIFIER IN IDENTIFIER.
-        """)
+        """
+        )
     )
 
     @Test
     fun openMultipleStatements() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
@@ -678,23 +747,27 @@ class CobolDivisionTest : RewriteTest {
                 OPEN     OUTPUT IDENTIFIER WITH NO REWIND IDENTIFIER WITH NO REWIND
                 OPEN     I-O IDENTIFIER IDENTIFIER I-O IDENTIFIER IDENTIFIER
                 OPEN     EXTEND IDENTIFIER IDENTIFIER EXTEND IDENTIFIER IDENTIFIER.
-        """)
+        """
+        )
     )
 
     @Test
     fun outOfOrderOpenStatements() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
             OPEN-FILES.
                 OPEN     INPUT IDENTIFIER OUTPUT IDENTIFIER INPUT IDENTIFIER OUTPUT IDENTIFIER.
-        """)
+        """
+        )
     )
 
     @Test
     fun unstringStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. acceptStatement.
             PROCEDURE DIVISION.
@@ -704,34 +777,40 @@ class CobolDivisionTest : RewriteTest {
                 UNSTRING IDENTIFIER INTO IDENTIFIER TALLYING IN IDENTIFIER
                 UNSTRING IDENTIFIER INTO IDENTIFIER ON OVERFLOW
                 UNSTRING IDENTIFIER INTO IDENTIFIER NOT ON OVERFLOW.
-        """)
+        """
+        )
     )
 
     @Test
     fun terminateStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. terminateStatement.
             PROCEDURE DIVISION.
             RW301M-CONTROL.
                 TERMINATE RFIL2.
-        """)
+        """
+        )
     )
 
     @Test
     fun generateStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. terminateStatement.
             PROCEDURE DIVISION.
             RW301M-CONTROL.
                 GENERATE RREC.
-        """)
+        """
+        )
     )
 
     @Test
     fun subtractStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. subtractStatement.
             PROCEDURE DIVISION.
@@ -739,23 +818,27 @@ class CobolDivisionTest : RewriteTest {
                 SUBTRACT 1 FROM ERROR-COUNTER
                 SUBTRACT N-10 FROM 0 GIVING N-19
                 SUBTRACT CORRESPONDING IDENTIFIER FROM IDENTIFIER ROUNDED.
-        """)
+        """
+        )
     )
 
     @Test
     fun exitStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. exitStatement.
             PROCEDURE DIVISION.
             RW301M-CONTROL.
                 EXIT PROGRAM.
-        """)
+        """
+        )
     )
 
     @Test
     fun sortStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. sortStatement.
             PROCEDURE DIVISION.
@@ -767,12 +850,14 @@ class CobolDivisionTest : RewriteTest {
                     ASCENDING KEY-4 KEY-5
                 USING SORTIN-1B
                 GIVING SORTOUT-1B.
-        """)
+        """
+        )
     )
 
     @Test
     fun stringStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. subtractStatement.
             PROCEDURE DIVISION.
@@ -781,24 +866,28 @@ class CobolDivisionTest : RewriteTest {
                 INTO IDENTIFIER
                 WITH POINTER IDENTIFIER END-STRING
             .
-        """)
+        """
+        )
     )
 
     @Test
     fun startStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. subtractStatement.
             PROCEDURE DIVISION.
             STA-TEST-GF-01.
                 START IX-FS2 KEY IS NOT LESS THAN IDENTIFIER IN IDENTIFIER END-START.
             .
-        """)
+        """
+        )
     )
 
     @Test
     fun goToStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. subtractStatement.
             PROCEDURE DIVISION.
@@ -806,12 +895,14 @@ class CobolDivisionTest : RewriteTest {
                 GO TO CM105-FINI.
                 GO TO CM105-FINI DEPENDING ON IDENTIFIER IN IDENTIFIER.
             .
-        """)
+        """
+        )
     )
 
     @Test
     fun ifStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. subtractStatement.
             PROCEDURE DIVISION.
@@ -821,36 +912,42 @@ class CobolDivisionTest : RewriteTest {
                 ELSE
                     PERFORM FAIL.
             .
-        """)
+        """
+        )
     )
 
     @Test
     fun initializeStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. subtractStatement.
             PROCEDURE DIVISION.
             INI-TEST-GF-1-0.
                 INITIALIZE IDENTIFIER IN IDENTIFIER REPLACING NATIONAL DATA BY 42.
             .
-        """)
+        """
+        )
     )
 
     @Test
     fun initiateStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. subtractStatement.
             PROCEDURE DIVISION.
             RW301M-CONTROL.
                 INITIATE RFIL2.
             .
-        """)
+        """
+        )
     )
 
     @Test
     fun inspectStatement() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. subtractStatement.
             PROCEDURE DIVISION.
@@ -860,12 +957,14 @@ class CobolDivisionTest : RewriteTest {
                 INSPECT IDENTIFIER IN IDENTIFIER TALLYING IDENTIFIER IN IDENTIFIER FOR CHARACTER BEFORE IDENTIFIER IN IDENTIFIER REPLACING ALL IDENTIFIER IN IDENTIFIER BY IDENTIFIER IN IDENTIFIER
                 INSPECT IDENTIFIER IN IDENTIFIER CONVERTING IDENTIFIER IN IDENTIFIER TO IDENTIFIER IN IDENTIFIER BEFORE IDENTIFIER IN IDENTIFIER
             .
-        """)
+        """
+        )
     )
 
     @Test
     fun communicationSection() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. communicationSection.
             DATA DIVISION.
@@ -873,24 +972,28 @@ class CobolDivisionTest : RewriteTest {
                 CD COMMNAME FOR INITIAL INPUT.
                 CD COMMNAME FOR OUTPUT.
                 CD COMMNAME FOR INITIAL I-O.
-        """)
+        """
+        )
     )
 
     @Test
     fun reportSection() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. communicationSection.
             DATA DIVISION.
             REPORT SECTION.
                 RD IDENTIFIER IN IDENTIFIER IS GLOBAL.
                 10 IDENTIFIER LINE NUMBER IS 10 ON NEXT PAGE.
-        """)
+        """
+        )
     )
 
     @Test
     fun programLibrarySection() = rewriteRun(
-        cobol("""
+        cobol(
+            """
             IDENTIFICATION DIVISION.
             PROGRAM-ID. communicationSection.
             DATA DIVISION.
@@ -898,6 +1001,7 @@ class CobolDivisionTest : RewriteTest {
                 LD IDENTIFIER EXPORT ATTRIBUTE SHARING IS DONTCARE ENTRY-PROCEDURE IDENTIFIER FOR ZERO
                 LB IDENTIFIER IMPORT IS GLOBAL IS COMMON ATTRIBUTE
                 FUNCTIONNAME IS ZERO LIBACCESS IS BYFUNCTION LIBPARAMETER IS ZERO
-        """)
+        """
+        )
     )
 }

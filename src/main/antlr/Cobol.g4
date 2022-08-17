@@ -3199,8 +3199,7 @@ COMMENTTAG : '*>';
 DOLLARCHAR : '$';
 DOUBLEQUOTE : '"';
 // period full stop
-DOT_FS : '.' ('\t' | ' ')+ | '.' EOF;
-DOT : '.';
+DOT_FS : '.' | '.' EOF;
 EQUALCHAR : '=';
 EXECCICSTAG : '*>EXECCICS';
 EXECSQLTAG : '*>EXECSQL';
@@ -3246,7 +3245,7 @@ LEVEL_NUMBER_88 : '88';
 
 INTEGERLITERAL : (PLUSCHAR | MINUSCHAR)? [0-9]+;
 
-NUMERICLITERAL : (PLUSCHAR | MINUSCHAR)? [0-9]* (DOT | COMMACHAR) [0-9]+ (('e' | 'E') (PLUSCHAR | MINUSCHAR)? [0-9]+)?;
+NUMERICLITERAL : (PLUSCHAR | MINUSCHAR)? [0-9]* ('.' | COMMACHAR) [0-9]+ (('e' | 'E') (PLUSCHAR | MINUSCHAR)? [0-9]+)?;
 
 IDENTIFIER : [a-zA-Z0-9]+ ([-_]+ [a-zA-Z0-9]+)*;
 

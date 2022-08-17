@@ -18,13 +18,15 @@ package org.openrewrite.cobol.tree;
 import lombok.Value;
 import lombok.With;
 import org.openrewrite.marker.Marker;
+import org.openrewrite.marker.Markers;
 
+import java.util.Map;
 import java.util.UUID;
 
 @With
 @Value
 public class Continuation implements Marker {
-
     UUID id;
-    CobolContainer<Integer> continuations;
+    Map<Integer, Markers> continuations;
+//    CobolContainer<Integer> continuations;
 }

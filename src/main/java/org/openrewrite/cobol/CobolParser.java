@@ -66,7 +66,8 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                                 sourceFile.getFileAttributes(),
                                 sourceStr,
                                 is.getCharset(),
-                                is.isCharsetBomMarked()
+                                is.isCharsetBomMarked(),
+                                CobolParserVisitor.CobolDialect.IBM_ANSI_85 // TODO: add detection or configuration of dialect
                         ).visitStartRule(parser.startRule());
 
                         sample.stop(MetricsHelper.successTags(timer).register(Metrics.globalRegistry));
@@ -91,13 +92,14 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                 new CobolLineReader()
         );
 
+        // TODO: set dialect and format through configuration.
         CobolParserParams params = new CobolParserParams(
                 encoding,
                 emptyList(),
                 emptyList(),
                 emptyList(),
-                CobolDialect.ANSI85,
-                CobolPreprocessor.CobolSourceFormatEnum.TANDEM,
+                org.openrewrite.cobol.proprocessor.CobolDialect.ANSI85,
+                CobolPreprocessor.CobolSourceFormatEnum.FIXED,
                 true
         );
 
