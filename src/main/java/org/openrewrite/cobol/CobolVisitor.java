@@ -923,7 +923,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.EnvironmentDivision e = environmentDivision;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
-        e = e.getPadding().withBody(visitContainer(e.getPadding().getBody(), p));
+        e = e.withWords(ListUtils.map(e.getWords(), it -> (Cobol.CobolWord) visit(it, p)));
+        e = e.withDot((Cobol.CobolWord) visit(e.getDot(), p));
+        e = e.withBody(ListUtils.map(e.getBody(), it -> visit(it, p)));
         return e;
     }
 
@@ -2113,9 +2115,10 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         pp = pp.withPrefix(visitSpace(pp.getPrefix(), p));
         pp = pp.withMarkers(visitMarkers(pp.getMarkers(), p));
         pp = pp.withProgramId((Cobol.CobolWord) visit(pp.getProgramId(), p));
-        pp = pp.getPadding().withProgramName(visitLeftPadded(pp.getPadding().getProgramName(), p));
-        pp = pp.withProgramAttributes(ListUtils.map(pp.getProgramAttributes(), it -> (Cobol.CobolWord) visit(it, p)));
         pp = pp.withDot((Cobol.CobolWord) visit(pp.getDot(), p));
+        pp = pp.withProgramName((Name) visit(pp.getProgramName(), p));
+        pp = pp.withProgramAttributes(ListUtils.map(pp.getProgramAttributes(), it -> (Cobol.CobolWord) visit(it, p)));
+        pp = pp.withDot2((Cobol.CobolWord) visit(pp.getDot2(), p));
         return pp;
     }
 

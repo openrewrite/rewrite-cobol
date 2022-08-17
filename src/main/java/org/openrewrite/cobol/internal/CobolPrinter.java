@@ -1002,7 +1002,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(environmentDivision.getPrefix(), p);
         visitMarkers(environmentDivision.getMarkers(), p);
         visit(environmentDivision.getWords(), p);
-        visitContainer(".", environmentDivision.getPadding().getBody(), "", "", p);
+        visit(environmentDivision.getDot(), p);
+        visit(environmentDivision.getBody(), p);
         return environmentDivision;
     }
 
@@ -2240,9 +2241,10 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(programIdParagraph.getPrefix(), p);
         visitMarkers(programIdParagraph.getMarkers(), p);
         visit(programIdParagraph.getProgramId(), p);
-        visitLeftPadded(".", programIdParagraph.getPadding().getProgramName(), p);
-        visit(programIdParagraph.getProgramAttributes(), p);
         visit(programIdParagraph.getDot(), p);
+        visit(programIdParagraph.getProgramName(), p);
+        visit(programIdParagraph.getProgramAttributes(), p);
+        visit(programIdParagraph.getDot2(), p);
         return programIdParagraph;
     }
 

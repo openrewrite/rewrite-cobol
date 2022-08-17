@@ -3139,75 +3139,23 @@ public interface Cobol extends Tree {
         }
     }
 
-    @ToString
-    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @RequiredArgsConstructor
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @With
     class EnvironmentDivision implements Cobol {
-        @Nullable
-        @NonFinal
-        transient WeakReference<Padding> padding;
 
-        @Getter
         @EqualsAndHashCode.Include
-        @With
         UUID id;
 
-        @Getter
-        @With
         Space prefix;
-
-        @Getter
-        @With
         Markers markers;
-
-        @Getter
-        @With
         List<CobolWord> words;
-
-        CobolContainer<Cobol> body;
+        CobolWord dot;
+        List<Cobol> body;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitEnvironmentDivision(this, p);
-        }
-
-        public List<Cobol> getBody() {
-            return body.getElements();
-        }
-
-        public EnvironmentDivision withBody(List<Cobol> body) {
-            return getPadding().withBody(this.body.getPadding().withElements(CobolRightPadded.withElements(
-                    this.body.getPadding().getElements(), body)));
-        }
-
-        public Padding getPadding() {
-            Padding p;
-            if (this.padding == null) {
-                p = new Padding(this);
-                this.padding = new WeakReference<>(p);
-            } else {
-                p = this.padding.get();
-                if (p == null || p.t != this) {
-                    p = new Padding(this);
-                    this.padding = new WeakReference<>(p);
-                }
-            }
-            return p;
-        }
-
-        @RequiredArgsConstructor
-        public static class Padding {
-            private final EnvironmentDivision t;
-
-            public CobolContainer<Cobol> getBody() {
-                return t.body;
-            }
-
-            public EnvironmentDivision withBody(CobolContainer<Cobol> body) {
-                return t.body == body ? t : new EnvironmentDivision(t.padding, t.id, t.prefix, t.markers, t.words, body);
-            }
         }
     }
 
@@ -6833,85 +6781,29 @@ public interface Cobol extends Tree {
         }
     }
 
-    @ToString
-    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @RequiredArgsConstructor
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @With
     class ProgramIdParagraph implements Cobol {
-        @Nullable
-        @NonFinal
-        transient WeakReference<Padding> padding;
 
-        @Getter
         @EqualsAndHashCode.Include
-        @With
         UUID id;
 
-        @Getter
-        @With
         Space prefix;
-
-        @Getter
-        @With
         Markers markers;
-
-        @Getter
-        @With
         CobolWord programId;
+        CobolWord dot;
+        Name programName;
 
-        CobolLeftPadded<Name> programName;
-
-        @Getter
         @Nullable
-        @With
         List<CobolWord> programAttributes;
 
-        @Getter
         @Nullable
-        @With
-        CobolWord dot;
+        CobolWord dot2;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitProgramIdParagraph(this, p);
-        }
-
-        public Name getProgramName() {
-            return programName.getElement();
-        }
-
-        public ProgramIdParagraph withProgramName(Name programName) {
-            //noinspection ConstantConditions
-            return getPadding().withProgramName(CobolLeftPadded.withElement(this.programName, programName));
-        }
-
-        public Padding getPadding() {
-            Padding p;
-            if (this.padding == null) {
-                p = new Padding(this);
-                this.padding = new WeakReference<>(p);
-            } else {
-                p = this.padding.get();
-                if (p == null || p.t != this) {
-                    p = new Padding(this);
-                    this.padding = new WeakReference<>(p);
-                }
-            }
-            return p;
-        }
-
-        @RequiredArgsConstructor
-        public static class Padding {
-            private final ProgramIdParagraph t;
-
-            public CobolLeftPadded<Name> getProgramName() {
-                return t.programName;
-            }
-
-            public ProgramIdParagraph withProgramName(CobolLeftPadded<Name> programName) {
-                return t.programName == programName ? t : new ProgramIdParagraph(t.padding, t.id, t.prefix, t.markers, t.programId, programName, t.programAttributes, t.dot);
-            }
         }
     }
 

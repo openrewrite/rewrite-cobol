@@ -1669,7 +1669,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.ENVIRONMENT(), ctx.DIVISION()),
-                convertAllContainer(sourceBefore("."), ctx.environmentDivisionBody())
+                (Cobol.CobolWord) visit(ctx.DOT_FS()),
+                convertAll(ctx.environmentDivisionBody())
         );
     }
 
@@ -3519,7 +3520,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 visitNullable(ctx.PROGRAM_ID()),
-                padLeft(sourceBefore("."), (Name) visit(ctx.programName())),
+                (Cobol.CobolWord) visit(ctx.DOT_FS(0)),
+                (Name) visit(ctx.programName()),
                 wordsList(ctx.IS(), ctx.COMMON(), ctx.INITIAL(), ctx.LIBRARY(), ctx.DEFINITION(), ctx.RECURSIVE(), ctx.PROGRAM()),
                 ctx.DOT_FS().size() == 1 ? null : visitNullable(ctx.DOT_FS(1))
         );
@@ -5864,7 +5866,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.ALL(), ctx.PROCEDURES(), ctx.REFERENCES(), ctx.OF()),
-                ctx.PROCEDURES() != null ? null : (Name) visit(ctx.identifier(), ctx.fileName()),
+                ctx.PROCEDURES() != null ? null : visit(ctx.identifier(), ctx.fileName()),
                 visitNullable(ctx.procedureName())
         );
     }
