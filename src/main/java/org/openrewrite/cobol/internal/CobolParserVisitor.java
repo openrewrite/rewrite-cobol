@@ -16,7 +16,6 @@
 package org.openrewrite.cobol.internal;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.openrewrite.FileAttributes;
@@ -1231,7 +1230,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.PICTURE(), ctx.PIC(), ctx.IS()),
-                convertAllContainer(ctx.pictureString().picture())
+                convertAll(singletonList(ctx.pictureString()))
         );
     }
 
@@ -1862,7 +1861,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 visit(ctx.FD(), ctx.SD()),
                 (Cobol.CobolWord) visit(ctx.fileName()),
                 convertAllList(singletonList("."), ctx.fileDescriptionEntryClause()),
-                convertAllContainer(sourceBefore("."), ctx.dataDescriptionEntry())
+                (Cobol.CobolWord) visit(ctx.DOT_FS(ctx.DOT_FS().size() - 1)),
+                convertAll(ctx.dataDescriptionEntry())
         );
     }
 
@@ -1873,7 +1873,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.FILE(), ctx.SECTION()),
-                convertAllContainer(sourceBefore("."), ctx.fileDescriptionEntry())
+                (Cobol.CobolWord) visit(ctx.DOT_FS()),
+                convertAll(ctx.fileDescriptionEntry())
         );
     }
 
@@ -2582,7 +2583,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.LINKAGE(), ctx.SECTION()),
-                convertAllContainer(sourceBefore("."), ctx.dataDescriptionEntry())
+                (Cobol.CobolWord) visit(ctx.DOT_FS()),
+                convertAll(ctx.dataDescriptionEntry())
         );
     }
 
@@ -2795,7 +2797,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 (Name) visit(ctx.moveToSendingArea()),
-                convertAllContainer(padLeft(ctx.TO()), ctx.identifier())
+                (Cobol.CobolWord) visit(ctx.TO()),
+                convertAll(ctx.identifier())
         );
     }
 

@@ -43,26 +43,26 @@ class CobolAnsi85DivisionTest : RewriteTest {
     @Test
     fun helloWorld() = rewriteRun(
         cobol("""
-            000001 IDENTIFICATION  DIVISION .                                       C_AREA.1
-            000002 PROGRAM-ID    . HELLO     .                                      C_AREA.2
-            000003 PROCEDURE DIVISION.                                              C_AREA.3
-            000004 DISPLAY 'Hello world!'.                                          C_AREA.4
-            000005 STOP RUN.                                                        C_AREA.5
+            000001 IDENTIFICATION  DIVISION .                                       C_AREA.01
+            000002 PROGRAM-ID    . HELLO     .                                      C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 DISPLAY 'Hello world!'.                                          C_AREA.04
+            000005 STOP RUN.                                                        C_AREA.05
         """)
     )
 
     @Test
     fun arithmetic() = rewriteRun(
         cobol("""
-            000001 IDENTIFICATION DIVISION .                                        C_AREA.1
-            000002 PROGRAM-ID . HELLO-WORLD .                                       C_AREA.2
-            000003 DATA DIVISION .                                                  C_AREA.3
-            000004     WORKING-STORAGE SECTION .                                    C_AREA.4
-            000005         77 X PIC 99.                                             C_AREA.5
-            000006         77 Y PIC 99.                                             C_AREA.6
-            000007         77 Z PIC 99.                                             C_AREA.7
-            000008 PROCEDURE DIVISION .                                             C_AREA.8
-            000009     SET X TO 10 .                                                C_AREA.9
+            000001 IDENTIFICATION DIVISION .                                        C_AREA.01
+            000002 PROGRAM-ID . HELLO-WORLD .                                       C_AREA.02
+            000003 DATA DIVISION .                                                  C_AREA.03
+            000004     WORKING-STORAGE SECTION .                                    C_AREA.04
+            000005         77 X PIC 99.                                             C_AREA.05
+            000006         77 Y PIC 99.                                             C_AREA.06
+            000007         77 Z PIC 99.                                             C_AREA.07
+            000008 PROCEDURE DIVISION .                                             C_AREA.08
+            000009     SET X TO 10 .                                                C_AREA.09
             000010     SET Y TO 25 .                                                C_AREA.10
             000011     ADD X Y GIVING Z .                                           C_AREA.11
             000012     DISPLAY "X + Y = "Z .                                        C_AREA.12
@@ -73,15 +73,15 @@ class CobolAnsi85DivisionTest : RewriteTest {
     @Test
     fun environmentDivision() = rewriteRun(
         cobol("""
-            000001 IDENTIFICATION DIVISION.                                         C_AREA.1
-            000002 PROGRAM-ID.                                                      C_AREA.2
-            000003     IC109A.                                                      C_AREA.3
-            000004 ENVIRONMENT DIVISION.                                            C_AREA.4
-            000005 CONFIGURATION SECTION.                                           C_AREA.5
-            000006 SOURCE-COMPUTER.                                                 C_AREA.6
-            000007     XXXXX082.                                                    C_AREA.7
-            000008 OBJECT-COMPUTER.                                                 C_AREA.8
-            000009     XXXXX083                                                     C_AREA.9
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID.                                                      C_AREA.02
+            000003     IC109A.                                                      C_AREA.03
+            000004 ENVIRONMENT DIVISION.                                            C_AREA.04
+            000005 CONFIGURATION SECTION.                                           C_AREA.05
+            000006 SOURCE-COMPUTER.                                                 C_AREA.06
+            000007     XXXXX082.                                                    C_AREA.07
+            000008 OBJECT-COMPUTER.                                                 C_AREA.08
+            000009     XXXXX083                                                     C_AREA.09
             000010     MEMORY SIZE XXXXX068 CHARACTERS                              C_AREA.10
             000011     PROGRAM COLLATING SEQUENCE IS COLLATING-SEQ-1.               C_AREA.11
             000012 SPECIAL-NAMES.                                                   C_AREA.12
@@ -100,15 +100,15 @@ class CobolAnsi85DivisionTest : RewriteTest {
     @Test
     fun inputOutputSection() = rewriteRun(
         cobol("""
-            000001 IDENTIFICATION DIVISION.                                         C_AREA.1
-            000002 PROGRAM-ID.                                                      C_AREA.2
-            000003     IC109A.                                                      C_AREA.3
-            000004 ENVIRONMENT DIVISION.                                            C_AREA.4
-            000005 INPUT-OUTPUT SECTION.                                            C_AREA.5
-            000006 FILE-CONTROL.                                                    C_AREA.6
-            000007     SELECT PRINT-FILE ASSIGN TO                                  C_AREA.7
-            000008         XXXXX055.                                                C_AREA.8 
-            000009     SELECT SEQ-FILE ASSIGN TO                                    C_AREA.9 
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID.                                                      C_AREA.02
+            000003     IC109A.                                                      C_AREA.03
+            000004 ENVIRONMENT DIVISION.                                            C_AREA.04
+            000005 INPUT-OUTPUT SECTION.                                            C_AREA.05
+            000006 FILE-CONTROL.                                                    C_AREA.06
+            000007     SELECT PRINT-FILE ASSIGN TO                                  C_AREA.07
+            000008         XXXXX055.                                                C_AREA.08 
+            000009     SELECT SEQ-FILE ASSIGN TO                                    C_AREA.09 
             000010         XXXXX014.                                                C_AREA.10
             000011     SELECT SEQ-FILE RESERVE NO ALTERNATE AREA.                   C_AREA.11
             000012     SELECT SEQ-FILE ORGANIZATION IS RECORD BINARY INDEXED.       C_AREA.12
@@ -129,76 +129,74 @@ class CobolAnsi85DivisionTest : RewriteTest {
     @Test
     fun procedureDivision() = rewriteRun(
         cobol("""
-            000001 IDENTIFICATION  DIVISION .                                       C_AREA.1
-            000002 PROGRAM-ID    . HELLO     .                                      C_AREA.2
-            000003 PROCEDURE DIVISION USING GRP-01 GIVING dataName.                 C_AREA.3
-            000004 DECLARATIVES.                                                    C_AREA.4
-            000005 sectionName SECTION 77.                                          C_AREA.5
-            000006 USE GLOBAL AFTER STANDARD ERROR PROCEDURE ON INPUT.              C_AREA.6
-            000007 END DECLARATIVES.                                                C_AREA.7
+            000001 IDENTIFICATION  DIVISION .                                       C_AREA.01
+            000002 PROGRAM-ID    . HELLO     .                                      C_AREA.02
+            000003 PROCEDURE DIVISION USING GRP-01 GIVING dataName.                 C_AREA.03
+            000004 DECLARATIVES.                                                    C_AREA.04
+            000005 sectionName SECTION 77.                                          C_AREA.05
+            000006 USE GLOBAL AFTER STANDARD ERROR PROCEDURE ON INPUT.              C_AREA.06
+            000007 END DECLARATIVES.                                                C_AREA.07
         """)
     )
 
     @Test
     fun divisionUsing() = rewriteRun(
         cobol("""
-            000001 IDENTIFICATION  DIVISION .                                       C_AREA.1
-            000002 PROGRAM-ID    . HELLO     .                                      C_AREA.2
-            000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.3
-            000004 STOP RUN.                                                        C_AREA.4
+            000001 IDENTIFICATION  DIVISION .                                       C_AREA.01
+            000002 PROGRAM-ID    . HELLO     .                                      C_AREA.02
+            000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.03
+            000004 STOP RUN.                                                        C_AREA.04
         """)
     )
 
-    @Disabled("Not yet implemented")
     @Test
     fun ic109a() = rewriteRun(
-        cobol(
-            """
-                IDENTIFICATION DIVISION.                                       
-                PROGRAM-ID.                                                    
-                    IC109A.                                                    
-                ENVIRONMENT DIVISION.                                          
-                CONFIGURATION SECTION.                                         
-                SOURCE-COMPUTER.                                               
-                    XXXXX082.                                                  
-                OBJECT-COMPUTER.                                               
-                    XXXXX083.                                                  
-                INPUT-OUTPUT SECTION.                                          
-                FILE-CONTROL.                                                  
-                    SELECT PRINT-FILE ASSIGN TO                                
-                    XXXXX055.                                                  
-                DATA DIVISION.                                                 
-                FILE SECTION.                                                  
-                FD  PRINT-FILE.                                                
-                01  PRINT-REC PICTURE X(120).                                  
-                01  DUMMY-RECORD PICTURE X(120).                               
-                WORKING-STORAGE SECTION.                                       
-                77  WS1 PICTURE X.                                             
-                LINKAGE SECTION.                                               
-                01  GRP-01.                                                    
-                    02  SUB-CALLED.                                            
-                        03  DN1  PICTURE X(6).                                 
-                        03  DN2  PICTURE X(6).                                 
-                        03  DN3  PICTURE X(6).                                 
-                    02  TIMES-CALLED.                                          
-                        03  DN4  PICTURE S999.                                 
-                        03  DN5  PICTURE S999.                                 
-                        03  DN6  PICTURE S999.                                 
-                    02  SPECIAL-FLAGS.                                         
-                        03  DN7 PICTURE X.                                     
-                        03  DN8 PICTURE X.                                     
-                        03  DN9 PICTURE X.                                     
-                PROCEDURE DIVISION USING GRP-01.                               
-                SECT-IC109-0001 SECTION.                                       
-                PARA-IC109.                                                    
-                    MOVE "IC109A" TO DN1.                                      
-                    MOVE SPACE TO WS1.                                         
-                    CALL "IC110A" USING WS1 GRP-01.                            
-                    ADD 1 TO DN4.                                              
-                    MOVE WS1 TO DN9.                                           
-                EXIT-IC109.                                                    
-                    EXIT PROGRAM.                                              
-                END-OF
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID.                                                      C_AREA.02
+            000003     IC109A.                                                      C_AREA.03
+            000004 ENVIRONMENT DIVISION.                                            C_AREA.04
+            000005 CONFIGURATION SECTION.                                           C_AREA.05
+            000006 SOURCE-COMPUTER.                                                 C_AREA.06
+            000007     XXXXX082.                                                    C_AREA.07
+            000008 OBJECT-COMPUTER.                                                 C_AREA.08
+            000009     XXXXX083.                                                    C_AREA.09
+            000010 INPUT-OUTPUT SECTION.                                            C_AREA.10
+            000011 FILE-CONTROL.                                                    C_AREA.11
+            000012     SELECT PRINT-FILE ASSIGN TO                                  C_AREA.12
+            000013     XXXXX055.                                                    C_AREA.13
+            000014 DATA DIVISION.                                                   C_AREA.14
+            000015 FILE SECTION.                                                    C_AREA.15
+            000016 FD  PRINT-FILE.                                                  C_AREA.16
+            000017 01  PRINT-REC PICTURE X(120).                                    C_AREA.17
+            000018 01  DUMMY-RECORD PICTURE X(120).                                 C_AREA.18
+            000019 WORKING-STORAGE SECTION.                                         C_AREA.19
+            000020 77  WS1 PICTURE X.                                               C_AREA.20
+            000021 LINKAGE SECTION.                                                 C_AREA.21
+            000022 01  GRP-01.                                                      C_AREA.22
+            000023     02  SUB-CALLED.                                              C_AREA.23
+            000024         03  DN1  PICTURE X(6).                                   C_AREA.24
+            000025         03  DN2  PICTURE X(6).                                   C_AREA.25
+            000026         03  DN3  PICTURE X(6).                                   C_AREA.26
+            000027     02  TIMES-CALLED.                                            C_AREA.27
+            000028         03  DN4  PICTURE S999.                                   C_AREA.28
+            000029         03  DN5  PICTURE S999.                                   C_AREA.29
+            000030         03  DN6  PICTURE S999.                                   C_AREA.30
+            000031     02  SPECIAL-FLAGS.                                           C_AREA.31
+            000032         03  DN7 PICTURE X.                                       C_AREA.32
+            000033         03  DN8 PICTURE X.                                       C_AREA.33
+            000034         03  DN9 PICTURE X.                                       C_AREA.34
+            000035 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.35
+            000036 SECT-IC109-0001 SECTION.                                         C_AREA.36
+            000037 PARA-IC109.                                                      C_AREA.37
+            000038     MOVE "IC109A" TO DN1.                                        C_AREA.38
+            000039     MOVE SPACE TO WS1.                                           C_AREA.39
+            000040     CALL "IC110A" USING WS1 GRP-01.                              C_AREA.40
+            000041     ADD 1 TO DN4.                                                C_AREA.41
+            000042     MOVE WS1 TO DN9.                                             C_AREA.42
+            000043 EXIT-IC109.                                                      C_AREA.43
+            000045     EXIT PROGRAM.                                                C_AREA.45
+            000046 END-OF                                                           C_AREA.46
             """
         )
     )
