@@ -15,6 +15,7 @@
  */
 package org.openrewrite.cobol.tree
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
@@ -130,6 +131,21 @@ class CobolSourceMarkersTest : RewriteTest {
            000003 PROCEDURE DIVISION.                                              
            000004    DISPLAY 'Because it will happen                               
            000005-    ''    .                                                      
+        """)
+    )
+
+    @Disabled("Fix: Comma delimiters are pipped to a hidden channel.")
+    @Test
+    fun commaDelimiter() = rewriteRun(
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 COMMA-SUBSCRIPT-TEST.                                            C_AREA.04
+            000005 EVALUATE SUBSCRIPT                                               C_AREA.05
+            000006 WHEN IDENTIFIER (FUNCTION INTEGER (IDENTIFIER                    C_AREA.06
+            000007 , IDENTIFIER IDENTIFIER) (1: 10))                                C_AREA.07
+            000008     CONTINUE.                                                    C_AREA.08
         """)
     )
 

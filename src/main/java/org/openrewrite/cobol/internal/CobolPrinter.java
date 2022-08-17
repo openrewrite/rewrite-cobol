@@ -494,7 +494,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(communicationDescriptionEntryFormat1.getCd(), p);
         visit(communicationDescriptionEntryFormat1.getName(), p);
         visit(communicationDescriptionEntryFormat1.getWords(), p);
-        visitContainer("", communicationDescriptionEntryFormat1.getPadding().getInputs(), "", ".", p);
+        visit(communicationDescriptionEntryFormat1.getInputs(), p);
+        visit(communicationDescriptionEntryFormat1.getDot(), p);
         return communicationDescriptionEntryFormat1;
     }
 
@@ -504,7 +505,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(communicationDescriptionEntryFormat2.getCd(), p);
         visit(communicationDescriptionEntryFormat2.getName(), p);
         visit(communicationDescriptionEntryFormat2.getWords(), p);
-        visitContainer("", communicationDescriptionEntryFormat2.getPadding().getOutputs(), "", ".", p);
+        visit(communicationDescriptionEntryFormat2.getOutputs(), p);
+        visit(communicationDescriptionEntryFormat2.getDot(), p);
         return communicationDescriptionEntryFormat2;
     }
 
@@ -514,7 +516,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(communicationDescriptionEntryFormat3.getCd(), p);
         visit(communicationDescriptionEntryFormat3.getName(), p);
         visit(communicationDescriptionEntryFormat3.getWords(), p);
-        visitContainer("", communicationDescriptionEntryFormat3.getPadding().getInitialIOs(), "", ".", p);
+        visit(communicationDescriptionEntryFormat3.getInitialIOs(), p);
+        visit(communicationDescriptionEntryFormat3.getDot(), p);
         return communicationDescriptionEntryFormat3;
     }
 
@@ -522,7 +525,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(communicationSection.getPrefix(), p);
         visitMarkers(communicationSection.getMarkers(), p);
         visit(communicationSection.getWords(), p);
-        visitContainer("", communicationSection.getPadding().getEntries(), "", "", p);
+        visit(communicationSection.getDot(), p);
+        visit(communicationSection.getEntries(), p);
         return communicationSection;
     }
 

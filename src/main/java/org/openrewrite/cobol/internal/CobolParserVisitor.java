@@ -855,7 +855,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 (Cobol.CobolWord) visit(ctx.CD()),
                 visitNullable(ctx.cdName()),
                 wordsList(ctx.FOR(), ctx.INITIAL(), ctx.INPUT()),
-                convertAllContainer(ctx.symbolicQueueClause(),
+                convertAll(ctx.symbolicQueueClause(),
                         ctx.symbolicSubQueueClause(),
                         ctx.messageDateClause(),
                         ctx.messageTimeClause(),
@@ -864,7 +864,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                         ctx.endKeyClause(),
                         ctx.statusKeyClause(),
                         ctx.messageCountClause(),
-                        ctx.dataDescName()).withLastSpace(sourceBefore("."))
+                        ctx.dataDescName()),
+                (Cobol.CobolWord) visit(ctx.DOT_FS())
         );
     }
 
@@ -877,12 +878,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 (Cobol.CobolWord) visit(ctx.CD()),
                 visitNullable(ctx.cdName()),
                 wordsList(ctx.FOR(), ctx.OUTPUT()),
-                convertAllContainer(ctx.destinationCountClause(),
+                convertAll(ctx.destinationCountClause(),
                         ctx.textLengthClause(),
                         ctx.statusKeyClause(),
                         ctx.destinationTableClause(),
                         ctx.errorKeyClause(),
-                        ctx.symbolicDestinationClause()).withLastSpace(sourceBefore("."))
+                        ctx.symbolicDestinationClause()),
+                (Cobol.CobolWord) visit(ctx.DOT_FS())
         );
     }
 
@@ -895,13 +897,14 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 (Cobol.CobolWord) visit(ctx.CD()),
                 visitNullable(ctx.cdName()),
                 wordsList(ctx.FOR(), ctx.INITIAL(), ctx.I_O()),
-                convertAllContainer(ctx.messageDateClause(),
+                convertAll(ctx.messageDateClause(),
                         ctx.messageTimeClause(),
                         ctx.symbolicTerminalClause(),
                         ctx.textLengthClause(),
                         ctx.endKeyClause(),
                         ctx.statusKeyClause(),
-                        ctx.dataDescName()).withLastSpace(sourceBefore("."))
+                        ctx.dataDescName()),
+                (Cobol.CobolWord) visit(ctx.DOT_FS())
         );
     }
 
@@ -911,8 +914,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                wordsList(ctx.COMMUNICATION(), ctx.SECTION(), ctx.DOT_FS()),
-                convertAllContainer(ctx.communicationDescriptionEntry(), ctx.dataDescriptionEntry())
+                wordsList(ctx.COMMUNICATION(), ctx.SECTION()),
+                (Cobol.CobolWord) visit(ctx.DOT_FS()),
+                convertAll(ctx.communicationDescriptionEntry(), ctx.dataDescriptionEntry())
         );
     }
 
@@ -5259,7 +5263,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 Markers.EMPTY,
                 wordsList(ctx.INPUT(), ctx.PROCEDURE(), ctx.IS()),
                 (Cobol.CobolWord) visit(ctx.procedureName()),
-                null
+                visitNullable(ctx.sortInputThrough())
         );
     }
 

@@ -601,344 +601,320 @@ class CobolAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun tableCallTest() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            COMMA-SUBSCRIPT-TEST.
-            EVALUATE SUBSCRIPT
-            WHEN IDENTIFIER (IDENTIFIER, IDENTIFIER IDENTIFIER)
-                CONTINUE.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 COMMA-SUBSCRIPT-TEST.                                            C_AREA.04
+            000005 EVALUATE SUBSCRIPT                                               C_AREA.05
+            000006 WHEN IDENTIFIER (IDENTIFIER, IDENTIFIER IDENTIFIER)              C_AREA.06
+            000007     CONTINUE.                                                    C_AREA.07
+        """)
     )
 
     @Test
     fun functionCallTest() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            COMMA-SUBSCRIPT-TEST.
-            EVALUATE SUBSCRIPT
-            WHEN IDENTIFIER (FUNCTION INTEGER (IDENTIFIER, IDENTIFIER IDENTIFIER) (1: 10))
-                CONTINUE.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 COMMA-SUBSCRIPT-TEST.                                            C_AREA.04
+            000005 EVALUATE SUBSCRIPT                                               C_AREA.05
+            000006 WHEN IDENTIFIER (FUNCTION INTEGER                                C_AREA.06
+            000007 (IDENTIFIER, IDENTIFIER IDENTIFIER) (1: 10))                     C_AREA.07
+            000008     CONTINUE.                                                    C_AREA.08
+        """)
     )
 
     @Test
     fun relationConditions() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            F-ANNUITY-02.
-            EVALUATE IC110A
-            WHEN NOT +IDENTIFIER IS NOT ZERO
-            WHEN NOT +IDENTIFIER IS GREATER OR EQUAL +IDENTIFIER
-            WHEN NOT +ZERO GREATER THAN (IDENTIFIER AND IDENTIFIER OR IDENTIFIER)
-            .
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 F-ANNUITY-02.                                                    C_AREA.04
+            000005 EVALUATE IC110A                                                  C_AREA.05
+            000006 WHEN NOT +IDENTIFIER IS NOT ZERO                                 C_AREA.06
+            000007 WHEN NOT +IDENTIFIER IS GREATER OR EQUAL +IDENTIFIER             C_AREA.07
+            000008 WHEN NOT +ZERO GREATER THAN (IDENTIFIER AND IDENTIFIER OR        C_AREA.08
+            000009 IDENTIFIER) .                                                    C_AREA.09
+        """)
     )
 
     @Test
     fun multiElementLiteral() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            Literal-Test.
-            EVALUATE DFHRESP (IDENTIFIER).
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 Literal-Test.                                                    C_AREA.04
+            000005 EVALUATE DFHRESP (IDENTIFIER).                                   C_AREA.05
+        """)
     )
 
     @Test
     fun multiElementIdentifier() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            Identifier-Test.
-            EVALUATE IDENTIFIER IN IDENTIFIER.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 Identifier-Test.                                                 C_AREA.04
+            000005 EVALUATE IDENTIFIER IN IDENTIFIER.                               C_AREA.05
+        """)
     )
 
     @Test
     fun openMultipleStatements() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            OPEN-FILES.
-                OPEN     INPUT IDENTIFIER REVERSED INPUT IDENTIFIER REVERSED
-                OPEN     OUTPUT IDENTIFIER WITH NO REWIND IDENTIFIER WITH NO REWIND
-                OPEN     I-O IDENTIFIER IDENTIFIER I-O IDENTIFIER IDENTIFIER
-                OPEN     EXTEND IDENTIFIER IDENTIFIER EXTEND IDENTIFIER IDENTIFIER.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 OPEN-FILES.                                                      C_AREA.04
+            000005     OPEN     INPUT IDENTIFIER REVERSED INPUT IDENTIFIER          C_AREA.05
+            000006         REVERSED                                                 C_AREA.06
+            000007     OPEN     OUTPUT IDENTIFIER WITH NO REWIND IDENTIFIER         C_AREA.07
+            000008         WITH NO REWIND                                           C_AREA.08
+            000009     OPEN     I-O IDENTIFIER IDENTIFIER I-O IDENTIFIER            C_AREA.09
+            000010         IDENTIFIER                                               C_AREA.10
+            000011     OPEN     EXTEND IDENTIFIER IDENTIFIER EXTEND IDENTIFIER      C_AREA.11
+            000012         IDENTIFIER.                                              C_AREA.12
+        """)
     )
 
     @Test
     fun outOfOrderOpenStatements() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            OPEN-FILES.
-                OPEN     INPUT IDENTIFIER OUTPUT IDENTIFIER INPUT IDENTIFIER OUTPUT IDENTIFIER.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 OPEN-FILES.                                                      C_AREA.04
+            000005     OPEN     INPUT IDENTIFIER OUTPUT IDENTIFIER INPUT            C_AREA.05
+            000006     IDENTIFIER OUTPUT IDENTIFIER.                                C_AREA.06
+        """)
     )
 
     @Test
     fun unstringStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. acceptStatement.
-            PROCEDURE DIVISION.
-            UNSTRING-TEST.
-                UNSTRING IDENTIFIER DELIMITED BY ALL IDENTIFIER OR ALL IDENTIFIER INTO IDENTIFIER DELIMITER IN IDENTIFIER COUNT IN IDENTIFIER END-UNSTRING
-                UNSTRING IDENTIFIER INTO IDENTIFIER WITH POINTER IDENTIFIER
-                UNSTRING IDENTIFIER INTO IDENTIFIER TALLYING IN IDENTIFIER
-                UNSTRING IDENTIFIER INTO IDENTIFIER ON OVERFLOW
-                UNSTRING IDENTIFIER INTO IDENTIFIER NOT ON OVERFLOW.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 UNSTRING-TEST.                                                   C_AREA.04
+            000005     UNSTRING IDENTIFIER DELIMITED BY ALL IDENTIFIER OR ALL       C_AREA.05
+            000006         IDENTIFIER INTO IDENTIFIER DELIMITER IN                  C_AREA.06
+            000007         IDENTIFIER COUNT IN IDENTIFIER END-UNSTRING              C_AREA.07
+            000008     UNSTRING IDENTIFIER INTO IDENTIFIER WITH POINTER IDENTIFIER  C_AREA.08
+            000009     UNSTRING IDENTIFIER INTO IDENTIFIER TALLYING IN IDENTIFIER   C_AREA.09
+            000010     UNSTRING IDENTIFIER INTO IDENTIFIER ON OVERFLOW              C_AREA.10
+            000011     UNSTRING IDENTIFIER INTO IDENTIFIER NOT ON OVERFLOW.         C_AREA.11
+        """)
     )
 
     @Test
     fun terminateStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. terminateStatement.
-            PROCEDURE DIVISION.
-            RW301M-CONTROL.
-                TERMINATE RFIL2.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. terminateStatement.                                  C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 RW301M-CONTROL.                                                  C_AREA.04
+            000005     TERMINATE RFIL2.                                             C_AREA.05
+        """)
     )
 
     @Test
     fun generateStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. terminateStatement.
-            PROCEDURE DIVISION.
-            RW301M-CONTROL.
-                GENERATE RREC.
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. terminateStatement.                                  C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 RW301M-CONTROL.                                                  C_AREA.04
+            000005     GENERATE RREC.                                               C_AREA.05
         """
         )
     )
 
     @Test
     fun subtractStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. subtractStatement.
-            PROCEDURE DIVISION.
-            RW301M-CONTROL.
-                SUBTRACT 1 FROM ERROR-COUNTER
-                SUBTRACT N-10 FROM 0 GIVING N-19
-                SUBTRACT CORRESPONDING IDENTIFIER FROM IDENTIFIER ROUNDED.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 RW301M-CONTROL.                                                  C_AREA.04
+            000005     SUBTRACT 1 FROM ERROR-COUNTER                                C_AREA.05
+            000006     SUBTRACT N-10 FROM 0 GIVING N-19                             C_AREA.06
+            000007     SUBTRACT CORRESPONDING IDENTIFIER FROM IDENTIFIER ROUNDED.   C_AREA.07
+        """)
     )
 
     @Test
     fun exitStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. exitStatement.
-            PROCEDURE DIVISION.
-            RW301M-CONTROL.
-                EXIT PROGRAM.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. exitStatement.                                       C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 RW301M-CONTROL.                                                  C_AREA.04
+            000005     EXIT PROGRAM.                                                C_AREA.05
+        """)
     )
 
     @Test
     fun sortStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. sortStatement.
-            PROCEDURE DIVISION.
-            SORT-STATEMENT.
-                SORT SORTFILE-1B
-                    ON DESCENDING KEY KEY-1
-                    ON ASCENDING KEY KEY-2
-                    ON DESCENDING KEY KEY-3
-                    ASCENDING KEY-4 KEY-5
-                USING SORTIN-1B
-                GIVING SORTOUT-1B.
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. sortStatement.                                       C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 SORT-STATEMENT.                                                  C_AREA.04
+            000005     SORT SORTFILE-1B                                             C_AREA.05
+            000006         ON DESCENDING KEY KEY-1                                  C_AREA.06
+            000007         ON ASCENDING KEY KEY-2                                   C_AREA.07
+            000008         ON DESCENDING KEY KEY-3                                  C_AREA.08
+            000009         ASCENDING KEY-4 KEY-5                                    C_AREA.09
+            000010     USING SORTIN-1B                                              C_AREA.10
+            000011     GIVING SORTOUT-1B.                                           C_AREA.11
         """
         )
     )
 
     @Test
     fun stringStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. subtractStatement.
-            PROCEDURE DIVISION.
-            RW301M-CONTROL.
-                STRING NONNUMERICLITERAL, NONNUMERICLITERAL NONNUMERICLITERAL DELIMITED BY SIZE
-                INTO IDENTIFIER
-                WITH POINTER IDENTIFIER END-STRING
-            .
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 RW301M-CONTROL.                                                  C_AREA.04
+            000005     STRING NONNUMERICLITERAL, NONNUMERICLITERAL                  C_AREA.05
+            000006     NONNUMERICLITERAL DELIMITED BY SIZE                          C_AREA.06
+            000007     INTO IDENTIFIER                                              C_AREA.07
+            000008     WITH POINTER IDENTIFIER END-STRING .                         C_AREA.08
+        """)
     )
 
     @Test
     fun startStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. subtractStatement.
-            PROCEDURE DIVISION.
-            STA-TEST-GF-01.
-                START IX-FS2 KEY IS NOT LESS THAN IDENTIFIER IN IDENTIFIER END-START.
-            .
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 STA-TEST-GF-01.                                                  C_AREA.04
+            000005     START IX-FS2 KEY IS NOT LESS THAN IDENTIFIER                 C_AREA.05
+            000006     IN IDENTIFIER END-START.                                     C_AREA.06
+            000007 .                                                                C_AREA.07
+        """)
     )
 
     @Test
     fun goToStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. subtractStatement.
-            PROCEDURE DIVISION.
-            ACCEPT-TEST-01.
-                GO TO CM105-FINI.
-                GO TO CM105-FINI DEPENDING ON IDENTIFIER IN IDENTIFIER.
-            .
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 ACCEPT-TEST-01.                                                  C_AREA.04
+            000005     GO TO CM105-FINI.                                            C_AREA.05
+            000006     GO TO CM105-FINI DEPENDING ON IDENTIFIER IN IDENTIFIER.      C_AREA.06
+            000007 .                                                                C_AREA.07
+        """)
     )
 
     @Test
     fun ifStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. subtractStatement.
-            PROCEDURE DIVISION.
-            IF--TEST-GF-99.
-                IF      ZERO IS EQUAL TO IF-D1
-                   THEN PERFORM PASS
-                ELSE
-                    PERFORM FAIL.
-            .
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 IF--TEST-GF-99.                                                  C_AREA.04
+            000005     IF      ZERO IS EQUAL TO IF-D1                               C_AREA.05
+            000006        THEN PERFORM PASS                                         C_AREA.06
+            000007     ELSE                                                         C_AREA.07
+            000008         PERFORM FAIL.                                            C_AREA.08
+            000009 .                                                                C_AREA.09
+        """)
     )
 
     @Test
     fun initializeStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. subtractStatement.
-            PROCEDURE DIVISION.
-            INI-TEST-GF-1-0.
-                INITIALIZE IDENTIFIER IN IDENTIFIER REPLACING NATIONAL DATA BY 42.
-            .
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 INI-TEST-GF-1-0.                                                 C_AREA.04
+            000005     INITIALIZE IDENTIFIER IN IDENTIFIER REPLACING NATIONAL       C_AREA.05
+            000006     DATA BY 42.                                                  C_AREA.06
+            000007 .                                                                C_AREA.07
+        """)
     )
 
     @Test
     fun initiateStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. subtractStatement.
-            PROCEDURE DIVISION.
-            RW301M-CONTROL.
-                INITIATE RFIL2.
-            .
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 RW301M-CONTROL.                                                  C_AREA.04
+            000005     INITIATE RFIL2.                                              C_AREA.05
+            000006 .                                                                C_AREA.06
+        """)
     )
 
     @Test
     fun inspectStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. subtractStatement.
-            PROCEDURE DIVISION.
-            RW301M-CONTROL.
-                INSPECT IDENTIFIER IN IDENTIFIER TALLYING IDENTIFIER IN IDENTIFIER FOR CHARACTER BEFORE INITIAL 42
-                INSPECT IDENTIFIER IN IDENTIFIER REPLACING CHARACTER BY IDENTIFIER IN IDENTIFIER BEFORE INITIAL 42
-                INSPECT IDENTIFIER IN IDENTIFIER TALLYING IDENTIFIER IN IDENTIFIER FOR CHARACTER BEFORE IDENTIFIER IN IDENTIFIER REPLACING ALL IDENTIFIER IN IDENTIFIER BY IDENTIFIER IN IDENTIFIER
-                INSPECT IDENTIFIER IN IDENTIFIER CONVERTING IDENTIFIER IN IDENTIFIER TO IDENTIFIER IN IDENTIFIER BEFORE IDENTIFIER IN IDENTIFIER
-            .
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
+            000003 PROCEDURE DIVISION.                                              C_AREA.03
+            000004 RW301M-CONTROL.                                                  C_AREA.04
+            000005     INSPECT IDENTIFIER IN IDENTIFIER TALLYING                    C_AREA.05
+            000006         IDENTIFIER IN IDENTIFIER                                 C_AREA.06
+            000007         FOR CHARACTER BEFORE INITIAL 42                          C_AREA.07
+            000008     INSPECT IDENTIFIER IN IDENTIFIER REPLACING CHARACTER BY      C_AREA.08
+            000009         IDENTIFIER IN IDENTIFIER BEFORE INITIAL 42               C_AREA.09
+            000010     INSPECT IDENTIFIER IN IDENTIFIER TALLYING                    C_AREA.10
+            000011         IDENTIFIER IN IDENTIFIER FOR CHARACTER BEFORE            C_AREA.11
+            000012         IDENTIFIER IN IDENTIFIER REPLACING ALL                   C_AREA.12
+            000013         IDENTIFIER IN IDENTIFIER BY IDENTIFIER IN IDENTIFIER     C_AREA.13
+            000014     INSPECT IDENTIFIER IN IDENTIFIER CONVERTING                  C_AREA.14
+            000015         IDENTIFIER IN IDENTIFIER TO IDENTIFIER IN IDENTIFIER     C_AREA.15
+            000016         BEFORE IDENTIFIER IN IDENTIFIER                          C_AREA.16
+            000017 .                                                                C_AREA.17
+        """)
     )
 
     @Test
     fun communicationSection() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. communicationSection.
-            DATA DIVISION.
-            COMMUNICATION SECTION.
-                CD COMMNAME FOR INITIAL INPUT.
-                CD COMMNAME FOR OUTPUT.
-                CD COMMNAME FOR INITIAL I-O.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. communicationSection.                                C_AREA.02
+            000003 DATA DIVISION.                                                   C_AREA.03
+            000004 COMMUNICATION SECTION.                                           C_AREA.04
+            000005     CD COMMNAME FOR INITIAL INPUT.                               C_AREA.05
+            000006     CD COMMNAME FOR OUTPUT.                                      C_AREA.06
+            000007     CD COMMNAME FOR INITIAL I-O.                                 C_AREA.07
+        """)
     )
 
     @Test
     fun reportSection() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. communicationSection.
-            DATA DIVISION.
-            REPORT SECTION.
-                RD IDENTIFIER IN IDENTIFIER IS GLOBAL.
-                10 IDENTIFIER LINE NUMBER IS 10 ON NEXT PAGE.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. communicationSection.                                C_AREA.02
+            000003 DATA DIVISION.                                                   C_AREA.03
+            000004 REPORT SECTION.                                                  C_AREA.04
+            000005     RD IDENTIFIER IN IDENTIFIER IS GLOBAL.                       C_AREA.05
+            000006     10 IDENTIFIER LINE NUMBER IS 10 ON NEXT PAGE.                C_AREA.06
+        """)
     )
 
     @Test
     fun programLibrarySection() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. communicationSection.
-            DATA DIVISION.
-            PROGRAM-LIBRARY SECTION.
-                LD IDENTIFIER EXPORT ATTRIBUTE SHARING IS DONTCARE ENTRY-PROCEDURE IDENTIFIER FOR ZERO
-                LB IDENTIFIER IMPORT IS GLOBAL IS COMMON ATTRIBUTE
-                FUNCTIONNAME IS ZERO LIBACCESS IS BYFUNCTION LIBPARAMETER IS ZERO
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. communicationSection.                                C_AREA.02
+            000003 DATA DIVISION.                                                   C_AREA.03
+            000004 PROGRAM-LIBRARY SECTION.                                         C_AREA.04
+            000005     LD IDENTIFIER EXPORT ATTRIBUTE SHARING IS DONTCARE           C_AREA.05
+            000006         ENTRY-PROCEDURE IDENTIFIER FOR ZERO                      C_AREA.06
+            000007     LB IDENTIFIER IMPORT IS GLOBAL IS COMMON ATTRIBUTE           C_AREA.07
+            000008     FUNCTIONNAME IS ZERO LIBACCESS IS                            C_AREA.08
+            000009         BYFUNCTION LIBPARAMETER IS ZERO                          C_AREA.09
+        """)
     )
 }
