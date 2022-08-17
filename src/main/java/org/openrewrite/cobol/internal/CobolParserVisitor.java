@@ -90,6 +90,16 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     public enum CobolDialect {
+
+        /**
+         * Fixed format, standard ANSI / IBM reference. Each line 80 chars.<br />
+         * <br />
+         * 1-6: sequence area<br />
+         * 7: indicator field<br />
+         * 8-12: area A<br />
+         * 13-72: area B<br />
+         * 73-80: comments<br />
+         */
         IBM_ANSI_85(0, 6, 7, 72);
 
         private final int sequenceArea;

@@ -24,7 +24,7 @@ import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
 
-@Disabled("Add configuration to run with different dialect.")
+@Disabled("Requires configuration to parse HP Tandem dialect.")
 class CobolDivisionTest : RewriteTest {
 
     override fun defaults(spec: RecipeSpec) {
@@ -153,7 +153,6 @@ class CobolDivisionTest : RewriteTest {
         """)
     )
 
-    @Disabled("Not yet implemented")
     @Test
     fun ic109a() = rewriteRun(
         cobol(
