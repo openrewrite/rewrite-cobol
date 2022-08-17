@@ -639,9 +639,10 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitDataDescriptionEntry(Cobol.DataDescriptionEntry dataDescriptionEntry, PrintOutputCapture<P> p) {
         visitSpace(dataDescriptionEntry.getPrefix(), p);
         visitMarkers(dataDescriptionEntry.getMarkers(), p);
-        visit(dataDescriptionEntry.getLevel(), p);
+        visit(dataDescriptionEntry.getWords(), p);
         visit(dataDescriptionEntry.getName(), p);
-        visitContainer("", dataDescriptionEntry.getPadding().getClauses(), "", ".", p);
+        visit(dataDescriptionEntry.getClauses(), p);
+        visit(dataDescriptionEntry.getDot(), p);
         return dataDescriptionEntry;
     }
 
@@ -649,7 +650,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(dataDivision.getPrefix(), p);
         visitMarkers(dataDivision.getMarkers(), p);
         visit(dataDivision.getWords(), p);
-        visitContainer(".", dataDivision.getPadding().getSections(), "", "", p);
+        visit(dataDivision.getDot(), p);
+        visit(dataDivision.getSections(), p);
         return dataDivision;
     }
 
@@ -2118,8 +2120,10 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(procedureDeclarative.getPrefix(), p);
         visitMarkers(procedureDeclarative.getMarkers(), p);
         visit(procedureDeclarative.getProcedureSectionHeader(), p);
-        visitLeftPadded(".", procedureDeclarative.getPadding().getUseStatement(), p);
-        visitLeftPadded(".", procedureDeclarative.getPadding().getParagraphs(), p);
+        visit(procedureDeclarative.getDot(), p);
+        visit(procedureDeclarative.getUseStatement(), p);
+        visit(procedureDeclarative.getDot2(), p);
+        visit(procedureDeclarative.getParagraphs(), p);
         return procedureDeclarative;
     }
 
@@ -2127,9 +2131,10 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(procedureDeclaratives.getPrefix(), p);
         visitMarkers(procedureDeclaratives.getMarkers(), p);
         visit(procedureDeclaratives.getDeclaratives(), p);
-        visitContainer(".", procedureDeclaratives.getPadding().getProcedureDeclarative(), "", "", p);
-        visit(procedureDeclaratives.getEndDeclaratives(), p);
         visit(procedureDeclaratives.getDot(), p);
+        visit(procedureDeclaratives.getProcedureDeclarative(), p);
+        visit(procedureDeclaratives.getEndDeclaratives(), p);
+        visit(procedureDeclaratives.getDot2(), p);
         return procedureDeclaratives;
     }
 
@@ -2141,7 +2146,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(procedureDivision.getProcedureDivisionGivingClause(), p);
         visit(procedureDivision.getDot(), p);
         visit(procedureDivision.getProcedureDeclaratives(), p);
-        visitLeftPadded("", procedureDivision.getPadding().getBody(), p);
+        visit(procedureDivision.getBody(), p);
         return procedureDivision;
     }
 
@@ -3800,7 +3805,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(workingStorageSection.getPrefix(), p);
         visitMarkers(workingStorageSection.getMarkers(), p);
         visit(workingStorageSection.getWords(), p);
-        visitContainer(".", workingStorageSection.getPadding().getDataDescriptions(), "", "", p);
+        visit(workingStorageSection.getDot(), p);
+        visit(workingStorageSection.getDataDescriptions(), p);
         return workingStorageSection;
     }
 

@@ -568,8 +568,10 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.DataDescriptionEntry d = dataDescriptionEntry;
         d = d.withPrefix(visitSpace(d.getPrefix(), p));
         d = d.withMarkers(visitMarkers(d.getMarkers(), p));
+        d = d.withWords(ListUtils.map(d.getWords(), it -> (Cobol.CobolWord) visit(it, p)));
         d = d.withName((Cobol.CobolWord) visit(d.getName(), p));
-        d = d.getPadding().withClauses(visitContainer(d.getPadding().getClauses(), p));
+        d = d.withClauses(ListUtils.map(d.getClauses(), it -> visit(it, p)));
+        d = d.withDot((Cobol.CobolWord) visit(d.getDot(), p));
         return d;
     }
 
@@ -577,7 +579,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.DataDivision d = dataDivision;
         d = d.withPrefix(visitSpace(d.getPrefix(), p));
         d = d.withMarkers(visitMarkers(d.getMarkers(), p));
-        d = d.getPadding().withSections(visitContainer(d.getPadding().getSections(), p));
+        d = d.withWords(ListUtils.map(d.getWords(), it -> (Cobol.CobolWord) visit(it, p)));
+        d = d.withDot((Cobol.CobolWord) visit(d.getDot(), p));
+        d = d.withSections(ListUtils.map(d.getSections(), it -> (DataDivisionSection) visit(it, p)));
         return d;
     }
 
@@ -2002,6 +2006,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         pp = pp.withPrefix(visitSpace(pp.getPrefix(), p));
         pp = pp.withMarkers(visitMarkers(pp.getMarkers(), p));
         pp = pp.withProcedureSectionHeader((Cobol.ProcedureSectionHeader) visit(pp.getProcedureSectionHeader(), p));
+        pp = pp.withDot((Cobol.CobolWord) visit(pp.getDot(), p));
+        pp = pp.withUseStatement((Cobol.UseStatement) visit(pp.getUseStatement(), p));
+        pp = pp.withDot2((Cobol.CobolWord) visit(pp.getDot2(), p));
         pp = pp.withParagraphs((Cobol.Paragraphs) visit(pp.getParagraphs(), p));
         return pp;
     }
@@ -2010,7 +2017,11 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.ProcedureDeclaratives pp = procedureDeclaratives;
         pp = pp.withPrefix(visitSpace(pp.getPrefix(), p));
         pp = pp.withMarkers(visitMarkers(pp.getMarkers(), p));
-        pp = pp.getPadding().withProcedureDeclarative(visitContainer(pp.getPadding().getProcedureDeclarative(), p));
+        pp = pp.withDeclaratives((Cobol.CobolWord) visit(pp.getDeclaratives(), p));
+        pp = pp.withDot((Cobol.CobolWord) visit(pp.getDot(), p));
+        pp = pp.withProcedureDeclarative(ListUtils.map(pp.getProcedureDeclarative(), it -> (Cobol.ProcedureDeclarative) visit(it, p)));
+        pp = pp.withEndDeclaratives(ListUtils.map(pp.getEndDeclaratives(), it -> (Cobol.CobolWord) visit(it, p)));
+        pp = pp.withDot2((Cobol.CobolWord) visit(pp.getDot2(), p));
         return pp;
     }
 
@@ -2018,7 +2029,12 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.ProcedureDivision pp = procedureDivision;
         pp = pp.withPrefix(visitSpace(pp.getPrefix(), p));
         pp = pp.withMarkers(visitMarkers(pp.getMarkers(), p));
-        pp = pp.getPadding().withBody(visitLeftPadded(pp.getPadding().getBody(), p));
+        pp = pp.withWords(ListUtils.map(pp.getWords(), it -> (Cobol.CobolWord) visit(it, p)));
+        pp = pp.withProcedureDivisionUsingClause((Cobol.ProcedureDivisionUsingClause) visit(pp.getProcedureDivisionUsingClause(), p));
+        pp = pp.withProcedureDivisionGivingClause((Cobol.ProcedureDivisionGivingClause) visit(pp.getProcedureDivisionGivingClause(), p));
+        pp = pp.withDot((Cobol.CobolWord) visit(pp.getDot(), p));
+        pp = pp.withProcedureDeclaratives((Cobol.ProcedureDeclaratives) visit(pp.getProcedureDeclaratives(), p));
+        pp = pp.withBody((Cobol.ProcedureDivisionBody) visit(pp.getBody(), p));
         return pp;
     }
 
@@ -3653,7 +3669,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.WorkingStorageSection w = workingStorageSection;
         w = w.withPrefix(visitSpace(w.getPrefix(), p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
-        w = w.getPadding().withDataDescriptions(visitContainer(w.getPadding().getDataDescriptions(), p));
+        w = w.withWords(ListUtils.map(w.getWords(), it -> (Cobol.CobolWord) visit(it, p)));
+        w = w.withDot((Cobol.CobolWord) visit(w.getDot(), p));
+        w = w.withDataDescriptions(ListUtils.map(w.getDataDescriptions(), it -> (Cobol.DataDescriptionEntry) visit(it, p)));
         return w;
     }
 

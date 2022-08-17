@@ -24,7 +24,7 @@ import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
 
-@Disabled("fix source before")
+//@Disabled("fix source before")
 class CobolAnsi85DivisionTest : RewriteTest {
 
     override fun defaults(spec: RecipeSpec) {
@@ -42,123 +42,111 @@ class CobolAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun helloWorld() = rewriteRun(
-        cobol(
-            """
-                000001 IDENTIFICATION  DIVISION .                                       C_AREA.1
-                000002 PROGRAM-ID    . HELLO     .                                      C_AREA.2
-                000003 PROCEDURE DIVISION.                                              C_AREA.3
-                000004 DISPLAY 'Hello world!'.                                          C_AREA.4
-                000005 STOP RUN.                                                        C_AREA.5
-            """
-        )
+        cobol("""
+            000001 IDENTIFICATION  DIVISION .                                       C_AREA.1
+            000002 PROGRAM-ID    . HELLO     .                                      C_AREA.2
+            000003 PROCEDURE DIVISION.                                              C_AREA.3
+            000004 DISPLAY 'Hello world!'.                                          C_AREA.4
+            000005 STOP RUN.                                                        C_AREA.5
+        """)
     )
 
     @Test
     fun arithmetic() = rewriteRun(
-        cobol(
-            """
-                000001 IDENTIFICATION DIVISION .                                        C_AREA.1
-                000002 PROGRAM-ID . HELLO-WORLD .                                       C_AREA.2
-                000003 DATA DIVISION .                                                  C_AREA.3
-                000004     WORKING-STORAGE SECTION .                                    C_AREA.4
-                000005         77 X PIC 99.                                             C_AREA.5
-                000006         77 Y PIC 99.                                             C_AREA.6
-                000007         77 Z PIC 99.                                             C_AREA.7
-                000008 PROCEDURE DIVISION .                                             C_AREA.8
-                000009     SET X TO 10 .                                                C_AREA.9
-                000010     SET Y TO 25 .                                                C_AREA.10
-                000011     ADD X Y GIVING Z .                                           C_AREA.11
-                000012     DISPLAY "X + Y = "Z .                                        C_AREA.12
-                000013 STOP RUN .                                                       C_AREA.13
-            """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION .                                        C_AREA.1
+            000002 PROGRAM-ID . HELLO-WORLD .                                       C_AREA.2
+            000003 DATA DIVISION .                                                  C_AREA.3
+            000004     WORKING-STORAGE SECTION .                                    C_AREA.4
+            000005         77 X PIC 99.                                             C_AREA.5
+            000006         77 Y PIC 99.                                             C_AREA.6
+            000007         77 Z PIC 99.                                             C_AREA.7
+            000008 PROCEDURE DIVISION .                                             C_AREA.8
+            000009     SET X TO 10 .                                                C_AREA.9
+            000010     SET Y TO 25 .                                                C_AREA.10
+            000011     ADD X Y GIVING Z .                                           C_AREA.11
+            000012     DISPLAY "X + Y = "Z .                                        C_AREA.12
+            000013 STOP RUN .                                                       C_AREA.13
+        """)
     )
 
     @Test
     fun environmentDivision() = rewriteRun(
-        cobol(
-            """
-                000001 IDENTIFICATION DIVISION.                                         C_AREA.1
-                000002 PROGRAM-ID.                                                      C_AREA.2
-                000003     IC109A.                                                      C_AREA.3
-                000004 ENVIRONMENT DIVISION.                                            C_AREA.4
-                000005 CONFIGURATION SECTION.                                           C_AREA.5
-                000006 SOURCE-COMPUTER.                                                 C_AREA.6
-                000007     XXXXX082.                                                    C_AREA.7
-                000008 OBJECT-COMPUTER.                                                 C_AREA.8
-                000009     XXXXX083                                                     C_AREA.9
-                000010     MEMORY SIZE XXXXX068 CHARACTERS                              C_AREA.10
-                000011     PROGRAM COLLATING SEQUENCE IS COLLATING-SEQ-1.               C_AREA.11
-                000012 SPECIAL-NAMES.                                                   C_AREA.12
-                000013     ALPHABET PRG-COLL-SEQ IS                                     C_AREA.13
-                000014     STANDARD-2.                                                  C_AREA.14
-                000015 INPUT-OUTPUT SECTION.                                            C_AREA.15
-                000016 FILE-CONTROL. SELECT OPTIONAL IDENTIFIER ASSIGN TO DISK.         C_AREA.16
-                000017 I-O-CONTROL. IDENTIFIER.                                         C_AREA.17
-                000018 RERUN ON IDENTIFIER EVERY 10 RECORDS                             C_AREA.18
-                000019 SAME RECORD AREA FOR IDENTIFIER                                  C_AREA.19
-                000020 MULTIPLE FILE TAPE CONTAINS IDENTIFIER POSITION 10               C_AREA.20
-                000021 COMMITMENT CONTROL FOR IDENTIFIER.                               C_AREA.21
-            """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.1
+            000002 PROGRAM-ID.                                                      C_AREA.2
+            000003     IC109A.                                                      C_AREA.3
+            000004 ENVIRONMENT DIVISION.                                            C_AREA.4
+            000005 CONFIGURATION SECTION.                                           C_AREA.5
+            000006 SOURCE-COMPUTER.                                                 C_AREA.6
+            000007     XXXXX082.                                                    C_AREA.7
+            000008 OBJECT-COMPUTER.                                                 C_AREA.8
+            000009     XXXXX083                                                     C_AREA.9
+            000010     MEMORY SIZE XXXXX068 CHARACTERS                              C_AREA.10
+            000011     PROGRAM COLLATING SEQUENCE IS COLLATING-SEQ-1.               C_AREA.11
+            000012 SPECIAL-NAMES.                                                   C_AREA.12
+            000013     ALPHABET PRG-COLL-SEQ IS                                     C_AREA.13
+            000014     STANDARD-2.                                                  C_AREA.14
+            000015 INPUT-OUTPUT SECTION.                                            C_AREA.15
+            000016 FILE-CONTROL. SELECT OPTIONAL IDENTIFIER ASSIGN TO DISK.         C_AREA.16
+            000017 I-O-CONTROL. IDENTIFIER.                                         C_AREA.17
+            000018 RERUN ON IDENTIFIER EVERY 10 RECORDS                             C_AREA.18
+            000019 SAME RECORD AREA FOR IDENTIFIER                                  C_AREA.19
+            000020 MULTIPLE FILE TAPE CONTAINS IDENTIFIER POSITION 10               C_AREA.20
+            000021 COMMITMENT CONTROL FOR IDENTIFIER.                               C_AREA.21
+        """)
     )
 
     @Test
     fun inputOutputSection() = rewriteRun(
-        cobol(
-            """
-                000001 IDENTIFICATION DIVISION.                                         C_AREA.1
-                000002 PROGRAM-ID.                                                      C_AREA.2
-                000003     IC109A.                                                      C_AREA.3
-                000004 ENVIRONMENT DIVISION.                                            C_AREA.4
-                000005 INPUT-OUTPUT SECTION.                                            C_AREA.5
-                000006 FILE-CONTROL.                                                    C_AREA.6
-                000007     SELECT PRINT-FILE ASSIGN TO                                  C_AREA.7
-                000008         XXXXX055.                                                C_AREA.8 
-                000009     SELECT SEQ-FILE ASSIGN TO                                    C_AREA.9 
-                000010         XXXXX014.                                                C_AREA.10
-                000011     SELECT SEQ-FILE RESERVE NO ALTERNATE AREA.                   C_AREA.11
-                000012     SELECT SEQ-FILE ORGANIZATION IS RECORD BINARY INDEXED.       C_AREA.12
-                000013     SELECT SEQ-FILE PADDING CHARACTER IS IDENTIFIER              C_AREA.13
-                000014         IN IDENTIFIER.                                           C_AREA.14
-                000015     SELECT SEQ-FILE RECORD DELIMITER IS STANDAR-1.               C_AREA.15
-                000016     SELECT SEQ-FILE ACCESS MODE IS SEQUENTIAL.                   C_AREA.16
-                000017     SELECT SEQ-FILE RECORD KEY IS IDENTIFIER IN IDENTIFIER       C_AREA.18
-                000018         PASSWORD IS IDENTIFIER WITH DUPLICATES.                  C_AREA.18
-                000019     SELECT SEQ-FILE ALTERNATE RECORD KEY IS IDENTIFIER IN        C_AREA.19
-                000020         IDENTIFIER PASSWORD IS IDENTIFIER WITH DUPLICATES.       C_AREA.20
-                000021     SELECT SEQ-FILE FILE STATUS IS IDENTIFIER IN IDENTIFIER      C_AREA.21
-                000022         IDENTIFIER IN IDENTIFIER.                                C_AREA.22
-                000023     SELECT SEQ-FILE RELATIVE KEY IS IDENTIFIER IN IDENTIFIER.    C_AREA.23
-            """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.1
+            000002 PROGRAM-ID.                                                      C_AREA.2
+            000003     IC109A.                                                      C_AREA.3
+            000004 ENVIRONMENT DIVISION.                                            C_AREA.4
+            000005 INPUT-OUTPUT SECTION.                                            C_AREA.5
+            000006 FILE-CONTROL.                                                    C_AREA.6
+            000007     SELECT PRINT-FILE ASSIGN TO                                  C_AREA.7
+            000008         XXXXX055.                                                C_AREA.8 
+            000009     SELECT SEQ-FILE ASSIGN TO                                    C_AREA.9 
+            000010         XXXXX014.                                                C_AREA.10
+            000011     SELECT SEQ-FILE RESERVE NO ALTERNATE AREA.                   C_AREA.11
+            000012     SELECT SEQ-FILE ORGANIZATION IS RECORD BINARY INDEXED.       C_AREA.12
+            000013     SELECT SEQ-FILE PADDING CHARACTER IS IDENTIFIER              C_AREA.13
+            000014         IN IDENTIFIER.                                           C_AREA.14
+            000015     SELECT SEQ-FILE RECORD DELIMITER IS STANDAR-1.               C_AREA.15
+            000016     SELECT SEQ-FILE ACCESS MODE IS SEQUENTIAL.                   C_AREA.16
+            000017     SELECT SEQ-FILE RECORD KEY IS IDENTIFIER IN IDENTIFIER       C_AREA.18
+            000018         PASSWORD IS IDENTIFIER WITH DUPLICATES.                  C_AREA.18
+            000019     SELECT SEQ-FILE ALTERNATE RECORD KEY IS IDENTIFIER IN        C_AREA.19
+            000020         IDENTIFIER PASSWORD IS IDENTIFIER WITH DUPLICATES.       C_AREA.20
+            000021     SELECT SEQ-FILE FILE STATUS IS IDENTIFIER IN IDENTIFIER      C_AREA.21
+            000022         IDENTIFIER IN IDENTIFIER.                                C_AREA.22
+            000023     SELECT SEQ-FILE RELATIVE KEY IS IDENTIFIER IN IDENTIFIER.    C_AREA.23
+        """)
     )
 
     @Test
     fun procedureDivision() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION  DIVISION .
-            PROGRAM-ID    . HELLO     .
-            PROCEDURE DIVISION USING GRP-01 GIVING dataName.
-            DECLARATIVES.
-            sectionName SECTION 77.
-            USE GLOBAL AFTER STANDARD ERROR PROCEDURE ON INPUT.
-            END DECLARATIVES.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION  DIVISION .                                       C_AREA.1
+            000002 PROGRAM-ID    . HELLO     .                                      C_AREA.2
+            000003 PROCEDURE DIVISION USING GRP-01 GIVING dataName.                 C_AREA.3
+            000004 DECLARATIVES.                                                    C_AREA.4
+            000005 sectionName SECTION 77.                                          C_AREA.5
+            000006 USE GLOBAL AFTER STANDARD ERROR PROCEDURE ON INPUT.              C_AREA.6
+            000007 END DECLARATIVES.                                                C_AREA.7
+        """)
     )
 
     @Test
     fun divisionUsing() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION  DIVISION .
-            PROGRAM-ID    . HELLO     .
-            PROCEDURE DIVISION USING GRP-01.
-            STOP RUN.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION  DIVISION .                                       C_AREA.1
+            000002 PROGRAM-ID    . HELLO     .                                      C_AREA.2
+            000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.3
+            000004 STOP RUN.                                                        C_AREA.4
+        """)
     )
 
     @Disabled("Not yet implemented")
@@ -217,30 +205,28 @@ class CobolAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun moveStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. MOVETEST.
-            DATA DIVISION.
-            PROCEDURE DIVISION USING GRP-01.
-            PARA-MOVETEST.
-                MOVE "MOVETEST" TO DN1.
-                MOVE SPACE TO WS1.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.1
+            000002 PROGRAM-ID. MOVETEST.                                            C_AREA.2
+            000003 DATA DIVISION.                                                   C_AREA.3
+            000004 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.4
+            000005 PARA-MOVETEST.                                                   C_AREA.5
+            000006     MOVE "MOVETEST" TO DN1.                                      C_AREA.6
+            000007     MOVE SPACE TO WS1.                                           C_AREA.7
+        """)
     )
 
     @Test
     fun mergeStatement() = rewriteRun(
         cobol(
             """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. MERGETEST.
-            PROCEDURE DIVISION.
-            MERGE-TEST.
-                MERGE ST-FS4  ON ASCENDING KEY SORT-KEY
-                    USING  SQ-FS1  SQ-FS2
-                    OUTPUT PROCEDURE IS MERGE-OUTPUT-PROC.
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.1
+            000002 PROGRAM-ID. MERGETEST.                                           C_AREA.2
+            000003 PROCEDURE DIVISION.                                              C_AREA.3
+            000004 MERGE-TEST.                                                      C_AREA.4
+            000005     MERGE ST-FS4  ON ASCENDING KEY SORT-KEY                      C_AREA.5
+            000006         USING  SQ-FS1  SQ-FS2                                    C_AREA.6
+            000007         OUTPUT PROCEDURE IS MERGE-OUTPUT-PROC.                   C_AREA.7
         """
         )
     )
@@ -248,63 +234,55 @@ class CobolAnsi85DivisionTest : RewriteTest {
     @Test
 
     fun multiplyStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. MULTIPLYTEST.
-            PROCEDURE DIVISION.
-            MULTIPLY -1.3 BY MULT4 ROUNDED.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.1
+            000002 PROGRAM-ID. MULTIPLYTEST.                                        C_AREA.2
+            000003 PROCEDURE DIVISION.                                              C_AREA.3
+            000004 MULTIPLY -1.3 BY MULT4 ROUNDED.                                  C_AREA.4
+        """)
     )
 
     @Test
     fun openStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. OPENTEST.
-            PROCEDURE DIVISION.
-            OPEN OUTPUT SQ-FS2.
-            OPEN INPUT TFIL REVERSED.
-            OPEN INPUT TFIL WITH NO REWIND.
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.1
+            000002 PROGRAM-ID. OPENTEST.                                            C_AREA.2
+            000003 PROCEDURE DIVISION.                                              C_AREA.3
+            000004 OPEN OUTPUT SQ-FS2.                                              C_AREA.4
+            000005 OPEN INPUT TFIL REVERSED.                                        C_AREA.5
+            000006 OPEN INPUT TFIL WITH NO REWIND.                                  C_AREA.6
+        """)
     )
 
     @Test
     fun performStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. PARSERTEST.
-            PROCEDURE DIVISION.
-            PERFORM ST301M-MERGE THRU ST301M-SORT 1 TIMES.            
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.1
+            000002 PROGRAM-ID. PARSERTEST.                                          C_AREA.2
+            000003 PROCEDURE DIVISION.                                              C_AREA.3
+            000004 PERFORM ST301M-MERGE THRU ST301M-SORT 1 TIMES.                   C_AREA.4
+        """)
     )
 
     @Test
     fun readStatement() = rewriteRun(
-        cobol(
-            """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. READTEST.
-            PROCEDURE DIVISION.
-            READ SQ-FS3 END .
-        """
-        )
+        cobol("""
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.1
+            000002 PROGRAM-ID. READTEST.                                            C_AREA.2
+            000003 PROCEDURE DIVISION.                                              C_AREA.3
+            000004 READ SQ-FS3 END .                                                C_AREA.4
+        """)
     )
 
     @Test
     fun receiveStatement() = rewriteRun(
         cobol(
             """
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. MERGETEST.
-            PROCEDURE DIVISION.
-            RECEIVE CM-INQUE-1 MESSAGE INTO MSG-72
-                NO DATA.
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.1
+            000002 PROGRAM-ID. MERGETEST.                                           C_AREA.2
+            000003 PROCEDURE DIVISION.                                              C_AREA.3
+            000004 RECEIVE CM-INQUE-1 MESSAGE INTO MSG-72                           C_AREA.4
+            000005     NO DATA.                                                     C_AREA.5
         """.trimIndent()
         )
     )
