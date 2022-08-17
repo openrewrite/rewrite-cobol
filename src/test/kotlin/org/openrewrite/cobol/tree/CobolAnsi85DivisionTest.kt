@@ -361,38 +361,38 @@ class CobolAnsi85DivisionTest : RewriteTest {
     @Test
     fun screenSection() = rewriteRun(
         cobol("""
-            IDENTIFICATION DIVISION.
-            PROGRAM-ID. DBSection.
-            DATA DIVISION.
-            SCREEN SECTION.
-            01 SCREEN1 BLANK LINE
-            BELL
-            BLINK
-            ERASE EOL
-            HIGHLIGHT
-            GRID
-            UNDERLINE
-            SIZE IS IDENTIFIER IN IDENTIFIER
-            LINE NUMBER IS PLUS IDENTIFIER IN IDENTIFIER
-            COLUMN NUMBER IS PLUS IDENTIFIER IN IDENTIFIER
-            FOREGROUND-COLOR IS IDENTIFIER IN IDENTIFIER
-            BACKGROUND-COLOR IS IDENTIFIER IN IDENTIFIER
-            CONTROL IS IDENTIFIER IN IDENTIFIER
-            VALUE IS 10
-            PICTURE IS ${'$'}(10)
-            FROM IDENTIFIER IN IDENTIFIER TO IDENTIFIER IN IDENTIFIER
-            USING IDENTIFIER IN IDENTIFIER
-            USAGE IS DISPLAY
-            BLANK WHEN ZERO
-            JUSTIFIED RIGHT
-            SIGN IS LEADING SEPARATE CHARACTER
-            AUTO
-            SECURE
-            REQUIRED
-            PROMPT CHARACTER IS IDENTIFIER IN IDENTIFIER OCCURS 01 TIMES
-            FULL
-            ZERO-FILL
-            .
+            000001 IDENTIFICATION DIVISION.                                         C_AREA.01
+            000002 PROGRAM-ID. DBSection.                                           C_AREA.02
+            000003 DATA DIVISION.                                                   C_AREA.03
+            000004 SCREEN SECTION.                                                  C_AREA.04
+            000005 01 SCREEN1 BLANK LINE                                            C_AREA.05
+            000006 BELL                                                             C_AREA.06
+            000007 BLINK                                                            C_AREA.07
+            000008 ERASE EOL                                                        C_AREA.08
+            000009 HIGHLIGHT                                                        C_AREA.09
+            000010 GRID                                                             C_AREA.10
+            000011 UNDERLINE                                                        C_AREA.11
+            000012 SIZE IS IDENTIFIER IN IDENTIFIER                                 C_AREA.12
+            000013 LINE NUMBER IS PLUS IDENTIFIER IN IDENTIFIER                     C_AREA.13
+            000014 COLUMN NUMBER IS PLUS IDENTIFIER IN IDENTIFIER                   C_AREA.14
+            000015 FOREGROUND-COLOR IS IDENTIFIER IN IDENTIFIER                     C_AREA.15
+            000016 BACKGROUND-COLOR IS IDENTIFIER IN IDENTIFIER                     C_AREA.16
+            000017 CONTROL IS IDENTIFIER IN IDENTIFIER                              C_AREA.17
+            000018 VALUE IS 10                                                      C_AREA.18
+            000019 PICTURE IS $(10)                                                 C_AREA.19
+            000020 FROM IDENTIFIER IN IDENTIFIER TO IDENTIFIER IN IDENTIFIER        C_AREA.20
+            000021 USING IDENTIFIER IN IDENTIFIER                                   C_AREA.21
+            000022 USAGE IS DISPLAY                                                 C_AREA.22
+            000023 BLANK WHEN ZERO                                                  C_AREA.23
+            000024 JUSTIFIED RIGHT                                                  C_AREA.24
+            000025 SIGN IS LEADING SEPARATE CHARACTER                               C_AREA.25
+            000026 AUTO                                                             C_AREA.26
+            000027 SECURE                                                           C_AREA.27
+            000028 REQUIRED                                                         C_AREA.28
+            000029 PROMPT CHARACTER IS IDENTIFIER IN IDENTIFIER OCCURS 01 TIMES     C_AREA.29
+            000030 FULL                                                             C_AREA.30
+            000031 ZERO-FILL                                                        C_AREA.31
+            000032 .                                                                C_AREA.32
         """)
     )
 

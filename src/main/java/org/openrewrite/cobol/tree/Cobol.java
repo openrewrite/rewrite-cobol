@@ -8482,80 +8482,27 @@ public interface Cobol extends Tree {
         }
     }
 
-    @ToString
-    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @RequiredArgsConstructor
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @With
     class ScreenDescriptionEntry implements Cobol {
-        @Nullable
-        @NonFinal
-        transient WeakReference<Padding> padding;
 
-        @Getter
         @EqualsAndHashCode.Include
-        @With
         UUID id;
 
-        @Getter
-        @With
         Space prefix;
-
-        @Getter
-        @With
         Markers markers;
-
-        @Getter
-        @With
         CobolWord words;
 
-        @Getter
         @Nullable
-        @With
         CobolWord name;
 
-        CobolContainer<Cobol> clauses;
+        List<Cobol> clauses;
+        CobolWord dot;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitScreenDescriptionEntry(this, p);
-        }
-
-        public List<Cobol> getClauses() {
-            return clauses.getElements();
-        }
-
-        public ScreenDescriptionEntry withClauses(List<Cobol> clauses) {
-            return getPadding().withClauses(this.clauses.getPadding().withElements(CobolRightPadded.withElements(
-                    this.clauses.getPadding().getElements(), clauses)));
-        }
-
-        public Padding getPadding() {
-            Padding p;
-            if (this.padding == null) {
-                p = new Padding(this);
-                this.padding = new WeakReference<>(p);
-            } else {
-                p = this.padding.get();
-                if (p == null || p.t != this) {
-                    p = new Padding(this);
-                    this.padding = new WeakReference<>(p);
-                }
-            }
-            return p;
-        }
-
-        @RequiredArgsConstructor
-        public static class Padding {
-            private final ScreenDescriptionEntry t;
-
-            public CobolContainer<Cobol> getClauses() {
-                return t.clauses;
-            }
-
-            public ScreenDescriptionEntry withClauses(CobolContainer<Cobol> clauses) {
-                return t.clauses == clauses ? t : new ScreenDescriptionEntry(t.padding, t.id, t.prefix, t.markers, t.words, t.name, clauses);
-            }
         }
     }
 
@@ -8952,75 +8899,23 @@ public interface Cobol extends Tree {
         }
     }
 
-    @ToString
-    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @RequiredArgsConstructor
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    class ScreenSection implements Cobol {
-        @Nullable
-        @NonFinal
-        transient WeakReference<Padding> padding;
+    @With
+    class ScreenSection implements DataDivisionSection {
 
-        @Getter
         @EqualsAndHashCode.Include
-        @With
         UUID id;
 
-        @Getter
-        @With
         Space prefix;
-
-        @Getter
-        @With
         Markers markers;
-
-        @Getter
-        @With
         List<CobolWord> words;
-
-        CobolContainer<ScreenDescriptionEntry> descriptions;
+        CobolWord dot;
+        List<ScreenDescriptionEntry> descriptions;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitScreenSection(this, p);
-        }
-
-        public List<Cobol.ScreenDescriptionEntry> getDescriptions() {
-            return descriptions.getElements();
-        }
-
-        public ScreenSection withDescriptions(List<Cobol.ScreenDescriptionEntry> descriptions) {
-            return getPadding().withDescriptions(this.descriptions.getPadding().withElements(CobolRightPadded.withElements(
-                    this.descriptions.getPadding().getElements(), descriptions)));
-        }
-
-        public Padding getPadding() {
-            Padding p;
-            if (this.padding == null) {
-                p = new Padding(this);
-                this.padding = new WeakReference<>(p);
-            } else {
-                p = this.padding.get();
-                if (p == null || p.t != this) {
-                    p = new Padding(this);
-                    this.padding = new WeakReference<>(p);
-                }
-            }
-            return p;
-        }
-
-        @RequiredArgsConstructor
-        public static class Padding {
-            private final ScreenSection t;
-
-            public CobolContainer<Cobol.ScreenDescriptionEntry> getDescriptions() {
-                return t.descriptions;
-            }
-
-            public ScreenSection withDescriptions(CobolContainer<Cobol.ScreenDescriptionEntry> descriptions) {
-                return t.descriptions == descriptions ? t : new ScreenSection(t.padding, t.id, t.prefix, t.markers, t.words, descriptions);
-            }
         }
     }
 

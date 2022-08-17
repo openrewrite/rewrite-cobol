@@ -3027,7 +3027,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(screenDescriptionEntry.getMarkers(), p);
         visit(screenDescriptionEntry.getWords(), p);
         visit(screenDescriptionEntry.getName(), p);
-        visitContainer("", screenDescriptionEntry.getPadding().getClauses(), "", ".", p);
+        visit(screenDescriptionEntry.getClauses(), p);
+        visit(screenDescriptionEntry.getDot(), p);
         return screenDescriptionEntry;
     }
 
@@ -3202,7 +3203,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(screenSection.getPrefix(), p);
         visitMarkers(screenSection.getMarkers(), p);
         visit(screenSection.getWords(), p);
-        visitContainer(".", screenSection.getPadding().getDescriptions(), "", "", p);
+        visit(screenSection.getDot(), p);
+        visit(screenSection.getDescriptions(), p);
         return screenSection;
     }
 

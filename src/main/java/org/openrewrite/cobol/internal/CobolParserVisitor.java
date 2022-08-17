@@ -4687,10 +4687,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                visitNullable(ctx.INTEGERLITERAL()),
-                ctx.FILLER() != null ? visitNullable(ctx.FILLER()) :
-                        ctx.screenName() != null ? visitNullable(ctx.screenName()) : null,
-                convertAllContainer(ctx.screenDescriptionBlankClause(),
+                (Cobol.CobolWord) visit(ctx.INTEGERLITERAL()),
+                ctx.FILLER() != null ? (Cobol.CobolWord) visit(ctx.FILLER()) :
+                        ctx.screenName() != null ? (Cobol.CobolWord) visit(ctx.screenName()) : null,
+                convertAll(ctx.screenDescriptionBlankClause(),
                         ctx.screenDescriptionAutoClause(),
                         ctx.screenDescriptionBellClause(),
                         ctx.screenDescriptionBlinkClause(),
@@ -4717,8 +4717,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                         ctx.screenDescriptionRequiredClause(),
                         ctx.screenDescriptionPromptClause(),
                         ctx.screenDescriptionFullClause(),
-                        ctx.screenDescriptionZeroFillClause())
-                        .withLastSpace(sourceBefore("."))
+                        ctx.screenDescriptionZeroFillClause()),
+                (Cobol.CobolWord) visit(ctx.DOT_FS())
         );
     }
 
@@ -4962,7 +4962,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.SCREEN(), ctx.SECTION()),
-                convertAllContainer(sourceBefore("."), ctx.screenDescriptionEntry())
+                (Cobol.CobolWord) visit(ctx.DOT_FS()),
+                convertAll(ctx.screenDescriptionEntry())
         );
     }
 
@@ -6076,6 +6077,15 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             converted.add(convert.apply(tree));
         }
         return converted;
+    }
+
+    @SafeVarargs
+    private final <C extends Cobol> List<C> convertAll(List<? extends ParserRuleContext>... trees) {
+        return convertAll(Arrays.stream(trees)
+                        .filter(Objects::nonNull)
+                        .flatMap(Collection::stream)
+                        .sorted(Comparator.comparingInt(it -> it.start.getStartIndex()))
+                        .collect(Collectors.toList()));
     }
 
     private <C extends Cobol, T extends ParseTree> List<C> convertAll(List<T> trees) {
