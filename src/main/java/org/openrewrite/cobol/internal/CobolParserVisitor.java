@@ -6132,8 +6132,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                                     markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
                                     delimiter
                             );
-                            // TODO: confirm cursor should automatically be incremented by matched text.
-//                            cursor += delimiter.length(); // skip the delimiter
                             break;
                         }
                     }
@@ -6168,8 +6166,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                                     markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
                                     delimiter
                             );
-                            // TODO: confirm cursor should automatically be incremented by matched text.
-//                            cursor += delimiter.length(); // skip the delimiter
                             return Stream.of(cobol, comma);
                         }
                     }
