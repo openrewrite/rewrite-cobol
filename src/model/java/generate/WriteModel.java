@@ -26,6 +26,7 @@ import org.openrewrite.java.JavaVisitor;
 import org.openrewrite.java.search.FindAnnotations;
 import org.openrewrite.java.tree.*;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.StringJoiner;
@@ -274,9 +275,10 @@ public class WriteModel extends Recipe {
 
                 J.Block b = block.withStatements(ListUtils.map(block.getStatements(), s -> s instanceof J.ClassDeclaration &&
                         !(((J.ClassDeclaration) s).getSimpleName().equals("CompilationUnit")) ? null : s));
-
-                b = b.withStatements(ListUtils.concatAll(b.getStatements(), ListUtils.map(modelClasses,
-                        mc -> (J.ClassDeclaration) writeModelClass.visitNonNull(mc, ctx, getCursor().getParentOrThrow()))));
+                List<Statement> statements = new ArrayList<>(b.getStatements());
+                statements.addAll(ListUtils.map(modelClasses,
+                        mc -> (J.ClassDeclaration) writeModelClass.visitNonNull(mc, ctx, getCursor().getParentOrThrow())));
+                b = b.withStatements(statements);
 
                 return b;
             }

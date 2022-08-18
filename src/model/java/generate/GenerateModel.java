@@ -53,8 +53,8 @@ public class GenerateModel {
         new GenerateModel(jp()
                 .parse(
                         Arrays.asList(
-                                Paths.get("./rewrite-cobol/src/model/java/model/Cobol.java"),
-                                Paths.get("./rewrite-cobol/src/model/java/model/Statement.java")
+                                Paths.get("src/model/java/model/Cobol.java"),
+                                Paths.get("src/model/java/model/Statement.java")
                         ),
                         null,
                         ctx
@@ -73,29 +73,29 @@ public class GenerateModel {
     public void generate() {
         List<Result> results = new ArrayList<>();
 
-        Path cobolTreePath = Paths.get("./rewrite-cobol/src/main/java/org/openrewrite/cobol/tree/Cobol.java");
+        Path cobolTreePath = Paths.get("src/main/java/org/openrewrite/cobol/tree/Cobol.java");
 
         List<Path> deps = Arrays.asList(
-                Paths.get("./rewrite-cobol/src/main/java/org/openrewrite/cobol/CobolVisitor.java"),
-                Paths.get("./rewrite-cobol/src/main/java/org/openrewrite/cobol/CobolIsoVisitor.java"),
-                Paths.get("./rewrite-cobol/src/main/java/org/openrewrite/cobol/tree/CobolContainer.java"),
-                Paths.get("./rewrite-cobol/src/main/java/org/openrewrite/cobol/tree/CobolLeftPadded.java"),
-                Paths.get("./rewrite-cobol/src/main/java/org/openrewrite/cobol/tree/CobolRightPadded.java")
+                Paths.get("src/main/java/org/openrewrite/cobol/CobolVisitor.java"),
+                Paths.get("src/main/java/org/openrewrite/cobol/CobolIsoVisitor.java"),
+                Paths.get("src/main/java/org/openrewrite/cobol/tree/CobolContainer.java"),
+                Paths.get("src/main/java/org/openrewrite/cobol/tree/CobolLeftPadded.java"),
+                Paths.get("src/main/java/org/openrewrite/cobol/tree/CobolRightPadded.java")
         );
 
         results.addAll(new WriteModel(modelClasses).run(Collections.singletonList(jp().parse(
                 ListUtils.concat(cobolTreePath, deps), null, ctx).get(0)), ctx));
         results.addAll(new WriteVisitorMethods(modelClasses).run(jp().parse(
                 Arrays.asList(
-                        Paths.get("./rewrite-cobol/src/main/java/org/openrewrite/cobol/CobolVisitor.java"),
-                        Paths.get("./rewrite-cobol/src/main/java/org/openrewrite/cobol/CobolIsoVisitor.java")
+                        Paths.get("src/main/java/org/openrewrite/cobol/CobolVisitor.java"),
+                        Paths.get("src/main/java/org/openrewrite/cobol/CobolIsoVisitor.java")
                 ),
                 null,
                 ctx
         ), ctx));
         results.addAll(new WritePrinter(modelClasses).run(jp().parse(
                 Collections.singletonList(
-                        Paths.get("./rewrite-cobol/src/main/java/org/openrewrite/cobol/internal/CobolPrinter.java")
+                        Paths.get("src/main/java/org/openrewrite/cobol/internal/CobolPrinter.java")
                 ),
                 null,
                 ctx
