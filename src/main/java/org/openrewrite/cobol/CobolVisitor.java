@@ -123,7 +123,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         a = a.withTo((Cobol.CobolWord) visit(a.getTo(), p));
         a = a.withNames(ListUtils.map(a.getNames(), t -> (Name) visit(t, p)));
         a = a.withGiving((Cobol.CobolWord) visit(a.getGiving(), p));
-        a = a.withRoundables(ListUtils.map(a.getRoundables(), t -> (Name) visit(t, p)));
+        a = a.withRoundables(ListUtils.map(a.getRoundables(), t -> (Cobol.Roundable) visit(t, p)));
         return a;
     }
 
@@ -184,7 +184,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.AlteredGoTo a = alteredGoTo;
         a = a.withPrefix(visitSpace(a.getPrefix(), p));
         a = a.withMarkers(visitMarkers(a.getMarkers(), p));
-        a = a.getPadding().withDot(visitLeftPadded(a.getPadding().getDot(), p));
+        a = a.withWords(ListUtils.map(a.getWords(), it -> (Cobol.CobolWord) visit(it, p)));
+        a = a.withDot((Cobol.CobolWord) visit(a.getDot(), p));
         return a;
     }
 
@@ -489,11 +490,11 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
     }
 
     public Cobol visitCompilationUnit(Cobol.CompilationUnit compilationUnit, P p) {
-        Cobol.CompilationUnit d = compilationUnit;
-        d = d.withPrefix(visitSpace(d.getPrefix(), p));
-        d = d.withMarkers(visitMarkers(d.getMarkers(), p));
-        d = d.getPadding().withProgramUnits(ListUtils.map(d.getPadding().getProgramUnits(), it -> visitRightPadded(it, p)));
-        return d;
+        Cobol.CompilationUnit c = compilationUnit;
+        c = c.withPrefix(visitSpace(c.getPrefix(), p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withProgramUnits(ListUtils.map(c.getProgramUnits(), it -> (Cobol.ProgramUnit) visit(it, p)));
+        return c;
     }
 
     public Cobol visitCompute(Cobol.Compute compute, P p) {
@@ -655,9 +656,12 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.DataOccursClause d = dataOccursClause;
         d = d.withPrefix(visitSpace(d.getPrefix(), p));
         d = d.withMarkers(visitMarkers(d.getMarkers(), p));
+        d = d.withOccurs((Cobol.CobolWord) visit(d.getOccurs(), p));
+        d = d.withName((Name) visit(d.getName(), p));
         d = d.withDataOccursTo((Cobol.DataOccursTo) visit(d.getDataOccursTo(), p));
+        d = d.withTimes((Cobol.CobolWord) visit(d.getTimes(), p));
         d = d.withDataOccursDepending((Cobol.DataOccursDepending) visit(d.getDataOccursDepending(), p));
-        d = d.getPadding().withSortIndexed(visitContainer(d.getPadding().getSortIndexed(), p));
+        d = d.withSortIndexed(ListUtils.map(d.getSortIndexed(), t -> visit(t, p)));
         return d;
     }
 
@@ -948,6 +952,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.EndProgram e = endProgram;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withWords(ListUtils.map(e.getWords(), it -> (Cobol.CobolWord) visit(it, p)));
+        e = e.withProgramName((Name) visit(e.getProgramName(), p));
+        e = e.withDot((Cobol.CobolWord) visit(e.getDot(), p));
         return e;
     }
 
@@ -1323,7 +1330,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectAllLeadings i = inspectAllLeadings;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
-        i = i.getPadding().withLeadings(visitContainer(i.getPadding().getLeadings(), p));
+        i = i.withWord((Cobol.CobolWord) visit(i.getWord(), p));
+        i = i.withLeadings(ListUtils.map(i.getLeadings(), t -> (Cobol.InspectAllLeading) visit(t, p)));
         return i;
     }
 
@@ -1365,7 +1373,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectFor i = inspectFor;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
-        i = i.getPadding().withInspects(visitContainer(i.getPadding().getInspects(), p));
+        i = i.withIdentifier((Identifier) visit(i.getIdentifier(), p));
+        i = i.withWord((Cobol.CobolWord) visit(i.getWord(), p));
+        i = i.withInspects(ListUtils.map(i.getInspects(), t -> visit(t, p)));
         return i;
     }
 
@@ -1400,7 +1410,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectReplacingPhrase i = inspectReplacingPhrase;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
-        i = i.getPadding().withInspections(visitContainer(i.getPadding().getInspections(), p));
+        i = i.withWord((Cobol.CobolWord) visit(i.getWord(), p));
+        i = i.withInspections(ListUtils.map(i.getInspections(), t -> visit(t, p)));
         return i;
     }
 
@@ -1433,9 +1444,12 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.IoControlParagraph i = ioControlParagraph;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withIOControl((Cobol.CobolWord) visit(i.getIOControl(), p));
         i = i.withDot((Cobol.CobolWord) visit(i.getDot(), p));
         i = i.withFileName((Cobol.CobolWord) visit(i.getFileName(), p));
-        i = i.getPadding().withClauses(visitContainer(i.getPadding().getClauses(), p));
+        i = i.withFileNameDot((Cobol.CobolWord) visit(i.getFileNameDot(), p));
+        i = i.withClauses(ListUtils.map(i.getClauses(), it -> visit(it, p)));
+        i = i.withDot2((Cobol.CobolWord) visit(i.getDot2(), p));
         return i;
     }
 
@@ -1499,10 +1513,12 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.LibraryDescriptionEntryFormat2 l = libraryDescriptionEntryFormat2;
         l = l.withPrefix(visitSpace(l.getPrefix(), p));
         l = l.withMarkers(visitMarkers(l.getMarkers(), p));
+        l = l.withLb((Cobol.CobolWord) visit(l.getLb(), p));
         l = l.withLibraryName((Cobol.CobolWord) visit(l.getLibraryName(), p));
+        l = l.withExport((Cobol.CobolWord) visit(l.getExport(), p));
         l = l.withLibraryIsGlobalClause((Cobol.LibraryIsGlobalClause) visit(l.getLibraryIsGlobalClause(), p));
         l = l.withLibraryIsCommonClause((Cobol.LibraryIsCommonClause) visit(l.getLibraryIsCommonClause(), p));
-        l = l.getPadding().withClauseFormats(visitContainer(l.getPadding().getClauseFormats(), p));
+        l = l.withClauseFormats(ListUtils.map(l.getClauseFormats(), it -> visit(it, p)));
         return l;
     }
 
@@ -1850,7 +1866,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Open o = open;
         o = o.withPrefix(visitSpace(o.getPrefix(), p));
         o = o.withMarkers(visitMarkers(o.getMarkers(), p));
-        o = o.getPadding().withOpen(visitContainer(o.getPadding().getOpen(), p));
+        o = o.withWords((Cobol.CobolWord) visit(o.getWords(), p));
+        o = o.withOpen(ListUtils.map(o.getOpen(), it -> visit(it, p)));
         return o;
     }
 
@@ -2196,9 +2213,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         pp = pp.withDataDivision((Cobol.DataDivision) visit(pp.getDataDivision(), p));
         pp = pp.withProcedureDivision((Cobol.ProcedureDivision) visit(pp.getProcedureDivision(), p));
         pp = pp.withProgramUnits(ListUtils.map(pp.getProgramUnits(), t -> (Cobol.ProgramUnit) visit(t, p)));
-        if (pp.getPadding().getEndProgram() != null) {
-            pp = pp.getPadding().withEndProgram(visitRightPadded(pp.getPadding().getEndProgram(), p));
-        }
+        pp = pp.withEndProgram((Cobol.EndProgram) visit(pp.getEndProgram(), p));
         return pp;
     }
 
@@ -2327,8 +2342,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         r = r.withPrefix(visitSpace(r.getPrefix(), p));
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
         r = r.withDataName((Cobol.CobolWord) visit(r.getDataName(), p));
+        r = r.withFrom((Cobol.CobolWord) visit(r.getFrom(), p));
         r = r.withReceiveFrom((Cobol.ReceiveFrom) visit(r.getReceiveFrom(), p));
-        r = r.getPadding().withBeforeWithThreadSizeStatus(visitContainer(r.getPadding().getBeforeWithThreadSizeStatus(), p));
+        r = r.withBeforeWithThreadSizeStatus(ListUtils.map(r.getBeforeWithThreadSizeStatus(), it -> visit(it, p)));
         return r;
     }
 
@@ -2597,7 +2613,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
         r = r.withIntegerLiteral((Cobol.CobolWord) visit(r.getIntegerLiteral(), p));
         r = r.withDataName((Cobol.CobolWord) visit(r.getDataName(), p));
-        r = r.getPadding().withClauses(visitContainer(r.getPadding().getClauses(), p));
+        r = r.withClauses(ListUtils.map(r.getClauses(), it -> visit(it, p)));
         r = r.withDot((Cobol.CobolWord) visit(r.getDot(), p));
         return r;
     }
@@ -3734,6 +3750,14 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return v;
     }
 
+    public Cobol visitWords(Cobol.Words words, P p) {
+        Cobol.Words w = words;
+        w = w.withPrefix(visitSpace(w.getPrefix(), p));
+        w = w.withMarkers(visitMarkers(w.getMarkers(), p));
+        w = w.withWords(ListUtils.map(w.getWords(), it -> (Cobol.CobolWord) visit(it, p)));
+        return w;
+    }
+
     public Cobol visitWorkingStorageSection(Cobol.WorkingStorageSection workingStorageSection, P p) {
         Cobol.WorkingStorageSection w = workingStorageSection;
         w = w.withPrefix(visitSpace(w.getPrefix(), p));
@@ -3793,78 +3817,4 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
         return w;
     }
-
-
-    public <P2 extends Cobol> CobolContainer<P2> visitContainer(@Nullable CobolContainer<P2> container, P p) {
-        if (container == null) {
-            //noinspection ConstantConditions
-            return null;
-        }
-
-        setCursor(new Cursor(getCursor(), container));
-
-        Space before = visitSpace(container.getBefore(), p);
-        CobolLeftPadded<String> preposition = visitLeftPadded(container.getPreposition(), p);
-        List<CobolRightPadded<P2>> ps = ListUtils.map(container.getPadding().getElements(), t -> visitRightPadded(t, p));
-        Markers markers = visitMarkers(container.getMarkers(), p);
-
-        setCursor(getCursor().getParent());
-
-        return (ps == container.getPadding().getElements() && before == container.getBefore() && preposition == container.getPreposition() &&
-                markers == container.getMarkers()) ?
-                container :
-                CobolContainer.build(before, preposition, ps, markers);
-    }
-
-
-    public <T> CobolLeftPadded<T> visitLeftPadded(@Nullable CobolLeftPadded<T> left, P p) {
-        if (left == null) {
-            //noinspection ConstantConditions
-            return null;
-        }
-
-        setCursor(new Cursor(getCursor(), left));
-
-        Space before = visitSpace(left.getBefore(), p);
-        T t = left.getElement();
-
-        if (t instanceof Cobol) {
-            //noinspection unchecked
-            t = visitAndCast((Cobol) left.getElement(), p);
-        }
-
-        setCursor(getCursor().getParent());
-        if (t == null) {
-            //noinspection ConstantConditions
-            return null;
-        }
-
-        return (before == left.getBefore() && t == left.getElement()) ? left : new CobolLeftPadded<>(before, t, left.getMarkers());
-    }
-
-
-    @SuppressWarnings("ConstantConditions")
-    public <T> CobolRightPadded<T> visitRightPadded(@Nullable CobolRightPadded<T> right, P p) {
-        if (right == null) {
-            //noinspection ConstantConditions
-            return null;
-        }
-
-        setCursor(new Cursor(getCursor(), right));
-
-        T t = right.getElement();
-        if (t instanceof Cobol) {
-            //noinspection unchecked
-            t = (T) visit((Cobol) right.getElement(), p);
-        }
-
-        setCursor(getCursor().getParent());
-        if (t == null) {
-            //noinspection ConstantConditions
-            return null;
-        }
-        Space after = visitSpace(right.getAfter(), p);
-        return (after == right.getAfter() && t == right.getElement()) ? right : new CobolRightPadded<>(t, after, right.getMarkers());
-    }
-
 }

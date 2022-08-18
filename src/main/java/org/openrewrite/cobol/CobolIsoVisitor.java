@@ -2160,6 +2160,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
+    public Cobol.Words visitWords(Cobol.Words words, P p) {
+        return (Cobol.Words) super.visitWords(words, p);
+    }
+
+    @Override
     public Cobol.WorkingStorageSection visitWorkingStorageSection(Cobol.WorkingStorageSection workingStorageSection, P p) {
         return (Cobol.WorkingStorageSection) super.visitWorkingStorageSection(workingStorageSection, p);
     }
