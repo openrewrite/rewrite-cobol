@@ -61,8 +61,18 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
+    public Cobol.AddCorresponding visitAddCorresponding(Cobol.AddCorresponding addCorresponding, P p) {
+        return (Cobol.AddCorresponding) super.visitAddCorresponding(addCorresponding, p);
+    }
+
+    @Override
     public Cobol.AddTo visitAddTo(Cobol.AddTo addTo, P p) {
         return (Cobol.AddTo) super.visitAddTo(addTo, p);
+    }
+
+    @Override
+    public Cobol.AddToGiving visitAddToGiving(Cobol.AddToGiving addToGiving, P p) {
+        return (Cobol.AddToGiving) super.visitAddToGiving(addToGiving, p);
     }
 
     @Override
@@ -2147,6 +2157,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     @Override
     public Cobol.ValuedObjectComputerClause visitValuedObjectComputerClause(Cobol.ValuedObjectComputerClause valuedObjectComputerClause, P p) {
         return (Cobol.ValuedObjectComputerClause) super.visitValuedObjectComputerClause(valuedObjectComputerClause, p);
+    }
+
+    @Override
+    public Cobol.Words visitWords(Cobol.Words words, P p) {
+        return (Cobol.Words) super.visitWords(words, p);
     }
 
     @Override

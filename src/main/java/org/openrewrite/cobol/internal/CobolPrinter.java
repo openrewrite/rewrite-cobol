@@ -103,13 +103,34 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return add;
     }
 
+    public Cobol visitAddCorresponding(Cobol.AddCorresponding addCorresponding, PrintOutputCapture<P> p) {
+        visitSpace(addCorresponding.getPrefix(), p);
+        visitMarkers(addCorresponding.getMarkers(), p);
+        visit(addCorresponding.getCorresponding(), p);
+        visit(addCorresponding.getIdentifier(), p);
+        visit(addCorresponding.getTo(), p);
+        visit(addCorresponding.getRoundable(), p);
+        return addCorresponding;
+    }
+
     public Cobol visitAddTo(Cobol.AddTo addTo, PrintOutputCapture<P> p) {
         visitSpace(addTo.getPrefix(), p);
         visitMarkers(addTo.getMarkers(), p);
         visit(addTo.getFrom(), p);
-        visitContainer("", addTo.getPadding().getTo(), "", "", p);
-        visitContainer("", addTo.getPadding().getGiving(), "", "", p);
+        visit(addTo.getTo(), p);
+        visit(addTo.getRoundables(), p);
         return addTo;
+    }
+
+    public Cobol visitAddToGiving(Cobol.AddToGiving addToGiving, PrintOutputCapture<P> p) {
+        visitSpace(addToGiving.getPrefix(), p);
+        visitMarkers(addToGiving.getMarkers(), p);
+        visit(addToGiving.getFrom(), p);
+        visit(addToGiving.getTo(), p);
+        visit(addToGiving.getNames(), p);
+        visit(addToGiving.getGiving(), p);
+        visit(addToGiving.getRoundables(), p);
+        return addToGiving;
     }
 
     public Cobol visitAlphabetAlso(Cobol.AlphabetAlso alphabetAlso, PrintOutputCapture<P> p) {
@@ -173,7 +194,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(alteredGoTo.getPrefix(), p);
         visitMarkers(alteredGoTo.getMarkers(), p);
         visit(alteredGoTo.getWords(), p);
-        visitLeftPadded("", alteredGoTo.getPadding().getDot(), p);
+        visit(alteredGoTo.getDot(), p);
         return alteredGoTo;
     }
 
@@ -466,7 +487,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(collatingSequenceClause.getPrefix(), p);
         visitMarkers(collatingSequenceClause.getMarkers(), p);
         visit(collatingSequenceClause.getWords(), p);
-        visitContainer("", collatingSequenceClause.getPadding().getAlphabetName(), "", "", p);
+        visit(collatingSequenceClause.getIs(), p);
+        visit(collatingSequenceClause.getAlphabetName(), p);
         visit(collatingSequenceClause.getAlphanumeric(), p);
         visit(collatingSequenceClause.getNational(), p);
         return collatingSequenceClause;
@@ -597,7 +619,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(currencyClause.getMarkers(), p);
         visit(currencyClause.getWords(), p);
         visit(currencyClause.getLiteral(), p);
-        visitLeftPadded("", currencyClause.getPadding().getPictureSymbol(), p);
+        visit(currencyClause.getPictureSymbols(), p);
         visit(currencyClause.getPictureSymbolLiteral(), p);
         return currencyClause;
     }
@@ -696,7 +718,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(dataOccursClause.getDataOccursTo(), p);
         visit(dataOccursClause.getTimes(), p);
         visit(dataOccursClause.getDataOccursDepending(), p);
-        visitContainer("", dataOccursClause.getPadding().getSortIndexed(), "", "", p);
+        visit(dataOccursClause.getSortIndexed(), p);
         return dataOccursClause;
     }
 
@@ -1001,6 +1023,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(endProgram.getPrefix(), p);
         visitMarkers(endProgram.getMarkers(), p);
         visit(endProgram.getWords(), p);
+        visit(endProgram.getProgramName(), p);
+        visit(endProgram.getDot(), p);
         return endProgram;
     }
 
@@ -1373,7 +1397,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(inspectAllLeadings.getPrefix(), p);
         visitMarkers(inspectAllLeadings.getMarkers(), p);
         visit(inspectAllLeadings.getWord(), p);
-        visitContainer("", inspectAllLeadings.getPadding().getLeadings(), "", "", p);
+        visit(inspectAllLeadings.getLeadings(), p);
         return inspectAllLeadings;
     }
 
@@ -1416,7 +1440,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(inspectFor.getMarkers(), p);
         visit(inspectFor.getIdentifier(), p);
         visit(inspectFor.getWord(), p);
-        visitContainer("", inspectFor.getPadding().getInspects(), "", "", p);
+        visit(inspectFor.getInspects(), p);
         return inspectFor;
     }
 
@@ -1450,7 +1474,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(inspectReplacingPhrase.getPrefix(), p);
         visitMarkers(inspectReplacingPhrase.getMarkers(), p);
         visit(inspectReplacingPhrase.getWord(), p);
-        visitContainer("", inspectReplacingPhrase.getPadding().getInspections(), "", "", p);
+        visit(inspectReplacingPhrase.getInspections(), p);
         return inspectReplacingPhrase;
     }
 
@@ -1486,7 +1510,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(ioControlParagraph.getDot(), p);
         visit(ioControlParagraph.getFileName(), p);
         visit(ioControlParagraph.getFileNameDot(), p);
-        visitContainer("", ioControlParagraph.getPadding().getClauses(), "", ".", p);
+        visit(ioControlParagraph.getClauses(), p);
+        visit(ioControlParagraph.getDot2(), p);
         return ioControlParagraph;
     }
 
@@ -1559,7 +1584,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(libraryDescriptionEntryFormat2.getExport(), p);
         visit(libraryDescriptionEntryFormat2.getLibraryIsGlobalClause(), p);
         visit(libraryDescriptionEntryFormat2.getLibraryIsCommonClause(), p);
-        visitContainer("", libraryDescriptionEntryFormat2.getPadding().getClauseFormats(), "", "", p);
+        visit(libraryDescriptionEntryFormat2.getClauseFormats(), p);
         return libraryDescriptionEntryFormat2;
     }
 
@@ -1791,7 +1816,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(moveCorrespondingToStatement.getMarkers(), p);
         visit(moveCorrespondingToStatement.getWords(), p);
         visit(moveCorrespondingToStatement.getMoveCorrespondingToSendingArea(), p);
-        visitContainer("", moveCorrespondingToStatement.getPadding().getTo(), "", "", p);
+        visit(moveCorrespondingToStatement.getTo(), p);
+        visit(moveCorrespondingToStatement.getIdentifiers(), p);
         return moveCorrespondingToStatement;
     }
 
@@ -1861,7 +1887,9 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitMultiplyGiving(Cobol.MultiplyGiving multiplyGiving, PrintOutputCapture<P> p) {
         visitSpace(multiplyGiving.getPrefix(), p);
         visitMarkers(multiplyGiving.getMarkers(), p);
-        visitContainer("", multiplyGiving.getPadding().getResult(), "", "", p);
+        visit(multiplyGiving.getOperand(), p);
+        visit(multiplyGiving.getGiving(), p);
+        visit(multiplyGiving.getResult(), p);
         return multiplyGiving;
     }
 
@@ -1908,7 +1936,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(open.getPrefix(), p);
         visitMarkers(open.getMarkers(), p);
         visit(open.getWords(), p);
-        visitContainer("", open.getPadding().getOpen(), "", "", p);
+        visit(open.getOpen(), p);
         return open;
     }
 
@@ -2268,14 +2296,15 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(programUnit.getDataDivision(), p);
         visit(programUnit.getProcedureDivision(), p);
         visit(programUnit.getProgramUnits(), p);
-        visitRightPadded(programUnit.getPadding().getEndProgram(), ".", p);
+        visit(programUnit.getEndProgram(), p);
         return programUnit;
     }
 
     public Cobol visitPurge(Cobol.Purge purge, PrintOutputCapture<P> p) {
         visitSpace(purge.getPrefix(), p);
         visitMarkers(purge.getMarkers(), p);
-        visitContainer("", purge.getPadding().getNames(), "", "", p);
+        visit(purge.getPurge(), p);
+        visit(purge.getNames(), p);
         return purge;
     }
 
@@ -2396,7 +2425,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(receiveFromStatement.getDataName(), p);
         visit(receiveFromStatement.getFrom(), p);
         visit(receiveFromStatement.getReceiveFrom(), p);
-        visitContainer("", receiveFromStatement.getPadding().getBeforeWithThreadSizeStatus(), "", "", p);
+        visit(receiveFromStatement.getBeforeWithThreadSizeStatus(), p);
         return receiveFromStatement;
     }
 
@@ -2663,7 +2692,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(reportGroupDescriptionEntryFormat3.getMarkers(), p);
         visit(reportGroupDescriptionEntryFormat3.getIntegerLiteral(), p);
         visit(reportGroupDescriptionEntryFormat3.getDataName(), p);
-        visitContainer("", reportGroupDescriptionEntryFormat3.getPadding().getClauses(), "", "", p);
+        visit(reportGroupDescriptionEntryFormat3.getClauses(), p);
         visit(reportGroupDescriptionEntryFormat3.getDot(), p);
         return reportGroupDescriptionEntryFormat3;
     }
@@ -3311,8 +3340,9 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitSetTo(Cobol.SetTo setTo, PrintOutputCapture<P> p) {
         visitSpace(setTo.getPrefix(), p);
         visitMarkers(setTo.getMarkers(), p);
+        visit(setTo.getIdentifiers(), p);
         visit(setTo.getTo(), p);
-        visitContainer("", setTo.getPadding().getValues(), "", "", p);
+        visit(setTo.getValues(), p);
         return setTo;
     }
 
@@ -3808,6 +3838,13 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return valuedObjectComputerClause;
     }
 
+    public Cobol visitWords(Cobol.Words words, PrintOutputCapture<P> p) {
+        visitSpace(words.getPrefix(), p);
+        visitMarkers(words.getMarkers(), p);
+        visit(words.getWords(), p);
+        return words;
+    }
+
     public Cobol visitWorkingStorageSection(Cobol.WorkingStorageSection workingStorageSection, PrintOutputCapture<P> p) {
         visitSpace(workingStorageSection.getPrefix(), p);
         visitMarkers(workingStorageSection.getMarkers(), p);
@@ -3868,59 +3905,5 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(writeFromPhrase.getFrom(), p);
         visit(writeFromPhrase.getName(), p);
         return writeFromPhrase;
-    }
-
-
-    @SuppressWarnings("SameParameterValue")
-    protected void visitContainer(String before, @Nullable CobolContainer<? extends Cobol> container,
-                                  String suffixBetween, @Nullable String after, PrintOutputCapture<P> p) {
-        if (container == null) {
-            return;
-        }
-        visitSpace(container.getBefore(), p);
-        visitLeftPadded("", container.getPreposition(), p);
-        p.append(before);
-        visitRightPadded(container.getPadding().getElements(), suffixBetween, p);
-        p.append(after == null ? "" : after);
-    }
-
-    protected void visitLeftPadded(@Nullable String prefix, @Nullable CobolLeftPadded<?> leftPadded, PrintOutputCapture<P> p) {
-        if (leftPadded != null) {
-            visitSpace(leftPadded.getBefore(), p);
-            if (prefix != null) {
-                p.append(prefix);
-            }
-            if (leftPadded.getElement() instanceof Cobol) {
-                visit((Cobol) leftPadded.getElement(), p);
-            } else if (leftPadded.getElement() instanceof String) {
-                p.append(((String) leftPadded.getElement()));
-            }
-        }
-    }
-
-    protected void visitRightPadded(@Nullable CobolRightPadded<?> rightPadded, @Nullable String suffix, PrintOutputCapture<P> p) {
-        if (rightPadded != null) {
-            if (rightPadded.getElement() instanceof Cobol) {
-                visit((Cobol) rightPadded.getElement(), p);
-            } else if (rightPadded.getElement() instanceof String) {
-                p.append(((String) rightPadded.getElement()));
-            }
-            visitSpace(rightPadded.getAfter(), p);
-            if (suffix != null) {
-                p.append(suffix);
-            }
-        }
-    }
-
-    protected void visitRightPadded(List<? extends CobolRightPadded<? extends Cobol>> nodes, String suffixBetween, PrintOutputCapture<P> p) {
-        for (int i = 0; i < nodes.size(); i++) {
-            CobolRightPadded<? extends Cobol> node = nodes.get(i);
-            visit(node.getElement(), p);
-            visitSpace(node.getAfter(), p);
-            visitMarkers(node.getMarkers(), p);
-            if (i < nodes.size() - 1) {
-                p.append(suffixBetween);
-            }
-        }
     }
 }
