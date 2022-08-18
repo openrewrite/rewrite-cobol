@@ -1118,6 +1118,23 @@ public interface Cobol extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
+    class CommentEntry implements Cobol, Comment {
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        List<Word> comments;
+
+        @Override
+        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+            return v.visitCommentEntry(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
     class CommitmentControlClause implements Cobol {
         @EqualsAndHashCode.Include
         UUID id;
@@ -2919,10 +2936,37 @@ public interface Cobol extends Tree {
         Markers markers;
         List<Word> words;
         ProgramIdParagraph programIdParagraph;
+        List<Cobol> paragraphs;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitIdentificationDivision(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class IdentificationDivisionParagraph implements Cobol {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        Word word;
+        Word dot;
+        CommentEntry commentEntry;
+
+        @Nullable
+        List<Word> words;
+
+        @Nullable
+        Word dot2;
+
+        @Override
+        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+            return v.visitIdentificationDivisionParagraph(this, p);
         }
     }
 

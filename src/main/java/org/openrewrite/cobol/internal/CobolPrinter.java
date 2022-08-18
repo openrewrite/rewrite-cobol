@@ -502,6 +502,13 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return combinableCondition;
     }
 
+    public Cobol visitCommentEntry(Cobol.CommentEntry commentEntry, PrintOutputCapture<P> p) {
+        visitSpace(commentEntry.getPrefix(), p);
+        visitMarkers(commentEntry.getMarkers(), p);
+        visit(commentEntry.getComments(), p);
+        return commentEntry;
+    }
+
     public Cobol visitCommitmentControlClause(Cobol.CommitmentControlClause commitmentControlClause, PrintOutputCapture<P> p) {
         visitSpace(commitmentControlClause.getPrefix(), p);
         visitMarkers(commitmentControlClause.getMarkers(), p);
@@ -1256,7 +1263,16 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             visit(c, p);
         }
         visit(identificationDivision.getProgramIdParagraph(), p);
+        visit(identificationDivision.getParagraphs(), p);
         return identificationDivision;
+    }
+
+    public Cobol visitIdentificationDivisionParagraph(Cobol.IdentificationDivisionParagraph identificationDivisionParagraph, PrintOutputCapture<P> p) {
+        visitSpace(identificationDivisionParagraph.getPrefix(), p);
+        visitMarkers(identificationDivisionParagraph.getMarkers(), p);
+        visit(identificationDivisionParagraph.getWords(), p);
+        visit(identificationDivisionParagraph.getCommentEntry(), p);
+        return identificationDivisionParagraph;
     }
 
     public Cobol visitIf(Cobol.If _if, PrintOutputCapture<P> p) {

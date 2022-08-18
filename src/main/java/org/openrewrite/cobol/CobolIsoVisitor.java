@@ -260,6 +260,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
+    public Cobol visitCommentEntry(Cobol.CommentEntry commentEntry, P p) {
+        return super.visitCommentEntry(commentEntry, p);
+    }
+
+    @Override
     public Cobol.CommitmentControlClause visitCommitmentControlClause(Cobol.CommitmentControlClause commitmentControlClause, P p) {
         return (Cobol.CommitmentControlClause) super.visitCommitmentControlClause(commitmentControlClause, p);
     }
@@ -707,6 +712,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     @Override
     public Cobol.IdentificationDivision visitIdentificationDivision(Cobol.IdentificationDivision identificationDivision, P p) {
         return (Cobol.IdentificationDivision) super.visitIdentificationDivision(identificationDivision, p);
+    }
+
+    @Override
+    public Cobol visitIdentificationDivisionParagraph(Cobol.IdentificationDivisionParagraph identificationDivisionParagraph, P p) {
+        return super.visitIdentificationDivisionParagraph(identificationDivisionParagraph, p);
     }
 
     @Override

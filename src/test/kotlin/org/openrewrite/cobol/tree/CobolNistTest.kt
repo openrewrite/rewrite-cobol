@@ -42,12 +42,11 @@ class CobolNistTest : RewriteTest {
     @Test
     fun cm1014() = rewriteRun(
         cobol("""
-            *HEADER,COBOL,CM101M                                                            
             000100 IDENTIFICATION DIVISION.                                         CM1014.2
             000200 PROGRAM-ID.                                                      CM1014.2
             000300     CM101M.                                                      CM1014.2
             000400 AUTHOR.                                                          CM1014.2
-            000500     FEDERAL COMPILER TESTING CENTER.                             CM1014.2
+            000500*    FEDERAL COMPILER TESTING CENTER.                             CM1014.2
             000600 INSTALLATION.                                                    CM1014.2
             000700     GENERAL SERVICES ADMINISTRATION                              CM1014.2
             000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                CM1014.2
@@ -712,7 +711,6 @@ class CobolNistTest : RewriteTest {
             066700         AFTER 5 LINES.                                           CM1014.2
             066800     MOVE HYPHEN-LINE TO PRINT-REC.                               CM1014.2
             066900     PERFORM WRITE-LINE.                                          CM1014.2
-            *END-OF,CM101M                                                                  
         """)
     )
 }

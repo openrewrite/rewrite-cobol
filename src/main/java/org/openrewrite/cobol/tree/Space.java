@@ -26,18 +26,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import static java.util.Collections.emptyList;
-
 /**
- * Wherever whitespace can occur in HCL, so can comments (at least block and javadoc style comments).
- * So whitespace and comments are like peanut butter and jelly.
+ * COBOL white space.
  */
 @EqualsAndHashCode
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@ref")
 public class Space {
-    public static final Space EMPTY = new Space("", emptyList());
-
-    private final List<Comment> comments;
+    public static final Space EMPTY = new Space("");
 
     @Nullable
     private final String whitespace;
@@ -49,20 +44,16 @@ public class Space {
      */
     private static final Map<String, Space> flyweights = new WeakHashMap<>();
 
-    private Space(@Nullable String whitespace, List<Comment> comments) {
-        this.comments = comments;
+    private Space(@Nullable String whitespace) {
         this.whitespace = whitespace == null || whitespace.isEmpty() ? null : whitespace;
     }
 
     @JsonCreator
-    public static Space build(@Nullable String whitespace, List<Comment> comments) {
-        if (comments.isEmpty()) {
-            if (whitespace == null || whitespace.isEmpty()) {
-                return Space.EMPTY;
-            }
-            return flyweights.computeIfAbsent(whitespace, k -> new Space(whitespace, comments));
+    public static Space build(@Nullable String whitespace) {
+        if (whitespace == null || whitespace.isEmpty()) {
+            return Space.EMPTY;
         }
-        return new Space(whitespace, comments);
+        return flyweights.computeIfAbsent(whitespace, k -> new Space(whitespace));
     }
 
     public String getIndent() {
@@ -86,33 +77,20 @@ public class Space {
         return whitespace;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
     public String getWhitespace() {
         return whitespace == null ? "" : whitespace;
     }
 
-    public Space withComments(List<Comment> comments) {
-        if (comments == this.comments) {
-            return this;
-        }
-        if (comments.isEmpty() && (whitespace == null || whitespace.isEmpty())) {
-            return Space.EMPTY;
-        }
-        return build(whitespace, comments);
-    }
 
     public Space withWhitespace(String whitespace) {
-        if (comments.isEmpty() && whitespace.isEmpty()) {
+        if (whitespace.isEmpty()) {
             return Space.EMPTY;
         }
 
-        if ((whitespace.isEmpty() && this.whitespace == null) || whitespace.equals(this.whitespace)) {
+        if (this.whitespace == null || whitespace.equals(this.whitespace)) {
             return this;
         }
-        return build(whitespace, comments);
+        return build(whitespace);
     }
 
     public boolean isEmpty() {
@@ -124,7 +102,7 @@ public class Space {
     }
 
     public static Space format(String formatting) {
-        return Space.build(formatting, emptyList());
+        return Space.build(formatting);
     }
 
     public static <C extends Cobol> List<C> formatFirstPrefix(List<C> trees, Space prefix) {
@@ -167,8 +145,6 @@ public class Space {
             }
         }
 
-        return "Space(" +
-                "comments=<" + (comments.size() == 1 ? "1 comment" : comments.size() + " comments") +
-                ">, whitespace='" + printedWs + "')";
+        return "Space(whitespace='" + printedWs + "')";
     }
 }

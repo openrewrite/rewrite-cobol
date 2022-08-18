@@ -431,6 +431,14 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return c;
     }
 
+    public Cobol visitCommentEntry(Cobol.CommentEntry commentEntry, P p) {
+        Cobol.CommentEntry c = commentEntry;
+        c = c.withPrefix(visitSpace(c.getPrefix(), p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withComments(ListUtils.map(c.getComments(), it -> (Cobol.Word) visit(it, p)));
+        return c;
+    }
+
     public Cobol visitCommitmentControlClause(Cobol.CommitmentControlClause commitmentControlClause, P p) {
         Cobol.CommitmentControlClause c = commitmentControlClause;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
@@ -1192,6 +1200,16 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
         i = i.withWords(ListUtils.map(i.getWords(), it -> (Cobol.Word) visit(it, p)));
         i = i.withProgramIdParagraph((Cobol.ProgramIdParagraph) visit(i.getProgramIdParagraph(), p));
+        i = i.withParagraphs(ListUtils.map(i.getParagraphs(), it -> visit(it, p)));
+        return i;
+    }
+
+    public Cobol visitIdentificationDivisionParagraph(Cobol.IdentificationDivisionParagraph identificationDivisionParagraph, P p) {
+        Cobol.IdentificationDivisionParagraph i = identificationDivisionParagraph;
+        i = i.withPrefix(visitSpace(i.getPrefix(), p));
+        i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWords(ListUtils.map(i.getWords(), it -> (Cobol.Word) visit(it, p)));
+        i = i.withCommentEntry((Cobol.CommentEntry) visit(identificationDivisionParagraph.getCommentEntry(), p));
         return i;
     }
 

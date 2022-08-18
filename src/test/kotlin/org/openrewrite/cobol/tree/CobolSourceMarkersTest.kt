@@ -134,6 +134,19 @@ class CobolSourceMarkersTest : RewriteTest {
         """)
     )
 
+    @Test
+    fun literalStartsOnNewLine() = rewriteRun(
+        cobol("""
+           000001  IDENTIFICATION DIVISION.                                        
+           000002 PROGRAM-ID. communicationSection.                                
+           000003 PROCEDURE DIVISION.                                              
+           000004 DISPLAY                                                          
+           000005 '----------------------------------------------------------------
+           000006-    'on another line'                                            
+           000007 EXIT.                                                            
+        """)
+    )
+
     @Disabled("Fix: Comma delimiters are pipped to a hidden channel.")
     @Test
     fun commaDelimiter() = rewriteRun(
