@@ -235,8 +235,8 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol.CobolWord visitCobolWord(Cobol.CobolWord cobolWord, P p) {
-        return (Cobol.CobolWord) super.visitCobolWord(cobolWord, p);
+    public Cobol.Word visitCobolWord(Cobol.Word word, P p) {
+        return (Cobol.Word) super.visitCobolWord(word, p);
     }
 
     @Override
