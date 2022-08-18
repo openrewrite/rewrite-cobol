@@ -1805,6 +1805,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
+    public Cobol.ScreenDescriptionSecureClause visitScreenDescriptionSecureClause(Cobol.ScreenDescriptionSecureClause screenDescriptionSecureClause, P p) {
+        return (Cobol.ScreenDescriptionSecureClause) super.visitScreenDescriptionSecureClause(screenDescriptionSecureClause, p);
+    }
+
+    @Override
     public Cobol.ScreenDescriptionSignClause visitScreenDescriptionSignClause(Cobol.ScreenDescriptionSignClause screenDescriptionSignClause, P p) {
         return (Cobol.ScreenDescriptionSignClause) super.visitScreenDescriptionSignClause(screenDescriptionSignClause, p);
     }

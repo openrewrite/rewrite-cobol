@@ -30,7 +30,6 @@ public class CobolLineWriter {
             } else {
                 sb.append(line.getContentArea());
             }
-
         }
 
         return sb.toString();
