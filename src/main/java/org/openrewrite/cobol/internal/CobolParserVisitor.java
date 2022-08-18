@@ -272,6 +272,19 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     @Override
+    public Object visitAddCorrespondingStatement(CobolParser.AddCorrespondingStatementContext ctx) {
+        return new Cobol.AddCorresponding(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                visit(ctx.CORRESPONDING(), ctx.CORR()),
+                (Identifier) visit(ctx.identifier()),
+                (Cobol.CobolWord) visit(ctx.TO()),
+                (Cobol.Roundable) visit(ctx.addTo())
+        );
+    }
+
+    @Override
     public Cobol.Add visitAddStatement(CobolParser.AddStatementContext ctx) {
         return new Cobol.Add(
                 randomId(),
@@ -286,14 +299,16 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     @Override
-    public Cobol.AddTo visitAddToGivingStatement(CobolParser.AddToGivingStatementContext ctx) {
-        return new Cobol.AddTo(
+    public Cobol.AddToGiving visitAddToGivingStatement(CobolParser.AddToGivingStatementContext ctx) {
+        return new Cobol.AddToGiving(
                 randomId(),
                 Space.EMPTY,
                 Markers.EMPTY,
                 convertAll(ctx.addFrom()),
-                convertAllContainer(padLeft(ctx.TO()), ctx.addToGiving()),
-                convertAllContainer(padLeft(ctx.GIVING()), ctx.addGiving())
+                visitNullable(ctx.TO()),
+                convertAll(ctx.addToGiving()),
+                (Cobol.CobolWord) visit(ctx.GIVING()),
+                convertAll(ctx.addGiving())
         );
     }
 
@@ -304,8 +319,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 Space.EMPTY,
                 Markers.EMPTY,
                 convertAll(ctx.addFrom()),
-                convertAllContainer(padLeft(ctx.TO()), ctx.addTo()),
-                null
+                visitNullable(ctx.TO()),
+                convertAll(ctx.addTo())
         );
     }
 
@@ -806,7 +821,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.PROGRAM(), ctx.COLLATING(), ctx.SEQUENCE()),
-                convertAllContainer(padLeft(ctx.IS()), ctx.alphabetName()),
+                (Cobol.CobolWord) visit(ctx.IS()),
+                convertAll(ctx.alphabetName()),
                 visitNullable(ctx.collatingSequenceClauseAlphanumeric()),
                 visitNullable(ctx.collatingSequenceClauseNational())
         );
@@ -1013,7 +1029,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 Markers.EMPTY,
                 wordsList(ctx.CURRENCY(), ctx.SIGN(), ctx.IS()),
                 (Literal) visit(ctx.literal(0)),
-                ctx.literal().size() > 1 ? padLeft(whitespace(), words(ctx.WITH(), ctx.PICTURE(), ctx.SYMBOL())) : null,
+                wordsList(ctx.WITH(), ctx.PICTURE(), ctx.SYMBOL()),
                 ctx.literal().size() > 1 ? (Literal) visit(ctx.literal(1)) : null
         );
     }
@@ -1673,7 +1689,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 Markers.EMPTY,
                 (Cobol.CobolWord) visit(ctx.ENTRY()),
                 (Literal) visit(ctx.literal()),
-                convertAllContainer(padLeft(ctx.USING()), ctx.identifier())
+                (Cobol.CobolWord) visit(ctx.USING()),
+                convertAll(ctx.identifier())
         );
     }
 
@@ -2792,7 +2809,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 Markers.EMPTY,
                 visit(ctx.CORRESPONDING(), ctx.CORR()),
                 (Identifier) visit(ctx.moveCorrespondingToSendingArea()),
-                convertAllContainer(padLeft(ctx.TO()), ctx.identifier())
+                (Cobol.CobolWord) visit(ctx.TO()),
+                convertAll(ctx.identifier())
         );
     }
 
@@ -2871,7 +2889,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 (Name) visit(ctx.multiplyGivingOperand()),
-                convertAllContainer(padLeft(ctx.GIVING()), ctx.multiplyGivingResult())
+                (Cobol.CobolWord) visit(ctx.GIVING()),
+                convertAll(ctx.multiplyGivingResult())
         );
     }
 
@@ -3581,7 +3600,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                convertAllContainer(padLeft(ctx.PURGE()), ctx.cdName())
+                (Cobol.CobolWord) visit(ctx.PURGE()),
+                convertAll(ctx.cdName())
         );
     }
 
@@ -5167,7 +5187,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 convertAll(ctx.setTo()),
-                convertAllContainer(padLeft(ctx.TO()), ctx.setToValue())
+                (Cobol.CobolWord) visit(ctx.TO()),
+                convertAll(ctx.setToValue())
         );
     }
 
@@ -6200,19 +6221,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     return Stream.of(cobol);
                 })
                 .collect(Collectors.toList());
-    }
-
-    private <T> CobolLeftPadded<T> padLeft(Space left, T tree) {
-        return new CobolLeftPadded<>(left, tree, Markers.EMPTY);
-    }
-
-    // TODO: fix me. The tree should be visited instead of using text.
-    private CobolLeftPadded<String> padLeft(@Nullable ParseTree pt) {
-        if (pt == null) {
-            //noinspection ConstantConditions
-            return null;
-        }
-        return padLeft(sourceBefore(pt.getText()), pt.getText());
     }
 
     private <T> CobolRightPadded<T> padRight(T tree, Space right) {

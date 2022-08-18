@@ -94,13 +94,36 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return a;
     }
 
+    public Cobol visitAddCorresponding(Cobol.AddCorresponding addCorresponding, P p) {
+        Cobol.AddCorresponding a = addCorresponding;
+        a = a.withPrefix(visitSpace(a.getPrefix(), p));
+        a = a.withMarkers(visitMarkers(a.getMarkers(), p));
+        a = a.withCorresponding((Cobol.CobolWord) visit(a.getCorresponding(), p));
+        a = a.withIdentifier((Identifier) visit(a.getIdentifier(), p));
+        a = a.withTo((Cobol.CobolWord) visit(a.getTo(), p));
+        a = a.withRoundable((Cobol.Roundable) visit(a.getRoundable(), p));
+        return a;
+    }
+
     public Cobol visitAddTo(Cobol.AddTo addTo, P p) {
         Cobol.AddTo a = addTo;
         a = a.withPrefix(visitSpace(a.getPrefix(), p));
         a = a.withMarkers(visitMarkers(a.getMarkers(), p));
         a = a.withFrom(ListUtils.map(a.getFrom(), t -> (Name) visit(t, p)));
-        a = a.getPadding().withTo(visitContainer(a.getPadding().getTo(), p));
-        a = a.getPadding().withGiving(visitContainer(a.getPadding().getGiving(), p));
+        a = a.withTo((Cobol.CobolWord) visit(a.getTo(), p));
+        a = a.withRoundables(ListUtils.map(a.getRoundables(), t -> (Name) visit(t, p)));
+        return a;
+    }
+
+    public Cobol visitAddToGiving(Cobol.AddToGiving addToGiving, P p) {
+        Cobol.AddToGiving a = addToGiving;
+        a = a.withPrefix(visitSpace(a.getPrefix(), p));
+        a = a.withMarkers(visitMarkers(a.getMarkers(), p));
+        a = a.withFrom(ListUtils.map(a.getFrom(), t -> (Name) visit(t, p)));
+        a = a.withTo((Cobol.CobolWord) visit(a.getTo(), p));
+        a = a.withNames(ListUtils.map(a.getNames(), t -> (Name) visit(t, p)));
+        a = a.withGiving((Cobol.CobolWord) visit(a.getGiving(), p));
+        a = a.withRoundables(ListUtils.map(a.getRoundables(), t -> (Name) visit(t, p)));
         return a;
     }
 
@@ -395,7 +418,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.CollatingSequenceClause c = collatingSequenceClause;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
-        c = c.getPadding().withAlphabetName(visitContainer(c.getPadding().getAlphabetName(), p));
+        c = c.withWords(ListUtils.map(c.getWords(), it -> (Cobol.CobolWord) visit(it, p)));
+        c = c.withIs((Cobol.CobolWord) visit(c.getIs(), p));
+        c = c.withAlphabetName(ListUtils.map(c.getAlphabetName(), it -> (Cobol.CobolWord) visit(it, p)));
         c = c.withAlphanumeric((Cobol.CollatingSequenceAlphabet) visit(c.getAlphanumeric(), p));
         c = c.withNational((Cobol.CollatingSequenceAlphabet) visit(c.getNational(), p));
         return c;
@@ -532,9 +557,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
         c = c.withLiteral((Literal) visit(c.getLiteral(), p));
-        if (c.getPadding().getPictureSymbol() != null) {
-            c = c.getPadding().withPictureSymbol(visitLeftPadded(c.getPadding().getPictureSymbol(), p));
-        }
+        c = c.withPictureSymbols(ListUtils.map(c.getPictureSymbols(), it -> (Cobol.CobolWord) visit(it, p)));
         c = c.withPictureSymbolLiteral((Literal) visit(c.getPictureSymbolLiteral(), p));
         return c;
     }
@@ -1705,7 +1728,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         m = m.withPrefix(visitSpace(m.getPrefix(), p));
         m = m.withMarkers(visitMarkers(m.getMarkers(), p));
         m = m.withMoveCorrespondingToSendingArea((Identifier) visit(m.getMoveCorrespondingToSendingArea(), p));
-        m = m.getPadding().withTo(visitContainer(m.getPadding().getTo(), p));
+        m = m.withTo((Cobol.CobolWord) visit(m.getTo(), p));
+        m = m.withIdentifiers(ListUtils.map(m.getIdentifiers(), t -> (Identifier) visit(t, p)));
         return m;
     }
 
@@ -1775,7 +1799,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.MultiplyGiving m = multiplyGiving;
         m = m.withPrefix(visitSpace(m.getPrefix(), p));
         m = m.withMarkers(visitMarkers(m.getMarkers(), p));
-        m = m.getPadding().withResult(visitContainer(m.getPadding().getResult(), p));
+        m = m.withOperand((Name) visit(m.getOperand(), p));
+        m = m.withGiving((Cobol.CobolWord) visit(m.getGiving(), p));
+        m = m.withResult(ListUtils.map(m.getResult(), it -> (Cobol.Roundable) visit(it, p)));
         return m;
     }
 
@@ -2180,7 +2206,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Purge pp = purge;
         pp = pp.withPrefix(visitSpace(pp.getPrefix(), p));
         pp = pp.withMarkers(visitMarkers(pp.getMarkers(), p));
-        pp = pp.getPadding().withNames(visitContainer(pp.getPadding().getNames(), p));
+        pp = pp.withPurge((Cobol.CobolWord) visit(pp.getPurge(), p));
+        pp = pp.withNames(ListUtils.map(pp.getNames(), t -> (Name) visit(t, p)));
         return pp;
     }
 
@@ -3194,8 +3221,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.SetTo s = setTo;
         s = s.withPrefix(visitSpace(s.getPrefix(), p));
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
-        s = s.withTo(ListUtils.map(s.getTo(), t -> (Identifier) visit(t, p)));
-        s = s.getPadding().withValues(visitContainer(s.getPadding().getValues(), p));
+        s = s.withIdentifiers(ListUtils.map(s.getIdentifiers(), t -> (Identifier) visit(t, p)));
+        s = s.withTo((Cobol.CobolWord) visit(s.getTo(), p));
+        s = s.withValues(ListUtils.map(s.getValues(), t -> (Name) visit(t, p)));
         return s;
     }
 
