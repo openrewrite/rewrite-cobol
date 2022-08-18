@@ -816,6 +816,22 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return dataValueClause;
     }
 
+    public Cobol visitDataValueInterval(Cobol.DataValueInterval dataValueInterval, PrintOutputCapture<P> p) {
+        visitSpace(dataValueInterval.getPrefix(), p);
+        visitMarkers(dataValueInterval.getMarkers(), p);
+        visit(dataValueInterval.getFrom(), p);
+        visit(dataValueInterval.getTo(), p);
+        return dataValueInterval;
+    }
+
+    public Cobol visitDataValueIntervalTo(Cobol.DataValueIntervalTo dataValueIntervalTo, PrintOutputCapture<P> p) {
+        visitSpace(dataValueIntervalTo.getPrefix(), p);
+        visitMarkers(dataValueIntervalTo.getMarkers(), p);
+        visit(dataValueIntervalTo.getThrough(), p);
+        visit(dataValueIntervalTo.getLiteral(), p);
+        return dataValueIntervalTo;
+    }
+
     public Cobol visitDataWithLowerBoundsClause(Cobol.DataWithLowerBoundsClause dataWithLowerBoundsClause, PrintOutputCapture<P> p) {
         visitSpace(dataWithLowerBoundsClause.getPrefix(), p);
         visitMarkers(dataWithLowerBoundsClause.getMarkers(), p);
@@ -1103,6 +1119,14 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(externalClause.getMarkers(), p);
         visit(externalClause.getWords(), p);
         return externalClause;
+    }
+
+    public Cobol visitFigurativeConstant(Cobol.FigurativeConstant figurativeConstant, PrintOutputCapture<P> p) {
+        visitSpace(figurativeConstant.getPrefix(), p);
+        visitMarkers(figurativeConstant.getMarkers(), p);
+        visit(figurativeConstant.getWord(), p);
+        visit(figurativeConstant.getLiteral(), p);
+        return figurativeConstant;
     }
 
     public Cobol visitFileControlEntry(Cobol.FileControlEntry fileControlEntry, PrintOutputCapture<P> p) {
@@ -3814,25 +3838,34 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
         Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
         if (continuation.isPresent()) {
+            if (continuation.get().getContinuations().containsKey(0)) {
+                Markers markers = continuation.get().getContinuations().get(0);
+                Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
+                sequenceArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+                sequenceArea.ifPresent(it -> p.append(it.getSequence()));
+
+                Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
+                indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
+            }
+
             visitSpace(word.getPrefix(), p);
-            boolean startsWithSeqArea;
+
             char[] charArray = word.getWord().toCharArray();
             for (int i = 0; i < charArray.length; i++) {
                 if (continuation.get().getContinuations().containsKey(i)) {
                     Markers markers = continuation.get().getContinuations().get(i);
-                    startsWithSeqArea = i == 0;
-                    if (!startsWithSeqArea) {
+                    if (i != 0) {
                         Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
                         commentArea.ifPresent(it -> p.append(it.getComment()));
                         commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+
+                        Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
+                        sequenceArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+                        sequenceArea.ifPresent(it -> p.append(it.getSequence()));
+
+                        Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
+                        indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
                     }
-
-                    Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
-                    sequenceArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-                    sequenceArea.ifPresent(it -> p.append(it.getSequence()));
-
-                    Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-                    indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
                 }
                 char c = charArray[i];
                 p.append(c);

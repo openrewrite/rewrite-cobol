@@ -1453,6 +1453,28 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     @Override
+    public Object visitDataValueInterval(CobolParser.DataValueIntervalContext ctx) {
+        return new Cobol.DataValueInterval(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                (Name) visit(ctx.dataValueIntervalFrom()),
+                visitNullable(ctx.dataValueIntervalTo())
+        );
+    }
+
+    @Override
+    public Object visitDataValueIntervalTo(CobolParser.DataValueIntervalToContext ctx) {
+        return new Cobol.DataValueIntervalTo(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                visit(ctx.THROUGH(), ctx.THRU()),
+                (Literal) visit(ctx.literal())
+        );
+    }
+
+    @Override
     public Object visitDataWithLowerBoundsClause(CobolParser.DataWithLowerBoundsClauseContext ctx) {
         return new Cobol.DataWithLowerBoundsClause(
                 randomId(),
@@ -1923,6 +1945,19 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.IS(), ctx.EXTERNAL())
+        );
+    }
+
+    @Override
+    public Object visitFigurativeConstant(CobolParser.FigurativeConstantContext ctx) {
+        return new Cobol.FigurativeConstant(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                visit(ctx.ALL(), ctx.HIGH_VALUE(), ctx.HIGH_VALUES(), ctx.LOW_VALUE(), ctx.LOW_VALUES(),
+                        ctx.NULL(), ctx.NULLS(), ctx.QUOTE(), ctx.QUOTES(),
+                        ctx.SPACE(), ctx.SPACES(), ctx.ZERO(), ctx.ZEROS(), ctx.ZEROES()),
+                visitNullable(ctx.literal())
         );
     }
 
@@ -6270,8 +6305,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 .collect(Collectors.toList());
     }
 
-    // TODO: check. Methods should not assume text / cursor is incremented.
-    // Add resilience
     /**
      * Return the prefix of the TerminalNode AND collect applicable markers.
      * Markers consist of COBOL areas that are removed during preprocessing.
@@ -6301,7 +6334,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             String matchedText = "";
             int iterations = 0;
             Map<Integer, Markers> continuations = new HashMap<>();
-            while (matchedText.length() < text.length() && iterations < 1000) {
+            while (matchedText.length() < text.length() && iterations < 200) {
                 List<Marker> continuation = new ArrayList<>(3);
                 // Check if the token is the first element in the content area.
                 // I.E. 000005 '------------------ ...
@@ -6309,12 +6342,16 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 String sequenceArea = sequenceArea();
                 if (sequenceArea != null) {
                     startsWithSeqArea = true;
-                    continuation.add(new SequenceArea(randomId(), Space.EMPTY, sequenceArea));
+                    continuation.add(new SequenceArea(randomId(), before, sequenceArea));
                 }
 
                 String indicatorArea = indicatorArea(null);
                 if (indicatorArea != null) {
                     continuation.add(new IndicatorArea(randomId(), indicatorArea));
+                }
+
+                if (startsWithSeqArea && delimiter != null) {
+                    prefix = whitespace();
                 }
 
                 current = source.substring(cursor);
@@ -6330,7 +6367,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
                 matchedText = current.substring(0, end);
                 cursor += matchedText.length();
-                if (prefix == Space.EMPTY && before != Space.EMPTY) {
+                if (!startsWithSeqArea && prefix == Space.EMPTY && before != Space.EMPTY) {
                     prefix = before;
                 }
 
@@ -6346,7 +6383,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
                 if (matchedText.endsWith(String.valueOf(delimiter))) {
                     if (!continuation.isEmpty()) {
-                        continuations.put(text.length() + 1, Markers.build(continuation));
+                        int pos = startsWithSeqArea ? 0 : text.length() + 1;
+                        continuations.put(pos, Markers.build(continuation));
                     }
                     break;
                 }

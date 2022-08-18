@@ -855,6 +855,21 @@ class CobolAnsi85DivisionTest : RewriteTest {
     )
 
     @Test
+    fun dataValueInterval() = rewriteRun(
+        cobol("""
+            000100 IDENTIFICATION DIVISION.                                         CM1014.2
+            000200 PROGRAM-ID.                                                      CM1014.2
+            000300     CM101M.                                                      CM1014.2
+            003200 DATA DIVISION.                                                   CM1014.2
+            004000 WORKING-STORAGE SECTION.                                         CM1014.2
+            008000 01  LOG-HDR-4.                                                   CM1014.2
+            008100     02  FILLER PIC X VALUE SPACE.                                CM1014.2
+            008200     02  FILLER PIC X(11) VALUE ALL "-".                          CM1014.2
+            008300     02  FILLER PIC X VALUE SPACES.                               CM1014.2
+        """)
+    )
+
+    @Test
     fun inspectStatement() = rewriteRun(
         cobol("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01

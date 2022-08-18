@@ -800,6 +800,24 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return d;
     }
 
+    public Cobol visitDataValueInterval(Cobol.DataValueInterval dataValueInterval, P p) {
+        Cobol.DataValueInterval d = dataValueInterval;
+        d = d.withPrefix(visitSpace(d.getPrefix(), p));
+        d = d.withMarkers(visitMarkers(d.getMarkers(), p));
+        d = d.withFrom((Name) visit(d.getFrom(), p));
+        d = d.withTo((Cobol.DataValueIntervalTo) visit(d.getTo(), p));
+        return d;
+    }
+
+    public Cobol visitDataValueIntervalTo(Cobol.DataValueIntervalTo dataValueIntervalTo, P p) {
+        Cobol.DataValueIntervalTo d = dataValueIntervalTo;
+        d = d.withPrefix(visitSpace(d.getPrefix(), p));
+        d = d.withMarkers(visitMarkers(d.getMarkers(), p));
+        d = d.withThrough((Cobol.Word) visit(d.getThrough(), p));
+        d = d.withLiteral((Literal) visit(d.getLiteral(), p));
+        return d;
+    }
+
     public Cobol visitDataWithLowerBoundsClause(Cobol.DataWithLowerBoundsClause dataWithLowerBoundsClause, P p) {
         Cobol.DataWithLowerBoundsClause d = dataWithLowerBoundsClause;
         d = d.withPrefix(visitSpace(d.getPrefix(), p));
@@ -1088,6 +1106,15 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
         return e;
+    }
+
+    public Cobol visitFigurativeConstant(Cobol.FigurativeConstant figurativeConstant, P p) {
+        Cobol.FigurativeConstant f = figurativeConstant;
+        f = f.withPrefix(visitSpace(f.getPrefix(), p));
+        f = f.withMarkers(visitMarkers(f.getMarkers(), p));
+        f = f.withWord((Cobol.Word) visit(f.getWord(), p));
+        f = f.withLiteral((Literal) visit(f.getLiteral(), p));
+        return f;
     }
 
     public Cobol visitFileControlEntry(Cobol.FileControlEntry fileControlEntry, P p) {

@@ -475,6 +475,16 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
+    public Cobol visitDataValueInterval(Cobol.DataValueInterval dataValueInterval, P p) {
+        return super.visitDataValueInterval(dataValueInterval, p);
+    }
+
+    @Override
+    public Cobol visitDataValueIntervalTo(Cobol.DataValueIntervalTo dataValueIntervalTo, P p) {
+        return super.visitDataValueIntervalTo(dataValueIntervalTo, p);
+    }
+
+    @Override
     public Cobol.DataWithLowerBoundsClause visitDataWithLowerBoundsClause(Cobol.DataWithLowerBoundsClause dataWithLowerBoundsClause, P p) {
         return (Cobol.DataWithLowerBoundsClause) super.visitDataWithLowerBoundsClause(dataWithLowerBoundsClause, p);
     }
@@ -647,6 +657,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     @Override
     public Cobol.ExternalClause visitExternalClause(Cobol.ExternalClause externalClause, P p) {
         return (Cobol.ExternalClause) super.visitExternalClause(externalClause, p);
+    }
+
+    @Override
+    public Cobol visitFigurativeConstant(Cobol.FigurativeConstant figurativeConstant, P p) {
+        return super.visitFigurativeConstant(figurativeConstant, p);
     }
 
     @Override
