@@ -2312,6 +2312,16 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Receivable r = receivable;
         r = r.withPrefix(visitSpace(r.getPrefix(), p));
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
+        r = r.withWords(ListUtils.map(r.getWords(), it -> (Cobol.Word) visit(it, p)));
+        r = r.withValue((Name) visit(r.getValue(), p));
+        return r;
+    }
+
+    public Cobol visitReceiveWith(Cobol.ReceiveWith receiveWith, P p) {
+        Cobol.ReceiveWith r = receiveWith;
+        r = r.withPrefix(visitSpace(r.getPrefix(), p));
+        r = r.withMarkers(visitMarkers(r.getMarkers(), p));
+        r = r.withWords(ListUtils.map(r.getWords(), it -> (Cobol.Word) visit(it, p)));
         return r;
     }
 
@@ -3744,14 +3754,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         v = v.withValue(visit(v.getValue(), p));
         v = v.withUnits((Cobol.Word) visit(v.getUnits(), p));
         return v;
-    }
-
-    public Cobol visitWords(Cobol.Words words, P p) {
-        Cobol.Words w = words;
-        w = w.withPrefix(visitSpace(w.getPrefix(), p));
-        w = w.withMarkers(visitMarkers(w.getMarkers(), p));
-        w = w.withWords(ListUtils.map(w.getWords(), it -> (Cobol.Word) visit(it, p)));
-        return w;
     }
 
     public Cobol visitWorkingStorageSection(Cobol.WorkingStorageSection workingStorageSection, P p) {

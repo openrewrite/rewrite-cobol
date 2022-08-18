@@ -3841,8 +3841,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     @Override
-    public Cobol.Words visitReceiveWith(CobolParser.ReceiveWithContext ctx) {
-        return new Cobol.Words(
+    public Cobol.ReceiveWith visitReceiveWith(CobolParser.ReceiveWithContext ctx) {
+        return new Cobol.ReceiveWith(
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,

@@ -18,6 +18,7 @@ package org.openrewrite.cobol.internal;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolVisitor;
 import org.openrewrite.cobol.tree.*;
+import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Markers;
 
@@ -2400,6 +2401,13 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return receivable;
     }
 
+    public Cobol visitReceiveWith(Cobol.ReceiveWith receiveWith, PrintOutputCapture<P> p) {
+        visitSpace(receiveWith.getPrefix(), p);
+        visitMarkers(receiveWith.getMarkers(), p);
+        visit(receiveWith.getWords(), p);
+        return receiveWith;
+    }
+
     public Cobol visitReceive(Cobol.Receive receive, PrintOutputCapture<P> p) {
         visitSpace(receive.getPrefix(), p);
         visitMarkers(receive.getMarkers(), p);
@@ -3836,13 +3844,6 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(valuedObjectComputerClause.getValue(), p);
         visit(valuedObjectComputerClause.getUnits(), p);
         return valuedObjectComputerClause;
-    }
-
-    public Cobol visitWords(Cobol.Words words, PrintOutputCapture<P> p) {
-        visitSpace(words.getPrefix(), p);
-        visitMarkers(words.getMarkers(), p);
-        visit(words.getWords(), p);
-        return words;
     }
 
     public Cobol visitWorkingStorageSection(Cobol.WorkingStorageSection workingStorageSection, PrintOutputCapture<P> p) {

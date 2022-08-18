@@ -5630,6 +5630,23 @@ public interface Cobol extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
+    class ReceiveWith implements Cobol {
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        List<Word> words;
+
+        @Override
+        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+            return v.visitReceiveWith(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
     class Receive implements Statement {
         @EqualsAndHashCode.Include
         UUID id;
@@ -9037,18 +9054,6 @@ public interface Cobol extends Tree {
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitValuePair(this, p);
         }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
-    class Words implements Cobol {
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-        List<Word> words;
     }
 
     @Value
