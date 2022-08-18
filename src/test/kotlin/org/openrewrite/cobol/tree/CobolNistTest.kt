@@ -46,7 +46,7 @@ class CobolNistTest : RewriteTest {
             000200 PROGRAM-ID.                                                      CM1014.2
             000300     CM101M.                                                      CM1014.2
             000400 AUTHOR.                                                          CM1014.2
-            000500*    FEDERAL COMPILER TESTING CENTER.                             CM1014.2
+            000500     FEDERAL COMPILER TESTING CENTER.                             CM1014.2
             000600 INSTALLATION.                                                    CM1014.2
             000700     GENERAL SERVICES ADMINISTRATION                              CM1014.2
             000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                CM1014.2

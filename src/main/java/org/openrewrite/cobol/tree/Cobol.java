@@ -1028,7 +1028,7 @@ public interface Cobol extends Tree {
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
-            return v.visitCobolWord(this, p);
+            return v.visitWord(this, p);
         }
     }
 

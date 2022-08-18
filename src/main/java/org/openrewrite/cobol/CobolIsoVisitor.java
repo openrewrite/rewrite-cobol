@@ -235,11 +235,6 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol.Word visitCobolWord(Cobol.Word word, P p) {
-        return (Cobol.Word) super.visitCobolWord(word, p);
-    }
-
-    @Override
     public Cobol.CodeSetClause visitCodeSetClause(Cobol.CodeSetClause codeSetClause, P p) {
         return (Cobol.CodeSetClause) super.visitCodeSetClause(codeSetClause, p);
     }
@@ -2167,6 +2162,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     @Override
     public Cobol.ValuedObjectComputerClause visitValuedObjectComputerClause(Cobol.ValuedObjectComputerClause valuedObjectComputerClause, P p) {
         return (Cobol.ValuedObjectComputerClause) super.visitValuedObjectComputerClause(valuedObjectComputerClause, p);
+    }
+
+    @Override
+    public Cobol.Word visitWord(Cobol.Word word, P p) {
+        return (Cobol.Word) super.visitWord(word, p);
     }
 
     @Override

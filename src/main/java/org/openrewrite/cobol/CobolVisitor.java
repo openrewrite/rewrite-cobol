@@ -388,13 +388,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return c;
     }
 
-    public Cobol visitCobolWord(Cobol.Word word, P p) {
-        Cobol.Word c = word;
-        c = c.withPrefix(visitSpace(c.getPrefix(), p));
-        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
-        return c;
-    }
-
     public Cobol visitCodeSetClause(Cobol.CodeSetClause codeSetClause, P p) {
         Cobol.CodeSetClause c = codeSetClause;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
@@ -1208,8 +1201,11 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.IdentificationDivisionParagraph i = identificationDivisionParagraph;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
+        i = i.withDot((Cobol.Word) visit(i.getDot(), p));
+        i = i.withCommentEntry((Cobol.CommentEntry) visit(i.getCommentEntry(), p));
         i = i.withWords(ListUtils.map(i.getWords(), it -> (Cobol.Word) visit(it, p)));
-        i = i.withCommentEntry((Cobol.CommentEntry) visit(identificationDivisionParagraph.getCommentEntry(), p));
+        i = i.withDot2((Cobol.Word) visit(i.getDot2(), p));
         return i;
     }
 
@@ -3772,6 +3768,13 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         v = v.withValue(visit(v.getValue(), p));
         v = v.withUnits((Cobol.Word) visit(v.getUnits(), p));
         return v;
+    }
+
+    public Cobol visitWord(Cobol.Word word, P p) {
+        Cobol.Word c = word;
+        c = c.withPrefix(visitSpace(c.getPrefix(), p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        return c;
     }
 
     public Cobol visitWorkingStorageSection(Cobol.WorkingStorageSection workingStorageSection, P p) {

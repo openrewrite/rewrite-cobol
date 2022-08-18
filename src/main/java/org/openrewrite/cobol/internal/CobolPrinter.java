@@ -414,59 +414,6 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return closeRelativeStatement;
     }
 
-    public Cobol visitCobolWord(Cobol.Word word, PrintOutputCapture<P> p) {
-        Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
-        if (continuation.isPresent()) {
-            visitSpace(word.getPrefix(), p);
-            char[] charArray = word.getWord().toCharArray();
-            for (int i = 0; i < charArray.length; i++) {
-                if (continuation.get().getContinuations().containsKey(i)) {
-                    Markers markers = continuation.get().getContinuations().get(i);
-                    Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
-                    commentArea.ifPresent(it -> p.append(it.getComment()));
-                    commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-
-                    Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
-                    sequenceArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-                    sequenceArea.ifPresent(it -> p.append(it.getSequence()));
-
-                    Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-                    indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
-                    System.out.println();
-                }
-                char c = charArray[i];
-                p.append(c);
-            }
-
-            List<Markers> lastMarkers = continuation.get().getContinuations().entrySet().stream()
-                    .filter(it -> it.getKey() > word.getWord().length())
-                    .map(Map.Entry::getValue)
-                    .collect(Collectors.toList());
-            if (!lastMarkers.isEmpty()) {
-                Markers markers = lastMarkers.get(0);
-                Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
-                commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-                commentArea.ifPresent(it -> p.append(it.getComment()));
-            }
-        } else {
-            Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
-            sequenceArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-            sequenceArea.ifPresent(it -> p.append(it.getSequence()));
-
-            Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
-
-            visitSpace(word.getPrefix(), p);
-            p.append(word.getWord());
-
-            Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-            commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-            commentArea.ifPresent(it -> p.append(it.getComment()));
-        }
-
-        return word;
-    }
-
     public Cobol visitCodeSetClause(Cobol.CodeSetClause codeSetClause, PrintOutputCapture<P> p) {
         visitSpace(codeSetClause.getPrefix(), p);
         visitMarkers(codeSetClause.getMarkers(), p);
@@ -1270,8 +1217,11 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitIdentificationDivisionParagraph(Cobol.IdentificationDivisionParagraph identificationDivisionParagraph, PrintOutputCapture<P> p) {
         visitSpace(identificationDivisionParagraph.getPrefix(), p);
         visitMarkers(identificationDivisionParagraph.getMarkers(), p);
-        visit(identificationDivisionParagraph.getWords(), p);
+        visit(identificationDivisionParagraph.getWord(), p);
+        visit(identificationDivisionParagraph.getDot(), p);
         visit(identificationDivisionParagraph.getCommentEntry(), p);
+        visit(identificationDivisionParagraph.getWords(), p);
+        visit(identificationDivisionParagraph.getDot2(), p);
         return identificationDivisionParagraph;
     }
 
@@ -3859,6 +3809,62 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(valuedObjectComputerClause.getValue(), p);
         visit(valuedObjectComputerClause.getUnits(), p);
         return valuedObjectComputerClause;
+    }
+
+    public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
+        Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
+        if (continuation.isPresent()) {
+            visitSpace(word.getPrefix(), p);
+            boolean startsWithSeqArea;
+            char[] charArray = word.getWord().toCharArray();
+            for (int i = 0; i < charArray.length; i++) {
+                if (continuation.get().getContinuations().containsKey(i)) {
+                    Markers markers = continuation.get().getContinuations().get(i);
+                    startsWithSeqArea = i == 0;
+                    if (!startsWithSeqArea) {
+                        Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
+                        commentArea.ifPresent(it -> p.append(it.getComment()));
+                        commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+                    }
+
+                    Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
+                    sequenceArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+                    sequenceArea.ifPresent(it -> p.append(it.getSequence()));
+
+                    Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
+                    indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
+                }
+                char c = charArray[i];
+                p.append(c);
+            }
+
+            List<Markers> lastMarkers = continuation.get().getContinuations().entrySet().stream()
+                    .filter(it -> it.getKey() == 0 || it.getKey() > word.getWord().length())
+                    .map(Map.Entry::getValue)
+                    .collect(Collectors.toList());
+            if (!lastMarkers.isEmpty()) {
+                Markers markers = lastMarkers.get(0);
+                Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
+                commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+                commentArea.ifPresent(it -> p.append(it.getComment()));
+            }
+        } else {
+            Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
+            sequenceArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+            sequenceArea.ifPresent(it -> p.append(it.getSequence()));
+
+            Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
+            indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
+
+            visitSpace(word.getPrefix(), p);
+            p.append(word.getWord());
+
+            Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
+            commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+            commentArea.ifPresent(it -> p.append(it.getComment()));
+        }
+
+        return word;
     }
 
     public Cobol visitWorkingStorageSection(Cobol.WorkingStorageSection workingStorageSection, PrintOutputCapture<P> p) {

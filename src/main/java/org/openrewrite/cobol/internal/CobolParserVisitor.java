@@ -6298,15 +6298,17 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 text = text.substring(COMMENT_ENTRY_ID.length());
             }
 
-            int matchedCount = 0;
+            String matchedText = "";
             int iterations = 0;
             Map<Integer, Markers> continuations = new HashMap<>();
-            while (matchedCount < text.length() && iterations < 1000) {
+            while (matchedText.length() < text.length() && iterations < 1000) {
                 List<Marker> continuation = new ArrayList<>(3);
                 // Check if the token is the first element in the content area.
                 // I.E. 000005 '------------------ ...
+                boolean startsWithSeqArea = false;
                 String sequenceArea = sequenceArea();
                 if (sequenceArea != null) {
+                    startsWithSeqArea = true;
                     continuation.add(new SequenceArea(randomId(), Space.EMPTY, sequenceArea));
                 }
 
@@ -6317,7 +6319,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
                 current = source.substring(cursor);
 
-                char[] charArray = text.substring(matchedCount).toCharArray();
+                char[] charArray = text.substring(matchedText.length()).toCharArray();
                 char[] sourceArray = current.toCharArray();
                 int end = 0;
                 for (; end < charArray.length; end++) {
@@ -6326,9 +6328,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     }
                 }
 
-                String matchedText = current.substring(0, end);
+                matchedText = current.substring(0, end);
                 cursor += matchedText.length();
-                matchedCount += matchedText.length();
                 if (prefix == Space.EMPTY && before != Space.EMPTY) {
                     prefix = before;
                 }
@@ -6366,7 +6367,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 }
 
                 if (!continuation.isEmpty()) {
-                    continuations.put(matchedCount, Markers.build(continuation));
+                    int pos = startsWithSeqArea ? 0 : matchedText.length();
+                    continuations.put(pos, Markers.build(continuation));
                 }
 
                 iterations++;
