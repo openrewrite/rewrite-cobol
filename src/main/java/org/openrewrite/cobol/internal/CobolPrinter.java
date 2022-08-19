@@ -3809,7 +3809,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(useDebugOn.getPrefix(), p);
         visitMarkers(useDebugOn.getMarkers(), p);
         visit(useDebugOn.getWords(), p);
-        visit(useDebugOn.getProcedureName(), p);
+        visit(useDebugOn.getName(), p);
         return useDebugOn;
     }
 

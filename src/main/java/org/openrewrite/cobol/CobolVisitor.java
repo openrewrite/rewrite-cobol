@@ -3759,7 +3759,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.UseDebugOn u = useDebugOn;
         u = u.withPrefix(visitSpace(u.getPrefix(), p));
         u = u.withMarkers(visitMarkers(u.getMarkers(), p));
-        u = u.withProcedureName((Cobol.ProcedureName) visit(u.getProcedureName(), p));
+        u = u.withWords(ListUtils.map(u.getWords(), it -> (Cobol.Word) visit(it, p)));
+        u = u.withName(visit(u.getName(), p));
         return u;
     }
 

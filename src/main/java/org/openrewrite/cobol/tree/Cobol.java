@@ -9059,10 +9059,7 @@ public interface Cobol extends Tree {
         List<Word> words;
 
         @Nullable
-        Name name;
-
-        @Nullable
-        ProcedureName procedureName;
+        Cobol name;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {

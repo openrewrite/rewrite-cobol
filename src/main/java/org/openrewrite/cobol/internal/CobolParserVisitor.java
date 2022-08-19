@@ -6065,8 +6065,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.ALL(), ctx.PROCEDURES(), ctx.REFERENCES(), ctx.OF()),
-                ctx.PROCEDURES() != null ? null : visit(ctx.identifier(), ctx.fileName()),
-                visitNullable(ctx.procedureName())
+                ctx.PROCEDURES() != null ? null : visit(ctx.identifier(), ctx.fileName(), ctx.procedureName())
         );
     }
 
@@ -6317,8 +6316,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 .collect(Collectors.toList());
     }
 
-    // TODO: check. Methods should not assume text / cursor is incremented.
-    // Add resilience
     /**
      * Return the prefix of the TerminalNode AND collect applicable markers.
      * Markers consist of COBOL areas that are removed during preprocessing.
