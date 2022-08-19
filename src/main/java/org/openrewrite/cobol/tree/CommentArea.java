@@ -12,4 +12,5 @@ public class CommentArea implements Marker {
     UUID id;
     Space prefix;
     String comment;
+    Space endLine;
 }

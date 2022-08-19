@@ -2499,6 +2499,24 @@ public interface Cobol extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
+    class ErrorKeyClause implements Cobol {
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        List<Word> words;
+        Name name;
+
+        @Override
+        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+            return v.visitErrorKeyClause(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
     class EvaluateAlsoCondition implements Cobol {
         @EqualsAndHashCode.Include
         UUID id;
@@ -4868,24 +4886,6 @@ public interface Cobol extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class PerformFrom implements Cobol {
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-        Word words;
-        Cobol from;
-
-        @Override
-        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
-            return v.visitPerformFrom(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
     class PerformInlineStatement implements Cobol {
 
         @EqualsAndHashCode.Include
@@ -5041,7 +5041,7 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         Name name;
-        PerformFrom from;
+        Performable from;
         Performable by;
         PerformUntil until;
 
@@ -7872,6 +7872,8 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         Name name;
+
+        @Nullable
         Word lines;
 
         @Override
@@ -8460,7 +8462,7 @@ public interface Cobol extends Tree {
         Cobol first;
 
         @Nullable
-        Cobol.Word integerLiteral;
+        Cobol.Word second;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {

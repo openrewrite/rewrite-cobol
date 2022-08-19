@@ -10,6 +10,5 @@ import java.util.UUID;
 @Value
 public class SequenceArea implements Marker {
     UUID id;
-    Space prefix;
     String sequence;
 }

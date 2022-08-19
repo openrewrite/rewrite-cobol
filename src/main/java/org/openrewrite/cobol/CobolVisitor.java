@@ -1010,6 +1010,15 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return e;
     }
 
+    public Cobol visitErrorKeyClause(Cobol.ErrorKeyClause errorKeyClause, P p) {
+        Cobol.ErrorKeyClause e = errorKeyClause;
+        e = e.withPrefix(visitSpace(e.getPrefix(), p));
+        e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withWords(ListUtils.map(e.getWords(), it -> (Cobol.Word) visit(it, p)));
+        e = e.withName((Name) visit(e.getName(), p));
+        return e;
+    }
+
     public Cobol visitEvaluateAlsoCondition(Cobol.EvaluateAlsoCondition evaluateAlsoCondition, P p) {
         Cobol.EvaluateAlsoCondition e = evaluateAlsoCondition;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
@@ -1986,14 +1995,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return pp;
     }
 
-    public Cobol visitPerformFrom(Cobol.PerformFrom performFrom, P p) {
-        Cobol.PerformFrom pp = performFrom;
-        pp = pp.withPrefix(visitSpace(pp.getPrefix(), p));
-        pp = pp.withMarkers(visitMarkers(pp.getMarkers(), p));
-        pp = pp.withFrom(visit(pp.getFrom(), p));
-        return pp;
-    }
-
     public Cobol visitPerformInlineStatement(Cobol.PerformInlineStatement performInlineStatement, P p) {
         Cobol.PerformInlineStatement pp = performInlineStatement;
         pp = pp.withPrefix(visitSpace(pp.getPrefix(), p));
@@ -2058,7 +2059,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.PerformVaryingPhrase pp = performVaryingPhrase;
         pp = pp.withPrefix(visitSpace(pp.getPrefix(), p));
         pp = pp.withMarkers(visitMarkers(pp.getMarkers(), p));
-        pp = pp.withFrom((Cobol.PerformFrom) visit(pp.getFrom(), p));
+        pp = pp.withFrom((Cobol.Performable) visit(pp.getFrom(), p));
         pp = pp.withBy((Cobol.Performable) visit(pp.getBy(), p));
         pp = pp.withUntil((Cobol.PerformUntil) visit(pp.getUntil(), p));
         return pp;
@@ -3498,7 +3499,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         s = s.withPrefix(visitSpace(s.getPrefix(), p));
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
         s = s.withFirst(visit(s.getFirst(), p));
-        s = s.withIntegerLiteral((Cobol.Word) visit(s.getIntegerLiteral(), p));
+        s = s.withSecond((Cobol.Word) visit(s.getSecond(), p));
         return s;
     }
 

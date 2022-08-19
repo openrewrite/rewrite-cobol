@@ -600,6 +600,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
+    public Cobol visitErrorKeyClause(Cobol.ErrorKeyClause errorKeyClause, P p) {
+        return super.visitErrorKeyClause(errorKeyClause, p);
+    }
+
+    @Override
     public Cobol.EvaluateAlsoCondition visitEvaluateAlsoCondition(Cobol.EvaluateAlsoCondition evaluateAlsoCondition, P p) {
         return (Cobol.EvaluateAlsoCondition) super.visitEvaluateAlsoCondition(evaluateAlsoCondition, p);
     }
@@ -1172,11 +1177,6 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     @Override
     public Cobol.Perform visitPerform(Cobol.Perform perform, P p) {
         return (Cobol.Perform) super.visitPerform(perform, p);
-    }
-
-    @Override
-    public Cobol.PerformFrom visitPerformFrom(Cobol.PerformFrom performFrom, P p) {
-        return (Cobol.PerformFrom) super.visitPerformFrom(performFrom, p);
     }
 
     @Override
@@ -1887,6 +1887,26 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     @Override
     public Cobol.SelectClause visitSelectClause(Cobol.SelectClause selectClause, P p) {
         return (Cobol.SelectClause) super.visitSelectClause(selectClause, p);
+    }
+
+    @Override
+    public Cobol visitSend(Cobol.Send send, P p) {
+        return super.visitSend(send, p);
+    }
+
+    @Override
+    public Cobol visitSendAdvancingLines(Cobol.SendAdvancingLines sendAdvancingLines, P p) {
+        return super.visitSendAdvancingLines(sendAdvancingLines, p);
+    }
+
+    @Override
+    public Cobol visitSendPhrase(Cobol.SendPhrase sendPhrase, P p) {
+        return super.visitSendPhrase(sendPhrase, p);
+    }
+
+    @Override
+    public Cobol visitSendStatementSync(Cobol.SendStatementSync sendStatementSync, P p) {
+        return super.visitSendStatementSync(sendStatementSync, p);
     }
 
     @Override
