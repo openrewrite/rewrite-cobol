@@ -6342,14 +6342,14 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         Map<Integer, Markers> continuations = new HashMap<>();
         List<Marker> continuation = new ArrayList<>(2);
 
-        String sequenceArea = sequenceArea();
+        SequenceArea sequenceArea = sequenceArea();
         if (sequenceArea != null) {
-            continuation.add(new SequenceArea(randomId(), sequenceArea));
+            continuation.add(sequenceArea);
         }
 
-        String indicatorArea = indicatorArea(null);
+        IndicatorArea indicatorArea = indicatorArea(null);
         if (indicatorArea != null) {
-            continuation.add(new IndicatorArea(randomId(), indicatorArea));
+            continuation.add(indicatorArea);
         }
 
         Space prefix = whitespace();
@@ -6378,15 +6378,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             cursor += matchedText.length();
             matchedCount += matchedText.length();
 
-            int saveCursor = cursor;
-            Space after = whitespace();
-            String commentArea = commentArea();
-            // Ensure the last whitespace is added to the ASt.
-            Space endLine = commentArea != null ? whitespace() : Space.EMPTY;
-            if (!after.getWhitespace().isEmpty() || commentArea != null) {
-                continuation.add(new CommentArea(randomId(), after, commentArea == null ? "" : commentArea, endLine));
-            } else {
-                cursor = saveCursor;
+            CommentArea commentArea = commentArea();
+            if (commentArea != null) {
+                continuation.add(commentArea);
             }
 
             if (matchedText.endsWith(String.valueOf(delimiter))) {
@@ -6398,21 +6392,18 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
             sequenceArea = sequenceArea();
             if (sequenceArea != null) {
-                continuation.add(new SequenceArea(randomId(), sequenceArea));
+                continuation.add(sequenceArea);
             }
 
             indicatorArea = indicatorArea(delimiter);
             if (indicatorArea != null) {
-                continuation.add(new IndicatorArea(randomId(), indicatorArea));
+                continuation.add(indicatorArea);
             }
 
             if (!continuation.isEmpty()) {
                 continuations.put(matchedCount, Markers.build(continuation));
             }
 
-            if (matchedText.endsWith(String.valueOf(delimiter))) {
-                break;
-            }
             iterations++;
         }
 
@@ -6421,14 +6412,14 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     private Space processText(String text, List<Marker> markers) {
-        String sequenceArea = sequenceArea();
+        SequenceArea sequenceArea = sequenceArea();
         if (sequenceArea != null) {
-            markers.add(new SequenceArea(randomId(), sequenceArea));
+            markers.add(sequenceArea);
         }
 
-        String indicatorArea = indicatorArea(null);
+        IndicatorArea indicatorArea = indicatorArea(null);
         if (indicatorArea != null) {
-            markers.add(new IndicatorArea(randomId(), indicatorArea));
+            markers.add(indicatorArea);
         }
 
         boolean isCommentEntry = text.startsWith("*>CE ");
@@ -6439,38 +6430,29 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
         cursor += text.length();
 
-        int saveCursor = cursor;
-        Space after = whitespace();
-        String commentArea = commentArea();
-
-        // Ensure the last whitespace is added to the ASt.
-        Space endLine = commentArea != null ? whitespace() : Space.EMPTY;
-        if (!after.getWhitespace().isEmpty() || commentArea != null) {
-            markers.add(new CommentArea(randomId(), after, commentArea == null ? "" : commentArea, endLine));
-        } else {
-            cursor = saveCursor;
+        CommentArea commentArea = commentArea();
+        if (commentArea != null) {
+            markers.add(commentArea);
         }
-
         return prefix;
     }
 
     @Nullable
-    private String sequenceArea() {
-        String sequenceArea = null;
+    private SequenceArea sequenceArea() {
         if (sequenceAreas.containsKey(cursor)) {
-            sequenceArea = sequenceAreas.get(cursor);
+            String sequence = sequenceAreas.get(cursor);
             sequenceAreas.remove(cursor);
+            cursor += sequence.length();
 
-            cursor += sequenceArea.length();
+            return new SequenceArea(randomId(), sequence);
         }
-        return sequenceArea;
+        return null;
     }
 
     @Nullable
-    private String indicatorArea(@Nullable Character delimiter) {
-        String indicatorArea = null;
+    private IndicatorArea indicatorArea(@Nullable Character delimiter) {
         if (indicatorAreas.containsKey(cursor)) {
-            indicatorArea = indicatorAreas.get(cursor);
+            String indicatorArea = indicatorAreas.get(cursor);
             if (delimiter != null) {
                 // Increment passed the start of the literal.
                 String current = source.substring(cursor + 1);
@@ -6480,21 +6462,35 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 }
             }
             indicatorAreas.remove(cursor);
-
             cursor += indicatorArea.length();
+
+            return new IndicatorArea(randomId(), indicatorArea);
         }
-        return indicatorArea;
+        return null;
     }
 
     @Nullable
-    private String commentArea() {
-        String commentArea = null;
+    private CommentArea commentArea() {
+        int saveCursor = cursor;
+
+        Space before = whitespace();
+        String comment = null;
+        Space endLine = Space.EMPTY;
+
         if (commentAreas.containsKey(cursor)) {
-            commentArea = commentAreas.get(cursor);
+            comment = commentAreas.get(cursor);
             commentAreas.remove(cursor);
 
-            cursor += commentArea.length();
+            cursor += comment.length();
+            endLine = whitespace();
         }
-        return commentArea;
+
+        // Ensure the last whitespace is added to the ASt.
+        if (!before.getWhitespace().isEmpty() || comment != null) {
+            return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine);
+        }
+
+        cursor = saveCursor;
+        return null;
     }
 }
