@@ -3345,7 +3345,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                (Cobol) visit(ctx.performType()),
+                visitNullable(ctx.performType()),
                 convertAll(ctx.statement()),
                 (Cobol.Word) visit(ctx.END_PERFORM())
         );
