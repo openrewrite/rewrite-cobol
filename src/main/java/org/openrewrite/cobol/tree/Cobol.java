@@ -309,7 +309,7 @@ public interface Cobol extends Tree {
         Markers markers;
         List<Name> from;
         Word to;
-        List<Name> roundables;
+        List<Cobol> roundables;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {

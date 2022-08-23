@@ -107,7 +107,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         a = a.withMarkers(visitMarkers(a.getMarkers(), p));
         a = a.withFrom(ListUtils.map(a.getFrom(), t -> (Name) visit(t, p)));
         a = a.withTo((Cobol.Word) visit(a.getTo(), p));
-        a = a.withRoundables(ListUtils.map(a.getRoundables(), t -> (Name) visit(t, p)));
+        a = a.withRoundables(ListUtils.map(a.getRoundables(), t -> visit(t, p)));
         return a;
     }
 

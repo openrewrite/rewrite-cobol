@@ -8,8 +8,6 @@
 
 package org.openrewrite.cobol.proprocessor;
 
-import org.openrewrite.internal.lang.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 

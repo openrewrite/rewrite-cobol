@@ -39,7 +39,6 @@ class CobolNistDBTest : RewriteTest {
         })
     }
 
-    @Disabled("Requires `S` and `Y` indicators")
     @Test
     fun db1014_2() = rewriteRun(
         cobol(
@@ -873,7 +872,6 @@ class CobolNistDBTest : RewriteTest {
         """)
     )
 
-    @Disabled("Requires indicator flags `S` and `Y`")
     @Test
     fun db1024_2() = rewriteRun(
         cobol("""
@@ -1566,7 +1564,6 @@ class CobolNistDBTest : RewriteTest {
         """)
     )
 
-    @Disabled("Requires S and Y indicators")
     @Test
     fun db1034_2() = rewriteRun(
         cobol("""
@@ -2257,7 +2254,6 @@ class CobolNistDBTest : RewriteTest {
         """)
     )
 
-    @Disabled("Requires C, G, S, Y, X indicators")
     @Test
     fun db1044_2() = rewriteRun(
         cobol("""
@@ -3014,7 +3010,6 @@ class CobolNistDBTest : RewriteTest {
         """)
     )
 
-    @Disabled("Requires Y and T indicators")
     @Test
     fun db1054_2() = rewriteRun(
         cobol("""
@@ -4475,7 +4470,6 @@ class CobolNistDBTest : RewriteTest {
         """)
     )
 
-    @Disabled("Requires Y indicator")
     @Test
     fun db2014_2() = rewriteRun(
         cobol("""
@@ -5999,7 +5993,6 @@ class CobolNistDBTest : RewriteTest {
         """)
     )
 
-    @Disabled("Requires Y and X")
     @Test
     fun db2024_2() = rewriteRun(
         cobol("""
@@ -6852,7 +6845,6 @@ class CobolNistDBTest : RewriteTest {
         """)
     )
 
-    @Disabled("Requires X, Y, G, C, J indicators")
     @Test
     fun db2034_2() = rewriteRun(
         cobol("""
@@ -7679,7 +7671,6 @@ class CobolNistDBTest : RewriteTest {
         """)
     )
 
-    @Disabled("Requires X, Y, G, C indicators")
     @Test
     fun db2044_2() = rewriteRun(
         cobol("""
@@ -8242,7 +8233,6 @@ class CobolNistDBTest : RewriteTest {
         """)
     )
 
-    @Disabled("Requires Y indicator")
     @Test
     fun db2054_2() = rewriteRun(
         cobol("""
