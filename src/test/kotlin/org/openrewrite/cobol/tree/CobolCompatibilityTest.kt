@@ -16,6 +16,7 @@
 package org.openrewrite.cobol.tree
 
 import io.github.classgraph.ClassGraph
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.openrewrite.cobol.Assertions.cobol
@@ -25,6 +26,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.stream.Stream
 
+@Disabled
 class CobolCompatibilityTest : RewriteTest {
     @ParameterizedTest
     @MethodSource
