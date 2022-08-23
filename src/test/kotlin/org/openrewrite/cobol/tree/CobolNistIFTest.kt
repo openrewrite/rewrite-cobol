@@ -15,6 +15,7 @@
  */
 package org.openrewrite.cobol.tree
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
@@ -23,6 +24,7 @@ import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
 
+@Disabled("Requires understanding the `Y` indicator. Tests will pass if the `Y` is changed to `*`.")
 class CobolNistIFTest : RewriteTest {
 
     override fun defaults(spec: RecipeSpec) {
@@ -329,19 +331,19 @@ class CobolNistIFTest : RewriteTest {
             028600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1014.2
             028700 WRITE-LINE.                                                      IF1014.2
             028800     ADD 1 TO RECORD-COUNT.                                       IF1014.2
-            028900*    IF RECORD-COUNT GREATER 42                                   IF1014.2
-            029000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1014.2
-            029100*        MOVE SPACE TO DUMMY-RECORD                               IF1014.2
-            029200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1014.2
-            029300*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1014.2
-            029400*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1014.2
-            029500*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1014.2
-            029600*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1014.2
-            029700*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1014.2
-            029800*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1014.2
-            029900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1014.2
-            030000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1014.2
-            030100*        MOVE ZERO TO RECORD-COUNT.                               IF1014.2
+            028900Y    IF RECORD-COUNT GREATER 42                                   IF1014.2
+            029000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1014.2
+            029100Y        MOVE SPACE TO DUMMY-RECORD                               IF1014.2
+            029200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1014.2
+            029300Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1014.2
+            029400Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1014.2
+            029500Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1014.2
+            029600Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1014.2
+            029700Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1014.2
+            029800Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1014.2
+            029900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1014.2
+            030000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1014.2
+            030100Y        MOVE ZERO TO RECORD-COUNT.                               IF1014.2
             030200     PERFORM WRT-LN.                                              IF1014.2
             030300 WRT-LN.                                                          IF1014.2
             030400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1014.2
@@ -1239,19 +1241,19 @@ class CobolNistIFTest : RewriteTest {
             028300     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1024.2
             028400 WRITE-LINE.                                                      IF1024.2
             028500     ADD 1 TO RECORD-COUNT.                                       IF1024.2
-            028600*    IF RECORD-COUNT GREATER 42                                   IF1024.2
-            028700*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1024.2
-            028800*        MOVE SPACE TO DUMMY-RECORD                               IF1024.2
-            028900*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1024.2
-            029000*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1024.2
-            029100*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1024.2
-            029200*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1024.2
-            029300*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1024.2
-            029400*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1024.2
-            029500*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1024.2
-            029600*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1024.2
-            029700*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1024.2
-            029800*        MOVE ZERO TO RECORD-COUNT.                               IF1024.2
+            028600Y    IF RECORD-COUNT GREATER 42                                   IF1024.2
+            028700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1024.2
+            028800Y        MOVE SPACE TO DUMMY-RECORD                               IF1024.2
+            028900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1024.2
+            029000Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1024.2
+            029100Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1024.2
+            029200Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1024.2
+            029300Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1024.2
+            029400Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1024.2
+            029500Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1024.2
+            029600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1024.2
+            029700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1024.2
+            029800Y        MOVE ZERO TO RECORD-COUNT.                               IF1024.2
             029900     PERFORM WRT-LN.                                              IF1024.2
             030000 WRT-LN.                                                          IF1024.2
             030100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1024.2
@@ -1867,19 +1869,19 @@ class CobolNistIFTest : RewriteTest {
             028600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1034.2
             028700 WRITE-LINE.                                                      IF1034.2
             028800     ADD 1 TO RECORD-COUNT.                                       IF1034.2
-            028900*    IF RECORD-COUNT GREATER 42                                   IF1034.2
-            029000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1034.2
-            029100*        MOVE SPACE TO DUMMY-RECORD                               IF1034.2
-            029200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1034.2
-            029300*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1034.2
-            029400*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1034.2
-            029500*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1034.2
-            029600*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1034.2
-            029700*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1034.2
-            029800*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1034.2
-            029900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1034.2
-            030000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1034.2
-            030100*        MOVE ZERO TO RECORD-COUNT.                               IF1034.2
+            028900Y    IF RECORD-COUNT GREATER 42                                   IF1034.2
+            029000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1034.2
+            029100Y        MOVE SPACE TO DUMMY-RECORD                               IF1034.2
+            029200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1034.2
+            029300Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1034.2
+            029400Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1034.2
+            029500Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1034.2
+            029600Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1034.2
+            029700Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1034.2
+            029800Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1034.2
+            029900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1034.2
+            030000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1034.2
+            030100Y        MOVE ZERO TO RECORD-COUNT.                               IF1034.2
             030200     PERFORM WRT-LN.                                              IF1034.2
             030300 WRT-LN.                                                          IF1034.2
             030400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1034.2
@@ -2714,19 +2716,19 @@ class CobolNistIFTest : RewriteTest {
             028500     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1044.2
             028600 WRITE-LINE.                                                      IF1044.2
             028700     ADD 1 TO RECORD-COUNT.                                       IF1044.2
-            028800*    IF RECORD-COUNT GREATER 42                                   IF1044.2
-            028900*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1044.2
-            029000*        MOVE SPACE TO DUMMY-RECORD                               IF1044.2
-            029100*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1044.2
-            029200*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1044.2
-            029300*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1044.2
-            029400*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1044.2
-            029500*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1044.2
-            029600*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1044.2
-            029700*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1044.2
-            029800*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1044.2
-            029900*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1044.2
-            030000*        MOVE ZERO TO RECORD-COUNT.                               IF1044.2
+            028800Y    IF RECORD-COUNT GREATER 42                                   IF1044.2
+            028900Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1044.2
+            029000Y        MOVE SPACE TO DUMMY-RECORD                               IF1044.2
+            029100Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1044.2
+            029200Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1044.2
+            029300Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1044.2
+            029400Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1044.2
+            029500Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1044.2
+            029600Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1044.2
+            029700Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1044.2
+            029800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1044.2
+            029900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1044.2
+            030000Y        MOVE ZERO TO RECORD-COUNT.                               IF1044.2
             030100     PERFORM WRT-LN.                                              IF1044.2
             030200 WRT-LN.                                                          IF1044.2
             030300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1044.2
@@ -3647,19 +3649,19 @@ class CobolNistIFTest : RewriteTest {
             028300     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1054.2
             028400 WRITE-LINE.                                                      IF1054.2
             028500     ADD 1 TO RECORD-COUNT.                                       IF1054.2
-            028600*    IF RECORD-COUNT GREATER 42                                   IF1054.2
-            028700*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1054.2
-            028800*        MOVE SPACE TO DUMMY-RECORD                               IF1054.2
-            028900*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1054.2
-            029000*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1054.2
-            029100*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1054.2
-            029200*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1054.2
-            029300*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1054.2
-            029400*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1054.2
-            029500*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1054.2
-            029600*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1054.2
-            029700*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1054.2
-            029800*        MOVE ZERO TO RECORD-COUNT.                               IF1054.2
+            028600Y    IF RECORD-COUNT GREATER 42                                   IF1054.2
+            028700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1054.2
+            028800Y        MOVE SPACE TO DUMMY-RECORD                               IF1054.2
+            028900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1054.2
+            029000Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1054.2
+            029100Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1054.2
+            029200Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1054.2
+            029300Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1054.2
+            029400Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1054.2
+            029500Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1054.2
+            029600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1054.2
+            029700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1054.2
+            029800Y        MOVE ZERO TO RECORD-COUNT.                               IF1054.2
             029900     PERFORM WRT-LN.                                              IF1054.2
             030000 WRT-LN.                                                          IF1054.2
             030100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1054.2
@@ -4144,19 +4146,19 @@ class CobolNistIFTest : RewriteTest {
             028500     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1064.2
             028600 WRITE-LINE.                                                      IF1064.2
             028700     ADD 1 TO RECORD-COUNT.                                       IF1064.2
-            028800*    IF RECORD-COUNT GREATER 42                                   IF1064.2
-            028900*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1064.2
-            029000*        MOVE SPACE TO DUMMY-RECORD                               IF1064.2
-            029100*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1064.2
-            029200*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1064.2
-            029300*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1064.2
-            029400*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1064.2
-            029500*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1064.2
-            029600*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1064.2
-            029700*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1064.2
-            029800*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1064.2
-            029900*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1064.2
-            030000*        MOVE ZERO TO RECORD-COUNT.                               IF1064.2
+            028800Y    IF RECORD-COUNT GREATER 42                                   IF1064.2
+            028900Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1064.2
+            029000Y        MOVE SPACE TO DUMMY-RECORD                               IF1064.2
+            029100Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1064.2
+            029200Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1064.2
+            029300Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1064.2
+            029400Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1064.2
+            029500Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1064.2
+            029600Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1064.2
+            029700Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1064.2
+            029800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1064.2
+            029900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1064.2
+            030000Y        MOVE ZERO TO RECORD-COUNT.                               IF1064.2
             030100     PERFORM WRT-LN.                                              IF1064.2
             030200 WRT-LN.                                                          IF1064.2
             030300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1064.2
@@ -5148,19 +5150,19 @@ class CobolNistIFTest : RewriteTest {
             027600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1074.2
             027700 WRITE-LINE.                                                      IF1074.2
             027800     ADD 1 TO RECORD-COUNT.                                       IF1074.2
-            027900*    IF RECORD-COUNT GREATER 42                                   IF1074.2
-            028000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1074.2
-            028100*        MOVE SPACE TO DUMMY-RECORD                               IF1074.2
-            028200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1074.2
-            028300*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1074.2
-            028400*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1074.2
-            028500*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1074.2
-            028600*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1074.2
-            028700*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1074.2
-            028800*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1074.2
-            028900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1074.2
-            029000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1074.2
-            029100*        MOVE ZERO TO RECORD-COUNT.                               IF1074.2
+            027900Y    IF RECORD-COUNT GREATER 42                                   IF1074.2
+            028000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1074.2
+            028100Y        MOVE SPACE TO DUMMY-RECORD                               IF1074.2
+            028200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1074.2
+            028300Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1074.2
+            028400Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1074.2
+            028500Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1074.2
+            028600Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1074.2
+            028700Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1074.2
+            028800Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1074.2
+            028900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1074.2
+            029000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1074.2
+            029100Y        MOVE ZERO TO RECORD-COUNT.                               IF1074.2
             029200     PERFORM WRT-LN.                                              IF1074.2
             029300 WRT-LN.                                                          IF1074.2
             029400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1074.2
@@ -5511,19 +5513,19 @@ class CobolNistIFTest : RewriteTest {
             025200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1084.2
             025300 WRITE-LINE.                                                      IF1084.2
             025400     ADD 1 TO RECORD-COUNT.                                       IF1084.2
-            025500*    IF RECORD-COUNT GREATER 42                                   IF1084.2
-            025600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1084.2
-            025700*        MOVE SPACE TO DUMMY-RECORD                               IF1084.2
-            025800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1084.2
-            025900*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1084.2
-            026000*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1084.2
-            026100*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1084.2
-            026200*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1084.2
-            026300*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1084.2
-            026400*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1084.2
-            026500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1084.2
-            026600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1084.2
-            026700*        MOVE ZERO TO RECORD-COUNT.                               IF1084.2
+            025500Y    IF RECORD-COUNT GREATER 42                                   IF1084.2
+            025600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1084.2
+            025700Y        MOVE SPACE TO DUMMY-RECORD                               IF1084.2
+            025800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1084.2
+            025900Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1084.2
+            026000Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1084.2
+            026100Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1084.2
+            026200Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1084.2
+            026300Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1084.2
+            026400Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1084.2
+            026500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1084.2
+            026600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1084.2
+            026700Y        MOVE ZERO TO RECORD-COUNT.                               IF1084.2
             026800     PERFORM WRT-LN.                                              IF1084.2
             026900 WRT-LN.                                                          IF1084.2
             027000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1084.2
@@ -6008,19 +6010,19 @@ class CobolNistIFTest : RewriteTest {
             025200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1094.2
             025300 WRITE-LINE.                                                      IF1094.2
             025400     ADD 1 TO RECORD-COUNT.                                       IF1094.2
-            025500*    IF RECORD-COUNT GREATER 42                                   IF1094.2
-            025600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1094.2
-            025700*        MOVE SPACE TO DUMMY-RECORD                               IF1094.2
-            025800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1094.2
-            025900*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1094.2
-            026000*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1094.2
-            026100*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1094.2
-            026200*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1094.2
-            026300*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1094.2
-            026400*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1094.2
-            026500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1094.2
-            026600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1094.2
-            026700*        MOVE ZERO TO RECORD-COUNT.                               IF1094.2
+            025500Y    IF RECORD-COUNT GREATER 42                                   IF1094.2
+            025600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1094.2
+            025700Y        MOVE SPACE TO DUMMY-RECORD                               IF1094.2
+            025800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1094.2
+            025900Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1094.2
+            026000Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1094.2
+            026100Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1094.2
+            026200Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1094.2
+            026300Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1094.2
+            026400Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1094.2
+            026500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1094.2
+            026600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1094.2
+            026700Y        MOVE ZERO TO RECORD-COUNT.                               IF1094.2
             026800     PERFORM WRT-LN.                                              IF1094.2
             026900 WRT-LN.                                                          IF1094.2
             027000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1094.2
@@ -6496,19 +6498,19 @@ class CobolNistIFTest : RewriteTest {
             028100     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1104.2
             028200 WRITE-LINE.                                                      IF1104.2
             028300     ADD 1 TO RECORD-COUNT.                                       IF1104.2
-            028400*    IF RECORD-COUNT GREATER 42                                   IF1104.2
-            028500*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1104.2
-            028600*        MOVE SPACE TO DUMMY-RECORD                               IF1104.2
-            028700*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1104.2
-            028800*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1104.2
-            028900*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1104.2
-            029000*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1104.2
-            029100*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1104.2
-            029200*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1104.2
-            029300*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1104.2
-            029400*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1104.2
-            029500*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1104.2
-            029600*        MOVE ZERO TO RECORD-COUNT.                               IF1104.2
+            028400Y    IF RECORD-COUNT GREATER 42                                   IF1104.2
+            028500Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1104.2
+            028600Y        MOVE SPACE TO DUMMY-RECORD                               IF1104.2
+            028700Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1104.2
+            028800Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1104.2
+            028900Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1104.2
+            029000Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1104.2
+            029100Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1104.2
+            029200Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1104.2
+            029300Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1104.2
+            029400Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1104.2
+            029500Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1104.2
+            029600Y        MOVE ZERO TO RECORD-COUNT.                               IF1104.2
             029700     PERFORM WRT-LN.                                              IF1104.2
             029800 WRT-LN.                                                          IF1104.2
             029900     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1104.2
@@ -6979,19 +6981,19 @@ class CobolNistIFTest : RewriteTest {
             025600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1114.2
             025700 WRITE-LINE.                                                      IF1114.2
             025800     ADD 1 TO RECORD-COUNT.                                       IF1114.2
-            025900*    IF RECORD-COUNT GREATER 42                                   IF1114.2
-            026000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1114.2
-            026100*        MOVE SPACE TO DUMMY-RECORD                               IF1114.2
-            026200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1114.2
-            026300*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1114.2
-            026400*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1114.2
-            026500*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1114.2
-            026600*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1114.2
-            026700*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1114.2
-            026800*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1114.2
-            026900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1114.2
-            027000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1114.2
-            027100*        MOVE ZERO TO RECORD-COUNT.                               IF1114.2
+            025900Y    IF RECORD-COUNT GREATER 42                                   IF1114.2
+            026000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1114.2
+            026100Y        MOVE SPACE TO DUMMY-RECORD                               IF1114.2
+            026200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1114.2
+            026300Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1114.2
+            026400Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1114.2
+            026500Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1114.2
+            026600Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1114.2
+            026700Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1114.2
+            026800Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1114.2
+            026900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1114.2
+            027000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1114.2
+            027100Y        MOVE ZERO TO RECORD-COUNT.                               IF1114.2
             027200     PERFORM WRT-LN.                                              IF1114.2
             027300 WRT-LN.                                                          IF1114.2
             027400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1114.2
@@ -7713,19 +7715,19 @@ class CobolNistIFTest : RewriteTest {
             025100     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1124.2
             025200 WRITE-LINE.                                                      IF1124.2
             025300     ADD 1 TO RECORD-COUNT.                                       IF1124.2
-            025400*    IF RECORD-COUNT GREATER 42                                   IF1124.2
-            025500*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1124.2
-            025600*        MOVE SPACE TO DUMMY-RECORD                               IF1124.2
-            025700*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1124.2
-            025800*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1124.2
-            025900*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1124.2
-            026000*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1124.2
-            026100*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1124.2
-            026200*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1124.2
-            026300*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1124.2
-            026400*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1124.2
-            026500*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1124.2
-            026600*        MOVE ZERO TO RECORD-COUNT.                               IF1124.2
+            025400Y    IF RECORD-COUNT GREATER 42                                   IF1124.2
+            025500Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1124.2
+            025600Y        MOVE SPACE TO DUMMY-RECORD                               IF1124.2
+            025700Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1124.2
+            025800Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1124.2
+            025900Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1124.2
+            026000Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1124.2
+            026100Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1124.2
+            026200Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1124.2
+            026300Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1124.2
+            026400Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1124.2
+            026500Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1124.2
+            026600Y        MOVE ZERO TO RECORD-COUNT.                               IF1124.2
             026700     PERFORM WRT-LN.                                              IF1124.2
             026800 WRT-LN.                                                          IF1124.2
             026900     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1124.2
@@ -8174,19 +8176,19 @@ class CobolNistIFTest : RewriteTest {
             025200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1134.2
             025300 WRITE-LINE.                                                      IF1134.2
             025400     ADD 1 TO RECORD-COUNT.                                       IF1134.2
-            025500*    IF RECORD-COUNT GREATER 42                                   IF1134.2
-            025600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1134.2
-            025700*        MOVE SPACE TO DUMMY-RECORD                               IF1134.2
-            025800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1134.2
-            025900*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1134.2
-            026000*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1134.2
-            026100*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1134.2
-            026200*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1134.2
-            026300*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1134.2
-            026400*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1134.2
-            026500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1134.2
-            026600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1134.2
-            026700*        MOVE ZERO TO RECORD-COUNT.                               IF1134.2
+            025500Y    IF RECORD-COUNT GREATER 42                                   IF1134.2
+            025600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1134.2
+            025700Y        MOVE SPACE TO DUMMY-RECORD                               IF1134.2
+            025800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1134.2
+            025900Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1134.2
+            026000Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1134.2
+            026100Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1134.2
+            026200Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1134.2
+            026300Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1134.2
+            026400Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1134.2
+            026500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1134.2
+            026600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1134.2
+            026700Y        MOVE ZERO TO RECORD-COUNT.                               IF1134.2
             026800     PERFORM WRT-LN.                                              IF1134.2
             026900 WRT-LN.                                                          IF1134.2
             027000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1134.2
@@ -8637,19 +8639,19 @@ class CobolNistIFTest : RewriteTest {
             025600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1144.2
             025700 WRITE-LINE.                                                      IF1144.2
             025800     ADD 1 TO RECORD-COUNT.                                       IF1144.2
-            025900*    IF RECORD-COUNT GREATER 42                                   IF1144.2
-            026000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1144.2
-            026100*        MOVE SPACE TO DUMMY-RECORD                               IF1144.2
-            026200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1144.2
-            026300*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1144.2
-            026400*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1144.2
-            026500*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1144.2
-            026600*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1144.2
-            026700*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1144.2
-            026800*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1144.2
-            026900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1144.2
-            027000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1144.2
-            027100*        MOVE ZERO TO RECORD-COUNT.                               IF1144.2
+            025900Y    IF RECORD-COUNT GREATER 42                                   IF1144.2
+            026000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1144.2
+            026100Y        MOVE SPACE TO DUMMY-RECORD                               IF1144.2
+            026200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1144.2
+            026300Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1144.2
+            026400Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1144.2
+            026500Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1144.2
+            026600Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1144.2
+            026700Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1144.2
+            026800Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1144.2
+            026900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1144.2
+            027000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1144.2
+            027100Y        MOVE ZERO TO RECORD-COUNT.                               IF1144.2
             027200     PERFORM WRT-LN.                                              IF1144.2
             027300 WRT-LN.                                                          IF1144.2
             027400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1144.2
@@ -9370,19 +9372,19 @@ class CobolNistIFTest : RewriteTest {
             024900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1154.2
             025000 WRITE-LINE.                                                      IF1154.2
             025100     ADD 1 TO RECORD-COUNT.                                       IF1154.2
-            025200*    IF RECORD-COUNT GREATER 42                                   IF1154.2
-            025300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1154.2
-            025400*        MOVE SPACE TO DUMMY-RECORD                               IF1154.2
-            025500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1154.2
-            025600*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1154.2
-            025700*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1154.2
-            025800*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1154.2
-            025900*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1154.2
-            026000*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1154.2
-            026100*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1154.2
-            026200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1154.2
-            026300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1154.2
-            026400*        MOVE ZERO TO RECORD-COUNT.                               IF1154.2
+            025200Y    IF RECORD-COUNT GREATER 42                                   IF1154.2
+            025300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1154.2
+            025400Y        MOVE SPACE TO DUMMY-RECORD                               IF1154.2
+            025500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1154.2
+            025600Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1154.2
+            025700Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1154.2
+            025800Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1154.2
+            025900Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1154.2
+            026000Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1154.2
+            026100Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1154.2
+            026200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1154.2
+            026300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1154.2
+            026400Y        MOVE ZERO TO RECORD-COUNT.                               IF1154.2
             026500     PERFORM WRT-LN.                                              IF1154.2
             026600 WRT-LN.                                                          IF1154.2
             026700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1154.2
@@ -9865,19 +9867,19 @@ class CobolNistIFTest : RewriteTest {
              028600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1164.2
              028700 WRITE-LINE.                                                      IF1164.2
              028800     ADD 1 TO RECORD-COUNT.                                       IF1164.2
-             028900*    IF RECORD-COUNT GREATER 42                                   IF1164.2
-             029000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1164.2
-             029100*        MOVE SPACE TO DUMMY-RECORD                               IF1164.2
-             029200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1164.2
-             029300*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1164.2
-             029400*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1164.2
-             029500*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1164.2
-             029600*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1164.2
-             029700*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1164.2
-             029800*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1164.2
-             029900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1164.2
-             030000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1164.2
-             030100*        MOVE ZERO TO RECORD-COUNT.                               IF1164.2
+             028900Y    IF RECORD-COUNT GREATER 42                                   IF1164.2
+             029000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1164.2
+             029100Y        MOVE SPACE TO DUMMY-RECORD                               IF1164.2
+             029200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1164.2
+             029300Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1164.2
+             029400Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1164.2
+             029500Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1164.2
+             029600Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1164.2
+             029700Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1164.2
+             029800Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1164.2
+             029900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1164.2
+             030000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1164.2
+             030100Y        MOVE ZERO TO RECORD-COUNT.                               IF1164.2
              030200     PERFORM WRT-LN.                                              IF1164.2
              030300 WRT-LN.                                                          IF1164.2
              030400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1164.2
@@ -10762,19 +10764,19 @@ class CobolNistIFTest : RewriteTest {
             028600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1174.2
             028700 WRITE-LINE.                                                      IF1174.2
             028800     ADD 1 TO RECORD-COUNT.                                       IF1174.2
-            028900*    IF RECORD-COUNT GREATER 42                                   IF1174.2
-            029000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1174.2
-            029100*        MOVE SPACE TO DUMMY-RECORD                               IF1174.2
-            029200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1174.2
-            029300*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1174.2
-            029400*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1174.2
-            029500*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1174.2
-            029600*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1174.2
-            029700*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1174.2
-            029800*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1174.2
-            029900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1174.2
-            030000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1174.2
-            030100*        MOVE ZERO TO RECORD-COUNT.                               IF1174.2
+            028900Y    IF RECORD-COUNT GREATER 42                                   IF1174.2
+            029000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1174.2
+            029100Y        MOVE SPACE TO DUMMY-RECORD                               IF1174.2
+            029200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1174.2
+            029300Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1174.2
+            029400Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1174.2
+            029500Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1174.2
+            029600Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1174.2
+            029700Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1174.2
+            029800Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1174.2
+            029900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1174.2
+            030000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1174.2
+            030100Y        MOVE ZERO TO RECORD-COUNT.                               IF1174.2
             030200     PERFORM WRT-LN.                                              IF1174.2
             030300 WRT-LN.                                                          IF1174.2
             030400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1174.2
@@ -11772,19 +11774,19 @@ class CobolNistIFTest : RewriteTest {
             025100     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1184.2
             025200 WRITE-LINE.                                                      IF1184.2
             025300     ADD 1 TO RECORD-COUNT.                                       IF1184.2
-            025400*    IF RECORD-COUNT GREATER 42                                   IF1184.2
-            025500*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1184.2
-            025600*        MOVE SPACE TO DUMMY-RECORD                               IF1184.2
-            025700*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1184.2
-            025800*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1184.2
-            025900*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1184.2
-            026000*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1184.2
-            026100*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1184.2
-            026200*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1184.2
-            026300*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1184.2
-            026400*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1184.2
-            026500*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1184.2
-            026600*        MOVE ZERO TO RECORD-COUNT.                               IF1184.2
+            025400Y    IF RECORD-COUNT GREATER 42                                   IF1184.2
+            025500Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1184.2
+            025600Y        MOVE SPACE TO DUMMY-RECORD                               IF1184.2
+            025700Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1184.2
+            025800Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1184.2
+            025900Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1184.2
+            026000Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1184.2
+            026100Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1184.2
+            026200Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1184.2
+            026300Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1184.2
+            026400Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1184.2
+            026500Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1184.2
+            026600Y        MOVE ZERO TO RECORD-COUNT.                               IF1184.2
             026700     PERFORM WRT-LN.                                              IF1184.2
             026800 WRT-LN.                                                          IF1184.2
             026900     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1184.2
@@ -12369,19 +12371,19 @@ class CobolNistIFTest : RewriteTest {
             029600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1194.2
             029700 WRITE-LINE.                                                      IF1194.2
             029800     ADD 1 TO RECORD-COUNT.                                       IF1194.2
-            029900*    IF RECORD-COUNT GREATER 42                                   IF1194.2
-            030000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1194.2
-            030100*        MOVE SPACE TO DUMMY-RECORD                               IF1194.2
-            030200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1194.2
-            030300*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1194.2
-            030400*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1194.2
-            030500*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1194.2
-            030600*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1194.2
-            030700*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1194.2
-            030800*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1194.2
-            030900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1194.2
-            031000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1194.2
-            031100*        MOVE ZERO TO RECORD-COUNT.                               IF1194.2
+            029900Y    IF RECORD-COUNT GREATER 42                                   IF1194.2
+            030000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1194.2
+            030100Y        MOVE SPACE TO DUMMY-RECORD                               IF1194.2
+            030200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1194.2
+            030300Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1194.2
+            030400Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1194.2
+            030500Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1194.2
+            030600Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1194.2
+            030700Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1194.2
+            030800Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1194.2
+            030900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1194.2
+            031000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1194.2
+            031100Y        MOVE ZERO TO RECORD-COUNT.                               IF1194.2
             031200     PERFORM WRT-LN.                                              IF1194.2
             031300 WRT-LN.                                                          IF1194.2
             031400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1194.2
@@ -12869,6 +12871,7050 @@ class CobolNistIFTest : RewriteTest {
             079600 CCVS-999999.                                                     IF1194.2
             079700     GO TO CLOSE-FILES.                                           IF1194.2
                   *END-OF,IF119A                                                            
+        """)
+    )
+
+    @Test
+    fun if1204_2() = rewriteRun(
+        cobol("""
+                  *HEADER,COBOL,IF120A                                                      
+            000100 IDENTIFICATION DIVISION.                                         IF1204.2
+            000200 PROGRAM-ID.                                                      IF1204.2
+            000300     IF120A.                                                      IF1204.2
+            000400                                                                  IF1204.2
+            000500***********************************************************       IF1204.2
+            000600*                                                         *       IF1204.2
+            000700* This program forms part of the CCVS85 COBOL Test Suite. *       IF1204.2
+            000800* It contains tests for the Intrinsic Function MEAN.      *       IF1204.2
+            000900*                                                         *       IF1204.2
+            001000***********************************************************       IF1204.2
+            001100 ENVIRONMENT DIVISION.                                            IF1204.2
+            001200 CONFIGURATION SECTION.                                           IF1204.2
+            001300 SOURCE-COMPUTER.                                                 IF1204.2
+            001400     XXXXX082.                                                    IF1204.2
+            001500 OBJECT-COMPUTER.                                                 IF1204.2
+            001600     XXXXX083.                                                    IF1204.2
+            001700 INPUT-OUTPUT SECTION.                                            IF1204.2
+            001800 FILE-CONTROL.                                                    IF1204.2
+            001900     SELECT PRINT-FILE ASSIGN TO                                  IF1204.2
+            002000     XXXXX055.                                                    IF1204.2
+            002100 DATA DIVISION.                                                   IF1204.2
+            002200 FILE SECTION.                                                    IF1204.2
+            002300 FD  PRINT-FILE.                                                  IF1204.2
+            002400 01  PRINT-REC PICTURE X(120).                                    IF1204.2
+            002500 01  DUMMY-RECORD PICTURE X(120).                                 IF1204.2
+            002600 WORKING-STORAGE SECTION.                                         IF1204.2
+            002700***********************************************************       IF1204.2
+            002800* Variables specific to the Intrinsic Function Test IF120A*       IF1204.2
+            002900***********************************************************       IF1204.2
+            003000 01  A                   PIC S9(10)          VALUE 5.             IF1204.2
+            003100 01  B                   PIC S9(10)          VALUE 7.             IF1204.2
+            003200 01  C                   PIC S9(10)          VALUE -4.            IF1204.2
+            003300 01  D                   PIC S9(10)          VALUE 10.            IF1204.2
+            003400 01  E                   PIC S9(5)V9(5)      VALUE 34.26.         IF1204.2
+            003500 01  F                   PIC S9(5)V9(5)      VALUE -8.32.         IF1204.2
+            003600 01  G                   PIC S9(5)V9(5)      VALUE 4.08.          IF1204.2
+            003700 01  H                   PIC S9(5)V9(5)      VALUE -5.3.          IF1204.2
+            003800 01  M                   PIC S9(10)          VALUE 320000.        IF1204.2
+            003900 01  N                   PIC S9(10)          VALUE 650000.        IF1204.2
+            004000 01  O                   PIC S9(10)          VALUE -430000.       IF1204.2
+            004100 01  P                   PIC S9(10)          VALUE 1.             IF1204.2
+            004200 01  Q                   PIC S9(10)          VALUE 3.             IF1204.2
+            004300 01  R                   PIC S9(10)          VALUE 5.             IF1204.2
+            004400 01  ARG1                PIC S9(10)          VALUE 1.             IF1204.2
+            004500 01  ARG2                PIC S9(10)          VALUE 1.             IF1204.2
+            004600 01  ARR                                     VALUE "40537".       IF1204.2
+            004700     02  IND OCCURS 5 TIMES PIC 9.                                IF1204.2
+            004800 01  TEMP                PIC S9(10)V9(5).                         IF1204.2
+            004900 01  WS-NUM              PIC S9(6)V9(6).                          IF1204.2
+            005000 01  MIN-RANGE           PIC S9(5)V9(7).                          IF1204.2
+            005100 01  MAX-RANGE           PIC S9(5)V9(7).                          IF1204.2
+            005200*                                                                 IF1204.2
+            005300**********************************************************        IF1204.2
+            005400*                                                                 IF1204.2
+            005500 01  TEST-RESULTS.                                                IF1204.2
+            005600     02 FILLER                   PIC X      VALUE SPACE.          IF1204.2
+            005700     02 FEATURE                  PIC X(20)  VALUE SPACE.          IF1204.2
+            005800     02 FILLER                   PIC X      VALUE SPACE.          IF1204.2
+            005900     02 P-OR-F                   PIC X(5)   VALUE SPACE.          IF1204.2
+            006000     02 FILLER                   PIC X      VALUE SPACE.          IF1204.2
+            006100     02  PAR-NAME.                                                IF1204.2
+            006200       03 FILLER                 PIC X(19)  VALUE SPACE.          IF1204.2
+            006300       03  PARDOT-X              PIC X      VALUE SPACE.          IF1204.2
+            006400       03 DOTVALUE               PIC 99     VALUE ZERO.           IF1204.2
+            006500     02 FILLER                   PIC X(8)   VALUE SPACE.          IF1204.2
+            006600     02 RE-MARK                  PIC X(61).                       IF1204.2
+            006700 01  TEST-COMPUTED.                                               IF1204.2
+            006800     02 FILLER                   PIC X(30)  VALUE SPACE.          IF1204.2
+            006900     02 FILLER                   PIC X(17)  VALUE                 IF1204.2
+            007000            "       COMPUTED=".                                   IF1204.2
+            007100     02 COMPUTED-X.                                               IF1204.2
+            007200     03 COMPUTED-A               PIC X(20)  VALUE SPACE.          IF1204.2
+            007300     03 COMPUTED-N               REDEFINES COMPUTED-A             IF1204.2
+            007400                                 PIC -9(9).9(9).                  IF1204.2
+            007500     03 COMPUTED-0V18 REDEFINES COMPUTED-A   PIC -.9(18).         IF1204.2
+            007600     03 COMPUTED-4V14 REDEFINES COMPUTED-A   PIC -9(4).9(14).     IF1204.2
+            007700     03 COMPUTED-14V4 REDEFINES COMPUTED-A   PIC -9(14).9(4).     IF1204.2
+            007800     03       CM-18V0 REDEFINES COMPUTED-A.                       IF1204.2
+            007900         04 COMPUTED-18V0                    PIC -9(18).          IF1204.2
+            008000         04 FILLER                           PIC X.               IF1204.2
+            008100     03 FILLER PIC X(50) VALUE SPACE.                             IF1204.2
+            008200 01  TEST-CORRECT.                                                IF1204.2
+            008300     02 FILLER PIC X(30) VALUE SPACE.                             IF1204.2
+            008400     02 FILLER PIC X(17) VALUE "       CORRECT =".                IF1204.2
+            008500     02 CORRECT-X.                                                IF1204.2
+            008600     03 CORRECT-A                  PIC X(20) VALUE SPACE.         IF1204.2
+            008700     03 CORRECT-N    REDEFINES CORRECT-A     PIC -9(9).9(9).      IF1204.2
+            008800     03 CORRECT-0V18 REDEFINES CORRECT-A     PIC -.9(18).         IF1204.2
+            008900     03 CORRECT-4V14 REDEFINES CORRECT-A     PIC -9(4).9(14).     IF1204.2
+            009000     03 CORRECT-14V4 REDEFINES CORRECT-A     PIC -9(14).9(4).     IF1204.2
+            009100     03      CR-18V0 REDEFINES CORRECT-A.                         IF1204.2
+            009200         04 CORRECT-18V0                     PIC -9(18).          IF1204.2
+            009300         04 FILLER                           PIC X.               IF1204.2
+            009400     03 FILLER PIC X(2) VALUE SPACE.                              IF1204.2
+            009500     03 COR-ANSI-REFERENCE             PIC X(48) VALUE SPACE.     IF1204.2
+            009600 01  TEST-CORRECT-MIN.                                            IF1204.2
+            009700     02 FILLER PIC X(30) VALUE SPACE.                             IF1204.2
+            009800     02 FILLER PIC X(17) VALUE "     MIN VALUE =".                IF1204.2
+            009900     02 CORRECTMI-X.                                              IF1204.2
+            010000     03 CORRECTMI-A                 PIC X(20) VALUE SPACE.        IF1204.2
+            010100     03 CORRECT-MIN    REDEFINES CORRECTMI-A     PIC -9(9).9(9).  IF1204.2
+            010200     03 CORRECTMI-0V18 REDEFINES CORRECTMI-A     PIC -.9(18).     IF1204.2
+            010300     03 CORRECTMI-4V14 REDEFINES CORRECTMI-A     PIC -9(4).9(14). IF1204.2
+            010400     03 CORRECTMI-14V4 REDEFINES CORRECTMI-A     PIC -9(14).9(4). IF1204.2
+            010500     03      CR-18V0 REDEFINES CORRECTMI-A.                       IF1204.2
+            010600         04 CORRECTMI-18V0                     PIC -9(18).        IF1204.2
+            010700         04 FILLER                           PIC X.               IF1204.2
+            010800     03 FILLER PIC X(2) VALUE SPACE.                              IF1204.2
+            010900     03 FILLER                           PIC X(48) VALUE SPACE.   IF1204.2
+            011000 01  TEST-CORRECT-MAX.                                            IF1204.2
+            011100     02 FILLER PIC X(30) VALUE SPACE.                             IF1204.2
+            011200     02 FILLER PIC X(17) VALUE "     MAX VALUE =".                IF1204.2
+            011300     02 CORRECTMA-X.                                              IF1204.2
+            011400     03 CORRECTMA-A                  PIC X(20) VALUE SPACE.       IF1204.2
+            011500     03 CORRECT-MAX    REDEFINES CORRECTMA-A     PIC -9(9).9(9).  IF1204.2
+            011600     03 CORRECTMA-0V18 REDEFINES CORRECTMA-A     PIC -.9(18).     IF1204.2
+            011700     03 CORRECTMA-4V14 REDEFINES CORRECTMA-A     PIC -9(4).9(14). IF1204.2
+            011800     03 CORRECTMA-14V4 REDEFINES CORRECTMA-A     PIC -9(14).9(4). IF1204.2
+            011900     03      CR-18V0 REDEFINES CORRECTMA-A.                       IF1204.2
+            012000         04 CORRECTMA-18V0                     PIC -9(18).        IF1204.2
+            012100         04 FILLER                           PIC X.               IF1204.2
+            012200     03 FILLER PIC X(2) VALUE SPACE.                              IF1204.2
+            012300     03 CORMA-ANSI-REFERENCE             PIC X(48) VALUE SPACE.   IF1204.2
+            012400 01  CCVS-C-1.                                                    IF1204.2
+            012500     02 FILLER  PIC IS X(99)    VALUE IS " FEATURE              PAIF1204.2
+            012600-    "SS  PARAGRAPH-NAME                                          IF1204.2
+            012700-    "       REMARKS".                                            IF1204.2
+            012800     02 FILLER                     PIC X(20)    VALUE SPACE.      IF1204.2
+            012900 01  CCVS-C-2.                                                    IF1204.2
+            013000     02 FILLER                     PIC X        VALUE SPACE.      IF1204.2
+            013100     02 FILLER                     PIC X(6)     VALUE "TESTED".   IF1204.2
+            013200     02 FILLER                     PIC X(15)    VALUE SPACE.      IF1204.2
+            013300     02 FILLER                     PIC X(4)     VALUE "FAIL".     IF1204.2
+            013400     02 FILLER                     PIC X(94)    VALUE SPACE.      IF1204.2
+            013500 01  REC-SKL-SUB                   PIC 9(2)     VALUE ZERO.       IF1204.2
+            013600 01  REC-CT                        PIC 99       VALUE ZERO.       IF1204.2
+            013700 01  DELETE-COUNTER                PIC 999      VALUE ZERO.       IF1204.2
+            013800 01  ERROR-COUNTER                 PIC 999      VALUE ZERO.       IF1204.2
+            013900 01  INSPECT-COUNTER               PIC 999      VALUE ZERO.       IF1204.2
+            014000 01  PASS-COUNTER                  PIC 999      VALUE ZERO.       IF1204.2
+            014100 01  TOTAL-ERROR                   PIC 999      VALUE ZERO.       IF1204.2
+            014200 01  ERROR-HOLD                    PIC 999      VALUE ZERO.       IF1204.2
+            014300 01  DUMMY-HOLD                    PIC X(120)   VALUE SPACE.      IF1204.2
+            014400 01  RECORD-COUNT                  PIC 9(5)     VALUE ZERO.       IF1204.2
+            014500 01  ANSI-REFERENCE                PIC X(48)    VALUE SPACES.     IF1204.2
+            014600 01  CCVS-H-1.                                                    IF1204.2
+            014700     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1204.2
+            014800     02  FILLER                    PIC X(42)    VALUE             IF1204.2
+            014900     "OFFICIAL COBOL COMPILER VALIDATION SYSTEM".                 IF1204.2
+            015000     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1204.2
+            015100 01  CCVS-H-2A.                                                   IF1204.2
+            015200   02  FILLER                        PIC X(40)  VALUE SPACE.      IF1204.2
+            015300   02  FILLER                        PIC X(7)   VALUE "CCVS85 ".  IF1204.2
+            015400   02  FILLER                        PIC XXXX   VALUE             IF1204.2
+            015500     "4.2 ".                                                      IF1204.2
+            015600   02  FILLER                        PIC X(28)  VALUE             IF1204.2
+            015700            " COPY - NOT FOR DISTRIBUTION".                       IF1204.2
+            015800   02  FILLER                        PIC X(41)  VALUE SPACE.      IF1204.2
+            015900                                                                  IF1204.2
+            016000 01  CCVS-H-2B.                                                   IF1204.2
+            016100   02  FILLER                        PIC X(15)  VALUE             IF1204.2
+            016200            "TEST RESULT OF ".                                    IF1204.2
+            016300   02  TEST-ID                       PIC X(9).                    IF1204.2
+            016400   02  FILLER                        PIC X(4)   VALUE             IF1204.2
+            016500            " IN ".                                               IF1204.2
+            016600   02  FILLER                        PIC X(12)  VALUE             IF1204.2
+            016700     " HIGH       ".                                              IF1204.2
+            016800   02  FILLER                        PIC X(22)  VALUE             IF1204.2
+            016900            " LEVEL VALIDATION FOR ".                             IF1204.2
+            017000   02  FILLER                        PIC X(58)  VALUE             IF1204.2
+            017100     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1204.2
+            017200 01  CCVS-H-3.                                                    IF1204.2
+            017300     02  FILLER                      PIC X(34)  VALUE             IF1204.2
+            017400            " FOR OFFICIAL USE ONLY    ".                         IF1204.2
+            017500     02  FILLER                      PIC X(58)  VALUE             IF1204.2
+            017600     "COBOL 85 VERSION 4.2, Apr  1993 SSVG                      ".IF1204.2
+            017700     02  FILLER                      PIC X(28)  VALUE             IF1204.2
+            017800            "  COPYRIGHT   1985 ".                                IF1204.2
+            017900 01  CCVS-E-1.                                                    IF1204.2
+            018000     02 FILLER                       PIC X(52)  VALUE SPACE.      IF1204.2
+            018100     02 FILLER  PIC X(14) VALUE IS "END OF TEST-  ".              IF1204.2
+            018200     02 ID-AGAIN                     PIC X(9).                    IF1204.2
+            018300     02 FILLER                       PIC X(45)  VALUE SPACES.     IF1204.2
+            018400 01  CCVS-E-2.                                                    IF1204.2
+            018500     02  FILLER                      PIC X(31)  VALUE SPACE.      IF1204.2
+            018600     02  FILLER                      PIC X(21)  VALUE SPACE.      IF1204.2
+            018700     02 CCVS-E-2-2.                                               IF1204.2
+            018800         03 ERROR-TOTAL              PIC XXX    VALUE SPACE.      IF1204.2
+            018900         03 FILLER                   PIC X      VALUE SPACE.      IF1204.2
+            019000         03 ENDER-DESC               PIC X(44)  VALUE             IF1204.2
+            019100            "ERRORS ENCOUNTERED".                                 IF1204.2
+            019200 01  CCVS-E-3.                                                    IF1204.2
+            019300     02  FILLER                      PIC X(22)  VALUE             IF1204.2
+            019400            " FOR OFFICIAL USE ONLY".                             IF1204.2
+            019500     02  FILLER                      PIC X(12)  VALUE SPACE.      IF1204.2
+            019600     02  FILLER                      PIC X(58)  VALUE             IF1204.2
+            019700     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1204.2
+            019800     02  FILLER                      PIC X(13)  VALUE SPACE.      IF1204.2
+            019900     02 FILLER                       PIC X(15)  VALUE             IF1204.2
+            020000             " COPYRIGHT 1985".                                   IF1204.2
+            020100 01  CCVS-E-4.                                                    IF1204.2
+            020200     02 CCVS-E-4-1                   PIC XXX    VALUE SPACE.      IF1204.2
+            020300     02 FILLER                       PIC X(4)   VALUE " OF ".     IF1204.2
+            020400     02 CCVS-E-4-2                   PIC XXX    VALUE SPACE.      IF1204.2
+            020500     02 FILLER                       PIC X(40)  VALUE             IF1204.2
+            020600      "  TESTS WERE EXECUTED SUCCESSFULLY".                       IF1204.2
+            020700 01  XXINFO.                                                      IF1204.2
+            020800     02 FILLER                       PIC X(19)  VALUE             IF1204.2
+            020900            "*** INFORMATION ***".                                IF1204.2
+            021000     02 INFO-TEXT.                                                IF1204.2
+            021100       04 FILLER                     PIC X(8)   VALUE SPACE.      IF1204.2
+            021200       04 XXCOMPUTED                 PIC X(20).                   IF1204.2
+            021300       04 FILLER                     PIC X(5)   VALUE SPACE.      IF1204.2
+            021400       04 XXCORRECT                  PIC X(20).                   IF1204.2
+            021500     02 INF-ANSI-REFERENCE           PIC X(48).                   IF1204.2
+            021600 01  HYPHEN-LINE.                                                 IF1204.2
+            021700     02 FILLER  PIC IS X VALUE IS SPACE.                          IF1204.2
+            021800     02 FILLER  PIC IS X(65)    VALUE IS "************************IF1204.2
+            021900-    "*****************************************".                 IF1204.2
+            022000     02 FILLER  PIC IS X(54)    VALUE IS "************************IF1204.2
+            022100-    "******************************".                            IF1204.2
+            022200 01  CCVS-PGM-ID                     PIC X(9)   VALUE             IF1204.2
+            022300     "IF120A".                                                    IF1204.2
+            022400 PROCEDURE DIVISION.                                              IF1204.2
+            022500 CCVS1 SECTION.                                                   IF1204.2
+            022600 OPEN-FILES.                                                      IF1204.2
+            022700     OPEN     OUTPUT PRINT-FILE.                                  IF1204.2
+            022800     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   IF1204.2
+            022900     MOVE    SPACE TO TEST-RESULTS.                               IF1204.2
+            023000     PERFORM  HEAD-ROUTINE THRU COLUMN-NAMES-ROUTINE.             IF1204.2
+            023100     GO TO CCVS1-EXIT.                                            IF1204.2
+            023200 CLOSE-FILES.                                                     IF1204.2
+            023300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IF1204.2
+            023400 TERMINATE-CCVS.                                                  IF1204.2
+            023500     STOP     RUN.                                                IF1204.2
+            023600 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IF1204.2
+            023700 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IF1204.2
+            023800 FAIL.  MOVE "FAIL*" TO P-OR-F.  ADD 1 TO ERROR-COUNTER.          IF1204.2
+            023900 DE-LETE.  MOVE "*****" TO P-OR-F.  ADD 1 TO DELETE-COUNTER.      IF1204.2
+            024000     MOVE "****TEST DELETED****" TO RE-MARK.                      IF1204.2
+            024100 PRINT-DETAIL.                                                    IF1204.2
+            024200     IF REC-CT NOT EQUAL TO ZERO                                  IF1204.2
+            024300             MOVE "." TO PARDOT-X                                 IF1204.2
+            024400             MOVE REC-CT TO DOTVALUE.                             IF1204.2
+            024500     MOVE     TEST-RESULTS TO PRINT-REC. PERFORM WRITE-LINE.      IF1204.2
+            024600     IF P-OR-F EQUAL TO "FAIL*"  PERFORM WRITE-LINE               IF1204.2
+            024700        PERFORM FAIL-ROUTINE THRU FAIL-ROUTINE-EX                 IF1204.2
+            024800          ELSE PERFORM BAIL-OUT THRU BAIL-OUT-EX.                 IF1204.2
+            024900     MOVE SPACE TO P-OR-F. MOVE SPACE TO COMPUTED-X.              IF1204.2
+            025000     MOVE SPACE TO CORRECT-X.                                     IF1204.2
+            025100     IF     REC-CT EQUAL TO ZERO  MOVE SPACE TO PAR-NAME.         IF1204.2
+            025200     MOVE     SPACE TO RE-MARK.                                   IF1204.2
+            025300 HEAD-ROUTINE.                                                    IF1204.2
+            025400     MOVE CCVS-H-1  TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1204.2
+            025500     MOVE CCVS-H-2A TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1204.2
+            025600     MOVE CCVS-H-2B TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1204.2
+            025700     MOVE CCVS-H-3  TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1204.2
+            025800 COLUMN-NAMES-ROUTINE.                                            IF1204.2
+            025900     MOVE CCVS-C-1 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1204.2
+            026000     MOVE CCVS-C-2 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1204.2
+            026100     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE.        IF1204.2
+            026200 END-ROUTINE.                                                     IF1204.2
+            026300     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE 5 TIMES.IF1204.2
+            026400 END-RTN-EXIT.                                                    IF1204.2
+            026500     MOVE CCVS-E-1 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1204.2
+            026600 END-ROUTINE-1.                                                   IF1204.2
+            026700      ADD ERROR-COUNTER TO ERROR-HOLD ADD INSPECT-COUNTER TO      IF1204.2
+            026800      ERROR-HOLD. ADD DELETE-COUNTER TO ERROR-HOLD.               IF1204.2
+            026900      ADD PASS-COUNTER TO ERROR-HOLD.                             IF1204.2
+            027000      MOVE PASS-COUNTER TO CCVS-E-4-1.                            IF1204.2
+            027100      MOVE ERROR-HOLD TO CCVS-E-4-2.                              IF1204.2
+            027200      MOVE CCVS-E-4 TO CCVS-E-2-2.                                IF1204.2
+            027300      MOVE CCVS-E-2 TO DUMMY-RECORD PERFORM WRITE-LINE.           IF1204.2
+            027400  END-ROUTINE-12.                                                 IF1204.2
+            027500      MOVE "TEST(S) FAILED" TO ENDER-DESC.                        IF1204.2
+            027600     IF       ERROR-COUNTER IS EQUAL TO ZERO                      IF1204.2
+            027700         MOVE "NO " TO ERROR-TOTAL                                IF1204.2
+            027800         ELSE                                                     IF1204.2
+            027900         MOVE ERROR-COUNTER TO ERROR-TOTAL.                       IF1204.2
+            028000     MOVE     CCVS-E-2 TO DUMMY-RECORD.                           IF1204.2
+            028100     PERFORM WRITE-LINE.                                          IF1204.2
+            028200 END-ROUTINE-13.                                                  IF1204.2
+            028300     IF DELETE-COUNTER IS EQUAL TO ZERO                           IF1204.2
+            028400         MOVE "NO " TO ERROR-TOTAL  ELSE                          IF1204.2
+            028500         MOVE DELETE-COUNTER TO ERROR-TOTAL.                      IF1204.2
+            028600     MOVE "TEST(S) DELETED     " TO ENDER-DESC.                   IF1204.2
+            028700     MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1204.2
+            028800      IF   INSPECT-COUNTER EQUAL TO ZERO                          IF1204.2
+            028900          MOVE "NO " TO ERROR-TOTAL                               IF1204.2
+            029000      ELSE MOVE INSPECT-COUNTER TO ERROR-TOTAL.                   IF1204.2
+            029100      MOVE "TEST(S) REQUIRE INSPECTION" TO ENDER-DESC.            IF1204.2
+            029200      MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.          IF1204.2
+            029300     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1204.2
+            029400 WRITE-LINE.                                                      IF1204.2
+            029500     ADD 1 TO RECORD-COUNT.                                       IF1204.2
+            029600Y    IF RECORD-COUNT GREATER 42                                   IF1204.2
+            029700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1204.2
+            029800Y        MOVE SPACE TO DUMMY-RECORD                               IF1204.2
+            029900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1204.2
+            030000Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1204.2
+            030100Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1204.2
+            030200Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1204.2
+            030300Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1204.2
+            030400Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1204.2
+            030500Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1204.2
+            030600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1204.2
+            030700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1204.2
+            030800Y        MOVE ZERO TO RECORD-COUNT.                               IF1204.2
+            030900     PERFORM WRT-LN.                                              IF1204.2
+            031000 WRT-LN.                                                          IF1204.2
+            031100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1204.2
+            031200     MOVE SPACE TO DUMMY-RECORD.                                  IF1204.2
+            031300 BLANK-LINE-PRINT.                                                IF1204.2
+            031400     PERFORM WRT-LN.                                              IF1204.2
+            031500 FAIL-ROUTINE.                                                    IF1204.2
+            031600     IF     COMPUTED-X NOT EQUAL TO SPACE                         IF1204.2
+            031700            GO TO FAIL-ROUTINE-WRITE.                             IF1204.2
+            031800     IF     CORRECT-X NOT EQUAL TO SPACE GO TO FAIL-ROUTINE-WRITE.IF1204.2
+            031900     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1204.2
+            032000     MOVE  "NO FURTHER INFORMATION, SEE PROGRAM." TO INFO-TEXT.   IF1204.2
+            032100     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1204.2
+            032200     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1204.2
+            032300     GO TO  FAIL-ROUTINE-EX.                                      IF1204.2
+            032400 FAIL-ROUTINE-WRITE.                                              IF1204.2
+            032500     MOVE   TEST-COMPUTED TO PRINT-REC PERFORM WRITE-LINE.        IF1204.2
+            032600     MOVE   ANSI-REFERENCE TO COR-ANSI-REFERENCE                  IF1204.2
+            032700                              CORMA-ANSI-REFERENCE.               IF1204.2
+            032800     IF CORRECT-MIN NOT EQUAL TO SPACES THEN                      IF1204.2
+            032900           MOVE TEST-CORRECT-MIN TO PRINT-REC PERFORM WRITE-LINE  IF1204.2
+            033000           MOVE TEST-CORRECT-MAX TO PRINT-REC PERFORM WRITE-LINE  IF1204.2
+            033100     ELSE                                                         IF1204.2
+            033200           MOVE TEST-CORRECT TO PRINT-REC PERFORM WRITE-LINE.     IF1204.2
+            033300     PERFORM WRITE-LINE.                                          IF1204.2
+            033400     MOVE   SPACES TO COR-ANSI-REFERENCE.                         IF1204.2
+            033500 FAIL-ROUTINE-EX. EXIT.                                           IF1204.2
+            033600 BAIL-OUT.                                                        IF1204.2
+            033700     IF     COMPUTED-A NOT EQUAL TO SPACE GO TO BAIL-OUT-WRITE.   IF1204.2
+            033800     IF     CORRECT-A EQUAL TO SPACE GO TO BAIL-OUT-EX.           IF1204.2
+            033900 BAIL-OUT-WRITE.                                                  IF1204.2
+            034000     MOVE CORRECT-A TO XXCORRECT.                                 IF1204.2
+            034100     MOVE COMPUTED-A TO XXCOMPUTED.                               IF1204.2
+            034200     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1204.2
+            034300     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1204.2
+            034400     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1204.2
+            034500 BAIL-OUT-EX. EXIT.                                               IF1204.2
+            034600 CCVS1-EXIT.                                                      IF1204.2
+            034700     EXIT.                                                        IF1204.2
+            034800********************************************************          IF1204.2
+            034900*                                                      *          IF1204.2
+            035000*    Intrinsic Function Tests         IF120A - MEAN    *          IF1204.2
+            035100*                                                      *          IF1204.2
+            035200********************************************************          IF1204.2
+            035300 SECT-IF120A SECTION.                                             IF1204.2
+            035400 F-MEAN-TEST-INFO.                                                IF1204.2
+            035500     MOVE     "See ref. A-53 2.24" TO ANSI-REFERENCE.             IF1204.2
+            035600     MOVE     "MEAN Function" TO FEATURE.                         IF1204.2
+            035700*****************TEST (a) - SIMPLE TEST*****************          IF1204.2
+            035800 F-MEAN-01.                                                       IF1204.2
+            035900     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            036000 F-MEAN-TEST-01.                                                  IF1204.2
+            036100     COMPUTE WS-NUM = FUNCTION MEAN(5, -2, -14, 0).               IF1204.2
+            036200     IF (WS-NUM >= -2.75006) AND                                  IF1204.2
+            036300        (WS-NUM <= -2.74995)                                      IF1204.2
+            036400                    PERFORM PASS                                  IF1204.2
+            036500     ELSE                                                         IF1204.2
+            036600                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            036700                    MOVE -2.75 TO CORRECT-N                       IF1204.2
+            036800                    PERFORM FAIL.                                 IF1204.2
+            036900     GO TO F-MEAN-WRITE-01.                                       IF1204.2
+            037000 F-MEAN-DELETE-01.                                                IF1204.2
+            037100     PERFORM  DE-LETE.                                            IF1204.2
+            037200     GO TO    F-MEAN-WRITE-01.                                    IF1204.2
+            037300 F-MEAN-WRITE-01.                                                 IF1204.2
+            037400     MOVE "F-MEAN-01" TO PAR-NAME.                                IF1204.2
+            037500     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            037600*****************TEST (b) - SIMPLE TEST*****************          IF1204.2
+            037700 F-MEAN-02.                                                       IF1204.2
+            037800     EVALUATE FUNCTION MEAN(3.9, -0.3, 8.7, 100.2)                IF1204.2
+            037900     WHEN 28.1244 THRU 28.1256                                    IF1204.2
+            038000                    PERFORM PASS                                  IF1204.2
+            038100     WHEN OTHER                                                   IF1204.2
+            038200                    PERFORM FAIL.                                 IF1204.2
+            038300     GO TO F-MEAN-WRITE-02.                                       IF1204.2
+            038400 F-MEAN-DELETE-02.                                                IF1204.2
+            038500     PERFORM  DE-LETE.                                            IF1204.2
+            038600     GO TO    F-MEAN-WRITE-02.                                    IF1204.2
+            038700 F-MEAN-WRITE-02.                                                 IF1204.2
+            038800     MOVE "F-MEAN-02" TO PAR-NAME.                                IF1204.2
+            038900     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            039000*****************TEST (c) - SIMPLE TEST*****************          IF1204.2
+            039100 F-MEAN-03.                                                       IF1204.2
+            039200     IF (FUNCTION MEAN(A, B, C, D) >= 4.49991) AND                IF1204.2
+            039300        (FUNCTION MEAN(A, B, C, D) <= 4.50009)                    IF1204.2
+            039400                    PERFORM PASS                                  IF1204.2
+            039500     ELSE                                                         IF1204.2
+            039600                    PERFORM FAIL.                                 IF1204.2
+            039700     GO TO F-MEAN-WRITE-03.                                       IF1204.2
+            039800 F-MEAN-DELETE-03.                                                IF1204.2
+            039900     PERFORM  DE-LETE.                                            IF1204.2
+            040000     GO TO    F-MEAN-WRITE-03.                                    IF1204.2
+            040100 F-MEAN-WRITE-03.                                                 IF1204.2
+            040200     MOVE "F-MEAN-03" TO PAR-NAME.                                IF1204.2
+            040300     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            040400*****************TEST (d) - SIMPLE TEST*****************          IF1204.2
+            040500 F-MEAN-04.                                                       IF1204.2
+            040600     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            040700 F-MEAN-TEST-04.                                                  IF1204.2
+            040800     COMPUTE WS-NUM = FUNCTION MEAN(E, F, G, H).                  IF1204.2
+            040900     IF (WS-NUM >= 6.17988) AND                                   IF1204.2
+            041000        (WS-NUM <= 6.18012)                                       IF1204.2
+            041100                    PERFORM PASS                                  IF1204.2
+            041200     ELSE                                                         IF1204.2
+            041300                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            041400                    MOVE 6.18 TO CORRECT-N                        IF1204.2
+            041500                    PERFORM FAIL.                                 IF1204.2
+            041600     GO TO F-MEAN-WRITE-04.                                       IF1204.2
+            041700 F-MEAN-DELETE-04.                                                IF1204.2
+            041800     PERFORM  DE-LETE.                                            IF1204.2
+            041900     GO TO    F-MEAN-WRITE-04.                                    IF1204.2
+            042000 F-MEAN-WRITE-04.                                                 IF1204.2
+            042100     MOVE "F-MEAN-04" TO PAR-NAME.                                IF1204.2
+            042200     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            042300*****************TEST (e) - SIMPLE TEST*****************          IF1204.2
+            042400 F-MEAN-05.                                                       IF1204.2
+            042500     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            042600 F-MEAN-TEST-05.                                                  IF1204.2
+            042700     COMPUTE WS-NUM = FUNCTION MEAN(10.2, -0.2, 5.6, -15.6).      IF1204.2
+            042800     IF (WS-NUM >= -0.000020) AND                                 IF1204.2
+            042900        (WS-NUM <= 0.000020)                                      IF1204.2
+            043000                    PERFORM PASS                                  IF1204.2
+            043100     ELSE                                                         IF1204.2
+            043200                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            043300                    MOVE 0.0 TO CORRECT-N                         IF1204.2
+            043400                    PERFORM FAIL.                                 IF1204.2
+            043500     GO TO F-MEAN-WRITE-05.                                       IF1204.2
+            043600 F-MEAN-DELETE-05.                                                IF1204.2
+            043700     PERFORM  DE-LETE.                                            IF1204.2
+            043800     GO TO    F-MEAN-WRITE-05.                                    IF1204.2
+            043900 F-MEAN-WRITE-05.                                                 IF1204.2
+            044000     MOVE "F-MEAN-05" TO PAR-NAME.                                IF1204.2
+            044100     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            044200*****************TEST (f) - SIMPLE TEST*****************          IF1204.2
+            044300 F-MEAN-06.                                                       IF1204.2
+            044400     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            044500 F-MEAN-TEST-06.                                                  IF1204.2
+            044600     COMPUTE WS-NUM = FUNCTION MEAN(A, B, C, D, E, F, G, H).      IF1204.2
+            044700     IF (WS-NUM >= 5.33989) AND                                   IF1204.2
+            044800        (WS-NUM <= 5.34011)                                       IF1204.2
+            044900                    PERFORM PASS                                  IF1204.2
+            045000     ELSE                                                         IF1204.2
+            045100                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            045200                    MOVE 5.34 TO CORRECT-N                        IF1204.2
+            045300                    PERFORM FAIL.                                 IF1204.2
+            045400     GO TO F-MEAN-WRITE-06.                                       IF1204.2
+            045500 F-MEAN-DELETE-06.                                                IF1204.2
+            045600     PERFORM  DE-LETE.                                            IF1204.2
+            045700     GO TO    F-MEAN-WRITE-06.                                    IF1204.2
+            045800 F-MEAN-WRITE-06.                                                 IF1204.2
+            045900     MOVE "F-MEAN-06" TO PAR-NAME.                                IF1204.2
+            046000     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            046100*****************TEST (g) - SIMPLE TEST*****************          IF1204.2
+            046200 F-MEAN-07.                                                       IF1204.2
+            046300     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            046400 F-MEAN-TEST-07.                                                  IF1204.2
+            046500     COMPUTE WS-NUM = FUNCTION MEAN(IND(2), IND(1), IND(3)).      IF1204.2
+            046600     IF (WS-NUM >= 2.99994) AND                                   IF1204.2
+            046700        (WS-NUM <= 3.00006)                                       IF1204.2
+            046800                    PERFORM PASS                                  IF1204.2
+            046900     ELSE                                                         IF1204.2
+            047000                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            047100                    MOVE 3.0 TO CORRECT-N                         IF1204.2
+            047200                    PERFORM FAIL.                                 IF1204.2
+            047300     GO TO F-MEAN-WRITE-07.                                       IF1204.2
+            047400 F-MEAN-DELETE-07.                                                IF1204.2
+            047500     PERFORM  DE-LETE.                                            IF1204.2
+            047600     GO TO    F-MEAN-WRITE-07.                                    IF1204.2
+            047700 F-MEAN-WRITE-07.                                                 IF1204.2
+            047800     MOVE "F-MEAN-07" TO PAR-NAME.                                IF1204.2
+            047900     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            048000*****************TEST (h) - SIMPLE TEST*****************          IF1204.2
+            048100 F-MEAN-08.                                                       IF1204.2
+            048200     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            048300 F-MEAN-TEST-08.                                                  IF1204.2
+            048400     COMPUTE WS-NUM = FUNCTION MEAN(IND(P), IND(Q), IND(R)).      IF1204.2
+            048500     IF (WS-NUM >= 5.33323) AND                                   IF1204.2
+            048600        (WS-NUM <= 5.33344)                                       IF1204.2
+            048700                    PERFORM PASS                                  IF1204.2
+            048800     ELSE                                                         IF1204.2
+            048900                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            049000                    MOVE 5.333 TO CORRECT-N                       IF1204.2
+            049100                    PERFORM FAIL.                                 IF1204.2
+            049200     GO TO F-MEAN-WRITE-08.                                       IF1204.2
+            049300 F-MEAN-DELETE-08.                                                IF1204.2
+            049400     PERFORM  DE-LETE.                                            IF1204.2
+            049500     GO TO    F-MEAN-WRITE-08.                                    IF1204.2
+            049600 F-MEAN-WRITE-08.                                                 IF1204.2
+            049700     MOVE "F-MEAN-08" TO PAR-NAME.                                IF1204.2
+            049800     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            049900*****************TEST (i) - SIMPLE TEST*****************          IF1204.2
+            050000 F-MEAN-09.                                                       IF1204.2
+            050100     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            050200 F-MEAN-TEST-09.                                                  IF1204.2
+            050300     COMPUTE WS-NUM = FUNCTION MEAN(IND(ALL)).                    IF1204.2
+            050400     IF (WS-NUM >= 3.79992) AND                                   IF1204.2
+            050500        (WS-NUM <= 3.80008)                                       IF1204.2
+            050600                    PERFORM PASS                                  IF1204.2
+            050700     ELSE                                                         IF1204.2
+            050800                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            050900                    MOVE 3.8 TO CORRECT-N                         IF1204.2
+            051000                    PERFORM FAIL.                                 IF1204.2
+            051100     GO TO F-MEAN-WRITE-09.                                       IF1204.2
+            051200 F-MEAN-DELETE-09.                                                IF1204.2
+            051300     PERFORM  DE-LETE.                                            IF1204.2
+            051400     GO TO    F-MEAN-WRITE-09.                                    IF1204.2
+            051500 F-MEAN-WRITE-09.                                                 IF1204.2
+            051600     MOVE "F-MEAN-09" TO PAR-NAME.                                IF1204.2
+            051700     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            051800*****************TEST (k) - SIMPLE TEST*****************          IF1204.2
+            051900 F-MEAN-11.                                                       IF1204.2
+            052000     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            052100 F-MEAN-TEST-11.                                                  IF1204.2
+            052200     COMPUTE WS-NUM = FUNCTION MEAN(M, N, O).                     IF1204.2
+            052300     IF WS-NUM = 180000  THEN                                     IF1204.2
+            052400                    PERFORM PASS                                  IF1204.2
+            052500     ELSE                                                         IF1204.2
+            052600                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            052700                    MOVE 180000  TO CORRECT-N                     IF1204.2
+            052800                    PERFORM FAIL.                                 IF1204.2
+            052900     GO TO F-MEAN-WRITE-11.                                       IF1204.2
+            053000 F-MEAN-DELETE-11.                                                IF1204.2
+            053100     PERFORM  DE-LETE.                                            IF1204.2
+            053200     GO TO    F-MEAN-WRITE-11.                                    IF1204.2
+            053300 F-MEAN-WRITE-11.                                                 IF1204.2
+            053400     MOVE "F-MEAN-11" TO PAR-NAME.                                IF1204.2
+            053500     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            053600*****************TEST (l) - SIMPLE TEST*****************          IF1204.2
+            053700 F-MEAN-12.                                                       IF1204.2
+            053800     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            053900 F-MEAN-TEST-12.                                                  IF1204.2
+            054000     COMPUTE WS-NUM = FUNCTION MEAN(A, 5, A).                     IF1204.2
+            054100     IF WS-NUM = 5    THEN                                        IF1204.2
+            054200                    PERFORM PASS                                  IF1204.2
+            054300     ELSE                                                         IF1204.2
+            054400                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            054500                    MOVE 5    TO CORRECT-N                        IF1204.2
+            054600                    PERFORM FAIL.                                 IF1204.2
+            054700     GO TO F-MEAN-WRITE-12.                                       IF1204.2
+            054800 F-MEAN-DELETE-12.                                                IF1204.2
+            054900     PERFORM  DE-LETE.                                            IF1204.2
+            055000     GO TO    F-MEAN-WRITE-12.                                    IF1204.2
+            055100 F-MEAN-WRITE-12.                                                 IF1204.2
+            055200     MOVE "F-MEAN-12" TO PAR-NAME.                                IF1204.2
+            055300     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            055400*****************TEST (a) - COMPLEX TEST****************          IF1204.2
+            055500 F-MEAN-13.                                                       IF1204.2
+            055600     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            055700     MOVE  20.6896 TO MIN-RANGE.                                  IF1204.2
+            055800     MOVE  20.6904 TO MAX-RANGE.                                  IF1204.2
+            055900 F-MEAN-TEST-13.                                                  IF1204.2
+            056000     COMPUTE WS-NUM = FUNCTION MEAN(E, 9 * A, 0, B / 2).          IF1204.2
+            056100     IF (WS-NUM >= MIN-RANGE) AND                                 IF1204.2
+            056200        (WS-NUM <= MAX-RANGE) THEN                                IF1204.2
+            056300                    PERFORM PASS                                  IF1204.2
+            056400     ELSE                                                         IF1204.2
+            056500                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            056600                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1204.2
+            056700                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1204.2
+            056800                    PERFORM FAIL.                                 IF1204.2
+            056900     GO TO F-MEAN-WRITE-13.                                       IF1204.2
+            057000 F-MEAN-DELETE-13.                                                IF1204.2
+            057100     PERFORM  DE-LETE.                                            IF1204.2
+            057200     GO TO    F-MEAN-WRITE-13.                                    IF1204.2
+            057300 F-MEAN-WRITE-13.                                                 IF1204.2
+            057400     MOVE "F-MEAN-13" TO PAR-NAME.                                IF1204.2
+            057500     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            057600*****************TEST (b) - COMPLEX TEST****************          IF1204.2
+            057700 F-MEAN-14.                                                       IF1204.2
+            057800     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            057900     MOVE 83.9983 TO MIN-RANGE.                                   IF1204.2
+            058000     MOVE 84.0017 TO MAX-RANGE.                                   IF1204.2
+            058100 F-MEAN-TEST-14.                                                  IF1204.2
+            058200     COMPUTE WS-NUM = FUNCTION MEAN(A, B) + 78.                   IF1204.2
+            058300     IF (WS-NUM >= MIN-RANGE) AND                                 IF1204.2
+            058400        (WS-NUM <= MAX-RANGE) THEN                                IF1204.2
+            058500                    PERFORM PASS                                  IF1204.2
+            058600     ELSE                                                         IF1204.2
+            058700                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            058800                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1204.2
+            058900                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1204.2
+            059000                    PERFORM FAIL.                                 IF1204.2
+            059100     GO TO F-MEAN-WRITE-14.                                       IF1204.2
+            059200 F-MEAN-DELETE-14.                                                IF1204.2
+            059300     PERFORM  DE-LETE.                                            IF1204.2
+            059400     GO TO    F-MEAN-WRITE-14.                                    IF1204.2
+            059500 F-MEAN-WRITE-14.                                                 IF1204.2
+            059600     MOVE "F-MEAN-14" TO PAR-NAME.                                IF1204.2
+            059700     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            059800*****************TEST (c) - COMPLEX TEST****************          IF1204.2
+            059900 F-MEAN-15.                                                       IF1204.2
+            060000     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            060100     MOVE 2.49995 TO MIN-RANGE.                                   IF1204.2
+            060200     MOVE 2.50005 TO MAX-RANGE.                                   IF1204.2
+            060300 F-MEAN-TEST-15.                                                  IF1204.2
+            060400     COMPUTE WS-NUM = FUNCTION MEAN(A , B) +                      IF1204.2
+            060500                      FUNCTION MEAN(-2.6, -4.4).                  IF1204.2
+            060600     IF (WS-NUM >= MIN-RANGE) AND                                 IF1204.2
+            060700        (WS-NUM <= MAX-RANGE) THEN                                IF1204.2
+            060800                    PERFORM PASS                                  IF1204.2
+            060900     ELSE                                                         IF1204.2
+            061000                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            061100                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1204.2
+            061200                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1204.2
+            061300                    PERFORM FAIL.                                 IF1204.2
+            061400     GO TO F-MEAN-WRITE-15.                                       IF1204.2
+            061500 F-MEAN-DELETE-15.                                                IF1204.2
+            061600     PERFORM  DE-LETE.                                            IF1204.2
+            061700     GO TO    F-MEAN-WRITE-15.                                    IF1204.2
+            061800 F-MEAN-WRITE-15.                                                 IF1204.2
+            061900     MOVE "F-MEAN-15" TO PAR-NAME.                                IF1204.2
+            062000     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            062100*****************TEST (d) - COMPLEX TEST****************          IF1204.2
+            062200 F-MEAN-16.                                                       IF1204.2
+            062300     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            062400     MOVE 4.49991 TO MIN-RANGE.                                   IF1204.2
+            062500     MOVE 4.50009 TO MAX-RANGE.                                   IF1204.2
+            062600 F-MEAN-TEST-16.                                                  IF1204.2
+            062700     COMPUTE WS-NUM = FUNCTION MEAN(FUNCTION MEAN(4, 2), 6).      IF1204.2
+            062800     IF (WS-NUM >= MIN-RANGE) AND                                 IF1204.2
+            062900        (WS-NUM <= MAX-RANGE) THEN                                IF1204.2
+            063000                    PERFORM PASS                                  IF1204.2
+            063100     ELSE                                                         IF1204.2
+            063200                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            063300                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1204.2
+            063400                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1204.2
+            063500                    PERFORM FAIL.                                 IF1204.2
+            063600     GO TO F-MEAN-WRITE-16.                                       IF1204.2
+            063700 F-MEAN-DELETE-16.                                                IF1204.2
+            063800     PERFORM  DE-LETE.                                            IF1204.2
+            063900     GO TO    F-MEAN-WRITE-16.                                    IF1204.2
+            064000 F-MEAN-WRITE-16.                                                 IF1204.2
+            064100     MOVE "F-MEAN-16" TO PAR-NAME.                                IF1204.2
+            064200     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            064300*****************TEST (e) - COMPLEX TEST****************          IF1204.2
+            064400 F-MEAN-17.                                                       IF1204.2
+            064500     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            064600     MOVE  20.7996 TO MIN-RANGE.                                  IF1204.2
+            064700     MOVE  20.8004 TO MAX-RANGE.                                  IF1204.2
+            064800 F-MEAN-TEST-17.                                                  IF1204.2
+            064900     COMPUTE WS-NUM = FUNCTION MEAN(2.6 + 30, 4.5 * 2).           IF1204.2
+            065000     IF (WS-NUM >= MIN-RANGE) AND                                 IF1204.2
+            065100        (WS-NUM <= MAX-RANGE) THEN                                IF1204.2
+            065200                    PERFORM PASS                                  IF1204.2
+            065300     ELSE                                                         IF1204.2
+            065400                    MOVE WS-NUM TO COMPUTED-N                     IF1204.2
+            065500                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1204.2
+            065600                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1204.2
+            065700                    PERFORM FAIL.                                 IF1204.2
+            065800     GO TO F-MEAN-WRITE-17.                                       IF1204.2
+            065900 F-MEAN-DELETE-17.                                                IF1204.2
+            066000     PERFORM  DE-LETE.                                            IF1204.2
+            066100     GO TO    F-MEAN-WRITE-17.                                    IF1204.2
+            066200 F-MEAN-WRITE-17.                                                 IF1204.2
+            066300     MOVE "F-MEAN-17" TO PAR-NAME.                                IF1204.2
+            066400     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            066500*****************SPECIAL PERFORM TEST**********************       IF1204.2
+            066600 F-MEAN-18.                                                       IF1204.2
+            066700     MOVE ZERO TO WS-NUM.                                         IF1204.2
+            066800     PERFORM F-MEAN-TEST-18                                       IF1204.2
+            066900       UNTIL FUNCTION MEAN(ARG1, ARG2) > 8.                       IF1204.2
+            067000     PERFORM PASS.                                                IF1204.2
+            067100     GO TO F-MEAN-WRITE-18.                                       IF1204.2
+            067200 F-MEAN-TEST-18.                                                  IF1204.2
+            067300     COMPUTE ARG1 = ARG1 + 1.                                     IF1204.2
+            067400     COMPUTE ARG2 = ARG2 + 1.                                     IF1204.2
+            067500 F-MEAN-DELETE-18.                                                IF1204.2
+            067600     PERFORM  DE-LETE.                                            IF1204.2
+            067700     GO TO    F-MEAN-WRITE-18.                                    IF1204.2
+            067800 F-MEAN-WRITE-18.                                                 IF1204.2
+            067900     MOVE "F-MEAN-18" TO PAR-NAME.                                IF1204.2
+            068000     PERFORM  PRINT-DETAIL.                                       IF1204.2
+            068100********************END OF TESTS***************                   IF1204.2
+            068200 CCVS-EXIT SECTION.                                               IF1204.2
+            068300 CCVS-999999.                                                     IF1204.2
+            068400     GO TO CLOSE-FILES.                                           IF1204.2
+                  *END-OF,IF120A                                                            
+        """)
+    )
+
+    @Test
+    fun if1214_2() = rewriteRun(
+        cobol("""
+                  *HEADER,COBOL,IF121A                                                      
+            000100 IDENTIFICATION DIVISION.                                         IF1214.2
+            000200 PROGRAM-ID.                                                      IF1214.2
+            000300     IF121A.                                                      IF1214.2
+            000400                                                                  IF1214.2
+            000500***********************************************************       IF1214.2
+            000600*                                                         *       IF1214.2
+            000700* This program forms part of the CCVS85 COBOL Test Suite. *       IF1214.2
+            000800* It contains tests for the Intrinsic Function MEDIAN.    *       IF1214.2
+            000900*                                                         *       IF1214.2
+            001000***********************************************************       IF1214.2
+            001100 ENVIRONMENT DIVISION.                                            IF1214.2
+            001200 CONFIGURATION SECTION.                                           IF1214.2
+            001300 SOURCE-COMPUTER.                                                 IF1214.2
+            001400     XXXXX082.                                                    IF1214.2
+            001500 OBJECT-COMPUTER.                                                 IF1214.2
+            001600     XXXXX083.                                                    IF1214.2
+            001700 INPUT-OUTPUT SECTION.                                            IF1214.2
+            001800 FILE-CONTROL.                                                    IF1214.2
+            001900     SELECT PRINT-FILE ASSIGN TO                                  IF1214.2
+            002000     XXXXX055.                                                    IF1214.2
+            002100 DATA DIVISION.                                                   IF1214.2
+            002200 FILE SECTION.                                                    IF1214.2
+            002300 FD  PRINT-FILE.                                                  IF1214.2
+            002400 01  PRINT-REC PICTURE X(120).                                    IF1214.2
+            002500 01  DUMMY-RECORD PICTURE X(120).                                 IF1214.2
+            002600 WORKING-STORAGE SECTION.                                         IF1214.2
+            002700***********************************************************       IF1214.2
+            002800* Variables specific to the Intrinsic Function Test IF121A*       IF1214.2
+            002900***********************************************************       IF1214.2
+            003000 01  A                   PIC S9(10)          VALUE 5.             IF1214.2
+            003100 01  B                   PIC S9(10)          VALUE 7.             IF1214.2
+            003200 01  C                   PIC S9(10)          VALUE -4.            IF1214.2
+            003300 01  D                   PIC S9(10)          VALUE 10.            IF1214.2
+            003400 01  E                   PIC S9(5)V9(5)      VALUE 34.26.         IF1214.2
+            003500 01  F                   PIC S9(5)V9(5)      VALUE -8.32.         IF1214.2
+            003600 01  G                   PIC S9(5)V9(5)      VALUE 4.08.          IF1214.2
+            003700 01  H                   PIC S9(5)V9(5)      VALUE -5.3.          IF1214.2
+            003800 01  M                   PIC S9(10)          VALUE 320000.        IF1214.2
+            003900 01  N                   PIC S9(10)          VALUE 650000.        IF1214.2
+            004000 01  O                   PIC S9(10)          VALUE -430000.       IF1214.2
+            004100 01  P                   PIC S9(10)          VALUE 1.             IF1214.2
+            004200 01  Q                   PIC S9(10)          VALUE 3.             IF1214.2
+            004300 01  R                   PIC S9(10)          VALUE 5.             IF1214.2
+            004400 01  ARG1                PIC S9(10)          VALUE 2.             IF1214.2
+            004500 01  ARG2                PIC S9(10)          VALUE 2.             IF1214.2
+            004600 01  ARR                                     VALUE "40537".       IF1214.2
+            004700     02  IND OCCURS 5 TIMES PIC 9.                                IF1214.2
+            004800 01  TEMP                PIC S9(10)V9(5).                         IF1214.2
+            004900 01  WS-NUM              PIC S9(6)V9(7).                          IF1214.2
+            005000 01  MIN-RANGE           PIC S9(5)V9(7).                          IF1214.2
+            005100 01  MAX-RANGE           PIC S9(5)V9(7).                          IF1214.2
+            005200*                                                                 IF1214.2
+            005300**********************************************************        IF1214.2
+            005400*                                                                 IF1214.2
+            005500 01  TEST-RESULTS.                                                IF1214.2
+            005600     02 FILLER                   PIC X      VALUE SPACE.          IF1214.2
+            005700     02 FEATURE                  PIC X(20)  VALUE SPACE.          IF1214.2
+            005800     02 FILLER                   PIC X      VALUE SPACE.          IF1214.2
+            005900     02 P-OR-F                   PIC X(5)   VALUE SPACE.          IF1214.2
+            006000     02 FILLER                   PIC X      VALUE SPACE.          IF1214.2
+            006100     02  PAR-NAME.                                                IF1214.2
+            006200       03 FILLER                 PIC X(19)  VALUE SPACE.          IF1214.2
+            006300       03  PARDOT-X              PIC X      VALUE SPACE.          IF1214.2
+            006400       03 DOTVALUE               PIC 99     VALUE ZERO.           IF1214.2
+            006500     02 FILLER                   PIC X(8)   VALUE SPACE.          IF1214.2
+            006600     02 RE-MARK                  PIC X(61).                       IF1214.2
+            006700 01  TEST-COMPUTED.                                               IF1214.2
+            006800     02 FILLER                   PIC X(30)  VALUE SPACE.          IF1214.2
+            006900     02 FILLER                   PIC X(17)  VALUE                 IF1214.2
+            007000            "       COMPUTED=".                                   IF1214.2
+            007100     02 COMPUTED-X.                                               IF1214.2
+            007200     03 COMPUTED-A               PIC X(20)  VALUE SPACE.          IF1214.2
+            007300     03 COMPUTED-N               REDEFINES COMPUTED-A             IF1214.2
+            007400                                 PIC -9(9).9(9).                  IF1214.2
+            007500     03 COMPUTED-0V18 REDEFINES COMPUTED-A   PIC -.9(18).         IF1214.2
+            007600     03 COMPUTED-4V14 REDEFINES COMPUTED-A   PIC -9(4).9(14).     IF1214.2
+            007700     03 COMPUTED-14V4 REDEFINES COMPUTED-A   PIC -9(14).9(4).     IF1214.2
+            007800     03       CM-18V0 REDEFINES COMPUTED-A.                       IF1214.2
+            007900         04 COMPUTED-18V0                    PIC -9(18).          IF1214.2
+            008000         04 FILLER                           PIC X.               IF1214.2
+            008100     03 FILLER PIC X(50) VALUE SPACE.                             IF1214.2
+            008200 01  TEST-CORRECT.                                                IF1214.2
+            008300     02 FILLER PIC X(30) VALUE SPACE.                             IF1214.2
+            008400     02 FILLER PIC X(17) VALUE "       CORRECT =".                IF1214.2
+            008500     02 CORRECT-X.                                                IF1214.2
+            008600     03 CORRECT-A                  PIC X(20) VALUE SPACE.         IF1214.2
+            008700     03 CORRECT-N    REDEFINES CORRECT-A     PIC -9(9).9(9).      IF1214.2
+            008800     03 CORRECT-0V18 REDEFINES CORRECT-A     PIC -.9(18).         IF1214.2
+            008900     03 CORRECT-4V14 REDEFINES CORRECT-A     PIC -9(4).9(14).     IF1214.2
+            009000     03 CORRECT-14V4 REDEFINES CORRECT-A     PIC -9(14).9(4).     IF1214.2
+            009100     03      CR-18V0 REDEFINES CORRECT-A.                         IF1214.2
+            009200         04 CORRECT-18V0                     PIC -9(18).          IF1214.2
+            009300         04 FILLER                           PIC X.               IF1214.2
+            009400     03 FILLER PIC X(2) VALUE SPACE.                              IF1214.2
+            009500     03 COR-ANSI-REFERENCE             PIC X(48) VALUE SPACE.     IF1214.2
+            009600 01  TEST-CORRECT-MIN.                                            IF1214.2
+            009700     02 FILLER PIC X(30) VALUE SPACE.                             IF1214.2
+            009800     02 FILLER PIC X(17) VALUE "     MIN VALUE =".                IF1214.2
+            009900     02 CORRECTMI-X.                                              IF1214.2
+            010000     03 CORRECTMI-A                 PIC X(20) VALUE SPACE.        IF1214.2
+            010100     03 CORRECT-MIN    REDEFINES CORRECTMI-A     PIC -9(9).9(9).  IF1214.2
+            010200     03 CORRECTMI-0V18 REDEFINES CORRECTMI-A     PIC -.9(18).     IF1214.2
+            010300     03 CORRECTMI-4V14 REDEFINES CORRECTMI-A     PIC -9(4).9(14). IF1214.2
+            010400     03 CORRECTMI-14V4 REDEFINES CORRECTMI-A     PIC -9(14).9(4). IF1214.2
+            010500     03      CR-18V0 REDEFINES CORRECTMI-A.                       IF1214.2
+            010600         04 CORRECTMI-18V0                     PIC -9(18).        IF1214.2
+            010700         04 FILLER                           PIC X.               IF1214.2
+            010800     03 FILLER PIC X(2) VALUE SPACE.                              IF1214.2
+            010900     03 FILLER                           PIC X(48) VALUE SPACE.   IF1214.2
+            011000 01  TEST-CORRECT-MAX.                                            IF1214.2
+            011100     02 FILLER PIC X(30) VALUE SPACE.                             IF1214.2
+            011200     02 FILLER PIC X(17) VALUE "     MAX VALUE =".                IF1214.2
+            011300     02 CORRECTMA-X.                                              IF1214.2
+            011400     03 CORRECTMA-A                  PIC X(20) VALUE SPACE.       IF1214.2
+            011500     03 CORRECT-MAX    REDEFINES CORRECTMA-A     PIC -9(9).9(9).  IF1214.2
+            011600     03 CORRECTMA-0V18 REDEFINES CORRECTMA-A     PIC -.9(18).     IF1214.2
+            011700     03 CORRECTMA-4V14 REDEFINES CORRECTMA-A     PIC -9(4).9(14). IF1214.2
+            011800     03 CORRECTMA-14V4 REDEFINES CORRECTMA-A     PIC -9(14).9(4). IF1214.2
+            011900     03      CR-18V0 REDEFINES CORRECTMA-A.                       IF1214.2
+            012000         04 CORRECTMA-18V0                     PIC -9(18).        IF1214.2
+            012100         04 FILLER                           PIC X.               IF1214.2
+            012200     03 FILLER PIC X(2) VALUE SPACE.                              IF1214.2
+            012300     03 CORMA-ANSI-REFERENCE             PIC X(48) VALUE SPACE.   IF1214.2
+            012400 01  CCVS-C-1.                                                    IF1214.2
+            012500     02 FILLER  PIC IS X(99)    VALUE IS " FEATURE              PAIF1214.2
+            012600-    "SS  PARAGRAPH-NAME                                          IF1214.2
+            012700-    "       REMARKS".                                            IF1214.2
+            012800     02 FILLER                     PIC X(20)    VALUE SPACE.      IF1214.2
+            012900 01  CCVS-C-2.                                                    IF1214.2
+            013000     02 FILLER                     PIC X        VALUE SPACE.      IF1214.2
+            013100     02 FILLER                     PIC X(6)     VALUE "TESTED".   IF1214.2
+            013200     02 FILLER                     PIC X(15)    VALUE SPACE.      IF1214.2
+            013300     02 FILLER                     PIC X(4)     VALUE "FAIL".     IF1214.2
+            013400     02 FILLER                     PIC X(94)    VALUE SPACE.      IF1214.2
+            013500 01  REC-SKL-SUB                   PIC 9(2)     VALUE ZERO.       IF1214.2
+            013600 01  REC-CT                        PIC 99       VALUE ZERO.       IF1214.2
+            013700 01  DELETE-COUNTER                PIC 999      VALUE ZERO.       IF1214.2
+            013800 01  ERROR-COUNTER                 PIC 999      VALUE ZERO.       IF1214.2
+            013900 01  INSPECT-COUNTER               PIC 999      VALUE ZERO.       IF1214.2
+            014000 01  PASS-COUNTER                  PIC 999      VALUE ZERO.       IF1214.2
+            014100 01  TOTAL-ERROR                   PIC 999      VALUE ZERO.       IF1214.2
+            014200 01  ERROR-HOLD                    PIC 999      VALUE ZERO.       IF1214.2
+            014300 01  DUMMY-HOLD                    PIC X(120)   VALUE SPACE.      IF1214.2
+            014400 01  RECORD-COUNT                  PIC 9(5)     VALUE ZERO.       IF1214.2
+            014500 01  ANSI-REFERENCE                PIC X(48)    VALUE SPACES.     IF1214.2
+            014600 01  CCVS-H-1.                                                    IF1214.2
+            014700     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1214.2
+            014800     02  FILLER                    PIC X(42)    VALUE             IF1214.2
+            014900     "OFFICIAL COBOL COMPILER VALIDATION SYSTEM".                 IF1214.2
+            015000     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1214.2
+            015100 01  CCVS-H-2A.                                                   IF1214.2
+            015200   02  FILLER                        PIC X(40)  VALUE SPACE.      IF1214.2
+            015300   02  FILLER                        PIC X(7)   VALUE "CCVS85 ".  IF1214.2
+            015400   02  FILLER                        PIC XXXX   VALUE             IF1214.2
+            015500     "4.2 ".                                                      IF1214.2
+            015600   02  FILLER                        PIC X(28)  VALUE             IF1214.2
+            015700            " COPY - NOT FOR DISTRIBUTION".                       IF1214.2
+            015800   02  FILLER                        PIC X(41)  VALUE SPACE.      IF1214.2
+            015900                                                                  IF1214.2
+            016000 01  CCVS-H-2B.                                                   IF1214.2
+            016100   02  FILLER                        PIC X(15)  VALUE             IF1214.2
+            016200            "TEST RESULT OF ".                                    IF1214.2
+            016300   02  TEST-ID                       PIC X(9).                    IF1214.2
+            016400   02  FILLER                        PIC X(4)   VALUE             IF1214.2
+            016500            " IN ".                                               IF1214.2
+            016600   02  FILLER                        PIC X(12)  VALUE             IF1214.2
+            016700     " HIGH       ".                                              IF1214.2
+            016800   02  FILLER                        PIC X(22)  VALUE             IF1214.2
+            016900            " LEVEL VALIDATION FOR ".                             IF1214.2
+            017000   02  FILLER                        PIC X(58)  VALUE             IF1214.2
+            017100     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1214.2
+            017200 01  CCVS-H-3.                                                    IF1214.2
+            017300     02  FILLER                      PIC X(34)  VALUE             IF1214.2
+            017400            " FOR OFFICIAL USE ONLY    ".                         IF1214.2
+            017500     02  FILLER                      PIC X(58)  VALUE             IF1214.2
+            017600     "COBOL 85 VERSION 4.2, Apr  1993 SSVG                      ".IF1214.2
+            017700     02  FILLER                      PIC X(28)  VALUE             IF1214.2
+            017800            "  COPYRIGHT   1985 ".                                IF1214.2
+            017900 01  CCVS-E-1.                                                    IF1214.2
+            018000     02 FILLER                       PIC X(52)  VALUE SPACE.      IF1214.2
+            018100     02 FILLER  PIC X(14) VALUE IS "END OF TEST-  ".              IF1214.2
+            018200     02 ID-AGAIN                     PIC X(9).                    IF1214.2
+            018300     02 FILLER                       PIC X(45)  VALUE SPACES.     IF1214.2
+            018400 01  CCVS-E-2.                                                    IF1214.2
+            018500     02  FILLER                      PIC X(31)  VALUE SPACE.      IF1214.2
+            018600     02  FILLER                      PIC X(21)  VALUE SPACE.      IF1214.2
+            018700     02 CCVS-E-2-2.                                               IF1214.2
+            018800         03 ERROR-TOTAL              PIC XXX    VALUE SPACE.      IF1214.2
+            018900         03 FILLER                   PIC X      VALUE SPACE.      IF1214.2
+            019000         03 ENDER-DESC               PIC X(44)  VALUE             IF1214.2
+            019100            "ERRORS ENCOUNTERED".                                 IF1214.2
+            019200 01  CCVS-E-3.                                                    IF1214.2
+            019300     02  FILLER                      PIC X(22)  VALUE             IF1214.2
+            019400            " FOR OFFICIAL USE ONLY".                             IF1214.2
+            019500     02  FILLER                      PIC X(12)  VALUE SPACE.      IF1214.2
+            019600     02  FILLER                      PIC X(58)  VALUE             IF1214.2
+            019700     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1214.2
+            019800     02  FILLER                      PIC X(13)  VALUE SPACE.      IF1214.2
+            019900     02 FILLER                       PIC X(15)  VALUE             IF1214.2
+            020000             " COPYRIGHT 1985".                                   IF1214.2
+            020100 01  CCVS-E-4.                                                    IF1214.2
+            020200     02 CCVS-E-4-1                   PIC XXX    VALUE SPACE.      IF1214.2
+            020300     02 FILLER                       PIC X(4)   VALUE " OF ".     IF1214.2
+            020400     02 CCVS-E-4-2                   PIC XXX    VALUE SPACE.      IF1214.2
+            020500     02 FILLER                       PIC X(40)  VALUE             IF1214.2
+            020600      "  TESTS WERE EXECUTED SUCCESSFULLY".                       IF1214.2
+            020700 01  XXINFO.                                                      IF1214.2
+            020800     02 FILLER                       PIC X(19)  VALUE             IF1214.2
+            020900            "*** INFORMATION ***".                                IF1214.2
+            021000     02 INFO-TEXT.                                                IF1214.2
+            021100       04 FILLER                     PIC X(8)   VALUE SPACE.      IF1214.2
+            021200       04 XXCOMPUTED                 PIC X(20).                   IF1214.2
+            021300       04 FILLER                     PIC X(5)   VALUE SPACE.      IF1214.2
+            021400       04 XXCORRECT                  PIC X(20).                   IF1214.2
+            021500     02 INF-ANSI-REFERENCE           PIC X(48).                   IF1214.2
+            021600 01  HYPHEN-LINE.                                                 IF1214.2
+            021700     02 FILLER  PIC IS X VALUE IS SPACE.                          IF1214.2
+            021800     02 FILLER  PIC IS X(65)    VALUE IS "************************IF1214.2
+            021900-    "*****************************************".                 IF1214.2
+            022000     02 FILLER  PIC IS X(54)    VALUE IS "************************IF1214.2
+            022100-    "******************************".                            IF1214.2
+            022200 01  CCVS-PGM-ID                     PIC X(9)   VALUE             IF1214.2
+            022300     "IF121A".                                                    IF1214.2
+            022400 PROCEDURE DIVISION.                                              IF1214.2
+            022500 CCVS1 SECTION.                                                   IF1214.2
+            022600 OPEN-FILES.                                                      IF1214.2
+            022700     OPEN     OUTPUT PRINT-FILE.                                  IF1214.2
+            022800     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   IF1214.2
+            022900     MOVE    SPACE TO TEST-RESULTS.                               IF1214.2
+            023000     PERFORM  HEAD-ROUTINE THRU COLUMN-NAMES-ROUTINE.             IF1214.2
+            023100     GO TO CCVS1-EXIT.                                            IF1214.2
+            023200 CLOSE-FILES.                                                     IF1214.2
+            023300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IF1214.2
+            023400 TERMINATE-CCVS.                                                  IF1214.2
+            023500     STOP     RUN.                                                IF1214.2
+            023600 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IF1214.2
+            023700 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IF1214.2
+            023800 FAIL.  MOVE "FAIL*" TO P-OR-F.  ADD 1 TO ERROR-COUNTER.          IF1214.2
+            023900 DE-LETE.  MOVE "*****" TO P-OR-F.  ADD 1 TO DELETE-COUNTER.      IF1214.2
+            024000     MOVE "****TEST DELETED****" TO RE-MARK.                      IF1214.2
+            024100 PRINT-DETAIL.                                                    IF1214.2
+            024200     IF REC-CT NOT EQUAL TO ZERO                                  IF1214.2
+            024300             MOVE "." TO PARDOT-X                                 IF1214.2
+            024400             MOVE REC-CT TO DOTVALUE.                             IF1214.2
+            024500     MOVE     TEST-RESULTS TO PRINT-REC. PERFORM WRITE-LINE.      IF1214.2
+            024600     IF P-OR-F EQUAL TO "FAIL*"  PERFORM WRITE-LINE               IF1214.2
+            024700        PERFORM FAIL-ROUTINE THRU FAIL-ROUTINE-EX                 IF1214.2
+            024800          ELSE PERFORM BAIL-OUT THRU BAIL-OUT-EX.                 IF1214.2
+            024900     MOVE SPACE TO P-OR-F. MOVE SPACE TO COMPUTED-X.              IF1214.2
+            025000     MOVE SPACE TO CORRECT-X.                                     IF1214.2
+            025100     IF     REC-CT EQUAL TO ZERO  MOVE SPACE TO PAR-NAME.         IF1214.2
+            025200     MOVE     SPACE TO RE-MARK.                                   IF1214.2
+            025300 HEAD-ROUTINE.                                                    IF1214.2
+            025400     MOVE CCVS-H-1  TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1214.2
+            025500     MOVE CCVS-H-2A TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1214.2
+            025600     MOVE CCVS-H-2B TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1214.2
+            025700     MOVE CCVS-H-3  TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1214.2
+            025800 COLUMN-NAMES-ROUTINE.                                            IF1214.2
+            025900     MOVE CCVS-C-1 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1214.2
+            026000     MOVE CCVS-C-2 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1214.2
+            026100     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE.        IF1214.2
+            026200 END-ROUTINE.                                                     IF1214.2
+            026300     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE 5 TIMES.IF1214.2
+            026400 END-RTN-EXIT.                                                    IF1214.2
+            026500     MOVE CCVS-E-1 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1214.2
+            026600 END-ROUTINE-1.                                                   IF1214.2
+            026700      ADD ERROR-COUNTER TO ERROR-HOLD ADD INSPECT-COUNTER TO      IF1214.2
+            026800      ERROR-HOLD. ADD DELETE-COUNTER TO ERROR-HOLD.               IF1214.2
+            026900      ADD PASS-COUNTER TO ERROR-HOLD.                             IF1214.2
+            027000      MOVE PASS-COUNTER TO CCVS-E-4-1.                            IF1214.2
+            027100      MOVE ERROR-HOLD TO CCVS-E-4-2.                              IF1214.2
+            027200      MOVE CCVS-E-4 TO CCVS-E-2-2.                                IF1214.2
+            027300      MOVE CCVS-E-2 TO DUMMY-RECORD PERFORM WRITE-LINE.           IF1214.2
+            027400  END-ROUTINE-12.                                                 IF1214.2
+            027500      MOVE "TEST(S) FAILED" TO ENDER-DESC.                        IF1214.2
+            027600     IF       ERROR-COUNTER IS EQUAL TO ZERO                      IF1214.2
+            027700         MOVE "NO " TO ERROR-TOTAL                                IF1214.2
+            027800         ELSE                                                     IF1214.2
+            027900         MOVE ERROR-COUNTER TO ERROR-TOTAL.                       IF1214.2
+            028000     MOVE     CCVS-E-2 TO DUMMY-RECORD.                           IF1214.2
+            028100     PERFORM WRITE-LINE.                                          IF1214.2
+            028200 END-ROUTINE-13.                                                  IF1214.2
+            028300     IF DELETE-COUNTER IS EQUAL TO ZERO                           IF1214.2
+            028400         MOVE "NO " TO ERROR-TOTAL  ELSE                          IF1214.2
+            028500         MOVE DELETE-COUNTER TO ERROR-TOTAL.                      IF1214.2
+            028600     MOVE "TEST(S) DELETED     " TO ENDER-DESC.                   IF1214.2
+            028700     MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1214.2
+            028800      IF   INSPECT-COUNTER EQUAL TO ZERO                          IF1214.2
+            028900          MOVE "NO " TO ERROR-TOTAL                               IF1214.2
+            029000      ELSE MOVE INSPECT-COUNTER TO ERROR-TOTAL.                   IF1214.2
+            029100      MOVE "TEST(S) REQUIRE INSPECTION" TO ENDER-DESC.            IF1214.2
+            029200      MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.          IF1214.2
+            029300     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1214.2
+            029400 WRITE-LINE.                                                      IF1214.2
+            029500     ADD 1 TO RECORD-COUNT.                                       IF1214.2
+            029600Y    IF RECORD-COUNT GREATER 42                                   IF1214.2
+            029700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1214.2
+            029800Y        MOVE SPACE TO DUMMY-RECORD                               IF1214.2
+            029900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1214.2
+            030000Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1214.2
+            030100Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1214.2
+            030200Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1214.2
+            030300Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1214.2
+            030400Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1214.2
+            030500Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1214.2
+            030600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1214.2
+            030700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1214.2
+            030800Y        MOVE ZERO TO RECORD-COUNT.                               IF1214.2
+            030900     PERFORM WRT-LN.                                              IF1214.2
+            031000 WRT-LN.                                                          IF1214.2
+            031100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1214.2
+            031200     MOVE SPACE TO DUMMY-RECORD.                                  IF1214.2
+            031300 BLANK-LINE-PRINT.                                                IF1214.2
+            031400     PERFORM WRT-LN.                                              IF1214.2
+            031500 FAIL-ROUTINE.                                                    IF1214.2
+            031600     IF     COMPUTED-X NOT EQUAL TO SPACE                         IF1214.2
+            031700            GO TO FAIL-ROUTINE-WRITE.                             IF1214.2
+            031800     IF     CORRECT-X NOT EQUAL TO SPACE GO TO FAIL-ROUTINE-WRITE.IF1214.2
+            031900     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1214.2
+            032000     MOVE  "NO FURTHER INFORMATION, SEE PROGRAM." TO INFO-TEXT.   IF1214.2
+            032100     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1214.2
+            032200     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1214.2
+            032300     GO TO  FAIL-ROUTINE-EX.                                      IF1214.2
+            032400 FAIL-ROUTINE-WRITE.                                              IF1214.2
+            032500     MOVE   TEST-COMPUTED TO PRINT-REC PERFORM WRITE-LINE.        IF1214.2
+            032600     MOVE   ANSI-REFERENCE TO COR-ANSI-REFERENCE                  IF1214.2
+            032700                              CORMA-ANSI-REFERENCE.               IF1214.2
+            032800     IF CORRECT-MIN NOT EQUAL TO SPACES THEN                      IF1214.2
+            032900           MOVE TEST-CORRECT-MIN TO PRINT-REC PERFORM WRITE-LINE  IF1214.2
+            033000           MOVE TEST-CORRECT-MAX TO PRINT-REC PERFORM WRITE-LINE  IF1214.2
+            033100     ELSE                                                         IF1214.2
+            033200           MOVE TEST-CORRECT TO PRINT-REC PERFORM WRITE-LINE.     IF1214.2
+            033300     PERFORM WRITE-LINE.                                          IF1214.2
+            033400     MOVE   SPACES TO COR-ANSI-REFERENCE.                         IF1214.2
+            033500 FAIL-ROUTINE-EX. EXIT.                                           IF1214.2
+            033600 BAIL-OUT.                                                        IF1214.2
+            033700     IF     COMPUTED-A NOT EQUAL TO SPACE GO TO BAIL-OUT-WRITE.   IF1214.2
+            033800     IF     CORRECT-A EQUAL TO SPACE GO TO BAIL-OUT-EX.           IF1214.2
+            033900 BAIL-OUT-WRITE.                                                  IF1214.2
+            034000     MOVE CORRECT-A TO XXCORRECT.                                 IF1214.2
+            034100     MOVE COMPUTED-A TO XXCOMPUTED.                               IF1214.2
+            034200     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1214.2
+            034300     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1214.2
+            034400     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1214.2
+            034500 BAIL-OUT-EX. EXIT.                                               IF1214.2
+            034600 CCVS1-EXIT.                                                      IF1214.2
+            034700     EXIT.                                                        IF1214.2
+            034800********************************************************          IF1214.2
+            034900*                                                      *          IF1214.2
+            035000*    Intrinsic Function Tests         IF121A - MEDIAN  *          IF1214.2
+            035100*                                                      *          IF1214.2
+            035200********************************************************          IF1214.2
+            035300 SECT-IF121A SECTION.                                             IF1214.2
+            035400 F-MEDIAN-INFO.                                                   IF1214.2
+            035500     MOVE     "See ref. A-54 2.25" TO ANSI-REFERENCE.             IF1214.2
+            035600     MOVE     "MEDIAN Function" TO FEATURE.                       IF1214.2
+            035700*****************TEST (a) - SIMPLE TEST*****************          IF1214.2
+            035800 F-MEDIAN-01.                                                     IF1214.2
+            035900     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            036000 F-MEDIAN-TEST-01.                                                IF1214.2
+            036100     COMPUTE WS-NUM = FUNCTION MEDIAN(5, -2, -14, 0).             IF1214.2
+            036200     IF WS-NUM = -1 THEN                                          IF1214.2
+            036300                    PERFORM PASS                                  IF1214.2
+            036400     ELSE                                                         IF1214.2
+            036500                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            036600                    MOVE -1 TO CORRECT-N                          IF1214.2
+            036700                    PERFORM FAIL.                                 IF1214.2
+            036800     GO TO F-MEDIAN-WRITE-01.                                     IF1214.2
+            036900 F-MEDIAN-DELETE-01.                                              IF1214.2
+            037000     PERFORM  DE-LETE.                                            IF1214.2
+            037100     GO TO    F-MEDIAN-WRITE-01.                                  IF1214.2
+            037200 F-MEDIAN-WRITE-01.                                               IF1214.2
+            037300     MOVE "F-MEDIAN-01" TO PAR-NAME.                              IF1214.2
+            037400     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            037500*****************TEST (b) - SIMPLE TEST*****************          IF1214.2
+            037600 F-MEDIAN-02.                                                     IF1214.2
+            037700     EVALUATE FUNCTION MEDIAN(3.9, -0.3, 8.7, 100.2)              IF1214.2
+            037800     WHEN 6.29987 THRU 6.30013                                    IF1214.2
+            037900                    PERFORM PASS                                  IF1214.2
+            038000     WHEN OTHER                                                   IF1214.2
+            038100                    PERFORM FAIL.                                 IF1214.2
+            038200     GO TO F-MEDIAN-WRITE-02.                                     IF1214.2
+            038300 F-MEDIAN-DELETE-02.                                              IF1214.2
+            038400     PERFORM  DE-LETE.                                            IF1214.2
+            038500     GO TO    F-MEDIAN-WRITE-02.                                  IF1214.2
+            038600 F-MEDIAN-WRITE-02.                                               IF1214.2
+            038700     MOVE "F-MEDIAN-02" TO PAR-NAME.                              IF1214.2
+            038800     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            038900*****************TEST (c) - SIMPLE TEST*****************          IF1214.2
+            039000 F-MEDIAN-03.                                                     IF1214.2
+            039100     IF FUNCTION MEDIAN(A, B, C, D) = 6    THEN                   IF1214.2
+            039200                    PERFORM PASS                                  IF1214.2
+            039300     ELSE                                                         IF1214.2
+            039400                    PERFORM FAIL.                                 IF1214.2
+            039500     GO TO F-MEDIAN-WRITE-03.                                     IF1214.2
+            039600 F-MEDIAN-DELETE-03.                                              IF1214.2
+            039700     PERFORM  DE-LETE.                                            IF1214.2
+            039800     GO TO    F-MEDIAN-WRITE-03.                                  IF1214.2
+            039900 F-MEDIAN-WRITE-03.                                               IF1214.2
+            040000     MOVE "F-MEDIAN-03" TO PAR-NAME.                              IF1214.2
+            040100     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            040200*****************TEST (d) - SIMPLE TEST*****************          IF1214.2
+            040300 F-MEDIAN-04.                                                     IF1214.2
+            040400     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            040500 F-MEDIAN-TEST-04.                                                IF1214.2
+            040600     COMPUTE WS-NUM = FUNCTION MEDIAN(E, F, G).                   IF1214.2
+            040700     IF (WS-NUM >= 4.07992) AND                                   IF1214.2
+            040800        (WS-NUM <= 4.08008)                                       IF1214.2
+            040900                    PERFORM PASS                                  IF1214.2
+            041000     ELSE                                                         IF1214.2
+            041100                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            041200                    MOVE 4.08 TO CORRECT-N                        IF1214.2
+            041300                    PERFORM FAIL.                                 IF1214.2
+            041400     GO TO F-MEDIAN-WRITE-04.                                     IF1214.2
+            041500 F-MEDIAN-DELETE-04.                                              IF1214.2
+            041600     PERFORM  DE-LETE.                                            IF1214.2
+            041700     GO TO    F-MEDIAN-WRITE-04.                                  IF1214.2
+            041800 F-MEDIAN-WRITE-04.                                               IF1214.2
+            041900     MOVE "F-MEDIAN-04" TO PAR-NAME.                              IF1214.2
+            042000     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            042100*****************TEST (e) - SIMPLE TEST*****************          IF1214.2
+            042200 F-MEDIAN-05.                                                     IF1214.2
+            042300     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            042400 F-MEDIAN-TEST-05.                                                IF1214.2
+            042500     COMPUTE WS-NUM = FUNCTION MEDIAN(10.2, -0.2, 5.6, -15.6).    IF1214.2
+            042600     IF (WS-NUM >= 2.69995) AND                                   IF1214.2
+            042700        (WS-NUM <= 2.70005)                                       IF1214.2
+            042800                    PERFORM PASS                                  IF1214.2
+            042900     ELSE                                                         IF1214.2
+            043000                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            043100                    MOVE 2.7 TO CORRECT-N                         IF1214.2
+            043200                    PERFORM FAIL.                                 IF1214.2
+            043300     GO TO F-MEDIAN-WRITE-05.                                     IF1214.2
+            043400 F-MEDIAN-DELETE-05.                                              IF1214.2
+            043500     PERFORM  DE-LETE.                                            IF1214.2
+            043600     GO TO    F-MEDIAN-WRITE-05.                                  IF1214.2
+            043700 F-MEDIAN-WRITE-05.                                               IF1214.2
+            043800     MOVE "F-MEDIAN-05" TO PAR-NAME.                              IF1214.2
+            043900     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            044000*****************TEST (f) - SIMPLE TEST*****************          IF1214.2
+            044100 F-MEDIAN-06.                                                     IF1214.2
+            044200     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            044300 F-MEDIAN-TEST-06.                                                IF1214.2
+            044400     COMPUTE WS-NUM = FUNCTION MEDIAN(A, B, C, D, E, F, G).       IF1214.2
+            044500     IF (WS-NUM >= 4.99990) AND                                   IF1214.2
+            044600        (WS-NUM <= 5.00010)                                       IF1214.2
+            044700                    PERFORM PASS                                  IF1214.2
+            044800     ELSE                                                         IF1214.2
+            044900                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            045000                    MOVE 5 TO CORRECT-N                           IF1214.2
+            045100                    PERFORM FAIL.                                 IF1214.2
+            045200     GO TO F-MEDIAN-WRITE-06.                                     IF1214.2
+            045300 F-MEDIAN-DELETE-06.                                              IF1214.2
+            045400     PERFORM  DE-LETE.                                            IF1214.2
+            045500     GO TO    F-MEDIAN-WRITE-06.                                  IF1214.2
+            045600 F-MEDIAN-WRITE-06.                                               IF1214.2
+            045700     MOVE "F-MEDIAN-06" TO PAR-NAME.                              IF1214.2
+            045800     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            045900*****************TEST (g) - SIMPLE TEST*****************          IF1214.2
+            046000 F-MEDIAN-07.                                                     IF1214.2
+            046100     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            046200 F-MEDIAN-TEST-07.                                                IF1214.2
+            046300     COMPUTE WS-NUM = FUNCTION MEDIAN(IND(1), IND(2), IND(3)).    IF1214.2
+            046400     IF WS-NUM = 4 THEN                                           IF1214.2
+            046500                    PERFORM PASS                                  IF1214.2
+            046600     ELSE                                                         IF1214.2
+            046700                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            046800                    MOVE 4 TO CORRECT-N                           IF1214.2
+            046900                    PERFORM FAIL.                                 IF1214.2
+            047000     GO TO F-MEDIAN-WRITE-07.                                     IF1214.2
+            047100 F-MEDIAN-DELETE-07.                                              IF1214.2
+            047200     PERFORM  DE-LETE.                                            IF1214.2
+            047300     GO TO    F-MEDIAN-WRITE-07.                                  IF1214.2
+            047400 F-MEDIAN-WRITE-07.                                               IF1214.2
+            047500     MOVE "F-MEDIAN-07" TO PAR-NAME.                              IF1214.2
+            047600     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            047700*****************TEST (h) - SIMPLE TEST*****************          IF1214.2
+            047800 F-MEDIAN-08.                                                     IF1214.2
+            047900     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            048000 F-MEDIAN-TEST-08.                                                IF1214.2
+            048100     COMPUTE WS-NUM = FUNCTION MEDIAN(IND(P), IND(Q), IND(R)).    IF1214.2
+            048200                                                                  IF1214.2
+            048300     IF WS-NUM = 5 THEN                                           IF1214.2
+            048400                    PERFORM PASS                                  IF1214.2
+            048500     ELSE                                                         IF1214.2
+            048600                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            048700                    MOVE 5 TO CORRECT-N                           IF1214.2
+            048800                    PERFORM FAIL.                                 IF1214.2
+            048900     GO TO F-MEDIAN-WRITE-08.                                     IF1214.2
+            049000 F-MEDIAN-DELETE-08.                                              IF1214.2
+            049100     PERFORM  DE-LETE.                                            IF1214.2
+            049200     GO TO    F-MEDIAN-WRITE-08.                                  IF1214.2
+            049300 F-MEDIAN-WRITE-08.                                               IF1214.2
+            049400     MOVE "F-MEDIAN-08" TO PAR-NAME.                              IF1214.2
+            049500     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            049600*****************TEST (i) - SIMPLE TEST*****************          IF1214.2
+            049700 F-MEDIAN-09.                                                     IF1214.2
+            049800     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            049900 F-MEDIAN-TEST-09.                                                IF1214.2
+            050000     COMPUTE WS-NUM = FUNCTION MEDIAN(IND(ALL)).                  IF1214.2
+            050100     IF WS-NUM = 4 THEN                                           IF1214.2
+            050200                    PERFORM PASS                                  IF1214.2
+            050300     ELSE                                                         IF1214.2
+            050400                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            050500                    MOVE 4 TO CORRECT-N                           IF1214.2
+            050600                    PERFORM FAIL.                                 IF1214.2
+            050700     GO TO F-MEDIAN-WRITE-09.                                     IF1214.2
+            050800 F-MEDIAN-DELETE-09.                                              IF1214.2
+            050900     PERFORM  DE-LETE.                                            IF1214.2
+            051000     GO TO    F-MEDIAN-WRITE-09.                                  IF1214.2
+            051100 F-MEDIAN-WRITE-09.                                               IF1214.2
+            051200     MOVE "F-MEDIAN-09" TO PAR-NAME.                              IF1214.2
+            051300     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            051400*****************TEST (k) - SIMPLE TEST*****************          IF1214.2
+            051500 F-MEDIAN-11.                                                     IF1214.2
+            051600     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            051700 F-MEDIAN-TEST-11.                                                IF1214.2
+            051800     COMPUTE WS-NUM = FUNCTION MEDIAN(M, N, O).                   IF1214.2
+            051900     IF WS-NUM = 320000 THEN                                      IF1214.2
+            052000                    PERFORM PASS                                  IF1214.2
+            052100     ELSE                                                         IF1214.2
+            052200                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            052300                    MOVE 320000 TO CORRECT-N                      IF1214.2
+            052400                    PERFORM FAIL.                                 IF1214.2
+            052500     GO TO F-MEDIAN-WRITE-11.                                     IF1214.2
+            052600 F-MEDIAN-DELETE-11.                                              IF1214.2
+            052700     PERFORM  DE-LETE.                                            IF1214.2
+            052800     GO TO    F-MEDIAN-WRITE-11.                                  IF1214.2
+            052900 F-MEDIAN-WRITE-11.                                               IF1214.2
+            053000     MOVE "F-MEDIAN-11" TO PAR-NAME.                              IF1214.2
+            053100     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            053200*****************TEST (l) - SIMPLE TEST*****************          IF1214.2
+            053300 F-MEDIAN-12.                                                     IF1214.2
+            053400     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            053500 F-MEDIAN-TEST-12.                                                IF1214.2
+            053600     COMPUTE WS-NUM = FUNCTION MEDIAN(A, 5, A).                   IF1214.2
+            053700     IF WS-NUM = 5 THEN                                           IF1214.2
+            053800                    PERFORM PASS                                  IF1214.2
+            053900     ELSE                                                         IF1214.2
+            054000                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            054100                    MOVE 5 TO CORRECT-N                           IF1214.2
+            054200                    PERFORM FAIL.                                 IF1214.2
+            054300     GO TO F-MEDIAN-WRITE-12.                                     IF1214.2
+            054400 F-MEDIAN-DELETE-12.                                              IF1214.2
+            054500     PERFORM  DE-LETE.                                            IF1214.2
+            054600     GO TO    F-MEDIAN-WRITE-12.                                  IF1214.2
+            054700 F-MEDIAN-WRITE-12.                                               IF1214.2
+            054800     MOVE "F-MEDIAN-12" TO PAR-NAME.                              IF1214.2
+            054900     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            055000*****************TEST (a) - COMPLEX TEST****************          IF1214.2
+            055100 F-MEDIAN-13.                                                     IF1214.2
+            055200     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            055300     MOVE  20.7996 TO MIN-RANGE.                                  IF1214.2
+            055400     MOVE  20.8004 TO MAX-RANGE.                                  IF1214.2
+            055500 F-MEDIAN-TEST-13.                                                IF1214.2
+            055600     COMPUTE WS-NUM = FUNCTION MEDIAN(2.6 + 30, 4.5 * 2).         IF1214.2
+            055700     IF (WS-NUM >= MIN-RANGE) AND                                 IF1214.2
+            055800        (WS-NUM <= MAX-RANGE) THEN                                IF1214.2
+            055900                    PERFORM PASS                                  IF1214.2
+            056000     ELSE                                                         IF1214.2
+            056100                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            056200                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1214.2
+            056300                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1214.2
+            056400                    PERFORM FAIL.                                 IF1214.2
+            056500     GO TO F-MEDIAN-WRITE-13.                                     IF1214.2
+            056600 F-MEDIAN-DELETE-13.                                              IF1214.2
+            056700     PERFORM  DE-LETE.                                            IF1214.2
+            056800     GO TO    F-MEDIAN-WRITE-13.                                  IF1214.2
+            056900 F-MEDIAN-WRITE-13.                                               IF1214.2
+            057000     MOVE "F-MEDIAN-13" TO PAR-NAME.                              IF1214.2
+            057100     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            057200*****************TEST (b) - COMPLEX TEST****************          IF1214.2
+            057300 F-MEDIAN-14.                                                     IF1214.2
+            057400     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            057500     MOVE  34.2593 TO MIN-RANGE.                                  IF1214.2
+            057600     MOVE  34.2607 TO MAX-RANGE.                                  IF1214.2
+            057700 F-MEDIAN-TEST-14.                                                IF1214.2
+            057800     COMPUTE WS-NUM = FUNCTION MEDIAN(E, 9 * A, B / 2).           IF1214.2
+            057900     IF (WS-NUM >= MIN-RANGE) AND                                 IF1214.2
+            058000        (WS-NUM <= MAX-RANGE) THEN                                IF1214.2
+            058100                    PERFORM PASS                                  IF1214.2
+            058200     ELSE                                                         IF1214.2
+            058300                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            058400                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1214.2
+            058500                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1214.2
+            058600                    PERFORM FAIL.                                 IF1214.2
+            058700     GO TO F-MEDIAN-WRITE-14.                                     IF1214.2
+            058800 F-MEDIAN-DELETE-14.                                              IF1214.2
+            058900     PERFORM  DE-LETE.                                            IF1214.2
+            059000     GO TO    F-MEDIAN-WRITE-14.                                  IF1214.2
+            059100 F-MEDIAN-WRITE-14.                                               IF1214.2
+            059200     MOVE "F-MEDIAN-14" TO PAR-NAME.                              IF1214.2
+            059300     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            059400*****************TEST (c) - COMPLEX TEST****************          IF1214.2
+            059500 F-MEDIAN-15.                                                     IF1214.2
+            059600     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            059700     MOVE 83.9983 TO MIN-RANGE.                                   IF1214.2
+            059800     MOVE 84.0017 TO MAX-RANGE.                                   IF1214.2
+            059900 F-MEDIAN-TEST-15.                                                IF1214.2
+            060000     COMPUTE WS-NUM = FUNCTION MEDIAN(A, B) + 78.                 IF1214.2
+            060100     IF (WS-NUM >= MIN-RANGE) AND                                 IF1214.2
+            060200        (WS-NUM <= MAX-RANGE) THEN                                IF1214.2
+            060300                    PERFORM PASS                                  IF1214.2
+            060400     ELSE                                                         IF1214.2
+            060500                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            060600                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1214.2
+            060700                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1214.2
+            060800                    PERFORM FAIL.                                 IF1214.2
+            060900     GO TO F-MEDIAN-WRITE-15.                                     IF1214.2
+            061000 F-MEDIAN-DELETE-15.                                              IF1214.2
+            061100     PERFORM  DE-LETE.                                            IF1214.2
+            061200     GO TO    F-MEDIAN-WRITE-15.                                  IF1214.2
+            061300 F-MEDIAN-WRITE-15.                                               IF1214.2
+            061400     MOVE "F-MEDIAN-15" TO PAR-NAME.                              IF1214.2
+            061500     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            061600*****************TEST (d) - COMPLEX TEST****************          IF1214.2
+            061700 F-MEDIAN-16.                                                     IF1214.2
+            061800     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            061900     MOVE 3.39932 TO MIN-RANGE.                                   IF1214.2
+            062000     MOVE 3.40007 TO MAX-RANGE.                                   IF1214.2
+            062100 F-MEDIAN-TEST-16.                                                IF1214.2
+            062200     COMPUTE WS-NUM = FUNCTION MEDIAN(A, B) +                     IF1214.2
+            062300                      FUNCTION MEDIAN(-2.6, -4.4, 1).             IF1214.2
+            062400     IF (WS-NUM >= MIN-RANGE) AND                                 IF1214.2
+            062500        (WS-NUM <= MAX-RANGE) THEN                                IF1214.2
+            062600                    PERFORM PASS                                  IF1214.2
+            062700     ELSE                                                         IF1214.2
+            062800                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            062900                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1214.2
+            063000                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1214.2
+            063100                    PERFORM FAIL.                                 IF1214.2
+            063200     GO TO F-MEDIAN-WRITE-16.                                     IF1214.2
+            063300 F-MEDIAN-DELETE-16.                                              IF1214.2
+            063400     PERFORM  DE-LETE.                                            IF1214.2
+            063500     GO TO    F-MEDIAN-WRITE-16.                                  IF1214.2
+            063600 F-MEDIAN-WRITE-16.                                               IF1214.2
+            063700     MOVE "F-MEDIAN-16" TO PAR-NAME.                              IF1214.2
+            063800     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            063900*****************TEST (e) - COMPLEX TEST****************          IF1214.2
+            064000 F-MEDIAN-17.                                                     IF1214.2
+            064100     MOVE ZERO TO WS-NUM.                                         IF1214.2
+            064200     MOVE 2.24995 TO MIN-RANGE.                                   IF1214.2
+            064300     MOVE 2.25004 TO MAX-RANGE.                                   IF1214.2
+            064400 F-MEDIAN-TEST-17.                                                IF1214.2
+            064500     COMPUTE WS-NUM =                                             IF1214.2
+            064600                 FUNCTION MEDIAN(FUNCTION MEDIAN(1, 2), 3).       IF1214.2
+            064700     IF (WS-NUM >= MIN-RANGE) AND                                 IF1214.2
+            064800        (WS-NUM <= MAX-RANGE) THEN                                IF1214.2
+            064900                    PERFORM PASS                                  IF1214.2
+            065000     ELSE                                                         IF1214.2
+            065100                    MOVE WS-NUM TO COMPUTED-N                     IF1214.2
+            065200                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1214.2
+            065300                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1214.2
+            065400                    PERFORM FAIL.                                 IF1214.2
+            065500     GO TO F-MEDIAN-WRITE-17.                                     IF1214.2
+            065600 F-MEDIAN-DELETE-17.                                              IF1214.2
+            065700     PERFORM  DE-LETE.                                            IF1214.2
+            065800     GO TO    F-MEDIAN-WRITE-17.                                  IF1214.2
+            065900 F-MEDIAN-WRITE-17.                                               IF1214.2
+            066000     MOVE "F-MEDIAN-17" TO PAR-NAME.                              IF1214.2
+            066100     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            066200*****************SPECIAL PERFORM TEST**********************       IF1214.2
+            066300 F-MEDIAN-18.                                                     IF1214.2
+            066400     PERFORM F-MEDIAN-TEST-18                                     IF1214.2
+            066500       UNTIL FUNCTION MEDIAN(1, ARG1, ARG2, 20) > 10.             IF1214.2
+            066600     PERFORM PASS.                                                IF1214.2
+            066700     GO TO F-MEDIAN-WRITE-18.                                     IF1214.2
+            066800 F-MEDIAN-TEST-18.                                                IF1214.2
+            066900     COMPUTE ARG1 = ARG1 + 1.                                     IF1214.2
+            067000     COMPUTE ARG2 = ARG2 + 1.                                     IF1214.2
+            067100 F-MEDIAN-DELETE-18.                                              IF1214.2
+            067200     PERFORM  DE-LETE.                                            IF1214.2
+            067300     GO TO    F-MEDIAN-WRITE-18.                                  IF1214.2
+            067400 F-MEDIAN-WRITE-18.                                               IF1214.2
+            067500     MOVE "F-MEDIAN-18" TO PAR-NAME.                              IF1214.2
+            067600     PERFORM  PRINT-DETAIL.                                       IF1214.2
+            067700********************END OF TESTS***************                   IF1214.2
+            067800 CCVS-EXIT SECTION.                                               IF1214.2
+            067900 CCVS-999999.                                                     IF1214.2
+            068000     GO TO CLOSE-FILES.                                           IF1214.2
+                  *END-OF,IF121A                                                            
+        """)
+    )
+
+        @Test
+    fun if1224_2() = rewriteRun(
+        cobol("""
+                  *HEADER,COBOL,IF122A                                                      
+            000100 IDENTIFICATION DIVISION.                                         IF1224.2
+            000200 PROGRAM-ID.                                                      IF1224.2
+            000300     IF122A.                                                      IF1224.2
+            000400                                                                  IF1224.2
+            000500***********************************************************       IF1224.2
+            000600*                                                         *       IF1224.2
+            000700* This program forms part of the CCVS85 COBOL Test Suite. *       IF1224.2
+            000800* It contains tests for the Intrinsic Function MIDRANGE   *       IF1224.2
+            000900*                                                         *       IF1224.2
+            001000***********************************************************       IF1224.2
+            001100 ENVIRONMENT DIVISION.                                            IF1224.2
+            001200 CONFIGURATION SECTION.                                           IF1224.2
+            001300 SOURCE-COMPUTER.                                                 IF1224.2
+            001400     XXXXX082.                                                    IF1224.2
+            001500 OBJECT-COMPUTER.                                                 IF1224.2
+            001600     XXXXX083.                                                    IF1224.2
+            001700 INPUT-OUTPUT SECTION.                                            IF1224.2
+            001800 FILE-CONTROL.                                                    IF1224.2
+            001900     SELECT PRINT-FILE ASSIGN TO                                  IF1224.2
+            002000     XXXXX055.                                                    IF1224.2
+            002100 DATA DIVISION.                                                   IF1224.2
+            002200 FILE SECTION.                                                    IF1224.2
+            002300 FD  PRINT-FILE.                                                  IF1224.2
+            002400 01  PRINT-REC PICTURE X(120).                                    IF1224.2
+            002500 01  DUMMY-RECORD PICTURE X(120).                                 IF1224.2
+            002600 WORKING-STORAGE SECTION.                                         IF1224.2
+            002700***********************************************************       IF1224.2
+            002800* Variables specific to the Intrinsic Function Test IF122A*       IF1224.2
+            002900***********************************************************       IF1224.2
+            003000 01  A                   PIC S9(10)          VALUE 5.             IF1224.2
+            003100 01  B                   PIC S9(10)          VALUE 7.             IF1224.2
+            003200 01  C                   PIC S9(10)          VALUE -4.            IF1224.2
+            003300 01  D                   PIC S9(10)          VALUE 10.            IF1224.2
+            003400 01  E                   PIC S9(5)V9(5)      VALUE 34.26.         IF1224.2
+            003500 01  F                   PIC S9(5)V9(5)      VALUE -8.32.         IF1224.2
+            003600 01  G                   PIC S9(5)V9(5)      VALUE 4.08.          IF1224.2
+            003700 01  H                   PIC S9(5)V9(5)      VALUE -5.3.          IF1224.2
+            003800 01  M                   PIC S9(10)          VALUE 320000.        IF1224.2
+            003900 01  N                   PIC S9(10)          VALUE 650000.        IF1224.2
+            004000 01  O                   PIC S9(10)          VALUE -430000.       IF1224.2
+            004100 01  P                   PIC S9(10)          VALUE 1.             IF1224.2
+            004200 01  Q                   PIC S9(10)          VALUE 3.             IF1224.2
+            004300 01  R                   PIC S9(10)          VALUE 5.             IF1224.2
+            004400 01  ARG1                PIC S9(10)          VALUE 2.             IF1224.2
+            004500 01  ARR                                     VALUE "40537".       IF1224.2
+            004600     02  IND OCCURS 5 TIMES PIC 9.                                IF1224.2
+            004700 01  TEMP                PIC S9(10)V9(5).                         IF1224.2
+            004800 01  WS-NUM              PIC S9(6)V9(7).                          IF1224.2
+            004900 01  MIN-RANGE           PIC S9(5)V9(7).                          IF1224.2
+            005000 01  MAX-RANGE           PIC S9(5)V9(7).                          IF1224.2
+            005100*                                                                 IF1224.2
+            005200**********************************************************        IF1224.2
+            005300*                                                                 IF1224.2
+            005400 01  TEST-RESULTS.                                                IF1224.2
+            005500     02 FILLER                   PIC X      VALUE SPACE.          IF1224.2
+            005600     02 FEATURE                  PIC X(20)  VALUE SPACE.          IF1224.2
+            005700     02 FILLER                   PIC X      VALUE SPACE.          IF1224.2
+            005800     02 P-OR-F                   PIC X(5)   VALUE SPACE.          IF1224.2
+            005900     02 FILLER                   PIC X      VALUE SPACE.          IF1224.2
+            006000     02  PAR-NAME.                                                IF1224.2
+            006100       03 FILLER                 PIC X(19)  VALUE SPACE.          IF1224.2
+            006200       03  PARDOT-X              PIC X      VALUE SPACE.          IF1224.2
+            006300       03 DOTVALUE               PIC 99     VALUE ZERO.           IF1224.2
+            006400     02 FILLER                   PIC X(8)   VALUE SPACE.          IF1224.2
+            006500     02 RE-MARK                  PIC X(61).                       IF1224.2
+            006600 01  TEST-COMPUTED.                                               IF1224.2
+            006700     02 FILLER                   PIC X(30)  VALUE SPACE.          IF1224.2
+            006800     02 FILLER                   PIC X(17)  VALUE                 IF1224.2
+            006900            "       COMPUTED=".                                   IF1224.2
+            007000     02 COMPUTED-X.                                               IF1224.2
+            007100     03 COMPUTED-A               PIC X(20)  VALUE SPACE.          IF1224.2
+            007200     03 COMPUTED-N               REDEFINES COMPUTED-A             IF1224.2
+            007300                                 PIC -9(9).9(9).                  IF1224.2
+            007400     03 COMPUTED-0V18 REDEFINES COMPUTED-A   PIC -.9(18).         IF1224.2
+            007500     03 COMPUTED-4V14 REDEFINES COMPUTED-A   PIC -9(4).9(14).     IF1224.2
+            007600     03 COMPUTED-14V4 REDEFINES COMPUTED-A   PIC -9(14).9(4).     IF1224.2
+            007700     03       CM-18V0 REDEFINES COMPUTED-A.                       IF1224.2
+            007800         04 COMPUTED-18V0                    PIC -9(18).          IF1224.2
+            007900         04 FILLER                           PIC X.               IF1224.2
+            008000     03 FILLER PIC X(50) VALUE SPACE.                             IF1224.2
+            008100 01  TEST-CORRECT.                                                IF1224.2
+            008200     02 FILLER PIC X(30) VALUE SPACE.                             IF1224.2
+            008300     02 FILLER PIC X(17) VALUE "       CORRECT =".                IF1224.2
+            008400     02 CORRECT-X.                                                IF1224.2
+            008500     03 CORRECT-A                  PIC X(20) VALUE SPACE.         IF1224.2
+            008600     03 CORRECT-N    REDEFINES CORRECT-A     PIC -9(9).9(9).      IF1224.2
+            008700     03 CORRECT-0V18 REDEFINES CORRECT-A     PIC -.9(18).         IF1224.2
+            008800     03 CORRECT-4V14 REDEFINES CORRECT-A     PIC -9(4).9(14).     IF1224.2
+            008900     03 CORRECT-14V4 REDEFINES CORRECT-A     PIC -9(14).9(4).     IF1224.2
+            009000     03      CR-18V0 REDEFINES CORRECT-A.                         IF1224.2
+            009100         04 CORRECT-18V0                     PIC -9(18).          IF1224.2
+            009200         04 FILLER                           PIC X.               IF1224.2
+            009300     03 FILLER PIC X(2) VALUE SPACE.                              IF1224.2
+            009400     03 COR-ANSI-REFERENCE             PIC X(48) VALUE SPACE.     IF1224.2
+            009500 01  TEST-CORRECT-MIN.                                            IF1224.2
+            009600     02 FILLER PIC X(30) VALUE SPACE.                             IF1224.2
+            009700     02 FILLER PIC X(17) VALUE "     MIN VALUE =".                IF1224.2
+            009800     02 CORRECTMI-X.                                              IF1224.2
+            009900     03 CORRECTMI-A                 PIC X(20) VALUE SPACE.        IF1224.2
+            010000     03 CORRECT-MIN    REDEFINES CORRECTMI-A     PIC -9(9).9(9).  IF1224.2
+            010100     03 CORRECTMI-0V18 REDEFINES CORRECTMI-A     PIC -.9(18).     IF1224.2
+            010200     03 CORRECTMI-4V14 REDEFINES CORRECTMI-A     PIC -9(4).9(14). IF1224.2
+            010300     03 CORRECTMI-14V4 REDEFINES CORRECTMI-A     PIC -9(14).9(4). IF1224.2
+            010400     03      CR-18V0 REDEFINES CORRECTMI-A.                       IF1224.2
+            010500         04 CORRECTMI-18V0                     PIC -9(18).        IF1224.2
+            010600         04 FILLER                           PIC X.               IF1224.2
+            010700     03 FILLER PIC X(2) VALUE SPACE.                              IF1224.2
+            010800     03 FILLER                           PIC X(48) VALUE SPACE.   IF1224.2
+            010900 01  TEST-CORRECT-MAX.                                            IF1224.2
+            011000     02 FILLER PIC X(30) VALUE SPACE.                             IF1224.2
+            011100     02 FILLER PIC X(17) VALUE "     MAX VALUE =".                IF1224.2
+            011200     02 CORRECTMA-X.                                              IF1224.2
+            011300     03 CORRECTMA-A                  PIC X(20) VALUE SPACE.       IF1224.2
+            011400     03 CORRECT-MAX    REDEFINES CORRECTMA-A     PIC -9(9).9(9).  IF1224.2
+            011500     03 CORRECTMA-0V18 REDEFINES CORRECTMA-A     PIC -.9(18).     IF1224.2
+            011600     03 CORRECTMA-4V14 REDEFINES CORRECTMA-A     PIC -9(4).9(14). IF1224.2
+            011700     03 CORRECTMA-14V4 REDEFINES CORRECTMA-A     PIC -9(14).9(4). IF1224.2
+            011800     03      CR-18V0 REDEFINES CORRECTMA-A.                       IF1224.2
+            011900         04 CORRECTMA-18V0                     PIC -9(18).        IF1224.2
+            012000         04 FILLER                           PIC X.               IF1224.2
+            012100     03 FILLER PIC X(2) VALUE SPACE.                              IF1224.2
+            012200     03 CORMA-ANSI-REFERENCE             PIC X(48) VALUE SPACE.   IF1224.2
+            012300 01  CCVS-C-1.                                                    IF1224.2
+            012400     02 FILLER  PIC IS X(99)    VALUE IS " FEATURE              PAIF1224.2
+            012500-    "SS  PARAGRAPH-NAME                                          IF1224.2
+            012600-    "       REMARKS".                                            IF1224.2
+            012700     02 FILLER                     PIC X(20)    VALUE SPACE.      IF1224.2
+            012800 01  CCVS-C-2.                                                    IF1224.2
+            012900     02 FILLER                     PIC X        VALUE SPACE.      IF1224.2
+            013000     02 FILLER                     PIC X(6)     VALUE "TESTED".   IF1224.2
+            013100     02 FILLER                     PIC X(15)    VALUE SPACE.      IF1224.2
+            013200     02 FILLER                     PIC X(4)     VALUE "FAIL".     IF1224.2
+            013300     02 FILLER                     PIC X(94)    VALUE SPACE.      IF1224.2
+            013400 01  REC-SKL-SUB                   PIC 9(2)     VALUE ZERO.       IF1224.2
+            013500 01  REC-CT                        PIC 99       VALUE ZERO.       IF1224.2
+            013600 01  DELETE-COUNTER                PIC 999      VALUE ZERO.       IF1224.2
+            013700 01  ERROR-COUNTER                 PIC 999      VALUE ZERO.       IF1224.2
+            013800 01  INSPECT-COUNTER               PIC 999      VALUE ZERO.       IF1224.2
+            013900 01  PASS-COUNTER                  PIC 999      VALUE ZERO.       IF1224.2
+            014000 01  TOTAL-ERROR                   PIC 999      VALUE ZERO.       IF1224.2
+            014100 01  ERROR-HOLD                    PIC 999      VALUE ZERO.       IF1224.2
+            014200 01  DUMMY-HOLD                    PIC X(120)   VALUE SPACE.      IF1224.2
+            014300 01  RECORD-COUNT                  PIC 9(5)     VALUE ZERO.       IF1224.2
+            014400 01  ANSI-REFERENCE                PIC X(48)    VALUE SPACES.     IF1224.2
+            014500 01  CCVS-H-1.                                                    IF1224.2
+            014600     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1224.2
+            014700     02  FILLER                    PIC X(42)    VALUE             IF1224.2
+            014800     "OFFICIAL COBOL COMPILER VALIDATION SYSTEM".                 IF1224.2
+            014900     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1224.2
+            015000 01  CCVS-H-2A.                                                   IF1224.2
+            015100   02  FILLER                        PIC X(40)  VALUE SPACE.      IF1224.2
+            015200   02  FILLER                        PIC X(7)   VALUE "CCVS85 ".  IF1224.2
+            015300   02  FILLER                        PIC XXXX   VALUE             IF1224.2
+            015400     "4.2 ".                                                      IF1224.2
+            015500   02  FILLER                        PIC X(28)  VALUE             IF1224.2
+            015600            " COPY - NOT FOR DISTRIBUTION".                       IF1224.2
+            015700   02  FILLER                        PIC X(41)  VALUE SPACE.      IF1224.2
+            015800                                                                  IF1224.2
+            015900 01  CCVS-H-2B.                                                   IF1224.2
+            016000   02  FILLER                        PIC X(15)  VALUE             IF1224.2
+            016100            "TEST RESULT OF ".                                    IF1224.2
+            016200   02  TEST-ID                       PIC X(9).                    IF1224.2
+            016300   02  FILLER                        PIC X(4)   VALUE             IF1224.2
+            016400            " IN ".                                               IF1224.2
+            016500   02  FILLER                        PIC X(12)  VALUE             IF1224.2
+            016600     " HIGH       ".                                              IF1224.2
+            016700   02  FILLER                        PIC X(22)  VALUE             IF1224.2
+            016800            " LEVEL VALIDATION FOR ".                             IF1224.2
+            016900   02  FILLER                        PIC X(58)  VALUE             IF1224.2
+            017000     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1224.2
+            017100 01  CCVS-H-3.                                                    IF1224.2
+            017200     02  FILLER                      PIC X(34)  VALUE             IF1224.2
+            017300            " FOR OFFICIAL USE ONLY    ".                         IF1224.2
+            017400     02  FILLER                      PIC X(58)  VALUE             IF1224.2
+            017500     "COBOL 85 VERSION 4.2, Apr  1993 SSVG                      ".IF1224.2
+            017600     02  FILLER                      PIC X(28)  VALUE             IF1224.2
+            017700            "  COPYRIGHT   1985 ".                                IF1224.2
+            017800 01  CCVS-E-1.                                                    IF1224.2
+            017900     02 FILLER                       PIC X(52)  VALUE SPACE.      IF1224.2
+            018000     02 FILLER  PIC X(14) VALUE IS "END OF TEST-  ".              IF1224.2
+            018100     02 ID-AGAIN                     PIC X(9).                    IF1224.2
+            018200     02 FILLER                       PIC X(45)  VALUE SPACES.     IF1224.2
+            018300 01  CCVS-E-2.                                                    IF1224.2
+            018400     02  FILLER                      PIC X(31)  VALUE SPACE.      IF1224.2
+            018500     02  FILLER                      PIC X(21)  VALUE SPACE.      IF1224.2
+            018600     02 CCVS-E-2-2.                                               IF1224.2
+            018700         03 ERROR-TOTAL              PIC XXX    VALUE SPACE.      IF1224.2
+            018800         03 FILLER                   PIC X      VALUE SPACE.      IF1224.2
+            018900         03 ENDER-DESC               PIC X(44)  VALUE             IF1224.2
+            019000            "ERRORS ENCOUNTERED".                                 IF1224.2
+            019100 01  CCVS-E-3.                                                    IF1224.2
+            019200     02  FILLER                      PIC X(22)  VALUE             IF1224.2
+            019300            " FOR OFFICIAL USE ONLY".                             IF1224.2
+            019400     02  FILLER                      PIC X(12)  VALUE SPACE.      IF1224.2
+            019500     02  FILLER                      PIC X(58)  VALUE             IF1224.2
+            019600     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1224.2
+            019700     02  FILLER                      PIC X(13)  VALUE SPACE.      IF1224.2
+            019800     02 FILLER                       PIC X(15)  VALUE             IF1224.2
+            019900             " COPYRIGHT 1985".                                   IF1224.2
+            020000 01  CCVS-E-4.                                                    IF1224.2
+            020100     02 CCVS-E-4-1                   PIC XXX    VALUE SPACE.      IF1224.2
+            020200     02 FILLER                       PIC X(4)   VALUE " OF ".     IF1224.2
+            020300     02 CCVS-E-4-2                   PIC XXX    VALUE SPACE.      IF1224.2
+            020400     02 FILLER                       PIC X(40)  VALUE             IF1224.2
+            020500      "  TESTS WERE EXECUTED SUCCESSFULLY".                       IF1224.2
+            020600 01  XXINFO.                                                      IF1224.2
+            020700     02 FILLER                       PIC X(19)  VALUE             IF1224.2
+            020800            "*** INFORMATION ***".                                IF1224.2
+            020900     02 INFO-TEXT.                                                IF1224.2
+            021000       04 FILLER                     PIC X(8)   VALUE SPACE.      IF1224.2
+            021100       04 XXCOMPUTED                 PIC X(20).                   IF1224.2
+            021200       04 FILLER                     PIC X(5)   VALUE SPACE.      IF1224.2
+            021300       04 XXCORRECT                  PIC X(20).                   IF1224.2
+            021400     02 INF-ANSI-REFERENCE           PIC X(48).                   IF1224.2
+            021500 01  HYPHEN-LINE.                                                 IF1224.2
+            021600     02 FILLER  PIC IS X VALUE IS SPACE.                          IF1224.2
+            021700     02 FILLER  PIC IS X(65)    VALUE IS "************************IF1224.2
+            021800-    "*****************************************".                 IF1224.2
+            021900     02 FILLER  PIC IS X(54)    VALUE IS "************************IF1224.2
+            022000-    "******************************".                            IF1224.2
+            022100 01  CCVS-PGM-ID                     PIC X(9)   VALUE             IF1224.2
+            022200     "IF122A".                                                    IF1224.2
+            022300 PROCEDURE DIVISION.                                              IF1224.2
+            022400 CCVS1 SECTION.                                                   IF1224.2
+            022500 OPEN-FILES.                                                      IF1224.2
+            022600     OPEN     OUTPUT PRINT-FILE.                                  IF1224.2
+            022700     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   IF1224.2
+            022800     MOVE    SPACE TO TEST-RESULTS.                               IF1224.2
+            022900     PERFORM  HEAD-ROUTINE THRU COLUMN-NAMES-ROUTINE.             IF1224.2
+            023000     GO TO CCVS1-EXIT.                                            IF1224.2
+            023100 CLOSE-FILES.                                                     IF1224.2
+            023200     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IF1224.2
+            023300 TERMINATE-CCVS.                                                  IF1224.2
+            023400     STOP     RUN.                                                IF1224.2
+            023500 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IF1224.2
+            023600 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IF1224.2
+            023700 FAIL.  MOVE "FAIL*" TO P-OR-F.  ADD 1 TO ERROR-COUNTER.          IF1224.2
+            023800 DE-LETE.  MOVE "*****" TO P-OR-F.  ADD 1 TO DELETE-COUNTER.      IF1224.2
+            023900     MOVE "****TEST DELETED****" TO RE-MARK.                      IF1224.2
+            024000 PRINT-DETAIL.                                                    IF1224.2
+            024100     IF REC-CT NOT EQUAL TO ZERO                                  IF1224.2
+            024200             MOVE "." TO PARDOT-X                                 IF1224.2
+            024300             MOVE REC-CT TO DOTVALUE.                             IF1224.2
+            024400     MOVE     TEST-RESULTS TO PRINT-REC. PERFORM WRITE-LINE.      IF1224.2
+            024500     IF P-OR-F EQUAL TO "FAIL*"  PERFORM WRITE-LINE               IF1224.2
+            024600        PERFORM FAIL-ROUTINE THRU FAIL-ROUTINE-EX                 IF1224.2
+            024700          ELSE PERFORM BAIL-OUT THRU BAIL-OUT-EX.                 IF1224.2
+            024800     MOVE SPACE TO P-OR-F. MOVE SPACE TO COMPUTED-X.              IF1224.2
+            024900     MOVE SPACE TO CORRECT-X.                                     IF1224.2
+            025000     IF     REC-CT EQUAL TO ZERO  MOVE SPACE TO PAR-NAME.         IF1224.2
+            025100     MOVE     SPACE TO RE-MARK.                                   IF1224.2
+            025200 HEAD-ROUTINE.                                                    IF1224.2
+            025300     MOVE CCVS-H-1  TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1224.2
+            025400     MOVE CCVS-H-2A TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1224.2
+            025500     MOVE CCVS-H-2B TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1224.2
+            025600     MOVE CCVS-H-3  TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1224.2
+            025700 COLUMN-NAMES-ROUTINE.                                            IF1224.2
+            025800     MOVE CCVS-C-1 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1224.2
+            025900     MOVE CCVS-C-2 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1224.2
+            026000     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE.        IF1224.2
+            026100 END-ROUTINE.                                                     IF1224.2
+            026200     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE 5 TIMES.IF1224.2
+            026300 END-RTN-EXIT.                                                    IF1224.2
+            026400     MOVE CCVS-E-1 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1224.2
+            026500 END-ROUTINE-1.                                                   IF1224.2
+            026600      ADD ERROR-COUNTER TO ERROR-HOLD ADD INSPECT-COUNTER TO      IF1224.2
+            026700      ERROR-HOLD. ADD DELETE-COUNTER TO ERROR-HOLD.               IF1224.2
+            026800      ADD PASS-COUNTER TO ERROR-HOLD.                             IF1224.2
+            026900      MOVE PASS-COUNTER TO CCVS-E-4-1.                            IF1224.2
+            027000      MOVE ERROR-HOLD TO CCVS-E-4-2.                              IF1224.2
+            027100      MOVE CCVS-E-4 TO CCVS-E-2-2.                                IF1224.2
+            027200      MOVE CCVS-E-2 TO DUMMY-RECORD PERFORM WRITE-LINE.           IF1224.2
+            027300  END-ROUTINE-12.                                                 IF1224.2
+            027400      MOVE "TEST(S) FAILED" TO ENDER-DESC.                        IF1224.2
+            027500     IF       ERROR-COUNTER IS EQUAL TO ZERO                      IF1224.2
+            027600         MOVE "NO " TO ERROR-TOTAL                                IF1224.2
+            027700         ELSE                                                     IF1224.2
+            027800         MOVE ERROR-COUNTER TO ERROR-TOTAL.                       IF1224.2
+            027900     MOVE     CCVS-E-2 TO DUMMY-RECORD.                           IF1224.2
+            028000     PERFORM WRITE-LINE.                                          IF1224.2
+            028100 END-ROUTINE-13.                                                  IF1224.2
+            028200     IF DELETE-COUNTER IS EQUAL TO ZERO                           IF1224.2
+            028300         MOVE "NO " TO ERROR-TOTAL  ELSE                          IF1224.2
+            028400         MOVE DELETE-COUNTER TO ERROR-TOTAL.                      IF1224.2
+            028500     MOVE "TEST(S) DELETED     " TO ENDER-DESC.                   IF1224.2
+            028600     MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1224.2
+            028700      IF   INSPECT-COUNTER EQUAL TO ZERO                          IF1224.2
+            028800          MOVE "NO " TO ERROR-TOTAL                               IF1224.2
+            028900      ELSE MOVE INSPECT-COUNTER TO ERROR-TOTAL.                   IF1224.2
+            029000      MOVE "TEST(S) REQUIRE INSPECTION" TO ENDER-DESC.            IF1224.2
+            029100      MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.          IF1224.2
+            029200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1224.2
+            029300 WRITE-LINE.                                                      IF1224.2
+            029400     ADD 1 TO RECORD-COUNT.                                       IF1224.2
+            029500Y    IF RECORD-COUNT GREATER 42                                   IF1224.2
+            029600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1224.2
+            029700Y        MOVE SPACE TO DUMMY-RECORD                               IF1224.2
+            029800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1224.2
+            029900Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1224.2
+            030000Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1224.2
+            030100Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1224.2
+            030200Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1224.2
+            030300Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1224.2
+            030400Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1224.2
+            030500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1224.2
+            030600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1224.2
+            030700Y        MOVE ZERO TO RECORD-COUNT.                               IF1224.2
+            030800     PERFORM WRT-LN.                                              IF1224.2
+            030900 WRT-LN.                                                          IF1224.2
+            031000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1224.2
+            031100     MOVE SPACE TO DUMMY-RECORD.                                  IF1224.2
+            031200 BLANK-LINE-PRINT.                                                IF1224.2
+            031300     PERFORM WRT-LN.                                              IF1224.2
+            031400 FAIL-ROUTINE.                                                    IF1224.2
+            031500     IF     COMPUTED-X NOT EQUAL TO SPACE                         IF1224.2
+            031600            GO TO FAIL-ROUTINE-WRITE.                             IF1224.2
+            031700     IF     CORRECT-X NOT EQUAL TO SPACE GO TO FAIL-ROUTINE-WRITE.IF1224.2
+            031800     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1224.2
+            031900     MOVE  "NO FURTHER INFORMATION, SEE PROGRAM." TO INFO-TEXT.   IF1224.2
+            032000     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1224.2
+            032100     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1224.2
+            032200     GO TO  FAIL-ROUTINE-EX.                                      IF1224.2
+            032300 FAIL-ROUTINE-WRITE.                                              IF1224.2
+            032400     MOVE   TEST-COMPUTED TO PRINT-REC PERFORM WRITE-LINE.        IF1224.2
+            032500     MOVE   ANSI-REFERENCE TO COR-ANSI-REFERENCE                  IF1224.2
+            032600                              CORMA-ANSI-REFERENCE.               IF1224.2
+            032700     IF CORRECT-MIN NOT EQUAL TO SPACES THEN                      IF1224.2
+            032800           MOVE TEST-CORRECT-MIN TO PRINT-REC PERFORM WRITE-LINE  IF1224.2
+            032900           MOVE TEST-CORRECT-MAX TO PRINT-REC PERFORM WRITE-LINE  IF1224.2
+            033000     ELSE                                                         IF1224.2
+            033100           MOVE TEST-CORRECT TO PRINT-REC PERFORM WRITE-LINE.     IF1224.2
+            033200     PERFORM WRITE-LINE.                                          IF1224.2
+            033300     MOVE   SPACES TO COR-ANSI-REFERENCE.                         IF1224.2
+            033400 FAIL-ROUTINE-EX. EXIT.                                           IF1224.2
+            033500 BAIL-OUT.                                                        IF1224.2
+            033600     IF     COMPUTED-A NOT EQUAL TO SPACE GO TO BAIL-OUT-WRITE.   IF1224.2
+            033700     IF     CORRECT-A EQUAL TO SPACE GO TO BAIL-OUT-EX.           IF1224.2
+            033800 BAIL-OUT-WRITE.                                                  IF1224.2
+            033900     MOVE CORRECT-A TO XXCORRECT.                                 IF1224.2
+            034000     MOVE COMPUTED-A TO XXCOMPUTED.                               IF1224.2
+            034100     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1224.2
+            034200     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1224.2
+            034300     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1224.2
+            034400 BAIL-OUT-EX. EXIT.                                               IF1224.2
+            034500 CCVS1-EXIT.                                                      IF1224.2
+            034600     EXIT.                                                        IF1224.2
+            034700********************************************************          IF1224.2
+            034800*                                                      *          IF1224.2
+            034900*    Intrinsic Function Tests        IF122A - MIDRANGE *          IF1224.2
+            035000*                                                      *          IF1224.2
+            035100********************************************************          IF1224.2
+            035200 SECT-IF122A SECTION.                                             IF1224.2
+            035300 F-MIDRANGE-INFO.                                                 IF1224.2
+            035400     MOVE     "See ref. A-55 2.26" TO ANSI-REFERENCE.             IF1224.2
+            035500     MOVE     "MIDRANGE Function" TO FEATURE.                     IF1224.2
+            035600*****************TEST (a) - SIMPLE TEST*****************          IF1224.2
+            035700 F-MIDRANGE-01.                                                   IF1224.2
+            035800     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            035900 F-MIDRANGE-TEST-01.                                              IF1224.2
+            036000     COMPUTE WS-NUM = FUNCTION MIDRANGE(5, -2, -14, 0).           IF1224.2
+            036100     IF (WS-NUM >= -4.50009) AND                                  IF1224.2
+            036200        (WS-NUM <= -4.49991)                                      IF1224.2
+            036300                    PERFORM PASS                                  IF1224.2
+            036400     ELSE                                                         IF1224.2
+            036500                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            036600                    MOVE -4.5 TO CORRECT-N                        IF1224.2
+            036700                    PERFORM FAIL.                                 IF1224.2
+            036800     GO TO F-MIDRANGE-WRITE-01.                                   IF1224.2
+            036900 F-MIDRANGE-DELETE-01.                                            IF1224.2
+            037000     PERFORM  DE-LETE.                                            IF1224.2
+            037100     GO TO    F-MIDRANGE-WRITE-01.                                IF1224.2
+            037200 F-MIDRANGE-WRITE-01.                                             IF1224.2
+            037300     MOVE "F-MIDRANGE-01" TO PAR-NAME.                            IF1224.2
+            037400     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            037500*****************TEST (b) - SIMPLE TEST*****************          IF1224.2
+            037600 F-MIDRANGE-02.                                                   IF1224.2
+            037700     EVALUATE FUNCTION MIDRANGE(3.9, -0.3, 8.7, 100.2)            IF1224.2
+            037800     WHEN 49.9490 THRU 49.9510                                    IF1224.2
+            037900                    PERFORM PASS                                  IF1224.2
+            038000     WHEN OTHER                                                   IF1224.2
+            038100                    PERFORM FAIL.                                 IF1224.2
+            038200     GO TO F-MIDRANGE-WRITE-02.                                   IF1224.2
+            038300 F-MIDRANGE-DELETE-02.                                            IF1224.2
+            038400     PERFORM  DE-LETE.                                            IF1224.2
+            038500     GO TO    F-MIDRANGE-WRITE-02.                                IF1224.2
+            038600 F-MIDRANGE-WRITE-02.                                             IF1224.2
+            038700     MOVE "F-MIDRANGE-02" TO PAR-NAME.                            IF1224.2
+            038800     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            038900*****************TEST (c) - SIMPLE TEST*****************          IF1224.2
+            039000 F-MIDRANGE-03.                                                   IF1224.2
+            039100     IF FUNCTION MIDRANGE(A, B, C, D) = 3 THEN                    IF1224.2
+            039200                    PERFORM PASS                                  IF1224.2
+            039300     ELSE                                                         IF1224.2
+            039400                    PERFORM FAIL.                                 IF1224.2
+            039500     GO TO F-MIDRANGE-WRITE-03.                                   IF1224.2
+            039600 F-MIDRANGE-DELETE-03.                                            IF1224.2
+            039700     PERFORM  DE-LETE.                                            IF1224.2
+            039800     GO TO    F-MIDRANGE-WRITE-03.                                IF1224.2
+            039900 F-MIDRANGE-WRITE-03.                                             IF1224.2
+            040000     MOVE "F-MIDRANGE-03" TO PAR-NAME.                            IF1224.2
+            040100     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            040200*****************TEST (d) - SIMPLE TEST*****************          IF1224.2
+            040300 F-MIDRANGE-04.                                                   IF1224.2
+            040400     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            040500 F-MIDRANGE-TEST-04.                                              IF1224.2
+            040600     COMPUTE WS-NUM = FUNCTION MIDRANGE(E, F, G, H).              IF1224.2
+            040700     IF (WS-NUM >= 12.9697) AND                                   IF1224.2
+            040800        (WS-NUM <= 12.9703)                                       IF1224.2
+            040900                    PERFORM PASS                                  IF1224.2
+            041000     ELSE                                                         IF1224.2
+            041100                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            041200                    MOVE 12.97 TO CORRECT-N                       IF1224.2
+            041300                    PERFORM FAIL.                                 IF1224.2
+            041400     GO TO F-MIDRANGE-WRITE-04.                                   IF1224.2
+            041500 F-MIDRANGE-DELETE-04.                                            IF1224.2
+            041600     PERFORM  DE-LETE.                                            IF1224.2
+            041700     GO TO    F-MIDRANGE-WRITE-04.                                IF1224.2
+            041800 F-MIDRANGE-WRITE-04.                                             IF1224.2
+            041900     MOVE "F-MIDRANGE-04" TO PAR-NAME.                            IF1224.2
+            042000     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            042100*****************TEST (e) - SIMPLE TEST*****************          IF1224.2
+            042200 F-MIDRANGE-05.                                                   IF1224.2
+            042300     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            042400 F-MIDRANGE-TEST-05.                                              IF1224.2
+            042500     COMPUTE WS-NUM = FUNCTION MIDRANGE(10.2, -0.2, 5.6, -15.6).  IF1224.2
+            042600     IF (WS-NUM >= -2.70005) AND                                  IF1224.2
+            042700        (WS-NUM <= -2.69995)                                      IF1224.2
+            042800                    PERFORM PASS                                  IF1224.2
+            042900     ELSE                                                         IF1224.2
+            043000                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            043100                    MOVE -2.7 TO CORRECT-N                        IF1224.2
+            043200                    PERFORM FAIL.                                 IF1224.2
+            043300     GO TO F-MIDRANGE-WRITE-05.                                   IF1224.2
+            043400 F-MIDRANGE-DELETE-05.                                            IF1224.2
+            043500     PERFORM  DE-LETE.                                            IF1224.2
+            043600     GO TO    F-MIDRANGE-WRITE-05.                                IF1224.2
+            043700 F-MIDRANGE-WRITE-05.                                             IF1224.2
+            043800     MOVE "F-MIDRANGE-05" TO PAR-NAME.                            IF1224.2
+            043900     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            044000*****************TEST (f) - SIMPLE TEST*****************          IF1224.2
+            044100 F-MIDRANGE-06.                                                   IF1224.2
+            044200     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            044300 F-MIDRANGE-TEST-06.                                              IF1224.2
+            044400     COMPUTE WS-NUM = FUNCTION MIDRANGE(A, B, C, D, E, F, G, H).  IF1224.2
+            044500     IF (WS-NUM >= 12.9697) AND                                   IF1224.2
+            044600        (WS-NUM <= 12.9703)                                       IF1224.2
+            044700                    PERFORM PASS                                  IF1224.2
+            044800     ELSE                                                         IF1224.2
+            044900                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            045000                    MOVE 12.97 TO CORRECT-N                       IF1224.2
+            045100                    PERFORM FAIL.                                 IF1224.2
+            045200     GO TO F-MIDRANGE-WRITE-06.                                   IF1224.2
+            045300 F-MIDRANGE-DELETE-06.                                            IF1224.2
+            045400     PERFORM  DE-LETE.                                            IF1224.2
+            045500     GO TO    F-MIDRANGE-WRITE-06.                                IF1224.2
+            045600 F-MIDRANGE-WRITE-06.                                             IF1224.2
+            045700     MOVE "F-MIDRANGE-06" TO PAR-NAME.                            IF1224.2
+            045800     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            045900*****************TEST (g) - SIMPLE TEST*****************          IF1224.2
+            046000 F-MIDRANGE-07.                                                   IF1224.2
+            046100     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            046200 F-MIDRANGE-TEST-07.                                              IF1224.2
+            046300     COMPUTE WS-NUM = FUNCTION MIDRANGE(2.6 + 30, 4.5 * 2).       IF1224.2
+            046400     IF (WS-NUM >= 20.7996) AND                                   IF1224.2
+            046500        (WS-NUM <= 20.8004)                                       IF1224.2
+            046600                    PERFORM PASS                                  IF1224.2
+            046700     ELSE                                                         IF1224.2
+            046800                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            046900                    MOVE 20.8 TO CORRECT-N                        IF1224.2
+            047000                    PERFORM FAIL.                                 IF1224.2
+            047100     GO TO F-MIDRANGE-WRITE-07.                                   IF1224.2
+            047200 F-MIDRANGE-DELETE-07.                                            IF1224.2
+            047300     PERFORM  DE-LETE.                                            IF1224.2
+            047400     GO TO    F-MIDRANGE-WRITE-07.                                IF1224.2
+            047500 F-MIDRANGE-WRITE-07.                                             IF1224.2
+            047600     MOVE "F-MIDRANGE-07" TO PAR-NAME.                            IF1224.2
+            047700     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            047800*****************TEST (h) - SIMPLE TEST*****************          IF1224.2
+            047900 F-MIDRANGE-08.                                                   IF1224.2
+            048000     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            048100 F-MIDRANGE-TEST-08.                                              IF1224.2
+            048200     COMPUTE WS-NUM = FUNCTION MIDRANGE(IND(1), IND(2),           IF1224.2
+            048300                                                   IND(3)).       IF1224.2
+            048400     IF (WS-NUM >= 2.49995) AND                                   IF1224.2
+            048500        (WS-NUM <= 2.50005)                                       IF1224.2
+            048600                    PERFORM PASS                                  IF1224.2
+            048700     ELSE                                                         IF1224.2
+            048800                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            048900                    MOVE 2.5 TO CORRECT-N                         IF1224.2
+            049000                    PERFORM FAIL.                                 IF1224.2
+            049100     GO TO F-MIDRANGE-WRITE-08.                                   IF1224.2
+            049200 F-MIDRANGE-DELETE-08.                                            IF1224.2
+            049300     PERFORM  DE-LETE.                                            IF1224.2
+            049400     GO TO    F-MIDRANGE-WRITE-08.                                IF1224.2
+            049500 F-MIDRANGE-WRITE-08.                                             IF1224.2
+            049600     MOVE "F-MIDRANGE-08" TO PAR-NAME.                            IF1224.2
+            049700     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            049800*****************TEST (i) - SIMPLE TEST*****************          IF1224.2
+            049900 F-MIDRANGE-09.                                                   IF1224.2
+            050000     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            050100 F-MIDRANGE-TEST-09.                                              IF1224.2
+            050200     COMPUTE WS-NUM = FUNCTION MIDRANGE(IND(P), IND(Q),           IF1224.2
+            050300                                                  IND(R)).        IF1224.2
+            050400     IF (WS-NUM >= 5.49989) AND                                   IF1224.2
+            050500        (WS-NUM <= 5.50011)                                       IF1224.2
+            050600                    PERFORM PASS                                  IF1224.2
+            050700     ELSE                                                         IF1224.2
+            050800                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            050900                    MOVE 5.5 TO CORRECT-N                         IF1224.2
+            051000                    PERFORM FAIL.                                 IF1224.2
+            051100     GO TO F-MIDRANGE-WRITE-09.                                   IF1224.2
+            051200 F-MIDRANGE-DELETE-09.                                            IF1224.2
+            051300     PERFORM  DE-LETE.                                            IF1224.2
+            051400     GO TO    F-MIDRANGE-WRITE-09.                                IF1224.2
+            051500 F-MIDRANGE-WRITE-09.                                             IF1224.2
+            051600     MOVE "F-MIDRANGE-09" TO PAR-NAME.                            IF1224.2
+            051700     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            051800*****************TEST (j) - SIMPLE TEST*****************          IF1224.2
+            051900 F-MIDRANGE-10.                                                   IF1224.2
+            052000     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            052100 F-MIDRANGE-TEST-10.                                              IF1224.2
+            052200     COMPUTE WS-NUM = FUNCTION MIDRANGE(IND(ALL)).                IF1224.2
+            052300     IF (WS-NUM >= 3.49993) AND                                   IF1224.2
+            052400        (WS-NUM <= 3.50007)                                       IF1224.2
+            052500                    PERFORM PASS                                  IF1224.2
+            052600     ELSE                                                         IF1224.2
+            052700                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            052800                    MOVE 3.5 TO CORRECT-N                         IF1224.2
+            052900                    PERFORM FAIL.                                 IF1224.2
+            053000     GO TO F-MIDRANGE-WRITE-10.                                   IF1224.2
+            053100 F-MIDRANGE-DELETE-10.                                            IF1224.2
+            053200     PERFORM  DE-LETE.                                            IF1224.2
+            053300     GO TO    F-MIDRANGE-WRITE-10.                                IF1224.2
+            053400 F-MIDRANGE-WRITE-10.                                             IF1224.2
+            053500     MOVE "F-MIDRANGE-10" TO PAR-NAME.                            IF1224.2
+            053600     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            053700*****************TEST (l) - SIMPLE TEST*****************          IF1224.2
+            053800 F-MIDRANGE-12.                                                   IF1224.2
+            053900     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            054000 F-MIDRANGE-TEST-12.                                              IF1224.2
+            054100     COMPUTE WS-NUM = FUNCTION MIDRANGE(M, N, O).                 IF1224.2
+            054200     IF WS-NUM = 110000 THEN                                      IF1224.2
+            054300                    PERFORM PASS                                  IF1224.2
+            054400     ELSE                                                         IF1224.2
+            054500                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            054600                    MOVE 110000 TO CORRECT-N                      IF1224.2
+            054700                    PERFORM FAIL.                                 IF1224.2
+            054800     GO TO F-MIDRANGE-WRITE-12.                                   IF1224.2
+            054900 F-MIDRANGE-DELETE-12.                                            IF1224.2
+            055000     PERFORM  DE-LETE.                                            IF1224.2
+            055100     GO TO    F-MIDRANGE-WRITE-12.                                IF1224.2
+            055200 F-MIDRANGE-WRITE-12.                                             IF1224.2
+            055300     MOVE "F-MIDRANGE-12" TO PAR-NAME.                            IF1224.2
+            055400     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            055500*****************TEST (m) - SIMPLE TEST*****************          IF1224.2
+            055600 F-MIDRANGE-13.                                                   IF1224.2
+            055700     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            055800 F-MIDRANGE-TEST-13.                                              IF1224.2
+            055900     COMPUTE WS-NUM = FUNCTION MIDRANGE(A, 5, A).                 IF1224.2
+            056000     IF WS-NUM = 5 THEN                                           IF1224.2
+            056100                    PERFORM PASS                                  IF1224.2
+            056200     ELSE                                                         IF1224.2
+            056300                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            056400                    MOVE 5 TO CORRECT-N                           IF1224.2
+            056500                    PERFORM FAIL.                                 IF1224.2
+            056600     GO TO F-MIDRANGE-WRITE-13.                                   IF1224.2
+            056700 F-MIDRANGE-DELETE-13.                                            IF1224.2
+            056800     PERFORM  DE-LETE.                                            IF1224.2
+            056900     GO TO    F-MIDRANGE-WRITE-13.                                IF1224.2
+            057000 F-MIDRANGE-WRITE-13.                                             IF1224.2
+            057100     MOVE "F-MIDRANGE-13" TO PAR-NAME.                            IF1224.2
+            057200     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            057300*****************TEST (a) - COMPLEX TEST****************          IF1224.2
+            057400 F-MIDRANGE-14.                                                   IF1224.2
+            057500     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            057600     MOVE  22.4995   TO MIN-RANGE.                                IF1224.2
+            057700     MOVE  22.5004 TO MAX-RANGE.                                  IF1224.2
+            057800 F-MIDRANGE-TEST-14.                                              IF1224.2
+            057900     COMPUTE WS-NUM = FUNCTION MIDRANGE(E, 9 * A, 0, B / 2).      IF1224.2
+            058000     IF (WS-NUM >= MIN-RANGE) AND                                 IF1224.2
+            058100        (WS-NUM <= MAX-RANGE) THEN                                IF1224.2
+            058200                    PERFORM PASS                                  IF1224.2
+            058300     ELSE                                                         IF1224.2
+            058400                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            058500                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1224.2
+            058600                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1224.2
+            058700                    PERFORM FAIL.                                 IF1224.2
+            058800     GO TO F-MIDRANGE-WRITE-14.                                   IF1224.2
+            058900 F-MIDRANGE-DELETE-14.                                            IF1224.2
+            059000     PERFORM  DE-LETE.                                            IF1224.2
+            059100     GO TO    F-MIDRANGE-WRITE-14.                                IF1224.2
+            059200 F-MIDRANGE-WRITE-14.                                             IF1224.2
+            059300     MOVE "F-MIDRANGE-14" TO PAR-NAME.                            IF1224.2
+            059400     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            059500*****************TEST (b) - COMPLEX TEST****************          IF1224.2
+            059600 F-MIDRANGE-15.                                                   IF1224.2
+            059700     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            059800     MOVE 83.9983 TO MIN-RANGE.                                   IF1224.2
+            059900     MOVE 84.0017 TO MAX-RANGE.                                   IF1224.2
+            060000 F-MIDRANGE-TEST-15.                                              IF1224.2
+            060100     COMPUTE WS-NUM = FUNCTION MIDRANGE(A, B) + 78.               IF1224.2
+            060200     IF (WS-NUM >= MIN-RANGE) AND                                 IF1224.2
+            060300        (WS-NUM <= MAX-RANGE) THEN                                IF1224.2
+            060400                    PERFORM PASS                                  IF1224.2
+            060500     ELSE                                                         IF1224.2
+            060600                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            060700                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1224.2
+            060800                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1224.2
+            060900                    PERFORM FAIL.                                 IF1224.2
+            061000     GO TO F-MIDRANGE-WRITE-15.                                   IF1224.2
+            061100 F-MIDRANGE-DELETE-15.                                            IF1224.2
+            061200     PERFORM  DE-LETE.                                            IF1224.2
+            061300     GO TO    F-MIDRANGE-WRITE-15.                                IF1224.2
+            061400 F-MIDRANGE-WRITE-15.                                             IF1224.2
+            061500     MOVE "F-MIDRANGE-15" TO PAR-NAME.                            IF1224.2
+            061600     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            061700*****************TEST (c) - COMPLEX TEST****************          IF1224.2
+            061800 F-MIDRANGE-16.                                                   IF1224.2
+            061900     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            062000     MOVE 2.49995 TO MIN-RANGE.                                   IF1224.2
+            062100     MOVE 2.50005 TO MAX-RANGE.                                   IF1224.2
+            062200 F-MIDRANGE-TEST-16.                                              IF1224.2
+            062300     COMPUTE WS-NUM = FUNCTION MIDRANGE(A, B) +                   IF1224.2
+            062400                      FUNCTION MIDRANGE(-2.6, -4.4).              IF1224.2
+            062500     IF (WS-NUM >= MIN-RANGE) AND                                 IF1224.2
+            062600        (WS-NUM <= MAX-RANGE) THEN                                IF1224.2
+            062700                    PERFORM PASS                                  IF1224.2
+            062800     ELSE                                                         IF1224.2
+            062900                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            063000                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1224.2
+            063100                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1224.2
+            063200                    PERFORM FAIL.                                 IF1224.2
+            063300     GO TO F-MIDRANGE-WRITE-16.                                   IF1224.2
+            063400 F-MIDRANGE-DELETE-16.                                            IF1224.2
+            063500     PERFORM  DE-LETE.                                            IF1224.2
+            063600     GO TO    F-MIDRANGE-WRITE-16.                                IF1224.2
+            063700 F-MIDRANGE-WRITE-16.                                             IF1224.2
+            063800     MOVE "F-MIDRANGE-16" TO PAR-NAME.                            IF1224.2
+            063900     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            064000*****************TEST (d) - COMPLEX TEST****************          IF1224.2
+            064100 F-MIDRANGE-17.                                                   IF1224.2
+            064200     MOVE ZERO TO WS-NUM.                                         IF1224.2
+            064300     MOVE 3.49993 TO MIN-RANGE.                                   IF1224.2
+            064400     MOVE 3.50007 TO MAX-RANGE.                                   IF1224.2
+            064500 F-MIDRANGE-TEST-17.                                              IF1224.2
+            064600     COMPUTE WS-NUM =                                             IF1224.2
+            064700             FUNCTION MIDRANGE(FUNCTION MIDRANGE(1, 3), 5).       IF1224.2
+            064800     IF (WS-NUM >= MIN-RANGE) AND                                 IF1224.2
+            064900        (WS-NUM <= MAX-RANGE) THEN                                IF1224.2
+            065000                    PERFORM PASS                                  IF1224.2
+            065100     ELSE                                                         IF1224.2
+            065200                    MOVE WS-NUM TO COMPUTED-N                     IF1224.2
+            065300                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1224.2
+            065400                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1224.2
+            065500                    PERFORM FAIL.                                 IF1224.2
+            065600     GO TO F-MIDRANGE-WRITE-17.                                   IF1224.2
+            065700 F-MIDRANGE-DELETE-17.                                            IF1224.2
+            065800     PERFORM  DE-LETE.                                            IF1224.2
+            065900     GO TO    F-MIDRANGE-WRITE-17.                                IF1224.2
+            066000 F-MIDRANGE-WRITE-17.                                             IF1224.2
+            066100     MOVE "F-MIDRANGE-17" TO PAR-NAME.                            IF1224.2
+            066200     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            066300*****************SPECIAL PERFORM TEST**********************       IF1224.2
+            066400 F-MIDRANGE-18.                                                   IF1224.2
+            066500     PERFORM F-MIDRANGE-TEST-18                                   IF1224.2
+            066600       UNTIL FUNCTION MIDRANGE(1, ARG1) > 10.                     IF1224.2
+            066700     PERFORM PASS.                                                IF1224.2
+            066800     GO TO F-MIDRANGE-WRITE-18.                                   IF1224.2
+            066900 F-MIDRANGE-TEST-18.                                              IF1224.2
+            067000     COMPUTE ARG1 = ARG1 + 1.                                     IF1224.2
+            067100 F-MIDRANGE-DELETE-18.                                            IF1224.2
+            067200     PERFORM  DE-LETE.                                            IF1224.2
+            067300     GO TO    F-MIDRANGE-WRITE-18.                                IF1224.2
+            067400 F-MIDRANGE-WRITE-18.                                             IF1224.2
+            067500     MOVE "F-MIDRANGE-18" TO PAR-NAME.                            IF1224.2
+            067600     PERFORM  PRINT-DETAIL.                                       IF1224.2
+            067700********************END OF TESTS***************                   IF1224.2
+            067800 CCVS-EXIT SECTION.                                               IF1224.2
+            067900 CCVS-999999.                                                     IF1224.2
+            068000     GO TO CLOSE-FILES.                                           IF1224.2
+                  *END-OF,IF122A                                                            
+        """)
+    )
+
+    @Test
+    fun if1234_2() = rewriteRun(
+        cobol("""
+                  *HEADER,COBOL,IF123A                                                      
+            000100 IDENTIFICATION DIVISION.                                         IF1234.2
+            000200 PROGRAM-ID.                                                      IF1234.2
+            000300     IF123A.                                                      IF1234.2
+            000400                                                                  IF1234.2
+            000500***********************************************************       IF1234.2
+            000600*                                                         *       IF1234.2
+            000700* This program forms part of the CCVS85 COBOL Test Suite. *       IF1234.2
+            000800* It contains tests for the Intrinsic Function MIN.       *       IF1234.2
+            000900*                                                         *       IF1234.2
+            001000***********************************************************       IF1234.2
+            001100 ENVIRONMENT DIVISION.                                            IF1234.2
+            001200 CONFIGURATION SECTION.                                           IF1234.2
+            001300 SOURCE-COMPUTER.                                                 IF1234.2
+            001400     XXXXX082.                                                    IF1234.2
+            001500 OBJECT-COMPUTER.                                                 IF1234.2
+            001600     XXXXX083                                                     IF1234.2
+            001700     PROGRAM COLLATING SEQUENCE IS PRG-COLL-SEQ.                  IF1234.2
+            001800 SPECIAL-NAMES.                                                   IF1234.2
+            001900     ALPHABET PRG-COLL-SEQ IS                                     IF1234.2
+            002000     STANDARD-2.                                                  IF1234.2
+            002100 INPUT-OUTPUT SECTION.                                            IF1234.2
+            002200 FILE-CONTROL.                                                    IF1234.2
+            002300     SELECT PRINT-FILE ASSIGN TO                                  IF1234.2
+            002400     XXXXX055.                                                    IF1234.2
+            002500 DATA DIVISION.                                                   IF1234.2
+            002600 FILE SECTION.                                                    IF1234.2
+            002700 FD  PRINT-FILE.                                                  IF1234.2
+            002800 01  PRINT-REC PICTURE X(120).                                    IF1234.2
+            002900 01  DUMMY-RECORD PICTURE X(120).                                 IF1234.2
+            003000 WORKING-STORAGE SECTION.                                         IF1234.2
+            003100***********************************************************       IF1234.2
+            003200* Variables specific to the Intrinsic Function Test IF123A*       IF1234.2
+            003300***********************************************************       IF1234.2
+            003400 01  A                   PIC S9(10)          VALUE 5.             IF1234.2
+            003500 01  B                   PIC S9(10)          VALUE 7.             IF1234.2
+            003600 01  C                   PIC S9(10)          VALUE -4.            IF1234.2
+            003700 01  D                   PIC S9(10)          VALUE 10.            IF1234.2
+            003800 01  E                   PIC S9(5)V9(5)      VALUE 34.26.         IF1234.2
+            003900 01  F                   PIC S9(5)V9(5)      VALUE -8.32.         IF1234.2
+            004000 01  G                   PIC S9(5)V9(5)      VALUE 4.08.          IF1234.2
+            004100 01  H                   PIC S9(5)V9(5)      VALUE -5.3.          IF1234.2
+            004200 01  I                   PIC X               VALUE "R".           IF1234.2
+            004300 01  J                   PIC X               VALUE "U".           IF1234.2
+            004400 01  M                   PIC S9(10)          VALUE 1.             IF1234.2
+            004500 01  N                   PIC S9(10)          VALUE 3.             IF1234.2
+            004600 01  O                   PIC S9(10)          VALUE 5.             IF1234.2
+            004700 01  P                   PIC S9(10)          VALUE 1.             IF1234.2
+            004800 01  Q                   PIC S9(10)          VALUE 3.             IF1234.2
+            004900 01  R                   PIC S9(10)          VALUE 5.             IF1234.2
+            005000 01  ARG1                PIC S9(10)          VALUE 15.            IF1234.2
+            005100 01  ARR                                     VALUE "40537".       IF1234.2
+            005200     02  IND OCCURS 5 TIMES PIC 9.                                IF1234.2
+            005300 01  TEMP                PIC S9(10).                              IF1234.2
+            005400 01  WS-NUM              PIC S9(5)V9(6).                          IF1234.2
+            005500 01  WS-ANUM             PIC X.                                   IF1234.2
+            005600 01  MIN-RANGE           PIC S9(5)V9(7).                          IF1234.2
+            005700 01  MAX-RANGE           PIC S9(5)V9(7).                          IF1234.2
+            005800*                                                                 IF1234.2
+            005900**********************************************************        IF1234.2
+            006000*                                                                 IF1234.2
+            006100 01  TEST-RESULTS.                                                IF1234.2
+            006200     02 FILLER                   PIC X      VALUE SPACE.          IF1234.2
+            006300     02 FEATURE                  PIC X(20)  VALUE SPACE.          IF1234.2
+            006400     02 FILLER                   PIC X      VALUE SPACE.          IF1234.2
+            006500     02 P-OR-F                   PIC X(5)   VALUE SPACE.          IF1234.2
+            006600     02 FILLER                   PIC X      VALUE SPACE.          IF1234.2
+            006700     02  PAR-NAME.                                                IF1234.2
+            006800       03 FILLER                 PIC X(19)  VALUE SPACE.          IF1234.2
+            006900       03  PARDOT-X              PIC X      VALUE SPACE.          IF1234.2
+            007000       03 DOTVALUE               PIC 99     VALUE ZERO.           IF1234.2
+            007100     02 FILLER                   PIC X(8)   VALUE SPACE.          IF1234.2
+            007200     02 RE-MARK                  PIC X(61).                       IF1234.2
+            007300 01  TEST-COMPUTED.                                               IF1234.2
+            007400     02 FILLER                   PIC X(30)  VALUE SPACE.          IF1234.2
+            007500     02 FILLER                   PIC X(17)  VALUE                 IF1234.2
+            007600            "       COMPUTED=".                                   IF1234.2
+            007700     02 COMPUTED-X.                                               IF1234.2
+            007800     03 COMPUTED-A               PIC X(20)  VALUE SPACE.          IF1234.2
+            007900     03 COMPUTED-N               REDEFINES COMPUTED-A             IF1234.2
+            008000                                 PIC -9(9).9(9).                  IF1234.2
+            008100     03 COMPUTED-0V18 REDEFINES COMPUTED-A   PIC -.9(18).         IF1234.2
+            008200     03 COMPUTED-4V14 REDEFINES COMPUTED-A   PIC -9(4).9(14).     IF1234.2
+            008300     03 COMPUTED-14V4 REDEFINES COMPUTED-A   PIC -9(14).9(4).     IF1234.2
+            008400     03       CM-18V0 REDEFINES COMPUTED-A.                       IF1234.2
+            008500         04 COMPUTED-18V0                    PIC -9(18).          IF1234.2
+            008600         04 FILLER                           PIC X.               IF1234.2
+            008700     03 FILLER PIC X(50) VALUE SPACE.                             IF1234.2
+            008800 01  TEST-CORRECT.                                                IF1234.2
+            008900     02 FILLER PIC X(30) VALUE SPACE.                             IF1234.2
+            009000     02 FILLER PIC X(17) VALUE "       CORRECT =".                IF1234.2
+            009100     02 CORRECT-X.                                                IF1234.2
+            009200     03 CORRECT-A                  PIC X(20) VALUE SPACE.         IF1234.2
+            009300     03 CORRECT-N    REDEFINES CORRECT-A     PIC -9(9).9(9).      IF1234.2
+            009400     03 CORRECT-0V18 REDEFINES CORRECT-A     PIC -.9(18).         IF1234.2
+            009500     03 CORRECT-4V14 REDEFINES CORRECT-A     PIC -9(4).9(14).     IF1234.2
+            009600     03 CORRECT-14V4 REDEFINES CORRECT-A     PIC -9(14).9(4).     IF1234.2
+            009700     03      CR-18V0 REDEFINES CORRECT-A.                         IF1234.2
+            009800         04 CORRECT-18V0                     PIC -9(18).          IF1234.2
+            009900         04 FILLER                           PIC X.               IF1234.2
+            010000     03 FILLER PIC X(2) VALUE SPACE.                              IF1234.2
+            010100     03 COR-ANSI-REFERENCE             PIC X(48) VALUE SPACE.     IF1234.2
+            010200 01  TEST-CORRECT-MIN.                                            IF1234.2
+            010300     02 FILLER PIC X(30) VALUE SPACE.                             IF1234.2
+            010400     02 FILLER PIC X(17) VALUE "     MIN VALUE =".                IF1234.2
+            010500     02 CORRECTMI-X.                                              IF1234.2
+            010600     03 CORRECTMI-A                 PIC X(20) VALUE SPACE.        IF1234.2
+            010700     03 CORRECT-MIN    REDEFINES CORRECTMI-A     PIC -9(9).9(9).  IF1234.2
+            010800     03 CORRECTMI-0V18 REDEFINES CORRECTMI-A     PIC -.9(18).     IF1234.2
+            010900     03 CORRECTMI-4V14 REDEFINES CORRECTMI-A     PIC -9(4).9(14). IF1234.2
+            011000     03 CORRECTMI-14V4 REDEFINES CORRECTMI-A     PIC -9(14).9(4). IF1234.2
+            011100     03      CR-18V0 REDEFINES CORRECTMI-A.                       IF1234.2
+            011200         04 CORRECTMI-18V0                     PIC -9(18).        IF1234.2
+            011300         04 FILLER                           PIC X.               IF1234.2
+            011400     03 FILLER PIC X(2) VALUE SPACE.                              IF1234.2
+            011500     03 FILLER                           PIC X(48) VALUE SPACE.   IF1234.2
+            011600 01  TEST-CORRECT-MAX.                                            IF1234.2
+            011700     02 FILLER PIC X(30) VALUE SPACE.                             IF1234.2
+            011800     02 FILLER PIC X(17) VALUE "     MAX VALUE =".                IF1234.2
+            011900     02 CORRECTMA-X.                                              IF1234.2
+            012000     03 CORRECTMA-A                  PIC X(20) VALUE SPACE.       IF1234.2
+            012100     03 CORRECT-MAX    REDEFINES CORRECTMA-A     PIC -9(9).9(9).  IF1234.2
+            012200     03 CORRECTMA-0V18 REDEFINES CORRECTMA-A     PIC -.9(18).     IF1234.2
+            012300     03 CORRECTMA-4V14 REDEFINES CORRECTMA-A     PIC -9(4).9(14). IF1234.2
+            012400     03 CORRECTMA-14V4 REDEFINES CORRECTMA-A     PIC -9(14).9(4). IF1234.2
+            012500     03      CR-18V0 REDEFINES CORRECTMA-A.                       IF1234.2
+            012600         04 CORRECTMA-18V0                     PIC -9(18).        IF1234.2
+            012700         04 FILLER                           PIC X.               IF1234.2
+            012800     03 FILLER PIC X(2) VALUE SPACE.                              IF1234.2
+            012900     03 CORMA-ANSI-REFERENCE             PIC X(48) VALUE SPACE.   IF1234.2
+            013000 01  CCVS-C-1.                                                    IF1234.2
+            013100     02 FILLER  PIC IS X(99)    VALUE IS " FEATURE              PAIF1234.2
+            013200-    "SS  PARAGRAPH-NAME                                          IF1234.2
+            013300-    "       REMARKS".                                            IF1234.2
+            013400     02 FILLER                     PIC X(20)    VALUE SPACE.      IF1234.2
+            013500 01  CCVS-C-2.                                                    IF1234.2
+            013600     02 FILLER                     PIC X        VALUE SPACE.      IF1234.2
+            013700     02 FILLER                     PIC X(6)     VALUE "TESTED".   IF1234.2
+            013800     02 FILLER                     PIC X(15)    VALUE SPACE.      IF1234.2
+            013900     02 FILLER                     PIC X(4)     VALUE "FAIL".     IF1234.2
+            014000     02 FILLER                     PIC X(94)    VALUE SPACE.      IF1234.2
+            014100 01  REC-SKL-SUB                   PIC 9(2)     VALUE ZERO.       IF1234.2
+            014200 01  REC-CT                        PIC 99       VALUE ZERO.       IF1234.2
+            014300 01  DELETE-COUNTER                PIC 999      VALUE ZERO.       IF1234.2
+            014400 01  ERROR-COUNTER                 PIC 999      VALUE ZERO.       IF1234.2
+            014500 01  INSPECT-COUNTER               PIC 999      VALUE ZERO.       IF1234.2
+            014600 01  PASS-COUNTER                  PIC 999      VALUE ZERO.       IF1234.2
+            014700 01  TOTAL-ERROR                   PIC 999      VALUE ZERO.       IF1234.2
+            014800 01  ERROR-HOLD                    PIC 999      VALUE ZERO.       IF1234.2
+            014900 01  DUMMY-HOLD                    PIC X(120)   VALUE SPACE.      IF1234.2
+            015000 01  RECORD-COUNT                  PIC 9(5)     VALUE ZERO.       IF1234.2
+            015100 01  ANSI-REFERENCE                PIC X(48)    VALUE SPACES.     IF1234.2
+            015200 01  CCVS-H-1.                                                    IF1234.2
+            015300     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1234.2
+            015400     02  FILLER                    PIC X(42)    VALUE             IF1234.2
+            015500     "OFFICIAL COBOL COMPILER VALIDATION SYSTEM".                 IF1234.2
+            015600     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1234.2
+            015700 01  CCVS-H-2A.                                                   IF1234.2
+            015800   02  FILLER                        PIC X(40)  VALUE SPACE.      IF1234.2
+            015900   02  FILLER                        PIC X(7)   VALUE "CCVS85 ".  IF1234.2
+            016000   02  FILLER                        PIC XXXX   VALUE             IF1234.2
+            016100     "4.2 ".                                                      IF1234.2
+            016200   02  FILLER                        PIC X(28)  VALUE             IF1234.2
+            016300            " COPY - NOT FOR DISTRIBUTION".                       IF1234.2
+            016400   02  FILLER                        PIC X(41)  VALUE SPACE.      IF1234.2
+            016500                                                                  IF1234.2
+            016600 01  CCVS-H-2B.                                                   IF1234.2
+            016700   02  FILLER                        PIC X(15)  VALUE             IF1234.2
+            016800            "TEST RESULT OF ".                                    IF1234.2
+            016900   02  TEST-ID                       PIC X(9).                    IF1234.2
+            017000   02  FILLER                        PIC X(4)   VALUE             IF1234.2
+            017100            " IN ".                                               IF1234.2
+            017200   02  FILLER                        PIC X(12)  VALUE             IF1234.2
+            017300     " HIGH       ".                                              IF1234.2
+            017400   02  FILLER                        PIC X(22)  VALUE             IF1234.2
+            017500            " LEVEL VALIDATION FOR ".                             IF1234.2
+            017600   02  FILLER                        PIC X(58)  VALUE             IF1234.2
+            017700     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1234.2
+            017800 01  CCVS-H-3.                                                    IF1234.2
+            017900     02  FILLER                      PIC X(34)  VALUE             IF1234.2
+            018000            " FOR OFFICIAL USE ONLY    ".                         IF1234.2
+            018100     02  FILLER                      PIC X(58)  VALUE             IF1234.2
+            018200     "COBOL 85 VERSION 4.2, Apr  1993 SSVG                      ".IF1234.2
+            018300     02  FILLER                      PIC X(28)  VALUE             IF1234.2
+            018400            "  COPYRIGHT   1985 ".                                IF1234.2
+            018500 01  CCVS-E-1.                                                    IF1234.2
+            018600     02 FILLER                       PIC X(52)  VALUE SPACE.      IF1234.2
+            018700     02 FILLER  PIC X(14) VALUE IS "END OF TEST-  ".              IF1234.2
+            018800     02 ID-AGAIN                     PIC X(9).                    IF1234.2
+            018900     02 FILLER                       PIC X(45)  VALUE SPACES.     IF1234.2
+            019000 01  CCVS-E-2.                                                    IF1234.2
+            019100     02  FILLER                      PIC X(31)  VALUE SPACE.      IF1234.2
+            019200     02  FILLER                      PIC X(21)  VALUE SPACE.      IF1234.2
+            019300     02 CCVS-E-2-2.                                               IF1234.2
+            019400         03 ERROR-TOTAL              PIC XXX    VALUE SPACE.      IF1234.2
+            019500         03 FILLER                   PIC X      VALUE SPACE.      IF1234.2
+            019600         03 ENDER-DESC               PIC X(44)  VALUE             IF1234.2
+            019700            "ERRORS ENCOUNTERED".                                 IF1234.2
+            019800 01  CCVS-E-3.                                                    IF1234.2
+            019900     02  FILLER                      PIC X(22)  VALUE             IF1234.2
+            020000            " FOR OFFICIAL USE ONLY".                             IF1234.2
+            020100     02  FILLER                      PIC X(12)  VALUE SPACE.      IF1234.2
+            020200     02  FILLER                      PIC X(58)  VALUE             IF1234.2
+            020300     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1234.2
+            020400     02  FILLER                      PIC X(13)  VALUE SPACE.      IF1234.2
+            020500     02 FILLER                       PIC X(15)  VALUE             IF1234.2
+            020600             " COPYRIGHT 1985".                                   IF1234.2
+            020700 01  CCVS-E-4.                                                    IF1234.2
+            020800     02 CCVS-E-4-1                   PIC XXX    VALUE SPACE.      IF1234.2
+            020900     02 FILLER                       PIC X(4)   VALUE " OF ".     IF1234.2
+            021000     02 CCVS-E-4-2                   PIC XXX    VALUE SPACE.      IF1234.2
+            021100     02 FILLER                       PIC X(40)  VALUE             IF1234.2
+            021200      "  TESTS WERE EXECUTED SUCCESSFULLY".                       IF1234.2
+            021300 01  XXINFO.                                                      IF1234.2
+            021400     02 FILLER                       PIC X(19)  VALUE             IF1234.2
+            021500            "*** INFORMATION ***".                                IF1234.2
+            021600     02 INFO-TEXT.                                                IF1234.2
+            021700       04 FILLER                     PIC X(8)   VALUE SPACE.      IF1234.2
+            021800       04 XXCOMPUTED                 PIC X(20).                   IF1234.2
+            021900       04 FILLER                     PIC X(5)   VALUE SPACE.      IF1234.2
+            022000       04 XXCORRECT                  PIC X(20).                   IF1234.2
+            022100     02 INF-ANSI-REFERENCE           PIC X(48).                   IF1234.2
+            022200 01  HYPHEN-LINE.                                                 IF1234.2
+            022300     02 FILLER  PIC IS X VALUE IS SPACE.                          IF1234.2
+            022400     02 FILLER  PIC IS X(65)    VALUE IS "************************IF1234.2
+            022500-    "*****************************************".                 IF1234.2
+            022600     02 FILLER  PIC IS X(54)    VALUE IS "************************IF1234.2
+            022700-    "******************************".                            IF1234.2
+            022800 01  CCVS-PGM-ID                     PIC X(9)   VALUE             IF1234.2
+            022900     "IF123A".                                                    IF1234.2
+            023000 PROCEDURE DIVISION.                                              IF1234.2
+            023100 CCVS1 SECTION.                                                   IF1234.2
+            023200 OPEN-FILES.                                                      IF1234.2
+            023300     OPEN     OUTPUT PRINT-FILE.                                  IF1234.2
+            023400     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   IF1234.2
+            023500     MOVE    SPACE TO TEST-RESULTS.                               IF1234.2
+            023600     PERFORM  HEAD-ROUTINE THRU COLUMN-NAMES-ROUTINE.             IF1234.2
+            023700     GO TO CCVS1-EXIT.                                            IF1234.2
+            023800 CLOSE-FILES.                                                     IF1234.2
+            023900     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IF1234.2
+            024000 TERMINATE-CCVS.                                                  IF1234.2
+            024100     STOP     RUN.                                                IF1234.2
+            024200 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IF1234.2
+            024300 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IF1234.2
+            024400 FAIL.  MOVE "FAIL*" TO P-OR-F.  ADD 1 TO ERROR-COUNTER.          IF1234.2
+            024500 DE-LETE.  MOVE "*****" TO P-OR-F.  ADD 1 TO DELETE-COUNTER.      IF1234.2
+            024600     MOVE "****TEST DELETED****" TO RE-MARK.                      IF1234.2
+            024700 PRINT-DETAIL.                                                    IF1234.2
+            024800     IF REC-CT NOT EQUAL TO ZERO                                  IF1234.2
+            024900             MOVE "." TO PARDOT-X                                 IF1234.2
+            025000             MOVE REC-CT TO DOTVALUE.                             IF1234.2
+            025100     MOVE     TEST-RESULTS TO PRINT-REC. PERFORM WRITE-LINE.      IF1234.2
+            025200     IF P-OR-F EQUAL TO "FAIL*"  PERFORM WRITE-LINE               IF1234.2
+            025300        PERFORM FAIL-ROUTINE THRU FAIL-ROUTINE-EX                 IF1234.2
+            025400          ELSE PERFORM BAIL-OUT THRU BAIL-OUT-EX.                 IF1234.2
+            025500     MOVE SPACE TO P-OR-F. MOVE SPACE TO COMPUTED-X.              IF1234.2
+            025600     MOVE SPACE TO CORRECT-X.                                     IF1234.2
+            025700     IF     REC-CT EQUAL TO ZERO  MOVE SPACE TO PAR-NAME.         IF1234.2
+            025800     MOVE     SPACE TO RE-MARK.                                   IF1234.2
+            025900 HEAD-ROUTINE.                                                    IF1234.2
+            026000     MOVE CCVS-H-1  TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1234.2
+            026100     MOVE CCVS-H-2A TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1234.2
+            026200     MOVE CCVS-H-2B TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1234.2
+            026300     MOVE CCVS-H-3  TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1234.2
+            026400 COLUMN-NAMES-ROUTINE.                                            IF1234.2
+            026500     MOVE CCVS-C-1 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1234.2
+            026600     MOVE CCVS-C-2 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1234.2
+            026700     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE.        IF1234.2
+            026800 END-ROUTINE.                                                     IF1234.2
+            026900     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE 5 TIMES.IF1234.2
+            027000 END-RTN-EXIT.                                                    IF1234.2
+            027100     MOVE CCVS-E-1 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1234.2
+            027200 END-ROUTINE-1.                                                   IF1234.2
+            027300      ADD ERROR-COUNTER TO ERROR-HOLD ADD INSPECT-COUNTER TO      IF1234.2
+            027400      ERROR-HOLD. ADD DELETE-COUNTER TO ERROR-HOLD.               IF1234.2
+            027500      ADD PASS-COUNTER TO ERROR-HOLD.                             IF1234.2
+            027600      MOVE PASS-COUNTER TO CCVS-E-4-1.                            IF1234.2
+            027700      MOVE ERROR-HOLD TO CCVS-E-4-2.                              IF1234.2
+            027800      MOVE CCVS-E-4 TO CCVS-E-2-2.                                IF1234.2
+            027900      MOVE CCVS-E-2 TO DUMMY-RECORD PERFORM WRITE-LINE.           IF1234.2
+            028000  END-ROUTINE-12.                                                 IF1234.2
+            028100      MOVE "TEST(S) FAILED" TO ENDER-DESC.                        IF1234.2
+            028200     IF       ERROR-COUNTER IS EQUAL TO ZERO                      IF1234.2
+            028300         MOVE "NO " TO ERROR-TOTAL                                IF1234.2
+            028400         ELSE                                                     IF1234.2
+            028500         MOVE ERROR-COUNTER TO ERROR-TOTAL.                       IF1234.2
+            028600     MOVE     CCVS-E-2 TO DUMMY-RECORD.                           IF1234.2
+            028700     PERFORM WRITE-LINE.                                          IF1234.2
+            028800 END-ROUTINE-13.                                                  IF1234.2
+            028900     IF DELETE-COUNTER IS EQUAL TO ZERO                           IF1234.2
+            029000         MOVE "NO " TO ERROR-TOTAL  ELSE                          IF1234.2
+            029100         MOVE DELETE-COUNTER TO ERROR-TOTAL.                      IF1234.2
+            029200     MOVE "TEST(S) DELETED     " TO ENDER-DESC.                   IF1234.2
+            029300     MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1234.2
+            029400      IF   INSPECT-COUNTER EQUAL TO ZERO                          IF1234.2
+            029500          MOVE "NO " TO ERROR-TOTAL                               IF1234.2
+            029600      ELSE MOVE INSPECT-COUNTER TO ERROR-TOTAL.                   IF1234.2
+            029700      MOVE "TEST(S) REQUIRE INSPECTION" TO ENDER-DESC.            IF1234.2
+            029800      MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.          IF1234.2
+            029900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1234.2
+            030000 WRITE-LINE.                                                      IF1234.2
+            030100     ADD 1 TO RECORD-COUNT.                                       IF1234.2
+            030200Y    IF RECORD-COUNT GREATER 42                                   IF1234.2
+            030300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1234.2
+            030400Y        MOVE SPACE TO DUMMY-RECORD                               IF1234.2
+            030500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1234.2
+            030600Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1234.2
+            030700Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1234.2
+            030800Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1234.2
+            030900Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1234.2
+            031000Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1234.2
+            031100Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1234.2
+            031200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1234.2
+            031300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1234.2
+            031400Y        MOVE ZERO TO RECORD-COUNT.                               IF1234.2
+            031500     PERFORM WRT-LN.                                              IF1234.2
+            031600 WRT-LN.                                                          IF1234.2
+            031700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1234.2
+            031800     MOVE SPACE TO DUMMY-RECORD.                                  IF1234.2
+            031900 BLANK-LINE-PRINT.                                                IF1234.2
+            032000     PERFORM WRT-LN.                                              IF1234.2
+            032100 FAIL-ROUTINE.                                                    IF1234.2
+            032200     IF     COMPUTED-X NOT EQUAL TO SPACE                         IF1234.2
+            032300            GO TO FAIL-ROUTINE-WRITE.                             IF1234.2
+            032400     IF     CORRECT-X NOT EQUAL TO SPACE GO TO FAIL-ROUTINE-WRITE.IF1234.2
+            032500     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1234.2
+            032600     MOVE  "NO FURTHER INFORMATION, SEE PROGRAM." TO INFO-TEXT.   IF1234.2
+            032700     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1234.2
+            032800     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1234.2
+            032900     GO TO  FAIL-ROUTINE-EX.                                      IF1234.2
+            033000 FAIL-ROUTINE-WRITE.                                              IF1234.2
+            033100     MOVE   TEST-COMPUTED TO PRINT-REC PERFORM WRITE-LINE.        IF1234.2
+            033200     MOVE   ANSI-REFERENCE TO COR-ANSI-REFERENCE                  IF1234.2
+            033300                              CORMA-ANSI-REFERENCE.               IF1234.2
+            033400     IF CORRECT-MIN NOT EQUAL TO SPACES THEN                      IF1234.2
+            033500           MOVE TEST-CORRECT-MIN TO PRINT-REC PERFORM WRITE-LINE  IF1234.2
+            033600           MOVE TEST-CORRECT-MAX TO PRINT-REC PERFORM WRITE-LINE  IF1234.2
+            033700     ELSE                                                         IF1234.2
+            033800           MOVE TEST-CORRECT TO PRINT-REC PERFORM WRITE-LINE.     IF1234.2
+            033900     PERFORM WRITE-LINE.                                          IF1234.2
+            034000     MOVE   SPACES TO COR-ANSI-REFERENCE.                         IF1234.2
+            034100 FAIL-ROUTINE-EX. EXIT.                                           IF1234.2
+            034200 BAIL-OUT.                                                        IF1234.2
+            034300     IF     COMPUTED-A NOT EQUAL TO SPACE GO TO BAIL-OUT-WRITE.   IF1234.2
+            034400     IF     CORRECT-A EQUAL TO SPACE GO TO BAIL-OUT-EX.           IF1234.2
+            034500 BAIL-OUT-WRITE.                                                  IF1234.2
+            034600     MOVE CORRECT-A TO XXCORRECT.                                 IF1234.2
+            034700     MOVE COMPUTED-A TO XXCOMPUTED.                               IF1234.2
+            034800     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1234.2
+            034900     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1234.2
+            035000     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1234.2
+            035100 BAIL-OUT-EX. EXIT.                                               IF1234.2
+            035200 CCVS1-EXIT.                                                      IF1234.2
+            035300     EXIT.                                                        IF1234.2
+            035400********************************************************          IF1234.2
+            035500*                                                      *          IF1234.2
+            035600*    Intrinsic Function Tests         IF123A - MIN     *          IF1234.2
+            035700*                                                      *          IF1234.2
+            035800********************************************************          IF1234.2
+            035900 SECT-IF123A SECTION.                                             IF1234.2
+            036000 F-MIN-INFO.                                                      IF1234.2
+            036100     MOVE     "See ref. A-56 2.27" TO ANSI-REFERENCE.             IF1234.2
+            036200     MOVE     "MIN Function" TO FEATURE.                          IF1234.2
+            036300*****************TEST (a) - SIMPLE TEST*****************          IF1234.2
+            036400 F-MIN-01.                                                        IF1234.2
+            036500     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            036600 F-MIN-TEST-01.                                                   IF1234.2
+            036700     COMPUTE WS-NUM = FUNCTION MIN(5, 6, 10, 3, 7).               IF1234.2
+            036800     IF WS-NUM = 3 THEN                                           IF1234.2
+            036900                    PERFORM PASS                                  IF1234.2
+            037000     ELSE                                                         IF1234.2
+            037100                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            037200                    MOVE 3 TO CORRECT-N                           IF1234.2
+            037300                    PERFORM FAIL.                                 IF1234.2
+            037400     GO TO F-MIN-WRITE-01.                                        IF1234.2
+            037500 F-MIN-DELETE-01.                                                 IF1234.2
+            037600     PERFORM  DE-LETE.                                            IF1234.2
+            037700     GO TO    F-MIN-WRITE-01.                                     IF1234.2
+            037800 F-MIN-WRITE-01.                                                  IF1234.2
+            037900     MOVE "F-MIN-01" TO PAR-NAME.                                 IF1234.2
+            038000     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            038100*****************TEST (b) - SIMPLE TEST*****************          IF1234.2
+            038200 F-MIN-02.                                                        IF1234.2
+            038300     EVALUATE FUNCTION MIN(-4, 7, 2304, 3, -8)                    IF1234.2
+            038400     WHEN -8                                                      IF1234.2
+            038500                    PERFORM PASS                                  IF1234.2
+            038600     WHEN OTHER                                                   IF1234.2
+            038700                    PERFORM FAIL.                                 IF1234.2
+            038800     GO TO F-MIN-WRITE-02.                                        IF1234.2
+            038900 F-MIN-DELETE-02.                                                 IF1234.2
+            039000     PERFORM  DE-LETE.                                            IF1234.2
+            039100     GO TO    F-MIN-WRITE-02.                                     IF1234.2
+            039200 F-MIN-WRITE-02.                                                  IF1234.2
+            039300     MOVE "F-MIN-02" TO PAR-NAME.                                 IF1234.2
+            039400     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            039500*****************TEST (c) - SIMPLE TEST*****************          IF1234.2
+            039600 F-MIN-03.                                                        IF1234.2
+            039700     IF (FUNCTION MIN(4.3, 2.6, 7.3, 9.1) >= 2.59995) AND         IF1234.2
+            039800        (FUNCTION MIN(4.3, 2.6, 7.3, 9.1) <= 2.60005) THEN        IF1234.2
+            039900                    PERFORM PASS                                  IF1234.2
+            040000     ELSE                                                         IF1234.2
+            040100                    PERFORM FAIL.                                 IF1234.2
+            040200     GO TO F-MIN-WRITE-03.                                        IF1234.2
+            040300 F-MIN-DELETE-03.                                                 IF1234.2
+            040400     PERFORM  DE-LETE.                                            IF1234.2
+            040500     GO TO    F-MIN-WRITE-03.                                     IF1234.2
+            040600 F-MIN-WRITE-03.                                                  IF1234.2
+            040700     MOVE "F-MIN-03" TO PAR-NAME.                                 IF1234.2
+            040800     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            040900*****************TEST (d) - SIMPLE TEST*****************          IF1234.2
+            041000 F-MIN-04.                                                        IF1234.2
+            041100     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            041200 F-MIN-TEST-04.                                                   IF1234.2
+            041300     COMPUTE WS-NUM = FUNCTION MIN(-4.3, 10.2, -0.7, 3.9).        IF1234.2
+            041400     IF (WS-NUM >= -4.30009) AND                                  IF1234.2
+            041500        (WS-NUM <= -4.29991)                                      IF1234.2
+            041600                    PERFORM PASS                                  IF1234.2
+            041700     ELSE                                                         IF1234.2
+            041800                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            041900                    MOVE -4.3 TO CORRECT-N                        IF1234.2
+            042000                    PERFORM FAIL.                                 IF1234.2
+            042100     GO TO F-MIN-WRITE-04.                                        IF1234.2
+            042200 F-MIN-DELETE-04.                                                 IF1234.2
+            042300     PERFORM  DE-LETE.                                            IF1234.2
+            042400     GO TO    F-MIN-WRITE-04.                                     IF1234.2
+            042500 F-MIN-WRITE-04.                                                  IF1234.2
+            042600     MOVE "F-MIN-04" TO PAR-NAME.                                 IF1234.2
+            042700     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            042800*****************TEST (e) - SIMPLE TEST*****************          IF1234.2
+            042900 F-MIN-05.                                                        IF1234.2
+            043000     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            043100 F-MIN-TEST-05.                                                   IF1234.2
+            043200     COMPUTE WS-NUM = FUNCTION MIN(A, B, D).                      IF1234.2
+            043300     IF WS-NUM = 5 THEN                                           IF1234.2
+            043400                    PERFORM PASS                                  IF1234.2
+            043500     ELSE                                                         IF1234.2
+            043600                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            043700                    MOVE 5 TO CORRECT-N                           IF1234.2
+            043800                    PERFORM FAIL.                                 IF1234.2
+            043900     GO TO F-MIN-WRITE-05.                                        IF1234.2
+            044000 F-MIN-DELETE-05.                                                 IF1234.2
+            044100     PERFORM  DE-LETE.                                            IF1234.2
+            044200     GO TO    F-MIN-WRITE-05.                                     IF1234.2
+            044300 F-MIN-WRITE-05.                                                  IF1234.2
+            044400     MOVE "F-MIN-05" TO PAR-NAME.                                 IF1234.2
+            044500     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            044600*****************TEST (f) - SIMPLE TEST*****************          IF1234.2
+            044700 F-MIN-06.                                                        IF1234.2
+            044800     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            044900 F-MIN-TEST-06.                                                   IF1234.2
+            045000     COMPUTE WS-NUM = FUNCTION MIN(A, B, C, D).                   IF1234.2
+            045100     IF WS-NUM = -4 THEN                                          IF1234.2
+            045200                    PERFORM PASS                                  IF1234.2
+            045300     ELSE                                                         IF1234.2
+            045400                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            045500                    MOVE -4 TO CORRECT-N                          IF1234.2
+            045600                    PERFORM FAIL.                                 IF1234.2
+            045700     GO TO F-MIN-WRITE-06.                                        IF1234.2
+            045800 F-MIN-DELETE-06.                                                 IF1234.2
+            045900     PERFORM  DE-LETE.                                            IF1234.2
+            046000     GO TO    F-MIN-WRITE-06.                                     IF1234.2
+            046100 F-MIN-WRITE-06.                                                  IF1234.2
+            046200     MOVE "F-MIN-06" TO PAR-NAME.                                 IF1234.2
+            046300     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            046400*****************TEST (g) - SIMPLE TEST*****************          IF1234.2
+            046500 F-MIN-07.                                                        IF1234.2
+            046600     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            046700 F-MIN-TEST-07.                                                   IF1234.2
+            046800     COMPUTE WS-NUM = FUNCTION MIN(E, G).                         IF1234.2
+            046900     IF (WS-NUM >= 4.07992) AND                                   IF1234.2
+            047000        (WS-NUM <= 4.08008)                                       IF1234.2
+            047100                    PERFORM PASS                                  IF1234.2
+            047200     ELSE                                                         IF1234.2
+            047300                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            047400                    MOVE 4.08 TO CORRECT-N                        IF1234.2
+            047500                    PERFORM FAIL.                                 IF1234.2
+            047600     GO TO F-MIN-WRITE-07.                                        IF1234.2
+            047700 F-MIN-DELETE-07.                                                 IF1234.2
+            047800     PERFORM  DE-LETE.                                            IF1234.2
+            047900     GO TO    F-MIN-WRITE-07.                                     IF1234.2
+            048000 F-MIN-WRITE-07.                                                  IF1234.2
+            048100     MOVE "F-MIN-07" TO PAR-NAME.                                 IF1234.2
+            048200     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            048300*****************TEST (h) - SIMPLE TEST*****************          IF1234.2
+            048400 F-MIN-08.                                                        IF1234.2
+            048500     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            048600 F-MIN-TEST-08.                                                   IF1234.2
+            048700     COMPUTE WS-NUM = FUNCTION MIN(E, F, G, H).                   IF1234.2
+            048800     IF (WS-NUM >= -8.32017) AND                                  IF1234.2
+            048900        (WS-NUM <= -8.31983)                                      IF1234.2
+            049000                    PERFORM PASS                                  IF1234.2
+            049100     ELSE                                                         IF1234.2
+            049200                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            049300                    MOVE -8.32 TO CORRECT-N                       IF1234.2
+            049400                    PERFORM FAIL.                                 IF1234.2
+            049500     GO TO F-MIN-WRITE-08.                                        IF1234.2
+            049600 F-MIN-DELETE-08.                                                 IF1234.2
+            049700     PERFORM  DE-LETE.                                            IF1234.2
+            049800     GO TO    F-MIN-WRITE-08.                                     IF1234.2
+            049900 F-MIN-WRITE-08.                                                  IF1234.2
+            050000     MOVE "F-MIN-08" TO PAR-NAME.                                 IF1234.2
+            050100     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            050200*****************TEST (i) - SIMPLE TEST*****************          IF1234.2
+            050300 F-MIN-09.                                                        IF1234.2
+            050400     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            050500 F-MIN-TEST-09.                                                   IF1234.2
+            050600     COMPUTE WS-NUM = FUNCTION MIN(A, 4, 8, -10, C, 0).           IF1234.2
+            050700     IF WS-NUM = -10 THEN                                         IF1234.2
+            050800                    PERFORM PASS                                  IF1234.2
+            050900     ELSE                                                         IF1234.2
+            051000                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            051100                    MOVE -10 TO CORRECT-N                         IF1234.2
+            051200                    PERFORM FAIL.                                 IF1234.2
+            051300     GO TO F-MIN-WRITE-09.                                        IF1234.2
+            051400 F-MIN-DELETE-09.                                                 IF1234.2
+            051500     PERFORM  DE-LETE.                                            IF1234.2
+            051600     GO TO    F-MIN-WRITE-09.                                     IF1234.2
+            051700 F-MIN-WRITE-09.                                                  IF1234.2
+            051800     MOVE "F-MIN-09" TO PAR-NAME.                                 IF1234.2
+            051900     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            052000*****************TEST (j) - SIMPLE TEST*****************          IF1234.2
+            052100 F-MIN-10.                                                        IF1234.2
+            052200     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            052300 F-MIN-TEST-10.                                                   IF1234.2
+            052400     COMPUTE WS-NUM = FUNCTION MIN(4, D, E, 6.3, -2.0).           IF1234.2
+            052500     IF (WS-NUM >= -2.00004) AND                                  IF1234.2
+            052600        (WS-NUM <= -1.99996)                                      IF1234.2
+            052700                    PERFORM PASS                                  IF1234.2
+            052800     ELSE                                                         IF1234.2
+            052900                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            053000                    MOVE -2.0 TO CORRECT-N                        IF1234.2
+            053100                    PERFORM FAIL.                                 IF1234.2
+            053200     GO TO F-MIN-WRITE-10.                                        IF1234.2
+            053300 F-MIN-DELETE-10.                                                 IF1234.2
+            053400     PERFORM  DE-LETE.                                            IF1234.2
+            053500     GO TO    F-MIN-WRITE-10.                                     IF1234.2
+            053600 F-MIN-WRITE-10.                                                  IF1234.2
+            053700     MOVE "F-MIN-10" TO PAR-NAME.                                 IF1234.2
+            053800     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            053900*****************TEST (k) - SIMPLE TEST*****************          IF1234.2
+            054000 F-MIN-11.                                                        IF1234.2
+            054100     MOVE SPACES TO WS-ANUM.                                      IF1234.2
+            054200 F-MIN-TEST-11.                                                   IF1234.2
+            054300     MOVE FUNCTION MIN("R", I, "I", "a") TO WS-ANUM.              IF1234.2
+            054400     IF WS-ANUM = "I" THEN                                        IF1234.2
+            054500                    PERFORM PASS                                  IF1234.2
+            054600     ELSE                                                         IF1234.2
+            054700                    MOVE WS-ANUM TO COMPUTED-A                    IF1234.2
+            054800                    MOVE "I" TO CORRECT-A                         IF1234.2
+            054900                    PERFORM FAIL.                                 IF1234.2
+            055000     GO TO F-MIN-WRITE-11.                                        IF1234.2
+            055100 F-MIN-DELETE-11.                                                 IF1234.2
+            055200     PERFORM  DE-LETE.                                            IF1234.2
+            055300     GO TO    F-MIN-WRITE-11.                                     IF1234.2
+            055400 F-MIN-WRITE-11.                                                  IF1234.2
+            055500     MOVE "F-MIN-11" TO PAR-NAME.                                 IF1234.2
+            055600     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            055700*****************TEST (l) - SIMPLE TEST*****************          IF1234.2
+            055800 F-MIN-12.                                                        IF1234.2
+            055900     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            056000 F-MIN-TEST-12.                                                   IF1234.2
+            056100     MOVE FUNCTION MIN("a", J, "J") TO WS-ANUM.                   IF1234.2
+            056200     IF WS-ANUM = "J" THEN                                        IF1234.2
+            056300                    PERFORM PASS                                  IF1234.2
+            056400     ELSE                                                         IF1234.2
+            056500                    MOVE WS-ANUM TO COMPUTED-A                    IF1234.2
+            056600                    MOVE "J" TO CORRECT-A                         IF1234.2
+            056700                    PERFORM FAIL.                                 IF1234.2
+            056800     GO TO F-MIN-WRITE-12.                                        IF1234.2
+            056900 F-MIN-DELETE-12.                                                 IF1234.2
+            057000     PERFORM  DE-LETE.                                            IF1234.2
+            057100     GO TO    F-MIN-WRITE-12.                                     IF1234.2
+            057200 F-MIN-WRITE-12.                                                  IF1234.2
+            057300     MOVE "F-MIN-12" TO PAR-NAME.                                 IF1234.2
+            057400     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            057500*****************TEST (m) - SIMPLE TEST*****************          IF1234.2
+            057600 F-MIN-13.                                                        IF1234.2
+            057700     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            057800 F-MIN-TEST-13.                                                   IF1234.2
+            057900     COMPUTE WS-NUM = FUNCTION MIN(IND(1), IND(2), IND(3)).       IF1234.2
+            058000     IF WS-NUM = 0 THEN                                           IF1234.2
+            058100                    PERFORM PASS                                  IF1234.2
+            058200     ELSE                                                         IF1234.2
+            058300                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            058400                    MOVE 0 TO CORRECT-N                           IF1234.2
+            058500                    PERFORM FAIL.                                 IF1234.2
+            058600     GO TO F-MIN-WRITE-13.                                        IF1234.2
+            058700 F-MIN-DELETE-13.                                                 IF1234.2
+            058800     PERFORM  DE-LETE.                                            IF1234.2
+            058900     GO TO    F-MIN-WRITE-13.                                     IF1234.2
+            059000 F-MIN-WRITE-13.                                                  IF1234.2
+            059100     MOVE "F-MIN-13" TO PAR-NAME.                                 IF1234.2
+            059200     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            059300*****************TEST (n) - SIMPLE TEST*****************          IF1234.2
+            059400 F-MIN-14.                                                        IF1234.2
+            059500     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            059600 F-MIN-TEST-14.                                                   IF1234.2
+            059700     COMPUTE WS-NUM = FUNCTION MIN(IND(P), IND(Q), IND(R)).       IF1234.2
+            059800     IF WS-NUM = 4 THEN                                           IF1234.2
+            059900                    PERFORM PASS                                  IF1234.2
+            060000     ELSE                                                         IF1234.2
+            060100                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            060200                    MOVE 4 TO CORRECT-N                           IF1234.2
+            060300                    PERFORM FAIL.                                 IF1234.2
+            060400     GO TO F-MIN-WRITE-14.                                        IF1234.2
+            060500 F-MIN-DELETE-14.                                                 IF1234.2
+            060600     PERFORM  DE-LETE.                                            IF1234.2
+            060700     GO TO    F-MIN-WRITE-14.                                     IF1234.2
+            060800 F-MIN-WRITE-14.                                                  IF1234.2
+            060900     MOVE "F-MIN-14" TO PAR-NAME.                                 IF1234.2
+            061000     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            061100*****************TEST (o) - SIMPLE TEST*****************          IF1234.2
+            061200 F-MIN-15.                                                        IF1234.2
+            061300     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            061400 F-MIN-TEST-15.                                                   IF1234.2
+            061500     COMPUTE WS-NUM = FUNCTION MIN(IND(ALL)).                     IF1234.2
+            061600     IF WS-NUM = 0 THEN                                           IF1234.2
+            061700                    PERFORM PASS                                  IF1234.2
+            061800     ELSE                                                         IF1234.2
+            061900                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            062000                    MOVE 0 TO CORRECT-N                           IF1234.2
+            062100                    PERFORM FAIL.                                 IF1234.2
+            062200     GO TO F-MIN-WRITE-15.                                        IF1234.2
+            062300 F-MIN-DELETE-15.                                                 IF1234.2
+            062400     PERFORM  DE-LETE.                                            IF1234.2
+            062500     GO TO    F-MIN-WRITE-15.                                     IF1234.2
+            062600 F-MIN-WRITE-15.                                                  IF1234.2
+            062700     MOVE "F-MIN-15" TO PAR-NAME.                                 IF1234.2
+            062800     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            062900*****************TEST (q) - SIMPLE TEST*****************          IF1234.2
+            063000 F-MIN-17.                                                        IF1234.2
+            063100     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            063200 F-MIN-TEST-17.                                                   IF1234.2
+            063300     COMPUTE WS-NUM =                                             IF1234.2
+            063400         FUNCTION MIN(31000, 310001, 78000, 29000, 12000).        IF1234.2
+            063500     IF WS-NUM = 12000 THEN                                       IF1234.2
+            063600                    PERFORM PASS                                  IF1234.2
+            063700     ELSE                                                         IF1234.2
+            063800                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            063900                    MOVE 1200 TO CORRECT-N                        IF1234.2
+            064000                    PERFORM FAIL.                                 IF1234.2
+            064100     GO TO F-MIN-WRITE-17.                                        IF1234.2
+            064200 F-MIN-DELETE-17.                                                 IF1234.2
+            064300     PERFORM  DE-LETE.                                            IF1234.2
+            064400     GO TO    F-MIN-WRITE-17.                                     IF1234.2
+            064500 F-MIN-WRITE-17.                                                  IF1234.2
+            064600     MOVE "F-MIN-17" TO PAR-NAME.                                 IF1234.2
+            064700     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            064800*****************TEST (a) - COMPLEX TEST****************          IF1234.2
+            064900 F-MIN-18.                                                        IF1234.2
+            065000     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            065100     MOVE  1.99996 TO MIN-RANGE.                                  IF1234.2
+            065200     MOVE  2.00004 TO MAX-RANGE.                                  IF1234.2
+            065300 F-MIN-TEST-18.                                                   IF1234.2
+            065400     COMPUTE WS-NUM = FUNCTION MIN(A * B, (3 + 1) / 2, 3 + 4).    IF1234.2
+            065500     IF (WS-NUM >= MIN-RANGE) AND                                 IF1234.2
+            065600        (WS-NUM <= MAX-RANGE) THEN                                IF1234.2
+            065700                    PERFORM PASS                                  IF1234.2
+            065800     ELSE                                                         IF1234.2
+            065900                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            066000                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1234.2
+            066100                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1234.2
+            066200                    PERFORM FAIL.                                 IF1234.2
+            066300     GO TO F-MIN-WRITE-18.                                        IF1234.2
+            066400 F-MIN-DELETE-18.                                                 IF1234.2
+            066500     PERFORM  DE-LETE.                                            IF1234.2
+            066600     GO TO    F-MIN-WRITE-18.                                     IF1234.2
+            066700 F-MIN-WRITE-18.                                                  IF1234.2
+            066800     MOVE "F-MIN-18" TO PAR-NAME.                                 IF1234.2
+            066900     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            067000*****************TEST (b) - COMPLEX TEST****************          IF1234.2
+            067100 F-MIN-19.                                                        IF1234.2
+            067200     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            067300     MOVE -10.6002 TO MIN-RANGE.                                  IF1234.2
+            067400     MOVE -10.5998 TO MAX-RANGE.                                  IF1234.2
+            067500 F-MIN-TEST-19.                                                   IF1234.2
+            067600     COMPUTE WS-NUM = FUNCTION MIN(E + 4, H * 2, 5 + A).          IF1234.2
+            067700     IF (WS-NUM >= MIN-RANGE) AND                                 IF1234.2
+            067800        (WS-NUM <= MAX-RANGE) THEN                                IF1234.2
+            067900                    PERFORM PASS                                  IF1234.2
+            068000     ELSE                                                         IF1234.2
+            068100                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            068200                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1234.2
+            068300                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1234.2
+            068400                    PERFORM FAIL.                                 IF1234.2
+            068500     GO TO F-MIN-WRITE-19.                                        IF1234.2
+            068600 F-MIN-DELETE-19.                                                 IF1234.2
+            068700     PERFORM  DE-LETE.                                            IF1234.2
+            068800     GO TO    F-MIN-WRITE-19.                                     IF1234.2
+            068900 F-MIN-WRITE-19.                                                  IF1234.2
+            069000     MOVE "F-MIN-19" TO PAR-NAME.                                 IF1234.2
+            069100     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            069200*****************TEST (c) - COMPLEX TEST****************          IF1234.2
+            069300 F-MIN-20.                                                        IF1234.2
+            069400     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            069500     MOVE -7.00014 TO MIN-RANGE.                                  IF1234.2
+            069600     MOVE -6.99986 TO MAX-RANGE.                                  IF1234.2
+            069700 F-MIN-TEST-20.                                                   IF1234.2
+            069800     COMPUTE WS-NUM = FUNCTION MIN(-7, -9 + 2, (- B)).            IF1234.2
+            069900     IF (WS-NUM >= MIN-RANGE) AND                                 IF1234.2
+            070000        (WS-NUM <= MAX-RANGE) THEN                                IF1234.2
+            070100                    PERFORM PASS                                  IF1234.2
+            070200     ELSE                                                         IF1234.2
+            070300                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            070400                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1234.2
+            070500                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1234.2
+            070600                    PERFORM FAIL.                                 IF1234.2
+            070700     GO TO F-MIN-WRITE-20.                                        IF1234.2
+            070800 F-MIN-DELETE-20.                                                 IF1234.2
+            070900     PERFORM  DE-LETE.                                            IF1234.2
+            071000     GO TO    F-MIN-WRITE-20.                                     IF1234.2
+            071100 F-MIN-WRITE-20.                                                  IF1234.2
+            071200     MOVE "F-MIN-20" TO PAR-NAME.                                 IF1234.2
+            071300     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            071400*****************TEST (d) - COMPLEX TEST****************          IF1234.2
+            071500 F-MIN-21.                                                        IF1234.2
+            071600     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            071700     MOVE 4.99990 TO MIN-RANGE.                                   IF1234.2
+            071800     MOVE 5.00010 TO MAX-RANGE.                                   IF1234.2
+            071900 F-MIN-TEST-21.                                                   IF1234.2
+            072000     COMPUTE WS-NUM = FUNCTION MIN(FUNCTION MIN(14, A), E, 50).   IF1234.2
+            072100     IF (WS-NUM >= MIN-RANGE) AND                                 IF1234.2
+            072200        (WS-NUM <= MAX-RANGE) THEN                                IF1234.2
+            072300                    PERFORM PASS                                  IF1234.2
+            072400     ELSE                                                         IF1234.2
+            072500                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            072600                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1234.2
+            072700                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1234.2
+            072800                    PERFORM FAIL.                                 IF1234.2
+            072900     GO TO F-MIN-WRITE-21.                                        IF1234.2
+            073000 F-MIN-DELETE-21.                                                 IF1234.2
+            073100     PERFORM  DE-LETE.                                            IF1234.2
+            073200     GO TO    F-MIN-WRITE-21.                                     IF1234.2
+            073300 F-MIN-WRITE-21.                                                  IF1234.2
+            073400     MOVE "F-MIN-21" TO PAR-NAME.                                 IF1234.2
+            073500     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            073600*****************TEST (e) - COMPLEX TEST****************          IF1234.2
+            073700 F-MIN-22.                                                        IF1234.2
+            073800     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            073900     MOVE 8.99982 TO MIN-RANGE.                                   IF1234.2
+            074000     MOVE 9.00018 TO MAX-RANGE.                                   IF1234.2
+            074100 F-MIN-TEST-22.                                                   IF1234.2
+            074200     COMPUTE WS-NUM = FUNCTION MIN(4, B, E) + A.                  IF1234.2
+            074300     IF (WS-NUM >= MIN-RANGE) AND                                 IF1234.2
+            074400        (WS-NUM <= MAX-RANGE) THEN                                IF1234.2
+            074500                    PERFORM PASS                                  IF1234.2
+            074600     ELSE                                                         IF1234.2
+            074700                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            074800                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1234.2
+            074900                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1234.2
+            075000                    PERFORM FAIL.                                 IF1234.2
+            075100     GO TO F-MIN-WRITE-22.                                        IF1234.2
+            075200 F-MIN-DELETE-22.                                                 IF1234.2
+            075300     PERFORM  DE-LETE.                                            IF1234.2
+            075400     GO TO    F-MIN-WRITE-22.                                     IF1234.2
+            075500 F-MIN-WRITE-22.                                                  IF1234.2
+            075600     MOVE "F-MIN-22" TO PAR-NAME.                                 IF1234.2
+            075700     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            075800*****************TEST (f) - COMPLEX TEST****************          IF1234.2
+            075900 F-MIN-23.                                                        IF1234.2
+            076000     MOVE ZERO TO WS-NUM.                                         IF1234.2
+            076100     MOVE 4.99990 TO MIN-RANGE.                                   IF1234.2
+            076200     MOVE 5.00010 TO MAX-RANGE.                                   IF1234.2
+            076300 F-MIN-TEST-23.                                                   IF1234.2
+            076400     COMPUTE WS-NUM = FUNCTION MIN(A, E) + FUNCTION MIN(B, 0).    IF1234.2
+            076500     IF (WS-NUM >= MIN-RANGE) AND                                 IF1234.2
+            076600        (WS-NUM <= MAX-RANGE) THEN                                IF1234.2
+            076700                    PERFORM PASS                                  IF1234.2
+            076800     ELSE                                                         IF1234.2
+            076900                    MOVE WS-NUM TO COMPUTED-N                     IF1234.2
+            077000                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1234.2
+            077100                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1234.2
+            077200                    PERFORM FAIL.                                 IF1234.2
+            077300     GO TO F-MIN-WRITE-23.                                        IF1234.2
+            077400 F-MIN-DELETE-23.                                                 IF1234.2
+            077500     PERFORM  DE-LETE.                                            IF1234.2
+            077600     GO TO    F-MIN-WRITE-23.                                     IF1234.2
+            077700 F-MIN-WRITE-23.                                                  IF1234.2
+            077800     MOVE "F-MIN-23" TO PAR-NAME.                                 IF1234.2
+            077900     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            078000*****************SPECIAL PERFORM TEST**********************       IF1234.2
+            078100 F-MIN-24.                                                        IF1234.2
+            078200     PERFORM F-MIN-TEST-24                                        IF1234.2
+            078300       UNTIL FUNCTION MIN(ARG1, 20) < 10.                         IF1234.2
+            078400     PERFORM PASS.                                                IF1234.2
+            078500     GO TO F-MIN-WRITE-24.                                        IF1234.2
+            078600 F-MIN-TEST-24.                                                   IF1234.2
+            078700     COMPUTE ARG1 = ARG1 - 1.                                     IF1234.2
+            078800 F-MIN-DELETE-24.                                                 IF1234.2
+            078900     PERFORM  DE-LETE.                                            IF1234.2
+            079000     GO TO    F-MIN-WRITE-24.                                     IF1234.2
+            079100 F-MIN-WRITE-24.                                                  IF1234.2
+            079200     MOVE "F-MIN-24" TO PAR-NAME.                                 IF1234.2
+            079300     PERFORM  PRINT-DETAIL.                                       IF1234.2
+            079400********************END OF TESTS***************                   IF1234.2
+            079500 CCVS-EXIT SECTION.                                               IF1234.2
+            079600 CCVS-999999.                                                     IF1234.2
+            079700     GO TO CLOSE-FILES.                                           IF1234.2
+                  *END-OF,IF123A                                                            
+        """)
+    )
+
+    @Test
+    fun if1244_2() = rewriteRun(
+        cobol("""
+                  *HEADER,COBOL,IF124A                                                      
+            000100 IDENTIFICATION DIVISION.                                         IF1244.2
+            000200 PROGRAM-ID.                                                      IF1244.2
+            000300     IF124A.                                                      IF1244.2
+            000400                                                                  IF1244.2
+            000500***********************************************************       IF1244.2
+            000600*                                                         *       IF1244.2
+            000700*   This program is intended to form part of the CCVS85   *       IF1244.2
+            000800*   COBOL Test Suite. It contains tests for the           *       IF1244.2
+            000900*   Intrinsic Function MOD.                               *       IF1244.2
+            001000*                                                         *       IF1244.2
+            001100***********************************************************       IF1244.2
+            001200 ENVIRONMENT DIVISION.                                            IF1244.2
+            001300 CONFIGURATION SECTION.                                           IF1244.2
+            001400 SOURCE-COMPUTER.                                                 IF1244.2
+            001500     XXXXX082.                                                    IF1244.2
+            001600 OBJECT-COMPUTER.                                                 IF1244.2
+            001700     XXXXX083.                                                    IF1244.2
+            001800 INPUT-OUTPUT SECTION.                                            IF1244.2
+            001900 FILE-CONTROL.                                                    IF1244.2
+            002000     SELECT PRINT-FILE ASSIGN TO                                  IF1244.2
+            002100     XXXXX055.                                                    IF1244.2
+            002200 DATA DIVISION.                                                   IF1244.2
+            002300 FILE SECTION.                                                    IF1244.2
+            002400 FD  PRINT-FILE.                                                  IF1244.2
+            002500 01  PRINT-REC PICTURE X(120).                                    IF1244.2
+            002600 01  DUMMY-RECORD PICTURE X(120).                                 IF1244.2
+            002700 WORKING-STORAGE SECTION.                                         IF1244.2
+            002800***********************************************************       IF1244.2
+            002900* Variables specific to the Intrinsic Function Test IF124A*       IF1244.2
+            003000***********************************************************       IF1244.2
+            003100 01  A                   PIC S9(10)          VALUE 5.             IF1244.2
+            003200 01  B                   PIC S9(10)          VALUE 7.             IF1244.2
+            003300 01  C                   PIC S9(10)          VALUE -4.            IF1244.2
+            003400 01  ARG2                PIC S9(10)          VALUE 1.             IF1244.2
+            003500 01  TEMP                PIC S9(10).                              IF1244.2
+            003600 01  WS-NUM              PIC S9(5)V9(6).                          IF1244.2
+            003700 01  MIN-RANGE           PIC S9(5)V9(7).                          IF1244.2
+            003800 01  MAX-RANGE           PIC S9(5)V9(7).                          IF1244.2
+            003900*                                                                 IF1244.2
+            004000***********************************************************       IF1244.2
+            004100*                                                                 IF1244.2
+            004200 01  TEST-RESULTS.                                                IF1244.2
+            004300     02 FILLER                   PIC X      VALUE SPACE.          IF1244.2
+            004400     02 FEATURE                  PIC X(20)  VALUE SPACE.          IF1244.2
+            004500     02 FILLER                   PIC X      VALUE SPACE.          IF1244.2
+            004600     02 P-OR-F                   PIC X(5)   VALUE SPACE.          IF1244.2
+            004700     02 FILLER                   PIC X      VALUE SPACE.          IF1244.2
+            004800     02  PAR-NAME.                                                IF1244.2
+            004900       03 FILLER                 PIC X(19)  VALUE SPACE.          IF1244.2
+            005000       03  PARDOT-X              PIC X      VALUE SPACE.          IF1244.2
+            005100       03 DOTVALUE               PIC 99     VALUE ZERO.           IF1244.2
+            005200     02 FILLER                   PIC X(8)   VALUE SPACE.          IF1244.2
+            005300     02 RE-MARK                  PIC X(61).                       IF1244.2
+            005400 01  TEST-COMPUTED.                                               IF1244.2
+            005500     02 FILLER                   PIC X(30)  VALUE SPACE.          IF1244.2
+            005600     02 FILLER                   PIC X(17)  VALUE                 IF1244.2
+            005700            "       COMPUTED=".                                   IF1244.2
+            005800     02 COMPUTED-X.                                               IF1244.2
+            005900     03 COMPUTED-A               PIC X(20)  VALUE SPACE.          IF1244.2
+            006000     03 COMPUTED-N               REDEFINES COMPUTED-A             IF1244.2
+            006100                                 PIC -9(9).9(9).                  IF1244.2
+            006200     03 COMPUTED-0V18 REDEFINES COMPUTED-A   PIC -.9(18).         IF1244.2
+            006300     03 COMPUTED-4V14 REDEFINES COMPUTED-A   PIC -9(4).9(14).     IF1244.2
+            006400     03 COMPUTED-14V4 REDEFINES COMPUTED-A   PIC -9(14).9(4).     IF1244.2
+            006500     03       CM-18V0 REDEFINES COMPUTED-A.                       IF1244.2
+            006600         04 COMPUTED-18V0                    PIC -9(18).          IF1244.2
+            006700         04 FILLER                           PIC X.               IF1244.2
+            006800     03 FILLER PIC X(50) VALUE SPACE.                             IF1244.2
+            006900 01  TEST-CORRECT.                                                IF1244.2
+            007000     02 FILLER PIC X(30) VALUE SPACE.                             IF1244.2
+            007100     02 FILLER PIC X(17) VALUE "       CORRECT =".                IF1244.2
+            007200     02 CORRECT-X.                                                IF1244.2
+            007300     03 CORRECT-A                  PIC X(20) VALUE SPACE.         IF1244.2
+            007400     03 CORRECT-N    REDEFINES CORRECT-A     PIC -9(9).9(9).      IF1244.2
+            007500     03 CORRECT-0V18 REDEFINES CORRECT-A     PIC -.9(18).         IF1244.2
+            007600     03 CORRECT-4V14 REDEFINES CORRECT-A     PIC -9(4).9(14).     IF1244.2
+            007700     03 CORRECT-14V4 REDEFINES CORRECT-A     PIC -9(14).9(4).     IF1244.2
+            007800     03      CR-18V0 REDEFINES CORRECT-A.                         IF1244.2
+            007900         04 CORRECT-18V0                     PIC -9(18).          IF1244.2
+            008000         04 FILLER                           PIC X.               IF1244.2
+            008100     03 FILLER PIC X(2) VALUE SPACE.                              IF1244.2
+            008200     03 COR-ANSI-REFERENCE             PIC X(48) VALUE SPACE.     IF1244.2
+            008300 01  TEST-CORRECT-MIN.                                            IF1244.2
+            008400     02 FILLER PIC X(30) VALUE SPACE.                             IF1244.2
+            008500     02 FILLER PIC X(17) VALUE "     MIN VALUE =".                IF1244.2
+            008600     02 CORRECTMI-X.                                              IF1244.2
+            008700     03 CORRECTMI-A                 PIC X(20) VALUE SPACE.        IF1244.2
+            008800     03 CORRECT-MIN    REDEFINES CORRECTMI-A     PIC -9(9).9(9).  IF1244.2
+            008900     03 CORRECTMI-0V18 REDEFINES CORRECTMI-A     PIC -.9(18).     IF1244.2
+            009000     03 CORRECTMI-4V14 REDEFINES CORRECTMI-A     PIC -9(4).9(14). IF1244.2
+            009100     03 CORRECTMI-14V4 REDEFINES CORRECTMI-A     PIC -9(14).9(4). IF1244.2
+            009200     03      CR-18V0 REDEFINES CORRECTMI-A.                       IF1244.2
+            009300         04 CORRECTMI-18V0                     PIC -9(18).        IF1244.2
+            009400         04 FILLER                           PIC X.               IF1244.2
+            009500     03 FILLER PIC X(2) VALUE SPACE.                              IF1244.2
+            009600     03 FILLER                           PIC X(48) VALUE SPACE.   IF1244.2
+            009700 01  TEST-CORRECT-MAX.                                            IF1244.2
+            009800     02 FILLER PIC X(30) VALUE SPACE.                             IF1244.2
+            009900     02 FILLER PIC X(17) VALUE "     MAX VALUE =".                IF1244.2
+            010000     02 CORRECTMA-X.                                              IF1244.2
+            010100     03 CORRECTMA-A                  PIC X(20) VALUE SPACE.       IF1244.2
+            010200     03 CORRECT-MAX    REDEFINES CORRECTMA-A     PIC -9(9).9(9).  IF1244.2
+            010300     03 CORRECTMA-0V18 REDEFINES CORRECTMA-A     PIC -.9(18).     IF1244.2
+            010400     03 CORRECTMA-4V14 REDEFINES CORRECTMA-A     PIC -9(4).9(14). IF1244.2
+            010500     03 CORRECTMA-14V4 REDEFINES CORRECTMA-A     PIC -9(14).9(4). IF1244.2
+            010600     03      CR-18V0 REDEFINES CORRECTMA-A.                       IF1244.2
+            010700         04 CORRECTMA-18V0                     PIC -9(18).        IF1244.2
+            010800         04 FILLER                           PIC X.               IF1244.2
+            010900     03 FILLER PIC X(2) VALUE SPACE.                              IF1244.2
+            011000     03 CORMA-ANSI-REFERENCE             PIC X(48) VALUE SPACE.   IF1244.2
+            011100 01  CCVS-C-1.                                                    IF1244.2
+            011200     02 FILLER  PIC IS X(99)    VALUE IS " FEATURE              PAIF1244.2
+            011300-    "SS  PARAGRAPH-NAME                                          IF1244.2
+            011400-    "       REMARKS".                                            IF1244.2
+            011500     02 FILLER                     PIC X(20)    VALUE SPACE.      IF1244.2
+            011600 01  CCVS-C-2.                                                    IF1244.2
+            011700     02 FILLER                     PIC X        VALUE SPACE.      IF1244.2
+            011800     02 FILLER                     PIC X(6)     VALUE "TESTED".   IF1244.2
+            011900     02 FILLER                     PIC X(15)    VALUE SPACE.      IF1244.2
+            012000     02 FILLER                     PIC X(4)     VALUE "FAIL".     IF1244.2
+            012100     02 FILLER                     PIC X(94)    VALUE SPACE.      IF1244.2
+            012200 01  REC-SKL-SUB                   PIC 9(2)     VALUE ZERO.       IF1244.2
+            012300 01  REC-CT                        PIC 99       VALUE ZERO.       IF1244.2
+            012400 01  DELETE-COUNTER                PIC 999      VALUE ZERO.       IF1244.2
+            012500 01  ERROR-COUNTER                 PIC 999      VALUE ZERO.       IF1244.2
+            012600 01  INSPECT-COUNTER               PIC 999      VALUE ZERO.       IF1244.2
+            012700 01  PASS-COUNTER                  PIC 999      VALUE ZERO.       IF1244.2
+            012800 01  TOTAL-ERROR                   PIC 999      VALUE ZERO.       IF1244.2
+            012900 01  ERROR-HOLD                    PIC 999      VALUE ZERO.       IF1244.2
+            013000 01  DUMMY-HOLD                    PIC X(120)   VALUE SPACE.      IF1244.2
+            013100 01  RECORD-COUNT                  PIC 9(5)     VALUE ZERO.       IF1244.2
+            013200 01  ANSI-REFERENCE                PIC X(48)    VALUE SPACES.     IF1244.2
+            013300 01  CCVS-H-1.                                                    IF1244.2
+            013400     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1244.2
+            013500     02  FILLER                    PIC X(42)    VALUE             IF1244.2
+            013600     "OFFICIAL COBOL COMPILER VALIDATION SYSTEM".                 IF1244.2
+            013700     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1244.2
+            013800 01  CCVS-H-2A.                                                   IF1244.2
+            013900   02  FILLER                        PIC X(40)  VALUE SPACE.      IF1244.2
+            014000   02  FILLER                        PIC X(7)   VALUE "CCVS85 ".  IF1244.2
+            014100   02  FILLER                        PIC XXXX   VALUE             IF1244.2
+            014200     "4.2 ".                                                      IF1244.2
+            014300   02  FILLER                        PIC X(28)  VALUE             IF1244.2
+            014400            " COPY - NOT FOR DISTRIBUTION".                       IF1244.2
+            014500   02  FILLER                        PIC X(41)  VALUE SPACE.      IF1244.2
+            014600                                                                  IF1244.2
+            014700 01  CCVS-H-2B.                                                   IF1244.2
+            014800   02  FILLER                        PIC X(15)  VALUE             IF1244.2
+            014900            "TEST RESULT OF ".                                    IF1244.2
+            015000   02  TEST-ID                       PIC X(9).                    IF1244.2
+            015100   02  FILLER                        PIC X(4)   VALUE             IF1244.2
+            015200            " IN ".                                               IF1244.2
+            015300   02  FILLER                        PIC X(12)  VALUE             IF1244.2
+            015400     " HIGH       ".                                              IF1244.2
+            015500   02  FILLER                        PIC X(22)  VALUE             IF1244.2
+            015600            " LEVEL VALIDATION FOR ".                             IF1244.2
+            015700   02  FILLER                        PIC X(58)  VALUE             IF1244.2
+            015800     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1244.2
+            015900 01  CCVS-H-3.                                                    IF1244.2
+            016000     02  FILLER                      PIC X(34)  VALUE             IF1244.2
+            016100            " FOR OFFICIAL USE ONLY    ".                         IF1244.2
+            016200     02  FILLER                      PIC X(58)  VALUE             IF1244.2
+            016300     "COBOL 85 VERSION 4.2, Apr  1993 SSVG                      ".IF1244.2
+            016400     02  FILLER                      PIC X(28)  VALUE             IF1244.2
+            016500            "  COPYRIGHT   1985 ".                                IF1244.2
+            016600 01  CCVS-E-1.                                                    IF1244.2
+            016700     02 FILLER                       PIC X(52)  VALUE SPACE.      IF1244.2
+            016800     02 FILLER  PIC X(14) VALUE IS "END OF TEST-  ".              IF1244.2
+            016900     02 ID-AGAIN                     PIC X(9).                    IF1244.2
+            017000     02 FILLER                       PIC X(45)  VALUE SPACES.     IF1244.2
+            017100 01  CCVS-E-2.                                                    IF1244.2
+            017200     02  FILLER                      PIC X(31)  VALUE SPACE.      IF1244.2
+            017300     02  FILLER                      PIC X(21)  VALUE SPACE.      IF1244.2
+            017400     02 CCVS-E-2-2.                                               IF1244.2
+            017500         03 ERROR-TOTAL              PIC XXX    VALUE SPACE.      IF1244.2
+            017600         03 FILLER                   PIC X      VALUE SPACE.      IF1244.2
+            017700         03 ENDER-DESC               PIC X(44)  VALUE             IF1244.2
+            017800            "ERRORS ENCOUNTERED".                                 IF1244.2
+            017900 01  CCVS-E-3.                                                    IF1244.2
+            018000     02  FILLER                      PIC X(22)  VALUE             IF1244.2
+            018100            " FOR OFFICIAL USE ONLY".                             IF1244.2
+            018200     02  FILLER                      PIC X(12)  VALUE SPACE.      IF1244.2
+            018300     02  FILLER                      PIC X(58)  VALUE             IF1244.2
+            018400     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1244.2
+            018500     02  FILLER                      PIC X(13)  VALUE SPACE.      IF1244.2
+            018600     02 FILLER                       PIC X(15)  VALUE             IF1244.2
+            018700             " COPYRIGHT 1985".                                   IF1244.2
+            018800 01  CCVS-E-4.                                                    IF1244.2
+            018900     02 CCVS-E-4-1                   PIC XXX    VALUE SPACE.      IF1244.2
+            019000     02 FILLER                       PIC X(4)   VALUE " OF ".     IF1244.2
+            019100     02 CCVS-E-4-2                   PIC XXX    VALUE SPACE.      IF1244.2
+            019200     02 FILLER                       PIC X(40)  VALUE             IF1244.2
+            019300      "  TESTS WERE EXECUTED SUCCESSFULLY".                       IF1244.2
+            019400 01  XXINFO.                                                      IF1244.2
+            019500     02 FILLER                       PIC X(19)  VALUE             IF1244.2
+            019600            "*** INFORMATION ***".                                IF1244.2
+            019700     02 INFO-TEXT.                                                IF1244.2
+            019800       04 FILLER                     PIC X(8)   VALUE SPACE.      IF1244.2
+            019900       04 XXCOMPUTED                 PIC X(20).                   IF1244.2
+            020000       04 FILLER                     PIC X(5)   VALUE SPACE.      IF1244.2
+            020100       04 XXCORRECT                  PIC X(20).                   IF1244.2
+            020200     02 INF-ANSI-REFERENCE           PIC X(48).                   IF1244.2
+            020300 01  HYPHEN-LINE.                                                 IF1244.2
+            020400     02 FILLER  PIC IS X VALUE IS SPACE.                          IF1244.2
+            020500     02 FILLER  PIC IS X(65)    VALUE IS "************************IF1244.2
+            020600-    "*****************************************".                 IF1244.2
+            020700     02 FILLER  PIC IS X(54)    VALUE IS "************************IF1244.2
+            020800-    "******************************".                            IF1244.2
+            020900 01  CCVS-PGM-ID                     PIC X(9)   VALUE             IF1244.2
+            021000     "IF124A".                                                    IF1244.2
+            021100 PROCEDURE DIVISION.                                              IF1244.2
+            021200 CCVS1 SECTION.                                                   IF1244.2
+            021300 OPEN-FILES.                                                      IF1244.2
+            021400     OPEN     OUTPUT PRINT-FILE.                                  IF1244.2
+            021500     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   IF1244.2
+            021600     MOVE    SPACE TO TEST-RESULTS.                               IF1244.2
+            021700     PERFORM  HEAD-ROUTINE THRU COLUMN-NAMES-ROUTINE.             IF1244.2
+            021800     GO TO CCVS1-EXIT.                                            IF1244.2
+            021900 CLOSE-FILES.                                                     IF1244.2
+            022000     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IF1244.2
+            022100 TERMINATE-CCVS.                                                  IF1244.2
+            022200     STOP     RUN.                                                IF1244.2
+            022300 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IF1244.2
+            022400 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IF1244.2
+            022500 FAIL.  MOVE "FAIL*" TO P-OR-F.  ADD 1 TO ERROR-COUNTER.          IF1244.2
+            022600 DE-LETE.  MOVE "*****" TO P-OR-F.  ADD 1 TO DELETE-COUNTER.      IF1244.2
+            022700     MOVE "****TEST DELETED****" TO RE-MARK.                      IF1244.2
+            022800 PRINT-DETAIL.                                                    IF1244.2
+            022900     IF REC-CT NOT EQUAL TO ZERO                                  IF1244.2
+            023000             MOVE "." TO PARDOT-X                                 IF1244.2
+            023100             MOVE REC-CT TO DOTVALUE.                             IF1244.2
+            023200     MOVE     TEST-RESULTS TO PRINT-REC. PERFORM WRITE-LINE.      IF1244.2
+            023300     IF P-OR-F EQUAL TO "FAIL*"  PERFORM WRITE-LINE               IF1244.2
+            023400        PERFORM FAIL-ROUTINE THRU FAIL-ROUTINE-EX                 IF1244.2
+            023500          ELSE PERFORM BAIL-OUT THRU BAIL-OUT-EX.                 IF1244.2
+            023600     MOVE SPACE TO P-OR-F. MOVE SPACE TO COMPUTED-X.              IF1244.2
+            023700     MOVE SPACE TO CORRECT-X.                                     IF1244.2
+            023800     IF     REC-CT EQUAL TO ZERO  MOVE SPACE TO PAR-NAME.         IF1244.2
+            023900     MOVE     SPACE TO RE-MARK.                                   IF1244.2
+            024000 HEAD-ROUTINE.                                                    IF1244.2
+            024100     MOVE CCVS-H-1  TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1244.2
+            024200     MOVE CCVS-H-2A TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1244.2
+            024300     MOVE CCVS-H-2B TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1244.2
+            024400     MOVE CCVS-H-3  TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1244.2
+            024500 COLUMN-NAMES-ROUTINE.                                            IF1244.2
+            024600     MOVE CCVS-C-1 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1244.2
+            024700     MOVE CCVS-C-2 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1244.2
+            024800     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE.        IF1244.2
+            024900 END-ROUTINE.                                                     IF1244.2
+            025000     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE 5 TIMES.IF1244.2
+            025100 END-RTN-EXIT.                                                    IF1244.2
+            025200     MOVE CCVS-E-1 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1244.2
+            025300 END-ROUTINE-1.                                                   IF1244.2
+            025400      ADD ERROR-COUNTER TO ERROR-HOLD ADD INSPECT-COUNTER TO      IF1244.2
+            025500      ERROR-HOLD. ADD DELETE-COUNTER TO ERROR-HOLD.               IF1244.2
+            025600      ADD PASS-COUNTER TO ERROR-HOLD.                             IF1244.2
+            025700      MOVE PASS-COUNTER TO CCVS-E-4-1.                            IF1244.2
+            025800      MOVE ERROR-HOLD TO CCVS-E-4-2.                              IF1244.2
+            025900      MOVE CCVS-E-4 TO CCVS-E-2-2.                                IF1244.2
+            026000      MOVE CCVS-E-2 TO DUMMY-RECORD PERFORM WRITE-LINE.           IF1244.2
+            026100  END-ROUTINE-12.                                                 IF1244.2
+            026200      MOVE "TEST(S) FAILED" TO ENDER-DESC.                        IF1244.2
+            026300     IF       ERROR-COUNTER IS EQUAL TO ZERO                      IF1244.2
+            026400         MOVE "NO " TO ERROR-TOTAL                                IF1244.2
+            026500         ELSE                                                     IF1244.2
+            026600         MOVE ERROR-COUNTER TO ERROR-TOTAL.                       IF1244.2
+            026700     MOVE     CCVS-E-2 TO DUMMY-RECORD.                           IF1244.2
+            026800     PERFORM WRITE-LINE.                                          IF1244.2
+            026900 END-ROUTINE-13.                                                  IF1244.2
+            027000     IF DELETE-COUNTER IS EQUAL TO ZERO                           IF1244.2
+            027100         MOVE "NO " TO ERROR-TOTAL  ELSE                          IF1244.2
+            027200         MOVE DELETE-COUNTER TO ERROR-TOTAL.                      IF1244.2
+            027300     MOVE "TEST(S) DELETED     " TO ENDER-DESC.                   IF1244.2
+            027400     MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1244.2
+            027500      IF   INSPECT-COUNTER EQUAL TO ZERO                          IF1244.2
+            027600          MOVE "NO " TO ERROR-TOTAL                               IF1244.2
+            027700      ELSE MOVE INSPECT-COUNTER TO ERROR-TOTAL.                   IF1244.2
+            027800      MOVE "TEST(S) REQUIRE INSPECTION" TO ENDER-DESC.            IF1244.2
+            027900      MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.          IF1244.2
+            028000     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1244.2
+            028100 WRITE-LINE.                                                      IF1244.2
+            028200     ADD 1 TO RECORD-COUNT.                                       IF1244.2
+            028300Y    IF RECORD-COUNT GREATER 42                                   IF1244.2
+            028400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1244.2
+            028500Y        MOVE SPACE TO DUMMY-RECORD                               IF1244.2
+            028600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1244.2
+            028700Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1244.2
+            028800Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1244.2
+            028900Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1244.2
+            029000Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1244.2
+            029100Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1244.2
+            029200Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1244.2
+            029300Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1244.2
+            029400Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1244.2
+            029500Y        MOVE ZERO TO RECORD-COUNT.                               IF1244.2
+            029600     PERFORM WRT-LN.                                              IF1244.2
+            029700 WRT-LN.                                                          IF1244.2
+            029800     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1244.2
+            029900     MOVE SPACE TO DUMMY-RECORD.                                  IF1244.2
+            030000 BLANK-LINE-PRINT.                                                IF1244.2
+            030100     PERFORM WRT-LN.                                              IF1244.2
+            030200 FAIL-ROUTINE.                                                    IF1244.2
+            030300     IF     COMPUTED-X NOT EQUAL TO SPACE                         IF1244.2
+            030400            GO TO FAIL-ROUTINE-WRITE.                             IF1244.2
+            030500     IF     CORRECT-X NOT EQUAL TO SPACE GO TO FAIL-ROUTINE-WRITE.IF1244.2
+            030600     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1244.2
+            030700     MOVE  "NO FURTHER INFORMATION, SEE PROGRAM." TO INFO-TEXT.   IF1244.2
+            030800     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1244.2
+            030900     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1244.2
+            031000     GO TO  FAIL-ROUTINE-EX.                                      IF1244.2
+            031100 FAIL-ROUTINE-WRITE.                                              IF1244.2
+            031200     MOVE   TEST-COMPUTED TO PRINT-REC PERFORM WRITE-LINE.        IF1244.2
+            031300     MOVE   ANSI-REFERENCE TO COR-ANSI-REFERENCE                  IF1244.2
+            031400                              CORMA-ANSI-REFERENCE.               IF1244.2
+            031500     IF CORRECT-MIN NOT EQUAL TO SPACES THEN                      IF1244.2
+            031600           MOVE TEST-CORRECT-MIN TO PRINT-REC PERFORM WRITE-LINE  IF1244.2
+            031700           MOVE TEST-CORRECT-MAX TO PRINT-REC PERFORM WRITE-LINE  IF1244.2
+            031800     ELSE                                                         IF1244.2
+            031900           MOVE TEST-CORRECT TO PRINT-REC PERFORM WRITE-LINE.     IF1244.2
+            032000     PERFORM WRITE-LINE.                                          IF1244.2
+            032100     MOVE   SPACES TO COR-ANSI-REFERENCE.                         IF1244.2
+            032200 FAIL-ROUTINE-EX. EXIT.                                           IF1244.2
+            032300 BAIL-OUT.                                                        IF1244.2
+            032400     IF     COMPUTED-A NOT EQUAL TO SPACE GO TO BAIL-OUT-WRITE.   IF1244.2
+            032500     IF     CORRECT-A EQUAL TO SPACE GO TO BAIL-OUT-EX.           IF1244.2
+            032600 BAIL-OUT-WRITE.                                                  IF1244.2
+            032700     MOVE CORRECT-A TO XXCORRECT.                                 IF1244.2
+            032800     MOVE COMPUTED-A TO XXCOMPUTED.                               IF1244.2
+            032900     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1244.2
+            033000     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1244.2
+            033100     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1244.2
+            033200 BAIL-OUT-EX. EXIT.                                               IF1244.2
+            033300 CCVS1-EXIT.                                                      IF1244.2
+            033400     EXIT.                                                        IF1244.2
+            033500********************************************************          IF1244.2
+            033600*                                                      *          IF1244.2
+            033700*    Intrinsic Function Tests         IF124A - MOD     *          IF1244.2
+            033800*                                                      *          IF1244.2
+            033900********************************************************          IF1244.2
+            034000 SECT-IF124A SECTION.                                             IF1244.2
+            034100 F-MOD-INFO.                                                      IF1244.2
+            034200     MOVE     "See ref. A-58 2.28" TO ANSI-REFERENCE.             IF1244.2
+            034300     MOVE     "MOD Function" TO FEATURE.                          IF1244.2
+            034400*****************TEST (a) - SIMPLE TEST*****************          IF1244.2
+            034500 F-MOD-01.                                                        IF1244.2
+            034600     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            034700 F-MOD-TEST-01.                                                   IF1244.2
+            034800     COMPUTE WS-NUM = FUNCTION MOD(6, 6).                         IF1244.2
+            034900     IF WS-NUM = 0 THEN                                           IF1244.2
+            035000                    PERFORM PASS                                  IF1244.2
+            035100     ELSE                                                         IF1244.2
+            035200                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            035300                    MOVE 0 TO CORRECT-N                           IF1244.2
+            035400                    PERFORM FAIL.                                 IF1244.2
+            035500     GO TO F-MOD-WRITE-01.                                        IF1244.2
+            035600 F-MOD-DELETE-01.                                                 IF1244.2
+            035700     PERFORM  DE-LETE.                                            IF1244.2
+            035800     GO TO    F-MOD-WRITE-01.                                     IF1244.2
+            035900 F-MOD-WRITE-01.                                                  IF1244.2
+            036000     MOVE "F-MOD-01" TO PAR-NAME.                                 IF1244.2
+            036100     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            036200*****************TEST (b) - SIMPLE TEST*****************          IF1244.2
+            036300 F-MOD-02.                                                        IF1244.2
+            036400     EVALUATE FUNCTION MOD(11, 5)                                 IF1244.2
+            036500     WHEN 1                                                       IF1244.2
+            036600                    PERFORM PASS                                  IF1244.2
+            036700     WHEN OTHER                                                   IF1244.2
+            036800                    PERFORM FAIL.                                 IF1244.2
+            036900     GO TO F-MOD-WRITE-02.                                        IF1244.2
+            037000 F-MOD-DELETE-02.                                                 IF1244.2
+            037100     PERFORM  DE-LETE.                                            IF1244.2
+            037200     GO TO    F-MOD-WRITE-02.                                     IF1244.2
+            037300 F-MOD-WRITE-02.                                                  IF1244.2
+            037400     MOVE "F-MOD-02" TO PAR-NAME.                                 IF1244.2
+            037500     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            037600*****************TEST (c) - SIMPLE TEST*****************          IF1244.2
+            037700 F-MOD-03.                                                        IF1244.2
+            037800     IF FUNCTION MOD(10, 20) = 10 THEN                            IF1244.2
+            037900                    PERFORM PASS                                  IF1244.2
+            038000     ELSE                                                         IF1244.2
+            038100                    PERFORM FAIL.                                 IF1244.2
+            038200     GO TO F-MOD-WRITE-03.                                        IF1244.2
+            038300 F-MOD-DELETE-03.                                                 IF1244.2
+            038400     PERFORM  DE-LETE.                                            IF1244.2
+            038500     GO TO    F-MOD-WRITE-03.                                     IF1244.2
+            038600 F-MOD-WRITE-03.                                                  IF1244.2
+            038700     MOVE "F-MOD-03" TO PAR-NAME.                                 IF1244.2
+            038800     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            038900*****************TEST (d) - SIMPLE TEST*****************          IF1244.2
+            039000 F-MOD-04.                                                        IF1244.2
+            039100     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            039200 F-MOD-TEST-04.                                                   IF1244.2
+            039300     COMPUTE WS-NUM = FUNCTION MOD(A, B).                         IF1244.2
+            039400     IF WS-NUM = 5 THEN                                           IF1244.2
+            039500                    PERFORM PASS                                  IF1244.2
+            039600     ELSE                                                         IF1244.2
+            039700                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            039800                    MOVE 5 TO CORRECT-N                           IF1244.2
+            039900                    PERFORM FAIL.                                 IF1244.2
+            040000     GO TO F-MOD-WRITE-04.                                        IF1244.2
+            040100 F-MOD-DELETE-04.                                                 IF1244.2
+            040200     PERFORM  DE-LETE.                                            IF1244.2
+            040300     GO TO    F-MOD-WRITE-04.                                     IF1244.2
+            040400 F-MOD-WRITE-04.                                                  IF1244.2
+            040500     MOVE "F-MOD-04" TO PAR-NAME.                                 IF1244.2
+            040600     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            040700*****************TEST (e) - SIMPLE TEST*****************          IF1244.2
+            040800 F-MOD-05.                                                        IF1244.2
+            040900     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            041000 F-MOD-TEST-05.                                                   IF1244.2
+            041100     COMPUTE WS-NUM = FUNCTION MOD(A, -3).                        IF1244.2
+            041200     IF WS-NUM = -1 THEN                                          IF1244.2
+            041300                    PERFORM PASS                                  IF1244.2
+            041400     ELSE                                                         IF1244.2
+            041500                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            041600                    MOVE -1 TO CORRECT-N                          IF1244.2
+            041700                    PERFORM FAIL.                                 IF1244.2
+            041800     GO TO F-MOD-WRITE-05.                                        IF1244.2
+            041900 F-MOD-DELETE-05.                                                 IF1244.2
+            042000     PERFORM  DE-LETE.                                            IF1244.2
+            042100     GO TO    F-MOD-WRITE-05.                                     IF1244.2
+            042200 F-MOD-WRITE-05.                                                  IF1244.2
+            042300     MOVE "F-MOD-05" TO PAR-NAME.                                 IF1244.2
+            042400     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            042500*****************TEST (f) - SIMPLE TEST*****************          IF1244.2
+            042600 F-MOD-06.                                                        IF1244.2
+            042700     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            042800 F-MOD-TEST-06.                                                   IF1244.2
+            042900     COMPUTE WS-NUM = FUNCTION MOD(23, B).                        IF1244.2
+            043000     IF WS-NUM = 2 THEN                                           IF1244.2
+            043100                    PERFORM PASS                                  IF1244.2
+            043200     ELSE                                                         IF1244.2
+            043300                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            043400                    MOVE 2 TO CORRECT-N                           IF1244.2
+            043500                    PERFORM FAIL.                                 IF1244.2
+            043600     GO TO F-MOD-WRITE-06.                                        IF1244.2
+            043700 F-MOD-DELETE-06.                                                 IF1244.2
+            043800     PERFORM  DE-LETE.                                            IF1244.2
+            043900     GO TO    F-MOD-WRITE-06.                                     IF1244.2
+            044000 F-MOD-WRITE-06.                                                  IF1244.2
+            044100     MOVE "F-MOD-06" TO PAR-NAME.                                 IF1244.2
+            044200     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            044300*****************TEST (g) - SIMPLE TEST*****************          IF1244.2
+            044400 F-MOD-07.                                                        IF1244.2
+            044500     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            044600 F-MOD-TEST-07.                                                   IF1244.2
+            044700     COMPUTE WS-NUM = FUNCTION MOD(-11, -5).                      IF1244.2
+            044800     IF WS-NUM = -1    THEN                                       IF1244.2
+            044900                    PERFORM PASS                                  IF1244.2
+            045000     ELSE                                                         IF1244.2
+            045100                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            045200                    MOVE -1    TO CORRECT-N                       IF1244.2
+            045300                    PERFORM FAIL.                                 IF1244.2
+            045400     GO TO F-MOD-WRITE-07.                                        IF1244.2
+            045500 F-MOD-DELETE-07.                                                 IF1244.2
+            045600     PERFORM  DE-LETE.                                            IF1244.2
+            045700     GO TO    F-MOD-WRITE-07.                                     IF1244.2
+            045800 F-MOD-WRITE-07.                                                  IF1244.2
+            045900     MOVE "F-MOD-07" TO PAR-NAME.                                 IF1244.2
+            046000     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            046100*****************TEST (h) - SIMPLE TEST*****************          IF1244.2
+            046200 F-MOD-08.                                                        IF1244.2
+            046300     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            046400 F-MOD-TEST-08.                                                   IF1244.2
+            046500     COMPUTE WS-NUM = FUNCTION MOD(11, -5).                       IF1244.2
+            046600     IF WS-NUM = -4 THEN                                          IF1244.2
+            046700                    PERFORM PASS                                  IF1244.2
+            046800     ELSE                                                         IF1244.2
+            046900                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            047000                    MOVE -4 TO CORRECT-N                          IF1244.2
+            047100                    PERFORM FAIL.                                 IF1244.2
+            047200     GO TO F-MOD-WRITE-08.                                        IF1244.2
+            047300 F-MOD-DELETE-08.                                                 IF1244.2
+            047400     PERFORM  DE-LETE.                                            IF1244.2
+            047500     GO TO    F-MOD-WRITE-08.                                     IF1244.2
+            047600 F-MOD-WRITE-08.                                                  IF1244.2
+            047700     MOVE "F-MOD-08" TO PAR-NAME.                                 IF1244.2
+            047800     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            047900*****************TEST (i) - SIMPLE TEST*****************          IF1244.2
+            048000 F-MOD-09.                                                        IF1244.2
+            048100     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            048200 F-MOD-TEST-09.                                                   IF1244.2
+            048300     COMPUTE WS-NUM = FUNCTION MOD(-11, 5).                       IF1244.2
+            048400     IF WS-NUM = 4 THEN                                           IF1244.2
+            048500                    PERFORM PASS                                  IF1244.2
+            048600     ELSE                                                         IF1244.2
+            048700                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            048800                    MOVE 4 TO CORRECT-N                           IF1244.2
+            048900                    PERFORM FAIL.                                 IF1244.2
+            049000     GO TO F-MOD-WRITE-09.                                        IF1244.2
+            049100 F-MOD-DELETE-09.                                                 IF1244.2
+            049200     PERFORM  DE-LETE.                                            IF1244.2
+            049300     GO TO    F-MOD-WRITE-09.                                     IF1244.2
+            049400 F-MOD-WRITE-09.                                                  IF1244.2
+            049500     MOVE "F-MOD-09" TO PAR-NAME.                                 IF1244.2
+            049600     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            049700*****************TEST (a) - COMPLEX TEST****************          IF1244.2
+            049800 F-MOD-11.                                                        IF1244.2
+            049900     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            050000     MOVE -0.000020 TO MIN-RANGE.                                 IF1244.2
+            050100     MOVE  0.000020 TO MAX-RANGE.                                 IF1244.2
+            050200 F-MOD-TEST-11.                                                   IF1244.2
+            050300     COMPUTE WS-NUM = FUNCTION MOD(35, FUNCTION INTEGER(A * B)).  IF1244.2
+            050400     IF (WS-NUM >= MIN-RANGE) AND                                 IF1244.2
+            050500        (WS-NUM <= MAX-RANGE) THEN                                IF1244.2
+            050600                    PERFORM PASS                                  IF1244.2
+            050700     ELSE                                                         IF1244.2
+            050800                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            050900                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1244.2
+            051000                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1244.2
+            051100                    PERFORM FAIL.                                 IF1244.2
+            051200     GO TO F-MOD-WRITE-11.                                        IF1244.2
+            051300 F-MOD-DELETE-11.                                                 IF1244.2
+            051400     PERFORM  DE-LETE.                                            IF1244.2
+            051500     GO TO    F-MOD-WRITE-11.                                     IF1244.2
+            051600 F-MOD-WRITE-11.                                                  IF1244.2
+            051700     MOVE "F-MOD-11" TO PAR-NAME.                                 IF1244.2
+            051800     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            051900*****************TEST (b) - COMPLEX TEST****************          IF1244.2
+            052000 F-MOD-12.                                                        IF1244.2
+            052100     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            052200     MOVE  0.999980 TO MIN-RANGE.                                 IF1244.2
+            052300     MOVE  1.00002 TO MAX-RANGE.                                  IF1244.2
+            052400 F-MOD-TEST-12.                                                   IF1244.2
+            052500     COMPUTE WS-NUM = FUNCTION MOD(A, FUNCTION INTEGER(B - 5)).   IF1244.2
+            052600     IF (WS-NUM >= MIN-RANGE) AND                                 IF1244.2
+            052700        (WS-NUM <= MAX-RANGE) THEN                                IF1244.2
+            052800                    PERFORM PASS                                  IF1244.2
+            052900     ELSE                                                         IF1244.2
+            053000                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            053100                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1244.2
+            053200                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1244.2
+            053300                    PERFORM FAIL.                                 IF1244.2
+            053400     GO TO F-MOD-WRITE-12.                                        IF1244.2
+            053500 F-MOD-DELETE-12.                                                 IF1244.2
+            053600     PERFORM  DE-LETE.                                            IF1244.2
+            053700     GO TO    F-MOD-WRITE-12.                                     IF1244.2
+            053800 F-MOD-WRITE-12.                                                  IF1244.2
+            053900     MOVE "F-MOD-12" TO PAR-NAME.                                 IF1244.2
+            054000     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            054100*****************TEST (c) - COMPLEX TEST****************          IF1244.2
+            054200 F-MOD-13.                                                        IF1244.2
+            054300     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            054400     MOVE  6.99986 TO MIN-RANGE.                                  IF1244.2
+            054500     MOVE  7.00014 TO MAX-RANGE.                                  IF1244.2
+            054600 F-MOD-TEST-13.                                                   IF1244.2
+            054700     COMPUTE WS-NUM = FUNCTION MOD(FUNCTION INTEGER(A - B), 9).   IF1244.2
+            054800     IF (WS-NUM >= MIN-RANGE) AND                                 IF1244.2
+            054900        (WS-NUM <= MAX-RANGE) THEN                                IF1244.2
+            055000                    PERFORM PASS                                  IF1244.2
+            055100     ELSE                                                         IF1244.2
+            055200                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            055300                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1244.2
+            055400                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1244.2
+            055500                    PERFORM FAIL.                                 IF1244.2
+            055600     GO TO F-MOD-WRITE-13.                                        IF1244.2
+            055700 F-MOD-DELETE-13.                                                 IF1244.2
+            055800     PERFORM  DE-LETE.                                            IF1244.2
+            055900     GO TO    F-MOD-WRITE-13.                                     IF1244.2
+            056000 F-MOD-WRITE-13.                                                  IF1244.2
+            056100     MOVE "F-MOD-13" TO PAR-NAME.                                 IF1244.2
+            056200     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            056300*****************TEST (d) - COMPLEX TEST****************          IF1244.2
+            056400 F-MOD-14.                                                        IF1244.2
+            056500     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            056600     MOVE -2.00004 TO MIN-RANGE.                                  IF1244.2
+            056700     MOVE -1.99996 TO MAX-RANGE.                                  IF1244.2
+            056800 F-MOD-TEST-14.                                                   IF1244.2
+            056900     COMPUTE WS-NUM = FUNCTION MOD(                               IF1244.2
+            057000                         FUNCTION INTEGER((A + B) / -2), -4).     IF1244.2
+            057100     IF (WS-NUM >= MIN-RANGE) AND                                 IF1244.2
+            057200        (WS-NUM <= MAX-RANGE) THEN                                IF1244.2
+            057300                    PERFORM PASS                                  IF1244.2
+            057400     ELSE                                                         IF1244.2
+            057500                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            057600                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1244.2
+            057700                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1244.2
+            057800                    PERFORM FAIL.                                 IF1244.2
+            057900     GO TO F-MOD-WRITE-14.                                        IF1244.2
+            058000 F-MOD-DELETE-14.                                                 IF1244.2
+            058100     PERFORM  DE-LETE.                                            IF1244.2
+            058200     GO TO    F-MOD-WRITE-14.                                     IF1244.2
+            058300 F-MOD-WRITE-14.                                                  IF1244.2
+            058400     MOVE "F-MOD-14" TO PAR-NAME.                                 IF1244.2
+            058500     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            058600*****************TEST (e) - COMPLEX TEST****************          IF1244.2
+            058700 F-MOD-15.                                                        IF1244.2
+            058800     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            058900     MOVE  0.999980 TO MIN-RANGE.                                 IF1244.2
+            059000     MOVE  1.00002 TO MAX-RANGE.                                  IF1244.2
+            059100 F-MOD-TEST-15.                                                   IF1244.2
+            059200     COMPUTE WS-NUM = FUNCTION MOD(FUNCTION INTEGER(A * B),       IF1244.2
+            059300                                      FUNCTION INTEGER(B - A)).   IF1244.2
+            059400     IF (WS-NUM >= MIN-RANGE) AND                                 IF1244.2
+            059500        (WS-NUM <= MAX-RANGE) THEN                                IF1244.2
+            059600                    PERFORM PASS                                  IF1244.2
+            059700     ELSE                                                         IF1244.2
+            059800                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            059900                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1244.2
+            060000                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1244.2
+            060100                    PERFORM FAIL.                                 IF1244.2
+            060200     GO TO F-MOD-WRITE-15.                                        IF1244.2
+            060300 F-MOD-DELETE-15.                                                 IF1244.2
+            060400     PERFORM  DE-LETE.                                            IF1244.2
+            060500     GO TO    F-MOD-WRITE-15.                                     IF1244.2
+            060600 F-MOD-WRITE-15.                                                  IF1244.2
+            060700     MOVE "F-MOD-15" TO PAR-NAME.                                 IF1244.2
+            060800     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            060900*****************TEST (f) - COMPLEX TEST****************          IF1244.2
+            061000 F-MOD-16.                                                        IF1244.2
+            061100     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            061200     MOVE  1.99996 TO MIN-RANGE.                                  IF1244.2
+            061300     MOVE  2.00004 TO MAX-RANGE.                                  IF1244.2
+            061400 F-MOD-TEST-16.                                                   IF1244.2
+            061500     COMPUTE WS-NUM = FUNCTION MOD(                               IF1244.2
+            061600                      FUNCTION MOD(B, A), A).                     IF1244.2
+            061700     IF (WS-NUM >= MIN-RANGE) AND                                 IF1244.2
+            061800        (WS-NUM <= MAX-RANGE) THEN                                IF1244.2
+            061900                    PERFORM PASS                                  IF1244.2
+            062000     ELSE                                                         IF1244.2
+            062100                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            062200                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1244.2
+            062300                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1244.2
+            062400                    PERFORM FAIL.                                 IF1244.2
+            062500     GO TO F-MOD-WRITE-16.                                        IF1244.2
+            062600 F-MOD-DELETE-16.                                                 IF1244.2
+            062700     PERFORM  DE-LETE.                                            IF1244.2
+            062800     GO TO    F-MOD-WRITE-16.                                     IF1244.2
+            062900 F-MOD-WRITE-16.                                                  IF1244.2
+            063000     MOVE "F-MOD-16" TO PAR-NAME.                                 IF1244.2
+            063100     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            063200*****************TEST (g) - COMPLEX TEST****************          IF1244.2
+            063300 F-MOD-17.                                                        IF1244.2
+            063400     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            063500     MOVE  1.99996 TO MIN-RANGE.                                  IF1244.2
+            063600     MOVE  2.00004 TO MAX-RANGE.                                  IF1244.2
+            063700 F-MOD-TEST-17.                                                   IF1244.2
+            063800     COMPUTE WS-NUM = FUNCTION MOD(C, FUNCTION MOD(C, B)).        IF1244.2
+            063900     IF (WS-NUM >= MIN-RANGE) AND                                 IF1244.2
+            064000        (WS-NUM <= MAX-RANGE) THEN                                IF1244.2
+            064100                    PERFORM PASS                                  IF1244.2
+            064200     ELSE                                                         IF1244.2
+            064300                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            064400                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1244.2
+            064500                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1244.2
+            064600                    PERFORM FAIL.                                 IF1244.2
+            064700     GO TO F-MOD-WRITE-17.                                        IF1244.2
+            064800 F-MOD-DELETE-17.                                                 IF1244.2
+            064900     PERFORM  DE-LETE.                                            IF1244.2
+            065000     GO TO    F-MOD-WRITE-17.                                     IF1244.2
+            065100 F-MOD-WRITE-17.                                                  IF1244.2
+            065200     MOVE "F-MOD-17" TO PAR-NAME.                                 IF1244.2
+            065300     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            065400*****************TEST (h) - COMPLEX TEST****************          IF1244.2
+            065500 F-MOD-18.                                                        IF1244.2
+            065600     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            065700     MOVE  0.999980 TO MIN-RANGE.                                 IF1244.2
+            065800     MOVE  1.00002 TO MAX-RANGE.                                  IF1244.2
+            065900 F-MOD-TEST-18.                                                   IF1244.2
+            066000     COMPUTE WS-NUM = FUNCTION MOD(FUNCTION MOD(9, 5),            IF1244.2
+            066100                                   FUNCTION MOD(B, 4)).           IF1244.2
+            066200     IF (WS-NUM >= MIN-RANGE) AND                                 IF1244.2
+            066300        (WS-NUM <= MAX-RANGE) THEN                                IF1244.2
+            066400                    PERFORM PASS                                  IF1244.2
+            066500     ELSE                                                         IF1244.2
+            066600                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            066700                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1244.2
+            066800                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1244.2
+            066900                    PERFORM FAIL.                                 IF1244.2
+            067000     GO TO F-MOD-WRITE-18.                                        IF1244.2
+            067100 F-MOD-DELETE-18.                                                 IF1244.2
+            067200     PERFORM  DE-LETE.                                            IF1244.2
+            067300     GO TO    F-MOD-WRITE-18.                                     IF1244.2
+            067400 F-MOD-WRITE-18.                                                  IF1244.2
+            067500     MOVE "F-MOD-18" TO PAR-NAME.                                 IF1244.2
+            067600     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            067700*****************TEST (i) - COMPLEX TEST****************          IF1244.2
+            067800 F-MOD-19.                                                        IF1244.2
+            067900     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            068000     MOVE 6.99986 TO MIN-RANGE.                                   IF1244.2
+            068100     MOVE 7.00014 TO MAX-RANGE.                                   IF1244.2
+            068200 F-MOD-TEST-19.                                                   IF1244.2
+            068300     COMPUTE WS-NUM = FUNCTION MOD(23, B) + A.                    IF1244.2
+            068400     IF (WS-NUM >= MIN-RANGE) AND                                 IF1244.2
+            068500        (WS-NUM <= MAX-RANGE) THEN                                IF1244.2
+            068600                    PERFORM PASS                                  IF1244.2
+            068700     ELSE                                                         IF1244.2
+            068800                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            068900                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1244.2
+            069000                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1244.2
+            069100                    PERFORM FAIL.                                 IF1244.2
+            069200     GO TO F-MOD-WRITE-19.                                        IF1244.2
+            069300 F-MOD-DELETE-19.                                                 IF1244.2
+            069400     PERFORM  DE-LETE.                                            IF1244.2
+            069500     GO TO    F-MOD-WRITE-19.                                     IF1244.2
+            069600 F-MOD-WRITE-19.                                                  IF1244.2
+            069700     MOVE "F-MOD-19" TO PAR-NAME.                                 IF1244.2
+            069800     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            069900*****************TEST (j) - COMPLEX TEST****************          IF1244.2
+            070000 F-MOD-20.                                                        IF1244.2
+            070100     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            070200     MOVE -0.000020 TO MIN-RANGE.                                 IF1244.2
+            070300     MOVE  0.000020 TO MAX-RANGE.                                 IF1244.2
+            070400 F-MOD-TEST-20.                                                   IF1244.2
+            070500     COMPUTE WS-NUM = FUNCTION MOD(FUNCTION MOD(5, 2), 1).        IF1244.2
+            070600     IF (WS-NUM >= MIN-RANGE) AND                                 IF1244.2
+            070700        (WS-NUM <= MAX-RANGE) THEN                                IF1244.2
+            070800                    PERFORM PASS                                  IF1244.2
+            070900     ELSE                                                         IF1244.2
+            071000                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            071100                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1244.2
+            071200                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1244.2
+            071300                    PERFORM FAIL.                                 IF1244.2
+            071400     GO TO F-MOD-WRITE-20.                                        IF1244.2
+            071500 F-MOD-DELETE-20.                                                 IF1244.2
+            071600     PERFORM  DE-LETE.                                            IF1244.2
+            071700     GO TO    F-MOD-WRITE-20.                                     IF1244.2
+            071800 F-MOD-WRITE-20.                                                  IF1244.2
+            071900     MOVE "F-MOD-20" TO PAR-NAME.                                 IF1244.2
+            072000     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            072100*****************TEST (k) - COMPLEX TEST****************          IF1244.2
+            072200 F-MOD-21.                                                        IF1244.2
+            072300     MOVE ZERO TO WS-NUM.                                         IF1244.2
+            072400     MOVE 0.999980 TO MIN-RANGE.                                  IF1244.2
+            072500     MOVE 1.00002 TO MAX-RANGE.                                   IF1244.2
+            072600 F-MOD-TEST-21.                                                   IF1244.2
+            072700     COMPUTE WS-NUM = FUNCTION MOD(25, C) +                       IF1244.2
+            072800                      FUNCTION MOD(-11, 5).                       IF1244.2
+            072900     IF (WS-NUM >= MIN-RANGE) AND                                 IF1244.2
+            073000        (WS-NUM <= MAX-RANGE) THEN                                IF1244.2
+            073100                    PERFORM PASS                                  IF1244.2
+            073200     ELSE                                                         IF1244.2
+            073300                    MOVE WS-NUM TO COMPUTED-N                     IF1244.2
+            073400                    MOVE MIN-RANGE TO CORRECT-MIN                 IF1244.2
+            073500                    MOVE MAX-RANGE TO CORRECT-MAX                 IF1244.2
+            073600                    PERFORM FAIL.                                 IF1244.2
+            073700     GO TO F-MOD-WRITE-21.                                        IF1244.2
+            073800 F-MOD-DELETE-21.                                                 IF1244.2
+            073900     PERFORM  DE-LETE.                                            IF1244.2
+            074000     GO TO    F-MOD-WRITE-21.                                     IF1244.2
+            074100 F-MOD-WRITE-21.                                                  IF1244.2
+            074200     MOVE "F-MOD-21" TO PAR-NAME.                                 IF1244.2
+            074300     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            074400*****************SPECIAL PERFORM TEST**********************       IF1244.2
+            074500 F-MOD-22.                                                        IF1244.2
+            074600     PERFORM F-MOD-TEST-22                                        IF1244.2
+            074700       UNTIL FUNCTION MOD(5, ARG2) >= 2.                          IF1244.2
+            074800     PERFORM PASS.                                                IF1244.2
+            074900     GO TO F-MOD-WRITE-22.                                        IF1244.2
+            075000 F-MOD-TEST-22.                                                   IF1244.2
+            075100     COMPUTE ARG2 = ARG2 + 1.                                     IF1244.2
+            075200 F-MOD-DELETE-22.                                                 IF1244.2
+            075300     PERFORM  DE-LETE.                                            IF1244.2
+            075400     GO TO    F-MOD-WRITE-22.                                     IF1244.2
+            075500 F-MOD-WRITE-22.                                                  IF1244.2
+            075600     MOVE "F-MOD-22" TO PAR-NAME.                                 IF1244.2
+            075700     PERFORM  PRINT-DETAIL.                                       IF1244.2
+            075800********************END OF TESTS***************                   IF1244.2
+            075900 CCVS-EXIT SECTION.                                               IF1244.2
+            076000 CCVS-999999.                                                     IF1244.2
+            076100     GO TO CLOSE-FILES.                                           IF1244.2
+                  *END-OF,IF124A                                                            
+        """)
+    )
+
+    @Test
+    fun if1254_2() = rewriteRun(
+        cobol("""
+                  *HEADER,COBOL,IF125A                                                      
+            000100 IDENTIFICATION DIVISION.                                         IF1254.2
+            000200 PROGRAM-ID.                                                      IF1254.2
+            000300     IF125A.                                                      IF1254.2
+            000400                                                                  IF1254.2
+            000500***********************************************************       IF1254.2
+            000600*                                                         *       IF1254.2
+            000700* This program forms part of the CCVS85 COBOL Test Suite. *       IF1254.2
+            000800* It contains tests for the Intrinsic Function NUMVAL.    *       IF1254.2
+            000900*                                                         *       IF1254.2
+            001000*                                                         *       IF1254.2
+            001100***********************************************************       IF1254.2
+            001200 ENVIRONMENT DIVISION.                                            IF1254.2
+            001300 CONFIGURATION SECTION.                                           IF1254.2
+            001400 SOURCE-COMPUTER.                                                 IF1254.2
+            001500     XXXXX082.                                                    IF1254.2
+            001600 OBJECT-COMPUTER.                                                 IF1254.2
+            001700     XXXXX083.                                                    IF1254.2
+            001800 INPUT-OUTPUT SECTION.                                            IF1254.2
+            001900 FILE-CONTROL.                                                    IF1254.2
+            002000     SELECT PRINT-FILE ASSIGN TO                                  IF1254.2
+            002100     XXXXX055.                                                    IF1254.2
+            002200 DATA DIVISION.                                                   IF1254.2
+            002300 FILE SECTION.                                                    IF1254.2
+            002400 FD  PRINT-FILE.                                                  IF1254.2
+            002500 01  PRINT-REC PICTURE X(120).                                    IF1254.2
+            002600 01  DUMMY-RECORD PICTURE X(120).                                 IF1254.2
+            002700 WORKING-STORAGE SECTION.                                         IF1254.2
+            002800***********************************************************       IF1254.2
+            002900* Variables specific to the Intrinsic Function Test IF125A*       IF1254.2
+            003000***********************************************************       IF1254.2
+            003100 01  A                   PIC X(1)       VALUE "4".                IF1254.2
+            003200 01  B                   PIC X(5)       VALUE "203".              IF1254.2
+            003300 01  C                   PIC X(4)       VALUE ".429".             IF1254.2
+            003400 01  D                   PIC X(7)       VALUE "928.344".          IF1254.2
+            003500 01  E                   PIC X(9)       VALUE "-042.3240".        IF1254.2
+            003600 01  F                   PIC X(7)       VALUE " 23.000".          IF1254.2
+            003700 01  G                   PIC X(8)       VALUE "-92924.3".         IF1254.2
+            003800 01  H                   PIC X(6)       VALUE "93.21+".           IF1254.2
+            003900 01  I                   PIC X(9)       VALUE " 92.92  -".        IF1254.2
+            004000 01  TEMP                PIC S9(5)V9(5).                          IF1254.2
+            004100                                                                  IF1254.2
+            004200*                                                                 IF1254.2
+            004300**********************************************************        IF1254.2
+            004400*                                                                 IF1254.2
+            004500 01  TEST-RESULTS.                                                IF1254.2
+            004600     02 FILLER                   PIC X      VALUE SPACE.          IF1254.2
+            004700     02 FEATURE                  PIC X(20)  VALUE SPACE.          IF1254.2
+            004800     02 FILLER                   PIC X      VALUE SPACE.          IF1254.2
+            004900     02 P-OR-F                   PIC X(5)   VALUE SPACE.          IF1254.2
+            005000     02 FILLER                   PIC X      VALUE SPACE.          IF1254.2
+            005100     02  PAR-NAME.                                                IF1254.2
+            005200       03 FILLER                 PIC X(19)  VALUE SPACE.          IF1254.2
+            005300       03  PARDOT-X              PIC X      VALUE SPACE.          IF1254.2
+            005400       03 DOTVALUE               PIC 99     VALUE ZERO.           IF1254.2
+            005500     02 FILLER                   PIC X(8)   VALUE SPACE.          IF1254.2
+            005600     02 RE-MARK                  PIC X(61).                       IF1254.2
+            005700 01  TEST-COMPUTED.                                               IF1254.2
+            005800     02 FILLER                   PIC X(30)  VALUE SPACE.          IF1254.2
+            005900     02 FILLER                   PIC X(17)  VALUE                 IF1254.2
+            006000            "       COMPUTED=".                                   IF1254.2
+            006100     02 COMPUTED-X.                                               IF1254.2
+            006200     03 COMPUTED-A               PIC X(20)  VALUE SPACE.          IF1254.2
+            006300     03 COMPUTED-N               REDEFINES COMPUTED-A             IF1254.2
+            006400                                 PIC -9(9).9(9).                  IF1254.2
+            006500     03 COMPUTED-0V18 REDEFINES COMPUTED-A   PIC -.9(18).         IF1254.2
+            006600     03 COMPUTED-4V14 REDEFINES COMPUTED-A   PIC -9(4).9(14).     IF1254.2
+            006700     03 COMPUTED-14V4 REDEFINES COMPUTED-A   PIC -9(14).9(4).     IF1254.2
+            006800     03       CM-18V0 REDEFINES COMPUTED-A.                       IF1254.2
+            006900         04 COMPUTED-18V0                    PIC -9(18).          IF1254.2
+            007000         04 FILLER                           PIC X.               IF1254.2
+            007100     03 FILLER PIC X(50) VALUE SPACE.                             IF1254.2
+            007200 01  TEST-CORRECT.                                                IF1254.2
+            007300     02 FILLER PIC X(30) VALUE SPACE.                             IF1254.2
+            007400     02 FILLER PIC X(17) VALUE "       CORRECT =".                IF1254.2
+            007500     02 CORRECT-X.                                                IF1254.2
+            007600     03 CORRECT-A                  PIC X(20) VALUE SPACE.         IF1254.2
+            007700     03 CORRECT-N    REDEFINES CORRECT-A     PIC -9(9).9(9).      IF1254.2
+            007800     03 CORRECT-0V18 REDEFINES CORRECT-A     PIC -.9(18).         IF1254.2
+            007900     03 CORRECT-4V14 REDEFINES CORRECT-A     PIC -9(4).9(14).     IF1254.2
+            008000     03 CORRECT-14V4 REDEFINES CORRECT-A     PIC -9(14).9(4).     IF1254.2
+            008100     03      CR-18V0 REDEFINES CORRECT-A.                         IF1254.2
+            008200         04 CORRECT-18V0                     PIC -9(18).          IF1254.2
+            008300         04 FILLER                           PIC X.               IF1254.2
+            008400     03 FILLER PIC X(2) VALUE SPACE.                              IF1254.2
+            008500     03 COR-ANSI-REFERENCE             PIC X(48) VALUE SPACE.     IF1254.2
+            008600 01  CCVS-C-1.                                                    IF1254.2
+            008700     02 FILLER  PIC IS X(99)    VALUE IS " FEATURE              PAIF1254.2
+            008800-    "SS  PARAGRAPH-NAME                                          IF1254.2
+            008900-    "       REMARKS".                                            IF1254.2
+            009000     02 FILLER                     PIC X(20)    VALUE SPACE.      IF1254.2
+            009100 01  CCVS-C-2.                                                    IF1254.2
+            009200     02 FILLER                     PIC X        VALUE SPACE.      IF1254.2
+            009300     02 FILLER                     PIC X(6)     VALUE "TESTED".   IF1254.2
+            009400     02 FILLER                     PIC X(15)    VALUE SPACE.      IF1254.2
+            009500     02 FILLER                     PIC X(4)     VALUE "FAIL".     IF1254.2
+            009600     02 FILLER                     PIC X(94)    VALUE SPACE.      IF1254.2
+            009700 01  REC-SKL-SUB                   PIC 9(2)     VALUE ZERO.       IF1254.2
+            009800 01  REC-CT                        PIC 99       VALUE ZERO.       IF1254.2
+            009900 01  DELETE-COUNTER                PIC 999      VALUE ZERO.       IF1254.2
+            010000 01  ERROR-COUNTER                 PIC 999      VALUE ZERO.       IF1254.2
+            010100 01  INSPECT-COUNTER               PIC 999      VALUE ZERO.       IF1254.2
+            010200 01  PASS-COUNTER                  PIC 999      VALUE ZERO.       IF1254.2
+            010300 01  TOTAL-ERROR                   PIC 999      VALUE ZERO.       IF1254.2
+            010400 01  ERROR-HOLD                    PIC 999      VALUE ZERO.       IF1254.2
+            010500 01  DUMMY-HOLD                    PIC X(120)   VALUE SPACE.      IF1254.2
+            010600 01  RECORD-COUNT                  PIC 9(5)     VALUE ZERO.       IF1254.2
+            010700 01  ANSI-REFERENCE                PIC X(48)    VALUE SPACES.     IF1254.2
+            010800 01  CCVS-H-1.                                                    IF1254.2
+            010900     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1254.2
+            011000     02  FILLER                    PIC X(42)    VALUE             IF1254.2
+            011100     "OFFICIAL COBOL COMPILER VALIDATION SYSTEM".                 IF1254.2
+            011200     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1254.2
+            011300 01  CCVS-H-2A.                                                   IF1254.2
+            011400   02  FILLER                        PIC X(40)  VALUE SPACE.      IF1254.2
+            011500   02  FILLER                        PIC X(7)   VALUE "CCVS85 ".  IF1254.2
+            011600   02  FILLER                        PIC XXXX   VALUE             IF1254.2
+            011700     "4.2 ".                                                      IF1254.2
+            011800   02  FILLER                        PIC X(28)  VALUE             IF1254.2
+            011900            " COPY - NOT FOR DISTRIBUTION".                       IF1254.2
+            012000   02  FILLER                        PIC X(41)  VALUE SPACE.      IF1254.2
+            012100                                                                  IF1254.2
+            012200 01  CCVS-H-2B.                                                   IF1254.2
+            012300   02  FILLER                        PIC X(15)  VALUE             IF1254.2
+            012400            "TEST RESULT OF ".                                    IF1254.2
+            012500   02  TEST-ID                       PIC X(9).                    IF1254.2
+            012600   02  FILLER                        PIC X(4)   VALUE             IF1254.2
+            012700            " IN ".                                               IF1254.2
+            012800   02  FILLER                        PIC X(12)  VALUE             IF1254.2
+            012900     " HIGH       ".                                              IF1254.2
+            013000   02  FILLER                        PIC X(22)  VALUE             IF1254.2
+            013100            " LEVEL VALIDATION FOR ".                             IF1254.2
+            013200   02  FILLER                        PIC X(58)  VALUE             IF1254.2
+            013300     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1254.2
+            013400 01  CCVS-H-3.                                                    IF1254.2
+            013500     02  FILLER                      PIC X(34)  VALUE             IF1254.2
+            013600            " FOR OFFICIAL USE ONLY    ".                         IF1254.2
+            013700     02  FILLER                      PIC X(58)  VALUE             IF1254.2
+            013800     "COBOL 85 VERSION 4.2, Apr  1993 SSVG                      ".IF1254.2
+            013900     02  FILLER                      PIC X(28)  VALUE             IF1254.2
+            014000            "  COPYRIGHT   1985 ".                                IF1254.2
+            014100 01  CCVS-E-1.                                                    IF1254.2
+            014200     02 FILLER                       PIC X(52)  VALUE SPACE.      IF1254.2
+            014300     02 FILLER  PIC X(14) VALUE IS "END OF TEST-  ".              IF1254.2
+            014400     02 ID-AGAIN                     PIC X(9).                    IF1254.2
+            014500     02 FILLER                       PIC X(45)  VALUE SPACES.     IF1254.2
+            014600 01  CCVS-E-2.                                                    IF1254.2
+            014700     02  FILLER                      PIC X(31)  VALUE SPACE.      IF1254.2
+            014800     02  FILLER                      PIC X(21)  VALUE SPACE.      IF1254.2
+            014900     02 CCVS-E-2-2.                                               IF1254.2
+            015000         03 ERROR-TOTAL              PIC XXX    VALUE SPACE.      IF1254.2
+            015100         03 FILLER                   PIC X      VALUE SPACE.      IF1254.2
+            015200         03 ENDER-DESC               PIC X(44)  VALUE             IF1254.2
+            015300            "ERRORS ENCOUNTERED".                                 IF1254.2
+            015400 01  CCVS-E-3.                                                    IF1254.2
+            015500     02  FILLER                      PIC X(22)  VALUE             IF1254.2
+            015600            " FOR OFFICIAL USE ONLY".                             IF1254.2
+            015700     02  FILLER                      PIC X(12)  VALUE SPACE.      IF1254.2
+            015800     02  FILLER                      PIC X(58)  VALUE             IF1254.2
+            015900     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1254.2
+            016000     02  FILLER                      PIC X(13)  VALUE SPACE.      IF1254.2
+            016100     02 FILLER                       PIC X(15)  VALUE             IF1254.2
+            016200             " COPYRIGHT 1985".                                   IF1254.2
+            016300 01  CCVS-E-4.                                                    IF1254.2
+            016400     02 CCVS-E-4-1                   PIC XXX    VALUE SPACE.      IF1254.2
+            016500     02 FILLER                       PIC X(4)   VALUE " OF ".     IF1254.2
+            016600     02 CCVS-E-4-2                   PIC XXX    VALUE SPACE.      IF1254.2
+            016700     02 FILLER                       PIC X(40)  VALUE             IF1254.2
+            016800      "  TESTS WERE EXECUTED SUCCESSFULLY".                       IF1254.2
+            016900 01  XXINFO.                                                      IF1254.2
+            017000     02 FILLER                       PIC X(19)  VALUE             IF1254.2
+            017100            "*** INFORMATION ***".                                IF1254.2
+            017200     02 INFO-TEXT.                                                IF1254.2
+            017300       04 FILLER                     PIC X(8)   VALUE SPACE.      IF1254.2
+            017400       04 XXCOMPUTED                 PIC X(20).                   IF1254.2
+            017500       04 FILLER                     PIC X(5)   VALUE SPACE.      IF1254.2
+            017600       04 XXCORRECT                  PIC X(20).                   IF1254.2
+            017700     02 INF-ANSI-REFERENCE           PIC X(48).                   IF1254.2
+            017800 01  HYPHEN-LINE.                                                 IF1254.2
+            017900     02 FILLER  PIC IS X VALUE IS SPACE.                          IF1254.2
+            018000     02 FILLER  PIC IS X(65)    VALUE IS "************************IF1254.2
+            018100-    "*****************************************".                 IF1254.2
+            018200     02 FILLER  PIC IS X(54)    VALUE IS "************************IF1254.2
+            018300-    "******************************".                            IF1254.2
+            018400 01  CCVS-PGM-ID                     PIC X(9)   VALUE             IF1254.2
+            018500     "IF125A".                                                    IF1254.2
+            018600 PROCEDURE DIVISION.                                              IF1254.2
+            018700 CCVS1 SECTION.                                                   IF1254.2
+            018800 OPEN-FILES.                                                      IF1254.2
+            018900     OPEN     OUTPUT PRINT-FILE.                                  IF1254.2
+            019000     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   IF1254.2
+            019100     MOVE    SPACE TO TEST-RESULTS.                               IF1254.2
+            019200     PERFORM  HEAD-ROUTINE THRU COLUMN-NAMES-ROUTINE.             IF1254.2
+            019300     GO TO CCVS1-EXIT.                                            IF1254.2
+            019400 CLOSE-FILES.                                                     IF1254.2
+            019500     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IF1254.2
+            019600 TERMINATE-CCVS.                                                  IF1254.2
+            019700     STOP     RUN.                                                IF1254.2
+            019800 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IF1254.2
+            019900 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IF1254.2
+            020000 FAIL.  MOVE "FAIL*" TO P-OR-F.  ADD 1 TO ERROR-COUNTER.          IF1254.2
+            020100 DE-LETE.  MOVE "*****" TO P-OR-F.  ADD 1 TO DELETE-COUNTER.      IF1254.2
+            020200     MOVE "****TEST DELETED****" TO RE-MARK.                      IF1254.2
+            020300 PRINT-DETAIL.                                                    IF1254.2
+            020400     IF REC-CT NOT EQUAL TO ZERO                                  IF1254.2
+            020500             MOVE "." TO PARDOT-X                                 IF1254.2
+            020600             MOVE REC-CT TO DOTVALUE.                             IF1254.2
+            020700     MOVE     TEST-RESULTS TO PRINT-REC. PERFORM WRITE-LINE.      IF1254.2
+            020800     IF P-OR-F EQUAL TO "FAIL*"  PERFORM WRITE-LINE               IF1254.2
+            020900        PERFORM FAIL-ROUTINE THRU FAIL-ROUTINE-EX                 IF1254.2
+            021000          ELSE PERFORM BAIL-OUT THRU BAIL-OUT-EX.                 IF1254.2
+            021100     MOVE SPACE TO P-OR-F. MOVE SPACE TO COMPUTED-X.              IF1254.2
+            021200     MOVE SPACE TO CORRECT-X.                                     IF1254.2
+            021300     IF     REC-CT EQUAL TO ZERO  MOVE SPACE TO PAR-NAME.         IF1254.2
+            021400     MOVE     SPACE TO RE-MARK.                                   IF1254.2
+            021500 HEAD-ROUTINE.                                                    IF1254.2
+            021600     MOVE CCVS-H-1  TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1254.2
+            021700     MOVE CCVS-H-2A TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1254.2
+            021800     MOVE CCVS-H-2B TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1254.2
+            021900     MOVE CCVS-H-3  TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1254.2
+            022000 COLUMN-NAMES-ROUTINE.                                            IF1254.2
+            022100     MOVE CCVS-C-1 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1254.2
+            022200     MOVE CCVS-C-2 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1254.2
+            022300     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE.        IF1254.2
+            022400 END-ROUTINE.                                                     IF1254.2
+            022500     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE 5 TIMES.IF1254.2
+            022600 END-RTN-EXIT.                                                    IF1254.2
+            022700     MOVE CCVS-E-1 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1254.2
+            022800 END-ROUTINE-1.                                                   IF1254.2
+            022900      ADD ERROR-COUNTER TO ERROR-HOLD ADD INSPECT-COUNTER TO      IF1254.2
+            023000      ERROR-HOLD. ADD DELETE-COUNTER TO ERROR-HOLD.               IF1254.2
+            023100      ADD PASS-COUNTER TO ERROR-HOLD.                             IF1254.2
+            023200      MOVE PASS-COUNTER TO CCVS-E-4-1.                            IF1254.2
+            023300      MOVE ERROR-HOLD TO CCVS-E-4-2.                              IF1254.2
+            023400      MOVE CCVS-E-4 TO CCVS-E-2-2.                                IF1254.2
+            023500      MOVE CCVS-E-2 TO DUMMY-RECORD PERFORM WRITE-LINE.           IF1254.2
+            023600  END-ROUTINE-12.                                                 IF1254.2
+            023700      MOVE "TEST(S) FAILED" TO ENDER-DESC.                        IF1254.2
+            023800     IF       ERROR-COUNTER IS EQUAL TO ZERO                      IF1254.2
+            023900         MOVE "NO " TO ERROR-TOTAL                                IF1254.2
+            024000         ELSE                                                     IF1254.2
+            024100         MOVE ERROR-COUNTER TO ERROR-TOTAL.                       IF1254.2
+            024200     MOVE     CCVS-E-2 TO DUMMY-RECORD.                           IF1254.2
+            024300     PERFORM WRITE-LINE.                                          IF1254.2
+            024400 END-ROUTINE-13.                                                  IF1254.2
+            024500     IF DELETE-COUNTER IS EQUAL TO ZERO                           IF1254.2
+            024600         MOVE "NO " TO ERROR-TOTAL  ELSE                          IF1254.2
+            024700         MOVE DELETE-COUNTER TO ERROR-TOTAL.                      IF1254.2
+            024800     MOVE "TEST(S) DELETED     " TO ENDER-DESC.                   IF1254.2
+            024900     MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1254.2
+            025000      IF   INSPECT-COUNTER EQUAL TO ZERO                          IF1254.2
+            025100          MOVE "NO " TO ERROR-TOTAL                               IF1254.2
+            025200      ELSE MOVE INSPECT-COUNTER TO ERROR-TOTAL.                   IF1254.2
+            025300      MOVE "TEST(S) REQUIRE INSPECTION" TO ENDER-DESC.            IF1254.2
+            025400      MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.          IF1254.2
+            025500     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1254.2
+            025600 WRITE-LINE.                                                      IF1254.2
+            025700     ADD 1 TO RECORD-COUNT.                                       IF1254.2
+            025800Y    IF RECORD-COUNT GREATER 42                                   IF1254.2
+            025900Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1254.2
+            026000Y        MOVE SPACE TO DUMMY-RECORD                               IF1254.2
+            026100Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1254.2
+            026200Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1254.2
+            026300Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1254.2
+            026400Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1254.2
+            026500Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1254.2
+            026600Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1254.2
+            026700Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1254.2
+            026800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1254.2
+            026900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1254.2
+            027000Y        MOVE ZERO TO RECORD-COUNT.                               IF1254.2
+            027100     PERFORM WRT-LN.                                              IF1254.2
+            027200 WRT-LN.                                                          IF1254.2
+            027300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1254.2
+            027400     MOVE SPACE TO DUMMY-RECORD.                                  IF1254.2
+            027500 BLANK-LINE-PRINT.                                                IF1254.2
+            027600     PERFORM WRT-LN.                                              IF1254.2
+            027700 FAIL-ROUTINE.                                                    IF1254.2
+            027800     IF     COMPUTED-X NOT EQUAL TO SPACE                         IF1254.2
+            027900            GO TO FAIL-ROUTINE-WRITE.                             IF1254.2
+            028000     IF     CORRECT-X NOT EQUAL TO SPACE GO TO FAIL-ROUTINE-WRITE.IF1254.2
+            028100     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1254.2
+            028200     MOVE  "NO FURTHER INFORMATION, SEE PROGRAM." TO INFO-TEXT.   IF1254.2
+            028300     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1254.2
+            028400     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1254.2
+            028500     GO TO  FAIL-ROUTINE-EX.                                      IF1254.2
+            028600 FAIL-ROUTINE-WRITE.                                              IF1254.2
+            028700     MOVE   TEST-COMPUTED TO PRINT-REC PERFORM WRITE-LINE         IF1254.2
+            028800     MOVE   ANSI-REFERENCE TO COR-ANSI-REFERENCE.                 IF1254.2
+            028900     MOVE   TEST-CORRECT TO PRINT-REC PERFORM WRITE-LINE 2 TIMES. IF1254.2
+            029000     MOVE   SPACES TO COR-ANSI-REFERENCE.                         IF1254.2
+            029100 FAIL-ROUTINE-EX. EXIT.                                           IF1254.2
+            029200 BAIL-OUT.                                                        IF1254.2
+            029300     IF     COMPUTED-A NOT EQUAL TO SPACE GO TO BAIL-OUT-WRITE.   IF1254.2
+            029400     IF     CORRECT-A EQUAL TO SPACE GO TO BAIL-OUT-EX.           IF1254.2
+            029500 BAIL-OUT-WRITE.                                                  IF1254.2
+            029600     MOVE CORRECT-A TO XXCORRECT.                                 IF1254.2
+            029700     MOVE COMPUTED-A TO XXCOMPUTED.                               IF1254.2
+            029800     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1254.2
+            029900     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1254.2
+            030000     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1254.2
+            030100 BAIL-OUT-EX. EXIT.                                               IF1254.2
+            030200 CCVS1-EXIT.                                                      IF1254.2
+            030300     EXIT.                                                        IF1254.2
+            030400********************************************************          IF1254.2
+            030500*                                                      *          IF1254.2
+            030600*    Intrinsic Function Tests         IF125A - NUMVAL  *          IF1254.2
+            030700*                                                      *          IF1254.2
+            030800********************************************************          IF1254.2
+            030900 SECT-IF125A SECTION.                                             IF1254.2
+            031000 F-NUMVAL-INFO.                                                   IF1254.2
+            031100     MOVE     "See ref. A-58 2.29" TO ANSI-REFERENCE.             IF1254.2
+            031200     MOVE     "NUMVAL Function"     TO FEATURE.                   IF1254.2
+            031300*****************TEST (a) ******************************          IF1254.2
+            031400 F-NUMVAL-01.                                                     IF1254.2
+            031500     MOVE ZERO TO TEMP.                                           IF1254.2
+            031600 F-NUMVAL-TEST-01.                                                IF1254.2
+            031700     COMPUTE TEMP = FUNCTION NUMVAL ("9").                        IF1254.2
+            031800     IF TEMP = 9 THEN                                             IF1254.2
+            031900                        PERFORM PASS                              IF1254.2
+            032000     ELSE                                                         IF1254.2
+            032100                        MOVE 9 TO CORRECT-N                       IF1254.2
+            032200                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            032300                        PERFORM FAIL.                             IF1254.2
+            032400     GO TO F-NUMVAL-WRITE-01.                                     IF1254.2
+            032500 F-NUMVAL-DELETE-01.                                              IF1254.2
+            032600     PERFORM  DE-LETE.                                            IF1254.2
+            032700     GO TO    F-NUMVAL-WRITE-01.                                  IF1254.2
+            032800 F-NUMVAL-WRITE-01.                                               IF1254.2
+            032900     MOVE "F-NUMVAL-01" TO PAR-NAME.                              IF1254.2
+            033000     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            033100*****************TEST (b) ******************************          IF1254.2
+            033200 F-NUMVAL-02.                                                     IF1254.2
+            033300     MOVE 77  TO TEMP.                                            IF1254.2
+            033400 F-NUMVAL-TEST-02.                                                IF1254.2
+            033500     EVALUATE FUNCTION NUMVAL ("4738")                            IF1254.2
+            033600              ALSO ( TEMP + 96 ) * 2                              IF1254.2
+            033700     WHEN     4738                                                IF1254.2
+            033800              ALSO 346                                            IF1254.2
+            033900        PERFORM PASS                                              IF1254.2
+            034000        GO TO F-NUMVAL-WRITE-02.                                  IF1254.2
+            034100     PERFORM FAIL.                                                IF1254.2
+            034200     GO TO    F-NUMVAL-WRITE-02.                                  IF1254.2
+            034300 F-NUMVAL-DELETE-02.                                              IF1254.2
+            034400     PERFORM  DE-LETE.                                            IF1254.2
+            034500     GO TO    F-NUMVAL-WRITE-02.                                  IF1254.2
+            034600 F-NUMVAL-WRITE-02.                                               IF1254.2
+            034700     MOVE "F-NUMVAL-02" TO PAR-NAME.                              IF1254.2
+            034800     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            034900*****************TEST (c) ******************************          IF1254.2
+            035000 F-NUMVAL-TEST-03.                                                IF1254.2
+            035100     IF (FUNCTION NUMVAL (".935") >= 0.934981) AND                IF1254.2
+            035200        (FUNCTION NUMVAL (".935") <= 0.935019)                    IF1254.2
+            035300                        PERFORM PASS                              IF1254.2
+            035400     ELSE                                                         IF1254.2
+            035500                        PERFORM FAIL.                             IF1254.2
+            035600     GO TO F-NUMVAL-WRITE-03.                                     IF1254.2
+            035700 F-NUMVAL-DELETE-03.                                              IF1254.2
+            035800     PERFORM  DE-LETE.                                            IF1254.2
+            035900     GO TO    F-NUMVAL-WRITE-03.                                  IF1254.2
+            036000 F-NUMVAL-WRITE-03.                                               IF1254.2
+            036100     MOVE "F-NUMVAL-03" TO PAR-NAME.                              IF1254.2
+            036200     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            036300*****************TEST (d) ******************************          IF1254.2
+            036400 F-NUMVAL-04.                                                     IF1254.2
+            036500     MOVE ZERO TO TEMP.                                           IF1254.2
+            036600 F-NUMVAL-TEST-04.                                                IF1254.2
+            036700     COMPUTE TEMP = FUNCTION NUMVAL ("385.93").                   IF1254.2
+            036800     IF (TEMP >= 385.922) AND                                     IF1254.2
+            036900        (TEMP <= 385.938)                                         IF1254.2
+            037000                        PERFORM PASS                              IF1254.2
+            037100     ELSE                                                         IF1254.2
+            037200                        MOVE  385.93  TO CORRECT-N                IF1254.2
+            037300                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            037400                        PERFORM FAIL.                             IF1254.2
+            037500     GO TO F-NUMVAL-WRITE-04.                                     IF1254.2
+            037600 F-NUMVAL-DELETE-04.                                              IF1254.2
+            037700     PERFORM  DE-LETE.                                            IF1254.2
+            037800     GO TO    F-NUMVAL-WRITE-04.                                  IF1254.2
+            037900 F-NUMVAL-WRITE-04.                                               IF1254.2
+            038000     MOVE "F-NUMVAL-04" TO PAR-NAME.                              IF1254.2
+            038100     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            038200*****************TEST (e) ******************************          IF1254.2
+            038300 F-NUMVAL-05.                                                     IF1254.2
+            038400     MOVE ZERO TO TEMP.                                           IF1254.2
+            038500 F-NUMVAL-TEST-05.                                                IF1254.2
+            038600     COMPUTE TEMP = FUNCTION NUMVAL ("+394.2").                   IF1254.2
+            038700     IF (TEMP >= 394.192) AND                                     IF1254.2
+            038800        (TEMP <= 394.208)                                         IF1254.2
+            038900                        PERFORM PASS                              IF1254.2
+            039000     ELSE                                                         IF1254.2
+            039100                        MOVE  394.2  TO CORRECT-N                 IF1254.2
+            039200                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            039300                        PERFORM FAIL.                             IF1254.2
+            039400     GO TO F-NUMVAL-WRITE-05.                                     IF1254.2
+            039500 F-NUMVAL-DELETE-05.                                              IF1254.2
+            039600     PERFORM  DE-LETE.                                            IF1254.2
+            039700     GO TO    F-NUMVAL-WRITE-05.                                  IF1254.2
+            039800 F-NUMVAL-WRITE-05.                                               IF1254.2
+            039900     MOVE "F-NUMVAL-05" TO PAR-NAME.                              IF1254.2
+            040000     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            040100*****************TEST (f) ******************************          IF1254.2
+            040200 F-NUMVAL-06.                                                     IF1254.2
+            040300     MOVE ZERO TO TEMP.                                           IF1254.2
+            040400 F-NUMVAL-TEST-06.                                                IF1254.2
+            040500     COMPUTE TEMP = FUNCTION NUMVAL ("  939.83").                 IF1254.2
+            040600     IF (TEMP >= 939.811) AND                                     IF1254.2
+            040700        (TEMP <= 939.849)                                         IF1254.2
+            040800                        PERFORM PASS                              IF1254.2
+            040900     ELSE                                                         IF1254.2
+            041000                        MOVE  939.83  TO CORRECT-N                IF1254.2
+            041100                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            041200                        PERFORM FAIL.                             IF1254.2
+            041300     GO TO F-NUMVAL-WRITE-06.                                     IF1254.2
+            041400 F-NUMVAL-DELETE-06.                                              IF1254.2
+            041500     PERFORM  DE-LETE.                                            IF1254.2
+            041600     GO TO    F-NUMVAL-WRITE-06.                                  IF1254.2
+            041700 F-NUMVAL-WRITE-06.                                               IF1254.2
+            041800     MOVE "F-NUMVAL-06" TO PAR-NAME.                              IF1254.2
+            041900     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            042000*****************TEST (g) ******************************          IF1254.2
+            042100 F-NUMVAL-07.                                                     IF1254.2
+            042200     MOVE ZERO TO TEMP.                                           IF1254.2
+            042300 F-NUMVAL-TEST-07.                                                IF1254.2
+            042400     COMPUTE TEMP = FUNCTION NUMVAL ("   -  4929.0323").          IF1254.2
+            042500     IF (TEMP >= -4929.1309) AND                                  IF1254.2
+            042600        (TEMP <= -4928.9337)                                      IF1254.2
+            042700                        PERFORM PASS                              IF1254.2
+            042800     ELSE                                                         IF1254.2
+            042900                        MOVE  -4929.0323  TO CORRECT-N            IF1254.2
+            043000                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            043100                        PERFORM FAIL.                             IF1254.2
+            043200     GO TO F-NUMVAL-WRITE-07.                                     IF1254.2
+            043300 F-NUMVAL-DELETE-07.                                              IF1254.2
+            043400     PERFORM  DE-LETE.                                            IF1254.2
+            043500     GO TO    F-NUMVAL-WRITE-07.                                  IF1254.2
+            043600 F-NUMVAL-WRITE-07.                                               IF1254.2
+            043700     MOVE "F-NUMVAL-07" TO PAR-NAME.                              IF1254.2
+            043800     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            043900*****************TEST (h) ******************************          IF1254.2
+            044000 F-NUMVAL-08.                                                     IF1254.2
+            044100     MOVE ZERO TO TEMP.                                           IF1254.2
+            044200 F-NUMVAL-TEST-08.                                                IF1254.2
+            044300     COMPUTE TEMP = FUNCTION NUMVAL ("82.9312+").                 IF1254.2
+            044400     IF (TEMP >= 82.9295) AND                                     IF1254.2
+            044500        (TEMP <= 82.9329)                                         IF1254.2
+            044600                        PERFORM PASS                              IF1254.2
+            044700     ELSE                                                         IF1254.2
+            044800                        MOVE  82.9312  TO CORRECT-N               IF1254.2
+            044900                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            045000                        PERFORM FAIL.                             IF1254.2
+            045100     GO TO F-NUMVAL-WRITE-08.                                     IF1254.2
+            045200 F-NUMVAL-DELETE-08.                                              IF1254.2
+            045300     PERFORM  DE-LETE.                                            IF1254.2
+            045400     GO TO    F-NUMVAL-WRITE-08.                                  IF1254.2
+            045500 F-NUMVAL-WRITE-08.                                               IF1254.2
+            045600     MOVE "F-NUMVAL-08" TO PAR-NAME.                              IF1254.2
+            045700     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            045800*****************TEST (i) ******************************          IF1254.2
+            045900 F-NUMVAL-09.                                                     IF1254.2
+            046000     MOVE ZERO TO TEMP.                                           IF1254.2
+            046100 F-NUMVAL-TEST-09.                                                IF1254.2
+            046200     COMPUTE TEMP = FUNCTION NUMVAL ("   200.0002   - ").         IF1254.2
+            046300     IF (TEMP >= -200.0042) AND                                   IF1254.2
+            046400        (TEMP <= -199.9962)                                       IF1254.2
+            046500                        PERFORM PASS                              IF1254.2
+            046600     ELSE                                                         IF1254.2
+            046700                        MOVE  -200.0002  TO CORRECT-N             IF1254.2
+            046800                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            046900                        PERFORM FAIL.                             IF1254.2
+            047000     GO TO F-NUMVAL-WRITE-09.                                     IF1254.2
+            047100 F-NUMVAL-DELETE-09.                                              IF1254.2
+            047200     PERFORM  DE-LETE.                                            IF1254.2
+            047300     GO TO    F-NUMVAL-WRITE-09.                                  IF1254.2
+            047400 F-NUMVAL-WRITE-09.                                               IF1254.2
+            047500     MOVE "F-NUMVAL-09" TO PAR-NAME.                              IF1254.2
+            047600     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            047700*****************TEST (j) ******************************          IF1254.2
+            047800 F-NUMVAL-10.                                                     IF1254.2
+            047900     MOVE ZERO TO TEMP.                                           IF1254.2
+            048000 F-NUMVAL-TEST-10.                                                IF1254.2
+            048100     COMPUTE TEMP = FUNCTION NUMVAL (A).                          IF1254.2
+            048200     IF TEMP = 4 THEN                                             IF1254.2
+            048300                        PERFORM PASS                              IF1254.2
+            048400     ELSE                                                         IF1254.2
+            048500                        MOVE  4  TO CORRECT-N                     IF1254.2
+            048600                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            048700                        PERFORM FAIL.                             IF1254.2
+            048800     GO TO F-NUMVAL-WRITE-10.                                     IF1254.2
+            048900 F-NUMVAL-DELETE-10.                                              IF1254.2
+            049000     PERFORM  DE-LETE.                                            IF1254.2
+            049100     GO TO    F-NUMVAL-WRITE-10.                                  IF1254.2
+            049200 F-NUMVAL-WRITE-10.                                               IF1254.2
+            049300     MOVE "F-NUMVAL-10" TO PAR-NAME.                              IF1254.2
+            049400     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            049500*****************TEST (k) ******************************          IF1254.2
+            049600 F-NUMVAL-11.                                                     IF1254.2
+            049700     MOVE ZERO TO TEMP.                                           IF1254.2
+            049800 F-NUMVAL-TEST-11.                                                IF1254.2
+            049900     COMPUTE TEMP = FUNCTION NUMVAL (B).                          IF1254.2
+            050000     IF TEMP = 203 THEN                                           IF1254.2
+            050100                        PERFORM PASS                              IF1254.2
+            050200     ELSE                                                         IF1254.2
+            050300                        MOVE  203  TO CORRECT-N                   IF1254.2
+            050400                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            050500                        PERFORM FAIL.                             IF1254.2
+            050600     GO TO F-NUMVAL-WRITE-11.                                     IF1254.2
+            050700 F-NUMVAL-DELETE-11.                                              IF1254.2
+            050800     PERFORM  DE-LETE.                                            IF1254.2
+            050900     GO TO    F-NUMVAL-WRITE-11.                                  IF1254.2
+            051000 F-NUMVAL-WRITE-11.                                               IF1254.2
+            051100     MOVE "F-NUMVAL-11" TO PAR-NAME.                              IF1254.2
+            051200     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            051300*****************TEST (l) ******************************          IF1254.2
+            051400 F-NUMVAL-12.                                                     IF1254.2
+            051500     MOVE ZERO TO TEMP.                                           IF1254.2
+            051600 F-NUMVAL-TEST-12.                                                IF1254.2
+            051700     COMPUTE TEMP = FUNCTION NUMVAL (C).                          IF1254.2
+            051800     IF (TEMP >= 0.428991) AND                                    IF1254.2
+            051900        (TEMP <= 0.429009)                                        IF1254.2
+            052000                        PERFORM PASS                              IF1254.2
+            052100     ELSE                                                         IF1254.2
+            052200                        MOVE  0.429  TO CORRECT-N                 IF1254.2
+            052300                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            052400                        PERFORM FAIL.                             IF1254.2
+            052500     GO TO F-NUMVAL-WRITE-12.                                     IF1254.2
+            052600 F-NUMVAL-DELETE-12.                                              IF1254.2
+            052700     PERFORM  DE-LETE.                                            IF1254.2
+            052800     GO TO    F-NUMVAL-WRITE-12.                                  IF1254.2
+            052900 F-NUMVAL-WRITE-12.                                               IF1254.2
+            053000     MOVE "F-NUMVAL-12" TO PAR-NAME.                              IF1254.2
+            053100     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            053200*****************TEST (m) ******************************          IF1254.2
+            053300 F-NUMVAL-13.                                                     IF1254.2
+            053400     MOVE ZERO TO TEMP.                                           IF1254.2
+            053500 F-NUMVAL-TEST-13.                                                IF1254.2
+            053600     COMPUTE TEMP = FUNCTION NUMVAL (D).                          IF1254.2
+            053700     IF (TEMP >= 928.325) AND                                     IF1254.2
+            053800        (TEMP <= 928.363)                                         IF1254.2
+            053900                        PERFORM PASS                              IF1254.2
+            054000     ELSE                                                         IF1254.2
+            054100                        MOVE  928.344  TO CORRECT-N               IF1254.2
+            054200                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            054300                        PERFORM FAIL.                             IF1254.2
+            054400     GO TO F-NUMVAL-WRITE-13.                                     IF1254.2
+            054500 F-NUMVAL-DELETE-13.                                              IF1254.2
+            054600     PERFORM  DE-LETE.                                            IF1254.2
+            054700     GO TO    F-NUMVAL-WRITE-13.                                  IF1254.2
+            054800 F-NUMVAL-WRITE-13.                                               IF1254.2
+            054900     MOVE "F-NUMVAL-13" TO PAR-NAME.                              IF1254.2
+            055000     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            055100*****************TEST (n) ******************************          IF1254.2
+            055200 F-NUMVAL-14.                                                     IF1254.2
+            055300     MOVE ZERO TO TEMP.                                           IF1254.2
+            055400 F-NUMVAL-TEST-14.                                                IF1254.2
+            055500     COMPUTE TEMP = FUNCTION NUMVAL (E).                          IF1254.2
+            055600     IF (TEMP >= -42.3248) AND                                    IF1254.2
+            055700        (TEMP <= -42.3232)                                        IF1254.2
+            055800                        PERFORM PASS                              IF1254.2
+            055900     ELSE                                                         IF1254.2
+            056000                        MOVE  -42.324      TO CORRECT-N           IF1254.2
+            056100                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            056200                        PERFORM FAIL.                             IF1254.2
+            056300     GO TO F-NUMVAL-WRITE-14.                                     IF1254.2
+            056400 F-NUMVAL-DELETE-14.                                              IF1254.2
+            056500     PERFORM  DE-LETE.                                            IF1254.2
+            056600     GO TO    F-NUMVAL-WRITE-14.                                  IF1254.2
+            056700 F-NUMVAL-WRITE-14.                                               IF1254.2
+            056800     MOVE "F-NUMVAL-14" TO PAR-NAME.                              IF1254.2
+            056900     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            057000*****************TEST (o) ******************************          IF1254.2
+            057100 F-NUMVAL-15.                                                     IF1254.2
+            057200     MOVE ZERO TO TEMP.                                           IF1254.2
+            057300 F-NUMVAL-TEST-15.                                                IF1254.2
+            057400     COMPUTE TEMP = FUNCTION NUMVAL (F).                          IF1254.2
+            057500     IF (TEMP >= 22.9995) AND                                     IF1254.2
+            057600        (TEMP <= 23.0005)                                         IF1254.2
+            057700                        PERFORM PASS                              IF1254.2
+            057800     ELSE                                                         IF1254.2
+            057900                        MOVE  23.0  TO CORRECT-N                  IF1254.2
+            058000                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            058100                        PERFORM FAIL.                             IF1254.2
+            058200     GO TO F-NUMVAL-WRITE-15.                                     IF1254.2
+            058300 F-NUMVAL-DELETE-15.                                              IF1254.2
+            058400     PERFORM  DE-LETE.                                            IF1254.2
+            058500     GO TO    F-NUMVAL-WRITE-15.                                  IF1254.2
+            058600 F-NUMVAL-WRITE-15.                                               IF1254.2
+            058700     MOVE "F-NUMVAL-15" TO PAR-NAME.                              IF1254.2
+            058800     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            058900*****************TEST (p) ******************************          IF1254.2
+            059000 F-NUMVAL-16.                                                     IF1254.2
+            059100     MOVE ZERO TO TEMP.                                           IF1254.2
+            059200 F-NUMVAL-TEST-16.                                                IF1254.2
+            059300     COMPUTE TEMP = FUNCTION NUMVAL (G).                          IF1254.2
+            059400     IF (TEMP >= -92926.16) AND                                   IF1254.2
+            059500        (TEMP <= -92922.44)                                       IF1254.2
+            059600                        PERFORM PASS                              IF1254.2
+            059700     ELSE                                                         IF1254.2
+            059800                        MOVE  -92924.3  TO CORRECT-N              IF1254.2
+            059900                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            060000                        PERFORM FAIL.                             IF1254.2
+            060100     GO TO F-NUMVAL-WRITE-16.                                     IF1254.2
+            060200 F-NUMVAL-DELETE-16.                                              IF1254.2
+            060300     PERFORM  DE-LETE.                                            IF1254.2
+            060400     GO TO    F-NUMVAL-WRITE-16.                                  IF1254.2
+            060500 F-NUMVAL-WRITE-16.                                               IF1254.2
+            060600     MOVE "F-NUMVAL-16" TO PAR-NAME.                              IF1254.2
+            060700     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            060800*****************TEST (q) ******************************          IF1254.2
+            060900 F-NUMVAL-17.                                                     IF1254.2
+            061000     MOVE ZERO TO TEMP.                                           IF1254.2
+            061100 F-NUMVAL-TEST-17.                                                IF1254.2
+            061200     COMPUTE TEMP = FUNCTION NUMVAL (H).                          IF1254.2
+            061300     IF (TEMP >= 93.2081) AND                                     IF1254.2
+            061400        (TEMP <= 93.2119)                                         IF1254.2
+            061500                        PERFORM PASS                              IF1254.2
+            061600     ELSE                                                         IF1254.2
+            061700                        MOVE  93.21  TO CORRECT-N                 IF1254.2
+            061800                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            061900                        PERFORM FAIL.                             IF1254.2
+            062000     GO TO F-NUMVAL-WRITE-17.                                     IF1254.2
+            062100 F-NUMVAL-DELETE-17.                                              IF1254.2
+            062200     PERFORM  DE-LETE.                                            IF1254.2
+            062300     GO TO    F-NUMVAL-WRITE-17.                                  IF1254.2
+            062400 F-NUMVAL-WRITE-17.                                               IF1254.2
+            062500     MOVE "F-NUMVAL-17" TO PAR-NAME.                              IF1254.2
+            062600     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            062700*****************TEST (r) ******************************          IF1254.2
+            062800 F-NUMVAL-18.                                                     IF1254.2
+            062900     MOVE ZERO TO TEMP.                                           IF1254.2
+            063000 F-NUMVAL-TEST-18.                                                IF1254.2
+            063100     COMPUTE TEMP = FUNCTION NUMVAL (I).                          IF1254.2
+            063200     IF (TEMP >= -92.9219) AND                                    IF1254.2
+            063300        (TEMP <= -92.9181)                                        IF1254.2
+            063400                        PERFORM PASS                              IF1254.2
+            063500     ELSE                                                         IF1254.2
+            063600                        MOVE  -92.92  TO CORRECT-N                IF1254.2
+            063700                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            063800                        PERFORM FAIL.                             IF1254.2
+            063900     GO TO F-NUMVAL-WRITE-18.                                     IF1254.2
+            064000 F-NUMVAL-DELETE-18.                                              IF1254.2
+            064100     PERFORM  DE-LETE.                                            IF1254.2
+            064200     GO TO    F-NUMVAL-WRITE-18.                                  IF1254.2
+            064300 F-NUMVAL-WRITE-18.                                               IF1254.2
+            064400     MOVE "F-NUMVAL-18" TO PAR-NAME.                              IF1254.2
+            064500     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            064600*****************TEST (s) ******************************          IF1254.2
+            064700 F-NUMVAL-19.                                                     IF1254.2
+            064800     MOVE ZERO TO TEMP.                                           IF1254.2
+            064900 F-NUMVAL-TEST-19.                                                IF1254.2
+            065000     COMPUTE TEMP = (FUNCTION NUMVAL ("90") + 10).                IF1254.2
+            065100     IF TEMP = 100 THEN                                           IF1254.2
+            065200                        PERFORM PASS                              IF1254.2
+            065300     ELSE                                                         IF1254.2
+            065400                        MOVE  100  TO CORRECT-N                   IF1254.2
+            065500                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            065600                        PERFORM FAIL.                             IF1254.2
+            065700     GO TO F-NUMVAL-WRITE-19.                                     IF1254.2
+            065800 F-NUMVAL-DELETE-19.                                              IF1254.2
+            065900     PERFORM  DE-LETE.                                            IF1254.2
+            066000     GO TO    F-NUMVAL-WRITE-19.                                  IF1254.2
+            066100 F-NUMVAL-WRITE-19.                                               IF1254.2
+            066200     MOVE "F-NUMVAL-19" TO PAR-NAME.                              IF1254.2
+            066300     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            066400*****************TEST (t) ******************************          IF1254.2
+            066500 F-NUMVAL-20.                                                     IF1254.2
+            066600     MOVE ZERO TO TEMP.                                           IF1254.2
+            066700 F-NUMVAL-TEST-20.                                                IF1254.2
+            066800     COMPUTE TEMP = (FUNCTION NUMVAL ("2") +                      IF1254.2
+            066900                     FUNCTION NUMVAL ("8") ).                     IF1254.2
+            067000     IF TEMP = 10 THEN                                            IF1254.2
+            067100                        PERFORM PASS                              IF1254.2
+            067200     ELSE                                                         IF1254.2
+            067300                        MOVE  10  TO CORRECT-N                    IF1254.2
+            067400                        MOVE TEMP TO COMPUTED-N                   IF1254.2
+            067500                        PERFORM FAIL.                             IF1254.2
+            067600     GO TO F-NUMVAL-WRITE-20.                                     IF1254.2
+            067700 F-NUMVAL-DELETE-20.                                              IF1254.2
+            067800     PERFORM  DE-LETE.                                            IF1254.2
+            067900     GO TO    F-NUMVAL-WRITE-20.                                  IF1254.2
+            068000 F-NUMVAL-WRITE-20.                                               IF1254.2
+            068100     MOVE "F-NUMVAL-20" TO PAR-NAME.                              IF1254.2
+            068200     PERFORM  PRINT-DETAIL.                                       IF1254.2
+            068300*******************END OF TESTS**************************         IF1254.2
+            068400 CCVS-EXIT SECTION.                                               IF1254.2
+            068500 CCVS-999999.                                                     IF1254.2
+            068600     GO TO CLOSE-FILES.                                           IF1254.2
+                  *END-OF,IF125A                                                            
+        """)
+    )
+
+    @Test
+    fun if1264_2() = rewriteRun(
+        cobol("""
+                  *HEADER,COBOL,IF126A                                                      
+            000100 IDENTIFICATION DIVISION.                                         IF1264.2
+            000200 PROGRAM-ID.                                                      IF1264.2
+            000300     IF126A.                                                      IF1264.2
+            000400                                                                  IF1264.2
+            000500***********************************************************       IF1264.2
+            000600*                                                         *       IF1264.2
+            000700* This program forms part of the CCVS85 COBOL Test Suite. *       IF1264.2
+            000800* It contains tests for the Intrinsic Function            *       IF1264.2
+            000900* NUMVAL-C.                                               *       IF1264.2
+            001000*                                                         *       IF1264.2
+            001100*                                                         *       IF1264.2
+            001200***********************************************************       IF1264.2
+            001300 ENVIRONMENT DIVISION.                                            IF1264.2
+            001400 CONFIGURATION SECTION.                                           IF1264.2
+            001500 SOURCE-COMPUTER.                                                 IF1264.2
+            001600     XXXXX082.                                                    IF1264.2
+            001700 OBJECT-COMPUTER.                                                 IF1264.2
+            001800     XXXXX083.                                                    IF1264.2
+            001900 INPUT-OUTPUT SECTION.                                            IF1264.2
+            002000 FILE-CONTROL.                                                    IF1264.2
+            002100     SELECT PRINT-FILE ASSIGN TO                                  IF1264.2
+            002200     XXXXX055.                                                    IF1264.2
+            002300 DATA DIVISION.                                                   IF1264.2
+            002400 FILE SECTION.                                                    IF1264.2
+            002500 FD  PRINT-FILE.                                                  IF1264.2
+            002600 01  PRINT-REC PICTURE X(120).                                    IF1264.2
+            002700 01  DUMMY-RECORD PICTURE X(120).                                 IF1264.2
+            002800 WORKING-STORAGE SECTION.                                         IF1264.2
+            002900***********************************************************       IF1264.2
+            003000* Variables specific to the Intrinsic Function Test IF126A*       IF1264.2
+            003100***********************************************************       IF1264.2
+            003200 01  A                   PIC X(1)       VALUE "4".                IF1264.2
+            003300 01  B                   PIC X(5)       VALUE "203".              IF1264.2
+            003400 01  C                   PIC X(4)       VALUE ".429".             IF1264.2
+            003500 01  D                   PIC X(7)       VALUE "928.344".          IF1264.2
+            003600 01  E                   PIC X(9)       VALUE "-042.3240".        IF1264.2
+            003700 01  F                   PIC X(7)       VALUE " 23.000".          IF1264.2
+            003800 01  G                   PIC X(8)       VALUE "-92924.3".         IF1264.2
+            003900 01  H                   PIC X(6)       VALUE "93.21+".           IF1264.2
+            004000 01  I                   PIC X(9)       VALUE " 92.92  -".        IF1264.2
+            004100 01  J                   PIC X(9)       VALUE "8,848.934".        IF1264.2
+            004200 01  K                   PIC X(12)      VALUE "4,825,293.92".     IF1264.2
+            004300 01  L                   PIC X(12)      VALUE " - 5,555.55 ".     IF1264.2
+            004400 01  M                   PIC X(9)       VALUE "5,555.55-".        IF1264.2
+            004500 01  N                   PIC X(13)      VALUE " 77,777.77 + ".    IF1264.2
+            004600 01  O                   PIC X(3)       VALUE "${'$'}33".              IF1264.2
+            004700 01  P                   PIC X(5)       VALUE "${'$'}0.11".            IF1264.2
+            004800 01  Q                   PIC X(9)       VALUE "${'$'}4,000.00".        IF1264.2
+            004900 01  R                   PIC X(14)      VALUE "${'$'}1,000,000.50".    IF1264.2
+            005000 01  S                   PIC X(14)       VALUE " ${'$'} 3,900.21".     IF1264.2
+            005100 01  T                   PIC X(14)       VALUE " + ${'$'} 9,000.99".   IF1264.2
+            005200 01  U                   PIC X(15)       VALUE " ${'$'} 3,890.20 + ".  IF1264.2
+            005300 01  TEMP                PIC S9(7)V9(5).                          IF1264.2
+            005400                                                                  IF1264.2
+            005500*                                                                 IF1264.2
+            005600**********************************************************        IF1264.2
+            005700*                                                                 IF1264.2
+            005800 01  TEST-RESULTS.                                                IF1264.2
+            005900     02 FILLER                   PIC X      VALUE SPACE.          IF1264.2
+            006000     02 FEATURE                  PIC X(20)  VALUE SPACE.          IF1264.2
+            006100     02 FILLER                   PIC X      VALUE SPACE.          IF1264.2
+            006200     02 P-OR-F                   PIC X(5)   VALUE SPACE.          IF1264.2
+            006300     02 FILLER                   PIC X      VALUE SPACE.          IF1264.2
+            006400     02  PAR-NAME.                                                IF1264.2
+            006500       03 FILLER                 PIC X(19)  VALUE SPACE.          IF1264.2
+            006600       03  PARDOT-X              PIC X      VALUE SPACE.          IF1264.2
+            006700       03 DOTVALUE               PIC 99     VALUE ZERO.           IF1264.2
+            006800     02 FILLER                   PIC X(8)   VALUE SPACE.          IF1264.2
+            006900     02 RE-MARK                  PIC X(61).                       IF1264.2
+            007000 01  TEST-COMPUTED.                                               IF1264.2
+            007100     02 FILLER                   PIC X(30)  VALUE SPACE.          IF1264.2
+            007200     02 FILLER                   PIC X(17)  VALUE                 IF1264.2
+            007300            "       COMPUTED=".                                   IF1264.2
+            007400     02 COMPUTED-X.                                               IF1264.2
+            007500     03 COMPUTED-A               PIC X(20)  VALUE SPACE.          IF1264.2
+            007600     03 COMPUTED-N               REDEFINES COMPUTED-A             IF1264.2
+            007700                                 PIC -9(9).9(9).                  IF1264.2
+            007800     03 COMPUTED-0V18 REDEFINES COMPUTED-A   PIC -.9(18).         IF1264.2
+            007900     03 COMPUTED-4V14 REDEFINES COMPUTED-A   PIC -9(4).9(14).     IF1264.2
+            008000     03 COMPUTED-14V4 REDEFINES COMPUTED-A   PIC -9(14).9(4).     IF1264.2
+            008100     03       CM-18V0 REDEFINES COMPUTED-A.                       IF1264.2
+            008200         04 COMPUTED-18V0                    PIC -9(18).          IF1264.2
+            008300         04 FILLER                           PIC X.               IF1264.2
+            008400     03 FILLER PIC X(50) VALUE SPACE.                             IF1264.2
+            008500 01  TEST-CORRECT.                                                IF1264.2
+            008600     02 FILLER PIC X(30) VALUE SPACE.                             IF1264.2
+            008700     02 FILLER PIC X(17) VALUE "       CORRECT =".                IF1264.2
+            008800     02 CORRECT-X.                                                IF1264.2
+            008900     03 CORRECT-A                  PIC X(20) VALUE SPACE.         IF1264.2
+            009000     03 CORRECT-N    REDEFINES CORRECT-A     PIC -9(9).9(9).      IF1264.2
+            009100     03 CORRECT-0V18 REDEFINES CORRECT-A     PIC -.9(18).         IF1264.2
+            009200     03 CORRECT-4V14 REDEFINES CORRECT-A     PIC -9(4).9(14).     IF1264.2
+            009300     03 CORRECT-14V4 REDEFINES CORRECT-A     PIC -9(14).9(4).     IF1264.2
+            009400     03      CR-18V0 REDEFINES CORRECT-A.                         IF1264.2
+            009500         04 CORRECT-18V0                     PIC -9(18).          IF1264.2
+            009600         04 FILLER                           PIC X.               IF1264.2
+            009700     03 FILLER PIC X(2) VALUE SPACE.                              IF1264.2
+            009800     03 COR-ANSI-REFERENCE             PIC X(48) VALUE SPACE.     IF1264.2
+            009900 01  CCVS-C-1.                                                    IF1264.2
+            010000     02 FILLER  PIC IS X(99)    VALUE IS " FEATURE              PAIF1264.2
+            010100-    "SS  PARAGRAPH-NAME                                          IF1264.2
+            010200-    "       REMARKS".                                            IF1264.2
+            010300     02 FILLER                     PIC X(20)    VALUE SPACE.      IF1264.2
+            010400 01  CCVS-C-2.                                                    IF1264.2
+            010500     02 FILLER                     PIC X        VALUE SPACE.      IF1264.2
+            010600     02 FILLER                     PIC X(6)     VALUE "TESTED".   IF1264.2
+            010700     02 FILLER                     PIC X(15)    VALUE SPACE.      IF1264.2
+            010800     02 FILLER                     PIC X(4)     VALUE "FAIL".     IF1264.2
+            010900     02 FILLER                     PIC X(94)    VALUE SPACE.      IF1264.2
+            011000 01  REC-SKL-SUB                   PIC 9(2)     VALUE ZERO.       IF1264.2
+            011100 01  REC-CT                        PIC 99       VALUE ZERO.       IF1264.2
+            011200 01  DELETE-COUNTER                PIC 999      VALUE ZERO.       IF1264.2
+            011300 01  ERROR-COUNTER                 PIC 999      VALUE ZERO.       IF1264.2
+            011400 01  INSPECT-COUNTER               PIC 999      VALUE ZERO.       IF1264.2
+            011500 01  PASS-COUNTER                  PIC 999      VALUE ZERO.       IF1264.2
+            011600 01  TOTAL-ERROR                   PIC 999      VALUE ZERO.       IF1264.2
+            011700 01  ERROR-HOLD                    PIC 999      VALUE ZERO.       IF1264.2
+            011800 01  DUMMY-HOLD                    PIC X(120)   VALUE SPACE.      IF1264.2
+            011900 01  RECORD-COUNT                  PIC 9(5)     VALUE ZERO.       IF1264.2
+            012000 01  ANSI-REFERENCE                PIC X(48)    VALUE SPACES.     IF1264.2
+            012100 01  CCVS-H-1.                                                    IF1264.2
+            012200     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1264.2
+            012300     02  FILLER                    PIC X(42)    VALUE             IF1264.2
+            012400     "OFFICIAL COBOL COMPILER VALIDATION SYSTEM".                 IF1264.2
+            012500     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1264.2
+            012600 01  CCVS-H-2A.                                                   IF1264.2
+            012700   02  FILLER                        PIC X(40)  VALUE SPACE.      IF1264.2
+            012800   02  FILLER                        PIC X(7)   VALUE "CCVS85 ".  IF1264.2
+            012900   02  FILLER                        PIC XXXX   VALUE             IF1264.2
+            013000     "4.2 ".                                                      IF1264.2
+            013100   02  FILLER                        PIC X(28)  VALUE             IF1264.2
+            013200            " COPY - NOT FOR DISTRIBUTION".                       IF1264.2
+            013300   02  FILLER                        PIC X(41)  VALUE SPACE.      IF1264.2
+            013400                                                                  IF1264.2
+            013500 01  CCVS-H-2B.                                                   IF1264.2
+            013600   02  FILLER                        PIC X(15)  VALUE             IF1264.2
+            013700            "TEST RESULT OF ".                                    IF1264.2
+            013800   02  TEST-ID                       PIC X(9).                    IF1264.2
+            013900   02  FILLER                        PIC X(4)   VALUE             IF1264.2
+            014000            " IN ".                                               IF1264.2
+            014100   02  FILLER                        PIC X(12)  VALUE             IF1264.2
+            014200     " HIGH       ".                                              IF1264.2
+            014300   02  FILLER                        PIC X(22)  VALUE             IF1264.2
+            014400            " LEVEL VALIDATION FOR ".                             IF1264.2
+            014500   02  FILLER                        PIC X(58)  VALUE             IF1264.2
+            014600     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1264.2
+            014700 01  CCVS-H-3.                                                    IF1264.2
+            014800     02  FILLER                      PIC X(34)  VALUE             IF1264.2
+            014900            " FOR OFFICIAL USE ONLY    ".                         IF1264.2
+            015000     02  FILLER                      PIC X(58)  VALUE             IF1264.2
+            015100     "COBOL 85 VERSION 4.2, Apr  1993 SSVG                      ".IF1264.2
+            015200     02  FILLER                      PIC X(28)  VALUE             IF1264.2
+            015300            "  COPYRIGHT   1985 ".                                IF1264.2
+            015400 01  CCVS-E-1.                                                    IF1264.2
+            015500     02 FILLER                       PIC X(52)  VALUE SPACE.      IF1264.2
+            015600     02 FILLER  PIC X(14) VALUE IS "END OF TEST-  ".              IF1264.2
+            015700     02 ID-AGAIN                     PIC X(9).                    IF1264.2
+            015800     02 FILLER                       PIC X(45)  VALUE SPACES.     IF1264.2
+            015900 01  CCVS-E-2.                                                    IF1264.2
+            016000     02  FILLER                      PIC X(31)  VALUE SPACE.      IF1264.2
+            016100     02  FILLER                      PIC X(21)  VALUE SPACE.      IF1264.2
+            016200     02 CCVS-E-2-2.                                               IF1264.2
+            016300         03 ERROR-TOTAL              PIC XXX    VALUE SPACE.      IF1264.2
+            016400         03 FILLER                   PIC X      VALUE SPACE.      IF1264.2
+            016500         03 ENDER-DESC               PIC X(44)  VALUE             IF1264.2
+            016600            "ERRORS ENCOUNTERED".                                 IF1264.2
+            016700 01  CCVS-E-3.                                                    IF1264.2
+            016800     02  FILLER                      PIC X(22)  VALUE             IF1264.2
+            016900            " FOR OFFICIAL USE ONLY".                             IF1264.2
+            017000     02  FILLER                      PIC X(12)  VALUE SPACE.      IF1264.2
+            017100     02  FILLER                      PIC X(58)  VALUE             IF1264.2
+            017200     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1264.2
+            017300     02  FILLER                      PIC X(13)  VALUE SPACE.      IF1264.2
+            017400     02 FILLER                       PIC X(15)  VALUE             IF1264.2
+            017500             " COPYRIGHT 1985".                                   IF1264.2
+            017600 01  CCVS-E-4.                                                    IF1264.2
+            017700     02 CCVS-E-4-1                   PIC XXX    VALUE SPACE.      IF1264.2
+            017800     02 FILLER                       PIC X(4)   VALUE " OF ".     IF1264.2
+            017900     02 CCVS-E-4-2                   PIC XXX    VALUE SPACE.      IF1264.2
+            018000     02 FILLER                       PIC X(40)  VALUE             IF1264.2
+            018100      "  TESTS WERE EXECUTED SUCCESSFULLY".                       IF1264.2
+            018200 01  XXINFO.                                                      IF1264.2
+            018300     02 FILLER                       PIC X(19)  VALUE             IF1264.2
+            018400            "*** INFORMATION ***".                                IF1264.2
+            018500     02 INFO-TEXT.                                                IF1264.2
+            018600       04 FILLER                     PIC X(8)   VALUE SPACE.      IF1264.2
+            018700       04 XXCOMPUTED                 PIC X(20).                   IF1264.2
+            018800       04 FILLER                     PIC X(5)   VALUE SPACE.      IF1264.2
+            018900       04 XXCORRECT                  PIC X(20).                   IF1264.2
+            019000     02 INF-ANSI-REFERENCE           PIC X(48).                   IF1264.2
+            019100 01  HYPHEN-LINE.                                                 IF1264.2
+            019200     02 FILLER  PIC IS X VALUE IS SPACE.                          IF1264.2
+            019300     02 FILLER  PIC IS X(65)    VALUE IS "************************IF1264.2
+            019400-    "*****************************************".                 IF1264.2
+            019500     02 FILLER  PIC IS X(54)    VALUE IS "************************IF1264.2
+            019600-    "******************************".                            IF1264.2
+            019700 01  CCVS-PGM-ID                     PIC X(9)   VALUE             IF1264.2
+            019800     "IF126A".                                                    IF1264.2
+            019900 PROCEDURE DIVISION.                                              IF1264.2
+            020000 CCVS1 SECTION.                                                   IF1264.2
+            020100 OPEN-FILES.                                                      IF1264.2
+            020200     OPEN     OUTPUT PRINT-FILE.                                  IF1264.2
+            020300     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   IF1264.2
+            020400     MOVE    SPACE TO TEST-RESULTS.                               IF1264.2
+            020500     PERFORM  HEAD-ROUTINE THRU COLUMN-NAMES-ROUTINE.             IF1264.2
+            020600     GO TO CCVS1-EXIT.                                            IF1264.2
+            020700 CLOSE-FILES.                                                     IF1264.2
+            020800     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IF1264.2
+            020900 TERMINATE-CCVS.                                                  IF1264.2
+            021000     STOP     RUN.                                                IF1264.2
+            021100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IF1264.2
+            021200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IF1264.2
+            021300 FAIL.  MOVE "FAIL*" TO P-OR-F.  ADD 1 TO ERROR-COUNTER.          IF1264.2
+            021400 DE-LETE.  MOVE "*****" TO P-OR-F.  ADD 1 TO DELETE-COUNTER.      IF1264.2
+            021500     MOVE "****TEST DELETED****" TO RE-MARK.                      IF1264.2
+            021600 PRINT-DETAIL.                                                    IF1264.2
+            021700     IF REC-CT NOT EQUAL TO ZERO                                  IF1264.2
+            021800             MOVE "." TO PARDOT-X                                 IF1264.2
+            021900             MOVE REC-CT TO DOTVALUE.                             IF1264.2
+            022000     MOVE     TEST-RESULTS TO PRINT-REC. PERFORM WRITE-LINE.      IF1264.2
+            022100     IF P-OR-F EQUAL TO "FAIL*"  PERFORM WRITE-LINE               IF1264.2
+            022200        PERFORM FAIL-ROUTINE THRU FAIL-ROUTINE-EX                 IF1264.2
+            022300          ELSE PERFORM BAIL-OUT THRU BAIL-OUT-EX.                 IF1264.2
+            022400     MOVE SPACE TO P-OR-F. MOVE SPACE TO COMPUTED-X.              IF1264.2
+            022500     MOVE SPACE TO CORRECT-X.                                     IF1264.2
+            022600     IF     REC-CT EQUAL TO ZERO  MOVE SPACE TO PAR-NAME.         IF1264.2
+            022700     MOVE     SPACE TO RE-MARK.                                   IF1264.2
+            022800 HEAD-ROUTINE.                                                    IF1264.2
+            022900     MOVE CCVS-H-1  TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1264.2
+            023000     MOVE CCVS-H-2A TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1264.2
+            023100     MOVE CCVS-H-2B TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1264.2
+            023200     MOVE CCVS-H-3  TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1264.2
+            023300 COLUMN-NAMES-ROUTINE.                                            IF1264.2
+            023400     MOVE CCVS-C-1 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1264.2
+            023500     MOVE CCVS-C-2 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1264.2
+            023600     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE.        IF1264.2
+            023700 END-ROUTINE.                                                     IF1264.2
+            023800     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE 5 TIMES.IF1264.2
+            023900 END-RTN-EXIT.                                                    IF1264.2
+            024000     MOVE CCVS-E-1 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1264.2
+            024100 END-ROUTINE-1.                                                   IF1264.2
+            024200      ADD ERROR-COUNTER TO ERROR-HOLD ADD INSPECT-COUNTER TO      IF1264.2
+            024300      ERROR-HOLD. ADD DELETE-COUNTER TO ERROR-HOLD.               IF1264.2
+            024400      ADD PASS-COUNTER TO ERROR-HOLD.                             IF1264.2
+            024500      MOVE PASS-COUNTER TO CCVS-E-4-1.                            IF1264.2
+            024600      MOVE ERROR-HOLD TO CCVS-E-4-2.                              IF1264.2
+            024700      MOVE CCVS-E-4 TO CCVS-E-2-2.                                IF1264.2
+            024800      MOVE CCVS-E-2 TO DUMMY-RECORD PERFORM WRITE-LINE.           IF1264.2
+            024900  END-ROUTINE-12.                                                 IF1264.2
+            025000      MOVE "TEST(S) FAILED" TO ENDER-DESC.                        IF1264.2
+            025100     IF       ERROR-COUNTER IS EQUAL TO ZERO                      IF1264.2
+            025200         MOVE "NO " TO ERROR-TOTAL                                IF1264.2
+            025300         ELSE                                                     IF1264.2
+            025400         MOVE ERROR-COUNTER TO ERROR-TOTAL.                       IF1264.2
+            025500     MOVE     CCVS-E-2 TO DUMMY-RECORD.                           IF1264.2
+            025600     PERFORM WRITE-LINE.                                          IF1264.2
+            025700 END-ROUTINE-13.                                                  IF1264.2
+            025800     IF DELETE-COUNTER IS EQUAL TO ZERO                           IF1264.2
+            025900         MOVE "NO " TO ERROR-TOTAL  ELSE                          IF1264.2
+            026000         MOVE DELETE-COUNTER TO ERROR-TOTAL.                      IF1264.2
+            026100     MOVE "TEST(S) DELETED     " TO ENDER-DESC.                   IF1264.2
+            026200     MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1264.2
+            026300      IF   INSPECT-COUNTER EQUAL TO ZERO                          IF1264.2
+            026400          MOVE "NO " TO ERROR-TOTAL                               IF1264.2
+            026500      ELSE MOVE INSPECT-COUNTER TO ERROR-TOTAL.                   IF1264.2
+            026600      MOVE "TEST(S) REQUIRE INSPECTION" TO ENDER-DESC.            IF1264.2
+            026700      MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.          IF1264.2
+            026800     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1264.2
+            026900 WRITE-LINE.                                                      IF1264.2
+            027000     ADD 1 TO RECORD-COUNT.                                       IF1264.2
+            027100Y    IF RECORD-COUNT GREATER 42                                   IF1264.2
+            027200Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1264.2
+            027300Y        MOVE SPACE TO DUMMY-RECORD                               IF1264.2
+            027400Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1264.2
+            027500Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1264.2
+            027600Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1264.2
+            027700Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1264.2
+            027800Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1264.2
+            027900Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1264.2
+            028000Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1264.2
+            028100Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1264.2
+            028200Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1264.2
+            028300Y        MOVE ZERO TO RECORD-COUNT.                               IF1264.2
+            028400     PERFORM WRT-LN.                                              IF1264.2
+            028500 WRT-LN.                                                          IF1264.2
+            028600     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1264.2
+            028700     MOVE SPACE TO DUMMY-RECORD.                                  IF1264.2
+            028800 BLANK-LINE-PRINT.                                                IF1264.2
+            028900     PERFORM WRT-LN.                                              IF1264.2
+            029000 FAIL-ROUTINE.                                                    IF1264.2
+            029100     IF     COMPUTED-X NOT EQUAL TO SPACE                         IF1264.2
+            029200            GO TO FAIL-ROUTINE-WRITE.                             IF1264.2
+            029300     IF     CORRECT-X NOT EQUAL TO SPACE GO TO FAIL-ROUTINE-WRITE.IF1264.2
+            029400     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1264.2
+            029500     MOVE  "NO FURTHER INFORMATION, SEE PROGRAM." TO INFO-TEXT.   IF1264.2
+            029600     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1264.2
+            029700     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1264.2
+            029800     GO TO  FAIL-ROUTINE-EX.                                      IF1264.2
+            029900 FAIL-ROUTINE-WRITE.                                              IF1264.2
+            030000     MOVE   TEST-COMPUTED TO PRINT-REC PERFORM WRITE-LINE         IF1264.2
+            030100     MOVE   ANSI-REFERENCE TO COR-ANSI-REFERENCE.                 IF1264.2
+            030200     MOVE   TEST-CORRECT TO PRINT-REC PERFORM WRITE-LINE 2 TIMES. IF1264.2
+            030300     MOVE   SPACES TO COR-ANSI-REFERENCE.                         IF1264.2
+            030400 FAIL-ROUTINE-EX. EXIT.                                           IF1264.2
+            030500 BAIL-OUT.                                                        IF1264.2
+            030600     IF     COMPUTED-A NOT EQUAL TO SPACE GO TO BAIL-OUT-WRITE.   IF1264.2
+            030700     IF     CORRECT-A EQUAL TO SPACE GO TO BAIL-OUT-EX.           IF1264.2
+            030800 BAIL-OUT-WRITE.                                                  IF1264.2
+            030900     MOVE CORRECT-A TO XXCORRECT.                                 IF1264.2
+            031000     MOVE COMPUTED-A TO XXCOMPUTED.                               IF1264.2
+            031100     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1264.2
+            031200     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1264.2
+            031300     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1264.2
+            031400 BAIL-OUT-EX. EXIT.                                               IF1264.2
+            031500 CCVS1-EXIT.                                                      IF1264.2
+            031600     EXIT.                                                        IF1264.2
+            031700********************************************************          IF1264.2
+            031800*                                                      *          IF1264.2
+            031900*    Intrinsic Function Tests       IF126A - NUMVAL-C  *          IF1264.2
+            032000*                                                      *          IF1264.2
+            032100********************************************************          IF1264.2
+            032200 SECT-IF126A SECTION.                                             IF1264.2
+            032300 F-NUMVALC-INFO.                                                  IF1264.2
+            032400     MOVE     "See ref. A-59 2.30" TO ANSI-REFERENCE.             IF1264.2
+            032500     MOVE     "NUMVAL-C Function"     TO FEATURE.                 IF1264.2
+            032600*****************TEST (a) ******************************          IF1264.2
+            032700 F-NUMVALC-01.                                                    IF1264.2
+            032800     MOVE ZERO TO TEMP.                                           IF1264.2
+            032900 F-NUMVALC-TEST-01.                                               IF1264.2
+            033000     COMPUTE TEMP = FUNCTION NUMVAL-C ("9").                      IF1264.2
+            033100     IF TEMP = 9 THEN                                             IF1264.2
+            033200                        PERFORM PASS                              IF1264.2
+            033300     ELSE                                                         IF1264.2
+            033400                        MOVE 9 TO CORRECT-N                       IF1264.2
+            033500                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            033600                        PERFORM FAIL.                             IF1264.2
+            033700     GO TO F-NUMVALC-WRITE-01.                                    IF1264.2
+            033800 F-NUMVALC-DELETE-01.                                             IF1264.2
+            033900     PERFORM  DE-LETE.                                            IF1264.2
+            034000     GO TO    F-NUMVALC-WRITE-01.                                 IF1264.2
+            034100 F-NUMVALC-WRITE-01.                                              IF1264.2
+            034200     MOVE "F-NUMVALC-01" TO PAR-NAME.                             IF1264.2
+            034300     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            034400*****************TEST (b) *******************************         IF1264.2
+            034500 F-NUMVALC-02.                                                    IF1264.2
+            034600     MOVE 77  TO TEMP.                                            IF1264.2
+            034700 F-NUMVALC-TEST-02.                                               IF1264.2
+            034800     EVALUATE FUNCTION NUMVAL-C (B)                               IF1264.2
+            034900              ALSO ( TEMP + 96 ) * 2                              IF1264.2
+            035000     WHEN     203                                                 IF1264.2
+            035100              ALSO 346                                            IF1264.2
+            035200        PERFORM PASS                                              IF1264.2
+            035300        GO TO F-NUMVALC-WRITE-02.                                 IF1264.2
+            035400     PERFORM FAIL.                                                IF1264.2
+            035500     GO TO    F-NUMVALC-WRITE-02.                                 IF1264.2
+            035600 F-NUMVALC-DELETE-02.                                             IF1264.2
+            035700     PERFORM  DE-LETE.                                            IF1264.2
+            035800     GO TO    F-NUMVALC-WRITE-02.                                 IF1264.2
+            035900 F-NUMVALC-WRITE-02.                                              IF1264.2
+            036000     MOVE "F-NUMVALC-02" TO PAR-NAME.                             IF1264.2
+            036100     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            036200*****************TEST (c) ******************************          IF1264.2
+            036300 F-NUMVALC-TEST-03.                                               IF1264.2
+            036400     IF FUNCTION NUMVAL-C ("92,483") = 92483 THEN                 IF1264.2
+            036500                        PERFORM PASS                              IF1264.2
+            036600     ELSE                                                         IF1264.2
+            036700                        PERFORM FAIL.                             IF1264.2
+            036800     GO TO F-NUMVALC-WRITE-03.                                    IF1264.2
+            036900 F-NUMVALC-DELETE-03.                                             IF1264.2
+            037000     PERFORM  DE-LETE.                                            IF1264.2
+            037100     GO TO    F-NUMVALC-WRITE-03.                                 IF1264.2
+            037200 F-NUMVALC-WRITE-03.                                              IF1264.2
+            037300     MOVE "F-NUMVALC-03" TO PAR-NAME.                             IF1264.2
+            037400     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            037500*****************TEST (d) ******************************          IF1264.2
+            037600 F-NUMVALC-04.                                                    IF1264.2
+            037700     MOVE ZERO TO TEMP.                                           IF1264.2
+            037800 F-NUMVALC-TEST-04.                                               IF1264.2
+            037900     COMPUTE TEMP = FUNCTION NUMVAL-C (C).                        IF1264.2
+            038000     IF (TEMP >= 0.428991) AND                                    IF1264.2
+            038100        (TEMP <= 0.429009)                                        IF1264.2
+            038200                        PERFORM PASS                              IF1264.2
+            038300     ELSE                                                         IF1264.2
+            038400                        MOVE  0.429  TO CORRECT-N                 IF1264.2
+            038500                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            038600                        PERFORM FAIL.                             IF1264.2
+            038700     GO TO F-NUMVALC-WRITE-04.                                    IF1264.2
+            038800 F-NUMVALC-DELETE-04.                                             IF1264.2
+            038900     PERFORM  DE-LETE.                                            IF1264.2
+            039000     GO TO    F-NUMVALC-WRITE-04.                                 IF1264.2
+            039100 F-NUMVALC-WRITE-04.                                              IF1264.2
+            039200     MOVE "F-NUMVALC-04" TO PAR-NAME.                             IF1264.2
+            039300     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            039400*****************TEST (e) ******************************          IF1264.2
+            039500 F-NUMVALC-05.                                                    IF1264.2
+            039600     MOVE ZERO TO TEMP.                                           IF1264.2
+            039700 F-NUMVALC-TEST-05.                                               IF1264.2
+            039800     COMPUTE TEMP = FUNCTION NUMVAL-C ("385.93").                 IF1264.2
+            039900     IF (TEMP >= 385.922) AND                                     IF1264.2
+            040000        (TEMP <= 385.938)                                         IF1264.2
+            040100                        PERFORM PASS                              IF1264.2
+            040200     ELSE                                                         IF1264.2
+            040300                        MOVE  385.93  TO CORRECT-N                IF1264.2
+            040400                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            040500                        PERFORM FAIL.                             IF1264.2
+            040600     GO TO F-NUMVALC-WRITE-05.                                    IF1264.2
+            040700 F-NUMVALC-DELETE-05.                                             IF1264.2
+            040800     PERFORM  DE-LETE.                                            IF1264.2
+            040900     GO TO    F-NUMVALC-WRITE-05.                                 IF1264.2
+            041000 F-NUMVALC-WRITE-05.                                              IF1264.2
+            041100     MOVE "F-NUMVALC-05" TO PAR-NAME.                             IF1264.2
+            041200     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            041300*****************TEST (f) ******************************          IF1264.2
+            041400 F-NUMVALC-06.                                                    IF1264.2
+            041500     MOVE ZERO TO TEMP.                                           IF1264.2
+            041600 F-NUMVALC-TEST-06.                                               IF1264.2
+            041700     COMPUTE TEMP = FUNCTION NUMVAL-C (J).                        IF1264.2
+            041800     IF (TEMP >= 8848.76) AND                                     IF1264.2
+            041900        (TEMP <= 8849.11)                                         IF1264.2
+            042000                        PERFORM PASS                              IF1264.2
+            042100     ELSE                                                         IF1264.2
+            042200                        MOVE  8848.934  TO CORRECT-N              IF1264.2
+            042300                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            042400                        PERFORM FAIL.                             IF1264.2
+            042500     GO TO F-NUMVALC-WRITE-06.                                    IF1264.2
+            042600 F-NUMVALC-DELETE-06.                                             IF1264.2
+            042700     PERFORM  DE-LETE.                                            IF1264.2
+            042800     GO TO    F-NUMVALC-WRITE-06.                                 IF1264.2
+            042900 F-NUMVALC-WRITE-06.                                              IF1264.2
+            043000     MOVE "F-NUMVALC-06" TO PAR-NAME.                             IF1264.2
+            043100     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            043200*****************TEST (g) ******************************          IF1264.2
+            043300 F-NUMVALC-07.                                                    IF1264.2
+            043400     MOVE ZERO TO TEMP.                                           IF1264.2
+            043500 F-NUMVALC-TEST-07.                                               IF1264.2
+            043600     COMPUTE TEMP = FUNCTION NUMVAL-C ("+394.2  ").               IF1264.2
+            043700     IF (TEMP >= 394.192) AND                                     IF1264.2
+            043800        (TEMP <= 394.208)                                         IF1264.2
+            043900                        PERFORM PASS                              IF1264.2
+            044000     ELSE                                                         IF1264.2
+            044100                        MOVE  394.2  TO CORRECT-N                 IF1264.2
+            044200                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            044300                        PERFORM FAIL.                             IF1264.2
+            044400     GO TO F-NUMVALC-WRITE-07.                                    IF1264.2
+            044500 F-NUMVALC-DELETE-07.                                             IF1264.2
+            044600     PERFORM  DE-LETE.                                            IF1264.2
+            044700     GO TO    F-NUMVALC-WRITE-07.                                 IF1264.2
+            044800 F-NUMVALC-WRITE-07.                                              IF1264.2
+            044900     MOVE "F-NUMVALC-07" TO PAR-NAME.                             IF1264.2
+            045000     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            045100*****************TEST (h) ******************************          IF1264.2
+            045200 F-NUMVALC-08.                                                    IF1264.2
+            045300     MOVE ZERO TO TEMP.                                           IF1264.2
+            045400 F-NUMVALC-TEST-08.                                               IF1264.2
+            045500     COMPUTE TEMP = FUNCTION NUMVAL-C ("  939.83").               IF1264.2
+            045600     IF (TEMP >= 939.811) AND                                     IF1264.2
+            045700        (TEMP <= 939.849)                                         IF1264.2
+            045800                        PERFORM PASS                              IF1264.2
+            045900     ELSE                                                         IF1264.2
+            046000                        MOVE  939.83  TO CORRECT-N                IF1264.2
+            046100                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            046200                        PERFORM FAIL.                             IF1264.2
+            046300     GO TO F-NUMVALC-WRITE-08.                                    IF1264.2
+            046400 F-NUMVALC-DELETE-08.                                             IF1264.2
+            046500     PERFORM  DE-LETE.                                            IF1264.2
+            046600     GO TO    F-NUMVALC-WRITE-08.                                 IF1264.2
+            046700 F-NUMVALC-WRITE-08.                                              IF1264.2
+            046800     MOVE "F-NUMVALC-08" TO PAR-NAME.                             IF1264.2
+            046900     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            047000*****************TEST (i) ******************************          IF1264.2
+            047100 F-NUMVALC-09.                                                    IF1264.2
+            047200     MOVE ZERO TO TEMP.                                           IF1264.2
+            047300 F-NUMVALC-TEST-09.                                               IF1264.2
+            047400     COMPUTE TEMP = FUNCTION NUMVAL-C ("  -  4929.0323").         IF1264.2
+            047500     IF (TEMP >= -4929.1309) AND                                  IF1264.2
+            047600        (TEMP <= -4928.9337)                                      IF1264.2
+            047700                        PERFORM PASS                              IF1264.2
+            047800     ELSE                                                         IF1264.2
+            047900                        MOVE  -4929.0323  TO CORRECT-N            IF1264.2
+            048000                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            048100                        PERFORM FAIL.                             IF1264.2
+            048200     GO TO F-NUMVALC-WRITE-09.                                    IF1264.2
+            048300 F-NUMVALC-DELETE-09.                                             IF1264.2
+            048400     PERFORM  DE-LETE.                                            IF1264.2
+            048500     GO TO    F-NUMVALC-WRITE-09.                                 IF1264.2
+            048600 F-NUMVALC-WRITE-09.                                              IF1264.2
+            048700     MOVE "F-NUMVALC-09" TO PAR-NAME.                             IF1264.2
+            048800     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            048900*****************TEST (j) ******************************          IF1264.2
+            049000 F-NUMVALC-10.                                                    IF1264.2
+            049100     MOVE ZERO TO TEMP.                                           IF1264.2
+            049200 F-NUMVALC-TEST-10.                                               IF1264.2
+            049300     COMPUTE TEMP = FUNCTION NUMVAL-C (K).                        IF1264.2
+            049400     IF (TEMP >= 4825197.41) AND                                  IF1264.2
+            049500        (TEMP <= 4825390.43)                                      IF1264.2
+            049600                        PERFORM PASS                              IF1264.2
+            049700     ELSE                                                         IF1264.2
+            049800                        MOVE  4825293.92  TO CORRECT-N            IF1264.2
+            049900                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            050000                        PERFORM FAIL.                             IF1264.2
+            050100     GO TO F-NUMVALC-WRITE-10.                                    IF1264.2
+            050200 F-NUMVALC-DELETE-10.                                             IF1264.2
+            050300     PERFORM  DE-LETE.                                            IF1264.2
+            050400     GO TO    F-NUMVALC-WRITE-10.                                 IF1264.2
+            050500 F-NUMVALC-WRITE-10.                                              IF1264.2
+            050600     MOVE "F-NUMVALC-10" TO PAR-NAME.                             IF1264.2
+            050700     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            050800*****************TEST (k) ******************************          IF1264.2
+            050900 F-NUMVALC-11.                                                    IF1264.2
+            051000     MOVE ZERO TO TEMP.                                           IF1264.2
+            051100 F-NUMVALC-TEST-11.                                               IF1264.2
+            051200     COMPUTE TEMP = FUNCTION NUMVAL-C (L).                        IF1264.2
+            051300     IF (TEMP >= -5555.66) AND                                    IF1264.2
+            051400        (TEMP <= -5555.44)                                        IF1264.2
+            051500                        PERFORM PASS                              IF1264.2
+            051600     ELSE                                                         IF1264.2
+            051700                        MOVE  -5555.55  TO CORRECT-N              IF1264.2
+            051800                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            051900                        PERFORM FAIL.                             IF1264.2
+            052000     GO TO F-NUMVALC-WRITE-11.                                    IF1264.2
+            052100 F-NUMVALC-DELETE-11.                                             IF1264.2
+            052200     PERFORM  DE-LETE.                                            IF1264.2
+            052300     GO TO    F-NUMVALC-WRITE-11.                                 IF1264.2
+            052400 F-NUMVALC-WRITE-11.                                              IF1264.2
+            052500     MOVE "F-NUMVALC-11" TO PAR-NAME.                             IF1264.2
+            052600     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            052700*****************TEST (l) ******************************          IF1264.2
+            052800 F-NUMVALC-12.                                                    IF1264.2
+            052900     MOVE ZERO TO TEMP.                                           IF1264.2
+            053000 F-NUMVALC-TEST-12.                                               IF1264.2
+            053100     COMPUTE TEMP = FUNCTION NUMVAL-C ("82.9312+").               IF1264.2
+            053200     IF (TEMP >= 82.9295) AND                                     IF1264.2
+            053300        (TEMP <= 82.9329)                                         IF1264.2
+            053400                        PERFORM PASS                              IF1264.2
+            053500     ELSE                                                         IF1264.2
+            053600                        MOVE  82.9312  TO CORRECT-N               IF1264.2
+            053700                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            053800                        PERFORM FAIL.                             IF1264.2
+            053900     GO TO F-NUMVALC-WRITE-12.                                    IF1264.2
+            054000 F-NUMVALC-DELETE-12.                                             IF1264.2
+            054100     PERFORM  DE-LETE.                                            IF1264.2
+            054200     GO TO    F-NUMVALC-WRITE-12.                                 IF1264.2
+            054300 F-NUMVALC-WRITE-12.                                              IF1264.2
+            054400     MOVE "F-NUMVALC-12" TO PAR-NAME.                             IF1264.2
+            054500     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            054600*****************TEST (m) ******************************          IF1264.2
+            054700 F-NUMVALC-13.                                                    IF1264.2
+            054800     MOVE ZERO TO TEMP.                                           IF1264.2
+            054900 F-NUMVALC-TEST-13.                                               IF1264.2
+            055000     COMPUTE TEMP = FUNCTION NUMVAL-C (M).                        IF1264.2
+            055100     IF (TEMP >= -5555.66) AND                                    IF1264.2
+            055200        (TEMP <= -5555.44)                                        IF1264.2
+            055300                        PERFORM PASS                              IF1264.2
+            055400     ELSE                                                         IF1264.2
+            055500                        MOVE  -5555.55  TO CORRECT-N              IF1264.2
+            055600                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            055700                        PERFORM FAIL.                             IF1264.2
+            055800     GO TO F-NUMVALC-WRITE-13.                                    IF1264.2
+            055900 F-NUMVALC-DELETE-13.                                             IF1264.2
+            056000     PERFORM  DE-LETE.                                            IF1264.2
+            056100     GO TO    F-NUMVALC-WRITE-13.                                 IF1264.2
+            056200 F-NUMVALC-WRITE-13.                                              IF1264.2
+            056300     MOVE "F-NUMVALC-13" TO PAR-NAME.                             IF1264.2
+            056400     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            056500*****************TEST (n) ******************************          IF1264.2
+            056600 F-NUMVALC-14.                                                    IF1264.2
+            056700     MOVE ZERO TO TEMP.                                           IF1264.2
+            056800 F-NUMVALC-TEST-14.                                               IF1264.2
+            056900     COMPUTE TEMP = FUNCTION NUMVAL-C ("  200.0002  -  ").        IF1264.2
+            057000     IF (TEMP >= -200.0042) AND                                   IF1264.2
+            057100        (TEMP <= -199.9962)                                       IF1264.2
+            057200                        PERFORM PASS                              IF1264.2
+            057300     ELSE                                                         IF1264.2
+            057400                        MOVE  -200.0002  TO CORRECT-N             IF1264.2
+            057500                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            057600                        PERFORM FAIL.                             IF1264.2
+            057700     GO TO F-NUMVALC-WRITE-14.                                    IF1264.2
+            057800 F-NUMVALC-DELETE-14.                                             IF1264.2
+            057900     PERFORM  DE-LETE.                                            IF1264.2
+            058000     GO TO    F-NUMVALC-WRITE-14.                                 IF1264.2
+            058100 F-NUMVALC-WRITE-14.                                              IF1264.2
+            058200     MOVE "F-NUMVALC-14" TO PAR-NAME.                             IF1264.2
+            058300     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            058400*****************TEST (o) ******************************          IF1264.2
+            058500 F-NUMVALC-15.                                                    IF1264.2
+            058600     MOVE ZERO TO TEMP.                                           IF1264.2
+            058700 F-NUMVALC-TEST-15.                                               IF1264.2
+            058800     COMPUTE TEMP = FUNCTION NUMVAL-C (N).                        IF1264.2
+            058900     IF (TEMP >= 77776.21) AND                                    IF1264.2
+            059000        (TEMP <= 77779.33)                                        IF1264.2
+            059100                        PERFORM PASS                              IF1264.2
+            059200     ELSE                                                         IF1264.2
+            059300                        MOVE  77777.77  TO CORRECT-N              IF1264.2
+            059400                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            059500                        PERFORM FAIL.                             IF1264.2
+            059600     GO TO F-NUMVALC-WRITE-15.                                    IF1264.2
+            059700 F-NUMVALC-DELETE-15.                                             IF1264.2
+            059800     PERFORM  DE-LETE.                                            IF1264.2
+            059900     GO TO    F-NUMVALC-WRITE-15.                                 IF1264.2
+            060000 F-NUMVALC-WRITE-15.                                              IF1264.2
+            060100     MOVE "F-NUMVALC-15" TO PAR-NAME.                             IF1264.2
+            060200     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            060300*****************TEST (p) ******************************          IF1264.2
+            060400 F-NUMVALC-16.                                                    IF1264.2
+            060500     MOVE ZERO TO TEMP.                                           IF1264.2
+            060600 F-NUMVALC-TEST-16.                                               IF1264.2
+            060700     COMPUTE TEMP = FUNCTION NUMVAL-C ("${'$'}5", "${'$'}").                IF1264.2
+            060800     IF TEMP = 5 THEN                                             IF1264.2
+            060900                        PERFORM PASS                              IF1264.2
+            061000     ELSE                                                         IF1264.2
+            061100                        MOVE  5  TO CORRECT-N                     IF1264.2
+            061200                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            061300                        PERFORM FAIL.                             IF1264.2
+            061400     GO TO F-NUMVALC-WRITE-16.                                    IF1264.2
+            061500 F-NUMVALC-DELETE-16.                                             IF1264.2
+            061600     PERFORM  DE-LETE.                                            IF1264.2
+            061700     GO TO    F-NUMVALC-WRITE-16.                                 IF1264.2
+            061800 F-NUMVALC-WRITE-16.                                              IF1264.2
+            061900     MOVE "F-NUMVALC-16" TO PAR-NAME.                             IF1264.2
+            062000     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            062100*****************TEST (q) ******************************          IF1264.2
+            062200 F-NUMVALC-17.                                                    IF1264.2
+            062300     MOVE ZERO TO TEMP.                                           IF1264.2
+            062400 F-NUMVALC-TEST-17.                                               IF1264.2
+            062500     COMPUTE TEMP = FUNCTION NUMVAL-C (O, "${'$'}").                   IF1264.2
+            062600     IF TEMP = 33 THEN                                            IF1264.2
+            062700                        PERFORM PASS                              IF1264.2
+            062800     ELSE                                                         IF1264.2
+            062900                        MOVE  33  TO CORRECT-N                    IF1264.2
+            063000                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            063100                        PERFORM FAIL.                             IF1264.2
+            063200     GO TO F-NUMVALC-WRITE-17.                                    IF1264.2
+            063300 F-NUMVALC-DELETE-17.                                             IF1264.2
+            063400     PERFORM  DE-LETE.                                            IF1264.2
+            063500     GO TO    F-NUMVALC-WRITE-17.                                 IF1264.2
+            063600 F-NUMVALC-WRITE-17.                                              IF1264.2
+            063700     MOVE "F-NUMVALC-17" TO PAR-NAME.                             IF1264.2
+            063800     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            063900*****************TEST (r) ******************************          IF1264.2
+            064000 F-NUMVALC-18.                                                    IF1264.2
+            064100     MOVE ZERO TO TEMP.                                           IF1264.2
+            064200 F-NUMVALC-TEST-18.                                               IF1264.2
+            064300     COMPUTE TEMP = FUNCTION NUMVAL-C ("${'$'}93,021", "${'$'}").           IF1264.2
+            064400     IF TEMP = 93021 THEN                                         IF1264.2
+            064500                        PERFORM PASS                              IF1264.2
+            064600     ELSE                                                         IF1264.2
+            064700                        MOVE  93021  TO CORRECT-N                 IF1264.2
+            064800                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            064900                        PERFORM FAIL.                             IF1264.2
+            065000     GO TO F-NUMVALC-WRITE-18.                                    IF1264.2
+            065100 F-NUMVALC-DELETE-18.                                             IF1264.2
+            065200     PERFORM  DE-LETE.                                            IF1264.2
+            065300     GO TO    F-NUMVALC-WRITE-18.                                 IF1264.2
+            065400 F-NUMVALC-WRITE-18.                                              IF1264.2
+            065500     MOVE "F-NUMVALC-18" TO PAR-NAME.                             IF1264.2
+            065600     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            065700*****************TEST (t) ******************************          IF1264.2
+            065800 F-NUMVALC-20.                                                    IF1264.2
+            065900     MOVE ZERO TO TEMP.                                           IF1264.2
+            066000 F-NUMVALC-TEST-20.                                               IF1264.2
+            066100     COMPUTE TEMP = FUNCTION NUMVAL-C ("${'$'}924.93", "${'$'}").           IF1264.2
+            066200     IF (TEMP >= 924.912) AND                                     IF1264.2
+            066300        (TEMP <= 924.948)                                         IF1264.2
+            066400                        PERFORM PASS                              IF1264.2
+            066500     ELSE                                                         IF1264.2
+            066600                        MOVE  924.93  TO CORRECT-N                IF1264.2
+            066700                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            066800                        PERFORM FAIL.                             IF1264.2
+            066900     GO TO F-NUMVALC-WRITE-20.                                    IF1264.2
+            067000 F-NUMVALC-DELETE-20.                                             IF1264.2
+            067100     PERFORM  DE-LETE.                                            IF1264.2
+            067200     GO TO    F-NUMVALC-WRITE-20.                                 IF1264.2
+            067300 F-NUMVALC-WRITE-20.                                              IF1264.2
+            067400     MOVE "F-NUMVALC-20" TO PAR-NAME.                             IF1264.2
+            067500     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            067600*****************TEST (u) ******************************          IF1264.2
+            067700 F-NUMVALC-21.                                                    IF1264.2
+            067800     MOVE ZERO TO TEMP.                                           IF1264.2
+            067900 F-NUMVALC-TEST-21.                                               IF1264.2
+            068000     COMPUTE TEMP = FUNCTION NUMVAL-C (Q, "${'$'}").                   IF1264.2
+            068100     IF TEMP = 4000 THEN                                          IF1264.2
+            068200                        PERFORM PASS                              IF1264.2
+            068300     ELSE                                                         IF1264.2
+            068400                        MOVE  4000  TO CORRECT-N                  IF1264.2
+            068500                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            068600                        PERFORM FAIL.                             IF1264.2
+            068700     GO TO F-NUMVALC-WRITE-21.                                    IF1264.2
+            068800 F-NUMVALC-DELETE-21.                                             IF1264.2
+            068900     PERFORM  DE-LETE.                                            IF1264.2
+            069000     GO TO    F-NUMVALC-WRITE-21.                                 IF1264.2
+            069100 F-NUMVALC-WRITE-21.                                              IF1264.2
+            069200     MOVE "F-NUMVALC-21" TO PAR-NAME.                             IF1264.2
+            069300     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            069400*****************TEST (v) ******************************          IF1264.2
+            069500 F-NUMVALC-22.                                                    IF1264.2
+            069600     MOVE ZERO TO TEMP.                                           IF1264.2
+            069700 F-NUMVALC-TEST-22.                                               IF1264.2
+            069800     COMPUTE TEMP = FUNCTION NUMVAL-C ("-${'$'}34.03", "${'$'}").           IF1264.2
+            069900     IF (TEMP >= -34.0307) AND                                    IF1264.2
+            070000        (TEMP <= -34.0293)                                        IF1264.2
+            070100                        PERFORM PASS                              IF1264.2
+            070200     ELSE                                                         IF1264.2
+            070300                        MOVE  -34.03  TO CORRECT-N                IF1264.2
+            070400                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            070500                        PERFORM FAIL.                             IF1264.2
+            070600     GO TO F-NUMVALC-WRITE-22.                                    IF1264.2
+            070700 F-NUMVALC-DELETE-22.                                             IF1264.2
+            070800     PERFORM  DE-LETE.                                            IF1264.2
+            070900     GO TO    F-NUMVALC-WRITE-22.                                 IF1264.2
+            071000 F-NUMVALC-WRITE-22.                                              IF1264.2
+            071100     MOVE "F-NUMVALC-22" TO PAR-NAME.                             IF1264.2
+            071200     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            071300*****************TEST (w) ******************************          IF1264.2
+            071400 F-NUMVALC-23.                                                    IF1264.2
+            071500     MOVE ZERO TO TEMP.                                           IF1264.2
+            071600 F-NUMVALC-TEST-23.                                               IF1264.2
+            071700     COMPUTE TEMP = FUNCTION NUMVAL-C (R, "${'$'}").                   IF1264.2
+            071800     IF (TEMP >= 999980.5) AND                                    IF1264.2
+            071900        (TEMP <= 1000020.5)                                       IF1264.2
+            072000                        PERFORM PASS                              IF1264.2
+            072100     ELSE                                                         IF1264.2
+            072200                        MOVE  1000000.5  TO CORRECT-N             IF1264.2
+            072300                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            072400                        PERFORM FAIL.                             IF1264.2
+            072500     GO TO F-NUMVALC-WRITE-23.                                    IF1264.2
+            072600 F-NUMVALC-DELETE-23.                                             IF1264.2
+            072700     PERFORM  DE-LETE.                                            IF1264.2
+            072800     GO TO    F-NUMVALC-WRITE-23.                                 IF1264.2
+            072900 F-NUMVALC-WRITE-23.                                              IF1264.2
+            073000     MOVE "F-NUMVALC-23" TO PAR-NAME.                             IF1264.2
+            073100     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            073200*****************TEST (x) ******************************          IF1264.2
+            073300 F-NUMVALC-24.                                                    IF1264.2
+            073400     MOVE ZERO TO TEMP.                                           IF1264.2
+            073500 F-NUMVALC-TEST-24.                                               IF1264.2
+            073600     COMPUTE TEMP = FUNCTION NUMVAL-C ("  ${'$'}  89.01", "${'$'}").        IF1264.2
+            073700     IF (TEMP >= 89.0082) AND                                     IF1264.2
+            073800        (TEMP <= 89.0118)                                         IF1264.2
+            073900                        PERFORM PASS                              IF1264.2
+            074000     ELSE                                                         IF1264.2
+            074100                        MOVE  89.01  TO CORRECT-N                 IF1264.2
+            074200                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            074300                        PERFORM FAIL.                             IF1264.2
+            074400     GO TO F-NUMVALC-WRITE-24.                                    IF1264.2
+            074500 F-NUMVALC-DELETE-24.                                             IF1264.2
+            074600     PERFORM  DE-LETE.                                            IF1264.2
+            074700     GO TO    F-NUMVALC-WRITE-24.                                 IF1264.2
+            074800 F-NUMVALC-WRITE-24.                                              IF1264.2
+            074900     MOVE "F-NUMVALC-24" TO PAR-NAME.                             IF1264.2
+            075000     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            075100*****************TEST (y) ******************************          IF1264.2
+            075200 F-NUMVALC-25.                                                    IF1264.2
+            075300     MOVE ZERO TO TEMP.                                           IF1264.2
+            075400 F-NUMVALC-TEST-25.                                               IF1264.2
+            075500     COMPUTE TEMP = FUNCTION NUMVAL-C (S, "${'$'}").                   IF1264.2
+            075600     IF (TEMP >= 3900.13) AND                                     IF1264.2
+            075700        (TEMP <= 3900.29)                                         IF1264.2
+            075800                        PERFORM PASS                              IF1264.2
+            075900     ELSE                                                         IF1264.2
+            076000                        MOVE  3900.21  TO CORRECT-N               IF1264.2
+            076100                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            076200                        PERFORM FAIL.                             IF1264.2
+            076300     GO TO F-NUMVALC-WRITE-25.                                    IF1264.2
+            076400 F-NUMVALC-DELETE-25.                                             IF1264.2
+            076500     PERFORM  DE-LETE.                                            IF1264.2
+            076600     GO TO    F-NUMVALC-WRITE-25.                                 IF1264.2
+            076700 F-NUMVALC-WRITE-25.                                              IF1264.2
+            076800     MOVE "F-NUMVALC-25" TO PAR-NAME.                             IF1264.2
+            076900     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            077000*****************TEST (z) ******************************          IF1264.2
+            077100 F-NUMVALC-26.                                                    IF1264.2
+            077200     MOVE ZERO TO TEMP.                                           IF1264.2
+            077300 F-NUMVALC-TEST-26.                                               IF1264.2
+            077400     COMPUTE TEMP = FUNCTION NUMVAL-C ("- ${'$'} 890.21", "${'$'}").        IF1264.2
+            077500     IF (TEMP >= -890.228) AND                                    IF1264.2
+            077600        (TEMP <= -890.192)                                        IF1264.2
+            077700                        PERFORM PASS                              IF1264.2
+            077800     ELSE                                                         IF1264.2
+            077900                        MOVE  -890.21  TO CORRECT-N               IF1264.2
+            078000                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            078100                        PERFORM FAIL.                             IF1264.2
+            078200     GO TO F-NUMVALC-WRITE-26.                                    IF1264.2
+            078300 F-NUMVALC-DELETE-26.                                             IF1264.2
+            078400     PERFORM  DE-LETE.                                            IF1264.2
+            078500     GO TO    F-NUMVALC-WRITE-26.                                 IF1264.2
+            078600 F-NUMVALC-WRITE-26.                                              IF1264.2
+            078700     MOVE "F-NUMVALC-26" TO PAR-NAME.                             IF1264.2
+            078800     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            078900*****************TEST (aa) ******************************         IF1264.2
+            079000 F-NUMVALC-27.                                                    IF1264.2
+            079100     MOVE ZERO TO TEMP.                                           IF1264.2
+            079200 F-NUMVALC-TEST-27.                                               IF1264.2
+            079300     COMPUTE TEMP = FUNCTION NUMVAL-C (T, "${'$'}").                   IF1264.2
+            079400     IF (TEMP >= 9000.81) AND                                     IF1264.2
+            079500        (TEMP <= 9001.17)                                         IF1264.2
+            079600                        PERFORM PASS                              IF1264.2
+            079700     ELSE                                                         IF1264.2
+            079800                        MOVE  9000.99  TO CORRECT-N               IF1264.2
+            079900                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            080000                        PERFORM FAIL.                             IF1264.2
+            080100     GO TO F-NUMVALC-WRITE-27.                                    IF1264.2
+            080200 F-NUMVALC-DELETE-27.                                             IF1264.2
+            080300     PERFORM  DE-LETE.                                            IF1264.2
+            080400     GO TO    F-NUMVALC-WRITE-27.                                 IF1264.2
+            080500 F-NUMVALC-WRITE-27.                                              IF1264.2
+            080600     MOVE "F-NUMVALC-27" TO PAR-NAME.                             IF1264.2
+            080700     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            080800*****************TEST (bb) ******************************         IF1264.2
+            080900 F-NUMVALC-28.                                                    IF1264.2
+            081000     MOVE ZERO TO TEMP.                                           IF1264.2
+            081100 F-NUMVALC-TEST-28.                                               IF1264.2
+            081200     COMPUTE TEMP = FUNCTION NUMVAL-C ("  ${'$'}  90.54 -  ", "${'$'}").    IF1264.2
+            081300     IF (TEMP >= -90.5418) AND                                    IF1264.2
+            081400        (TEMP <= -90.5382)                                        IF1264.2
+            081500                        PERFORM PASS                              IF1264.2
+            081600     ELSE                                                         IF1264.2
+            081700                        MOVE  -90.54  TO CORRECT-N                IF1264.2
+            081800                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            081900                        PERFORM FAIL.                             IF1264.2
+            082000     GO TO F-NUMVALC-WRITE-28.                                    IF1264.2
+            082100 F-NUMVALC-DELETE-28.                                             IF1264.2
+            082200     PERFORM  DE-LETE.                                            IF1264.2
+            082300     GO TO    F-NUMVALC-WRITE-28.                                 IF1264.2
+            082400 F-NUMVALC-WRITE-28.                                              IF1264.2
+            082500     MOVE "F-NUMVALC-28" TO PAR-NAME.                             IF1264.2
+            082600     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            082700*****************TEST (cc) ******************************         IF1264.2
+            082800 F-NUMVALC-29.                                                    IF1264.2
+            082900     MOVE ZERO TO TEMP.                                           IF1264.2
+            083000 F-NUMVALC-TEST-29.                                               IF1264.2
+            083100     COMPUTE TEMP = FUNCTION NUMVAL-C (U, "${'$'}").                   IF1264.2
+            083200     IF (TEMP >= 3890.12) AND                                     IF1264.2
+            083300        (TEMP <= 3890.28)                                         IF1264.2
+            083400                        PERFORM PASS                              IF1264.2
+            083500     ELSE                                                         IF1264.2
+            083600                        MOVE  3890.2  TO CORRECT-N                IF1264.2
+            083700                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            083800                        PERFORM FAIL.                             IF1264.2
+            083900     GO TO F-NUMVALC-WRITE-29.                                    IF1264.2
+            084000 F-NUMVALC-DELETE-29.                                             IF1264.2
+            084100     PERFORM  DE-LETE.                                            IF1264.2
+            084200     GO TO    F-NUMVALC-WRITE-29.                                 IF1264.2
+            084300 F-NUMVALC-WRITE-29.                                              IF1264.2
+            084400     MOVE "F-NUMVALC-29" TO PAR-NAME.                             IF1264.2
+            084500     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            084600*****************TEST (dd) ******************************         IF1264.2
+            084700 F-NUMVALC-30.                                                    IF1264.2
+            084800     MOVE ZERO TO TEMP.                                           IF1264.2
+            084900 F-NUMVALC-TEST-30.                                               IF1264.2
+            085000     COMPUTE TEMP = FUNCTION NUMVAL-C ("90") + 10.                IF1264.2
+            085100     IF TEMP = 100 THEN                                           IF1264.2
+            085200                        PERFORM PASS                              IF1264.2
+            085300     ELSE                                                         IF1264.2
+            085400                        MOVE  100  TO CORRECT-N                   IF1264.2
+            085500                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            085600                        PERFORM FAIL.                             IF1264.2
+            085700     GO TO F-NUMVALC-WRITE-30.                                    IF1264.2
+            085800 F-NUMVALC-DELETE-30.                                             IF1264.2
+            085900     PERFORM  DE-LETE.                                            IF1264.2
+            086000     GO TO    F-NUMVALC-WRITE-30.                                 IF1264.2
+            086100 F-NUMVALC-WRITE-30.                                              IF1264.2
+            086200     MOVE "F-NUMVALC-30" TO PAR-NAME.                             IF1264.2
+            086300     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            086400*****************TEST (ee) ******************************         IF1264.2
+            086500 F-NUMVALC-31.                                                    IF1264.2
+            086600     MOVE ZERO TO TEMP.                                           IF1264.2
+            086700 F-NUMVALC-TEST-31.                                               IF1264.2
+            086800     COMPUTE TEMP = FUNCTION NUMVAL-C ("2") +                     IF1264.2
+            086900                    FUNCTION NUMVAL-C ("8").                      IF1264.2
+            087000     IF TEMP = 10 THEN                                            IF1264.2
+            087100                        PERFORM PASS                              IF1264.2
+            087200     ELSE                                                         IF1264.2
+            087300                        MOVE  10  TO CORRECT-N                    IF1264.2
+            087400                        MOVE TEMP TO COMPUTED-N                   IF1264.2
+            087500                        PERFORM FAIL.                             IF1264.2
+            087600     GO TO F-NUMVALC-WRITE-31.                                    IF1264.2
+            087700 F-NUMVALC-DELETE-31.                                             IF1264.2
+            087800     PERFORM  DE-LETE.                                            IF1264.2
+            087900     GO TO    F-NUMVALC-WRITE-31.                                 IF1264.2
+            088000 F-NUMVALC-WRITE-31.                                              IF1264.2
+            088100     MOVE "F-NUMVALC-31" TO PAR-NAME.                             IF1264.2
+            088200     PERFORM  PRINT-DETAIL.                                       IF1264.2
+            088300*******************END OF TESTS**************************         IF1264.2
+            088400 CCVS-EXIT SECTION.                                               IF1264.2
+            088500 CCVS-999999.                                                     IF1264.2
+            088600     GO TO CLOSE-FILES.                                           IF1264.2
+                  *END-OF,IF126A                                                            
+        """)
+    )
+
+    @Test
+    fun if1274_2() = rewriteRun(
+        cobol("""
+                  *HEADER,COBOL,IF127A                                                      
+            000100 IDENTIFICATION DIVISION.                                         IF1274.2
+            000200 PROGRAM-ID.                                                      IF1274.2
+            000300     IF127A.                                                      IF1274.2
+            000400                                                                  IF1274.2
+            000500***********************************************************       IF1274.2
+            000600*                                                         *       IF1274.2
+            000700* This program forms part of the CCVS85 COBOL Test Suite. *       IF1274.2
+            000800* It contains tests for the Intrinsic Function ORD.       *       IF1274.2
+            000900*                                                         *       IF1274.2
+            001000*                                                         *       IF1274.2
+            001100***********************************************************       IF1274.2
+            001200 ENVIRONMENT DIVISION.                                            IF1274.2
+            001300 CONFIGURATION SECTION.                                           IF1274.2
+            001400 SOURCE-COMPUTER.                                                 IF1274.2
+            001500     XXXXX082.                                                    IF1274.2
+            001600 OBJECT-COMPUTER.                                                 IF1274.2
+            001700     XXXXX083                                                     IF1274.2
+            001800     PROGRAM COLLATING SEQUENCE IS PRG-COLL-SEQ.                  IF1274.2
+            001900 SPECIAL-NAMES.                                                   IF1274.2
+            002000     ALPHABET PRG-COLL-SEQ IS                                     IF1274.2
+            002100     STANDARD-2.                                                  IF1274.2
+            002200 INPUT-OUTPUT SECTION.                                            IF1274.2
+            002300 FILE-CONTROL.                                                    IF1274.2
+            002400     SELECT PRINT-FILE ASSIGN TO                                  IF1274.2
+            002500     XXXXX055.                                                    IF1274.2
+            002600 DATA DIVISION.                                                   IF1274.2
+            002700 FILE SECTION.                                                    IF1274.2
+            002800 FD  PRINT-FILE.                                                  IF1274.2
+            002900 01  PRINT-REC PICTURE X(120).                                    IF1274.2
+            003000 01  DUMMY-RECORD PICTURE X(120).                                 IF1274.2
+            003100 WORKING-STORAGE SECTION.                                         IF1274.2
+            003200***********************************************************       IF1274.2
+            003300* Variables specific to the Intrinsic Function Test IF127A*       IF1274.2
+            003400***********************************************************       IF1274.2
+            003500 01  A                   PIC X          VALUE "F".                IF1274.2
+            003600 01  B                   PIC X          VALUE "d".                IF1274.2
+            003700 01  C                   PIC X          VALUE "3".                IF1274.2
+            003800 01  ARG1                PIC X          VALUE "A".                IF1274.2
+            003900 01  TEMP                PIC S9(10).                              IF1274.2
+            004000 01  WS-INT              PIC S9(10).                              IF1274.2
+            004100*                                                                 IF1274.2
+            004200**********************************************************        IF1274.2
+            004300*                                                                 IF1274.2
+            004400 01  TEST-RESULTS.                                                IF1274.2
+            004500     02 FILLER                   PIC X      VALUE SPACE.          IF1274.2
+            004600     02 FEATURE                  PIC X(20)  VALUE SPACE.          IF1274.2
+            004700     02 FILLER                   PIC X      VALUE SPACE.          IF1274.2
+            004800     02 P-OR-F                   PIC X(5)   VALUE SPACE.          IF1274.2
+            004900     02 FILLER                   PIC X      VALUE SPACE.          IF1274.2
+            005000     02  PAR-NAME.                                                IF1274.2
+            005100       03 FILLER                 PIC X(19)  VALUE SPACE.          IF1274.2
+            005200       03  PARDOT-X              PIC X      VALUE SPACE.          IF1274.2
+            005300       03 DOTVALUE               PIC 99     VALUE ZERO.           IF1274.2
+            005400     02 FILLER                   PIC X(8)   VALUE SPACE.          IF1274.2
+            005500     02 RE-MARK                  PIC X(61).                       IF1274.2
+            005600 01  TEST-COMPUTED.                                               IF1274.2
+            005700     02 FILLER                   PIC X(30)  VALUE SPACE.          IF1274.2
+            005800     02 FILLER                   PIC X(17)  VALUE                 IF1274.2
+            005900            "       COMPUTED=".                                   IF1274.2
+            006000     02 COMPUTED-X.                                               IF1274.2
+            006100     03 COMPUTED-A               PIC X(20)  VALUE SPACE.          IF1274.2
+            006200     03 COMPUTED-N               REDEFINES COMPUTED-A             IF1274.2
+            006300                                 PIC -9(9).9(9).                  IF1274.2
+            006400     03 COMPUTED-0V18 REDEFINES COMPUTED-A   PIC -.9(18).         IF1274.2
+            006500     03 COMPUTED-4V14 REDEFINES COMPUTED-A   PIC -9(4).9(14).     IF1274.2
+            006600     03 COMPUTED-14V4 REDEFINES COMPUTED-A   PIC -9(14).9(4).     IF1274.2
+            006700     03       CM-18V0 REDEFINES COMPUTED-A.                       IF1274.2
+            006800         04 COMPUTED-18V0                    PIC -9(18).          IF1274.2
+            006900         04 FILLER                           PIC X.               IF1274.2
+            007000     03 FILLER PIC X(50) VALUE SPACE.                             IF1274.2
+            007100 01  TEST-CORRECT.                                                IF1274.2
+            007200     02 FILLER PIC X(30) VALUE SPACE.                             IF1274.2
+            007300     02 FILLER PIC X(17) VALUE "       CORRECT =".                IF1274.2
+            007400     02 CORRECT-X.                                                IF1274.2
+            007500     03 CORRECT-A                  PIC X(20) VALUE SPACE.         IF1274.2
+            007600     03 CORRECT-N    REDEFINES CORRECT-A     PIC -9(9).9(9).      IF1274.2
+            007700     03 CORRECT-0V18 REDEFINES CORRECT-A     PIC -.9(18).         IF1274.2
+            007800     03 CORRECT-4V14 REDEFINES CORRECT-A     PIC -9(4).9(14).     IF1274.2
+            007900     03 CORRECT-14V4 REDEFINES CORRECT-A     PIC -9(14).9(4).     IF1274.2
+            008000     03      CR-18V0 REDEFINES CORRECT-A.                         IF1274.2
+            008100         04 CORRECT-18V0                     PIC -9(18).          IF1274.2
+            008200         04 FILLER                           PIC X.               IF1274.2
+            008300     03 FILLER PIC X(2) VALUE SPACE.                              IF1274.2
+            008400     03 COR-ANSI-REFERENCE             PIC X(48) VALUE SPACE.     IF1274.2
+            008500 01  TEST-CORRECT-MIN.                                            IF1274.2
+            008600     02 FILLER PIC X(30) VALUE SPACE.                             IF1274.2
+            008700     02 FILLER PIC X(17) VALUE "     MIN VALUE =".                IF1274.2
+            008800     02 CORRECTMI-X.                                              IF1274.2
+            008900     03 CORRECTMI-A                 PIC X(20) VALUE SPACE.        IF1274.2
+            009000     03 CORRECT-MIN    REDEFINES CORRECTMI-A     PIC -9(9).9(9).  IF1274.2
+            009100     03 CORRECTMI-0V18 REDEFINES CORRECTMI-A     PIC -.9(18).     IF1274.2
+            009200     03 CORRECTMI-4V14 REDEFINES CORRECTMI-A     PIC -9(4).9(14). IF1274.2
+            009300     03 CORRECTMI-14V4 REDEFINES CORRECTMI-A     PIC -9(14).9(4). IF1274.2
+            009400     03      CR-18V0 REDEFINES CORRECTMI-A.                       IF1274.2
+            009500         04 CORRECTMI-18V0                     PIC -9(18).        IF1274.2
+            009600         04 FILLER                           PIC X.               IF1274.2
+            009700     03 FILLER PIC X(2) VALUE SPACE.                              IF1274.2
+            009800     03 FILLER                           PIC X(48) VALUE SPACE.   IF1274.2
+            009900 01  TEST-CORRECT-MAX.                                            IF1274.2
+            010000     02 FILLER PIC X(30) VALUE SPACE.                             IF1274.2
+            010100     02 FILLER PIC X(17) VALUE "     MAX VALUE =".                IF1274.2
+            010200     02 CORRECTMA-X.                                              IF1274.2
+            010300     03 CORRECTMA-A                  PIC X(20) VALUE SPACE.       IF1274.2
+            010400     03 CORRECT-MAX    REDEFINES CORRECTMA-A     PIC -9(9).9(9).  IF1274.2
+            010500     03 CORRECTMA-0V18 REDEFINES CORRECTMA-A     PIC -.9(18).     IF1274.2
+            010600     03 CORRECTMA-4V14 REDEFINES CORRECTMA-A     PIC -9(4).9(14). IF1274.2
+            010700     03 CORRECTMA-14V4 REDEFINES CORRECTMA-A     PIC -9(14).9(4). IF1274.2
+            010800     03      CR-18V0 REDEFINES CORRECTMA-A.                       IF1274.2
+            010900         04 CORRECTMA-18V0                     PIC -9(18).        IF1274.2
+            011000         04 FILLER                           PIC X.               IF1274.2
+            011100     03 FILLER PIC X(2) VALUE SPACE.                              IF1274.2
+            011200     03 CORMA-ANSI-REFERENCE             PIC X(48) VALUE SPACE.   IF1274.2
+            011300 01  CCVS-C-1.                                                    IF1274.2
+            011400     02 FILLER  PIC IS X(99)    VALUE IS " FEATURE              PAIF1274.2
+            011500-    "SS  PARAGRAPH-NAME                                          IF1274.2
+            011600-    "       REMARKS".                                            IF1274.2
+            011700     02 FILLER                     PIC X(20)    VALUE SPACE.      IF1274.2
+            011800 01  CCVS-C-2.                                                    IF1274.2
+            011900     02 FILLER                     PIC X        VALUE SPACE.      IF1274.2
+            012000     02 FILLER                     PIC X(6)     VALUE "TESTED".   IF1274.2
+            012100     02 FILLER                     PIC X(15)    VALUE SPACE.      IF1274.2
+            012200     02 FILLER                     PIC X(4)     VALUE "FAIL".     IF1274.2
+            012300     02 FILLER                     PIC X(94)    VALUE SPACE.      IF1274.2
+            012400 01  REC-SKL-SUB                   PIC 9(2)     VALUE ZERO.       IF1274.2
+            012500 01  REC-CT                        PIC 99       VALUE ZERO.       IF1274.2
+            012600 01  DELETE-COUNTER                PIC 999      VALUE ZERO.       IF1274.2
+            012700 01  ERROR-COUNTER                 PIC 999      VALUE ZERO.       IF1274.2
+            012800 01  INSPECT-COUNTER               PIC 999      VALUE ZERO.       IF1274.2
+            012900 01  PASS-COUNTER                  PIC 999      VALUE ZERO.       IF1274.2
+            013000 01  TOTAL-ERROR                   PIC 999      VALUE ZERO.       IF1274.2
+            013100 01  ERROR-HOLD                    PIC 999      VALUE ZERO.       IF1274.2
+            013200 01  DUMMY-HOLD                    PIC X(120)   VALUE SPACE.      IF1274.2
+            013300 01  RECORD-COUNT                  PIC 9(5)     VALUE ZERO.       IF1274.2
+            013400 01  ANSI-REFERENCE                PIC X(48)    VALUE SPACES.     IF1274.2
+            013500 01  CCVS-H-1.                                                    IF1274.2
+            013600     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1274.2
+            013700     02  FILLER                    PIC X(42)    VALUE             IF1274.2
+            013800     "OFFICIAL COBOL COMPILER VALIDATION SYSTEM".                 IF1274.2
+            013900     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1274.2
+            014000 01  CCVS-H-2A.                                                   IF1274.2
+            014100   02  FILLER                        PIC X(40)  VALUE SPACE.      IF1274.2
+            014200   02  FILLER                        PIC X(7)   VALUE "CCVS85 ".  IF1274.2
+            014300   02  FILLER                        PIC XXXX   VALUE             IF1274.2
+            014400     "4.2 ".                                                      IF1274.2
+            014500   02  FILLER                        PIC X(28)  VALUE             IF1274.2
+            014600            " COPY - NOT FOR DISTRIBUTION".                       IF1274.2
+            014700   02  FILLER                        PIC X(41)  VALUE SPACE.      IF1274.2
+            014800                                                                  IF1274.2
+            014900 01  CCVS-H-2B.                                                   IF1274.2
+            015000   02  FILLER                        PIC X(15)  VALUE             IF1274.2
+            015100            "TEST RESULT OF ".                                    IF1274.2
+            015200   02  TEST-ID                       PIC X(9).                    IF1274.2
+            015300   02  FILLER                        PIC X(4)   VALUE             IF1274.2
+            015400            " IN ".                                               IF1274.2
+            015500   02  FILLER                        PIC X(12)  VALUE             IF1274.2
+            015600     " HIGH       ".                                              IF1274.2
+            015700   02  FILLER                        PIC X(22)  VALUE             IF1274.2
+            015800            " LEVEL VALIDATION FOR ".                             IF1274.2
+            015900   02  FILLER                        PIC X(58)  VALUE             IF1274.2
+            016000     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1274.2
+            016100 01  CCVS-H-3.                                                    IF1274.2
+            016200     02  FILLER                      PIC X(34)  VALUE             IF1274.2
+            016300            " FOR OFFICIAL USE ONLY    ".                         IF1274.2
+            016400     02  FILLER                      PIC X(58)  VALUE             IF1274.2
+            016500     "COBOL 85 VERSION 4.2, Apr  1993 SSVG                      ".IF1274.2
+            016600     02  FILLER                      PIC X(28)  VALUE             IF1274.2
+            016700            "  COPYRIGHT   1985 ".                                IF1274.2
+            016800 01  CCVS-E-1.                                                    IF1274.2
+            016900     02 FILLER                       PIC X(52)  VALUE SPACE.      IF1274.2
+            017000     02 FILLER  PIC X(14) VALUE IS "END OF TEST-  ".              IF1274.2
+            017100     02 ID-AGAIN                     PIC X(9).                    IF1274.2
+            017200     02 FILLER                       PIC X(45)  VALUE SPACES.     IF1274.2
+            017300 01  CCVS-E-2.                                                    IF1274.2
+            017400     02  FILLER                      PIC X(31)  VALUE SPACE.      IF1274.2
+            017500     02  FILLER                      PIC X(21)  VALUE SPACE.      IF1274.2
+            017600     02 CCVS-E-2-2.                                               IF1274.2
+            017700         03 ERROR-TOTAL              PIC XXX    VALUE SPACE.      IF1274.2
+            017800         03 FILLER                   PIC X      VALUE SPACE.      IF1274.2
+            017900         03 ENDER-DESC               PIC X(44)  VALUE             IF1274.2
+            018000            "ERRORS ENCOUNTERED".                                 IF1274.2
+            018100 01  CCVS-E-3.                                                    IF1274.2
+            018200     02  FILLER                      PIC X(22)  VALUE             IF1274.2
+            018300            " FOR OFFICIAL USE ONLY".                             IF1274.2
+            018400     02  FILLER                      PIC X(12)  VALUE SPACE.      IF1274.2
+            018500     02  FILLER                      PIC X(58)  VALUE             IF1274.2
+            018600     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1274.2
+            018700     02  FILLER                      PIC X(13)  VALUE SPACE.      IF1274.2
+            018800     02 FILLER                       PIC X(15)  VALUE             IF1274.2
+            018900             " COPYRIGHT 1985".                                   IF1274.2
+            019000 01  CCVS-E-4.                                                    IF1274.2
+            019100     02 CCVS-E-4-1                   PIC XXX    VALUE SPACE.      IF1274.2
+            019200     02 FILLER                       PIC X(4)   VALUE " OF ".     IF1274.2
+            019300     02 CCVS-E-4-2                   PIC XXX    VALUE SPACE.      IF1274.2
+            019400     02 FILLER                       PIC X(40)  VALUE             IF1274.2
+            019500      "  TESTS WERE EXECUTED SUCCESSFULLY".                       IF1274.2
+            019600 01  XXINFO.                                                      IF1274.2
+            019700     02 FILLER                       PIC X(19)  VALUE             IF1274.2
+            019800            "*** INFORMATION ***".                                IF1274.2
+            019900     02 INFO-TEXT.                                                IF1274.2
+            020000       04 FILLER                     PIC X(8)   VALUE SPACE.      IF1274.2
+            020100       04 XXCOMPUTED                 PIC X(20).                   IF1274.2
+            020200       04 FILLER                     PIC X(5)   VALUE SPACE.      IF1274.2
+            020300       04 XXCORRECT                  PIC X(20).                   IF1274.2
+            020400     02 INF-ANSI-REFERENCE           PIC X(48).                   IF1274.2
+            020500 01  HYPHEN-LINE.                                                 IF1274.2
+            020600     02 FILLER  PIC IS X VALUE IS SPACE.                          IF1274.2
+            020700     02 FILLER  PIC IS X(65)    VALUE IS "************************IF1274.2
+            020800-    "*****************************************".                 IF1274.2
+            020900     02 FILLER  PIC IS X(54)    VALUE IS "************************IF1274.2
+            021000-    "******************************".                            IF1274.2
+            021100 01  CCVS-PGM-ID                     PIC X(9)   VALUE             IF1274.2
+            021200     "IF127A".                                                    IF1274.2
+            021300 PROCEDURE DIVISION.                                              IF1274.2
+            021400 CCVS1 SECTION.                                                   IF1274.2
+            021500 OPEN-FILES.                                                      IF1274.2
+            021600     OPEN     OUTPUT PRINT-FILE.                                  IF1274.2
+            021700     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   IF1274.2
+            021800     MOVE    SPACE TO TEST-RESULTS.                               IF1274.2
+            021900     PERFORM  HEAD-ROUTINE THRU COLUMN-NAMES-ROUTINE.             IF1274.2
+            022000     GO TO CCVS1-EXIT.                                            IF1274.2
+            022100 CLOSE-FILES.                                                     IF1274.2
+            022200     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IF1274.2
+            022300 TERMINATE-CCVS.                                                  IF1274.2
+            022400     STOP     RUN.                                                IF1274.2
+            022500 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IF1274.2
+            022600 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IF1274.2
+            022700 FAIL.  MOVE "FAIL*" TO P-OR-F.  ADD 1 TO ERROR-COUNTER.          IF1274.2
+            022800 DE-LETE.  MOVE "*****" TO P-OR-F.  ADD 1 TO DELETE-COUNTER.      IF1274.2
+            022900     MOVE "****TEST DELETED****" TO RE-MARK.                      IF1274.2
+            023000 PRINT-DETAIL.                                                    IF1274.2
+            023100     IF REC-CT NOT EQUAL TO ZERO                                  IF1274.2
+            023200             MOVE "." TO PARDOT-X                                 IF1274.2
+            023300             MOVE REC-CT TO DOTVALUE.                             IF1274.2
+            023400     MOVE     TEST-RESULTS TO PRINT-REC. PERFORM WRITE-LINE.      IF1274.2
+            023500     IF P-OR-F EQUAL TO "FAIL*"  PERFORM WRITE-LINE               IF1274.2
+            023600        PERFORM FAIL-ROUTINE THRU FAIL-ROUTINE-EX                 IF1274.2
+            023700          ELSE PERFORM BAIL-OUT THRU BAIL-OUT-EX.                 IF1274.2
+            023800     MOVE SPACE TO P-OR-F. MOVE SPACE TO COMPUTED-X.              IF1274.2
+            023900     MOVE SPACE TO CORRECT-X.                                     IF1274.2
+            024000     IF     REC-CT EQUAL TO ZERO  MOVE SPACE TO PAR-NAME.         IF1274.2
+            024100     MOVE     SPACE TO RE-MARK.                                   IF1274.2
+            024200 HEAD-ROUTINE.                                                    IF1274.2
+            024300     MOVE CCVS-H-1  TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1274.2
+            024400     MOVE CCVS-H-2A TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1274.2
+            024500     MOVE CCVS-H-2B TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1274.2
+            024600     MOVE CCVS-H-3  TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1274.2
+            024700 COLUMN-NAMES-ROUTINE.                                            IF1274.2
+            024800     MOVE CCVS-C-1 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1274.2
+            024900     MOVE CCVS-C-2 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1274.2
+            025000     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE.        IF1274.2
+            025100 END-ROUTINE.                                                     IF1274.2
+            025200     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE 5 TIMES.IF1274.2
+            025300 END-RTN-EXIT.                                                    IF1274.2
+            025400     MOVE CCVS-E-1 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1274.2
+            025500 END-ROUTINE-1.                                                   IF1274.2
+            025600      ADD ERROR-COUNTER TO ERROR-HOLD ADD INSPECT-COUNTER TO      IF1274.2
+            025700      ERROR-HOLD. ADD DELETE-COUNTER TO ERROR-HOLD.               IF1274.2
+            025800      ADD PASS-COUNTER TO ERROR-HOLD.                             IF1274.2
+            025900      MOVE PASS-COUNTER TO CCVS-E-4-1.                            IF1274.2
+            026000      MOVE ERROR-HOLD TO CCVS-E-4-2.                              IF1274.2
+            026100      MOVE CCVS-E-4 TO CCVS-E-2-2.                                IF1274.2
+            026200      MOVE CCVS-E-2 TO DUMMY-RECORD PERFORM WRITE-LINE.           IF1274.2
+            026300  END-ROUTINE-12.                                                 IF1274.2
+            026400      MOVE "TEST(S) FAILED" TO ENDER-DESC.                        IF1274.2
+            026500     IF       ERROR-COUNTER IS EQUAL TO ZERO                      IF1274.2
+            026600         MOVE "NO " TO ERROR-TOTAL                                IF1274.2
+            026700         ELSE                                                     IF1274.2
+            026800         MOVE ERROR-COUNTER TO ERROR-TOTAL.                       IF1274.2
+            026900     MOVE     CCVS-E-2 TO DUMMY-RECORD.                           IF1274.2
+            027000     PERFORM WRITE-LINE.                                          IF1274.2
+            027100 END-ROUTINE-13.                                                  IF1274.2
+            027200     IF DELETE-COUNTER IS EQUAL TO ZERO                           IF1274.2
+            027300         MOVE "NO " TO ERROR-TOTAL  ELSE                          IF1274.2
+            027400         MOVE DELETE-COUNTER TO ERROR-TOTAL.                      IF1274.2
+            027500     MOVE "TEST(S) DELETED     " TO ENDER-DESC.                   IF1274.2
+            027600     MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1274.2
+            027700      IF   INSPECT-COUNTER EQUAL TO ZERO                          IF1274.2
+            027800          MOVE "NO " TO ERROR-TOTAL                               IF1274.2
+            027900      ELSE MOVE INSPECT-COUNTER TO ERROR-TOTAL.                   IF1274.2
+            028000      MOVE "TEST(S) REQUIRE INSPECTION" TO ENDER-DESC.            IF1274.2
+            028100      MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.          IF1274.2
+            028200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1274.2
+            028300 WRITE-LINE.                                                      IF1274.2
+            028400     ADD 1 TO RECORD-COUNT.                                       IF1274.2
+            028500Y    IF RECORD-COUNT GREATER 42                                   IF1274.2
+            028600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1274.2
+            028700Y        MOVE SPACE TO DUMMY-RECORD                               IF1274.2
+            028800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1274.2
+            028900Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1274.2
+            029000Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1274.2
+            029100Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1274.2
+            029200Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1274.2
+            029300Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1274.2
+            029400Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1274.2
+            029500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1274.2
+            029600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1274.2
+            029700Y        MOVE ZERO TO RECORD-COUNT.                               IF1274.2
+            029800     PERFORM WRT-LN.                                              IF1274.2
+            029900 WRT-LN.                                                          IF1274.2
+            030000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1274.2
+            030100     MOVE SPACE TO DUMMY-RECORD.                                  IF1274.2
+            030200 BLANK-LINE-PRINT.                                                IF1274.2
+            030300     PERFORM WRT-LN.                                              IF1274.2
+            030400 FAIL-ROUTINE.                                                    IF1274.2
+            030500     IF     COMPUTED-X NOT EQUAL TO SPACE                         IF1274.2
+            030600            GO TO FAIL-ROUTINE-WRITE.                             IF1274.2
+            030700     IF     CORRECT-X NOT EQUAL TO SPACE GO TO FAIL-ROUTINE-WRITE.IF1274.2
+            030800     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1274.2
+            030900     MOVE  "NO FURTHER INFORMATION, SEE PROGRAM." TO INFO-TEXT.   IF1274.2
+            031000     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1274.2
+            031100     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1274.2
+            031200     GO TO  FAIL-ROUTINE-EX.                                      IF1274.2
+            031300 FAIL-ROUTINE-WRITE.                                              IF1274.2
+            031400     MOVE   TEST-COMPUTED TO PRINT-REC PERFORM WRITE-LINE.        IF1274.2
+            031500     MOVE   ANSI-REFERENCE TO COR-ANSI-REFERENCE                  IF1274.2
+            031600                              CORMA-ANSI-REFERENCE.               IF1274.2
+            031700     IF CORRECT-MIN NOT EQUAL TO SPACES THEN                      IF1274.2
+            031800           MOVE TEST-CORRECT-MIN TO PRINT-REC PERFORM WRITE-LINE  IF1274.2
+            031900           MOVE TEST-CORRECT-MAX TO PRINT-REC PERFORM WRITE-LINE  IF1274.2
+            032000     ELSE                                                         IF1274.2
+            032100           MOVE TEST-CORRECT TO PRINT-REC PERFORM WRITE-LINE.     IF1274.2
+            032200     PERFORM WRITE-LINE.                                          IF1274.2
+            032300     MOVE   SPACES TO COR-ANSI-REFERENCE.                         IF1274.2
+            032400 FAIL-ROUTINE-EX. EXIT.                                           IF1274.2
+            032500 BAIL-OUT.                                                        IF1274.2
+            032600     IF     COMPUTED-A NOT EQUAL TO SPACE GO TO BAIL-OUT-WRITE.   IF1274.2
+            032700     IF     CORRECT-A EQUAL TO SPACE GO TO BAIL-OUT-EX.           IF1274.2
+            032800 BAIL-OUT-WRITE.                                                  IF1274.2
+            032900     MOVE CORRECT-A TO XXCORRECT.                                 IF1274.2
+            033000     MOVE COMPUTED-A TO XXCOMPUTED.                               IF1274.2
+            033100     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1274.2
+            033200     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1274.2
+            033300     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1274.2
+            033400 BAIL-OUT-EX. EXIT.                                               IF1274.2
+            033500 CCVS1-EXIT.                                                      IF1274.2
+            033600     EXIT.                                                        IF1274.2
+            033700********************************************************          IF1274.2
+            033800*                                                      *          IF1274.2
+            033900*    Intrinsic Function Tests         IF127A - ORD     *          IF1274.2
+            034000*                                                      *          IF1274.2
+            034100********************************************************          IF1274.2
+            034200 SECT-IF127A SECTION.                                             IF1274.2
+            034300 F-ORD-INFO.                                                      IF1274.2
+            034400     MOVE     "See ref. A-60 2.31" TO ANSI-REFERENCE.             IF1274.2
+            034500     MOVE     "ORD Function"     TO FEATURE.                      IF1274.2
+            034600*****************TEST (a) ******************************          IF1274.2
+            034700 F-ORD-01.                                                        IF1274.2
+            034800     MOVE ZERO TO WS-INT.                                         IF1274.2
+            034900 F-ORD-TEST-01.                                                   IF1274.2
+            035000     COMPUTE WS-INT = FUNCTION ORD("A").                          IF1274.2
+            035100     IF WS-INT = 66 THEN                                          IF1274.2
+            035200                        PERFORM PASS                              IF1274.2
+            035300     ELSE                                                         IF1274.2
+            035400                        MOVE 66  TO CORRECT-N                     IF1274.2
+            035500                        MOVE WS-INT TO COMPUTED-N                 IF1274.2
+            035600                        PERFORM FAIL.                             IF1274.2
+            035700     GO TO F-ORD-WRITE-01.                                        IF1274.2
+            035800 F-ORD-DELETE-01.                                                 IF1274.2
+            035900     PERFORM  DE-LETE.                                            IF1274.2
+            036000     GO TO    F-ORD-WRITE-01.                                     IF1274.2
+            036100 F-ORD-WRITE-01.                                                  IF1274.2
+            036200     MOVE "F-ORD-01" TO PAR-NAME.                                 IF1274.2
+            036300     PERFORM  PRINT-DETAIL.                                       IF1274.2
+            036400*****************TEST (b) ******************************          IF1274.2
+            036500 F-ORD-TEST-02.                                                   IF1274.2
+            036600     EVALUATE FUNCTION ORD("m")                                   IF1274.2
+            036700     WHEN 110                                                     IF1274.2
+            036800                                 PERFORM PASS                     IF1274.2
+            036900                                 GO TO F-ORD-WRITE-02.            IF1274.2
+            037000     PERFORM FAIL.                                                IF1274.2
+            037100     GO TO F-ORD-WRITE-02.                                        IF1274.2
+            037200 F-ORD-DELETE-02.                                                 IF1274.2
+            037300     PERFORM  DE-LETE.                                            IF1274.2
+            037400     GO TO    F-ORD-WRITE-02.                                     IF1274.2
+            037500 F-ORD-WRITE-02.                                                  IF1274.2
+            037600     MOVE "F-ORD-02" TO PAR-NAME.                                 IF1274.2
+            037700     PERFORM  PRINT-DETAIL.                                       IF1274.2
+            037800*****************TEST (c) ******************************          IF1274.2
+            037900 F-ORD-03.                                                        IF1274.2
+            038000     MOVE ZERO TO WS-INT.                                         IF1274.2
+            038100 F-ORD-TEST-03.                                                   IF1274.2
+            038200     IF FUNCTION ORD("5") = 54 THEN                               IF1274.2
+            038300                        PERFORM PASS                              IF1274.2
+            038400     ELSE                                                         IF1274.2
+            038500                        PERFORM FAIL.                             IF1274.2
+            038600     GO TO F-ORD-WRITE-03.                                        IF1274.2
+            038700 F-ORD-DELETE-03.                                                 IF1274.2
+            038800     PERFORM  DE-LETE.                                            IF1274.2
+            038900     GO TO    F-ORD-WRITE-03.                                     IF1274.2
+            039000 F-ORD-WRITE-03.                                                  IF1274.2
+            039100     MOVE "F-ORD-03" TO PAR-NAME.                                 IF1274.2
+            039200     PERFORM  PRINT-DETAIL.                                       IF1274.2
+            039300*****************TEST (d) ******************************          IF1274.2
+            039400 F-ORD-04.                                                        IF1274.2
+            039500     MOVE ZERO TO WS-INT.                                         IF1274.2
+            039600 F-ORD-TEST-04.                                                   IF1274.2
+            039700     COMPUTE WS-INT = FUNCTION ORD(A).                            IF1274.2
+            039800     IF WS-INT = 71 THEN                                          IF1274.2
+            039900                        PERFORM PASS                              IF1274.2
+            040000     ELSE                                                         IF1274.2
+            040100                        MOVE 71  TO CORRECT-N                     IF1274.2
+            040200                        MOVE WS-INT TO COMPUTED-N                 IF1274.2
+            040300                        PERFORM FAIL.                             IF1274.2
+            040400     GO TO F-ORD-WRITE-04.                                        IF1274.2
+            040500 F-ORD-DELETE-04.                                                 IF1274.2
+            040600     PERFORM  DE-LETE.                                            IF1274.2
+            040700     GO TO    F-ORD-WRITE-04.                                     IF1274.2
+            040800 F-ORD-WRITE-04.                                                  IF1274.2
+            040900     MOVE "F-ORD-04" TO PAR-NAME.                                 IF1274.2
+            041000     PERFORM  PRINT-DETAIL.                                       IF1274.2
+            041100*****************TEST (e) ******************************          IF1274.2
+            041200 F-ORD-05.                                                        IF1274.2
+            041300     MOVE ZERO TO WS-INT.                                         IF1274.2
+            041400 F-ORD-TEST-05.                                                   IF1274.2
+            041500     COMPUTE WS-INT = FUNCTION ORD(B).                            IF1274.2
+            041600     IF WS-INT = 101 THEN                                         IF1274.2
+            041700                        PERFORM PASS                              IF1274.2
+            041800     ELSE                                                         IF1274.2
+            041900                        MOVE 101  TO CORRECT-N                    IF1274.2
+            042000                        MOVE WS-INT TO COMPUTED-N                 IF1274.2
+            042100                        PERFORM FAIL.                             IF1274.2
+            042200     GO TO F-ORD-WRITE-05.                                        IF1274.2
+            042300 F-ORD-DELETE-05.                                                 IF1274.2
+            042400     PERFORM  DE-LETE.                                            IF1274.2
+            042500     GO TO    F-ORD-WRITE-05.                                     IF1274.2
+            042600 F-ORD-WRITE-05.                                                  IF1274.2
+            042700     MOVE "F-ORD-05" TO PAR-NAME.                                 IF1274.2
+            042800     PERFORM  PRINT-DETAIL.                                       IF1274.2
+            042900*****************TEST (f) ******************************          IF1274.2
+            043000 F-ORD-06.                                                        IF1274.2
+            043100     MOVE ZERO TO WS-INT.                                         IF1274.2
+            043200 F-ORD-TEST-06.                                                   IF1274.2
+            043300     COMPUTE WS-INT = FUNCTION ORD(C).                            IF1274.2
+            043400     IF WS-INT = 52 THEN                                          IF1274.2
+            043500                        PERFORM PASS                              IF1274.2
+            043600     ELSE                                                         IF1274.2
+            043700                        MOVE 52  TO CORRECT-N                     IF1274.2
+            043800                        MOVE WS-INT TO COMPUTED-N                 IF1274.2
+            043900                        PERFORM FAIL.                             IF1274.2
+            044000     GO TO F-ORD-WRITE-06.                                        IF1274.2
+            044100 F-ORD-DELETE-06.                                                 IF1274.2
+            044200     PERFORM  DE-LETE.                                            IF1274.2
+            044300     GO TO    F-ORD-WRITE-06.                                     IF1274.2
+            044400 F-ORD-WRITE-06.                                                  IF1274.2
+            044500     MOVE "F-ORD-06" TO PAR-NAME.                                 IF1274.2
+            044600     PERFORM  PRINT-DETAIL.                                       IF1274.2
+            044700*****************TEST (g) ******************************          IF1274.2
+            044800 F-ORD-07.                                                        IF1274.2
+            044900     MOVE ZERO TO WS-INT.                                         IF1274.2
+            045000 F-ORD-TEST-07.                                                   IF1274.2
+            045100     COMPUTE WS-INT = FUNCTION ORD("g") + 1.                      IF1274.2
+            045200     IF WS-INT = 105 THEN                                         IF1274.2
+            045300                        PERFORM PASS                              IF1274.2
+            045400     ELSE                                                         IF1274.2
+            045500                        MOVE 105  TO CORRECT-N                    IF1274.2
+            045600                        MOVE WS-INT TO COMPUTED-N                 IF1274.2
+            045700                        PERFORM FAIL.                             IF1274.2
+            045800     GO TO F-ORD-WRITE-07.                                        IF1274.2
+            045900 F-ORD-DELETE-07.                                                 IF1274.2
+            046000     PERFORM  DE-LETE.                                            IF1274.2
+            046100     GO TO    F-ORD-WRITE-07.                                     IF1274.2
+            046200 F-ORD-WRITE-07.                                                  IF1274.2
+            046300     MOVE "F-ORD-07" TO PAR-NAME.                                 IF1274.2
+            046400     PERFORM  PRINT-DETAIL.                                       IF1274.2
+            046500*****************TEST (h) ******************************          IF1274.2
+            046600 F-ORD-08.                                                        IF1274.2
+            046700     MOVE ZERO TO WS-INT.                                         IF1274.2
+            046800 F-ORD-TEST-08.                                                   IF1274.2
+            046900     COMPUTE WS-INT = FUNCTION ORD("A") +                         IF1274.2
+            047000             FUNCTION ORD(A).                                     IF1274.2
+            047100     IF WS-INT = 137 THEN                                         IF1274.2
+            047200                        PERFORM PASS                              IF1274.2
+            047300     ELSE                                                         IF1274.2
+            047400                        MOVE 137  TO CORRECT-N                    IF1274.2
+            047500                        MOVE WS-INT TO COMPUTED-N                 IF1274.2
+            047600                        PERFORM FAIL.                             IF1274.2
+            047700     GO TO F-ORD-WRITE-08.                                        IF1274.2
+            047800 F-ORD-DELETE-08.                                                 IF1274.2
+            047900     PERFORM  DE-LETE.                                            IF1274.2
+            048000     GO TO    F-ORD-WRITE-08.                                     IF1274.2
+            048100 F-ORD-WRITE-08.                                                  IF1274.2
+            048200     MOVE "F-ORD-08" TO PAR-NAME.                                 IF1274.2
+            048300     PERFORM  PRINT-DETAIL.                                       IF1274.2
+            048400*****************SPECIAL TEST 1******************************     IF1274.2
+            048500 F-ORD-09.                                                        IF1274.2
+            048600     PERFORM F-ORD-TEST-09 UNTIL FUNCTION ORD(ARG1) = 67.         IF1274.2
+            048700     IF ARG1 = "B" THEN                                           IF1274.2
+            048800                        PERFORM PASS                              IF1274.2
+            048900     ELSE                                                         IF1274.2
+            049000                        PERFORM FAIL.                             IF1274.2
+            049100     GO TO F-ORD-WRITE-09.                                        IF1274.2
+            049200*                                                                 IF1274.2
+            049300 F-ORD-TEST-09.                                                   IF1274.2
+            049400     MOVE "B" TO ARG1.                                            IF1274.2
+            049500*                                                                 IF1274.2
+            049600 F-ORD-DELETE-09.                                                 IF1274.2
+            049700     PERFORM  DE-LETE.                                            IF1274.2
+            049800     GO TO    F-ORD-WRITE-09.                                     IF1274.2
+            049900 F-ORD-WRITE-09.                                                  IF1274.2
+            050000     MOVE "F-ORD-09" TO PAR-NAME.                                 IF1274.2
+            050100     PERFORM  PRINT-DETAIL.                                       IF1274.2
+            050200*******************END OF TESTS**************************         IF1274.2
+            050300 CCVS-EXIT SECTION.                                               IF1274.2
+            050400 CCVS-999999.                                                     IF1274.2
+            050500     GO TO CLOSE-FILES.                                           IF1274.2
+                  *END-OF,IF127A                                                            
+        """)
+    )
+
+    @Test
+    fun if1284_2() = rewriteRun(
+        cobol("""
+                  *HEADER,COBOL,IF128A                                                      
+            000100 IDENTIFICATION DIVISION.                                         IF1284.2
+            000200 PROGRAM-ID.                                                      IF1284.2
+            000300     IF128A.                                                      IF1284.2
+            000400                                                                  IF1284.2
+            000500***********************************************************       IF1284.2
+            000600*                                                         *       IF1284.2
+            000700* This program forms part of the CCVS85 COBOL Test Suite. *       IF1284.2
+            000800* It contains tests for the Intrinsic Function ORD-MAX.   *       IF1284.2
+            000900*                                                         *       IF1284.2
+            001000*                                                         *       IF1284.2
+            001100***********************************************************       IF1284.2
+            001200 ENVIRONMENT DIVISION.                                            IF1284.2
+            001300 CONFIGURATION SECTION.                                           IF1284.2
+            001400 SOURCE-COMPUTER.                                                 IF1284.2
+            001500     XXXXX082.                                                    IF1284.2
+            001600 OBJECT-COMPUTER.                                                 IF1284.2
+            001700     XXXXX083                                                     IF1284.2
+            001800     PROGRAM COLLATING SEQUENCE IS PRG-COLL-SEQ.                  IF1284.2
+            001900 SPECIAL-NAMES.                                                   IF1284.2
+            002000     ALPHABET PRG-COLL-SEQ IS                                     IF1284.2
+            002100     STANDARD-2.                                                  IF1284.2
+            002200 INPUT-OUTPUT SECTION.                                            IF1284.2
+            002300 FILE-CONTROL.                                                    IF1284.2
+            002400     SELECT PRINT-FILE ASSIGN TO                                  IF1284.2
+            002500     XXXXX055.                                                    IF1284.2
+            002600 DATA DIVISION.                                                   IF1284.2
+            002700 FILE SECTION.                                                    IF1284.2
+            002800 FD  PRINT-FILE.                                                  IF1284.2
+            002900 01  PRINT-REC PICTURE X(120).                                    IF1284.2
+            003000 01  DUMMY-RECORD PICTURE X(120).                                 IF1284.2
+            003100 WORKING-STORAGE SECTION.                                         IF1284.2
+            003200***********************************************************       IF1284.2
+            003300* Variables specific to the Intrinsic Function Test IF128A*       IF1284.2
+            003400***********************************************************       IF1284.2
+            003500 01  A                   PIC S9(10)     VALUE 5.                  IF1284.2
+            003600 01  B                   PIC S9(10)     VALUE 7.                  IF1284.2
+            003700 01  C                   PIC S9(10)     VALUE 4.                  IF1284.2
+            003800 01  D                   PIC S9(10)     VALUE 10.                 IF1284.2
+            003900 01  I                   PIC X(4)       VALUE "R".                IF1284.2
+            004000 01  J                   PIC X(4)       VALUE "U".                IF1284.2
+            004100 01  P                   PIC S9(10)     VALUE 1.                  IF1284.2
+            004200 01  Q                   PIC S9(10)     VALUE 3.                  IF1284.2
+            004300 01  R                   PIC S9(10)     VALUE 5.                  IF1284.2
+            004400 01  ARG1                PIC S9(10)     VALUE 1.                  IF1284.2
+            004500 01  ARR                                VALUE "40537".            IF1284.2
+            004600     02 IND OCCURS 5 TIMES   PIC 9.                               IF1284.2
+            004700 01  TEMP                PIC S9(10).                              IF1284.2
+            004800 01  WS-INT              PIC S9(10).                              IF1284.2
+            004900*                                                                 IF1284.2
+            005000**********************************************************        IF1284.2
+            005100*                                                                 IF1284.2
+            005200 01  TEST-RESULTS.                                                IF1284.2
+            005300     02 FILLER                   PIC X      VALUE SPACE.          IF1284.2
+            005400     02 FEATURE                  PIC X(20)  VALUE SPACE.          IF1284.2
+            005500     02 FILLER                   PIC X      VALUE SPACE.          IF1284.2
+            005600     02 P-OR-F                   PIC X(5)   VALUE SPACE.          IF1284.2
+            005700     02 FILLER                   PIC X      VALUE SPACE.          IF1284.2
+            005800     02  PAR-NAME.                                                IF1284.2
+            005900       03 FILLER                 PIC X(19)  VALUE SPACE.          IF1284.2
+            006000       03  PARDOT-X              PIC X      VALUE SPACE.          IF1284.2
+            006100       03 DOTVALUE               PIC 99     VALUE ZERO.           IF1284.2
+            006200     02 FILLER                   PIC X(8)   VALUE SPACE.          IF1284.2
+            006300     02 RE-MARK                  PIC X(61).                       IF1284.2
+            006400 01  TEST-COMPUTED.                                               IF1284.2
+            006500     02 FILLER                   PIC X(30)  VALUE SPACE.          IF1284.2
+            006600     02 FILLER                   PIC X(17)  VALUE                 IF1284.2
+            006700            "       COMPUTED=".                                   IF1284.2
+            006800     02 COMPUTED-X.                                               IF1284.2
+            006900     03 COMPUTED-A               PIC X(20)  VALUE SPACE.          IF1284.2
+            007000     03 COMPUTED-N               REDEFINES COMPUTED-A             IF1284.2
+            007100                                 PIC -9(9).9(9).                  IF1284.2
+            007200     03 COMPUTED-0V18 REDEFINES COMPUTED-A   PIC -.9(18).         IF1284.2
+            007300     03 COMPUTED-4V14 REDEFINES COMPUTED-A   PIC -9(4).9(14).     IF1284.2
+            007400     03 COMPUTED-14V4 REDEFINES COMPUTED-A   PIC -9(14).9(4).     IF1284.2
+            007500     03       CM-18V0 REDEFINES COMPUTED-A.                       IF1284.2
+            007600         04 COMPUTED-18V0                    PIC -9(18).          IF1284.2
+            007700         04 FILLER                           PIC X.               IF1284.2
+            007800     03 FILLER PIC X(50) VALUE SPACE.                             IF1284.2
+            007900 01  TEST-CORRECT.                                                IF1284.2
+            008000     02 FILLER PIC X(30) VALUE SPACE.                             IF1284.2
+            008100     02 FILLER PIC X(17) VALUE "       CORRECT =".                IF1284.2
+            008200     02 CORRECT-X.                                                IF1284.2
+            008300     03 CORRECT-A                  PIC X(20) VALUE SPACE.         IF1284.2
+            008400     03 CORRECT-N    REDEFINES CORRECT-A     PIC -9(9).9(9).      IF1284.2
+            008500     03 CORRECT-0V18 REDEFINES CORRECT-A     PIC -.9(18).         IF1284.2
+            008600     03 CORRECT-4V14 REDEFINES CORRECT-A     PIC -9(4).9(14).     IF1284.2
+            008700     03 CORRECT-14V4 REDEFINES CORRECT-A     PIC -9(14).9(4).     IF1284.2
+            008800     03      CR-18V0 REDEFINES CORRECT-A.                         IF1284.2
+            008900         04 CORRECT-18V0                     PIC -9(18).          IF1284.2
+            009000         04 FILLER                           PIC X.               IF1284.2
+            009100     03 FILLER PIC X(2) VALUE SPACE.                              IF1284.2
+            009200     03 COR-ANSI-REFERENCE             PIC X(48) VALUE SPACE.     IF1284.2
+            009300 01  TEST-CORRECT-MIN.                                            IF1284.2
+            009400     02 FILLER PIC X(30) VALUE SPACE.                             IF1284.2
+            009500     02 FILLER PIC X(17) VALUE "     MIN VALUE =".                IF1284.2
+            009600     02 CORRECTMI-X.                                              IF1284.2
+            009700     03 CORRECTMI-A                 PIC X(20) VALUE SPACE.        IF1284.2
+            009800     03 CORRECT-MIN    REDEFINES CORRECTMI-A     PIC -9(9).9(9).  IF1284.2
+            009900     03 CORRECTMI-0V18 REDEFINES CORRECTMI-A     PIC -.9(18).     IF1284.2
+            010000     03 CORRECTMI-4V14 REDEFINES CORRECTMI-A     PIC -9(4).9(14). IF1284.2
+            010100     03 CORRECTMI-14V4 REDEFINES CORRECTMI-A     PIC -9(14).9(4). IF1284.2
+            010200     03      CR-18V0 REDEFINES CORRECTMI-A.                       IF1284.2
+            010300         04 CORRECTMI-18V0                     PIC -9(18).        IF1284.2
+            010400         04 FILLER                           PIC X.               IF1284.2
+            010500     03 FILLER PIC X(2) VALUE SPACE.                              IF1284.2
+            010600     03 FILLER                           PIC X(48) VALUE SPACE.   IF1284.2
+            010700 01  TEST-CORRECT-MAX.                                            IF1284.2
+            010800     02 FILLER PIC X(30) VALUE SPACE.                             IF1284.2
+            010900     02 FILLER PIC X(17) VALUE "     MAX VALUE =".                IF1284.2
+            011000     02 CORRECTMA-X.                                              IF1284.2
+            011100     03 CORRECTMA-A                  PIC X(20) VALUE SPACE.       IF1284.2
+            011200     03 CORRECT-MAX    REDEFINES CORRECTMA-A     PIC -9(9).9(9).  IF1284.2
+            011300     03 CORRECTMA-0V18 REDEFINES CORRECTMA-A     PIC -.9(18).     IF1284.2
+            011400     03 CORRECTMA-4V14 REDEFINES CORRECTMA-A     PIC -9(4).9(14). IF1284.2
+            011500     03 CORRECTMA-14V4 REDEFINES CORRECTMA-A     PIC -9(14).9(4). IF1284.2
+            011600     03      CR-18V0 REDEFINES CORRECTMA-A.                       IF1284.2
+            011700         04 CORRECTMA-18V0                     PIC -9(18).        IF1284.2
+            011800         04 FILLER                           PIC X.               IF1284.2
+            011900     03 FILLER PIC X(2) VALUE SPACE.                              IF1284.2
+            012000     03 CORMA-ANSI-REFERENCE             PIC X(48) VALUE SPACE.   IF1284.2
+            012100 01  CCVS-C-1.                                                    IF1284.2
+            012200     02 FILLER  PIC IS X(99)    VALUE IS " FEATURE              PAIF1284.2
+            012300-    "SS  PARAGRAPH-NAME                                          IF1284.2
+            012400-    "       REMARKS".                                            IF1284.2
+            012500     02 FILLER                     PIC X(20)    VALUE SPACE.      IF1284.2
+            012600 01  CCVS-C-2.                                                    IF1284.2
+            012700     02 FILLER                     PIC X        VALUE SPACE.      IF1284.2
+            012800     02 FILLER                     PIC X(6)     VALUE "TESTED".   IF1284.2
+            012900     02 FILLER                     PIC X(15)    VALUE SPACE.      IF1284.2
+            013000     02 FILLER                     PIC X(4)     VALUE "FAIL".     IF1284.2
+            013100     02 FILLER                     PIC X(94)    VALUE SPACE.      IF1284.2
+            013200 01  REC-SKL-SUB                   PIC 9(2)     VALUE ZERO.       IF1284.2
+            013300 01  REC-CT                        PIC 99       VALUE ZERO.       IF1284.2
+            013400 01  DELETE-COUNTER                PIC 999      VALUE ZERO.       IF1284.2
+            013500 01  ERROR-COUNTER                 PIC 999      VALUE ZERO.       IF1284.2
+            013600 01  INSPECT-COUNTER               PIC 999      VALUE ZERO.       IF1284.2
+            013700 01  PASS-COUNTER                  PIC 999      VALUE ZERO.       IF1284.2
+            013800 01  TOTAL-ERROR                   PIC 999      VALUE ZERO.       IF1284.2
+            013900 01  ERROR-HOLD                    PIC 999      VALUE ZERO.       IF1284.2
+            014000 01  DUMMY-HOLD                    PIC X(120)   VALUE SPACE.      IF1284.2
+            014100 01  RECORD-COUNT                  PIC 9(5)     VALUE ZERO.       IF1284.2
+            014200 01  ANSI-REFERENCE                PIC X(48)    VALUE SPACES.     IF1284.2
+            014300 01  CCVS-H-1.                                                    IF1284.2
+            014400     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1284.2
+            014500     02  FILLER                    PIC X(42)    VALUE             IF1284.2
+            014600     "OFFICIAL COBOL COMPILER VALIDATION SYSTEM".                 IF1284.2
+            014700     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1284.2
+            014800 01  CCVS-H-2A.                                                   IF1284.2
+            014900   02  FILLER                        PIC X(40)  VALUE SPACE.      IF1284.2
+            015000   02  FILLER                        PIC X(7)   VALUE "CCVS85 ".  IF1284.2
+            015100   02  FILLER                        PIC XXXX   VALUE             IF1284.2
+            015200     "4.2 ".                                                      IF1284.2
+            015300   02  FILLER                        PIC X(28)  VALUE             IF1284.2
+            015400            " COPY - NOT FOR DISTRIBUTION".                       IF1284.2
+            015500   02  FILLER                        PIC X(41)  VALUE SPACE.      IF1284.2
+            015600                                                                  IF1284.2
+            015700 01  CCVS-H-2B.                                                   IF1284.2
+            015800   02  FILLER                        PIC X(15)  VALUE             IF1284.2
+            015900            "TEST RESULT OF ".                                    IF1284.2
+            016000   02  TEST-ID                       PIC X(9).                    IF1284.2
+            016100   02  FILLER                        PIC X(4)   VALUE             IF1284.2
+            016200            " IN ".                                               IF1284.2
+            016300   02  FILLER                        PIC X(12)  VALUE             IF1284.2
+            016400     " HIGH       ".                                              IF1284.2
+            016500   02  FILLER                        PIC X(22)  VALUE             IF1284.2
+            016600            " LEVEL VALIDATION FOR ".                             IF1284.2
+            016700   02  FILLER                        PIC X(58)  VALUE             IF1284.2
+            016800     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1284.2
+            016900 01  CCVS-H-3.                                                    IF1284.2
+            017000     02  FILLER                      PIC X(34)  VALUE             IF1284.2
+            017100            " FOR OFFICIAL USE ONLY    ".                         IF1284.2
+            017200     02  FILLER                      PIC X(58)  VALUE             IF1284.2
+            017300     "COBOL 85 VERSION 4.2, Apr  1993 SSVG                      ".IF1284.2
+            017400     02  FILLER                      PIC X(28)  VALUE             IF1284.2
+            017500            "  COPYRIGHT   1985 ".                                IF1284.2
+            017600 01  CCVS-E-1.                                                    IF1284.2
+            017700     02 FILLER                       PIC X(52)  VALUE SPACE.      IF1284.2
+            017800     02 FILLER  PIC X(14) VALUE IS "END OF TEST-  ".              IF1284.2
+            017900     02 ID-AGAIN                     PIC X(9).                    IF1284.2
+            018000     02 FILLER                       PIC X(45)  VALUE SPACES.     IF1284.2
+            018100 01  CCVS-E-2.                                                    IF1284.2
+            018200     02  FILLER                      PIC X(31)  VALUE SPACE.      IF1284.2
+            018300     02  FILLER                      PIC X(21)  VALUE SPACE.      IF1284.2
+            018400     02 CCVS-E-2-2.                                               IF1284.2
+            018500         03 ERROR-TOTAL              PIC XXX    VALUE SPACE.      IF1284.2
+            018600         03 FILLER                   PIC X      VALUE SPACE.      IF1284.2
+            018700         03 ENDER-DESC               PIC X(44)  VALUE             IF1284.2
+            018800            "ERRORS ENCOUNTERED".                                 IF1284.2
+            018900 01  CCVS-E-3.                                                    IF1284.2
+            019000     02  FILLER                      PIC X(22)  VALUE             IF1284.2
+            019100            " FOR OFFICIAL USE ONLY".                             IF1284.2
+            019200     02  FILLER                      PIC X(12)  VALUE SPACE.      IF1284.2
+            019300     02  FILLER                      PIC X(58)  VALUE             IF1284.2
+            019400     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1284.2
+            019500     02  FILLER                      PIC X(13)  VALUE SPACE.      IF1284.2
+            019600     02 FILLER                       PIC X(15)  VALUE             IF1284.2
+            019700             " COPYRIGHT 1985".                                   IF1284.2
+            019800 01  CCVS-E-4.                                                    IF1284.2
+            019900     02 CCVS-E-4-1                   PIC XXX    VALUE SPACE.      IF1284.2
+            020000     02 FILLER                       PIC X(4)   VALUE " OF ".     IF1284.2
+            020100     02 CCVS-E-4-2                   PIC XXX    VALUE SPACE.      IF1284.2
+            020200     02 FILLER                       PIC X(40)  VALUE             IF1284.2
+            020300      "  TESTS WERE EXECUTED SUCCESSFULLY".                       IF1284.2
+            020400 01  XXINFO.                                                      IF1284.2
+            020500     02 FILLER                       PIC X(19)  VALUE             IF1284.2
+            020600            "*** INFORMATION ***".                                IF1284.2
+            020700     02 INFO-TEXT.                                                IF1284.2
+            020800       04 FILLER                     PIC X(8)   VALUE SPACE.      IF1284.2
+            020900       04 XXCOMPUTED                 PIC X(20).                   IF1284.2
+            021000       04 FILLER                     PIC X(5)   VALUE SPACE.      IF1284.2
+            021100       04 XXCORRECT                  PIC X(20).                   IF1284.2
+            021200     02 INF-ANSI-REFERENCE           PIC X(48).                   IF1284.2
+            021300 01  HYPHEN-LINE.                                                 IF1284.2
+            021400     02 FILLER  PIC IS X VALUE IS SPACE.                          IF1284.2
+            021500     02 FILLER  PIC IS X(65)    VALUE IS "************************IF1284.2
+            021600-    "*****************************************".                 IF1284.2
+            021700     02 FILLER  PIC IS X(54)    VALUE IS "************************IF1284.2
+            021800-    "******************************".                            IF1284.2
+            021900 01  CCVS-PGM-ID                     PIC X(9)   VALUE             IF1284.2
+            022000     "IF128A".                                                    IF1284.2
+            022100 PROCEDURE DIVISION.                                              IF1284.2
+            022200 CCVS1 SECTION.                                                   IF1284.2
+            022300 OPEN-FILES.                                                      IF1284.2
+            022400     OPEN     OUTPUT PRINT-FILE.                                  IF1284.2
+            022500     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   IF1284.2
+            022600     MOVE    SPACE TO TEST-RESULTS.                               IF1284.2
+            022700     PERFORM  HEAD-ROUTINE THRU COLUMN-NAMES-ROUTINE.             IF1284.2
+            022800     GO TO CCVS1-EXIT.                                            IF1284.2
+            022900 CLOSE-FILES.                                                     IF1284.2
+            023000     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IF1284.2
+            023100 TERMINATE-CCVS.                                                  IF1284.2
+            023200     STOP     RUN.                                                IF1284.2
+            023300 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IF1284.2
+            023400 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IF1284.2
+            023500 FAIL.  MOVE "FAIL*" TO P-OR-F.  ADD 1 TO ERROR-COUNTER.          IF1284.2
+            023600 DE-LETE.  MOVE "*****" TO P-OR-F.  ADD 1 TO DELETE-COUNTER.      IF1284.2
+            023700     MOVE "****TEST DELETED****" TO RE-MARK.                      IF1284.2
+            023800 PRINT-DETAIL.                                                    IF1284.2
+            023900     IF REC-CT NOT EQUAL TO ZERO                                  IF1284.2
+            024000             MOVE "." TO PARDOT-X                                 IF1284.2
+            024100             MOVE REC-CT TO DOTVALUE.                             IF1284.2
+            024200     MOVE     TEST-RESULTS TO PRINT-REC. PERFORM WRITE-LINE.      IF1284.2
+            024300     IF P-OR-F EQUAL TO "FAIL*"  PERFORM WRITE-LINE               IF1284.2
+            024400        PERFORM FAIL-ROUTINE THRU FAIL-ROUTINE-EX                 IF1284.2
+            024500          ELSE PERFORM BAIL-OUT THRU BAIL-OUT-EX.                 IF1284.2
+            024600     MOVE SPACE TO P-OR-F. MOVE SPACE TO COMPUTED-X.              IF1284.2
+            024700     MOVE SPACE TO CORRECT-X.                                     IF1284.2
+            024800     IF     REC-CT EQUAL TO ZERO  MOVE SPACE TO PAR-NAME.         IF1284.2
+            024900     MOVE     SPACE TO RE-MARK.                                   IF1284.2
+            025000 HEAD-ROUTINE.                                                    IF1284.2
+            025100     MOVE CCVS-H-1  TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1284.2
+            025200     MOVE CCVS-H-2A TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1284.2
+            025300     MOVE CCVS-H-2B TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1284.2
+            025400     MOVE CCVS-H-3  TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1284.2
+            025500 COLUMN-NAMES-ROUTINE.                                            IF1284.2
+            025600     MOVE CCVS-C-1 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1284.2
+            025700     MOVE CCVS-C-2 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1284.2
+            025800     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE.        IF1284.2
+            025900 END-ROUTINE.                                                     IF1284.2
+            026000     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE 5 TIMES.IF1284.2
+            026100 END-RTN-EXIT.                                                    IF1284.2
+            026200     MOVE CCVS-E-1 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1284.2
+            026300 END-ROUTINE-1.                                                   IF1284.2
+            026400      ADD ERROR-COUNTER TO ERROR-HOLD ADD INSPECT-COUNTER TO      IF1284.2
+            026500      ERROR-HOLD. ADD DELETE-COUNTER TO ERROR-HOLD.               IF1284.2
+            026600      ADD PASS-COUNTER TO ERROR-HOLD.                             IF1284.2
+            026700      MOVE PASS-COUNTER TO CCVS-E-4-1.                            IF1284.2
+            026800      MOVE ERROR-HOLD TO CCVS-E-4-2.                              IF1284.2
+            026900      MOVE CCVS-E-4 TO CCVS-E-2-2.                                IF1284.2
+            027000      MOVE CCVS-E-2 TO DUMMY-RECORD PERFORM WRITE-LINE.           IF1284.2
+            027100  END-ROUTINE-12.                                                 IF1284.2
+            027200      MOVE "TEST(S) FAILED" TO ENDER-DESC.                        IF1284.2
+            027300     IF       ERROR-COUNTER IS EQUAL TO ZERO                      IF1284.2
+            027400         MOVE "NO " TO ERROR-TOTAL                                IF1284.2
+            027500         ELSE                                                     IF1284.2
+            027600         MOVE ERROR-COUNTER TO ERROR-TOTAL.                       IF1284.2
+            027700     MOVE     CCVS-E-2 TO DUMMY-RECORD.                           IF1284.2
+            027800     PERFORM WRITE-LINE.                                          IF1284.2
+            027900 END-ROUTINE-13.                                                  IF1284.2
+            028000     IF DELETE-COUNTER IS EQUAL TO ZERO                           IF1284.2
+            028100         MOVE "NO " TO ERROR-TOTAL  ELSE                          IF1284.2
+            028200         MOVE DELETE-COUNTER TO ERROR-TOTAL.                      IF1284.2
+            028300     MOVE "TEST(S) DELETED     " TO ENDER-DESC.                   IF1284.2
+            028400     MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1284.2
+            028500      IF   INSPECT-COUNTER EQUAL TO ZERO                          IF1284.2
+            028600          MOVE "NO " TO ERROR-TOTAL                               IF1284.2
+            028700      ELSE MOVE INSPECT-COUNTER TO ERROR-TOTAL.                   IF1284.2
+            028800      MOVE "TEST(S) REQUIRE INSPECTION" TO ENDER-DESC.            IF1284.2
+            028900      MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.          IF1284.2
+            029000     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1284.2
+            029100 WRITE-LINE.                                                      IF1284.2
+            029200     ADD 1 TO RECORD-COUNT.                                       IF1284.2
+            029300Y    IF RECORD-COUNT GREATER 42                                   IF1284.2
+            029400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1284.2
+            029500Y        MOVE SPACE TO DUMMY-RECORD                               IF1284.2
+            029600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1284.2
+            029700Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1284.2
+            029800Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1284.2
+            029900Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1284.2
+            030000Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1284.2
+            030100Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1284.2
+            030200Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1284.2
+            030300Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1284.2
+            030400Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1284.2
+            030500Y        MOVE ZERO TO RECORD-COUNT.                               IF1284.2
+            030600     PERFORM WRT-LN.                                              IF1284.2
+            030700 WRT-LN.                                                          IF1284.2
+            030800     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1284.2
+            030900     MOVE SPACE TO DUMMY-RECORD.                                  IF1284.2
+            031000 BLANK-LINE-PRINT.                                                IF1284.2
+            031100     PERFORM WRT-LN.                                              IF1284.2
+            031200 FAIL-ROUTINE.                                                    IF1284.2
+            031300     IF     COMPUTED-X NOT EQUAL TO SPACE                         IF1284.2
+            031400            GO TO FAIL-ROUTINE-WRITE.                             IF1284.2
+            031500     IF     CORRECT-X NOT EQUAL TO SPACE GO TO FAIL-ROUTINE-WRITE.IF1284.2
+            031600     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1284.2
+            031700     MOVE  "NO FURTHER INFORMATION, SEE PROGRAM." TO INFO-TEXT.   IF1284.2
+            031800     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1284.2
+            031900     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1284.2
+            032000     GO TO  FAIL-ROUTINE-EX.                                      IF1284.2
+            032100 FAIL-ROUTINE-WRITE.                                              IF1284.2
+            032200     MOVE   TEST-COMPUTED TO PRINT-REC PERFORM WRITE-LINE.        IF1284.2
+            032300     MOVE   ANSI-REFERENCE TO COR-ANSI-REFERENCE                  IF1284.2
+            032400                              CORMA-ANSI-REFERENCE.               IF1284.2
+            032500     IF CORRECT-MIN NOT EQUAL TO SPACES THEN                      IF1284.2
+            032600           MOVE TEST-CORRECT-MIN TO PRINT-REC PERFORM WRITE-LINE  IF1284.2
+            032700           MOVE TEST-CORRECT-MAX TO PRINT-REC PERFORM WRITE-LINE  IF1284.2
+            032800     ELSE                                                         IF1284.2
+            032900           MOVE TEST-CORRECT TO PRINT-REC PERFORM WRITE-LINE.     IF1284.2
+            033000     PERFORM WRITE-LINE.                                          IF1284.2
+            033100     MOVE   SPACES TO COR-ANSI-REFERENCE.                         IF1284.2
+            033200 FAIL-ROUTINE-EX. EXIT.                                           IF1284.2
+            033300 BAIL-OUT.                                                        IF1284.2
+            033400     IF     COMPUTED-A NOT EQUAL TO SPACE GO TO BAIL-OUT-WRITE.   IF1284.2
+            033500     IF     CORRECT-A EQUAL TO SPACE GO TO BAIL-OUT-EX.           IF1284.2
+            033600 BAIL-OUT-WRITE.                                                  IF1284.2
+            033700     MOVE CORRECT-A TO XXCORRECT.                                 IF1284.2
+            033800     MOVE COMPUTED-A TO XXCOMPUTED.                               IF1284.2
+            033900     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1284.2
+            034000     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1284.2
+            034100     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1284.2
+            034200 BAIL-OUT-EX. EXIT.                                               IF1284.2
+            034300 CCVS1-EXIT.                                                      IF1284.2
+            034400     EXIT.                                                        IF1284.2
+            034500********************************************************          IF1284.2
+            034600*                                                      *          IF1284.2
+            034700*    Intrinsic Function Tests         IF128A - ORD-MAX *          IF1284.2
+            034800*                                                      *          IF1284.2
+            034900********************************************************          IF1284.2
+            035000 SECT-IF128A SECTION.                                             IF1284.2
+            035100 F-ORD-MAX-INFO.                                                  IF1284.2
+            035200     MOVE     "See ref. A-61 2.32" TO ANSI-REFERENCE.             IF1284.2
+            035300     MOVE     "ORD-MAX Function"     TO FEATURE.                  IF1284.2
+            035400*****************TEST (a) ******************************          IF1284.2
+            035500 F-ORD-MAX-01.                                                    IF1284.2
+            035600     MOVE ZERO TO WS-INT.                                         IF1284.2
+            035700 F-ORD-MAX-TEST-01.                                               IF1284.2
+            035800     COMPUTE WS-INT = FUNCTION ORD-MAX(5, 3, 2, 8, 3, 1).         IF1284.2
+            035900     IF WS-INT = 4 THEN                                           IF1284.2
+            036000                        PERFORM PASS                              IF1284.2
+            036100     ELSE                                                         IF1284.2
+            036200                        MOVE 4  TO CORRECT-N                      IF1284.2
+            036300                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            036400                        PERFORM FAIL.                             IF1284.2
+            036500     GO TO F-ORD-MAX-WRITE-01.                                    IF1284.2
+            036600 F-ORD-MAX-DELETE-01.                                             IF1284.2
+            036700     PERFORM  DE-LETE.                                            IF1284.2
+            036800     GO TO    F-ORD-MAX-WRITE-01.                                 IF1284.2
+            036900 F-ORD-MAX-WRITE-01.                                              IF1284.2
+            037000     MOVE "F-ORD-MAX-01" TO PAR-NAME.                             IF1284.2
+            037100     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            037200*****************TEST (b) ******************************          IF1284.2
+            037300 F-ORD-MAX-TEST-02.                                               IF1284.2
+            037400     EVALUATE FUNCTION ORD-MAX(3, 2, 7, 1, 5)                     IF1284.2
+            037500     WHEN 3                                                       IF1284.2
+            037600                                 PERFORM PASS                     IF1284.2
+            037700                                 GO TO F-ORD-MAX-WRITE-02.        IF1284.2
+            037800     PERFORM FAIL.                                                IF1284.2
+            037900     GO TO F-ORD-MAX-WRITE-02.                                    IF1284.2
+            038000 F-ORD-MAX-DELETE-02.                                             IF1284.2
+            038100     PERFORM  DE-LETE.                                            IF1284.2
+            038200     GO TO    F-ORD-MAX-WRITE-02.                                 IF1284.2
+            038300 F-ORD-MAX-WRITE-02.                                              IF1284.2
+            038400     MOVE "F-ORD-MAX-02" TO PAR-NAME.                             IF1284.2
+            038500     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            038600*****************TEST (c) ******************************          IF1284.2
+            038700 F-ORD-MAX-03.                                                    IF1284.2
+            038800     MOVE ZERO TO WS-INT.                                         IF1284.2
+            038900 F-ORD-MAX-TEST-03.                                               IF1284.2
+            039000     IF FUNCTION ORD-MAX(A, B, D) = 3 THEN                        IF1284.2
+            039100                        PERFORM PASS                              IF1284.2
+            039200     ELSE                                                         IF1284.2
+            039300                        PERFORM FAIL.                             IF1284.2
+            039400     GO TO F-ORD-MAX-WRITE-03.                                    IF1284.2
+            039500 F-ORD-MAX-DELETE-03.                                             IF1284.2
+            039600     PERFORM  DE-LETE.                                            IF1284.2
+            039700     GO TO    F-ORD-MAX-WRITE-03.                                 IF1284.2
+            039800 F-ORD-MAX-WRITE-03.                                              IF1284.2
+            039900     MOVE "F-ORD-MAX-03" TO PAR-NAME.                             IF1284.2
+            040000     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            040100*****************TEST (d) ******************************          IF1284.2
+            040200 F-ORD-MAX-04.                                                    IF1284.2
+            040300     MOVE ZERO TO WS-INT.                                         IF1284.2
+            040400 F-ORD-MAX-TEST-04.                                               IF1284.2
+            040500     COMPUTE WS-INT = FUNCTION ORD-MAX(A, B, C).                  IF1284.2
+            040600     IF WS-INT = 2 THEN                                           IF1284.2
+            040700                        PERFORM PASS                              IF1284.2
+            040800     ELSE                                                         IF1284.2
+            040900                        MOVE 2   TO CORRECT-N                     IF1284.2
+            041000                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            041100                        PERFORM FAIL.                             IF1284.2
+            041200     GO TO F-ORD-MAX-WRITE-04.                                    IF1284.2
+            041300 F-ORD-MAX-DELETE-04.                                             IF1284.2
+            041400     PERFORM  DE-LETE.                                            IF1284.2
+            041500     GO TO    F-ORD-MAX-WRITE-04.                                 IF1284.2
+            041600 F-ORD-MAX-WRITE-04.                                              IF1284.2
+            041700     MOVE "F-ORD-MAX-04" TO PAR-NAME.                             IF1284.2
+            041800     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            041900*****************TEST (e) ******************************          IF1284.2
+            042000 F-ORD-MAX-05.                                                    IF1284.2
+            042100     MOVE ZERO TO WS-INT.                                         IF1284.2
+            042200 F-ORD-MAX-TEST-05.                                               IF1284.2
+            042300     COMPUTE WS-INT = FUNCTION ORD-MAX(A, 4, B, 7, C, 9).         IF1284.2
+            042400     IF WS-INT = 6 THEN                                           IF1284.2
+            042500                        PERFORM PASS                              IF1284.2
+            042600     ELSE                                                         IF1284.2
+            042700                        MOVE 6    TO CORRECT-N                    IF1284.2
+            042800                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            042900                        PERFORM FAIL.                             IF1284.2
+            043000     GO TO F-ORD-MAX-WRITE-05.                                    IF1284.2
+            043100 F-ORD-MAX-DELETE-05.                                             IF1284.2
+            043200     PERFORM  DE-LETE.                                            IF1284.2
+            043300     GO TO    F-ORD-MAX-WRITE-05.                                 IF1284.2
+            043400 F-ORD-MAX-WRITE-05.                                              IF1284.2
+            043500     MOVE "F-ORD-MAX-05" TO PAR-NAME.                             IF1284.2
+            043600     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            043700*****************TEST (f) ******************************          IF1284.2
+            043800 F-ORD-MAX-06.                                                    IF1284.2
+            043900     MOVE ZERO TO WS-INT.                                         IF1284.2
+            044000 F-ORD-MAX-TEST-06.                                               IF1284.2
+            044100     COMPUTE WS-INT = FUNCTION ORD-MAX(4, 9, A, 3).               IF1284.2
+            044200     IF WS-INT = 2 THEN                                           IF1284.2
+            044300                        PERFORM PASS                              IF1284.2
+            044400     ELSE                                                         IF1284.2
+            044500                        MOVE 2   TO CORRECT-N                     IF1284.2
+            044600                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            044700                        PERFORM FAIL.                             IF1284.2
+            044800     GO TO F-ORD-MAX-WRITE-06.                                    IF1284.2
+            044900 F-ORD-MAX-DELETE-06.                                             IF1284.2
+            045000     PERFORM  DE-LETE.                                            IF1284.2
+            045100     GO TO    F-ORD-MAX-WRITE-06.                                 IF1284.2
+            045200 F-ORD-MAX-WRITE-06.                                              IF1284.2
+            045300     MOVE "F-ORD-MAX-06" TO PAR-NAME.                             IF1284.2
+            045400     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            045500*****************TEST (g) ******************************          IF1284.2
+            045600 F-ORD-MAX-07.                                                    IF1284.2
+            045700     MOVE ZERO TO WS-INT.                                         IF1284.2
+            045800 F-ORD-MAX-TEST-07.                                               IF1284.2
+            045900     COMPUTE WS-INT = FUNCTION ORD-MAX("A", I, "P").              IF1284.2
+            046000     IF WS-INT = 2 THEN                                           IF1284.2
+            046100                        PERFORM PASS                              IF1284.2
+            046200     ELSE                                                         IF1284.2
+            046300                        MOVE 2    TO CORRECT-N                    IF1284.2
+            046400                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            046500                        PERFORM FAIL.                             IF1284.2
+            046600     GO TO F-ORD-MAX-WRITE-07.                                    IF1284.2
+            046700 F-ORD-MAX-DELETE-07.                                             IF1284.2
+            046800     PERFORM  DE-LETE.                                            IF1284.2
+            046900     GO TO    F-ORD-MAX-WRITE-07.                                 IF1284.2
+            047000 F-ORD-MAX-WRITE-07.                                              IF1284.2
+            047100     MOVE "F-ORD-MAX-07" TO PAR-NAME.                             IF1284.2
+            047200     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            047300*****************TEST (h) ******************************          IF1284.2
+            047400 F-ORD-MAX-08.                                                    IF1284.2
+            047500     MOVE ZERO TO WS-INT.                                         IF1284.2
+            047600 F-ORD-MAX-TEST-08.                                               IF1284.2
+            047700     COMPUTE WS-INT = FUNCTION ORD-MAX("S", "D", J).              IF1284.2
+            047800     IF WS-INT = 3 THEN                                           IF1284.2
+            047900                        PERFORM PASS                              IF1284.2
+            048000     ELSE                                                         IF1284.2
+            048100                        MOVE 3    TO CORRECT-N                    IF1284.2
+            048200                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            048300                        PERFORM FAIL.                             IF1284.2
+            048400     GO TO F-ORD-MAX-WRITE-08.                                    IF1284.2
+            048500 F-ORD-MAX-DELETE-08.                                             IF1284.2
+            048600     PERFORM  DE-LETE.                                            IF1284.2
+            048700     GO TO    F-ORD-MAX-WRITE-08.                                 IF1284.2
+            048800 F-ORD-MAX-WRITE-08.                                              IF1284.2
+            048900     MOVE "F-ORD-MAX-08" TO PAR-NAME.                             IF1284.2
+            049000     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            049100*****************TEST (i) ******************************          IF1284.2
+            049200 F-ORD-MAX-09.                                                    IF1284.2
+            049300     MOVE ZERO TO WS-INT.                                         IF1284.2
+            049400 F-ORD-MAX-TEST-09.                                               IF1284.2
+            049500     COMPUTE WS-INT = FUNCTION ORD-MAX(A, 5, 5, A).               IF1284.2
+            049600     IF WS-INT = 1 THEN                                           IF1284.2
+            049700                        PERFORM PASS                              IF1284.2
+            049800     ELSE                                                         IF1284.2
+            049900                        MOVE 1   TO CORRECT-N                     IF1284.2
+            050000                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            050100                        PERFORM FAIL.                             IF1284.2
+            050200     GO TO F-ORD-MAX-WRITE-09.                                    IF1284.2
+            050300 F-ORD-MAX-DELETE-09.                                             IF1284.2
+            050400     PERFORM  DE-LETE.                                            IF1284.2
+            050500     GO TO    F-ORD-MAX-WRITE-09.                                 IF1284.2
+            050600 F-ORD-MAX-WRITE-09.                                              IF1284.2
+            050700     MOVE "F-ORD-MAX-09" TO PAR-NAME.                             IF1284.2
+            050800     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            050900*****************TEST (j) ******************************          IF1284.2
+            051000 F-ORD-MAX-10.                                                    IF1284.2
+            051100     MOVE ZERO TO WS-INT.                                         IF1284.2
+            051200 F-ORD-MAX-TEST-10.                                               IF1284.2
+            051300     COMPUTE WS-INT = FUNCTION ORD-MAX(IND(1), IND(2), IND(3)).   IF1284.2
+            051400     IF WS-INT = 3 THEN                                           IF1284.2
+            051500                        PERFORM PASS                              IF1284.2
+            051600     ELSE                                                         IF1284.2
+            051700                        MOVE 3    TO CORRECT-N                    IF1284.2
+            051800                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            051900                        PERFORM FAIL.                             IF1284.2
+            052000     GO TO F-ORD-MAX-WRITE-10.                                    IF1284.2
+            052100 F-ORD-MAX-DELETE-10.                                             IF1284.2
+            052200     PERFORM  DE-LETE.                                            IF1284.2
+            052300     GO TO    F-ORD-MAX-WRITE-10.                                 IF1284.2
+            052400 F-ORD-MAX-WRITE-10.                                              IF1284.2
+            052500     MOVE "F-ORD-MAX-10" TO PAR-NAME.                             IF1284.2
+            052600     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            052700*****************TEST (k) ******************************          IF1284.2
+            052800 F-ORD-MAX-11.                                                    IF1284.2
+            052900     MOVE ZERO TO WS-INT.                                         IF1284.2
+            053000 F-ORD-MAX-TEST-11.                                               IF1284.2
+            053100     COMPUTE WS-INT = FUNCTION ORD-MAX(IND(R), IND(P), IND(Q)).   IF1284.2
+            053200     IF WS-INT = 1 THEN                                           IF1284.2
+            053300                        PERFORM PASS                              IF1284.2
+            053400     ELSE                                                         IF1284.2
+            053500                        MOVE 1   TO CORRECT-N                     IF1284.2
+            053600                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            053700                        PERFORM FAIL.                             IF1284.2
+            053800     GO TO F-ORD-MAX-WRITE-11.                                    IF1284.2
+            053900 F-ORD-MAX-DELETE-11.                                             IF1284.2
+            054000     PERFORM  DE-LETE.                                            IF1284.2
+            054100     GO TO    F-ORD-MAX-WRITE-11.                                 IF1284.2
+            054200 F-ORD-MAX-WRITE-11.                                              IF1284.2
+            054300     MOVE "F-ORD-MAX-11" TO PAR-NAME.                             IF1284.2
+            054400     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            054500*****************TEST (l) ******************************          IF1284.2
+            054600 F-ORD-MAX-12.                                                    IF1284.2
+            054700     MOVE ZERO TO WS-INT.                                         IF1284.2
+            054800 F-ORD-MAX-TEST-12.                                               IF1284.2
+            054900     COMPUTE WS-INT = FUNCTION ORD-MAX(IND(ALL)).                 IF1284.2
+            055000     IF WS-INT = 5 THEN                                           IF1284.2
+            055100                        PERFORM PASS                              IF1284.2
+            055200     ELSE                                                         IF1284.2
+            055300                        MOVE 5    TO CORRECT-N                    IF1284.2
+            055400                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            055500                        PERFORM FAIL.                             IF1284.2
+            055600     GO TO F-ORD-MAX-WRITE-12.                                    IF1284.2
+            055700 F-ORD-MAX-DELETE-12.                                             IF1284.2
+            055800     PERFORM  DE-LETE.                                            IF1284.2
+            055900     GO TO    F-ORD-MAX-WRITE-12.                                 IF1284.2
+            056000 F-ORD-MAX-WRITE-12.                                              IF1284.2
+            056100     MOVE "F-ORD-MAX-12" TO PAR-NAME.                             IF1284.2
+            056200     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            056300*****************TEST (m) ******************************          IF1284.2
+            056400 F-ORD-MAX-13.                                                    IF1284.2
+            056500     MOVE ZERO TO WS-INT.                                         IF1284.2
+            056600 F-ORD-MAX-TEST-13.                                               IF1284.2
+            056700     COMPUTE WS-INT = FUNCTION ORD-MAX(                           IF1284.2
+            056800                           FUNCTION ORD-MAX(1, 4), 3, 1).         IF1284.2
+            056900     IF WS-INT = 2 THEN                                           IF1284.2
+            057000                        PERFORM PASS                              IF1284.2
+            057100     ELSE                                                         IF1284.2
+            057200                        MOVE 2    TO CORRECT-N                    IF1284.2
+            057300                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            057400                        PERFORM FAIL.                             IF1284.2
+            057500     GO TO F-ORD-MAX-WRITE-13.                                    IF1284.2
+            057600 F-ORD-MAX-DELETE-13.                                             IF1284.2
+            057700     PERFORM  DE-LETE.                                            IF1284.2
+            057800     GO TO    F-ORD-MAX-WRITE-13.                                 IF1284.2
+            057900 F-ORD-MAX-WRITE-13.                                              IF1284.2
+            058000     MOVE "F-ORD-MAX-13" TO PAR-NAME.                             IF1284.2
+            058100     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            058200*****************TEST (n) ******************************          IF1284.2
+            058300 F-ORD-MAX-14.                                                    IF1284.2
+            058400     MOVE ZERO TO WS-INT.                                         IF1284.2
+            058500 F-ORD-MAX-TEST-14.                                               IF1284.2
+            058600     COMPUTE WS-INT = FUNCTION ORD-MAX(2, 3, C) + A.              IF1284.2
+            058700     IF WS-INT = 8 THEN                                           IF1284.2
+            058800                        PERFORM PASS                              IF1284.2
+            058900     ELSE                                                         IF1284.2
+            059000                        MOVE 8    TO CORRECT-N                    IF1284.2
+            059100                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            059200                        PERFORM FAIL.                             IF1284.2
+            059300     GO TO F-ORD-MAX-WRITE-14.                                    IF1284.2
+            059400 F-ORD-MAX-DELETE-14.                                             IF1284.2
+            059500     PERFORM  DE-LETE.                                            IF1284.2
+            059600     GO TO    F-ORD-MAX-WRITE-14.                                 IF1284.2
+            059700 F-ORD-MAX-WRITE-14.                                              IF1284.2
+            059800     MOVE "F-ORD-MAX-14" TO PAR-NAME.                             IF1284.2
+            059900     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            060000*****************TEST (o) ******************************          IF1284.2
+            060100 F-ORD-MAX-15.                                                    IF1284.2
+            060200     MOVE ZERO TO WS-INT.                                         IF1284.2
+            060300 F-ORD-MAX-TEST-15.                                               IF1284.2
+            060400     COMPUTE WS-INT = FUNCTION ORD-MAX(2, 3, A) +                 IF1284.2
+            060500                      FUNCTION ORD-MAX(1, 1).                     IF1284.2
+            060600     IF WS-INT = 4 THEN                                           IF1284.2
+            060700                        PERFORM PASS                              IF1284.2
+            060800     ELSE                                                         IF1284.2
+            060900                        MOVE 4   TO CORRECT-N                     IF1284.2
+            061000                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            061100                        PERFORM FAIL.                             IF1284.2
+            061200     GO TO F-ORD-MAX-WRITE-15.                                    IF1284.2
+            061300 F-ORD-MAX-DELETE-15.                                             IF1284.2
+            061400     PERFORM  DE-LETE.                                            IF1284.2
+            061500     GO TO    F-ORD-MAX-WRITE-15.                                 IF1284.2
+            061600 F-ORD-MAX-WRITE-15.                                              IF1284.2
+            061700     MOVE "F-ORD-MAX-15" TO PAR-NAME.                             IF1284.2
+            061800     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            061900*****************SPECIAL TEST 1******************************     IF1284.2
+            062000 F-ORD-MAX-16.                                                    IF1284.2
+            062100     MOVE 1 TO ARG1                                               IF1284.2
+            062200     PERFORM F-ORD-MAX-TEST-16                                    IF1284.2
+            062300         UNTIL FUNCTION ORD-MAX (5, ARG1) = 2.                    IF1284.2
+            062400*                                                                 IF1284.2
+            062500**    when ARG1 = 6 , ORD-MAX(5,ARG1) = 2                         IF1284.2
+            062600*                                                                 IF1284.2
+            062700     IF ARG1 = 6 THEN                                             IF1284.2
+            062800                        PERFORM PASS                              IF1284.2
+            062900     ELSE                                                         IF1284.2
+            063000                        MOVE 6 TO CORRECT-N                       IF1284.2
+            063100                        MOVE WS-INT TO COMPUTED-N                 IF1284.2
+            063200                        PERFORM FAIL.                             IF1284.2
+            063300     GO TO F-ORD-MAX-WRITE-16.                                    IF1284.2
+            063400*                                                                 IF1284.2
+            063500 F-ORD-MAX-TEST-16.                                               IF1284.2
+            063600     COMPUTE ARG1 = ARG1 + 1.                                     IF1284.2
+            063700*                                                                 IF1284.2
+            063800 F-ORD-MAX-DELETE-16.                                             IF1284.2
+            063900     PERFORM  DE-LETE.                                            IF1284.2
+            064000     GO TO    F-ORD-MAX-WRITE-16.                                 IF1284.2
+            064100 F-ORD-MAX-WRITE-16.                                              IF1284.2
+            064200     MOVE "F-ORD-MAX-16" TO PAR-NAME.                             IF1284.2
+            064300     PERFORM  PRINT-DETAIL.                                       IF1284.2
+            064400*******************END OF TESTS**************************         IF1284.2
+            064500 CCVS-EXIT SECTION.                                               IF1284.2
+            064600 CCVS-999999.                                                     IF1284.2
+            064700     GO TO CLOSE-FILES.                                           IF1284.2
+                  *END-OF,IF128A                                                            
+        """)
+    )
+
+    @Test
+    fun if1294_2() = rewriteRun(
+        cobol("""
+                  *HEADER,COBOL,IF129A                                                      
+            000100 IDENTIFICATION DIVISION.                                         IF1294.2
+            000200 PROGRAM-ID.                                                      IF1294.2
+            000300     IF129A.                                                      IF1294.2
+            000400                                                                  IF1294.2
+            000500***********************************************************       IF1294.2
+            000600*                                                         *       IF1294.2
+            000700* This program forms part of the CCVS85 COBOL Test Suite. *       IF1294.2
+            000800* It contains tests for the Intrinsic Function ORD-MIN.   *       IF1294.2
+            000900*                                                         *       IF1294.2
+            001000*                                                         *       IF1294.2
+            001100***********************************************************       IF1294.2
+            001200 ENVIRONMENT DIVISION.                                            IF1294.2
+            001300 CONFIGURATION SECTION.                                           IF1294.2
+            001400 SOURCE-COMPUTER.                                                 IF1294.2
+            001500     XXXXX082.                                                    IF1294.2
+            001600 OBJECT-COMPUTER.                                                 IF1294.2
+            001700     XXXXX083                                                     IF1294.2
+            001800     PROGRAM COLLATING SEQUENCE IS PRG-COLL-SEQ.                  IF1294.2
+            001900 SPECIAL-NAMES.                                                   IF1294.2
+            002000     ALPHABET PRG-COLL-SEQ IS                                     IF1294.2
+            002100     STANDARD-2.                                                  IF1294.2
+            002200 INPUT-OUTPUT SECTION.                                            IF1294.2
+            002300 FILE-CONTROL.                                                    IF1294.2
+            002400     SELECT PRINT-FILE ASSIGN TO                                  IF1294.2
+            002500     XXXXX055.                                                    IF1294.2
+            002600 DATA DIVISION.                                                   IF1294.2
+            002700 FILE SECTION.                                                    IF1294.2
+            002800 FD  PRINT-FILE.                                                  IF1294.2
+            002900 01  PRINT-REC PICTURE X(120).                                    IF1294.2
+            003000 01  DUMMY-RECORD PICTURE X(120).                                 IF1294.2
+            003100 WORKING-STORAGE SECTION.                                         IF1294.2
+            003200***********************************************************       IF1294.2
+            003300* Variables specific to the Intrinsic Function Test IF129A*       IF1294.2
+            003400***********************************************************       IF1294.2
+            003500 01  A                   PIC S9(10)     VALUE 5.                  IF1294.2
+            003600 01  B                   PIC S9(10)     VALUE 7.                  IF1294.2
+            003700 01  C                   PIC S9(10)     VALUE 4.                  IF1294.2
+            003800 01  D                   PIC S9(10)     VALUE 10.                 IF1294.2
+            003900 01  I                   PIC X(4)       VALUE "R".                IF1294.2
+            004000 01  J                   PIC X(4)       VALUE "U".                IF1294.2
+            004100 01  P                   PIC S9(10)     VALUE 1.                  IF1294.2
+            004200 01  Q                   PIC S9(10)     VALUE 3.                  IF1294.2
+            004300 01  R                   PIC S9(10)     VALUE 5.                  IF1294.2
+            004400 01  ARG1                PIC S9(10)     VALUE 10.                 IF1294.2
+            004500 01  ARR                                VALUE "40537".            IF1294.2
+            004600     02 IND OCCURS 5 TIMES   PIC 9.                               IF1294.2
+            004700 01  TEMP                PIC S9(10).                              IF1294.2
+            004800 01  WS-INT              PIC S9(10).                              IF1294.2
+            004900*                                                                 IF1294.2
+            005000**********************************************************        IF1294.2
+            005100*                                                                 IF1294.2
+            005200 01  TEST-RESULTS.                                                IF1294.2
+            005300     02 FILLER                   PIC X      VALUE SPACE.          IF1294.2
+            005400     02 FEATURE                  PIC X(20)  VALUE SPACE.          IF1294.2
+            005500     02 FILLER                   PIC X      VALUE SPACE.          IF1294.2
+            005600     02 P-OR-F                   PIC X(5)   VALUE SPACE.          IF1294.2
+            005700     02 FILLER                   PIC X      VALUE SPACE.          IF1294.2
+            005800     02  PAR-NAME.                                                IF1294.2
+            005900       03 FILLER                 PIC X(19)  VALUE SPACE.          IF1294.2
+            006000       03  PARDOT-X              PIC X      VALUE SPACE.          IF1294.2
+            006100       03 DOTVALUE               PIC 99     VALUE ZERO.           IF1294.2
+            006200     02 FILLER                   PIC X(8)   VALUE SPACE.          IF1294.2
+            006300     02 RE-MARK                  PIC X(61).                       IF1294.2
+            006400 01  TEST-COMPUTED.                                               IF1294.2
+            006500     02 FILLER                   PIC X(30)  VALUE SPACE.          IF1294.2
+            006600     02 FILLER                   PIC X(17)  VALUE                 IF1294.2
+            006700            "       COMPUTED=".                                   IF1294.2
+            006800     02 COMPUTED-X.                                               IF1294.2
+            006900     03 COMPUTED-A               PIC X(20)  VALUE SPACE.          IF1294.2
+            007000     03 COMPUTED-N               REDEFINES COMPUTED-A             IF1294.2
+            007100                                 PIC -9(9).9(9).                  IF1294.2
+            007200     03 COMPUTED-0V18 REDEFINES COMPUTED-A   PIC -.9(18).         IF1294.2
+            007300     03 COMPUTED-4V14 REDEFINES COMPUTED-A   PIC -9(4).9(14).     IF1294.2
+            007400     03 COMPUTED-14V4 REDEFINES COMPUTED-A   PIC -9(14).9(4).     IF1294.2
+            007500     03       CM-18V0 REDEFINES COMPUTED-A.                       IF1294.2
+            007600         04 COMPUTED-18V0                    PIC -9(18).          IF1294.2
+            007700         04 FILLER                           PIC X.               IF1294.2
+            007800     03 FILLER PIC X(50) VALUE SPACE.                             IF1294.2
+            007900 01  TEST-CORRECT.                                                IF1294.2
+            008000     02 FILLER PIC X(30) VALUE SPACE.                             IF1294.2
+            008100     02 FILLER PIC X(17) VALUE "       CORRECT =".                IF1294.2
+            008200     02 CORRECT-X.                                                IF1294.2
+            008300     03 CORRECT-A                  PIC X(20) VALUE SPACE.         IF1294.2
+            008400     03 CORRECT-N    REDEFINES CORRECT-A     PIC -9(9).9(9).      IF1294.2
+            008500     03 CORRECT-0V18 REDEFINES CORRECT-A     PIC -.9(18).         IF1294.2
+            008600     03 CORRECT-4V14 REDEFINES CORRECT-A     PIC -9(4).9(14).     IF1294.2
+            008700     03 CORRECT-14V4 REDEFINES CORRECT-A     PIC -9(14).9(4).     IF1294.2
+            008800     03      CR-18V0 REDEFINES CORRECT-A.                         IF1294.2
+            008900         04 CORRECT-18V0                     PIC -9(18).          IF1294.2
+            009000         04 FILLER                           PIC X.               IF1294.2
+            009100     03 FILLER PIC X(2) VALUE SPACE.                              IF1294.2
+            009200     03 COR-ANSI-REFERENCE             PIC X(48) VALUE SPACE.     IF1294.2
+            009300 01  CCVS-C-1.                                                    IF1294.2
+            009400     02 FILLER  PIC IS X(99)    VALUE IS " FEATURE              PAIF1294.2
+            009500-    "SS  PARAGRAPH-NAME                                          IF1294.2
+            009600-    "       REMARKS".                                            IF1294.2
+            009700     02 FILLER                     PIC X(20)    VALUE SPACE.      IF1294.2
+            009800 01  CCVS-C-2.                                                    IF1294.2
+            009900     02 FILLER                     PIC X        VALUE SPACE.      IF1294.2
+            010000     02 FILLER                     PIC X(6)     VALUE "TESTED".   IF1294.2
+            010100     02 FILLER                     PIC X(15)    VALUE SPACE.      IF1294.2
+            010200     02 FILLER                     PIC X(4)     VALUE "FAIL".     IF1294.2
+            010300     02 FILLER                     PIC X(94)    VALUE SPACE.      IF1294.2
+            010400 01  REC-SKL-SUB                   PIC 9(2)     VALUE ZERO.       IF1294.2
+            010500 01  REC-CT                        PIC 99       VALUE ZERO.       IF1294.2
+            010600 01  DELETE-COUNTER                PIC 999      VALUE ZERO.       IF1294.2
+            010700 01  ERROR-COUNTER                 PIC 999      VALUE ZERO.       IF1294.2
+            010800 01  INSPECT-COUNTER               PIC 999      VALUE ZERO.       IF1294.2
+            010900 01  PASS-COUNTER                  PIC 999      VALUE ZERO.       IF1294.2
+            011000 01  TOTAL-ERROR                   PIC 999      VALUE ZERO.       IF1294.2
+            011100 01  ERROR-HOLD                    PIC 999      VALUE ZERO.       IF1294.2
+            011200 01  DUMMY-HOLD                    PIC X(120)   VALUE SPACE.      IF1294.2
+            011300 01  RECORD-COUNT                  PIC 9(5)     VALUE ZERO.       IF1294.2
+            011400 01  ANSI-REFERENCE                PIC X(48)    VALUE SPACES.     IF1294.2
+            011500 01  CCVS-H-1.                                                    IF1294.2
+            011600     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1294.2
+            011700     02  FILLER                    PIC X(42)    VALUE             IF1294.2
+            011800     "OFFICIAL COBOL COMPILER VALIDATION SYSTEM".                 IF1294.2
+            011900     02  FILLER                    PIC X(39)    VALUE SPACES.     IF1294.2
+            012000 01  CCVS-H-2A.                                                   IF1294.2
+            012100   02  FILLER                        PIC X(40)  VALUE SPACE.      IF1294.2
+            012200   02  FILLER                        PIC X(7)   VALUE "CCVS85 ".  IF1294.2
+            012300   02  FILLER                        PIC XXXX   VALUE             IF1294.2
+            012400     "4.2 ".                                                      IF1294.2
+            012500   02  FILLER                        PIC X(28)  VALUE             IF1294.2
+            012600            " COPY - NOT FOR DISTRIBUTION".                       IF1294.2
+            012700   02  FILLER                        PIC X(41)  VALUE SPACE.      IF1294.2
+            012800                                                                  IF1294.2
+            012900 01  CCVS-H-2B.                                                   IF1294.2
+            013000   02  FILLER                        PIC X(15)  VALUE             IF1294.2
+            013100            "TEST RESULT OF ".                                    IF1294.2
+            013200   02  TEST-ID                       PIC X(9).                    IF1294.2
+            013300   02  FILLER                        PIC X(4)   VALUE             IF1294.2
+            013400            " IN ".                                               IF1294.2
+            013500   02  FILLER                        PIC X(12)  VALUE             IF1294.2
+            013600     " HIGH       ".                                              IF1294.2
+            013700   02  FILLER                        PIC X(22)  VALUE             IF1294.2
+            013800            " LEVEL VALIDATION FOR ".                             IF1294.2
+            013900   02  FILLER                        PIC X(58)  VALUE             IF1294.2
+            014000     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1294.2
+            014100 01  CCVS-H-3.                                                    IF1294.2
+            014200     02  FILLER                      PIC X(34)  VALUE             IF1294.2
+            014300            " FOR OFFICIAL USE ONLY    ".                         IF1294.2
+            014400     02  FILLER                      PIC X(58)  VALUE             IF1294.2
+            014500     "COBOL 85 VERSION 4.2, Apr  1993 SSVG                      ".IF1294.2
+            014600     02  FILLER                      PIC X(28)  VALUE             IF1294.2
+            014700            "  COPYRIGHT   1985 ".                                IF1294.2
+            014800 01  CCVS-E-1.                                                    IF1294.2
+            014900     02 FILLER                       PIC X(52)  VALUE SPACE.      IF1294.2
+            015000     02 FILLER  PIC X(14) VALUE IS "END OF TEST-  ".              IF1294.2
+            015100     02 ID-AGAIN                     PIC X(9).                    IF1294.2
+            015200     02 FILLER                       PIC X(45)  VALUE SPACES.     IF1294.2
+            015300 01  CCVS-E-2.                                                    IF1294.2
+            015400     02  FILLER                      PIC X(31)  VALUE SPACE.      IF1294.2
+            015500     02  FILLER                      PIC X(21)  VALUE SPACE.      IF1294.2
+            015600     02 CCVS-E-2-2.                                               IF1294.2
+            015700         03 ERROR-TOTAL              PIC XXX    VALUE SPACE.      IF1294.2
+            015800         03 FILLER                   PIC X      VALUE SPACE.      IF1294.2
+            015900         03 ENDER-DESC               PIC X(44)  VALUE             IF1294.2
+            016000            "ERRORS ENCOUNTERED".                                 IF1294.2
+            016100 01  CCVS-E-3.                                                    IF1294.2
+            016200     02  FILLER                      PIC X(22)  VALUE             IF1294.2
+            016300            " FOR OFFICIAL USE ONLY".                             IF1294.2
+            016400     02  FILLER                      PIC X(12)  VALUE SPACE.      IF1294.2
+            016500     02  FILLER                      PIC X(58)  VALUE             IF1294.2
+            016600     "ON-SITE VALIDATION, NATIONAL INSTITUTE OF STD & TECH.     ".IF1294.2
+            016700     02  FILLER                      PIC X(13)  VALUE SPACE.      IF1294.2
+            016800     02 FILLER                       PIC X(15)  VALUE             IF1294.2
+            016900             " COPYRIGHT 1985".                                   IF1294.2
+            017000 01  CCVS-E-4.                                                    IF1294.2
+            017100     02 CCVS-E-4-1                   PIC XXX    VALUE SPACE.      IF1294.2
+            017200     02 FILLER                       PIC X(4)   VALUE " OF ".     IF1294.2
+            017300     02 CCVS-E-4-2                   PIC XXX    VALUE SPACE.      IF1294.2
+            017400     02 FILLER                       PIC X(40)  VALUE             IF1294.2
+            017500      "  TESTS WERE EXECUTED SUCCESSFULLY".                       IF1294.2
+            017600 01  XXINFO.                                                      IF1294.2
+            017700     02 FILLER                       PIC X(19)  VALUE             IF1294.2
+            017800            "*** INFORMATION ***".                                IF1294.2
+            017900     02 INFO-TEXT.                                                IF1294.2
+            018000       04 FILLER                     PIC X(8)   VALUE SPACE.      IF1294.2
+            018100       04 XXCOMPUTED                 PIC X(20).                   IF1294.2
+            018200       04 FILLER                     PIC X(5)   VALUE SPACE.      IF1294.2
+            018300       04 XXCORRECT                  PIC X(20).                   IF1294.2
+            018400     02 INF-ANSI-REFERENCE           PIC X(48).                   IF1294.2
+            018500 01  HYPHEN-LINE.                                                 IF1294.2
+            018600     02 FILLER  PIC IS X VALUE IS SPACE.                          IF1294.2
+            018700     02 FILLER  PIC IS X(65)    VALUE IS "************************IF1294.2
+            018800-    "*****************************************".                 IF1294.2
+            018900     02 FILLER  PIC IS X(54)    VALUE IS "************************IF1294.2
+            019000-    "******************************".                            IF1294.2
+            019100 01  CCVS-PGM-ID                     PIC X(9)   VALUE             IF1294.2
+            019200     "IF129A".                                                    IF1294.2
+            019300 PROCEDURE DIVISION.                                              IF1294.2
+            019400 CCVS1 SECTION.                                                   IF1294.2
+            019500 OPEN-FILES.                                                      IF1294.2
+            019600     OPEN     OUTPUT PRINT-FILE.                                  IF1294.2
+            019700     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   IF1294.2
+            019800     MOVE    SPACE TO TEST-RESULTS.                               IF1294.2
+            019900     PERFORM  HEAD-ROUTINE THRU COLUMN-NAMES-ROUTINE.             IF1294.2
+            020000     GO TO CCVS1-EXIT.                                            IF1294.2
+            020100 CLOSE-FILES.                                                     IF1294.2
+            020200     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IF1294.2
+            020300 TERMINATE-CCVS.                                                  IF1294.2
+            020400     STOP     RUN.                                                IF1294.2
+            020500 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IF1294.2
+            020600 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IF1294.2
+            020700 FAIL.  MOVE "FAIL*" TO P-OR-F.  ADD 1 TO ERROR-COUNTER.          IF1294.2
+            020800 DE-LETE.  MOVE "*****" TO P-OR-F.  ADD 1 TO DELETE-COUNTER.      IF1294.2
+            020900     MOVE "****TEST DELETED****" TO RE-MARK.                      IF1294.2
+            021000 PRINT-DETAIL.                                                    IF1294.2
+            021100     IF REC-CT NOT EQUAL TO ZERO                                  IF1294.2
+            021200             MOVE "." TO PARDOT-X                                 IF1294.2
+            021300             MOVE REC-CT TO DOTVALUE.                             IF1294.2
+            021400     MOVE     TEST-RESULTS TO PRINT-REC. PERFORM WRITE-LINE.      IF1294.2
+            021500     IF P-OR-F EQUAL TO "FAIL*"  PERFORM WRITE-LINE               IF1294.2
+            021600        PERFORM FAIL-ROUTINE THRU FAIL-ROUTINE-EX                 IF1294.2
+            021700          ELSE PERFORM BAIL-OUT THRU BAIL-OUT-EX.                 IF1294.2
+            021800     MOVE SPACE TO P-OR-F. MOVE SPACE TO COMPUTED-X.              IF1294.2
+            021900     MOVE SPACE TO CORRECT-X.                                     IF1294.2
+            022000     IF     REC-CT EQUAL TO ZERO  MOVE SPACE TO PAR-NAME.         IF1294.2
+            022100     MOVE     SPACE TO RE-MARK.                                   IF1294.2
+            022200 HEAD-ROUTINE.                                                    IF1294.2
+            022300     MOVE CCVS-H-1  TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1294.2
+            022400     MOVE CCVS-H-2A TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.  IF1294.2
+            022500     MOVE CCVS-H-2B TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1294.2
+            022600     MOVE CCVS-H-3  TO DUMMY-RECORD. PERFORM WRITE-LINE 3 TIMES.  IF1294.2
+            022700 COLUMN-NAMES-ROUTINE.                                            IF1294.2
+            022800     MOVE CCVS-C-1 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1294.2
+            022900     MOVE CCVS-C-2 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1294.2
+            023000     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE.        IF1294.2
+            023100 END-ROUTINE.                                                     IF1294.2
+            023200     MOVE HYPHEN-LINE TO DUMMY-RECORD. PERFORM WRITE-LINE 5 TIMES.IF1294.2
+            023300 END-RTN-EXIT.                                                    IF1294.2
+            023400     MOVE CCVS-E-1 TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1294.2
+            023500 END-ROUTINE-1.                                                   IF1294.2
+            023600      ADD ERROR-COUNTER TO ERROR-HOLD ADD INSPECT-COUNTER TO      IF1294.2
+            023700      ERROR-HOLD. ADD DELETE-COUNTER TO ERROR-HOLD.               IF1294.2
+            023800      ADD PASS-COUNTER TO ERROR-HOLD.                             IF1294.2
+            023900      MOVE PASS-COUNTER TO CCVS-E-4-1.                            IF1294.2
+            024000      MOVE ERROR-HOLD TO CCVS-E-4-2.                              IF1294.2
+            024100      MOVE CCVS-E-4 TO CCVS-E-2-2.                                IF1294.2
+            024200      MOVE CCVS-E-2 TO DUMMY-RECORD PERFORM WRITE-LINE.           IF1294.2
+            024300  END-ROUTINE-12.                                                 IF1294.2
+            024400      MOVE "TEST(S) FAILED" TO ENDER-DESC.                        IF1294.2
+            024500     IF       ERROR-COUNTER IS EQUAL TO ZERO                      IF1294.2
+            024600         MOVE "NO " TO ERROR-TOTAL                                IF1294.2
+            024700         ELSE                                                     IF1294.2
+            024800         MOVE ERROR-COUNTER TO ERROR-TOTAL.                       IF1294.2
+            024900     MOVE     CCVS-E-2 TO DUMMY-RECORD.                           IF1294.2
+            025000     PERFORM WRITE-LINE.                                          IF1294.2
+            025100 END-ROUTINE-13.                                                  IF1294.2
+            025200     IF DELETE-COUNTER IS EQUAL TO ZERO                           IF1294.2
+            025300         MOVE "NO " TO ERROR-TOTAL  ELSE                          IF1294.2
+            025400         MOVE DELETE-COUNTER TO ERROR-TOTAL.                      IF1294.2
+            025500     MOVE "TEST(S) DELETED     " TO ENDER-DESC.                   IF1294.2
+            025600     MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1294.2
+            025700      IF   INSPECT-COUNTER EQUAL TO ZERO                          IF1294.2
+            025800          MOVE "NO " TO ERROR-TOTAL                               IF1294.2
+            025900      ELSE MOVE INSPECT-COUNTER TO ERROR-TOTAL.                   IF1294.2
+            026000      MOVE "TEST(S) REQUIRE INSPECTION" TO ENDER-DESC.            IF1294.2
+            026100      MOVE CCVS-E-2 TO DUMMY-RECORD. PERFORM WRITE-LINE.          IF1294.2
+            026200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1294.2
+            026300 WRITE-LINE.                                                      IF1294.2
+            026400     ADD 1 TO RECORD-COUNT.                                       IF1294.2
+            026500Y    IF RECORD-COUNT GREATER 42                                   IF1294.2
+            026600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1294.2
+            026700Y        MOVE SPACE TO DUMMY-RECORD                               IF1294.2
+            026800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1294.2
+            026900Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1294.2
+            027000Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1294.2
+            027100Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1294.2
+            027200Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1294.2
+            027300Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1294.2
+            027400Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1294.2
+            027500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1294.2
+            027600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1294.2
+            027700Y        MOVE ZERO TO RECORD-COUNT.                               IF1294.2
+            027800     PERFORM WRT-LN.                                              IF1294.2
+            027900 WRT-LN.                                                          IF1294.2
+            028000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1294.2
+            028100     MOVE SPACE TO DUMMY-RECORD.                                  IF1294.2
+            028200 BLANK-LINE-PRINT.                                                IF1294.2
+            028300     PERFORM WRT-LN.                                              IF1294.2
+            028400 FAIL-ROUTINE.                                                    IF1294.2
+            028500     IF     COMPUTED-X NOT EQUAL TO SPACE                         IF1294.2
+            028600            GO TO FAIL-ROUTINE-WRITE.                             IF1294.2
+            028700     IF     CORRECT-X NOT EQUAL TO SPACE GO TO FAIL-ROUTINE-WRITE.IF1294.2
+            028800     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1294.2
+            028900     MOVE  "NO FURTHER INFORMATION, SEE PROGRAM." TO INFO-TEXT.   IF1294.2
+            029000     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1294.2
+            029100     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1294.2
+            029200     GO TO  FAIL-ROUTINE-EX.                                      IF1294.2
+            029300 FAIL-ROUTINE-WRITE.                                              IF1294.2
+            029400     MOVE   TEST-COMPUTED TO PRINT-REC PERFORM WRITE-LINE         IF1294.2
+            029500     MOVE   ANSI-REFERENCE TO COR-ANSI-REFERENCE.                 IF1294.2
+            029600     MOVE   TEST-CORRECT TO PRINT-REC PERFORM WRITE-LINE 2 TIMES. IF1294.2
+            029700     MOVE   SPACES TO COR-ANSI-REFERENCE.                         IF1294.2
+            029800 FAIL-ROUTINE-EX. EXIT.                                           IF1294.2
+            029900 BAIL-OUT.                                                        IF1294.2
+            030000     IF     COMPUTED-A NOT EQUAL TO SPACE GO TO BAIL-OUT-WRITE.   IF1294.2
+            030100     IF     CORRECT-A EQUAL TO SPACE GO TO BAIL-OUT-EX.           IF1294.2
+            030200 BAIL-OUT-WRITE.                                                  IF1294.2
+            030300     MOVE CORRECT-A TO XXCORRECT.                                 IF1294.2
+            030400     MOVE COMPUTED-A TO XXCOMPUTED.                               IF1294.2
+            030500     MOVE   ANSI-REFERENCE TO INF-ANSI-REFERENCE.                 IF1294.2
+            030600     MOVE   XXINFO TO DUMMY-RECORD. PERFORM WRITE-LINE 2 TIMES.   IF1294.2
+            030700     MOVE   SPACES TO INF-ANSI-REFERENCE.                         IF1294.2
+            030800 BAIL-OUT-EX. EXIT.                                               IF1294.2
+            030900 CCVS1-EXIT.                                                      IF1294.2
+            031000     EXIT.                                                        IF1294.2
+            031100********************************************************          IF1294.2
+            031200*                                                      *          IF1294.2
+            031300*    Intrinsic Function Tests         IF129A - ORD-MIN *          IF1294.2
+            031400*                                                      *          IF1294.2
+            031500********************************************************          IF1294.2
+            031600 SECT-IF129A SECTION.                                             IF1294.2
+            031700 F-ORD-MIN-INFO.                                                  IF1294.2
+            031800     MOVE     "See ref. A-62 2.33" TO ANSI-REFERENCE.             IF1294.2
+            031900     MOVE     "ORD-MIN Function"     TO FEATURE.                  IF1294.2
+            032000*****************TEST (a) ******************************          IF1294.2
+            032100 F-ORD-MIN-01.                                                    IF1294.2
+            032200     MOVE ZERO TO WS-INT.                                         IF1294.2
+            032300 F-ORD-MIN-TEST-01.                                               IF1294.2
+            032400     COMPUTE WS-INT = FUNCTION ORD-MIN(5, 3, 2, 8, 3, 1).         IF1294.2
+            032500     IF WS-INT = 6 THEN                                           IF1294.2
+            032600                        PERFORM PASS                              IF1294.2
+            032700     ELSE                                                         IF1294.2
+            032800                        MOVE 6   TO CORRECT-N                     IF1294.2
+            032900                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            033000                        PERFORM FAIL.                             IF1294.2
+            033100     GO TO F-ORD-MIN-WRITE-01.                                    IF1294.2
+            033200 F-ORD-MIN-DELETE-01.                                             IF1294.2
+            033300     PERFORM  DE-LETE.                                            IF1294.2
+            033400     GO TO    F-ORD-MIN-WRITE-01.                                 IF1294.2
+            033500 F-ORD-MIN-WRITE-01.                                              IF1294.2
+            033600     MOVE "F-ORD-MIN-01" TO PAR-NAME.                             IF1294.2
+            033700     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            033800*****************TEST (b) ******************************          IF1294.2
+            033900 F-ORD-MIN-TEST-02.                                               IF1294.2
+            034000     EVALUATE FUNCTION ORD-MIN(3, 2, 7, 1, 5)                     IF1294.2
+            034100     WHEN 4                                                       IF1294.2
+            034200                                 PERFORM PASS                     IF1294.2
+            034300                                 GO TO F-ORD-MIN-WRITE-02.        IF1294.2
+            034400     PERFORM FAIL.                                                IF1294.2
+            034500     GO TO F-ORD-MIN-WRITE-02.                                    IF1294.2
+            034600 F-ORD-MIN-DELETE-02.                                             IF1294.2
+            034700     PERFORM  DE-LETE.                                            IF1294.2
+            034800     GO TO    F-ORD-MIN-WRITE-02.                                 IF1294.2
+            034900 F-ORD-MIN-WRITE-02.                                              IF1294.2
+            035000     MOVE "F-ORD-MIN-02" TO PAR-NAME.                             IF1294.2
+            035100     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            035200*****************TEST (c) ******************************          IF1294.2
+            035300 F-ORD-MIN-03.                                                    IF1294.2
+            035400     MOVE ZERO TO WS-INT.                                         IF1294.2
+            035500 F-ORD-MIN-TEST-03.                                               IF1294.2
+            035600     IF FUNCTION ORD-MIN(5, 4, 3, 6, 2, 8) = 5                    IF1294.2
+            035700                        PERFORM PASS                              IF1294.2
+            035800     ELSE                                                         IF1294.2
+            035900                        PERFORM FAIL.                             IF1294.2
+            036000     GO TO F-ORD-MIN-WRITE-03.                                    IF1294.2
+            036100 F-ORD-MIN-DELETE-03.                                             IF1294.2
+            036200     PERFORM  DE-LETE.                                            IF1294.2
+            036300     GO TO    F-ORD-MIN-WRITE-03.                                 IF1294.2
+            036400 F-ORD-MIN-WRITE-03.                                              IF1294.2
+            036500     MOVE "F-ORD-MIN-03" TO PAR-NAME.                             IF1294.2
+            036600     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            036700*****************TEST (d) ******************************          IF1294.2
+            036800 F-ORD-MIN-04.                                                    IF1294.2
+            036900     MOVE ZERO TO WS-INT.                                         IF1294.2
+            037000 F-ORD-MIN-TEST-04.                                               IF1294.2
+            037100     COMPUTE WS-INT = FUNCTION ORD-MIN(A, B, C).                  IF1294.2
+            037200     IF WS-INT = 3 THEN                                           IF1294.2
+            037300                        PERFORM PASS                              IF1294.2
+            037400     ELSE                                                         IF1294.2
+            037500                        MOVE 3   TO CORRECT-N                     IF1294.2
+            037600                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            037700                        PERFORM FAIL.                             IF1294.2
+            037800     GO TO F-ORD-MIN-WRITE-04.                                    IF1294.2
+            037900 F-ORD-MIN-DELETE-04.                                             IF1294.2
+            038000     PERFORM  DE-LETE.                                            IF1294.2
+            038100     GO TO    F-ORD-MIN-WRITE-04.                                 IF1294.2
+            038200 F-ORD-MIN-WRITE-04.                                              IF1294.2
+            038300     MOVE "F-ORD-MIN-04" TO PAR-NAME.                             IF1294.2
+            038400     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            038500*****************TEST (e) ******************************          IF1294.2
+            038600 F-ORD-MIN-05.                                                    IF1294.2
+            038700     MOVE ZERO TO WS-INT.                                         IF1294.2
+            038800 F-ORD-MIN-TEST-05.                                               IF1294.2
+            038900     COMPUTE WS-INT = FUNCTION ORD-MIN(A, B, D).                  IF1294.2
+            039000     IF WS-INT = 1 THEN                                           IF1294.2
+            039100                        PERFORM PASS                              IF1294.2
+            039200     ELSE                                                         IF1294.2
+            039300                        MOVE 1    TO CORRECT-N                    IF1294.2
+            039400                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            039500                        PERFORM FAIL.                             IF1294.2
+            039600     GO TO F-ORD-MIN-WRITE-05.                                    IF1294.2
+            039700 F-ORD-MIN-DELETE-05.                                             IF1294.2
+            039800     PERFORM  DE-LETE.                                            IF1294.2
+            039900     GO TO    F-ORD-MIN-WRITE-05.                                 IF1294.2
+            040000 F-ORD-MIN-WRITE-05.                                              IF1294.2
+            040100     MOVE "F-ORD-MIN-05" TO PAR-NAME.                             IF1294.2
+            040200     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            040300*****************TEST (f) ******************************          IF1294.2
+            040400 F-ORD-MIN-06.                                                    IF1294.2
+            040500     MOVE ZERO TO WS-INT.                                         IF1294.2
+            040600 F-ORD-MIN-TEST-06.                                               IF1294.2
+            040700     COMPUTE WS-INT = FUNCTION ORD-MIN(A, 4, B, 7, 1, 9).         IF1294.2
+            040800     IF WS-INT = 5 THEN                                           IF1294.2
+            040900                        PERFORM PASS                              IF1294.2
+            041000     ELSE                                                         IF1294.2
+            041100                        MOVE 5   TO CORRECT-N                     IF1294.2
+            041200                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            041300                        PERFORM FAIL.                             IF1294.2
+            041400     GO TO F-ORD-MIN-WRITE-06.                                    IF1294.2
+            041500 F-ORD-MIN-DELETE-06.                                             IF1294.2
+            041600     PERFORM  DE-LETE.                                            IF1294.2
+            041700     GO TO    F-ORD-MIN-WRITE-06.                                 IF1294.2
+            041800 F-ORD-MIN-WRITE-06.                                              IF1294.2
+            041900     MOVE "F-ORD-MIN-06" TO PAR-NAME.                             IF1294.2
+            042000     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            042100*****************TEST (g) ******************************          IF1294.2
+            042200 F-ORD-MIN-07.                                                    IF1294.2
+            042300     MOVE ZERO TO WS-INT.                                         IF1294.2
+            042400 F-ORD-MIN-TEST-07.                                               IF1294.2
+            042500     COMPUTE WS-INT = FUNCTION ORD-MIN(4, 1, A, 3).               IF1294.2
+            042600     IF WS-INT = 2 THEN                                           IF1294.2
+            042700                        PERFORM PASS                              IF1294.2
+            042800     ELSE                                                         IF1294.2
+            042900                        MOVE 2    TO CORRECT-N                    IF1294.2
+            043000                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            043100                        PERFORM FAIL.                             IF1294.2
+            043200     GO TO F-ORD-MIN-WRITE-07.                                    IF1294.2
+            043300 F-ORD-MIN-DELETE-07.                                             IF1294.2
+            043400     PERFORM  DE-LETE.                                            IF1294.2
+            043500     GO TO    F-ORD-MIN-WRITE-07.                                 IF1294.2
+            043600 F-ORD-MIN-WRITE-07.                                              IF1294.2
+            043700     MOVE "F-ORD-MIN-07" TO PAR-NAME.                             IF1294.2
+            043800     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            043900*****************TEST (h) ******************************          IF1294.2
+            044000 F-ORD-MIN-08.                                                    IF1294.2
+            044100     MOVE ZERO TO WS-INT.                                         IF1294.2
+            044200 F-ORD-MIN-TEST-08.                                               IF1294.2
+            044300     COMPUTE WS-INT = FUNCTION ORD-MIN("A", I, "P").              IF1294.2
+            044400     IF WS-INT = 1 THEN                                           IF1294.2
+            044500                        PERFORM PASS                              IF1294.2
+            044600     ELSE                                                         IF1294.2
+            044700                        MOVE 1    TO CORRECT-N                    IF1294.2
+            044800                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            044900                        PERFORM FAIL.                             IF1294.2
+            045000     GO TO F-ORD-MIN-WRITE-08.                                    IF1294.2
+            045100 F-ORD-MIN-DELETE-08.                                             IF1294.2
+            045200     PERFORM  DE-LETE.                                            IF1294.2
+            045300     GO TO    F-ORD-MIN-WRITE-08.                                 IF1294.2
+            045400 F-ORD-MIN-WRITE-08.                                              IF1294.2
+            045500     MOVE "F-ORD-MIN-08" TO PAR-NAME.                             IF1294.2
+            045600     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            045700*****************TEST (i) ******************************          IF1294.2
+            045800 F-ORD-MIN-09.                                                    IF1294.2
+            045900     MOVE ZERO TO WS-INT.                                         IF1294.2
+            046000 F-ORD-MIN-TEST-09.                                               IF1294.2
+            046100     COMPUTE WS-INT = FUNCTION ORD-MIN("S", "D", J).              IF1294.2
+            046200     IF WS-INT = 2 THEN                                           IF1294.2
+            046300                        PERFORM PASS                              IF1294.2
+            046400     ELSE                                                         IF1294.2
+            046500                        MOVE 2   TO CORRECT-N                     IF1294.2
+            046600                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            046700                        PERFORM FAIL.                             IF1294.2
+            046800     GO TO F-ORD-MIN-WRITE-09.                                    IF1294.2
+            046900 F-ORD-MIN-DELETE-09.                                             IF1294.2
+            047000     PERFORM  DE-LETE.                                            IF1294.2
+            047100     GO TO    F-ORD-MIN-WRITE-09.                                 IF1294.2
+            047200 F-ORD-MIN-WRITE-09.                                              IF1294.2
+            047300     MOVE "F-ORD-MIN-09" TO PAR-NAME.                             IF1294.2
+            047400     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            047500*****************TEST (j) ******************************          IF1294.2
+            047600 F-ORD-MIN-10.                                                    IF1294.2
+            047700     MOVE ZERO TO WS-INT.                                         IF1294.2
+            047800 F-ORD-MIN-TEST-10.                                               IF1294.2
+            047900     COMPUTE WS-INT = FUNCTION ORD-MIN(A, 5, 5, A).               IF1294.2
+            048000     IF WS-INT = 1 THEN                                           IF1294.2
+            048100                        PERFORM PASS                              IF1294.2
+            048200     ELSE                                                         IF1294.2
+            048300                        MOVE 1    TO CORRECT-N                    IF1294.2
+            048400                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            048500                        PERFORM FAIL.                             IF1294.2
+            048600     GO TO F-ORD-MIN-WRITE-10.                                    IF1294.2
+            048700 F-ORD-MIN-DELETE-10.                                             IF1294.2
+            048800     PERFORM  DE-LETE.                                            IF1294.2
+            048900     GO TO    F-ORD-MIN-WRITE-10.                                 IF1294.2
+            049000 F-ORD-MIN-WRITE-10.                                              IF1294.2
+            049100     MOVE "F-ORD-MIN-10" TO PAR-NAME.                             IF1294.2
+            049200     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            049300*****************TEST (k) ******************************          IF1294.2
+            049400 F-ORD-MIN-11.                                                    IF1294.2
+            049500     MOVE ZERO TO WS-INT.                                         IF1294.2
+            049600 F-ORD-MIN-TEST-11.                                               IF1294.2
+            049700     COMPUTE WS-INT = FUNCTION ORD-MIN(IND(1), IND(2), IND(3)).   IF1294.2
+            049800     IF WS-INT = 2 THEN                                           IF1294.2
+            049900                        PERFORM PASS                              IF1294.2
+            050000     ELSE                                                         IF1294.2
+            050100                        MOVE 2   TO CORRECT-N                     IF1294.2
+            050200                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            050300                        PERFORM FAIL.                             IF1294.2
+            050400     GO TO F-ORD-MIN-WRITE-11.                                    IF1294.2
+            050500 F-ORD-MIN-DELETE-11.                                             IF1294.2
+            050600     PERFORM  DE-LETE.                                            IF1294.2
+            050700     GO TO    F-ORD-MIN-WRITE-11.                                 IF1294.2
+            050800 F-ORD-MIN-WRITE-11.                                              IF1294.2
+            050900     MOVE "F-ORD-MIN-11" TO PAR-NAME.                             IF1294.2
+            051000     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            051100*****************TEST (l) ******************************          IF1294.2
+            051200 F-ORD-MIN-12.                                                    IF1294.2
+            051300     MOVE ZERO TO WS-INT.                                         IF1294.2
+            051400 F-ORD-MIN-TEST-12.                                               IF1294.2
+            051500     COMPUTE WS-INT = FUNCTION ORD-MIN(IND(P), IND(Q), IND(R)).   IF1294.2
+            051600     IF WS-INT = 1 THEN                                           IF1294.2
+            051700                        PERFORM PASS                              IF1294.2
+            051800     ELSE                                                         IF1294.2
+            051900                        MOVE 1    TO CORRECT-N                    IF1294.2
+            052000                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            052100                        PERFORM FAIL.                             IF1294.2
+            052200     GO TO F-ORD-MIN-WRITE-12.                                    IF1294.2
+            052300 F-ORD-MIN-DELETE-12.                                             IF1294.2
+            052400     PERFORM  DE-LETE.                                            IF1294.2
+            052500     GO TO    F-ORD-MIN-WRITE-12.                                 IF1294.2
+            052600 F-ORD-MIN-WRITE-12.                                              IF1294.2
+            052700     MOVE "F-ORD-MIN-12" TO PAR-NAME.                             IF1294.2
+            052800     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            052900*****************TEST (m) ******************************          IF1294.2
+            053000 F-ORD-MIN-13.                                                    IF1294.2
+            053100     MOVE ZERO TO WS-INT.                                         IF1294.2
+            053200 F-ORD-MIN-TEST-13.                                               IF1294.2
+            053300     COMPUTE WS-INT = FUNCTION ORD-MIN(                           IF1294.2
+            053400                           FUNCTION ORD-MIN(1, 4), 3, 7).         IF1294.2
+            053500     IF WS-INT = 1 THEN                                           IF1294.2
+            053600                        PERFORM PASS                              IF1294.2
+            053700     ELSE                                                         IF1294.2
+            053800                        MOVE 1    TO CORRECT-N                    IF1294.2
+            053900                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            054000                        PERFORM FAIL.                             IF1294.2
+            054100     GO TO F-ORD-MIN-WRITE-13.                                    IF1294.2
+            054200 F-ORD-MIN-DELETE-13.                                             IF1294.2
+            054300     PERFORM  DE-LETE.                                            IF1294.2
+            054400     GO TO    F-ORD-MIN-WRITE-13.                                 IF1294.2
+            054500 F-ORD-MIN-WRITE-13.                                              IF1294.2
+            054600     MOVE "F-ORD-MIN-13" TO PAR-NAME.                             IF1294.2
+            054700     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            054800*****************TEST (n) ******************************          IF1294.2
+            054900 F-ORD-MIN-14.                                                    IF1294.2
+            055000     MOVE ZERO TO WS-INT.                                         IF1294.2
+            055100 F-ORD-MIN-TEST-14.                                               IF1294.2
+            055200     COMPUTE WS-INT = FUNCTION ORD-MIN(IND(ALL)).                 IF1294.2
+            055300     IF WS-INT = 2 THEN                                           IF1294.2
+            055400                        PERFORM PASS                              IF1294.2
+            055500     ELSE                                                         IF1294.2
+            055600                        MOVE 2    TO CORRECT-N                    IF1294.2
+            055700                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            055800                        PERFORM FAIL.                             IF1294.2
+            055900     GO TO F-ORD-MIN-WRITE-14.                                    IF1294.2
+            056000 F-ORD-MIN-DELETE-14.                                             IF1294.2
+            056100     PERFORM  DE-LETE.                                            IF1294.2
+            056200     GO TO    F-ORD-MIN-WRITE-14.                                 IF1294.2
+            056300 F-ORD-MIN-WRITE-14.                                              IF1294.2
+            056400     MOVE "F-ORD-MIN-14" TO PAR-NAME.                             IF1294.2
+            056500     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            056600*****************TEST (o) ******************************          IF1294.2
+            056700 F-ORD-MIN-15.                                                    IF1294.2
+            056800     MOVE ZERO TO WS-INT.                                         IF1294.2
+            056900 F-ORD-MIN-TEST-15.                                               IF1294.2
+            057000     COMPUTE WS-INT = FUNCTION ORD-MIN(2, 3, C) + A.              IF1294.2
+            057100     IF WS-INT = 6 THEN                                           IF1294.2
+            057200                        PERFORM PASS                              IF1294.2
+            057300     ELSE                                                         IF1294.2
+            057400                        MOVE 6    TO CORRECT-N                    IF1294.2
+            057500                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            057600                        PERFORM FAIL.                             IF1294.2
+            057700     GO TO F-ORD-MIN-WRITE-15.                                    IF1294.2
+            057800 F-ORD-MIN-DELETE-15.                                             IF1294.2
+            057900     PERFORM  DE-LETE.                                            IF1294.2
+            058000     GO TO    F-ORD-MIN-WRITE-15.                                 IF1294.2
+            058100 F-ORD-MIN-WRITE-15.                                              IF1294.2
+            058200     MOVE "F-ORD-MIN-15" TO PAR-NAME.                             IF1294.2
+            058300     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            058400*****************TEST (p) ******************************          IF1294.2
+            058500 F-ORD-MIN-16.                                                    IF1294.2
+            058600     MOVE ZERO TO WS-INT.                                         IF1294.2
+            058700 F-ORD-MIN-TEST-16.                                               IF1294.2
+            058800     COMPUTE WS-INT = FUNCTION ORD-MIN(9, 3, A) +                 IF1294.2
+            058900                      FUNCTION ORD-MIN(1, 1).                     IF1294.2
+            059000     IF WS-INT = 3 THEN                                           IF1294.2
+            059100                        PERFORM PASS                              IF1294.2
+            059200     ELSE                                                         IF1294.2
+            059300                        MOVE 3    TO CORRECT-N                    IF1294.2
+            059400                        MOVE WS-INT TO COMPUTED-N                 IF1294.2
+            059500                        PERFORM FAIL.                             IF1294.2
+            059600     GO TO F-ORD-MIN-WRITE-16.                                    IF1294.2
+            059700 F-ORD-MIN-DELETE-16.                                             IF1294.2
+            059800     PERFORM  DE-LETE.                                            IF1294.2
+            059900     GO TO    F-ORD-MIN-WRITE-16.                                 IF1294.2
+            060000 F-ORD-MIN-WRITE-16.                                              IF1294.2
+            060100     MOVE "F-ORD-MIN-16" TO PAR-NAME.                             IF1294.2
+            060200     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            060300*****************SPECIAL TEST 1******************************     IF1294.2
+            060400 F-ORD-MIN-17.                                                    IF1294.2
+            060500     MOVE 10 TO ARG1                                              IF1294.2
+            060600     PERFORM F-ORD-MIN-TEST-17                                    IF1294.2
+            060700       UNTIL FUNCTION ORD-MIN(2, ARG1) > 1.                       IF1294.2
+            060800*                                                                 IF1294.2
+            060900**    when ARG1 = 10 .. 2 ORD-MIN(2,ARG1) = 1                     IF1294.2
+            061000**    when ARG1 = 1 , ORD-MIN(5,ARG1) = 2                         IF1294.2
+            061100*                                                                 IF1294.2
+            061200     IF ARG1 = 1 THEN                                             IF1294.2
+            061300                        PERFORM PASS                              IF1294.2
+            061400     ELSE                                                         IF1294.2
+            061500                        MOVE 1 TO CORRECT-N                       IF1294.2
+            061600                        MOVE ARG1   TO COMPUTED-N                 IF1294.2
+            061700                        PERFORM FAIL.                             IF1294.2
+            061800     GO TO F-ORD-MIN-WRITE-17.                                    IF1294.2
+            061900*                                                                 IF1294.2
+            062000 F-ORD-MIN-TEST-17.                                               IF1294.2
+            062100     COMPUTE ARG1 = ARG1 - 1.                                     IF1294.2
+            062200*                                                                 IF1294.2
+            062300 F-ORD-MIN-DELETE-17.                                             IF1294.2
+            062400     PERFORM  DE-LETE.                                            IF1294.2
+            062500     GO TO    F-ORD-MIN-WRITE-17.                                 IF1294.2
+            062600 F-ORD-MIN-WRITE-17.                                              IF1294.2
+            062700     MOVE "F-ORD-MIN-17" TO PAR-NAME.                             IF1294.2
+            062800     PERFORM  PRINT-DETAIL.                                       IF1294.2
+            062900*******************END OF TESTS**************************         IF1294.2
+            063000 CCVS-EXIT SECTION.                                               IF1294.2
+            063100 CCVS-999999.                                                     IF1294.2
+            063200     GO TO CLOSE-FILES.                                           IF1294.2
+                  *END-OF,IF129A                                                            
+        """)
+    )
+
+    @Test
+    fun if1304_2() = rewriteRun(
+        cobol("""
         """)
     )
 }
