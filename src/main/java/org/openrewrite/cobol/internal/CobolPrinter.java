@@ -3892,6 +3892,24 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 commentArea.ifPresent(it -> visitSpace(it.getEndLine(), p));
             }
         } else {
+            Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
+            if (lines.isPresent()) {
+                for (Lines.Line line : lines.get().getLines()) {
+                    if (line.getSequenceArea() != null) {
+                        p.append(line.getSequenceArea().getSequence());
+                    }
+                    if (line.getIndicatorArea() != null) {
+                        p.append(line.getIndicatorArea().getIndicator());
+                    }
+                    p.append(line.getContent());
+                    if (line.getCommentArea() != null) {
+                        visitSpace(line.getCommentArea().getPrefix(), p);
+                        p.append(line.getCommentArea().getComment());
+                        visitSpace(line.getCommentArea().getEndLine(), p);
+                    }
+                }
+            }
+
             Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
             sequenceArea.ifPresent(it -> p.append(it.getSequence()));
 

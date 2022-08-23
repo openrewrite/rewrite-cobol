@@ -6413,18 +6413,46 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
     private Space processText(String text, List<Marker> markers) {
         SequenceArea sequenceArea = sequenceArea();
-        if (sequenceArea != null) {
-            markers.add(sequenceArea);
-        }
-
         IndicatorArea indicatorArea = indicatorArea(null);
-        if (indicatorArea != null) {
-            markers.add(indicatorArea);
-        }
 
         boolean isCommentEntry = text.startsWith("*>CE ");
         if (isCommentEntry) {
             text = text.substring(5);
+        }
+
+        if (!isCommentEntry && indicatorArea != null) {
+            String contentArea = source.substring(cursor, cursor - cobolDialect.indicatorArea - 1 + cobolDialect.otherArea);
+            if (contentArea.trim().isEmpty() || "*".equals(indicatorArea.getIndicator())) {
+                cursor += contentArea.length();
+                List<Lines.Line> lines = new ArrayList<>();
+                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
+                lines.add(line);
+
+                int iterations = 0;
+                while (iterations < 1000) {
+                    sequenceArea = sequenceArea();
+                    indicatorArea = indicatorArea(null);
+                    contentArea = source.substring(cursor, cursor - cobolDialect.indicatorArea - 1 + cobolDialect.otherArea);
+                    if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
+                        cursor += contentArea.length();
+                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
+                        lines.add(line);
+                    } else {
+                        break;
+                    }
+                    iterations++;
+                }
+
+                markers.add(new Lines(randomId(), lines));
+            }
+        }
+
+        if (sequenceArea != null) {
+            markers.add(sequenceArea);
+        }
+
+        if (indicatorArea != null) {
+            markers.add(indicatorArea);
         }
 
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
