@@ -3338,7 +3338,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.SortProcedurePhrase s = sortProcedurePhrase;
         s = s.withPrefix(visitSpace(s.getPrefix(), p));
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
-        s = s.withProcedureName((Cobol.Word) visit(s.getProcedureName(), p));
+        s = s.withProcedureName((Name) visit(s.getProcedureName(), p));
         s = s.withSortInputThrough((Cobol.Sortable) visit(s.getSortInputThrough(), p));
         return s;
     }

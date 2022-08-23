@@ -440,7 +440,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 visit(ctx.AND(), ctx.OR()),
-                (Cobol.CombinableCondition) visit(ctx.combinableCondition()),
+                visitNullable(ctx.combinableCondition()),
                 convertAll(ctx.abbreviation())
         );
     }
@@ -1552,8 +1552,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 (Cobol.Word) visit(ctx.DELETE()),
                 (Name) visit(ctx.fileName()),
                 visitNullable(ctx.RECORD()),
-                (Cobol.StatementPhrase) visit(ctx.invalidKeyPhrase()),
-                (Cobol.StatementPhrase) visit(ctx.notInvalidKeyPhrase()),
+                visitNullable(ctx.invalidKeyPhrase()),
+                visitNullable(ctx.notInvalidKeyPhrase()),
                 visitNullable(ctx.END_DELETE())
         );
     }
@@ -4719,7 +4719,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 visitNullable(ctx.RECORD()),
                 visitNullable(ctx.returnInto()),
                 (Cobol.StatementPhrase) visit(ctx.atEndPhrase()),
-                (Cobol.StatementPhrase) visit(ctx.notAtEndPhrase()),
+                visitNullable(ctx.notAtEndPhrase()),
                 visitNullable(ctx.END_RETURN())
         );
     }
@@ -5448,7 +5448,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.INPUT(), ctx.PROCEDURE(), ctx.IS()),
-                (Cobol.Word) visit(ctx.procedureName()),
+                (Name) visit(ctx.procedureName()),
                 visitNullable(ctx.sortInputThrough())
         );
     }

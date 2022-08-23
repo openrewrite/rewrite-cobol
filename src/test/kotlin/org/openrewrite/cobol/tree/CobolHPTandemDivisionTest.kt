@@ -25,7 +25,7 @@ import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
 
 @Disabled("Requires configuration to parse HP Tandem dialect.")
-class CobolDivisionTest : RewriteTest {
+class CobolHPTandemDivisionTest : RewriteTest {
 
     override fun defaults(spec: RecipeSpec) {
         spec.recipe(toRecipe {

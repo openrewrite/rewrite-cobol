@@ -5347,7 +5347,7 @@ public interface Cobol extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class ProcedureName implements Cobol {
+    class ProcedureName implements Cobol, Name {
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8122,7 +8122,7 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         List<Word> words;
-        Word procedureName;
+        Name procedureName;
 
         @Nullable
         Sortable sortInputThrough;
