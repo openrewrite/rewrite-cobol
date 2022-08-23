@@ -3307,7 +3307,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
         s = s.withFileName((Cobol.Word) visit(s.getFileName(), p));
         s = s.withSortOnKeyClause(ListUtils.map(s.getSortOnKeyClause(), t -> (Cobol.Sortable) visit(t, p)));
-        s = s.withSortDuplicatesPhrase((Cobol.Word) visit(s.getSortDuplicatesPhrase(), p));
+        s = s.withSortDuplicatesPhrase((Cobol.Sortable) visit(s.getSortDuplicatesPhrase(), p));
         s = s.withSortCollatingSequencePhrase((Cobol.SortCollatingSequencePhrase) visit(s.getSortCollatingSequencePhrase(), p));
         s = s.withSortInputProcedurePhrase((Cobol.SortProcedurePhrase) visit(s.getSortInputProcedurePhrase(), p));
         s = s.withSortUsing(ListUtils.map(s.getSortUsing(), t -> (Cobol.Sortable) visit(t, p)));

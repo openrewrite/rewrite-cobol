@@ -8029,7 +8029,7 @@ public interface Cobol extends Tree {
         List<Sortable> sortOnKeyClause;
 
         @Nullable
-        Cobol.Word sortDuplicatesPhrase;
+        Sortable sortDuplicatesPhrase;
 
         SortCollatingSequencePhrase sortCollatingSequencePhrase;
         SortProcedurePhrase sortInputProcedurePhrase;
