@@ -41,6 +41,7 @@ class CobolNistCMTest : RewriteTest {
     @Test
     fun cm1014_2() = rewriteRun(
         cobol("""
+                  *HEADER,COBOL,CM101M                                                      
             000100 IDENTIFICATION DIVISION.                                         CM1014.2
             000200 PROGRAM-ID.                                                      CM1014.2
             000300     CM101M.                                                      CM1014.2
@@ -710,12 +711,14 @@ class CobolNistCMTest : RewriteTest {
             066700         AFTER 5 LINES.                                           CM1014.2
             066800     MOVE HYPHEN-LINE TO PRINT-REC.                               CM1014.2
             066900     PERFORM WRITE-LINE.                                          CM1014.2
+                  *END-OF,CM101M                                                            
         """)
     )
 
     @Test
     fun cm1024_2() = rewriteRun(
         cobol("""
+                  *HEADER,COBOL,CM102M                                                      
             000100 IDENTIFICATION DIVISION.                                         CM1024.2
             000200 PROGRAM-ID.                                                      CM1024.2
             000300     CM102M.                                                      CM1024.2
@@ -1681,12 +1684,14 @@ class CobolNistCMTest : RewriteTest {
             096300         AFTER 5 LINES.                                           CM1024.2
             096400     MOVE HYPHEN-LINE TO PRINT-REC.                               CM1024.2
             096500     PERFORM WRITE-LINE.                                          CM1024.2
+                  *END-OF,CM102M                                                            
         """)
     )
 
     @Test
     fun cm1034_2() = rewriteRun(
         cobol("""
+                  *HEADER,COBOL,CM103M                                                      
             000100 IDENTIFICATION DIVISION.                                         CM1034.2
             000200 PROGRAM-ID.                                                      CM1034.2
             000300     CM103M.                                                      CM1034.2
@@ -1966,12 +1971,14 @@ class CobolNistCMTest : RewriteTest {
             027700         AFTER 5 LINES.                                           CM1034.2
             027800     MOVE HYPHEN-LINE TO PRINT-REC.                               CM1034.2
             027900     PERFORM WRITE-LINE.                                          CM1034.2
+                  *END-OF,CM103M                                                            
         """)
     )
 
     @Test
     fun cm1044_2() = rewriteRun(
         cobol("""
+                  *HEADER,COBOL,CM104M                                                      
             000100 IDENTIFICATION DIVISION.                                         CM1044.2
             000200 PROGRAM-ID.                                                      CM1044.2
             000300     CM104M.                                                      CM1044.2
@@ -2307,12 +2314,14 @@ class CobolNistCMTest : RewriteTest {
             033300         AFTER 5 LINES.                                           CM1044.2
             033400     MOVE HYPHEN-LINE TO PRINT-REC.                               CM1044.2
             033500     PERFORM WRITE-LINE.                                          CM1044.2
+                  *END-OF,CM104M                                                            
         """)
     )
 
     @Test
     fun cm1054_2() = rewriteRun(
         cobol("""
+                  *HEADER,COBOL,CM105M                                                      
             000100 IDENTIFICATION DIVISION.                                         CM1054.2
             000200 PROGRAM-ID.                                                      CM1054.2
             000300     CM105M.                                                      CM1054.2
@@ -2804,12 +2813,14 @@ class CobolNistCMTest : RewriteTest {
             048900         AFTER 5 LINES.                                           CM1054.2
             049000     MOVE HYPHEN-LINE TO PRINT-REC.                               CM1054.2
             049100     PERFORM WRITE-LINE.                                          CM1054.2
+                  *END-OF,CM105M                                                            
         """)
     )
 
     @Test
     fun cm2014_2() = rewriteRun(
         cobol("""
+                  *HEADER,COBOL,CM201M                                                      
             000100 IDENTIFICATION DIVISION.                                         CM2014.2
             000200 PROGRAM-ID.                                                      CM2014.2
             000300     CM201M.                                                      CM2014.2
@@ -2895,12 +2906,14 @@ class CobolNistCMTest : RewriteTest {
             008300     MOVE 70 TO OUT-LENGTH.                                       CM2014.2
             008400     SEND CM-OUTQUE-1 FROM RECOGNITION-MSG-2 WITH EGI.            CM2014.2
             008500     STOP RUN.                                                    CM2014.2
+                  *END-OF,CM201M                                                            
         """)
     )
 
     @Test
     fun cm2024_2() = rewriteRun(
         cobol("""
+                  *HEADER,COBOL,CM202M                                                      
             000100 IDENTIFICATION DIVISION.                                         CM2024.2
             000200 PROGRAM-ID.                                                      CM2024.2
             000300     CM202M.                                                      CM2024.2
@@ -3543,12 +3556,14 @@ class CobolNistCMTest : RewriteTest {
             064000         AFTER 5 LINES.                                           CM2024.2
             064100     MOVE HYPHEN-LINE TO PRINT-REC.                               CM2024.2
             064200     PERFORM WRITE-LINE.                                          CM2024.2
+                  *END-OF,CM202M                                                            
         """)
     )
 
     @Test
     fun cm3034_2() = rewriteRun(
         cobol("""
+                  *HEADER,COBOL,CM303M                                                      
             000100 IDENTIFICATION DIVISION.                                         CM3034.2
             000200 PROGRAM-ID.                                                      CM3034.2
             000300     CM303M.                                                      CM3034.2
@@ -3584,12 +3599,14 @@ class CobolNistCMTest : RewriteTest {
             003300*Message expected for above statement: OBSOLETE                   CM3034.2
             003400                                                                  CM3034.2
             003500*TOTAL NUMBER OF FLAGS EXPECTED = 2.                              CM3034.2
+                  *END-OF,CM303M                                                            
         """)
     )
 
     @Test
     fun cm4014_2() = rewriteRun(
         cobol("""
+                  *HEADER,COBOL,CM401M                                                      
             000100 IDENTIFICATION DIVISION.                                         CM4014.2
             000200 PROGRAM-ID.                                                      CM4014.2
             000300      CM401M.                                                     CM4014.2
@@ -3655,6 +3672,7 @@ class CobolNistCMTest : RewriteTest {
             006300*Message expected for above statement: NON-CONFORMING STANDARD    CM4014.2
             006400                                                                  CM4014.2
             006500*TOTAL NUMBER OF FLAGS EXPECTED = 10.                             CM4014.2
+                  *END-OF,CM401M                                                            
         """)
     )
 }
