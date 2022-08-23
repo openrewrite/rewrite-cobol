@@ -1147,7 +1147,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 ctx.dataName() != null ? (Cobol.Word) visit(ctx.dataName()) :
                         ctx.FILLER() != null ? (Cobol.Word) visit(ctx.FILLER()) : null,
                 convertAll(ctx.dataDescriptionEntryFormat1Clause()),
-                (Cobol.Word) visit(ctx.DOT_FS())
+                visitNullable(ctx.DOT_FS())
         );
     }
 

@@ -2180,7 +2180,7 @@ public interface Cobol extends Tree {
         DisplayUpon displayUpon;
 
         @Nullable
-        Cobol.Word displayWith;
+        List<Word> displayWith;
 
         @Nullable
         StatementPhrase onExceptionClause;
