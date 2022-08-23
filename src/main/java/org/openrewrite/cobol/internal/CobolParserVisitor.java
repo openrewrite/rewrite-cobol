@@ -6361,7 +6361,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         int matchedCount = 0;
         int iterations = 0;
-        while (matchedCount < text.length() && iterations < 1000) {
+        while (matchedCount < text.length() && iterations < 200) {
             continuation = new ArrayList<>(3);
 
             String current = source.substring(cursor);
@@ -6430,7 +6430,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 lines.add(line);
 
                 int iterations = 0;
-                while (iterations < 1000) {
+                while (iterations < 200) {
                     sequenceArea = sequenceArea();
                     indicatorArea = indicatorArea(null);
                     contentArea = source.substring(cursor, cursor - cobolDialect.indicatorArea - 1 + cobolDialect.otherArea);
