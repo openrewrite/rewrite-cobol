@@ -1391,7 +1391,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitInspectAllLeading(Cobol.InspectAllLeading inspectAllLeading, PrintOutputCapture<P> p) {
         visitSpace(inspectAllLeading.getPrefix(), p);
         visitMarkers(inspectAllLeading.getMarkers(), p);
-        visit(inspectAllLeading.getWord(), p);
+        visit(inspectAllLeading.getName(), p);
         visit(inspectAllLeading.getInspections(), p);
         return inspectAllLeading;
     }

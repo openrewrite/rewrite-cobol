@@ -723,7 +723,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                (Cobol.Word) visit(ctx.classClauseFrom()),
+                (Name) visit(ctx.classClauseFrom()),
                 ctx.THROUGH() != null ? (Cobol.Word) visit(ctx.THROUGH()) :
                         ctx.THRU() != null ? (Cobol.Word) visit(ctx.THRU()) : null,
                 visitNullable(ctx.classClauseTo())
@@ -4287,7 +4287,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 Markers.EMPTY,
                 wordsList(ctx.PAGE(), ctx.LIMIT(), ctx.IS(), ctx.LIMITS(), ctx.ARE()),
                 (Name) visit(ctx.integerLiteral()),
-                visit(ctx.LINE(), ctx.LINES())
+                ctx.LINE() != null ? (Cobol.Word) visit(ctx.LINE()) :
+                        ctx.LINES() != null ? (Cobol.Word) visit(ctx.LINES()) : null
         );
     }
 

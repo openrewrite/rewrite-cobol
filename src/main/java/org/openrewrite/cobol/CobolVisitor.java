@@ -1367,7 +1367,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectAllLeading i = inspectAllLeading;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
-        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
+        i = i.withName((Name) visit(i.getName(), p));
         i = i.withInspections(ListUtils.map(i.getInspections(), t -> (Cobol.InspectBeforeAfter) visit(t, p)));
         return i;
     }

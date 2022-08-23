@@ -3345,7 +3345,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word word;
+        Name name;
 
         @Nullable
         List<InspectBeforeAfter> inspections;
@@ -6215,19 +6215,19 @@ public interface Cobol extends Tree {
         ReportDescriptionGlobalClause reportDescriptionGlobalClause;
 
         @Nullable
-        ReportDescriptionGlobalClause reportDescriptionPageLimitClause;
+        ReportDescriptionPageLimitClause reportDescriptionPageLimitClause;
 
         @Nullable
-        ReportDescriptionGlobalClause reportDescriptionHeadingClause;
+        ReportDescriptionHeadingClause reportDescriptionHeadingClause;
 
         @Nullable
-        ReportDescriptionGlobalClause reportDescriptionFirstDetailClause;
+        ReportDescriptionFirstDetailClause reportDescriptionFirstDetailClause;
 
         @Nullable
-        ReportDescriptionGlobalClause reportDescriptionLastDetailClause;
+        ReportDescriptionLastDetailClause reportDescriptionLastDetailClause;
 
         @Nullable
-        ReportDescriptionGlobalClause reportDescriptionFootingClause;
+        ReportDescriptionFootingClause reportDescriptionFootingClause;
 
         Word dot;
 
