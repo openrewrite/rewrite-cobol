@@ -2564,11 +2564,11 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
         r = r.withQualifiedDataName((Cobol.QualifiedDataName) visit(r.getQualifiedDataName(), p));
         r = r.withReportDescriptionGlobalClause((Cobol.ReportDescriptionGlobalClause) visit(r.getReportDescriptionGlobalClause(), p));
-        r = r.withReportDescriptionPageLimitClause((Cobol.ReportDescriptionGlobalClause) visit(r.getReportDescriptionPageLimitClause(), p));
-        r = r.withReportDescriptionHeadingClause((Cobol.ReportDescriptionGlobalClause) visit(r.getReportDescriptionHeadingClause(), p));
-        r = r.withReportDescriptionFirstDetailClause((Cobol.ReportDescriptionGlobalClause) visit(r.getReportDescriptionFirstDetailClause(), p));
-        r = r.withReportDescriptionLastDetailClause((Cobol.ReportDescriptionGlobalClause) visit(r.getReportDescriptionLastDetailClause(), p));
-        r = r.withReportDescriptionFootingClause((Cobol.ReportDescriptionGlobalClause) visit(r.getReportDescriptionFootingClause(), p));
+        r = r.withReportDescriptionPageLimitClause((Cobol.ReportDescriptionPageLimitClause) visit(r.getReportDescriptionPageLimitClause(), p));
+        r = r.withReportDescriptionHeadingClause((Cobol.ReportDescriptionHeadingClause) visit(r.getReportDescriptionHeadingClause(), p));
+        r = r.withReportDescriptionFirstDetailClause((Cobol.ReportDescriptionFirstDetailClause) visit(r.getReportDescriptionFirstDetailClause(), p));
+        r = r.withReportDescriptionLastDetailClause((Cobol.ReportDescriptionLastDetailClause) visit(r.getReportDescriptionLastDetailClause(), p));
+        r = r.withReportDescriptionFootingClause((Cobol.ReportDescriptionFootingClause) visit(r.getReportDescriptionFootingClause(), p));
         r = r.withDot((Cobol.Word) visit(r.getDot(), p));
         return r;
     }
