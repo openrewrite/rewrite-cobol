@@ -15,6 +15,8 @@
  */
 package org.openrewrite.cobol;
 
+
+import org.openrewrite.Parser;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.test.DslParserBuilder;
@@ -27,7 +29,12 @@ public class Assertions {
     private Assertions() {
     }
 
-    private static final DslParserBuilder parserBuilder = new DslParserBuilder("cobol", CobolParser.builder());
+    static final DslParserBuilder parserBuilder = new DslParserBuilder("cobol", new Parser.Builder(Cobol.CompilationUnit.class) {
+        @Override
+        public Parser<?> build() {
+            return new CobolParser();
+        }
+    });
 
     public static SourceSpecs cobol(@Nullable String before) {
         return cobol(before, s -> {
