@@ -589,7 +589,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.BY(), ctx.REFERENCE()),
-                convertAllPrefixedList(ctx.COMMACHAR(), ctx.callByReference())
+                convertAll(ctx.callByReference())
         );
     }
 
@@ -674,7 +674,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 (Cobol.Word) visit(ctx.CANCEL()),
-                convertAllPrefixedList(ctx.COMMACHAR(), ctx.cancelCall())
+                convertAll(ctx.cancelCall())
         );
     }
 
@@ -2997,7 +2997,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 Markers.EMPTY,
                 (Name) visit(ctx.moveToSendingArea()),
                 (Cobol.Word) visit(ctx.TO()),
-                convertAllPrefixedList(ctx.COMMACHAR(), ctx.identifier())
+                convertAll(ctx.identifier())
         );
     }
 

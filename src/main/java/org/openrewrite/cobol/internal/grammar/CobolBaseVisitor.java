@@ -1,4 +1,4 @@
-// Generated from /Users/yoshi/Development/Repos/openrewrite/rewrite-cobol/src/main/antlr/Cobol.g4 by ANTLR 4.9.3
+// Generated from F:\Projects\moderneinc\rewrite-cobol\src\main\antlr\Cobol.g4 by ANTLR 4.9.3
 package org.openrewrite.cobol.internal.grammar;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 

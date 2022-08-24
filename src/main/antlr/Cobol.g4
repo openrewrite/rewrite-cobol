@@ -1263,7 +1263,7 @@ callUsingParameter
    ;
 
 callByReferencePhrase
-   : (BY? REFERENCE)? callByReference (COMMACHAR? callByReference)*
+   : (BY? REFERENCE)? callByReference+
    ;
 
 callByReference
@@ -1293,7 +1293,7 @@ callGivingPhrase
 // cancel statement
 
 cancelStatement
-   : CANCEL cancelCall (COMMACHAR? cancelCall)*
+   : CANCEL cancelCall+
    ;
 
 cancelCall
@@ -1681,7 +1681,7 @@ moveStatement
    ;
 
 moveToStatement
-   : moveToSendingArea TO identifier (COMMACHAR? identifier)*?
+   : moveToSendingArea TO identifier+
    ;
 
 moveToSendingArea
