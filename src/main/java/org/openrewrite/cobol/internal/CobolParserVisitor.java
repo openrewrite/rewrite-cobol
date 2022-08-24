@@ -6493,11 +6493,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
             cursor += comment.length();
             endLine = whitespace();
-        }
 
-        // Ensure the last whitespace is added to the ASt.
-        if (!before.getWhitespace().isEmpty() || comment != null) {
-            return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine);
+            // Ensure the last whitespace is added to the ASt.
+            if (!before.getWhitespace().isEmpty() || comment != null) {
+                return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine);
+            }
         }
 
         cursor = saveCursor;
