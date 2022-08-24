@@ -2496,6 +2496,59 @@ public interface Cobol extends Tree {
         }
     }
 
+    // environmentName IS? mnemonicName environmentSwitchNameSpecialNamesStatusPhrase? | environmentSwitchNameSpecialNamesStatusPhrase
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class EnvironmentSwitchNameClause implements Cobol {
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+
+        @Nullable
+        Name environmentName;
+
+        @Nullable
+        Cobol.Word is;
+
+        @Nullable
+        Name mnemonicName;
+
+        @Nullable
+        EnvironmentSwitchNameSpecialNamesStatusPhrase environmentSwitchNameSpecialNamesStatusPhrase;
+
+        @Override
+        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+            return v.visitEnvironmentSwitchNameClause(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class EnvironmentSwitchNameSpecialNamesStatusPhrase implements Cobol {
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        List<Word> first;
+
+        Condition condition;
+
+        @Nullable
+        List<Word> second;
+
+        Condition condition2;
+
+        @Override
+        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+            return v.visitEnvironmentSwitchNameSpecialNamesStatusPhrase(this, p);
+        }
+    }
+
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With

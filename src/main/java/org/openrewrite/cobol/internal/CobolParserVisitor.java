@@ -1793,6 +1793,47 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     @Override
+    public Object visitEnvironmentSwitchNameClause(CobolParser.EnvironmentSwitchNameClauseContext ctx) {
+        return new Cobol.EnvironmentSwitchNameClause(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                visitNullable(ctx.environmentName()),
+                visitNullable(ctx.IS()),
+                visitNullable(ctx.mnemonicName()),
+                visitNullable(ctx.environmentSwitchNameSpecialNamesStatusPhrase())
+        );
+    }
+
+    @Override
+    public Object visitEnvironmentSwitchNameSpecialNamesStatusPhrase(CobolParser.EnvironmentSwitchNameSpecialNamesStatusPhraseContext ctx) {
+        TerminalNode first;
+        TerminalNode second = null;
+
+        boolean useBothConditions = ctx.ON() != null && ctx.OFF() != null;
+        if (useBothConditions) {
+            boolean isOnFirst = ctx.ON().getSymbol().getStartIndex() < ctx.OFF().getSymbol().getStartIndex();
+            first = isOnFirst ? ctx.ON() : ctx.OFF();
+            second = isOnFirst ? ctx.OFF() : ctx.ON();
+        } else if (ctx.ON() != null) {
+            first = ctx.ON();
+        } else {
+            first = ctx.OFF();
+        }
+
+        return new Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                wordsList(first, ctx.STATUS().size() == 0 ? null : ctx.STATUS(0), ctx.IS().size() == 0 ? null : ctx.IS(0)),
+                (Cobol.Condition) visit(ctx.condition(0)),
+                useBothConditions ? wordsList(second, ctx.STATUS().size() == 1 ? null : ctx.STATUS(1),
+                        ctx.IS().size() == 1 ? null : ctx.IS(1)) : null,
+                ctx.condition().size() == 1 ? null : (Cobol.Condition) visit(ctx.condition(1))
+        );
+    }
+
+    @Override
     public Object visitErrorKeyClause(CobolParser.ErrorKeyClauseContext ctx) {
         return new Cobol.ErrorKeyClause(
                 randomId(),
@@ -6419,6 +6460,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                         cursor += contentArea.length();
                         line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
                         lines.add(line);
+
+                        sequenceArea = null;
+                        indicatorArea = null;
                     } else {
                         break;
                     }
@@ -6493,11 +6537,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
             cursor += comment.length();
             endLine = whitespace();
+        }
 
-            // Ensure the last whitespace is added to the ASt.
-            if (!before.getWhitespace().isEmpty() || comment != null) {
-                return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine);
-            }
+        // Ensure the last whitespace is added to the ASt.
+        if (before.getWhitespace().endsWith("\n") || comment != null) {
+            return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine);
         }
 
         cursor = saveCursor;

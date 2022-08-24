@@ -865,6 +865,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(delete.getPrefix(), p);
         visitMarkers(delete.getMarkers(), p);
         visit(delete.getDelete(), p);
+        visit(delete.getFileName(), p);
         visit(delete.getRecord(), p);
         visit(delete.getInvalidKey(), p);
         visit(delete.getNotInvalidKey(), p);
@@ -1030,6 +1031,26 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(evaluateAlso.getAlso(), p);
         visit(evaluateAlso.getSelect(), p);
         return evaluateAlso;
+    }
+
+    public Cobol visitEnvironmentSwitchNameClause(Cobol.EnvironmentSwitchNameClause environmentSwitchNameClause, PrintOutputCapture<P> p) {
+        visitSpace(environmentSwitchNameClause.getPrefix(), p);
+        visitMarkers(environmentSwitchNameClause.getMarkers(), p);
+        visit(environmentSwitchNameClause.getEnvironmentName(), p);
+        visit(environmentSwitchNameClause.getIs(), p);
+        visit(environmentSwitchNameClause.getMnemonicName(), p);
+        visit(environmentSwitchNameClause.getEnvironmentSwitchNameSpecialNamesStatusPhrase(), p);
+        return environmentSwitchNameClause;
+    }
+
+    public Cobol visitEnvironmentSwitchNameSpecialNamesStatusPhrase(Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase environmentSwitchNameSpecialNamesStatusPhrase, PrintOutputCapture<P> p) {
+        visitSpace(environmentSwitchNameSpecialNamesStatusPhrase.getPrefix(), p);
+        visitMarkers(environmentSwitchNameSpecialNamesStatusPhrase.getMarkers(), p);
+        visit(environmentSwitchNameSpecialNamesStatusPhrase.getFirst(), p);
+        visit(environmentSwitchNameSpecialNamesStatusPhrase.getCondition(), p);
+        visit(environmentSwitchNameSpecialNamesStatusPhrase.getSecond(), p);
+        visit(environmentSwitchNameSpecialNamesStatusPhrase.getCondition2(), p);
+        return environmentSwitchNameSpecialNamesStatusPhrase;
     }
 
     public Cobol visitErrorKeyClause(Cobol.ErrorKeyClause errorKeyClause, PrintOutputCapture<P> p) {

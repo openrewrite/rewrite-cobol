@@ -1010,6 +1010,28 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return e;
     }
 
+    public Cobol visitEnvironmentSwitchNameClause(Cobol.EnvironmentSwitchNameClause environmentSwitchNameClause, P p) {
+        Cobol.EnvironmentSwitchNameClause e = environmentSwitchNameClause;
+        e = e.withPrefix(visitSpace(e.getPrefix(), p));
+        e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withEnvironmentName((Name) visit(e.getEnvironmentName(), p));
+        e = e.withIs((Cobol.Word) visit(e.getIs(), p));
+        e = e.withMnemonicName((Name) visit(e.getMnemonicName(), p));
+        e = e.withEnvironmentSwitchNameSpecialNamesStatusPhrase((Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase) visit(e.getEnvironmentSwitchNameSpecialNamesStatusPhrase(), p));
+        return e;
+    }
+
+    public Cobol visitEnvironmentSwitchNameSpecialNamesStatusPhrase(Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase environmentSwitchNameSpecialNamesStatusPhrase, P p) {
+        Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase e = environmentSwitchNameSpecialNamesStatusPhrase;
+        e = e.withPrefix(visitSpace(e.getPrefix(), p));
+        e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withFirst(ListUtils.map(e.getFirst(), it -> (Cobol.Word) visit(it, p)));
+        e = e.withCondition((Cobol.Condition) visit(e.getCondition(), p));
+        e = e.withSecond(ListUtils.map(e.getSecond(), it -> (Cobol.Word) visit(it, p)));
+        e = e.withCondition2((Cobol.Condition) visit(e.getCondition2(), p));
+        return e;
+    }
+
     public Cobol visitErrorKeyClause(Cobol.ErrorKeyClause errorKeyClause, P p) {
         Cobol.ErrorKeyClause e = errorKeyClause;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));

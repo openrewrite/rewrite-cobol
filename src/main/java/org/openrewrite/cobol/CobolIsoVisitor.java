@@ -600,6 +600,16 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
+    public Cobol visitEnvironmentSwitchNameClause(Cobol.EnvironmentSwitchNameClause environmentSwitchNameClause, P p) {
+        return super.visitEnvironmentSwitchNameClause(environmentSwitchNameClause, p);
+    }
+
+    @Override
+    public Cobol visitEnvironmentSwitchNameSpecialNamesStatusPhrase(Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase environmentSwitchNameSpecialNamesStatusPhrase, P p) {
+        return super.visitEnvironmentSwitchNameSpecialNamesStatusPhrase(environmentSwitchNameSpecialNamesStatusPhrase, p);
+    }
+
+    @Override
     public Cobol visitErrorKeyClause(Cobol.ErrorKeyClause errorKeyClause, P p) {
         return super.visitErrorKeyClause(errorKeyClause, p);
     }
