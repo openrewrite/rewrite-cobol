@@ -34,7 +34,7 @@ public class CobolLineWriter {
 //
 //        return sb.toString();
 //    }
-//
+
     public static String write(List<CobolLine> lines) {
         StringBuilder sb = new StringBuilder();
 

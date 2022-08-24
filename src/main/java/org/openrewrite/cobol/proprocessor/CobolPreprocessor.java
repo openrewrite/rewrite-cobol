@@ -19,8 +19,7 @@ import java.util.regex.Pattern;
 
 @Value
 public class CobolPreprocessor {
-    // The original regex ([ABCdD$\t\-/*# ]) has been modified to parse indicators that appear in the NIST suite.
-    public static final String INDICATOR_FIELD = "([ABCdDGJSTXY$\\t\\-/*# ])";
+    public static final String INDICATOR_FIELD = "([ABCdD$\\t\\-/*# ])";
     public static final String NEWLINE = "\n";
     public static final String WS = " ";
     public static final String CHAR_ASTERISK = "*";
