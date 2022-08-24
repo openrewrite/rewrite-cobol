@@ -907,9 +907,13 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(display.getPrefix(), p);
         visitMarkers(display.getMarkers(), p);
         visit(display.getDisplay(), p);
-        for (Name d : display.getOperands()) {
-            visit(d, p);
-        }
+        visit(display.getOperands(), p);
+        visit(display.getDisplayAt(), p);
+        visit(display.getDisplayUpon(), p);
+        visit(display.getDisplayWith(), p);
+        visit(display.getOnExceptionClause(), p);
+        visit(display.getNotOnExceptionClause(), p);
+        visit(display.getEndDisplay(), p);
         return display;
     }
 
