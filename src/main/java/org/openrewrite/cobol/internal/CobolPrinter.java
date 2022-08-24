@@ -2576,6 +2576,16 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return relativeKeyClause;
     }
 
+    public Cobol visitRelease(Cobol.Release release, PrintOutputCapture<P> p) {
+        visitSpace(release.getPrefix(), p);
+        visitMarkers(release.getMarkers(), p);
+        visit(release.getRelease(), p);
+        visit(release.getRecordName(), p);
+        visit(release.getFrom(), p);
+        visit(release.getQualifiedDataName(), p);
+        return release;
+    }
+
     public Cobol visitReportClause(Cobol.ReportClause reportClause, PrintOutputCapture<P> p) {
         visitSpace(reportClause.getPrefix(), p);
         visitMarkers(reportClause.getMarkers(), p);
@@ -3360,6 +3370,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(setUpDown.getMarkers(), p);
         visit(setUpDown.getTo(), p);
         visit(setUpDown.getOperation(), p);
+        visit(setUpDown.getValue(), p);
         return setUpDown;
     }
 

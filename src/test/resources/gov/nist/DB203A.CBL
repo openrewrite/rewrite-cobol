@@ -6,7 +6,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             DB2034.2
 000600 INSTALLATION.                                                    DB2034.2
 000700     GENERAL SERVICES ADMINISTRATION                              DB2034.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                DB2034.2
+000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               DB2034.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 DB2034.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               DB2034.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 DB2034.2

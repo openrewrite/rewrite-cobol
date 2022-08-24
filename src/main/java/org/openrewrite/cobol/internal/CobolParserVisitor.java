@@ -1988,7 +1988,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                (Cobol.Word) visit(ctx.FILE_CONTROL()),
+                visitNullable(ctx.FILE_CONTROL()),
                 convertAllList(singletonList("."), ctx.fileControlEntry()),
                 (Cobol.Word) visit(ctx.DOT_FS().get(ctx.DOT_FS().size() - 1))
         );
