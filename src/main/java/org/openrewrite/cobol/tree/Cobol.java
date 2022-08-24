@@ -746,7 +746,7 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         Word cancel;
-        List<CancelCall> cancelCalls;
+        List<Cobol> cancelCalls;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -4471,7 +4471,7 @@ public interface Cobol extends Tree {
         Markers markers;
         Name from;
         Word to;
-        List<Identifier> names;
+        List<Cobol> names;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
