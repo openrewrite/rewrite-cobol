@@ -1029,7 +1029,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 (Cobol.Word) visit(ctx.LPARENCHAR()),
-                convertAllPrefixedList(ctx.COMMACHAR(), ctx.subscript()),
+                convertAllPrefixedList(singletonList(","), ctx.subscript()),
                 (Cobol.Word) visit(ctx.RPARENCHAR())
         );
     }
@@ -1447,7 +1447,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 wordsList(ctx.VALUE(), ctx.VALUES(), ctx.IS(), ctx.ARE()),
-                convertAllPrefixedList(ctx.COMMACHAR(), ctx.dataValueInterval())
+                convertAllPrefixedList(singletonList(","), ctx.dataValueInterval())
         );
     }
 
@@ -2092,7 +2092,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 (Cobol.Word) visit(ctx.LPARENCHAR()),
-                convertAllPrefixedList(ctx.COMMACHAR(), ctx.argument()),
+                convertAllPrefixedList(Collections.singletonList(","), ctx.argument()),
                 (Cobol.Word) visit(ctx.RPARENCHAR())
         );
     }
@@ -4159,7 +4159,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                convertAllPrefixedList(ctx.AND(), ctx.OR(), ctx.arithmeticExpression())
+                convertAllPrefixedList(Arrays.asList("AND", "OR"), ctx.arithmeticExpression())
         );
     }
 
@@ -4545,7 +4545,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 (Cobol.Word) visit(ctx.SUM()),
                 convertAllList(singletonList(","), ctx.identifier()),
                 visitNullable(ctx.UPON()),
-                convertAllPrefixedList(ctx.COMMACHAR(), ctx.dataName())
+                convertAllPrefixedList(singletonList(","), ctx.dataName())
         );
     }
 
@@ -5701,7 +5701,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                convertAllPrefixedList(ctx.COMMACHAR(), ctx.stringSending()),
+                convertAllPrefixedList(singletonList(","), ctx.stringSending()),
                 visit(ctx.stringDelimitedByPhrase(), ctx.stringForPhrase())
         );
     }
@@ -5910,7 +5910,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 (Cobol.Word) visit(ctx.LPARENCHAR()),
-                convertAllPrefixedList(ctx.COMMACHAR(), ctx.subscript()),
+                convertAllPrefixedList(Collections.singletonList(","), ctx.subscript()),
                 (Cobol.Word) visit(ctx.RPARENCHAR())
         );
     }
@@ -6330,12 +6330,31 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     @SafeVarargs
-    private final List<Cobol> convertAllPrefixedList(List<? extends ParseTree>... trees) {
+    private final List<Cobol> convertAllPrefixedList(List<String> delimiters, List<? extends ParseTree>... trees) {
         return Arrays.stream(trees)
-                .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
-                .sorted(Comparator.comparingInt(it -> it.getSourceInterval().a))
-                .map(it -> (Cobol) visit(it))
+                .filter(Objects::nonNull)
+                .flatMap(it -> {
+                    Cobol cobol = (Cobol) visit(it);
+                    int saveCursor = cursor;
+                    Space prefix = whitespace();
+                    for (String delimiter : delimiters) {
+                        if (source.substring(cursor).startsWith(delimiter)) {
+                            List<Marker> markers = new ArrayList<>();
+                            Space delimiterPrefix = processTokenText(delimiter, markers);
+                            delimiterPrefix = Space.build(prefix.getWhitespace() + delimiterPrefix.getWhitespace());
+                            Cobol.Word comma = new Cobol.Word(
+                                    randomId(),
+                                    delimiterPrefix,
+                                    markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
+                                    delimiter
+                            );
+                            return Stream.of(cobol, comma);
+                        }
+                    }
+                    cursor = saveCursor;
+                    return Stream.of(cobol);
+                })
                 .collect(Collectors.toList());
     }
 

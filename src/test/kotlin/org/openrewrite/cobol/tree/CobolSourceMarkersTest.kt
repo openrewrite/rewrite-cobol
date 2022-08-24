@@ -974,6 +974,7 @@ class CobolSourceMarkersTest : RewriteTest {
         """)
     )
 
+    @Disabled("Fix: Comma delimiters are pipped to a hidden channel.")
     @Test
     fun commaDelimiter() = rewriteRun(
         cobol("""

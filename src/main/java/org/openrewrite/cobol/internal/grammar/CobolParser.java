@@ -1,4 +1,19 @@
-// Generated from F:\Projects\moderneinc\rewrite-cobol\src\main\antlr\Cobol.g4 by ANTLR 4.9.3
+/*
+ * Copyright 2022 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * https://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+// Generated from /Users/yoshi/Development/Repos/openrewrite/rewrite/rewrite-cobol/src/main/antlr/Cobol.g4 by ANTLR 4.9.3
 package org.openrewrite.cobol.internal.grammar;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -114,7 +129,8 @@ public class CobolParser extends Parser {
 		PLUSCHAR=552, SINGLEQUOTE=553, RPARENCHAR=554, SLASHCHAR=555, NONNUMERICLITERAL=556, 
 		LEVEL_NUMBER_66=557, LEVEL_NUMBER_77=558, LEVEL_NUMBER_88=559, INTEGERLITERAL=560, 
 		NUMERICLITERAL=561, IDENTIFIER=562, NEWLINE=563, EXECCICSLINE=564, EXECSQLIMSLINE=565, 
-		EXECSQLLINE=566, COMMENTENTRYLINE=567, COMMENTLINE=568, WS=569, DOT=570;
+		EXECSQLLINE=566, COMMENTENTRYLINE=567, COMMENTLINE=568, WS=569, SEPARATOR=570, 
+		DOT=571;
 	public static final int
 		RULE_startRule = 0, RULE_compilationUnit = 1, RULE_programUnit = 2, RULE_endProgramStatement = 3, 
 		RULE_identificationDivision = 4, RULE_identificationDivisionBody = 5, 
@@ -561,7 +577,8 @@ public class CobolParser extends Parser {
 			null, null, null, "'&'", "'*'", "'**'", "':'", "','", "'*>CE'", "'*>'", 
 			"'$'", "'\"'", null, "'='", "'*>EXECCICS'", "'*>EXECSQL'", "'*>EXECSQLIMS'", 
 			"'<'", "'<='", "'('", "'-'", "'>'", "'>='", "'<>'", "'+'", "'''", "')'", 
-			"'/'", null, "'66'", "'77'", "'88'"
+			"'/'", null, "'66'", "'77'", "'88'", null, null, null, null, null, null, 
+			null, null, null, null, "', '"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -655,7 +672,7 @@ public class CobolParser extends Parser {
 			"NONNUMERICLITERAL", "LEVEL_NUMBER_66", "LEVEL_NUMBER_77", "LEVEL_NUMBER_88", 
 			"INTEGERLITERAL", "NUMERICLITERAL", "IDENTIFIER", "NEWLINE", "EXECCICSLINE", 
 			"EXECSQLIMSLINE", "EXECSQLLINE", "COMMENTENTRYLINE", "COMMENTLINE", "WS", 
-			"DOT"
+			"SEPARATOR", "DOT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -51647,7 +51664,7 @@ public class CobolParser extends Parser {
 
 	private static final int _serializedATNSegments = 3;
 	private static final String _serializedATNSegment0 =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\u023c\u18d3\4\2\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\u023d\u18d3\4\2\t"+
 		"\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -53443,7 +53460,7 @@ public class CobolParser extends Parser {
 		"\3\2\2\2\u0d0d\u0d0f\3\2\2\2\u0d0e\u0d10\5\u01e0\u00f1\2\u0d0f\u0d0e\3"+
 		"\2\2\2\u0d0f\u0d10\3\2\2\2\u0d10\u01dd\3\2\2\2\u0d11\u0d22\7\u021c\2\2"+
 		"\u0d12\u0d22\7\u0234\2\2\u0d13\u0d22\7\u0233\2\2\u0d14\u0d22\7\u022d\2"+
-		"\2\u0d15\u0d22\7\u0219\2\2\u0d16\u0d22\7\u023c\2\2\u0d17\u0d22\7\u0218"+
+		"\2\u0d15\u0d22\7\u0219\2\2\u0d16\u0d22\7\u023d\2\2\u0d17\u0d22\7\u0218"+
 		"\2\2\u0d18\u0d22\7\u0216\2\2\u0d19\u0d22\7\u0217\2\2\u0d1a\u0d22\7\u0225"+
 		"\2\2\u0d1b\u0d22\7\u022c\2\2\u0d1c\u0d22\7\u022a\2\2\u0d1d\u0d22\7\u0226"+
 		"\2\2\u0d1e\u0d22\7\u0223\2\2\u0d1f\u0d22\7\u0227\2\2\u0d20\u0d22\5\u04ae"+
