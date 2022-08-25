@@ -29,7 +29,6 @@ import org.openrewrite.marker.Markers;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -2532,9 +2531,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 (Cobol.Word) visit(ctx.I_O_CONTROL()),
                 (Cobol.Word) visit(ctx.DOT_FS(0)),
                 visitNullable(ctx.fileName()),
-                ctx.DOT_FS().size() < 2 ? null : (Cobol.Word) visit(ctx.DOT_FS(1)),
+                ctx.fileName() == null ? null : (Cobol.Word) visit(ctx.DOT_FS(1)),
                 convertAllList(emptyList(), ctx.ioControlClause()),
-                ctx.DOT_FS().size() < 3 ? null : (Cobol.Word) visit(ctx.DOT_FS(2))
+                ctx.ioControlClause().isEmpty() ? null : (Cobol.Word) visit(ctx.DOT_FS(ctx.DOT_FS().size() == 2 ? 1 : 2))
         );
     }
 
@@ -4784,7 +4783,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 whitespace(),
                 Markers.EMPTY,
                 (Cobol.Word) visit(ctx.REWRITE()),
-                visitNullable(ctx.recordName()),
+                (Cobol.QualifiedDataName) visit(ctx.recordName()),
+                visitNullable(ctx.rewriteFrom()),
                 visitNullable(ctx.invalidKeyPhrase()),
                 visitNullable(ctx.notInvalidKeyPhrase()),
                 visitNullable(ctx.END_REWRITE())
@@ -5739,10 +5739,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                ctx.ALL() == null && ctx.qualifiedDataName() == null &&
-                        ctx.indexName() == null && ctx.arithmeticExpression() == null ? null :
-                        visit(ctx.ALL(), ctx.qualifiedDataName(), ctx.indexName(), ctx.arithmeticExpression()),
-                visitNullable(ctx.integerLiteral())
+                convertAllList(emptyList(), singletonList(ctx.ALL()), singletonList(ctx.qualifiedDataName()), singletonList(ctx.indexName()),
+                        singletonList(ctx.arithmeticExpression()), singletonList(ctx.integerLiteral()))
         );
     }
 
@@ -6387,13 +6385,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
             int end = 0;
             for (; end < charArray.length; end++) {
-                if (charArray[end] != sourceArray[end]) {
+                if (charArray[end] != sourceArray[end] || commentAreas.containsKey(cursor)) {
                     break;
                 }
+                cursor++;
             }
 
             String matchedText = current.substring(0, end);
-            cursor += matchedText.length();
             matchedCount += matchedText.length();
 
             CommentArea commentArea = commentArea();
@@ -6478,6 +6476,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
         cursor += text.length();
+
+        if (source.substring(cursor).startsWith(";")) {
+            System.out.println("Semi-colon ... hmm");
+        }
 
         CommentArea commentArea = commentArea();
         if (commentArea != null) {

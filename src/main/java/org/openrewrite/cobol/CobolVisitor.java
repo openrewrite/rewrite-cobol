@@ -2946,6 +2946,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         r = r.withPrefix(visitSpace(r.getPrefix(), p));
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
         r = r.withRecordName((Cobol.QualifiedDataName) visit(r.getRecordName(), p));
+        r = r.withRewriteFrom((Cobol.RewriteFrom) visit(r.getRewriteFrom(), p));
         r = r.withInvalidKeyPhrase((Cobol.StatementPhrase) visit(r.getInvalidKeyPhrase(), p));
         r = r.withNotInvalidKeyPhrase((Cobol.StatementPhrase) visit(r.getNotInvalidKeyPhrase(), p));
         r = r.withEndRewrite((Cobol.Word) visit(r.getEndRewrite(), p));
@@ -3520,8 +3521,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Subscript s = subscript;
         s = s.withPrefix(visitSpace(s.getPrefix(), p));
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
-        s = s.withFirst(visit(s.getFirst(), p));
-        s = s.withSecond((Cobol.Word) visit(s.getSecond(), p));
+        s = s.withWords(ListUtils.map(s.getWords(), it -> visit(it, p)));
         return s;
     }
 

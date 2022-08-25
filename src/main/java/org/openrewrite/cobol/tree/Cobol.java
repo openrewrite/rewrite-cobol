@@ -7150,8 +7150,10 @@ public interface Cobol extends Tree {
         Markers markers;
         Word rewrite;
 
-        @Nullable
         QualifiedDataName recordName;
+
+        @Nullable
+        RewriteFrom rewriteFrom;
 
         @Nullable
         StatementPhrase invalidKeyPhrase;
@@ -8513,10 +8515,7 @@ public interface Cobol extends Tree {
         Markers markers;
 
         @Nullable
-        Cobol first;
-
-        @Nullable
-        Cobol.Word second;
+        List<Cobol> words;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {

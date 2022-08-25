@@ -2996,6 +2996,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(rewrite.getMarkers(), p);
         visit(rewrite.getRewrite(), p);
         visit(rewrite.getRecordName(), p);
+        visit(rewrite.getRewriteFrom(), p);
         visit(rewrite.getInvalidKeyPhrase(), p);
         visit(rewrite.getNotInvalidKeyPhrase(), p);
         visit(rewrite.getEndRewrite(), p);
@@ -3006,6 +3007,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(rewriteFrom.getPrefix(), p);
         visitMarkers(rewriteFrom.getMarkers(), p);
         visit(rewriteFrom.getFrom(), p);
+        visit(rewriteFrom.getIdentifier(), p);
         return rewriteFrom;
     }
 
@@ -3580,8 +3582,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitSubscript(Cobol.Subscript subscript, PrintOutputCapture<P> p) {
         visitSpace(subscript.getPrefix(), p);
         visitMarkers(subscript.getMarkers(), p);
-        visit(subscript.getFirst(), p);
-        visit(subscript.getSecond(), p);
+        visit(subscript.getWords(), p);
         return subscript;
     }
 
