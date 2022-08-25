@@ -6265,7 +6265,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         for (; delimIndex < source.length(); delimIndex++) {
             if (source.length() > delimIndex + 1) {
                 if (separators.contains(source.substring(delimIndex, delimIndex + 2))) {
-                    delimIndex++;
                     continue;
                 }
             }
@@ -6521,7 +6520,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.add(indicatorArea);
         }
 
-        Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
+        // An inline comment entry will have a null sequence area.
+        Space prefix = (isCommentEntry && sequenceArea != null) ? Space.EMPTY : whitespace();
         cursor += text.length();
 
         CommentArea commentArea = commentArea();
