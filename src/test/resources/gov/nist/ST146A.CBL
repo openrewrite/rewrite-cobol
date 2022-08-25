@@ -1,4 +1,4 @@
-      *HEADER,COBOL,ST146A                                                    TES00010
+      *HEADER,COBOL,ST146A                                              TES00010
 000100 IDENTIFICATION DIVISION.                                         ST1464.2
 000200 PROGRAM-ID.                                                      ST1464.2
 000300     ST146A.                                                      ST1464.2
@@ -687,4 +687,4 @@
 068600 BAIL-OUT-EX-1. EXIT.                                             ST1464.2
 068700 S-O-P-3.                                                         ST1464.2
 068800     CLOSE SQ-FS2.                                                ST1464.2
-      *END-OF,ST146A                                                          TES07470
+      *END-OF,ST146A                                                    TES07470

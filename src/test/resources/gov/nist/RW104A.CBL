@@ -6,7 +6,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             RW1044.2
 000600 INSTALLATION.                                                    RW1044.2
 000700     GENERAL SERVICES ADMINISTRATION                              RW1044.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                RW1044.2
+000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               RW1044.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 RW1044.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               RW1044.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 RW1044.2

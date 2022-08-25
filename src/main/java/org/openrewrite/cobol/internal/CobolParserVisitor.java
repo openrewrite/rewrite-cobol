@@ -48,10 +48,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final Charset charset;
     private final boolean charsetBomMarked;
     private final CobolDialect cobolDialect;
-    private final Map<Integer, String> sequenceAreas = new HashMap<>();
-    private final Map<Integer, String> indicatorAreas = new HashMap<>();
-    private final Map<Integer, String> commentAreas = new HashMap<>();
-
+    private final Map<Integer, String> sequenceAreas = null;
+    private final Map<Integer, String> indicatorAreas = null;
+    private final Map<Integer, String> commentAreas = null;
     private int cursor = 0;
 
     public CobolParserVisitor(Path path, @Nullable FileAttributes fileAttributes,
@@ -6376,7 +6375,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         int matchedCount = 0;
         int iterations = 0;
-        while (matchedCount < text.length() && iterations < 200) {
+        while (matchedCount < text.length() && iterations < 20) {
             continuation = new ArrayList<>(3);
 
             String current = source.substring(cursor);
@@ -6445,7 +6444,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 lines.add(line);
 
                 int iterations = 0;
-                while (iterations < 200) {
+                while (iterations < 20) {
                     sequenceArea = sequenceArea();
                     indicatorArea = indicatorArea(null);
                     contentArea = source.substring(cursor, cursor - cobolDialect.indicatorArea - 1 + cobolDialect.otherArea);
@@ -6476,10 +6475,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
         cursor += text.length();
-
-        if (source.substring(cursor).startsWith(";")) {
-            System.out.println("Semi-colon ... hmm");
-        }
 
         CommentArea commentArea = commentArea();
         if (commentArea != null) {
