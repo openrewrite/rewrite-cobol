@@ -48,9 +48,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final Charset charset;
     private final boolean charsetBomMarked;
     private final CobolDialect cobolDialect;
-    private final Map<Integer, String> sequenceAreas = null;
-    private final Map<Integer, String> indicatorAreas = null;
-    private final Map<Integer, String> commentAreas = null;
+    private final Map<Integer, String> sequenceAreas = new HashMap<>();
+    private final Map<Integer, String> indicatorAreas = new HashMap<>();
+    private final Map<Integer, String> commentAreas = new HashMap<>();
+
     private int cursor = 0;
 
     public CobolParserVisitor(Path path, @Nullable FileAttributes fileAttributes,
