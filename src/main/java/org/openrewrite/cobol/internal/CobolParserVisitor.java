@@ -4540,16 +4540,17 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
     @Override
     public Object visitReportGroupSumClause(CobolParser.ReportGroupSumClauseContext ctx) {
-        // TODO: fix me.
-        return new Cobol.ReportGroupSumClause(
-                randomId(),
-                Space.EMPTY,
-                Markers.EMPTY,
-                (Cobol.Word) visit(ctx.SUM()),
-                convertAllList(ctx.COMMACHAR(), ctx.identifier()),
-                visitNullable(ctx.UPON()),
-                convertAllList(ctx.COMMACHAR(), ctx.dataName())
-        );
+        throw new UnsupportedOperationException("Fix me. The rule requires ctx.COMMACHAR() to be split up.");
+//        // TODO: fix me.
+//        return new Cobol.ReportGroupSumClause(
+//                randomId(),
+//                Space.EMPTY,
+//                Markers.EMPTY,
+//                (Cobol.Word) visit(ctx.SUM()),
+//                convertAllList(ctx.COMMACHAR(), ctx.identifier()),
+//                visitNullable(ctx.UPON()),
+//                convertAllList(ctx.COMMACHAR(), ctx.dataName())
+//        );
     }
 
     @Override
@@ -6319,7 +6320,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     @SafeVarargs
     private final List<Cobol> convertAllList(List<? extends ParseTree>... trees) {
         return Arrays.stream(trees)
-                .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
                 .filter(Objects::nonNull)
                 .sorted(Comparator.comparingInt(it -> it instanceof TerminalNode ? ((TerminalNode) it).getSymbol().getStartIndex() :
