@@ -268,6 +268,9 @@ public interface Cobol extends Tree {
         StatementPhrase onSizeError;
 
         @Nullable
+        StatementPhrase notOnSizeError;
+
+        @Nullable
         Cobol.Word endAdd;
 
         @Override
@@ -2861,9 +2864,6 @@ public interface Cobol extends Tree {
         @Nullable
         List<Cobol> controlEntries;
 
-        @Nullable
-        Cobol.Word dot;
-
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitFileControlParagraph(this, p);
@@ -2886,7 +2886,6 @@ public interface Cobol extends Tree {
         @Nullable
         List<Cobol> clauses;
 
-        Word dot;
         @Nullable
         List<DataDescriptionEntry> dataDescriptions;
 

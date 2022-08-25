@@ -99,6 +99,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(add.getAdd(), p);
         visit(add.getOperation(), p);
         visit(add.getOnSizeError(), p);
+        visit(add.getNotOnSizeError(), p);
         visit(add.getEndAdd(), p);
         return add;
     }
@@ -543,9 +544,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(conditionNameSubscriptReference.getPrefix(), p);
         visitMarkers(conditionNameSubscriptReference.getMarkers(), p);
         visit(conditionNameSubscriptReference.getLeftParen(), p);
-        for(Cobol c : conditionNameSubscriptReference.getSubscripts()) {
-            visit(c, p);
-        }
+        visit(conditionNameSubscriptReference.getSubscripts(), p);
         visit(conditionNameSubscriptReference.getRightParen(), p);
         return conditionNameSubscriptReference;
     }
@@ -1177,12 +1176,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(fileControlParagraph.getPrefix(), p);
         visitMarkers(fileControlParagraph.getMarkers(), p);
         visit(fileControlParagraph.getFileControl(), p);
-        if (fileControlParagraph.getControlEntries() != null) {
-            for (Cobol c : fileControlParagraph.getControlEntries()) {
-                visit(c, p);
-            }
-        }
-        visit(fileControlParagraph.getDot(), p);
+        visit(fileControlParagraph.getControlEntries(), p);
         return fileControlParagraph;
     }
 
@@ -1192,7 +1186,6 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(fileDescriptionEntry.getWords(), p);
         visit(fileDescriptionEntry.getName(), p);
         visit(fileDescriptionEntry.getClauses(), p);
-        visit(fileDescriptionEntry.getDot(), p);
         visit(fileDescriptionEntry.getDataDescriptions(), p);
         return fileDescriptionEntry;
     }
@@ -1266,9 +1259,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitIdentificationDivision(Cobol.IdentificationDivision identificationDivision, PrintOutputCapture<P> p) {
         visitSpace(identificationDivision.getPrefix(), p);
         visitMarkers(identificationDivision.getMarkers(), p);
-        for (Cobol.Word c : identificationDivision.getWords()) {
-            visit(c, p);
-        }
+        visit(identificationDivision.getWords(), p);
         visit(identificationDivision.getProgramIdParagraph(), p);
         visit(identificationDivision.getParagraphs(), p);
         return identificationDivision;

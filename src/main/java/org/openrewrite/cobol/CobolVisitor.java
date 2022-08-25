@@ -1162,7 +1162,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         f = f.withPrefix(visitSpace(f.getPrefix(), p));
         f = f.withMarkers(visitMarkers(f.getMarkers(), p));
         f = f.withControlEntries(ListUtils.map(f.getControlEntries(), t -> visit(t, p)));
-        f = f.withDot((Cobol.Word) visit(f.getDot(), p));
         return f;
     }
 
@@ -1173,7 +1172,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         f = f.withWords((Cobol.Word) visit(f.getWords(), p));
         f = f.withName((Cobol.Word) visit(f.getName(), p));
         f = f.withClauses(ListUtils.map(f.getClauses(), it -> visit(it, p)));
-        f = f.withDot((Cobol.Word) visit(f.getDot(), p));
         f = f.withDataDescriptions(ListUtils.map(f.getDataDescriptions(), it -> (Cobol.DataDescriptionEntry) visit(it, p)));
         return f;
     }
