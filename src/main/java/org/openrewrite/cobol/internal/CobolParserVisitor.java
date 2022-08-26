@@ -6355,17 +6355,47 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         List<Marker> continuation = new ArrayList<>(2);
 
         SequenceArea sequenceArea = sequenceArea();
+        IndicatorArea indicatorArea = indicatorArea(null);
+
+        if (indicatorArea != null) {
+            String contentArea = source.substring(cursor, cursor - cobolDialect.indicatorArea - 1 + cobolDialect.otherArea);
+            if (contentArea.trim().isEmpty() || "*".equals(indicatorArea.getIndicator())) {
+                cursor += contentArea.length();
+                List<Lines.Line> lines = new ArrayList<>();
+                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
+                lines.add(line);
+
+                int iterations = 0;
+                while (iterations < 200) {
+                    sequenceArea = sequenceArea();
+                    indicatorArea = indicatorArea(null);
+                    contentArea = source.substring(cursor, cursor - cobolDialect.indicatorArea - 1 + cobolDialect.otherArea);
+                    if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
+                        cursor += contentArea.length();
+                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
+                        lines.add(line);
+
+                        sequenceArea = null;
+                        indicatorArea = null;
+                    } else {
+                        break;
+                    }
+                    iterations++;
+                }
+
+                markers.add(new Lines(randomId(), lines));
+            }
+        }
+
         if (sequenceArea != null) {
             continuation.add(sequenceArea);
         }
 
-        IndicatorArea indicatorArea = indicatorArea(null);
         if (indicatorArea != null) {
             continuation.add(indicatorArea);
         }
 
         Space prefix = whitespace();
-
         if (!continuation.isEmpty()) {
             continuations.put(0, Markers.build(continuation));
         }
@@ -6395,21 +6425,24 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 continuation.add(commentArea);
             }
 
-            if (matchedText.endsWith(String.valueOf(delimiter))) {
+            int saveCursor = cursor;
+            sequenceArea = sequenceArea();
+            indicatorArea = indicatorArea(delimiter);
+
+            // Note: "-" might not be safe for all COBOL dialects.
+            if (indicatorArea != null && !indicatorArea.getIndicator().startsWith("-")) {
                 if (!continuation.isEmpty()) {
                     continuations.put(text.length() + 1, Markers.build(continuation));
                 }
+                cursor = saveCursor;
                 break;
-            }
-
-            sequenceArea = sequenceArea();
-            if (sequenceArea != null) {
-                continuation.add(sequenceArea);
-            }
-
-            indicatorArea = indicatorArea(delimiter);
-            if (indicatorArea != null) {
-                continuation.add(indicatorArea);
+            } else {
+                if (sequenceArea != null) {
+                    continuation.add(sequenceArea);
+                }
+                if (indicatorArea != null) {
+                    continuation.add(indicatorArea);
+                }
             }
 
             if (!continuation.isEmpty()) {
@@ -6485,7 +6518,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private SequenceArea sequenceArea() {
         if (sequenceAreas.containsKey(cursor)) {
             String sequence = sequenceAreas.get(cursor);
-            sequenceAreas.remove(cursor);
             cursor += sequence.length();
 
             return new SequenceArea(randomId(), sequence);
@@ -6505,7 +6537,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     indicatorArea = indicatorArea + current.substring(0, current.indexOf(delimiter) + 1);
                 }
             }
-            indicatorAreas.remove(cursor);
             cursor += indicatorArea.length();
 
             return new IndicatorArea(randomId(), indicatorArea);
@@ -6523,7 +6554,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         if (commentAreas.containsKey(cursor)) {
             comment = commentAreas.get(cursor);
-            commentAreas.remove(cursor);
 
             cursor += comment.length();
             endLine = whitespace();

@@ -147,11 +147,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(alphabetClause.getMarkers(), p);
         visit(alphabetClause.getAlphabet(), p);
         visit(alphabetClause.getName(), p);
-        if (alphabetClause.getWords() != null) {
-            for (Cobol c : alphabetClause.getWords()) {
-                visit(c, p);
-            }
-        }
+        visit(alphabetClause.getWords(), p);
         return alphabetClause;
     }
 
@@ -509,9 +505,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitCompilationUnit(Cobol.CompilationUnit compilationUnit, PrintOutputCapture<P> p) {
         visitSpace(compilationUnit.getPrefix(), p);
         visitMarkers(compilationUnit.getMarkers(), p);
-        for (Cobol.ProgramUnit programUnit : compilationUnit.getProgramUnits()) {
-            visit(programUnit, p);
-        }
+        visit(compilationUnit.getProgramUnits(), p);
         p.append(compilationUnit.getEof());
         return compilationUnit;
     }
@@ -808,9 +802,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(dataValueClause.getPrefix(), p);
         visitMarkers(dataValueClause.getMarkers(), p);
         visit(dataValueClause.getWords(), p);
-        for (Cobol c : dataValueClause.getCobols()) {
-            visit(c, p);
-        }
+        visit(dataValueClause.getCobols(), p);
         return dataValueClause;
     }
 
@@ -2240,9 +2232,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(procedureDivisionUsingClause.getPrefix(), p);
         visitMarkers(procedureDivisionUsingClause.getMarkers(), p);
         visit(procedureDivisionUsingClause.getWords(), p);
-        for (Cobol pp : procedureDivisionUsingClause.getProcedureDivisionUsingParameter()) {
-            visit(pp, p);
-        }
+        visit(procedureDivisionUsingClause.getProcedureDivisionUsingParameter(), p);
         return procedureDivisionUsingClause;
     }
 
@@ -2472,12 +2462,8 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(recordContainsClauseFormat2.getPrefix(), p);
         visitMarkers(recordContainsClauseFormat2.getMarkers(), p);
         visit(recordContainsClauseFormat2.getWords(), p);
-        for (Cobol c : recordContainsClauseFormat2.getFromClause()) {
-            visit(c, p);
-        }
-        for (Cobol c : recordContainsClauseFormat2.getQualifiedDataName()) {
-            visit(c, p);
-        }
+        visit(recordContainsClauseFormat2.getFromClause(), p);
+        visit(recordContainsClauseFormat2.getQualifiedDataName(), p);
         return recordContainsClauseFormat2;
     }
 
@@ -2557,9 +2543,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitRelationCombinedCondition(Cobol.RelationCombinedCondition relationCombinedCondition, PrintOutputCapture<P> p) {
         visitSpace(relationCombinedCondition.getPrefix(), p);
         visitMarkers(relationCombinedCondition.getMarkers(), p);
-        for (Cobol c : relationCombinedCondition.getRelationalArithmeticExpressions()) {
-            visit(c, p);
-        }
+        visit(relationCombinedCondition.getRelationalArithmeticExpressions(), p);
         return relationCombinedCondition;
     }
 
@@ -2812,13 +2796,9 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(reportGroupSumClause.getPrefix(), p);
         visitMarkers(reportGroupSumClause.getMarkers(), p);
         visit(reportGroupSumClause.getWords(), p);
-        for (Cobol c : reportGroupSumClause.getIdentifiers()) {
-            visit(c, p);
-        }
+        visit(reportGroupSumClause.getIdentifiers(), p);
         visit(reportGroupSumClause.getUpon(), p);
-        for (Cobol c : reportGroupSumClause.getDataNames()) {
-            visit(c, p);
-        }
+        visit(reportGroupSumClause.getDataNames(), p);
         return reportGroupSumClause;
     }
 
@@ -2946,9 +2926,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitReserveClause(Cobol.ReserveClause reserveClause, PrintOutputCapture<P> p) {
         visitSpace(reserveClause.getPrefix(), p);
         visitMarkers(reserveClause.getMarkers(), p);
-        for (Cobol c : reserveClause.getWords()) {
-            visit(c, p);
-        }
+        visit(reserveClause.getWords(), p);
         return reserveClause;
     }
 
@@ -3542,9 +3520,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitStringSendingPhrase(Cobol.StringSendingPhrase stringSendingPhrase, PrintOutputCapture<P> p) {
         visitSpace(stringSendingPhrase.getPrefix(), p);
         visitMarkers(stringSendingPhrase.getMarkers(), p);
-        for (Cobol s : stringSendingPhrase.getSendings()) {
-            visit(s, p);
-        }
+        visit(stringSendingPhrase.getSendings(), p);
         visit(stringSendingPhrase.getPhrase(), p);
         return stringSendingPhrase;
     }
@@ -3865,6 +3841,24 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
+        Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
+        if (lines.isPresent()) {
+            for (Lines.Line line : lines.get().getLines()) {
+                if (line.getSequenceArea() != null) {
+                    p.append(line.getSequenceArea().getSequence());
+                }
+                if (line.getIndicatorArea() != null) {
+                    p.append(line.getIndicatorArea().getIndicator());
+                }
+                p.append(line.getContent());
+                if (line.getCommentArea() != null) {
+                    visitSpace(line.getCommentArea().getPrefix(), p);
+                    p.append(line.getCommentArea().getComment());
+                    visitSpace(line.getCommentArea().getEndLine(), p);
+                }
+            }
+        }
+
         Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
         if (continuation.isPresent()) {
             if (continuation.get().getContinuations().containsKey(0)) {
@@ -3909,24 +3903,6 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 commentArea.ifPresent(it -> visitSpace(it.getEndLine(), p));
             }
         } else {
-            Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
-            if (lines.isPresent()) {
-                for (Lines.Line line : lines.get().getLines()) {
-                    if (line.getSequenceArea() != null) {
-                        p.append(line.getSequenceArea().getSequence());
-                    }
-                    if (line.getIndicatorArea() != null) {
-                        p.append(line.getIndicatorArea().getIndicator());
-                    }
-                    p.append(line.getContent());
-                    if (line.getCommentArea() != null) {
-                        visitSpace(line.getCommentArea().getPrefix(), p);
-                        p.append(line.getCommentArea().getComment());
-                        visitSpace(line.getCommentArea().getEndLine(), p);
-                    }
-                }
-            }
-
             Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
             sequenceArea.ifPresent(it -> p.append(it.getSequence()));
 
