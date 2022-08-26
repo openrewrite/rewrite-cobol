@@ -1039,10 +1039,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitEnvironmentSwitchNameSpecialNamesStatusPhrase(Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase environmentSwitchNameSpecialNamesStatusPhrase, PrintOutputCapture<P> p) {
         visitSpace(environmentSwitchNameSpecialNamesStatusPhrase.getPrefix(), p);
         visitMarkers(environmentSwitchNameSpecialNamesStatusPhrase.getMarkers(), p);
-        visit(environmentSwitchNameSpecialNamesStatusPhrase.getFirst(), p);
-        visit(environmentSwitchNameSpecialNamesStatusPhrase.getCondition(), p);
-        visit(environmentSwitchNameSpecialNamesStatusPhrase.getSecond(), p);
-        visit(environmentSwitchNameSpecialNamesStatusPhrase.getCondition2(), p);
+        visit(environmentSwitchNameSpecialNamesStatusPhrase.getCobols(), p);
         return environmentSwitchNameSpecialNamesStatusPhrase;
     }
 

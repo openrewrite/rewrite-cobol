@@ -1025,10 +1025,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase e = environmentSwitchNameSpecialNamesStatusPhrase;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
-        e = e.withFirst(ListUtils.map(e.getFirst(), it -> (Cobol.Word) visit(it, p)));
-        e = e.withCondition((Cobol.Condition) visit(e.getCondition(), p));
-        e = e.withSecond(ListUtils.map(e.getSecond(), it -> (Cobol.Word) visit(it, p)));
-        e = e.withCondition2((Cobol.Condition) visit(e.getCondition2(), p));
+        e = e.withCobols(ListUtils.map(e.getCobols(), it -> visit(it, p)));
         return e;
     }
 

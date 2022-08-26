@@ -2537,14 +2537,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        List<Word> first;
-
-        Condition condition;
-
-        @Nullable
-        List<Word> second;
-
-        Condition condition2;
+        List<Cobol> cobols;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {

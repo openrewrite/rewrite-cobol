@@ -1811,29 +1811,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
     @Override
     public Object visitEnvironmentSwitchNameSpecialNamesStatusPhrase(CobolParser.EnvironmentSwitchNameSpecialNamesStatusPhraseContext ctx) {
-        TerminalNode first;
-        TerminalNode second = null;
-
-        boolean useBothConditions = ctx.ON() != null && ctx.OFF() != null;
-        if (useBothConditions) {
-            boolean isOnFirst = ctx.ON().getSymbol().getStartIndex() < ctx.OFF().getSymbol().getStartIndex();
-            first = isOnFirst ? ctx.ON() : ctx.OFF();
-            second = isOnFirst ? ctx.OFF() : ctx.ON();
-        } else if (ctx.ON() != null) {
-            first = ctx.ON();
-        } else {
-            first = ctx.OFF();
-        }
-
         return new Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase(
                 randomId(),
                 Space.EMPTY,
                 Markers.EMPTY,
-                wordsList(first, ctx.STATUS().size() == 0 ? null : ctx.STATUS(0), ctx.IS().size() == 0 ? null : ctx.IS(0)),
-                (Cobol.Condition) visit(ctx.condition(0)),
-                useBothConditions ? wordsList(second, ctx.STATUS().size() == 1 ? null : ctx.STATUS(1),
-                        ctx.IS().size() == 1 ? null : ctx.IS(1)) : null,
-                ctx.condition().size() == 1 ? null : (Cobol.Condition) visit(ctx.condition(1))
+                convertAllList(singletonList(ctx.ON()), singletonList(ctx.OFF()), ctx.STATUS(), ctx.IS(), ctx.condition())
         );
     }
 
