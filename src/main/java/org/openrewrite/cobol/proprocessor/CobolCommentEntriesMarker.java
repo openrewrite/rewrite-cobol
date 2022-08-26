@@ -33,8 +33,7 @@ public class CobolCommentEntriesMarker {
     }
 
     CobolLine buildMultiLineCommentEntryLine(CobolLine line) {
-        return CobolLine.copyCobolLineWithIndicatorArea(CobolPreprocessor.COMMENT_ENTRY_TAG + CobolPreprocessor.WS,
-                line);
+        return CobolLine.copyCobolLineWithIndicatorArea(CobolPreprocessor.COMMENT_ENTRY_TAG, line);
     }
 
     /**

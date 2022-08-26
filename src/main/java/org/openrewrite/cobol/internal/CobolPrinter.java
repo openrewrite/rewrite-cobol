@@ -1732,6 +1732,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(mergeCollatingSequencePhrase.getPrefix(), p);
         visitMarkers(mergeCollatingSequencePhrase.getMarkers(), p);
         visit(mergeCollatingSequencePhrase.getWords(), p);
+        visit(mergeCollatingSequencePhrase.getName(), p);
         visit(mergeCollatingSequencePhrase.getMergeCollatingAlphanumeric(), p);
         visit(mergeCollatingSequencePhrase.getMergeCollatingNational(), p);
         return mergeCollatingSequencePhrase;

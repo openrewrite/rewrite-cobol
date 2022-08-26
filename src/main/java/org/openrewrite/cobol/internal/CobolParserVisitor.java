@@ -31,7 +31,6 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.Collections.*;
 import static org.openrewrite.Tree.randomId;
@@ -39,7 +38,7 @@ import static org.openrewrite.cobol.tree.Space.format;
 
 public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
-    private static final String COMMENT_ENTRY_ID = "*>CE ";
+    private static final String COMMENT_ENTRY_TAG = "*>CE ";
 
     private final Path path;
 
@@ -5900,7 +5899,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 randomId(),
                 prefix,
                 markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
-                node.getText().startsWith(COMMENT_ENTRY_ID) ? node.getText().substring(5) : node.getText()
+                node.getText().startsWith(COMMENT_ENTRY_TAG) ? node.getText().substring(COMMENT_ENTRY_TAG.length()) : node.getText()
         );
     }
 
@@ -6432,9 +6431,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea(null);
 
-        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_ID);
+        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_TAG);
         if (isCommentEntry) {
-            text = text.substring(5);
+            text = text.substring(COMMENT_ENTRY_TAG.length());
         }
 
         if (!isCommentEntry && indicatorArea != null) {
@@ -6476,7 +6475,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         }
 
         // An inline comment entry will have a null sequence area.
-        Space prefix = (isCommentEntry && sequenceArea != null) ? Space.EMPTY : whitespace();
+        Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
         cursor += text.length();
 
         CommentArea commentArea = commentArea();

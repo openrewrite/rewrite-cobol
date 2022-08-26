@@ -29,7 +29,7 @@ public class CobolPreprocessor {
     public static final String CHAR_MINUS = "-";
     public static final String CHAR_SLASH = "/";
     public static final String COMMENT_TAG = "*>";
-    public static final String COMMENT_ENTRY_TAG = "*>CE";
+    public static final String COMMENT_ENTRY_TAG = "*>CE ";
     public static final String EXEC_CICS_TAG = "*>EXECCICS";
     public static final String EXEC_END_TAG = "}";
     public static final String EXEC_SQL_TAG = "*>EXECSQL";
