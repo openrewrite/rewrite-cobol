@@ -1741,6 +1741,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitMergeGiving(Cobol.MergeGiving mergeGiving, PrintOutputCapture<P> p) {
         visitSpace(mergeGiving.getPrefix(), p);
         visitMarkers(mergeGiving.getMarkers(), p);
+        visit(mergeGiving.getName(), p);
         visit(mergeGiving.getWords(), p);
         return mergeGiving;
     }
@@ -2786,6 +2787,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(reportGroupSourceClause.getPrefix(), p);
         visitMarkers(reportGroupSourceClause.getMarkers(), p);
         visit(reportGroupSourceClause.getWords(), p);
+        visit(reportGroupSourceClause.getIdentifier(), p);
         return reportGroupSourceClause;
     }
 
