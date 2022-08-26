@@ -2272,7 +2272,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 Space.EMPTY,
                 Markers.EMPTY,
                 wordsList(ctx.ALPHABETIC(), ctx.ALPHANUMERIC(), ctx.ALPHANUMERIC_EDITED(),
-                        ctx.NATIONAL(), ctx.NATIONAL_EDITED(), ctx.NUMERIC(), ctx.NATIONAL_EDITED(),
+                        ctx.NATIONAL(), ctx.NATIONAL_EDITED(), ctx.NUMERIC(), ctx.NUMERIC_EDITED(),
                         ctx.DBCS(), ctx.EGCS(), ctx.DATA(), ctx.BY()),
                 visit(ctx.identifier(), ctx.literal())
         );
