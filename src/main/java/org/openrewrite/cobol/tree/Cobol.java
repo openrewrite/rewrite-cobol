@@ -5045,10 +5045,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Cobol first;
-
-        @Nullable
-        Cobol second;
+        List<Cobol> cobols;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {

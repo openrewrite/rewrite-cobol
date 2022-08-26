@@ -2074,8 +2074,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitPerformVarying(Cobol.PerformVarying performVarying, PrintOutputCapture<P> p) {
         visitSpace(performVarying.getPrefix(), p);
         visitMarkers(performVarying.getMarkers(), p);
-        visit(performVarying.getFirst(), p);
-        visit(performVarying.getSecond(), p);
+        visit(performVarying.getCobols(), p);
         return performVarying;
     }
 

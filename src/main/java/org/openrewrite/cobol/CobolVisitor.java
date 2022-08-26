@@ -2058,8 +2058,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.PerformVarying pp = performVarying;
         pp = pp.withPrefix(visitSpace(pp.getPrefix(), p));
         pp = pp.withMarkers(visitMarkers(pp.getMarkers(), p));
-        pp = pp.withFirst(visit(pp.getFirst(), p));
-        pp = pp.withSecond(visit(pp.getSecond(), p));
+        pp = pp.withCobols(ListUtils.map(pp.getCobols(), it -> visit(it, p)));
         return pp;
     }
 

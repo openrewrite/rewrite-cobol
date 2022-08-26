@@ -3436,21 +3436,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
     @Override
     public Cobol.PerformVarying visitPerformVarying(CobolParser.PerformVaryingContext ctx) {
-        if (ctx.performVaryingClause().getRuleIndex() == ctx.getRuleIndex()) {
-            return new Cobol.PerformVarying(
-                    randomId(),
-                    Space.EMPTY,
-                    Markers.EMPTY,
-                    (Cobol) visit(ctx.performTestClause()),
-                    (Cobol) visit(ctx.performVaryingClause())
-            );
-        }
         return new Cobol.PerformVarying(
                 randomId(),
                 Space.EMPTY,
                 Markers.EMPTY,
-                (Cobol) visit(ctx.performVaryingClause()),
-                visitNullable(ctx.performTestClause())
+                convertAllList(singletonList(ctx.performVaryingClause()), singletonList(ctx.performTestClause()))
         );
     }
 
