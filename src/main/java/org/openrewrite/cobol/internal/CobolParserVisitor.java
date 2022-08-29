@@ -49,6 +49,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final Charset charset;
     private final boolean charsetBomMarked;
     private final CobolDialect cobolDialect;
+
+    // TODO: Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
     private final Map<Integer, String> sequenceAreas = new HashMap<>();
     private final Map<Integer, String> indicatorAreas = new HashMap<>();
     private final Map<Integer, String> commentAreas = new HashMap<>();
@@ -6237,11 +6239,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         int delimIndex = cursor;
         for (; delimIndex < source.length(); delimIndex++) {
             if (source.length() > delimIndex + 1) {
+                // TODO: explain.
                 if (separators.contains(source.substring(delimIndex, delimIndex + 2))) {
                     continue;
                 }
             }
 
+            // TODO: explain.
             if (!Character.isWhitespace(source.substring(delimIndex, delimIndex + 1).charAt(0)) ||
                     sequenceAreas.containsKey(delimIndex) || indicatorAreas.containsKey(delimIndex) || commentAreas.containsKey(delimIndex)) {
                 break; // found it!
@@ -6321,6 +6325,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return processText(text, markers);
     }
 
+    /**
+     * TODO: explain
+     */
     private Space processLiteral(String text, List<Marker> markers, Character delimiter) {
         Map<Integer, Markers> continuations = new HashMap<>();
         List<Marker> continuation = new ArrayList<>(2);
@@ -6427,6 +6434,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return prefix;
     }
 
+    /**
+     * TODO: explain
+     */
     private Space processText(String text, List<Marker> markers) {
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea(null);
@@ -6485,6 +6495,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return prefix;
     }
 
+    /**
+     * TODO: explain
+     */
     @Nullable
     private SequenceArea sequenceArea() {
         if (sequenceAreas.containsKey(cursor)) {
@@ -6496,6 +6509,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return null;
     }
 
+    /**
+     * TODO: explain
+     */
     @Nullable
     private IndicatorArea indicatorArea(@Nullable Character delimiter) {
         if (indicatorAreas.containsKey(cursor)) {
@@ -6515,6 +6531,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return null;
     }
 
+    /**
+     * TODO: explain
+     */
     @Nullable
     private CommentArea commentArea() {
         int saveCursor = cursor;

@@ -6,6 +6,9 @@ import org.openrewrite.marker.Marker;
 
 import java.util.UUID;
 
+/**
+ * TODO: explain.
+ */
 @With
 @Value
 public class SequenceArea implements Marker {

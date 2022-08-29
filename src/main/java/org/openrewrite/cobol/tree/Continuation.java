@@ -23,10 +23,13 @@ import org.openrewrite.marker.Markers;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * TODO: info on COBOL continuation.
+ * Explain why continuations are split via an Integer.
+ */
 @With
 @Value
 public class Continuation implements Marker {
     UUID id;
     Map<Integer, Markers> continuations;
-//    CobolContainer<Integer> continuations;
 }

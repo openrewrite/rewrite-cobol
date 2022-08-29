@@ -3854,7 +3854,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 if (line.getCommentArea() != null) {
                     visitSpace(line.getCommentArea().getPrefix(), p);
                     p.append(line.getCommentArea().getComment());
-                    visitSpace(line.getCommentArea().getEndLine(), p);
+                    visitSpace(line.getCommentArea().getEndOfLine(), p);
                 }
             }
         }
@@ -3878,7 +3878,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                     Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
                     commentArea.ifPresent(it -> p.append(it.getComment()));
                     commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-                    commentArea.ifPresent(it -> visitSpace(it.getEndLine(), p));
+                    commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
 
                     Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
                     sequenceArea.ifPresent(it -> p.append(it.getSequence()));
@@ -3900,7 +3900,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
                 commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
                 commentArea.ifPresent(it -> p.append(it.getComment()));
-                commentArea.ifPresent(it -> visitSpace(it.getEndLine(), p));
+                commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
             }
         } else {
             Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
@@ -3915,7 +3915,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
             commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
             commentArea.ifPresent(it -> p.append(it.getComment()));
-            commentArea.ifPresent(it -> visitSpace(it.getEndLine(), p));
+            commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
         }
 
         return word;
