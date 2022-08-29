@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
+import org.openrewrite.cobol.CobolIbmAnsi85Parser
 import org.openrewrite.cobol.CobolVisitor
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
@@ -30,13 +31,15 @@ class CobolRemainingNistTest : RewriteTest {
         spec.recipe(toRecipe {
             object : CobolVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
-                    if (space.whitespace.trim().isNotEmpty()) {
+                    val whitespace = space.whitespace.trim()
+                    // TODO: separators should be isolated to a dialect.
+                    if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {
                         return space.withWhitespace("(~~>${space.whitespace}<~~)")
                     }
                     return space
                 }
             }
-        })
+        }).parser(CobolIbmAnsi85Parser.builder())
     }
 
     @Disabled("Requires / indicator for comment entries that are moved to the top of the page.")

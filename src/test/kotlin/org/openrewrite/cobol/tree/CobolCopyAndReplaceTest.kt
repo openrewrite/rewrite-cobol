@@ -30,13 +30,15 @@ class CobolCopyAndReplaceTest : RewriteTest {
         spec.recipe(toRecipe {
             object : CobolVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
-                    if (space.whitespace.trim().isNotEmpty()) {
+                    val whitespace = space.whitespace.trim()
+                    // TODO: separators should be isolated to a dialect.
+                    if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {
                         return space.withWhitespace("(~~>${space.whitespace}<~~)")
                     }
                     return space
                 }
             }
-        })
+        }).parser(CobolIbmAnsi85Parser.builder())
     }
 
     @Test

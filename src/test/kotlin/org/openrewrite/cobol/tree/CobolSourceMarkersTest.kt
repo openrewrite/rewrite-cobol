@@ -30,6 +30,7 @@ class CobolSourceMarkersTest : RewriteTest {
             object : CobolVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
                     val whitespace = space.whitespace.trim()
+                    // TODO: separators should be isolated to a dialect.
                     if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {
                         return space.withWhitespace("(~~>${space.whitespace}<~~)")
                     }

@@ -19,12 +19,13 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
+import org.openrewrite.cobol.CobolHpTandemParser
 import org.openrewrite.cobol.CobolVisitor
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
 
-@Disabled("Requires configuration to parse HP Tandem dialect.")
+@Disabled("Requires adding comments at the first line of each test to prevent trimming the blank indicator.")
 class CobolHPTandemDivisionTest : RewriteTest {
 
     override fun defaults(spec: RecipeSpec) {
@@ -37,7 +38,7 @@ class CobolHPTandemDivisionTest : RewriteTest {
                     return space
                 }
             }
-        })
+        }).parser(CobolHpTandemParser.builder())
     }
 
     @Test
