@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
 public class CobolParser implements Parser<Cobol.CompilationUnit> {
@@ -111,7 +112,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
         CobolParserParams params = new CobolParserParams(
                 encoding,
                 emptyList(),
-                emptyList(),
+                getCobolFileExtensions(),
                 getCopyBooks(),
                 preprocessorDialect,
                 sourceFormat,
@@ -132,6 +133,10 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
         String userDir = System.getProperty("user.dir");
         String copyBooks = "/src/test/resources/gov/nist/copybooks";
         return Arrays.stream(Objects.requireNonNull(Paths.get(userDir + copyBooks).toFile().listFiles())).collect(toList());
+    }
+
+    private List<String> getCobolFileExtensions() {
+        return singletonList("CPY");
     }
 
     @Override
