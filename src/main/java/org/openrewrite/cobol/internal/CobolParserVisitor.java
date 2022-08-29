@@ -102,7 +102,16 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
          * 13-72: area B<br />
          * 73-80: comments<br />
          */
-        IBM_ANSI_85(0, 6, 7, 72);
+        IBM_ANSI_85(0, 6, 7, 72),
+
+        /**
+         * HP Tandem format.<br />
+         * <br />
+         * 1: indicator field<br />
+         * 2-5: optional area A<br />
+         * 6-132: optional area B<br />
+         */
+        HP_TANDEM(Integer.MIN_VALUE, 0, 1, 5);
 
         private final int sequenceArea;
         private final int indicatorArea;
@@ -165,6 +174,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
             // TODO: separators should likely be modeled.
             separators.addAll(Arrays.asList(", ", "; "));
+        } else if (cobolDialect == CobolDialect.HP_TANDEM) {
+            throw new UnsupportedOperationException("Implement me.");
+        } else {
+            throw new UnsupportedOperationException("CobolDialect is not supported: " + cobolDialect.name());
         }
     }
 

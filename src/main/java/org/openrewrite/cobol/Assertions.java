@@ -32,7 +32,7 @@ public class Assertions {
     static final DslParserBuilder parserBuilder = new DslParserBuilder("cobol", new Parser.Builder(Cobol.CompilationUnit.class) {
         @Override
         public Parser<?> build() {
-            return new CobolParser();
+            return new CobolIbmAnsi85Parser();
         }
     });
 
