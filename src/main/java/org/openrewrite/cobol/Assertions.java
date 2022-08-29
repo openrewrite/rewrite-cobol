@@ -15,11 +15,8 @@
  */
 package org.openrewrite.cobol;
 
-
-import org.openrewrite.Parser;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.internal.lang.Nullable;
-import org.openrewrite.test.DslParserBuilder;
 import org.openrewrite.test.SourceSpec;
 import org.openrewrite.test.SourceSpecs;
 
@@ -29,20 +26,13 @@ public class Assertions {
     private Assertions() {
     }
 
-    static final DslParserBuilder parserBuilder = new DslParserBuilder("cobol", new Parser.Builder(Cobol.CompilationUnit.class) {
-        @Override
-        public Parser<?> build() {
-            return new CobolIbmAnsi85Parser();
-        }
-    });
-
     public static SourceSpecs cobol(@Nullable String before) {
         return cobol(before, s -> {
         });
     }
 
     public static SourceSpecs cobol(@Nullable String before, Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
-        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(Cobol.CompilationUnit.class, null, parserBuilder, before, null);
+        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(Cobol.CompilationUnit.class, null, CobolIbmAnsi85Parser.builder(), before, null);
         spec.accept(cobol);
         return cobol;
     }
@@ -54,7 +44,7 @@ public class Assertions {
 
     public static SourceSpecs cobol(@Nullable String before, String after,
                               Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
-        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(Cobol.CompilationUnit.class, null, parserBuilder, before, after);
+        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(Cobol.CompilationUnit.class, null, CobolIbmAnsi85Parser.builder(), before, after);
         spec.accept(cobol);
         return cobol;
     }

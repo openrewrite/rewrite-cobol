@@ -32,10 +32,13 @@ import org.openrewrite.tree.ParsingExecutionContextView;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
 public class CobolIbmAnsi85Parser implements CobolParser {
@@ -44,18 +47,6 @@ public class CobolIbmAnsi85Parser implements CobolParser {
     private final CobolParserVisitor.CobolDialect cobolDialect = CobolParserVisitor.CobolDialect.IBM_ANSI_85;
     private final CobolDialect preprocessorDialect = CobolDialect.ANSI85;
     private final CobolPreprocessor.CobolSourceFormatEnum sourceFormat = CobolPreprocessor.CobolSourceFormatEnum.FIXED;
-
-    // TODO: discovery ... there are a lot of unknowns about copy books. There may be MANY of them so some form of
-    // auto-detection is ideal. Short-term, this will likely become a "Style" for simple auto-configuration.
-
-    @Nullable
-    private List<File> copyBookDirectories;
-
-    @Nullable
-    private List<String> copyBookExtensions;
-
-    @Nullable
-    private List<File> copyBookFiles;
 
     @Override
     public List<Cobol.CompilationUnit> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
@@ -112,14 +103,49 @@ public class CobolIbmAnsi85Parser implements CobolParser {
         CobolParserParams params = new CobolParserParams(
                 encoding,
                 emptyList(),
-                emptyList(),
-                emptyList(),
+                singletonList("CPY"),
+                getCopyBooks(),
                 preprocessorDialect,
                 sourceFormat,
                 true
         );
 
         return cobolPreprocessor.process(source, params);
+    }
+
+    /**
+     * There may be A LOT of copy books in a COBOL codebase, but we do not know how the parser is provided the copy books.
+     * We also do not know how they are detected or what types of conventions exist.
+     *
+     * Temporarily hardcoded to implement COPY/REPLACE, but this SHOULD be auto-detected / configurable.
+     * A temp ADHOC solution may be an auto-detected style that contains all the relevant info.
+     */
+    private List<File> getCopyBooks() {
+        String userDir = System.getProperty("user.dir");
+        String copyBooks = "/src/test/resources/gov/nist/copybooks";
+        return Arrays.stream(Objects.requireNonNull(Paths.get(userDir + copyBooks).toFile().listFiles())).collect(toList());
+    }
+
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder extends org.openrewrite.Parser.Builder {
+
+        public Builder() {
+            super(Cobol.CompilationUnit.class);
+        }
+
+        @Override
+        public CobolParser build() {
+            return new CobolIbmAnsi85Parser();
+        }
+
+        @Override
+        public String getDslName() {
+            return "cobol";
+        }
     }
 
     private static class ForwardingErrorListener extends BaseErrorListener {
