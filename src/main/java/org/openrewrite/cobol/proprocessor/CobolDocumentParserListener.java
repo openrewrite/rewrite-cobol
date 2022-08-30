@@ -14,11 +14,10 @@ import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorBaseListener;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser;
-import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.lang.Nullable;
 
-import java.io.*;
-import java.nio.file.Files;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
@@ -151,15 +150,10 @@ public class CobolDocumentParserListener extends CobolPreprocessorBaseListener {
          * copy the copy book
          */
         CobolPreprocessorParser.CopySourceContext copySource = ctx.copySource();
-        CopyBook copyBookContent = getCopyBookContent(copySource, params);
+        String copyBookContent = getCopyBookContent(copySource, params);
 
         if (copyBookContent != null) {
-            context().write(CobolPreprocessor.COMMENT_TAG + " __COPY_BEFORE_START__" + CobolPreprocessor.NEWLINE);
-            context().write(addCommentTagsToSource(copyBookContent.getSource()) + CobolPreprocessor.NEWLINE);
-            context().write(CobolPreprocessor.COMMENT_TAG + " __COPY_BEFORE_STOP__" + CobolPreprocessor.NEWLINE);
-            context().write(CobolPreprocessor.COMMENT_TAG + " __COPY_AFTER_START__" + CobolPreprocessor.NEWLINE);
-            context().write(copyBookContent.getProcessed() + CobolPreprocessor.NEWLINE);
-            context().write(CobolPreprocessor.COMMENT_TAG + " __COPY_AFTER_STOP__" + CobolPreprocessor.NEWLINE);
+            context().write(copyBookContent + CobolPreprocessor.NEWLINE);
             context().replaceReplaceablesByReplacements(tokens);
         }
 
@@ -169,18 +163,6 @@ public class CobolDocumentParserListener extends CobolPreprocessorBaseListener {
         context().write(content);
     }
 
-    private String addCommentTagsToSource(String source) {
-        StringBuilder sb = new StringBuilder();
-        for (String part : source.split("\n")) {
-            boolean isCRLF = part.endsWith("\r");
-            String cleanedPart = isCRLF ? part.substring(0, part.length() - 1) : part;
-            sb.append(CobolPreprocessor.COMMENT_TAG + " ");
-            sb.append(cleanedPart);
-            sb.append(isCRLF ? "\r\n" : "\n");
-        }
-
-        return sb.toString();
-    }
 
     public void exitEjectStatement(CobolPreprocessorParser.EjectStatementContext ctx) {
         // throw away eject statement
@@ -316,36 +298,28 @@ public class CobolDocumentParserListener extends CobolPreprocessorBaseListener {
     }
 
     @Nullable
-    CopyBook getCopyBookContent(CobolPreprocessorParser.CopySourceContext copySource, CobolParserParams params) {
+    String getCopyBookContent(CobolPreprocessorParser.CopySourceContext copySource, CobolParserParams params) {
         File copyBook = findCopyBook(copySource, params);
+        String result;
 
         if (copyBook == null) {
             throw new IllegalStateException("Could not find copy book " + copySource.getText()
                     + " in directory of COBOL input file or copy books param object.");
+        } else {
+            try {
+                result = new CobolPreprocessor(
+                        new CobolCommentEntriesMarker(),
+                        new CobolDocumentParser(),
+                        new CobolInlineCommentEntriesNormalizer(),
+                        new CobolLineIndicatorProcessor(),
+                        new CobolLineReader()
+                ).process(copyBook, params);
+            } catch (IOException e) {
+                result = null;
+            }
         }
 
-        String source;
-        try (InputStream inputStream = Files.newInputStream(copyBook.toPath())) {
-            EncodingDetectingInputStream is = new EncodingDetectingInputStream(inputStream);
-            source = is.readFully();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        String result;
-        try {
-            result = new CobolPreprocessor(
-                    new CobolCommentEntriesMarker(),
-                    new CobolDocumentParser(),
-                    new CobolInlineCommentEntriesNormalizer(),
-                    new CobolLineIndicatorProcessor(),
-                    new CobolLineReader()
-            ).process(copyBook, params);
-        } catch (IOException e) {
-            result = null;
-        }
-
-        return source == null || result == null ? null : new CopyBook(source, result) ;
+        return result;
     }
 
     /**
