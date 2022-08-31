@@ -19,7 +19,7 @@ grammar CobolPreprocessor;
 startRule : compilationUnit EOF;
 
 compilationUnit
-   : (compilerOptions | copyStatement | execCicsStatement | execSqlStatement | execSqlImsStatement | replaceOffStatement | replaceArea | ejectStatement | skipStatement | titleStatement | charDataLine | NEWLINE)*
+   : (compilerOptions | copyStatement | execCicsStatement | execSqlStatement | execSqlImsStatement | replaceOffStatement | replaceArea | ejectStatement | skipStatement | titleStatement | charDataLine)*
    ;
 
 // compiler options
@@ -175,7 +175,7 @@ execSqlImsStatement
 // copy statement
 
 copyStatement
-   : COPY copySource (NEWLINE* (directoryPhrase | familyPhrase | replacingPhrase | SUPPRESS))* NEWLINE* DOT
+   : COPY copySource ((directoryPhrase | familyPhrase | replacingPhrase | SUPPRESS))* DOT
    ;
 
 copySource
@@ -187,7 +187,7 @@ copyLibrary
    ;
 
 replacingPhrase
-   : REPLACING NEWLINE* replaceClause (NEWLINE+ replaceClause)*
+   : REPLACING replaceClause (replaceClause)*
    ;
 
 // replace statement
@@ -197,7 +197,7 @@ replaceArea
    ;
 
 replaceByStatement
-   : REPLACE (NEWLINE* replaceClause)+ DOT
+   : REPLACE (replaceClause)+ DOT
    ;
 
 replaceOffStatement
@@ -205,15 +205,15 @@ replaceOffStatement
    ;
 
 replaceClause
-   : replaceable NEWLINE* BY NEWLINE* replacement (NEWLINE* directoryPhrase)? (NEWLINE* familyPhrase)?
+   : replaceable BY replacement (directoryPhrase)? (familyPhrase)?
    ;
 
 directoryPhrase
-   : (OF | IN) NEWLINE* (literal | cobolWord)
+   : (OF | IN) (literal | cobolWord)
    ;
 
 familyPhrase
-   : ON NEWLINE* (literal | cobolWord)
+   : ON (literal | cobolWord)
    ;
 
 replaceable
@@ -249,11 +249,11 @@ pseudoText
    ;
 
 charData
-   : (charDataLine | NEWLINE)+
+   : (charDataLine)+
    ;
 
 charDataSql
-   : (charDataLine | COPY | REPLACE | NEWLINE)+
+   : (charDataLine | COPY | REPLACE)+
    ;
 
 charDataLine
@@ -639,9 +639,10 @@ FILENAME : [a-zA-Z0-9]+ '.' [a-zA-Z0-9]+;
 
 
 // whitespace, line breaks, comments, ...
-NEWLINE : '\r'? '\n';
+NEWLINE : '\r'? '\n' -> channel(HIDDEN);
 COMMENTLINE : COMMENTTAG ~('\n' | '\r')* -> channel(HIDDEN);
 WS : [ \t\f;]+ -> channel(HIDDEN);
+SEPARATOR : ', ' -> channel(HIDDEN);
 TEXT : ~('\n' | '\r');
 
 
