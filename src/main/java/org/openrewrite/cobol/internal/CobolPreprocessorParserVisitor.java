@@ -133,7 +133,12 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
     @Override
     public Object visitCharData(CobolPreprocessorParser.CharDataContext ctx) {
-        return super.visitCharData(ctx);
+        return new CobolPreprocessor.CharData(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                convertAll(ctx.charDataLine())
+        );
     }
 
     @Override
@@ -144,12 +149,22 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
     @Override
     public Object visitCharDataLine(CobolPreprocessorParser.CharDataLineContext ctx) {
-        return super.visitCharDataLine(ctx);
+        return new CobolPreprocessor.CharDataLine(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                convertAllList(ctx.cobolWord(), ctx.literal(), ctx.filename(), ctx.TEXT(), ctx.DOT(), ctx.LPARENCHAR(), ctx.RPARENCHAR())
+        );
     }
 
     @Override
     public Object visitCharDataSql(CobolPreprocessorParser.CharDataSqlContext ctx) {
-        return super.visitCharDataSql(ctx);
+        return new CobolPreprocessor.CharDataSql(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                convertAllList(ctx.charDataLine())
+        );
     }
 
     @Override
@@ -160,7 +175,302 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
     @Override
     public Object visitCompilerOption(CobolPreprocessorParser.CompilerOptionContext ctx) {
-        return super.visitCompilerOption(ctx);
+        return new CobolPreprocessor.CompilerOption(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                convertAllList(
+                        // Each item is listed in alphabetical order to reduce risk of types, and make it simpler to
+                        // find missing compiler options.
+                        // `convertAllList` will sort each of the terminals across all the lists based on the symbol order.
+                        singletonList(ctx.ADATA()),
+                        singletonList(ctx.ADV()),
+                        singletonList(ctx.ALIAS()),
+                        singletonList(ctx.ANSI()),
+                        singletonList(ctx.ANY()),
+                        singletonList(ctx.APOST()),
+                        singletonList(ctx.AR()),
+                        singletonList(ctx.ARITH()),
+                        singletonList(ctx.AUTO()),
+                        singletonList(ctx.AWO()),
+
+                        singletonList(ctx.BIN()),
+                        singletonList(ctx.BLOCK0()),
+                        singletonList(ctx.BUF()),
+                        singletonList(ctx.BUFSIZE()),
+
+                        singletonList(ctx.C_CHAR()),
+                        singletonList(ctx.CBLCARD()),
+                        singletonList(ctx.CICS()),
+                        singletonList(ctx.CO()),
+                        singletonList(ctx.COBOL2()),
+                        singletonList(ctx.COBOL3()),
+                        singletonList(ctx.cobolWord()),
+                        singletonList(ctx.CODEPAGE()),
+                        ctx.COMMACHAR(),
+                        singletonList(ctx.COMPAT()),
+                        singletonList(ctx.COMPILE()),
+                        singletonList(ctx.CP()),
+                        singletonList(ctx.CPP()),
+                        singletonList(ctx.CPSM()),
+                        singletonList(ctx.CS()),
+                        singletonList(ctx.CURR()),
+                        singletonList(ctx.CURRENCY()),
+
+                        singletonList(ctx.D_CHAR()),
+                        singletonList(ctx.DATA()),
+                        singletonList(ctx.DATEPROC()),
+                        singletonList(ctx.DBCS()),
+                        singletonList(ctx.DD()),
+                        singletonList(ctx.DEBUG()),
+                        singletonList(ctx.DECK()),
+                        singletonList(ctx.DIAGTRUNC()),
+                        singletonList(ctx.DLL()),
+                        singletonList(ctx.DP()),
+                        singletonList(ctx.DTR()),
+                        singletonList(ctx.DU()),
+                        singletonList(ctx.DUMP()),
+                        singletonList(ctx.DYN()),
+                        singletonList(ctx.DYNAM()),
+
+                        ctx.E_CHAR(),
+                        singletonList(ctx.EDF()),
+                        singletonList(ctx.EJPD()),
+                        singletonList(ctx.EN()),
+                        singletonList(ctx.ENGLISH()),
+                        singletonList(ctx.EPILOG()),
+                        singletonList(ctx.EXIT()),
+                        singletonList(ctx.EXP()),
+                        singletonList(ctx.EXPORTALL()),
+                        singletonList(ctx.EXTEND()),
+
+                        singletonList(ctx.F_CHAR()),
+                        singletonList(ctx.FASTSRT()),
+                        singletonList(ctx.FEPI()),
+                        singletonList(ctx.FLAG()),
+                        singletonList(ctx.FLAGSTD()),
+                        singletonList(ctx.FSRT()),
+                        singletonList(ctx.FULL()),
+
+                        singletonList(ctx.GDS()),
+                        singletonList(ctx.GRAPHIC()),
+
+                        singletonList(ctx.H_CHAR()),
+                        singletonList(ctx.HOOK()),
+
+                        ctx.I_CHAR(),
+                        singletonList(ctx.INTDATE()),
+
+                        singletonList(ctx.JA()),
+                        singletonList(ctx.JP()),
+
+                        ctx.KA(),
+
+                        singletonList(ctx.LANG()),
+                        singletonList(ctx.LANGUAGE()),
+                        singletonList(ctx.LC()),
+                        singletonList(ctx.LEASM()),
+                        singletonList(ctx.LENGTH()),
+                        singletonList(ctx.LIB()),
+                        singletonList(ctx.LINKAGE()),
+                        singletonList(ctx.LIN()),
+                        singletonList(ctx.LINECOUNT()),
+                        singletonList(ctx.LIST()),
+                        ctx.literal(),
+                        singletonList(ctx.LILIAN()),
+                        singletonList(ctx.LM()),
+                        singletonList(ctx.LONGMIXED()),
+                        singletonList(ctx.LONGUPPER()),
+                        singletonList(ctx.LPARENCHAR()),
+                        singletonList(ctx.LU()),
+
+                        singletonList(ctx.M_CHAR()),
+                        singletonList(ctx.MAP()),
+                        singletonList(ctx.MARGINS()),
+                        singletonList(ctx.MAX()),
+                        singletonList(ctx.MD()),
+                        singletonList(ctx.MDECK()),
+                        singletonList(ctx.MIG()),
+                        singletonList(ctx.MIXED()),
+
+                        singletonList(ctx.N_CHAR()),
+                        singletonList(ctx.NAME()),
+                        singletonList(ctx.NAT()),
+                        singletonList(ctx.NATIONAL()),
+                        singletonList(ctx.NATLANG()),
+                        singletonList(ctx.NN()),
+                        singletonList(ctx.NOADATA()),
+                        singletonList(ctx.NOADV()),
+                        singletonList(ctx.NOALIAS()),
+                        singletonList(ctx.NOAWO()),
+                        singletonList(ctx.NOBLOCK0()),
+                        singletonList(ctx.NOCBLCARD()),
+                        singletonList(ctx.NOCICS()),
+                        singletonList(ctx.NOCMPR2()),
+                        singletonList(ctx.NOC()),
+                        singletonList(ctx.NOCOMPILE()),
+                        singletonList(ctx.NOCPSM()),
+                        singletonList(ctx.NOCURR()),
+                        singletonList(ctx.NOCURRENCY()),
+                        singletonList(ctx.NOD()),
+                        singletonList(ctx.NODATEPROC()),
+                        singletonList(ctx.NODBCS()),
+                        singletonList(ctx.NODE()),
+                        singletonList(ctx.NODEBUG()),
+                        singletonList(ctx.NODECK()),
+                        singletonList(ctx.NODIAGTRUNC()),
+                        singletonList(ctx.NODLL()),
+                        singletonList(ctx.NODP()),
+                        singletonList(ctx.NODTR()),
+                        singletonList(ctx.NODYN()),
+                        singletonList(ctx.NODYNAM()),
+                        singletonList(ctx.NODU()),
+                        singletonList(ctx.NODUMP()),
+                        singletonList(ctx.NOEDF()),
+                        singletonList(ctx.NOEJPD()),
+                        singletonList(ctx.NOEPILOG()),
+                        singletonList(ctx.NOEXIT()),
+                        singletonList(ctx.NOEXP()),
+                        singletonList(ctx.NOEXPORTALL()),
+                        singletonList(ctx.NOF()),
+                        singletonList(ctx.NOFASTSRT()),
+                        singletonList(ctx.NOFEPI()),
+                        singletonList(ctx.NOFLAG()),
+                        singletonList(ctx.NOFLAGMIG()),
+                        singletonList(ctx.NOFLAGSTD()),
+                        singletonList(ctx.NOFSRT()),
+                        singletonList(ctx.NOGRAPHIC()),
+                        singletonList(ctx.NOHOOK()),
+                        singletonList(ctx.NOLENGTH()),
+                        singletonList(ctx.NOLIB()),
+                        singletonList(ctx.NOLINKAGE()),
+                        singletonList(ctx.NOLIST()),
+                        singletonList(ctx.NOMAP()),
+                        singletonList(ctx.NOMD()),
+                        singletonList(ctx.NOMDECK()),
+                        singletonList(ctx.NONAME()),
+                        singletonList(ctx.NONUM()),
+                        singletonList(ctx.NONUMBER()),
+                        singletonList(ctx.NOOBJ()),
+                        singletonList(ctx.NOOBJECT()),
+                        singletonList(ctx.NOOFF()),
+                        singletonList(ctx.NOOFFSET()),
+                        singletonList(ctx.NOOPSEQUENCE()),
+                        singletonList(ctx.NOOPT()),
+                        singletonList(ctx.NOOPTIMIZE()),
+                        singletonList(ctx.NOOPTIONS()),
+                        singletonList(ctx.NOP()),
+                        singletonList(ctx.NOPFD()),
+                        singletonList(ctx.NOPROLOG()),
+                        singletonList(ctx.NORENT()),
+                        singletonList(ctx.NOS()),
+                        singletonList(ctx.NOSEP()),
+                        singletonList(ctx.NOSEPARATE()),
+                        singletonList(ctx.NOSEQ()),
+                        singletonList(ctx.NOSEQUENCE()),
+                        singletonList(ctx.NOSOURCE()),
+                        singletonList(ctx.NOSPIE()),
+                        singletonList(ctx.NOSQL()),
+                        singletonList(ctx.NOSQLC()),
+                        singletonList(ctx.NOSQLCCSID()),
+                        singletonList(ctx.NOSSR()),
+                        singletonList(ctx.NOSSRANGE()),
+                        singletonList(ctx.NOSTDTRUNC()),
+                        singletonList(ctx.NOTERM()),
+                        singletonList(ctx.NOTERMINAL()),
+                        singletonList(ctx.NOTEST()),
+                        singletonList(ctx.NOTHREAD()),
+                        singletonList(ctx.NOTRIG()),
+                        singletonList(ctx.NOVBREF()),
+                        singletonList(ctx.NOWD()),
+                        singletonList(ctx.NOWORD()),
+                        singletonList(ctx.NOX()),
+                        singletonList(ctx.NOXREF()),
+                        singletonList(ctx.NOZWB()),
+                        singletonList(ctx.NS()),
+                        singletonList(ctx.NSEQ()),
+                        singletonList(ctx.NSYMBOL()),
+                        singletonList(ctx.NUM()),
+                        singletonList(ctx.NUMBER()),
+                        singletonList(ctx.NUMPROC()),
+
+                        singletonList(ctx.OBJ()),
+                        singletonList(ctx.OBJECT()),
+                        singletonList(ctx.OFF()),
+                        singletonList(ctx.OFFSET()),
+                        singletonList(ctx.OPMARGINS()),
+                        singletonList(ctx.OPSEQUENCE()),
+                        singletonList(ctx.OP()),
+                        singletonList(ctx.OPT()),
+                        singletonList(ctx.OPTFILE()),
+                        singletonList(ctx.OPTIMIZE()),
+                        singletonList(ctx.OPTIONS()),
+                        singletonList(ctx.OUT()),
+                        singletonList(ctx.OUTDD()),
+
+                        singletonList(ctx.PFD()),
+                        singletonList(ctx.PGMN()),
+                        singletonList(ctx.PGMNAME()),
+                        singletonList(ctx.PROLOG()),
+
+                        singletonList(ctx.Q_CHAR()),
+                        singletonList(ctx.QUOTE()),
+
+                        singletonList(ctx.RENT()),
+                        singletonList(ctx.RMODE()),
+                        singletonList(ctx.RPARENCHAR()),
+
+                        ctx.S_CHAR(),
+                        singletonList(ctx.SEP()),
+                        singletonList(ctx.SEPARATE()),
+                        singletonList(ctx.SEQ()),
+                        singletonList(ctx.SEQUENCE()),
+                        singletonList(ctx.SHORT()),
+                        singletonList(ctx.SIZE()),
+                        singletonList(ctx.SOURCE()),
+                        singletonList(ctx.SP()),
+                        singletonList(ctx.SPACE()),
+                        singletonList(ctx.SPIE()),
+                        singletonList(ctx.SS()),
+                        singletonList(ctx.SSR()),
+                        singletonList(ctx.SSRANGE()),
+                        singletonList(ctx.STD()),
+                        singletonList(ctx.SQL()),
+                        singletonList(ctx.SQLC()),
+                        singletonList(ctx.SQLCCSID()),
+                        singletonList(ctx.SYSEIB()),
+                        singletonList(ctx.SZ()),
+
+                        singletonList(ctx.TERM()),
+                        singletonList(ctx.TERMINAL()),
+                        singletonList(ctx.THREAD()),
+                        singletonList(ctx.TEST()),
+                        singletonList(ctx.TRIG()),
+                        singletonList(ctx.TRUNC()),
+
+                        ctx.U_CHAR(),
+                        singletonList(ctx.UE()),
+                        singletonList(ctx.UPPER()),
+
+                        singletonList(ctx.VBREF()),
+
+                        singletonList(ctx.WD()),
+                        singletonList(ctx.WORD()),
+
+                        singletonList(ctx.X_CHAR()),
+                        singletonList(ctx.XP()),
+                        singletonList(ctx.XMLPARSE()),
+                        singletonList(ctx.XMLSS()),
+                        singletonList(ctx.XREF()),
+
+                        singletonList(ctx.YEARWINDOW()),
+                        singletonList(ctx.YW()),
+
+                        singletonList(ctx.ZWB()),
+
+                        ctx.W_CHAR()
+                )
+        );
     }
 
     @Override
@@ -340,11 +650,11 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         return delimIndex;
     }
 
-    private @Nullable List<Cobol.Word> wordsList(TerminalNode... wordNodes) {
-        List<Cobol.Word> words = new ArrayList<>(wordNodes.length);
+    private @Nullable List<CobolPreprocessor.Word> wordsList(TerminalNode... wordNodes) {
+        List<CobolPreprocessor.Word> words = new ArrayList<>(wordNodes.length);
         for (TerminalNode wordNode : wordNodes) {
             if (wordNode != null) {
-                Cobol.Word cw = (Cobol.Word) visit(wordNode);
+                CobolPreprocessor.Word cw = (CobolPreprocessor.Word) visit(wordNode);
                 words.add(cw);
             }
         }
@@ -365,7 +675,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     }
 
     @SafeVarargs
-    private final <C extends Cobol> List<C> convertAll(List<? extends ParserRuleContext>... trees) {
+    private final <C extends CobolPreprocessor> List<C> convertAll(List<? extends ParserRuleContext>... trees) {
         return convertAll(Arrays.stream(trees)
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
@@ -373,19 +683,19 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 .collect(Collectors.toList()));
     }
 
-    private <C extends Cobol, T extends ParseTree> List<C> convertAll(List<T> trees) {
+    private <C extends CobolPreprocessor, T extends ParseTree> List<C> convertAll(List<T> trees) {
         //noinspection unchecked
         return convertAll(trees, t -> (C) visit(t));
     }
 
     @SafeVarargs
-    private final List<Cobol> convertAllList(List<? extends ParseTree>... trees) {
+    private final List<CobolPreprocessor> convertAllList(List<? extends ParseTree>... trees) {
         return Arrays.stream(trees)
                 .flatMap(Collection::stream)
                 .filter(Objects::nonNull)
                 .sorted(Comparator.comparingInt(it -> it instanceof TerminalNode ? ((TerminalNode) it).getSymbol().getStartIndex() :
                         ((ParserRuleContext) it).getStart().getStartIndex()))
-                .map(it -> (Cobol) visit(it))
+                .map(it -> (CobolPreprocessor) visit(it))
                 .collect(Collectors.toList());
     }
 

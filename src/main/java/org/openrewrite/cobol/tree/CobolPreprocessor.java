@@ -82,7 +82,7 @@ public interface CobolPreprocessor extends Tree {
         Space prefix;
         Markers markers;
 
-        List<Word> words;
+        List<CobolPreprocessor> words;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
