@@ -225,7 +225,7 @@ public interface CobolPreprocessor extends Tree {
         Space prefix;
         Markers markers;
 
-        CobolPreprocessor cobolPreprocessor;
+        Word cobolPreprocessor;
 
         @Nullable
         Word word;
@@ -273,7 +273,7 @@ public interface CobolPreprocessor extends Tree {
         Markers markers;
 
         Word word;
-        Name name;
+        Word name;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
@@ -338,7 +338,7 @@ public interface CobolPreprocessor extends Tree {
         Markers markers;
 
         Word word;
-        Name name;
+        Word name;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {

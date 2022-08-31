@@ -264,7 +264,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                         singletonList(ctx.JA()),
                         singletonList(ctx.JP()),
 
-                        ctx.KA(),
+                        singletonList(ctx.KA()),
 
                         singletonList(ctx.LANG()),
                         singletonList(ctx.LANGUAGE()),
@@ -475,12 +475,26 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
     @Override
     public Object visitCompilerOptions(CobolPreprocessorParser.CompilerOptionsContext ctx) {
-        return super.visitCompilerOptions(ctx);
+        return new CobolPreprocessor.CompilerOptions(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                visit(ctx.PROCESS(), ctx.CBL()),
+                convertAllList(ctx.COMMACHAR(), ctx.compilerOption(), ctx.compilerXOpts())
+        );
     }
 
     @Override
     public Object visitCompilerXOpts(CobolPreprocessorParser.CompilerXOptsContext ctx) {
-        return super.visitCompilerXOpts(ctx);
+        return new CobolPreprocessor.CompilerXOpts(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                (CobolPreprocessor.Word) visit(ctx.XOPTS()),
+                (CobolPreprocessor.Word) visit(ctx.LPARENCHAR()),
+                convertAllList(ctx.COMMACHAR(), ctx.compilerOption()),
+                (CobolPreprocessor.Word) visit(ctx.RPARENCHAR())
+        );
     }
 
     @Override
@@ -518,42 +532,99 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
     @Override
     public Object visitCopySource(CobolPreprocessorParser.CopySourceContext ctx) {
-        return super.visitCopySource(ctx);
+        return new CobolPreprocessor.CopySource(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                visit(ctx.literal(), ctx.cobolWord(), ctx.filename()),
+                ctx.OF() == null && ctx.IN() == null ? null : visit(ctx.OF(), ctx.IN()),
+                visitNullable(ctx.copyLibrary())
+        );
     }
 
     @Override
     public Object visitCopyStatement(CobolPreprocessorParser.CopyStatementContext ctx) {
-        return super.visitCopyStatement(ctx);
+        return new CobolPreprocessor.CopyStatement(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                (CobolPreprocessor.Word) visit(ctx.COPY()),
+                (CobolPreprocessor.CopySource) visit(ctx.copySource()),
+                convertAllList(ctx.directoryPhrase(), ctx.familyPhrase(), ctx.replacingPhrase(), ctx.SUPPRESS()),
+                (CobolPreprocessor.Word) visit(ctx.DOT())
+        );
     }
 
     @Override
     public Object visitDirectoryPhrase(CobolPreprocessorParser.DirectoryPhraseContext ctx) {
-        return super.visitDirectoryPhrase(ctx);
+        return new CobolPreprocessor.DirectoryPhrase(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                visit(ctx.OF(), ctx.IN()),
+                visit(ctx.literal(), ctx.cobolWord())
+        );
     }
 
     @Override
     public Object visitEjectStatement(CobolPreprocessorParser.EjectStatementContext ctx) {
-        return super.visitEjectStatement(ctx);
+        return new CobolPreprocessor.EjectStatement(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                (CobolPreprocessor.Word) visit(ctx.EJECT()),
+                visitNullable(ctx.DOT())
+        );
     }
 
     @Override
     public Object visitExecCicsStatement(CobolPreprocessorParser.ExecCicsStatementContext ctx) {
-        return super.visitExecCicsStatement(ctx);
+        return new CobolPreprocessor.ExecStatement(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                wordsList(ctx.EXEC(), ctx.CICS()),
+                (CobolPreprocessor) visit(ctx.charData()),
+                (CobolPreprocessor.Word) visit(ctx.END_EXEC()),
+                visitNullable(ctx.DOT())
+        );
     }
 
     @Override
     public Object visitExecSqlStatement(CobolPreprocessorParser.ExecSqlStatementContext ctx) {
-        return super.visitExecSqlStatement(ctx);
+        return new CobolPreprocessor.ExecStatement(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                wordsList(ctx.EXEC(), ctx.SQL()),
+                (CobolPreprocessor) visit(ctx.charDataSql()),
+                (CobolPreprocessor.Word) visit(ctx.END_EXEC()),
+                visitNullable(ctx.DOT())
+        );
     }
 
     @Override
     public Object visitExecSqlImsStatement(CobolPreprocessorParser.ExecSqlImsStatementContext ctx) {
-        return super.visitExecSqlImsStatement(ctx);
+        return new CobolPreprocessor.ExecStatement(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                wordsList(ctx.EXEC(), ctx.SQLIMS()),
+                (CobolPreprocessor) visit(ctx.charData()),
+                (CobolPreprocessor.Word) visit(ctx.END_EXEC()),
+                visitNullable(ctx.DOT())
+        );
     }
 
     @Override
     public Object visitFamilyPhrase(CobolPreprocessorParser.FamilyPhraseContext ctx) {
-        return super.visitFamilyPhrase(ctx);
+        return new CobolPreprocessor.FamilyPhrase(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                (CobolPreprocessor.Word) visit(ctx.ON()),
+                (CobolPreprocessor.Word) visit(ctx.literal(), ctx.cobolWord())
+        );
     }
 
     @Override
@@ -570,7 +641,14 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
     @Override
     public Object visitPseudoText(CobolPreprocessorParser.PseudoTextContext ctx) {
-        return super.visitPseudoText(ctx);
+        return new CobolPreprocessor.PseudoText(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                (CobolPreprocessor.Word) visit(ctx.DOUBLEEQUALCHAR().get(0)),
+                visitNullable(ctx.charData()),
+                (CobolPreprocessor.Word) visit(ctx.DOUBLEEQUALCHAR().get(1))
+        );
     }
 
     @Override
