@@ -17,6 +17,12 @@ public interface CobolPreprocessorVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStartRule(CobolPreprocessorParser.StartRuleContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CobolPreprocessorParser#compilationUnit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCompilationUnit(CobolPreprocessorParser.CompilationUnitContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CobolPreprocessorParser#compilerOptions}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

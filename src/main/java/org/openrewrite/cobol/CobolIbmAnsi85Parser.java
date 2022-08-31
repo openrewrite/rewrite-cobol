@@ -15,14 +15,16 @@
  */
 package org.openrewrite.cobol;
 
-import org.openrewrite.cobol.internal.CobolParserVisitor;
-import org.openrewrite.cobol.proprocessor.*;
+import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.tree.Cobol;
+
+import static org.openrewrite.cobol.proprocessor.CobolDialect.ANSI85;
+import static org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum.FIXED;
 
 public class CobolIbmAnsi85Parser extends CobolParser {
 
     public CobolIbmAnsi85Parser() {
-        super(CobolParserVisitor.CobolDialect.IBM_ANSI_85, CobolDialect.ANSI85, CobolPreprocessor.CobolSourceFormatEnum.FIXED);
+        super(new IbmAnsi85(), ANSI85, FIXED);
     }
 
     public static Builder builder() {

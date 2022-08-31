@@ -91,80 +91,28 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return visitCompilationUnit(ctx.compilationUnit());
     }
 
-    public enum CobolDialect {
-
-        /**
-         * Fixed format, standard ANSI / IBM reference. Each line 80 chars.<br />
-         * <br />
-         * 1-6: sequence area<br />
-         * 7: indicator field<br />
-         * 8-12: area A<br />
-         * 13-72: area B<br />
-         * 73-80: comments<br />
-         */
-        IBM_ANSI_85(0, 6, 7, 72),
-
-        /**
-         * HP Tandem format.<br />
-         * <br />
-         * 1: indicator field<br />
-         * 2-5: optional area A<br />
-         * 6-132: optional area B<br />
-         */
-        HP_TANDEM(Integer.MIN_VALUE, 0, 1, 5);
-
-        private final int sequenceArea;
-        private final int indicatorArea;
-        private final int contentArea;
-        private final int otherArea;
-
-        CobolDialect(int sequenceArea,
-                     int indicatorArea,
-                     int contentArea,
-                     int otherArea) {
-            this.sequenceArea = sequenceArea;
-            this.indicatorArea = indicatorArea;
-            this.contentArea = contentArea;
-            this.otherArea = otherArea;
-        }
-
-        public int getSequenceArea() {
-            return sequenceArea;
-        }
-
-        public int getIndicatorArea() {
-            return indicatorArea;
-        }
-
-        public int getContentArea() {
-            return contentArea;
-        }
-
-        public int getOtherArea() {
-            return otherArea;
-        }
-    }
-
     private void init() {
         String[] parts = source.split("\n");
-        if (cobolDialect == CobolDialect.IBM_ANSI_85) {
+
+        if (cobolDialect.getColumns() == CobolDialect.Columns.IBM_ANSI_85) {
+            CobolDialect.Columns columns = cobolDialect.getColumns();
             int pos = 0;
             for (String part : parts) {
                 boolean isCRLF = part.endsWith("\r");
                 String cleanedPart = isCRLF ? part.substring(0, part.length() - 1) : part;
 
-                String sequenceArea = cleanedPart.substring(cobolDialect.getSequenceArea(), cobolDialect.getIndicatorArea());
+                String sequenceArea = cleanedPart.substring(columns.getSequenceArea(), columns.getIndicatorArea());
                 sequenceAreas.put(pos, sequenceArea);
                 pos += sequenceArea.length();
 
-                String indicatorArea = cleanedPart.substring(cobolDialect.getIndicatorArea(), cobolDialect.getContentArea());
+                String indicatorArea = cleanedPart.substring(columns.getIndicatorArea(), columns.getContentArea());
                 indicatorAreas.put(pos, indicatorArea);
                 pos += indicatorArea.length();
 
-                String contentArea = cleanedPart.substring(cobolDialect.getContentArea(), cobolDialect.getOtherArea());
+                String contentArea = cleanedPart.substring(columns.getContentArea(), columns.getOtherArea());
                 pos += contentArea.length();
 
-                String otherArea = cleanedPart.length() > cobolDialect.getContentArea() ? cleanedPart.substring(cobolDialect.getOtherArea()) : "";
+                String otherArea = cleanedPart.length() > columns.getContentArea() ? cleanedPart.substring(columns.getOtherArea()) : "";
                 if (!otherArea.isEmpty()) {
                     commentAreas.put(pos, otherArea);
                     pos += otherArea.length();
@@ -172,12 +120,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 pos += isCRLF ? 2 : 1; // Increment for new line delimiter.
             }
 
-            // TODO: separators should likely be modeled.
-            separators.addAll(Arrays.asList(", ", "; "));
-        } else if (cobolDialect == CobolDialect.HP_TANDEM) {
+            separators.addAll(cobolDialect.getSeparators());
+        } else if (cobolDialect.getColumns() == CobolDialect.Columns.HP_TANDEM) {
             throw new UnsupportedOperationException("Implement me.");
         } else {
-            throw new UnsupportedOperationException("CobolDialect is not supported: " + cobolDialect.name());
+            throw new UnsupportedOperationException("CobolDialect is not supported: " + cobolDialect.getColumns().name());
         }
     }
 
@@ -6349,7 +6296,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         IndicatorArea indicatorArea = indicatorArea(null);
 
         if (indicatorArea != null) {
-            String contentArea = source.substring(cursor, cursor - cobolDialect.indicatorArea - 1 + cobolDialect.otherArea);
+            String contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
             if (contentArea.trim().isEmpty() || "*".equals(indicatorArea.getIndicator())) {
                 cursor += contentArea.length();
                 List<Lines.Line> lines = new ArrayList<>();
@@ -6360,7 +6307,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 while (iterations < 200) {
                     sequenceArea = sequenceArea();
                     indicatorArea = indicatorArea(null);
-                    contentArea = source.substring(cursor, cursor - cobolDialect.indicatorArea - 1 + cobolDialect.otherArea);
+                    contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
                         cursor += contentArea.length();
                         line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
@@ -6460,7 +6407,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         }
 
         if (!isCommentEntry && indicatorArea != null) {
-            String contentArea = source.substring(cursor, cursor - cobolDialect.indicatorArea - 1 + cobolDialect.otherArea);
+            String contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
             if (contentArea.trim().isEmpty() || "*".equals(indicatorArea.getIndicator())) {
                 cursor += contentArea.length();
                 List<Lines.Line> lines = new ArrayList<>();
@@ -6471,7 +6418,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 while (iterations < 200) {
                     sequenceArea = sequenceArea();
                     indicatorArea = indicatorArea(null);
-                    contentArea = source.substring(cursor, cursor - cobolDialect.indicatorArea - 1 + cobolDialect.otherArea);
+                    contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
                         cursor += contentArea.length();
                         line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());

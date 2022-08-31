@@ -15,14 +15,16 @@
  */
 package org.openrewrite.cobol;
 
-import org.openrewrite.cobol.internal.CobolParserVisitor;
-import org.openrewrite.cobol.proprocessor.*;
+import org.openrewrite.cobol.internal.HpTandem;
 import org.openrewrite.cobol.tree.Cobol;
+
+import static org.openrewrite.cobol.proprocessor.CobolDialect.ANSI85;
+import static org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum.TANDEM;
 
 public class CobolHpTandemParser extends CobolParser {
 
     public CobolHpTandemParser() {
-        super(CobolParserVisitor.CobolDialect.HP_TANDEM, CobolDialect.ANSI85, CobolPreprocessor.CobolSourceFormatEnum.TANDEM);
+        super(new HpTandem(), ANSI85, TANDEM);
     }
 
     public static CobolIbmAnsi85Parser.Builder builder() {

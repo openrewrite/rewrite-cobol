@@ -23,9 +23,11 @@ import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Parser;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolParserVisitor;
+import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
+import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.internal.grammar.CobolLexer;
-import org.openrewrite.cobol.proprocessor.*;
 import org.openrewrite.cobol.tree.Cobol;
+import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.MetricsHelper;
 import org.openrewrite.internal.lang.Nullable;
@@ -40,28 +42,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
-public class CobolParser implements Parser<Cobol.CompilationUnit> {
+public class CobolPreprocessorParser implements Parser<CobolPreprocessor.CompilationUnit> {
     private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
 
     private final CobolDialect cobolDialect;
-    private final org.openrewrite.cobol.proprocessor.CobolDialect preprocessorDialect;
-    private final CobolPreprocessor.CobolSourceFormatEnum sourceFormat;
 
-    public CobolParser(CobolDialect cobolDialect,
-                       org.openrewrite.cobol.proprocessor.CobolDialect preprocessorDialect,
-                       CobolPreprocessor.CobolSourceFormatEnum sourceFormat) {
+    public CobolPreprocessorParser(CobolDialect cobolDialect) {
 
         this.cobolDialect = cobolDialect;
-        this.preprocessorDialect = preprocessorDialect;
-        this.sourceFormat = sourceFormat;
     }
 
     @Override
-    public List<Cobol.CompilationUnit> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
+    public List<CobolPreprocessor.CompilationUnit> parseInputs(Iterable<org.openrewrite.Parser.Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
         ParsingEventListener parsingListener = ParsingExecutionContextView.view(ctx).getParsingListener();
         return acceptedInputs(sourceFiles).stream()
                 .map(sourceFile -> {
@@ -73,12 +68,11 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                         EncodingDetectingInputStream is = sourceFile.getSource();
                         String sourceStr = is.readFully();
 
-                        String processedCobol = preprocessCobol(sourceStr, is.getCharset());
-                        org.openrewrite.cobol.internal.grammar.CobolParser parser =
-                                new org.openrewrite.cobol.internal.grammar.CobolParser(
-                                        new CommonTokenStream(new CobolLexer(CharStreams.fromString(processedCobol))));
+                        org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
+                                new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
+                                        new CommonTokenStream(new CobolLexer(CharStreams.fromString(sourceStr))));
 
-                        Cobol.CompilationUnit compilationUnit = new CobolParserVisitor(
+                        CobolPreprocessor.CompilationUnit compilationUnit = new CobolPreprocessorParserVisitor(
                                 sourceFile.getRelativePath(relativeTo),
                                 sourceFile.getFileAttributes(),
                                 sourceStr,
@@ -100,29 +94,6 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                 .collect(toList());
     }
 
-    private String preprocessCobol(String source, Charset encoding) {
-        CobolPreprocessor cobolPreprocessor = new CobolPreprocessor(
-                new CobolCommentEntriesMarker(),
-                new CobolDocumentParser(),
-                new CobolInlineCommentEntriesNormalizer(),
-                new CobolLineIndicatorProcessor(),
-                new CobolLineReader()
-        );
-
-        // TODO: set dialect and format through configuration.
-        CobolParserParams params = new CobolParserParams(
-                encoding,
-                emptyList(),
-                emptyList(),
-                emptyList(),
-                preprocessorDialect,
-                sourceFormat,
-                true
-        );
-
-        return cobolPreprocessor.process(source, params);
-    }
-
     /**
      * There may be A LOT of copy books in a COBOL codebase, but we do not know how the parser is provided the copy books.
      * We also do not know how they are detected or what types of conventions exist.
@@ -141,7 +112,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
     }
 
     @Override
-    public List<Cobol.CompilationUnit> parse(String... sources) {
+    public List<CobolPreprocessor.CompilationUnit> parse(String... sources) {
         return parse(new InMemoryExecutionContext(), sources);
     }
 
@@ -159,6 +130,27 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
     @Override
     public Path sourcePathFromSourceText(Path prefix, String sourceCode) {
         return prefix.resolve("file.CBL");
+    }
+
+    public static CobolPreprocessorParser.Builder builder() {
+        return new CobolPreprocessorParser.Builder();
+    }
+
+    public static class Builder extends org.openrewrite.Parser.Builder {
+
+        public Builder() {
+            super(Cobol.CompilationUnit.class);
+        }
+
+        @Override
+        public CobolPreprocessorParser build() {
+            return new CobolPreprocessorParser(new IbmAnsi85());
+        }
+
+        @Override
+        public String getDslName() {
+            return "preprocessCobol";
+        }
     }
 
     private static class ForwardingErrorListener extends BaseErrorListener {
