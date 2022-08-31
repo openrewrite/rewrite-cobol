@@ -84,7 +84,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
     public CobolPreprocessor visitCopySource(CobolPreprocessor.CopySource copySource, PrintOutputCapture<P> p) {
         visitSpace(copySource.getPrefix(), p);
         visitMarkers(copySource.getMarkers(), p);
-        visit(copySource.getCobolPreprocessor(), p);
+        visit(copySource.getName(), p);
         visit(copySource.getWord(), p);
         visit(copySource.getCopyLibrary(), p);
         return copySource;
@@ -184,7 +184,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
         visitSpace(replacingPhrase.getPrefix(), p);
         visitMarkers(replacingPhrase.getMarkers(), p);
         visit(replacingPhrase.getWord(), p);
-        visit(replacingPhrase.getCobols(), p);
+        visit(replacingPhrase.getClauses(), p);
         return replacingPhrase;
     }
 

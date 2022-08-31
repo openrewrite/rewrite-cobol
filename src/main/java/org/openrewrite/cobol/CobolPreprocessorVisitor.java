@@ -17,6 +17,7 @@ package org.openrewrite.cobol;
 
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.cobol.tree.*;
+import org.openrewrite.internal.ListUtils;
 
 public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, P> {
 
@@ -24,6 +25,7 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.CharData c = charData;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
         return c;
     }
 
@@ -31,6 +33,7 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.CharDataLine c = charDataLine;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withWords(ListUtils.map(c.getWords(), it -> visit(it, p)));
         return c;
     }
 
@@ -38,6 +41,7 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.CharDataSql c = charDataSql;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
         return c;
     }
 
@@ -45,6 +49,7 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.CompilationUnit c = compilationUnit;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
         return c;
     }
 
@@ -52,6 +57,7 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.CompilerOption c = compilerOption;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
         return c;
     }
 
@@ -59,6 +65,7 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.CompilerOptions c = compilerOptions;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
         return c;
     }
 
@@ -66,6 +73,10 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.CompilerXOpts c = compilerXOpts;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withWord((CobolPreprocessor.Word) visit(c.getWord(), p));
+        c = c.withLeftParen((CobolPreprocessor.Word) visit(c.getLeftParen(), p));
+        c = c.withCompilerOptions(ListUtils.map(c.getCompilerOptions(), it -> visit(it, p)));
+        c = c.withRightParen((CobolPreprocessor.Word) visit(c.getRightParen(), p));
         return c;
     }
 
@@ -73,6 +84,9 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.CopySource c = copySource;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withName((CobolPreprocessor.Word) visit(c.getName(), p));
+        c = c.withWord((CobolPreprocessor.Word) visit(c.getWord(), p));
+        c = c.withCopyLibrary((CobolPreprocessor.Word) visit(c.getCopyLibrary(), p));
         return c;
     }
 
@@ -80,6 +94,10 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.CopyStatement c = copyStatement;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withWord((CobolPreprocessor.Word) visit(c.getWord(), p));
+        c = c.withCopySource((CobolPreprocessor.CopySource) visit(c.getCopySource(), p));
+        c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
+        c = c.withDot((CobolPreprocessor.Word) visit(c.getDot(), p));
         return c;
     }
 
@@ -87,6 +105,8 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.DirectoryPhrase d = directoryPhrase;
         d = d.withPrefix(visitSpace(d.getPrefix(), p));
         d = d.withMarkers(visitMarkers(d.getMarkers(), p));
+        d = d.withWord((CobolPreprocessor.Word) visit(d.getWord(), p));
+        d = d.withName((CobolPreprocessor.Word) visit(d.getName(), p));
         return d;
     }
 
@@ -94,6 +114,8 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.EjectStatement e = ejectStatement;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withWord((CobolPreprocessor.Word) visit(e.getWord(), p));
+        e = e.withDot((CobolPreprocessor.Word) visit(e.getDot(), p));
         return e;
     }
 
@@ -101,6 +123,10 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.ExecStatement e = execStatement;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withWords(ListUtils.map(e.getWords(), it -> (CobolPreprocessor.Word) visit(it, p)));
+        e = e.withCobol(visit(e.getCobol(), p));
+        e = e.withEndExec((CobolPreprocessor.Word) visit(e.getEndExec(), p));
+        e = e.withDot((CobolPreprocessor.Word) visit(e.getDot(), p));
         return e;
     }
 
@@ -108,6 +134,8 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.FamilyPhrase f = familyPhrase;
         f = f.withPrefix(visitSpace(f.getPrefix(), p));
         f = f.withMarkers(visitMarkers(f.getMarkers(), p));
+        f = f.withWord((CobolPreprocessor.Word) visit(f.getWord(), p));
+        f = f.withName((CobolPreprocessor.Word) visit(f.getName(), p));
         return f;
     }
 
@@ -115,6 +143,9 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.PseudoText pp = pseudoText;
         pp = pp.withPrefix(visitSpace(pp.getPrefix(), p));
         pp = pp.withMarkers(visitMarkers(pp.getMarkers(), p));
+        pp = pp.withDoubleEqualOpen((CobolPreprocessor.Word) visit(pp.getDoubleEqualOpen(), p));
+        pp = pp.withCharData(visit(pp.getCharData(), p));
+        pp = pp.withDoubleEqualClose((CobolPreprocessor.Word) visit(pp.getDoubleEqualClose(), p));
         return pp;
     }
 
@@ -122,6 +153,9 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.ReplaceArea r = replaceArea;
         r = r.withPrefix(visitSpace(r.getPrefix(), p));
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
+        r = r.withReplaceByStatement((CobolPreprocessor.ReplaceByStatement) visit(r.getReplaceByStatement(), p));
+        r = r.withCobols(ListUtils.map(r.getCobols(), it -> visit(it, p)));
+        r = r.withReplaceOffStatement((CobolPreprocessor.ReplaceOffStatement) visit(r.getReplaceOffStatement(), p));
         return r;
     }
 
@@ -129,6 +163,9 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.ReplaceByStatement r = replaceByStatement;
         r = r.withPrefix(visitSpace(r.getPrefix(), p));
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
+        r = r.withWord((CobolPreprocessor.Word) visit(r.getWord(), p));
+        r = r.withClauses(ListUtils.map(r.getClauses(), it -> (CobolPreprocessor.ReplaceClause) visit(it, p)));
+        r = r.withDot((CobolPreprocessor.Word) visit(r.getDot(), p));
         return r;
     }
 
@@ -136,6 +173,11 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.ReplaceClause r = replaceClause;
         r = r.withPrefix(visitSpace(r.getPrefix(), p));
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
+        r = r.withReplaceable((CobolPreprocessor.Word) visit(r.getReplaceable(), p));
+        r = r.withBy((CobolPreprocessor.Word) visit(r.getBy(), p));
+        r = r.withReplacement((CobolPreprocessor.Word) visit(r.getReplacement(), p));
+        r = r.withDirectoryPhrase((CobolPreprocessor.DirectoryPhrase) visit(r.getDirectoryPhrase(), p));
+        r = r.withFamilyPhrase((CobolPreprocessor.FamilyPhrase) visit(r.getFamilyPhrase(), p));
         return r;
     }
 
@@ -143,6 +185,8 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.ReplaceOffStatement r = replaceOffStatement;
         r = r.withPrefix(visitSpace(r.getPrefix(), p));
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
+        r = r.withWords(ListUtils.map(r.getWords(), it -> (CobolPreprocessor.Word) visit(it, p)));
+        r = r.withDot((CobolPreprocessor.Word) visit(r.getDot(), p));
         return r;
     }
 
@@ -150,6 +194,8 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.ReplacingPhrase r = replacingPhrase;
         r = r.withPrefix(visitSpace(r.getPrefix(), p));
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
+        r = r.withWord((CobolPreprocessor.Word) visit(r.getWord(), p));
+        r = r.withClauses(ListUtils.map(r.getClauses(), it -> (CobolPreprocessor.ReplaceClause) visit(it, p)));
         return r;
     }
 
@@ -157,6 +203,8 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.SkipStatement s = skipStatement;
         s = s.withPrefix(visitSpace(s.getPrefix(), p));
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
+        s = s.withWord((CobolPreprocessor.Word) visit(s.getWord(), p));
+        s = s.withDot((CobolPreprocessor.Word) visit(s.getDot(), p));
         return s;
     }
 
@@ -164,6 +212,9 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.TitleStatement t = titleStatement;
         t = t.withPrefix(visitSpace(t.getPrefix(), p));
         t = t.withMarkers(visitMarkers(t.getMarkers(), p));
+        t = t.withFirst((CobolPreprocessor.Word) visit(t.getFirst(), p));
+        t = t.withSecond((CobolPreprocessor.Word) visit(t.getSecond(), p));
+        t = t.withDot((CobolPreprocessor.Word) visit(t.getDot(), p));
         return t;
     }
 

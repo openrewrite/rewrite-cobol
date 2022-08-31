@@ -21,6 +21,7 @@ import org.openrewrite.cobol.CobolPreprocessorVisitor;
 import org.openrewrite.cobol.internal.CobolPreprocessorPrinter;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Markers;
+import org.openrewrite.text.PlainText;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -227,13 +228,16 @@ public interface CobolPreprocessor extends Tree {
         Space prefix;
         Markers markers;
 
-        Word cobolPreprocessor;
+        Word name;
 
         @Nullable
         Word word;
 
         @Nullable
         Word copyLibrary;
+
+        @Nullable
+        String source;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
@@ -473,7 +477,7 @@ public interface CobolPreprocessor extends Tree {
         Markers markers;
 
         Word word;
-        List<ReplaceClause> cobols;
+        List<ReplaceClause> clauses;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {

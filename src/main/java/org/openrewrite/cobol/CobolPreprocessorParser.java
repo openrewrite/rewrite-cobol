@@ -90,6 +90,10 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                                 cobolDialect
                         ).visitStartRule(parser.startRule());
 
+                        PreprocessCopy copy = new PreprocessCopy(emptyList(),
+                                getCopyBooks().stream().map(it -> it.toPath().toString()).collect(toList()),
+                                getCobolFileExtensions());
+                        CobolPreprocessor.CompilationUnit afterCopy = (CobolPreprocessor.CompilationUnit) copy.getVisitor().visit(compilationUnit, new InMemoryExecutionContext());
                         sample.stop(MetricsHelper.successTags(timer).register(Metrics.globalRegistry));
                         parsingListener.parsed(sourceFile, compilationUnit);
                         return compilationUnit;
