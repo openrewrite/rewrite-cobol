@@ -404,9 +404,7 @@ public interface CobolPreprocessor extends Tree {
         Markers markers;
 
         Word word;
-
         List<ReplaceClause> clauses;
-
         Word dot;
 
         @Override
@@ -473,7 +471,7 @@ public interface CobolPreprocessor extends Tree {
         Markers markers;
 
         Word word;
-        List<CobolPreprocessor> cobols;
+        List<ReplaceClause> cobols;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
@@ -491,7 +489,7 @@ public interface CobolPreprocessor extends Tree {
         Space prefix;
         Markers markers;
 
-        List<Word> words;
+        Word word;
 
         @Nullable
         Word dot;
@@ -512,7 +510,8 @@ public interface CobolPreprocessor extends Tree {
         Space prefix;
         Markers markers;
 
-        List<Word> words;
+        Word first;
+        Word second;
 
         @Nullable
         Word dot;

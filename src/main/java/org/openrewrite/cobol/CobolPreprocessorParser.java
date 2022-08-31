@@ -22,10 +22,10 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Parser;
 import org.openrewrite.cobol.internal.CobolDialect;
-import org.openrewrite.cobol.internal.CobolParserVisitor;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.internal.grammar.CobolLexer;
+import org.openrewrite.cobol.proprocessor.*;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.internal.EncodingDetectingInputStream;
@@ -42,17 +42,25 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
+import static org.openrewrite.cobol.proprocessor.CobolDialect.ANSI85;
+import static org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum.FIXED;
 
 public class CobolPreprocessorParser implements Parser<CobolPreprocessor.CompilationUnit> {
     private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
 
     private final CobolDialect cobolDialect;
+    private final org.openrewrite.cobol.proprocessor.CobolDialect preprocessorDialect;
+    private final org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum sourceFormat;
 
-    public CobolPreprocessorParser(CobolDialect cobolDialect) {
-
+    public CobolPreprocessorParser(CobolDialect cobolDialect,
+                                   org.openrewrite.cobol.proprocessor.CobolDialect preprocessorDialect,
+                                   org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum sourceFormat) {
         this.cobolDialect = cobolDialect;
+        this.preprocessorDialect = preprocessorDialect;
+        this.sourceFormat = sourceFormat;
     }
 
     @Override
@@ -92,6 +100,28 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 })
                 .filter(Objects::nonNull)
                 .collect(toList());
+    }
+
+    private String preprocessCobol(String source, Charset encoding) {
+        org.openrewrite.cobol.proprocessor.CobolPreprocessor cobolPreprocessor = new org.openrewrite.cobol.proprocessor.CobolPreprocessor(
+                new CobolCommentEntriesMarker(),
+                new CobolDocumentParser(),
+                new CobolInlineCommentEntriesNormalizer(),
+                new CobolLineIndicatorProcessor(),
+                new CobolLineReader()
+        );
+
+        CobolParserParams params = new CobolParserParams(
+                encoding,
+                emptyList(),
+                getCobolFileExtensions(),
+                getCopyBooks(),
+                preprocessorDialect,
+                sourceFormat,
+                true
+        );
+
+        return cobolPreprocessor.process(source, params);
     }
 
     /**
@@ -144,7 +174,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
         @Override
         public CobolPreprocessorParser build() {
-            return new CobolPreprocessorParser(new IbmAnsi85());
+            return new CobolPreprocessorParser(new IbmAnsi85(), ANSI85, FIXED);
         }
 
         @Override

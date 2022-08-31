@@ -17,7 +17,6 @@ package org.openrewrite.cobol.internal;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.openrewrite.FileAttributes;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorBaseVisitor;
@@ -33,7 +32,6 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.cobol.tree.Space.format;
@@ -659,17 +657,40 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
     @Override
     public Object visitReplaceArea(CobolPreprocessorParser.ReplaceAreaContext ctx) {
-        return super.visitReplaceArea(ctx);
+        return new CobolPreprocessor.ReplaceArea(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                (CobolPreprocessor.ReplaceByStatement) visit(ctx.replaceByStatement()),
+                convertAllList(ctx.copyStatement(), ctx.charData()),
+                visitNullable(ctx.replaceOffStatement())
+        );
     }
 
     @Override
     public Object visitReplaceByStatement(CobolPreprocessorParser.ReplaceByStatementContext ctx) {
-        return super.visitReplaceByStatement(ctx);
+        return new CobolPreprocessor.ReplaceByStatement(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                (CobolPreprocessor.Word) visit(ctx.REPLACE()),
+                convertAll(ctx.replaceClause()),
+                (CobolPreprocessor.Word) visit(ctx.DOT())
+        );
     }
 
     @Override
     public Object visitReplaceClause(CobolPreprocessorParser.ReplaceClauseContext ctx) {
-        return super.visitReplaceClause(ctx);
+        return new CobolPreprocessor.ReplaceClause(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                (CobolPreprocessor.Word) visit(ctx.replaceable()),
+                (CobolPreprocessor.Word) visit(ctx.BY()),
+                (CobolPreprocessor.Word) visit(ctx.replacement()),
+                visitNullable(ctx.directoryPhrase()),
+                visitNullable(ctx.familyPhrase())
+        );
     }
 
     @Override
@@ -680,27 +701,59 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
     @Override
     public Object visitReplaceOffStatement(CobolPreprocessorParser.ReplaceOffStatementContext ctx) {
-        return super.visitReplaceOffStatement(ctx);
+        return new CobolPreprocessor.ReplaceOffStatement(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                wordsList(ctx.REPLACE(), ctx.OFF()),
+                (CobolPreprocessor.Word) visit(ctx.DOT())
+        );
     }
 
     @Override
     public Object visitReplacingPhrase(CobolPreprocessorParser.ReplacingPhraseContext ctx) {
-        return super.visitReplacingPhrase(ctx);
+        return new CobolPreprocessor.ReplacingPhrase(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                (CobolPreprocessor.Word) visit(ctx.REPLACING()),
+                convertAll(ctx.replaceClause())
+        );
     }
 
     @Override
     public Object visitSkipStatement(CobolPreprocessorParser.SkipStatementContext ctx) {
-        return super.visitSkipStatement(ctx);
+        return new CobolPreprocessor.SkipStatement(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                visit(ctx.SKIP1(), ctx.SKIP2(), ctx.SKIP3()),
+                visitNullable(ctx.DOT())
+        );
     }
 
     @Override
     public Object visitTerminal(TerminalNode node) {
-        return super.visitTerminal(node);
+        List<Marker> markers = new ArrayList<>();
+        Space prefix = processTokenText(node.getText(), markers);
+        return new CobolPreprocessor.Word(
+                randomId(),
+                prefix,
+                markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
+                node.getText().startsWith(COMMENT_ENTRY_TAG) ? node.getText().substring(COMMENT_ENTRY_TAG.length()) : node.getText()
+        );
     }
 
     @Override
     public Object visitTitleStatement(CobolPreprocessorParser.TitleStatementContext ctx) {
-        return super.visitTitleStatement(ctx);
+        return new CobolPreprocessor.TitleStatement(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                (CobolPreprocessor.Word) visit(ctx.TITLE()),
+                (CobolPreprocessor.Word) visit(ctx.literal()),
+                visitNullable(ctx.DOT())
+        );
     }
 
     private Space whitespace() {
