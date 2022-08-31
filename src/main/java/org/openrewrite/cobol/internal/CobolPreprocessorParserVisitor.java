@@ -17,6 +17,7 @@ package org.openrewrite.cobol.internal;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.openrewrite.FileAttributes;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorBaseVisitor;
@@ -131,6 +132,48 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     }
 
     @Override
+    public Object visitCharData(CobolPreprocessorParser.CharDataContext ctx) {
+        return super.visitCharData(ctx);
+    }
+
+    @Override
+    public Object visitCharDataKeyword(CobolPreprocessorParser.CharDataKeywordContext ctx) {
+        // Pass through.
+        return super.visitCharDataKeyword(ctx);
+    }
+
+    @Override
+    public Object visitCharDataLine(CobolPreprocessorParser.CharDataLineContext ctx) {
+        return super.visitCharDataLine(ctx);
+    }
+
+    @Override
+    public Object visitCharDataSql(CobolPreprocessorParser.CharDataSqlContext ctx) {
+        return super.visitCharDataSql(ctx);
+    }
+
+    @Override
+    public Object visitCobolWord(CobolPreprocessorParser.CobolWordContext ctx) {
+        // Pass through.
+        return super.visitCobolWord(ctx);
+    }
+
+    @Override
+    public Object visitCompilerOption(CobolPreprocessorParser.CompilerOptionContext ctx) {
+        return super.visitCompilerOption(ctx);
+    }
+
+    @Override
+    public Object visitCompilerOptions(CobolPreprocessorParser.CompilerOptionsContext ctx) {
+        return super.visitCompilerOptions(ctx);
+    }
+
+    @Override
+    public Object visitCompilerXOpts(CobolPreprocessorParser.CompilerXOptsContext ctx) {
+        return super.visitCompilerXOpts(ctx);
+    }
+
+    @Override
     public CobolPreprocessor.CompilationUnit visitCompilationUnit(CobolPreprocessorParser.CompilationUnitContext ctx) {
         init();
 
@@ -155,6 +198,121 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                         ctx.skipStatement(),
                         ctx.titleStatement())
         );
+    }
+
+    @Override
+    public Object visitCopyLibrary(CobolPreprocessorParser.CopyLibraryContext ctx) {
+        // Pass through.
+        return super.visitCopyLibrary(ctx);
+    }
+
+    @Override
+    public Object visitCopySource(CobolPreprocessorParser.CopySourceContext ctx) {
+        return super.visitCopySource(ctx);
+    }
+
+    @Override
+    public Object visitCopyStatement(CobolPreprocessorParser.CopyStatementContext ctx) {
+        return super.visitCopyStatement(ctx);
+    }
+
+    @Override
+    public Object visitDirectoryPhrase(CobolPreprocessorParser.DirectoryPhraseContext ctx) {
+        return super.visitDirectoryPhrase(ctx);
+    }
+
+    @Override
+    public Object visitEjectStatement(CobolPreprocessorParser.EjectStatementContext ctx) {
+        return super.visitEjectStatement(ctx);
+    }
+
+    @Override
+    public Object visitExecCicsStatement(CobolPreprocessorParser.ExecCicsStatementContext ctx) {
+        return super.visitExecCicsStatement(ctx);
+    }
+
+    @Override
+    public Object visitExecSqlStatement(CobolPreprocessorParser.ExecSqlStatementContext ctx) {
+        return super.visitExecSqlStatement(ctx);
+    }
+
+    @Override
+    public Object visitExecSqlImsStatement(CobolPreprocessorParser.ExecSqlImsStatementContext ctx) {
+        return super.visitExecSqlImsStatement(ctx);
+    }
+
+    @Override
+    public Object visitFamilyPhrase(CobolPreprocessorParser.FamilyPhraseContext ctx) {
+        return super.visitFamilyPhrase(ctx);
+    }
+
+    @Override
+    public Object visitFilename(CobolPreprocessorParser.FilenameContext ctx) {
+        // Pass through.
+        return super.visitFilename(ctx);
+    }
+
+    @Override
+    public Object visitLiteral(CobolPreprocessorParser.LiteralContext ctx) {
+        // Pass through.
+        return super.visitLiteral(ctx);
+    }
+
+    @Override
+    public Object visitPseudoText(CobolPreprocessorParser.PseudoTextContext ctx) {
+        return super.visitPseudoText(ctx);
+    }
+
+    @Override
+    public Object visitReplaceable(CobolPreprocessorParser.ReplaceableContext ctx) {
+        // Pass through.
+        return super.visitReplaceable(ctx);
+    }
+
+    @Override
+    public Object visitReplaceArea(CobolPreprocessorParser.ReplaceAreaContext ctx) {
+        return super.visitReplaceArea(ctx);
+    }
+
+    @Override
+    public Object visitReplaceByStatement(CobolPreprocessorParser.ReplaceByStatementContext ctx) {
+        return super.visitReplaceByStatement(ctx);
+    }
+
+    @Override
+    public Object visitReplaceClause(CobolPreprocessorParser.ReplaceClauseContext ctx) {
+        return super.visitReplaceClause(ctx);
+    }
+
+    @Override
+    public Object visitReplacement(CobolPreprocessorParser.ReplacementContext ctx) {
+        // Pass through.
+        return super.visitReplacement(ctx);
+    }
+
+    @Override
+    public Object visitReplaceOffStatement(CobolPreprocessorParser.ReplaceOffStatementContext ctx) {
+        return super.visitReplaceOffStatement(ctx);
+    }
+
+    @Override
+    public Object visitReplacingPhrase(CobolPreprocessorParser.ReplacingPhraseContext ctx) {
+        return super.visitReplacingPhrase(ctx);
+    }
+
+    @Override
+    public Object visitSkipStatement(CobolPreprocessorParser.SkipStatementContext ctx) {
+        return super.visitSkipStatement(ctx);
+    }
+
+    @Override
+    public Object visitTerminal(TerminalNode node) {
+        return super.visitTerminal(node);
+    }
+
+    @Override
+    public Object visitTitleStatement(CobolPreprocessorParser.TitleStatementContext ctx) {
+        return super.visitTitleStatement(ctx);
     }
 
     private Space whitespace() {

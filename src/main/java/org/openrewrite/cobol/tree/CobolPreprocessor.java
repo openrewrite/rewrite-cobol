@@ -64,7 +64,7 @@ public interface CobolPreprocessor extends Tree {
         Space prefix;
         Markers markers;
 
-        List<Cobol> cobols;
+        List<CobolPreprocessor> cobols;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
@@ -100,7 +100,7 @@ public interface CobolPreprocessor extends Tree {
         Space prefix;
         Markers markers;
 
-        List<Cobol> cobols;
+        List<CobolPreprocessor> cobols;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
@@ -143,7 +143,7 @@ public interface CobolPreprocessor extends Tree {
             return withCharsetName(charset.name());
         }
 
-        List<Cobol> cobols;
+        List<CobolPreprocessor> cobols;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
@@ -415,6 +415,7 @@ public interface CobolPreprocessor extends Tree {
         }
     }
 
+    //    : replaceable NEWLINE* BY NEWLINE* replacement (NEWLINE* directoryPhrase)? (NEWLINE* familyPhrase)?
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
@@ -425,6 +426,15 @@ public interface CobolPreprocessor extends Tree {
         Space prefix;
         Markers markers;
 
+        Word replaceable;
+        Word by;
+        Word replacement;
+
+        @Nullable
+        DirectoryPhrase directoryPhrase;
+
+        @Nullable
+        FamilyPhrase familyPhrase;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {

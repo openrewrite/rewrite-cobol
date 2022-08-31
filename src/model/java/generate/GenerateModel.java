@@ -83,28 +83,28 @@ public class GenerateModel {
                 Paths.get("src/main/java/org/openrewrite/cobol/tree/CobolRightPadded.java")
         );
 
-        results.addAll(new WriteModel(modelClasses).run(Collections.singletonList(jp().parse(
-                ListUtils.concat(cobolTreePath, deps), null, ctx).get(0)), ctx));
-        results.addAll(new WriteVisitorMethods(modelClasses).run(jp().parse(
-                Arrays.asList(
-                        Paths.get("src/main/java/org/openrewrite/cobol/CobolVisitor.java"),
-                        Paths.get("src/main/java/org/openrewrite/cobol/CobolIsoVisitor.java")
-                ),
-                null,
-                ctx
-        ), ctx));
-        results.addAll(new WritePrinter(modelClasses).run(jp().parse(
-                Collections.singletonList(
-                        Paths.get("src/main/java/org/openrewrite/cobol/internal/CobolPrinter.java")
-                ),
-                null,
-                ctx
-        ), ctx));
-
-        writeResults(results);
-
-        // TODO Unable to add accessors in the first phase due to some bug in JavaTemplate.
-        writeResults(new WritePaddingAccessors().run(jp().parse(Collections.singletonList(cobolTreePath), null, ctx), ctx));
+//        results.addAll(new WriteModel(modelClasses).run(Collections.singletonList(jp().parse(
+//                ListUtils.concat(cobolTreePath, deps), null, ctx).get(0)), ctx));
+//        results.addAll(new WriteVisitorMethods(modelClasses).run(jp().parse(
+//                Arrays.asList(
+//                        Paths.get("src/main/java/org/openrewrite/cobol/CobolVisitor.java"),
+//                        Paths.get("src/main/java/org/openrewrite/cobol/CobolIsoVisitor.java")
+//                ),
+//                null,
+//                ctx
+//        ), ctx));
+//        results.addAll(new WritePrinter(modelClasses).run(jp().parse(
+//                Collections.singletonList(
+//                        Paths.get("src/main/java/org/openrewrite/cobol/internal/CobolPrinter.java")
+//                ),
+//                null,
+//                ctx
+//        ), ctx));
+//
+//        writeResults(results);
+//
+//        // TODO Unable to add accessors in the first phase due to some bug in JavaTemplate.
+//        writeResults(new WritePaddingAccessors().run(jp().parse(Collections.singletonList(cobolTreePath), null, ctx), ctx));
     }
 
     private void writeResults(List<Result> results) {
