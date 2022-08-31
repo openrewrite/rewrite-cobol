@@ -142,7 +142,18 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 Markers.EMPTY,
                 charset.name(),
                 charsetBomMarked,
-                null
+                null,
+                convertAll(ctx.charDataLine(),
+                        ctx.compilerOptions(),
+                        ctx.copyStatement(),
+                        ctx.execCicsStatement(),
+                        ctx.execSqlStatement(),
+                        ctx.execSqlImsStatement(),
+                        ctx.ejectStatement(),
+                        ctx.replaceArea(),
+                        ctx.replaceOffStatement(),
+                        ctx.skipStatement(),
+                        ctx.titleStatement())
         );
     }
 
