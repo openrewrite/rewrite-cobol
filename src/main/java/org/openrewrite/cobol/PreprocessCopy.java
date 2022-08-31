@@ -70,10 +70,10 @@ public class PreprocessCopy extends Recipe {
 
     private static class AddCopyBookSource extends CobolPreprocessorIsoVisitor<ExecutionContext> {
 
-        private CobolWordCopyBookFinder cobolWordCopyBookFinder = new CobolWordCopyBookFinder();
-        private List<Path> directoryPaths;
-        private List<Path> filePaths;
-        private List<String> extensions;
+        private final CobolWordCopyBookFinder cobolWordCopyBookFinder = new CobolWordCopyBookFinder();
+        private final List<Path> directoryPaths;
+        private final List<Path> filePaths;
+        private final List<String> extensions;
 
         private AddCopyBookSource(List<String> directoryPaths,
                                   List<String> filePaths,
@@ -147,21 +147,16 @@ public class PreprocessCopy extends Recipe {
 
             @Nullable
             public Path findCopyBook(CobolPreprocessor.CopySource copySource) {
-                if (filePaths != null) {
-                    for (Path copyBookPath : filePaths) {
-                        if (isMatchingCopyBook(copyBookPath.toFile(), copySource)) {
-                            return copyBookPath;
-                        }
+                for (Path copyBookPath : filePaths) {
+                    if (isMatchingCopyBook(copyBookPath.toFile(), copySource)) {
+                        return copyBookPath;
                     }
                 }
 
-                if (directoryPaths != null) {
-                    for (Path copyBookDirectory : directoryPaths) {
-                        Path validCopyBook = findCopyBookInDirectory(copyBookDirectory, copySource);
-
-                        if (validCopyBook != null) {
-                            return validCopyBook;
-                        }
+                for (Path copyBookDirectory : directoryPaths) {
+                    Path validCopyBook = findCopyBookInDirectory(copyBookDirectory, copySource);
+                    if (validCopyBook != null) {
+                        return validCopyBook;
                     }
                 }
 
@@ -185,7 +180,7 @@ public class PreprocessCopy extends Recipe {
             protected boolean isMatchingCopyBook(File copyBookCandidate, CobolPreprocessor.CopySource copySource) {
                 String copyBookIdentifier = copySource.getName().getWord();
 
-                if (extensions != null) {
+                if (!extensions.isEmpty()) {
                     for (String copyBookExtension : extensions) {
                         if (isMatchingCopyBookWithExtension(copyBookCandidate, copyBookIdentifier, copyBookExtension)) {
                             return true;
