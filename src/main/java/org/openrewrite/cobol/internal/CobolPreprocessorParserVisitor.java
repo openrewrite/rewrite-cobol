@@ -518,7 +518,8 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                         ctx.replaceArea(),
                         ctx.replaceOffStatement(),
                         ctx.skipStatement(),
-                        ctx.titleStatement())
+                        ctx.titleStatement()),
+                source.substring(cursor)
         );
     }
 

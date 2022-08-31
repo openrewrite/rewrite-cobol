@@ -24,7 +24,7 @@ import org.openrewrite.Parser;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.IbmAnsi85;
-import org.openrewrite.cobol.internal.grammar.CobolLexer;
+import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
 import org.openrewrite.cobol.proprocessor.*;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
@@ -76,9 +76,10 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         EncodingDetectingInputStream is = sourceFile.getSource();
                         String sourceStr = is.readFully();
 
+                        String prepareSource = preprocessCobol(sourceStr, is.getCharset());
                         org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
                                 new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
-                                        new CommonTokenStream(new CobolLexer(CharStreams.fromString(sourceStr))));
+                                        new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(prepareSource))));
 
                         CobolPreprocessor.CompilationUnit compilationUnit = new CobolPreprocessorParserVisitor(
                                 sourceFile.getRelativePath(relativeTo),
@@ -121,7 +122,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 true
         );
 
-        return cobolPreprocessor.process(source, params);
+        return cobolPreprocessor.rewriteLines(source, params);
     }
 
     /**

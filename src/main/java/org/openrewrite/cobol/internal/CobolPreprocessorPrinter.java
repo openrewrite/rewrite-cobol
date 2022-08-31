@@ -52,6 +52,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
         visitSpace(compilationUnit.getPrefix(), p);
         visitMarkers(compilationUnit.getMarkers(), p);
         visit(compilationUnit.getCobols(), p);
+        p.append(compilationUnit.getEof());
         return compilationUnit;
     }
 
