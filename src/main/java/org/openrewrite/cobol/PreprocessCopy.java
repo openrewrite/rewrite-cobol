@@ -142,7 +142,13 @@ public class PreprocessCopy extends Recipe {
             return source;
         }
 
-        // TODO: create our own or add license credit.
+        /*
+         * Copyright (C) 2017, Ulrich Wolffgang <ulrich.wolffgang@proleap.io>
+         * All rights reserved.
+         *
+         * This software may be modified and distributed under the terms
+         * of the MIT license. See the LICENSE file for details.
+         */
         class CobolWordCopyBookFinder {
 
             @Nullable
