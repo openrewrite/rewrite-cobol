@@ -239,6 +239,9 @@ public interface CobolPreprocessor extends Tree {
         @Nullable
         String source;
 
+        @Nullable
+        CobolPreprocessor processedSource;
+
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
             return v.visitCopySource(this, p);

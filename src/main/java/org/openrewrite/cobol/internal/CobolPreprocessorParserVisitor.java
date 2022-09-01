@@ -538,6 +538,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 visit(ctx.literal(), ctx.cobolWord(), ctx.filename()),
                 ctx.OF() == null && ctx.IN() == null ? null : visit(ctx.OF(), ctx.IN()),
                 visitNullable(ctx.copyLibrary()),
+                null,
                 null
         );
     }

@@ -81,19 +81,26 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                                 new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
                                         new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(prepareSource))));
 
-                        CobolPreprocessor.CompilationUnit compilationUnit = new CobolPreprocessorParserVisitor(
+                        CobolPreprocessorParserVisitor parserVisitor = new CobolPreprocessorParserVisitor(
                                 sourceFile.getRelativePath(relativeTo),
                                 sourceFile.getFileAttributes(),
                                 sourceStr,
                                 is.getCharset(),
                                 is.isCharsetBomMarked(),
                                 cobolDialect
-                        ).visitStartRule(parser.startRule());
+                        );
+                        CobolPreprocessor.CompilationUnit compilationUnit = parserVisitor.visitStartRule(parser.startRule());
 
-                        PreprocessCopy copy = new PreprocessCopy(emptyList(),
+                        PreprocessCopyVisitor<ExecutionContext> copyPhase = new PreprocessCopyVisitor<>(
+                                sourceFile,
+                                relativeTo,
+                                emptyList(),
                                 getCopyBooks().stream().map(it -> it.toPath().toString()).collect(toList()),
-                                getCobolFileExtensions());
-                        CobolPreprocessor.CompilationUnit afterCopy = (CobolPreprocessor.CompilationUnit) copy.getVisitor().visit(compilationUnit, new InMemoryExecutionContext());
+                                getCobolFileExtensions(),
+                                cobolDialect);
+
+                        CobolPreprocessor.CompilationUnit afterCopy = (CobolPreprocessor.CompilationUnit) copyPhase.visit(compilationUnit, new InMemoryExecutionContext());
+
                         sample.stop(MetricsHelper.successTags(timer).register(Metrics.globalRegistry));
                         parsingListener.parsed(sourceFile, compilationUnit);
                         return compilationUnit;
