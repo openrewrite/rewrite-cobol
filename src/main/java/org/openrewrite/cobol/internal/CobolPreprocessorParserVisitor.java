@@ -688,9 +688,9 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 randomId(),
                 Space.EMPTY,
                 Markers.EMPTY,
-                (CobolPreprocessor.Word) visit(ctx.replaceable()),
+                (CobolPreprocessor) visit(ctx.replaceable()),
                 (CobolPreprocessor.Word) visit(ctx.BY()),
-                (CobolPreprocessor.Word) visit(ctx.replacement()),
+                (CobolPreprocessor) visit(ctx.replacement()),
                 visitNullable(ctx.directoryPhrase()),
                 visitNullable(ctx.familyPhrase())
         );

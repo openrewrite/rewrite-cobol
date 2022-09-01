@@ -111,7 +111,7 @@ public class CobolCommentEntriesMarker {
         if (foundCommentEntryTriggerInCurrentLine) {
             result = escapeCommentEntry(line);
         } else if (foundCommentEntryTriggerInPreviousLine || isInCommentEntry) {
-            boolean isContentAreaAEmpty = line.getContentAreaA().trim().isEmpty();
+            boolean isContentAreaAEmpty = line.getContentArea().trim().isEmpty();
             boolean isInOsvsCommentEntry = isInOsvsCommentEntry(line);
 
             isInCommentEntry = isInCommentEntry(line, isContentAreaAEmpty, isInOsvsCommentEntry);

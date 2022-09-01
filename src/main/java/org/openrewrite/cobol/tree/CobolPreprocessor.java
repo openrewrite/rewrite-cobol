@@ -434,9 +434,9 @@ public interface CobolPreprocessor extends Tree {
         Space prefix;
         Markers markers;
 
-        Word replaceable;
+        CobolPreprocessor replaceable;
         Word by;
-        Word replacement;
+        CobolPreprocessor replacement;
 
         @Nullable
         DirectoryPhrase directoryPhrase;

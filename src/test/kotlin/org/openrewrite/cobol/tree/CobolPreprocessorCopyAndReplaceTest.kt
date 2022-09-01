@@ -15,6 +15,7 @@
  */
 package org.openrewrite.cobol.tree
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.preprocessCobol
@@ -4353,6 +4354,7 @@ class CobolPreprocessorCopyAndReplaceTest : RewriteTest {
         """)
     )
 
+    @Disabled("Requires continuation markers for tokens.")
     @Test
     fun sm206A() = rewriteRun(
         preprocessCobol("""

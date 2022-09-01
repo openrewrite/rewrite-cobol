@@ -89,8 +89,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                                 is.isCharsetBomMarked(),
                                 cobolDialect
                         );
-                        CobolPreprocessor.CompilationUnit compilationUnit = parserVisitor.visitStartRule(parser.startRule());
 
+                        CobolPreprocessor.CompilationUnit preprocessedCU = parserVisitor.visitStartRule(parser.startRule());
                         PreprocessCopyVisitor<ExecutionContext> copyPhase = new PreprocessCopyVisitor<>(
                                 sourceFile,
                                 relativeTo,
@@ -99,14 +99,15 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                                 getCobolFileExtensions(),
                                 cobolDialect);
 
-                        CobolPreprocessor.CompilationUnit afterCopy = (CobolPreprocessor.CompilationUnit) copyPhase.visit(compilationUnit, new InMemoryExecutionContext());
+                        CobolPreprocessor.CompilationUnit afterCopy = (CobolPreprocessor.CompilationUnit) copyPhase.visit(preprocessedCU, new InMemoryExecutionContext());
                         if (afterCopy != null) {
-                            afterCopy.printAll(); // How can we print the copied code?
+                            // Add other printer here for debugging.
+                            afterCopy.printAll();
                         }
 
                         sample.stop(MetricsHelper.successTags(timer).register(Metrics.globalRegistry));
-                        parsingListener.parsed(sourceFile, compilationUnit);
-                        return compilationUnit;
+                        parsingListener.parsed(sourceFile, preprocessedCU);
+                        return preprocessedCU;
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
                         ctx.getOnError().accept(new IllegalStateException(sourceFile.getPath() + " " + t.getMessage(), t));

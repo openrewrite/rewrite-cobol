@@ -98,6 +98,7 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         c = c.withCopySource((CobolPreprocessor.CopySource) visit(c.getCopySource(), p));
         c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
         c = c.withDot((CobolPreprocessor.Word) visit(c.getDot(), p));
+        c = c.withProcessedSource(visit(c.getProcessedSource(), p));
         return c;
     }
 
@@ -173,9 +174,9 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.ReplaceClause r = replaceClause;
         r = r.withPrefix(visitSpace(r.getPrefix(), p));
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
-        r = r.withReplaceable((CobolPreprocessor.Word) visit(r.getReplaceable(), p));
+        r = r.withReplaceable(visit(r.getReplaceable(), p));
         r = r.withBy((CobolPreprocessor.Word) visit(r.getBy(), p));
-        r = r.withReplacement((CobolPreprocessor.Word) visit(r.getReplacement(), p));
+        r = r.withReplacement(visit(r.getReplacement(), p));
         r = r.withDirectoryPhrase((CobolPreprocessor.DirectoryPhrase) visit(r.getDirectoryPhrase(), p));
         r = r.withFamilyPhrase((CobolPreprocessor.FamilyPhrase) visit(r.getFamilyPhrase(), p));
         return r;
