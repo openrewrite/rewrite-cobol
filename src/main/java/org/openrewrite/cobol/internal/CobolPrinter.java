@@ -506,7 +506,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(compilationUnit.getPrefix(), p);
         visitMarkers(compilationUnit.getMarkers(), p);
         visit(compilationUnit.getProgramUnits(), p);
-        p.append(compilationUnit.getEof());
+        visit(compilationUnit.getEof(), p);
         return compilationUnit;
     }
 
@@ -3910,7 +3910,9 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
 
             visitSpace(word.getPrefix(), p);
-            p.append(word.getWord());
+            if (!"<EOF>".equals(word.getWord())) {
+                p.append(word.getWord());
+            }
 
             Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
             commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));

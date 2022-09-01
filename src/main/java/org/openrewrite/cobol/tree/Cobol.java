@@ -88,7 +88,7 @@ public interface Cobol extends Tree {
         }
 
         List<ProgramUnit> programUnits;
-        String eof;
+        Word eof;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {

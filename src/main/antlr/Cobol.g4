@@ -19,10 +19,10 @@
 
 grammar Cobol;
 
-startRule : compilationUnit EOF;
+startRule : compilationUnit;
 
 compilationUnit
-   : programUnit*
+   : programUnit* EOF
    ;
 
 programUnit

@@ -38,15 +38,6 @@ class CobolRemainingNistTest : RewriteTest {
                     }
                     return space
                 }
-
-                override fun visitCompilationUnit(compilationUnit: Cobol.CompilationUnit, p: ExecutionContext): Cobol {
-                    val whitespace = compilationUnit.eof.trim()
-                    // TODO: separators should be isolated to a dialect.
-                    if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {
-                        return compilationUnit.withEof("(~~>${compilationUnit.eof}<~~)")
-                    }
-                    return compilationUnit
-                }
             }
         }).parser(CobolIbmAnsi85Parser.builder())
     }

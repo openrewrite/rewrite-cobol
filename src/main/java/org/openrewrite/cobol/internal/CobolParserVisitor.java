@@ -147,7 +147,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 charsetBomMarked,
                 null,
                 programUnits,
-                source.substring(cursor)
+                (Cobol.Word) visit(ctx.EOF())
         );
     }
 
@@ -6418,7 +6418,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 while (iterations < 200) {
                     sequenceArea = sequenceArea();
                     indicatorArea = indicatorArea(null);
-                    contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
+
+                    contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
                         cursor += contentArea.length();
                         line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
@@ -6446,11 +6447,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         // An inline comment entry will have a null sequence area.
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
-        cursor += text.length();
+        if (!"<EOF>".equals(text)) {
+            cursor += text.length();
 
-        CommentArea commentArea = commentArea();
-        if (commentArea != null) {
-            markers.add(commentArea);
+            CommentArea commentArea = commentArea();
+            if (commentArea != null) {
+                markers.add(commentArea);
+            }
         }
         return prefix;
     }
