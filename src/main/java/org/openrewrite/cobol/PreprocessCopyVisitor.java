@@ -10,8 +10,11 @@ import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
 import org.openrewrite.cobol.proprocessor.*;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
+import org.openrewrite.cobol.tree.CopyBook;
+import org.openrewrite.cobol.tree.Space;
 import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.lang.Nullable;
+import org.openrewrite.marker.Markers;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +31,7 @@ import java.util.stream.Collectors;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
+import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.cobol.proprocessor.CobolDialect.ANSI85;
 
 @EqualsAndHashCode(callSuper = true)
@@ -59,13 +63,12 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
         this.cobolDialect = cobolDialect;
     }
 
-    // TODO: copyBook is similar to JavaTemplate, a cache will reduce unnecessary parsers.
     @Override
     public CobolPreprocessor.CopyStatement visitCopyStatement(CobolPreprocessor.CopyStatement copyStatement, P p) {
         CobolPreprocessor.CopyStatement c = super.visitCopyStatement(copyStatement, p);
-        Path copyBook = cobolWordCopyBookFinder.findCopyBook(c.getCopySource());
-        if (copyBook != null) {
-            String source = getSource(copyBook);
+        Path copyBookPath = cobolWordCopyBookFinder.findCopyBook(c.getCopySource());
+        if (copyBookPath != null) {
+            String source = getSource(copyBookPath);
             String result;
 
             try {
@@ -79,13 +82,14 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
                         org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum.FIXED,
                         true
                 );
+                // Convert the copyBook into a valid source for the CobolPreproccessor.g4
                 result = new org.openrewrite.cobol.proprocessor.CobolPreprocessor(
                         new CobolCommentEntriesMarker(),
                         new CobolDocumentParser(),
                         new CobolInlineCommentEntriesNormalizer(),
                         new CobolLineIndicatorProcessor(),
                         new CobolLineReader()
-                ).process(copyBook.toFile(), params);
+                ).process(copyBookPath.toFile(), params);
             } catch (IOException e) {
                 result = null;
             }
@@ -106,13 +110,16 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
                 CobolPreprocessor.CompilationUnit cu = parserVisitor.visitStartRule(parser.startRule());
                 CobolPreprocessor parsedCopySource = cu.getCobols().get(0);
 
-                // Add trailing comments and whitespace from the copied source.
-//                if (!cu.getEof().isEmpty()) {
-//
-//                }
-
-                c = c.withSource(source);
-                c = c.withProcessedSource(parsedCopySource);
+                CopyBook copyBook = new CopyBook(
+                        randomId(),
+                        Space.EMPTY,
+                        Markers.EMPTY,
+                        copyBookPath,
+                        source,
+                        parsedCopySource,
+                        cu.getEof()
+                );
+                c = c.withSourceFile(copyBook);
             }
         }
         return c;

@@ -260,10 +260,7 @@ public interface CobolPreprocessor extends Tree {
 
         // TODO: temp POC clean up.
         @Nullable
-        String source;
-
-        @Nullable
-        CobolPreprocessor processedSource;
+        CopyBook sourceFile;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {

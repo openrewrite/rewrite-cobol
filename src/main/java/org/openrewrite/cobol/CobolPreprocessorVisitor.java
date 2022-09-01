@@ -99,7 +99,7 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         c = c.withCopySource((CobolPreprocessor.CopySource) visit(c.getCopySource(), p));
         c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
         c = c.withDot((CobolPreprocessor.Word) visit(c.getDot(), p));
-        c = c.withProcessedSource(visit(c.getProcessedSource(), p));
+        c = c.withSourceFile((CopyBook) visit(c.getSourceFile(), p));
         return c;
     }
 
