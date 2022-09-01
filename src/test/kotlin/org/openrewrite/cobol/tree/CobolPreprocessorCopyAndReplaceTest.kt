@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.preprocessCobol
 import org.openrewrite.cobol.CobolIbmAnsi85Parser
+import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.CobolVisitor
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
@@ -29,7 +30,7 @@ class CobolPreprocessorCopyAndReplaceTest : RewriteTest {
 
     override fun defaults(spec: RecipeSpec) {
         spec.recipe(toRecipe {
-            object : CobolVisitor<ExecutionContext>() {
+            object : CobolPreprocessorVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
                     val whitespace = space.whitespace.trim()
                     // TODO: separators should be isolated to a dialect.
@@ -39,7 +40,7 @@ class CobolPreprocessorCopyAndReplaceTest : RewriteTest {
                     return space
                 }
 
-                override fun visitCompilationUnit(compilationUnit: Cobol.CompilationUnit, p: ExecutionContext): Cobol {
+                override fun visitCompilationUnit(compilationUnit: CobolPreprocessor.CompilationUnit, p: ExecutionContext): CobolPreprocessor {
                     val whitespace = compilationUnit.eof.trim()
                     // TODO: separators should be isolated to a dialect.
                     if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {

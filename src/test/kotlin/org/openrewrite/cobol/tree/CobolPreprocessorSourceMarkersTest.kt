@@ -17,17 +17,17 @@ package org.openrewrite.cobol.tree
 
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
-import org.openrewrite.cobol.Assertions.cobol
-import org.openrewrite.cobol.CobolVisitor
+import org.openrewrite.cobol.Assertions.preprocessCobol
+import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
 
-class CobolSourceMarkersTest : RewriteTest {
+class CobolPreprocessorSourceMarkersTest : RewriteTest {
 
     override fun defaults(spec: RecipeSpec) {
         spec.recipe(toRecipe {
-            object : CobolVisitor<ExecutionContext>() {
+            object : CobolPreprocessorVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
                     val whitespace = space.whitespace.trim()
                     // TODO: separators should be isolated to a dialect.
@@ -37,7 +37,7 @@ class CobolSourceMarkersTest : RewriteTest {
                     return space
                 }
 
-                override fun visitCompilationUnit(compilationUnit: Cobol.CompilationUnit, p: ExecutionContext): Cobol {
+                override fun visitCompilationUnit(compilationUnit: CobolPreprocessor.CompilationUnit, p: ExecutionContext): CobolPreprocessor {
                     val whitespace = compilationUnit.eof.trim()
                     // TODO: separators should be isolated to a dialect.
                     if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {
@@ -51,7 +51,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun lineNumbers() = rewriteRun(
-        cobol("""
+        preprocessCobol("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.1
             000002 PROGRAM-ID. communicationSection.                                C_AREA.2
         """)
@@ -59,7 +59,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun dotSeparators() = rewriteRun(
-        cobol("""
+        preprocessCobol("""
             000001 IDENTIFICATION DIVISION                                          C_AREA.1
             000002    .                                                             C_AREA.2
             000003 PROGRAM-ID                                                       C_AREA.3
@@ -69,7 +69,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun singleLineStringLiteral() = rewriteRun(
-        cobol("""
+        preprocessCobol("""
             000001 IDENTIFICATION DIVISION.                                         
             000002 PROGRAM-ID. communicationSection.                                
             000003 PROCEDURE DIVISION.                                              
@@ -82,7 +82,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun continuationLiteral() = rewriteRun(
-        cobol("""
+        preprocessCobol("""
            000001  IDENTIFICATION DIVISION.                                        
            000002 PROGRAM-ID. communicationSection.                                
            000003 PROCEDURE DIVISION.                                              
@@ -94,7 +94,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun multipleContinuationLiteral() = rewriteRun(
-        cobol("""
+        preprocessCobol("""
            000001 IDENTIFICATION DIVISION.                                         C_AREA.1
            000002 PROGRAM-ID. communicationSection.                                C_AREA.2
            000003 PROCEDURE DIVISION.                                              C_AREA.3
@@ -109,7 +109,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun multipleContinuationLiteralNoCommentArea() = rewriteRun(
-        cobol("""
+        preprocessCobol("""
            000001 IDENTIFICATION DIVISION.                                         
            000002 PROGRAM-ID. communicationSection.                                
            000003 PROCEDURE DIVISION.                                              
@@ -124,7 +124,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun continuationWithoutNewLine() = rewriteRun(
-        cobol("""
+        preprocessCobol("""
            000001 IDENTIFICATION DIVISION.                                         
            000002 PROGRAM-ID. communicationSection.                                
            000003 PROCEDURE DIVISION.                                              
@@ -135,7 +135,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun emptyContinuation() = rewriteRun(
-        cobol("""
+        preprocessCobol("""
            000001 IDENTIFICATION DIVISION.                                         
            000002 PROGRAM-ID. communicationSection.                                
            000003 PROCEDURE DIVISION.                                              
@@ -146,7 +146,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun literalStartsOnNewLine() = rewriteRun(
-        cobol("""
+        preprocessCobol("""
            000001  IDENTIFICATION DIVISION.                                        
            000002 PROGRAM-ID. communicationSection.                                
            000003 PROCEDURE DIVISION.                                              
@@ -159,7 +159,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun commaDelimiter() = rewriteRun(
-        cobol("""
+        preprocessCobol("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -174,7 +174,7 @@ class CobolSourceMarkersTest : RewriteTest {
     // CRLF
     @Test
     fun continuationWithCRLF() = rewriteRun(
-        cobol("" +
+        preprocessCobol("" +
            "000001 IDENTIFICATION DIVISION.                                         \r\n" +
            "000002 PROGRAM-ID. communicationSection.                                \r\n" +
            "000003 PROCEDURE DIVISION.                                              \r\n" +
@@ -185,7 +185,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun commentAreaWithCRLF() = rewriteRun(
-        cobol("" +
+        preprocessCobol("" +
                 "000001 IDENTIFICATION DIVISION.                                         C_AREA.1\r\n" +
                 "000002 PROGRAM-ID. communicationSection.                                C_AREA.2\r\n"
         )
@@ -193,7 +193,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun trailingComment() = rewriteRun(
-        cobol(
+        preprocessCobol(
             """
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. communicationSection.                                C_AREA.02
@@ -204,7 +204,7 @@ class CobolSourceMarkersTest : RewriteTest {
 
     @Test
     fun trailingWhitespace() = rewriteRun(
-        cobol(
+        preprocessCobol(
             """
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. communicationSection.                                C_AREA.02
