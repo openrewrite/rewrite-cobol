@@ -59,15 +59,17 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
         this.cobolDialect = cobolDialect;
     }
 
+    // TODO: copyBook is similar to JavaTemplate, a cache will reduce unnecessary parsers.
     @Override
-    public CobolPreprocessor.CopySource visitCopySource(CobolPreprocessor.CopySource copySource, P p) {
-        CobolPreprocessor.CopySource c = super.visitCopySource(copySource, p);
-        Path copyBook = cobolWordCopyBookFinder.findCopyBook(copySource);
+    public CobolPreprocessor.CopyStatement visitCopyStatement(CobolPreprocessor.CopyStatement copyStatement, P p) {
+        CobolPreprocessor.CopyStatement c = super.visitCopyStatement(copyStatement, p);
+        Path copyBook = cobolWordCopyBookFinder.findCopyBook(c.getCopySource());
         if (copyBook != null) {
             String source = getSource(copyBook);
             String result;
+
             try {
-                // TEMP for POC
+                // TEMP for POC, using proleap preprocessor to produce malformed COBOL source.
                 CobolParserParams params = new CobolParserParams(
                         StandardCharsets.UTF_8,
                         emptyList(),

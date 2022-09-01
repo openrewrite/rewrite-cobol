@@ -236,12 +236,6 @@ public interface CobolPreprocessor extends Tree {
         @Nullable
         Word copyLibrary;
 
-        @Nullable
-        String source;
-
-        @Nullable
-        CobolPreprocessor processedSource;
-
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
             return v.visitCopySource(this, p);
@@ -264,6 +258,13 @@ public interface CobolPreprocessor extends Tree {
         List<CobolPreprocessor> cobols;
 
         Word dot;
+
+        // TODO: temp POC clean up.
+        @Nullable
+        String source;
+
+        @Nullable
+        CobolPreprocessor processedSource;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {

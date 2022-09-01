@@ -537,9 +537,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 Markers.EMPTY,
                 visit(ctx.literal(), ctx.cobolWord(), ctx.filename()),
                 ctx.OF() == null && ctx.IN() == null ? null : visit(ctx.OF(), ctx.IN()),
-                visitNullable(ctx.copyLibrary()),
-                null,
-                null
+                visitNullable(ctx.copyLibrary())
         );
     }
 
@@ -552,7 +550,9 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 (CobolPreprocessor.Word) visit(ctx.COPY()),
                 (CobolPreprocessor.CopySource) visit(ctx.copySource()),
                 convertAllList(ctx.directoryPhrase(), ctx.familyPhrase(), ctx.replacingPhrase(), ctx.SUPPRESS()),
-                (CobolPreprocessor.Word) visit(ctx.DOT())
+                (CobolPreprocessor.Word) visit(ctx.DOT()),
+                null,
+                null
         );
     }
 

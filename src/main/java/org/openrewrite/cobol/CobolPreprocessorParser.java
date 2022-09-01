@@ -100,6 +100,9 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                                 cobolDialect);
 
                         CobolPreprocessor.CompilationUnit afterCopy = (CobolPreprocessor.CompilationUnit) copyPhase.visit(compilationUnit, new InMemoryExecutionContext());
+                        if (afterCopy != null) {
+                            afterCopy.printAll(); // How can we print the copied code?
+                        }
 
                         sample.stop(MetricsHelper.successTags(timer).register(Metrics.globalRegistry));
                         parsingListener.parsed(sourceFile, compilationUnit);
