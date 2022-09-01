@@ -519,7 +519,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                         ctx.replaceOffStatement(),
                         ctx.skipStatement(),
                         ctx.titleStatement()),
-                source.substring(cursor)
+                (CobolPreprocessor.Word) visit(ctx.EOF())
         );
     }
 
@@ -850,6 +850,8 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 current.length() > text.length() &&
                 !current.substring(0, current.substring(1).indexOf(delimiter) + 2).equals(text)) {
             return processLiteral(text, markers, delimiter);
+        } else if ("<EOF>".equals(text) && source.substring(cursor).isEmpty()) {
+            return Space.EMPTY;
         }
 
         return processText(text, markers);
@@ -988,7 +990,8 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 while (iterations < 200) {
                     sequenceArea = sequenceArea();
                     indicatorArea = indicatorArea(null);
-                    contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
+
+                    contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
                         cursor += contentArea.length();
                         line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
@@ -1016,11 +1019,13 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
         // An inline comment entry will have a null sequence area.
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
-        cursor += text.length();
+        if (!"<EOF>".equals(text)) {
+            cursor += text.length();
 
-        CommentArea commentArea = commentArea();
-        if (commentArea != null) {
-            markers.add(commentArea);
+            CommentArea commentArea = commentArea();
+            if (commentArea != null) {
+                markers.add(commentArea);
+            }
         }
         return prefix;
     }
@@ -1080,7 +1085,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         }
 
         // Ensure the last whitespace is added to the ASt.
-        if (before.getWhitespace().endsWith("\n") || comment != null) {
+        if (source.substring(cursor).isEmpty() || before.getWhitespace().endsWith("\n") || comment != null) {
             return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine);
         }
 

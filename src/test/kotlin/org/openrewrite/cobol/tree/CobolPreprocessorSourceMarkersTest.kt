@@ -36,15 +36,6 @@ class CobolPreprocessorSourceMarkersTest : RewriteTest {
                     }
                     return space
                 }
-
-                override fun visitCompilationUnit(compilationUnit: CobolPreprocessor.CompilationUnit, p: ExecutionContext): CobolPreprocessor {
-                    val whitespace = compilationUnit.eof.trim()
-                    // TODO: separators should be isolated to a dialect.
-                    if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {
-                        return compilationUnit.withEof("(~~>${compilationUnit.eof}<~~)")
-                    }
-                    return compilationUnit
-                }
             }
         })
     }
@@ -197,7 +188,9 @@ class CobolPreprocessorSourceMarkersTest : RewriteTest {
             """
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. communicationSection.                                C_AREA.02
-            000003* Trailing comment                                                C_AREA.02
+            000003* Trailing comment 1                                              C_AREA.02
+            000004* Trailing comment 2                                              C_AREA.02
+            000005* Trailing comment 3                                              C_AREA.02
         """
         )
     )
@@ -209,6 +202,8 @@ class CobolPreprocessorSourceMarkersTest : RewriteTest {
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. communicationSection.                                C_AREA.02
             000003                                                                  C_AREA.02
+            000004                                                                  C_AREA.02
+            000005                                                                  C_AREA.02
         """
         )
     )

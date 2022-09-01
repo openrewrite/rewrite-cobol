@@ -52,7 +52,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
         visitSpace(compilationUnit.getPrefix(), p);
         visitMarkers(compilationUnit.getMarkers(), p);
         visit(compilationUnit.getCobols(), p);
-        p.append(compilationUnit.getEof());
+        visit(compilationUnit.getEof(), p);
         return compilationUnit;
     }
 
@@ -280,7 +280,9 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
             indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
 
             visitSpace(word.getPrefix(), p);
-            p.append(word.getWord());
+            if (!"<EOF>".equals(word.getWord())) {
+                p.append(word.getWord());
+            }
 
             Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
             commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));

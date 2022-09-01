@@ -37,15 +37,6 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
                     }
                     return space
                 }
-
-                override fun visitCompilationUnit(compilationUnit: CobolPreprocessor.CompilationUnit, p: ExecutionContext): CobolPreprocessor {
-                    val whitespace = compilationUnit.eof.trim()
-                    // TODO: separators should be isolated to a dialect.
-                    if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {
-                        return compilationUnit.withEof("(~~>${compilationUnit.eof}<~~)")
-                    }
-                    return compilationUnit
-                }
             }
         })
     }

@@ -107,9 +107,9 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
                 CobolPreprocessor parsedCopySource = cu.getCobols().get(0);
 
                 // Add trailing comments and whitespace from the copied source.
-                if (!cu.getEof().isEmpty()) {
-
-                }
+//                if (!cu.getEof().isEmpty()) {
+//
+//                }
 
                 c = c.withSource(source);
                 c = c.withProcessedSource(parsedCopySource);

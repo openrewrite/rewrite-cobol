@@ -145,7 +145,7 @@ public interface CobolPreprocessor extends Tree {
 
         List<CobolPreprocessor> cobols;
 
-        String eof;
+        Word eof;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {

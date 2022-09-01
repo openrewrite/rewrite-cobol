@@ -16,10 +16,10 @@
 
 grammar CobolPreprocessor;
 
-startRule : compilationUnit EOF;
+startRule : compilationUnit;
 
 compilationUnit
-   : (compilerOptions | copyStatement | execCicsStatement | execSqlStatement | execSqlImsStatement | replaceOffStatement | replaceArea | ejectStatement | skipStatement | titleStatement | charDataLine)*
+   : (compilerOptions | copyStatement | execCicsStatement | execSqlStatement | execSqlImsStatement | replaceOffStatement | replaceArea | ejectStatement | skipStatement | titleStatement | charDataLine)* EOF
    ;
 
 // compiler options
