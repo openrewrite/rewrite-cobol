@@ -15,16 +15,22 @@
  */
 package org.openrewrite.cobol.tree
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
+import org.openrewrite.InMemoryExecutionContext
+import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.Assertions.preprocessCobol
 import org.openrewrite.cobol.CobolIbmAnsi85Parser
 import org.openrewrite.cobol.CobolPreprocessorVisitor
-import org.openrewrite.cobol.CobolVisitor
+import org.openrewrite.cobol.internal.CobolPostPreprocessorPrinter
+import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
+import java.nio.file.Files
+import java.nio.file.Path
 
 class CobolPreprocessorCopyAndReplaceTest : RewriteTest {
 
@@ -39,8 +45,36 @@ class CobolPreprocessorCopyAndReplaceTest : RewriteTest {
                     }
                     return space
                 }
+
+                override fun visitCopyStatement(
+                    copyStatement: CobolPreprocessor.CopyStatement,
+                    p: ExecutionContext
+                ): CobolPreprocessor {
+                    val copyBook = copyStatement.copyBook!!
+
+                    val output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    val printer = CobolPostPreprocessorPrinter<ExecutionContext>()
+                    printer.visit(copyBook, output)
+
+                    val source = getSource(copyBook.sourcePath)
+                    assertThat(source).isEqualTo(output.getOut())
+                    return super.visitCopyStatement(copyStatement, p)
+                }
             }
         }).parser(CobolIbmAnsi85Parser.builder())
+    }
+
+    private fun getSource(copyBook: Path): String {
+        var source = ""
+        try {
+            Files.newInputStream(copyBook).use { inputStream ->
+                val `is` = EncodingDetectingInputStream(inputStream)
+                source = `is`.readFully()
+            }
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+        return source
     }
 
     @Test

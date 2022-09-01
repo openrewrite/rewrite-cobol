@@ -91,6 +91,10 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         );
 
                         CobolPreprocessor.CompilationUnit preprocessedCU = parserVisitor.visitStartRule(parser.startRule());
+
+                        // TODO: move to preprocess COBOL.
+                        // Add a COBOL parser that generates that runs CobolPreprocessorParserVisitor, PreprocessCobol,
+                        // and CobolParserVisitor.
                         PreprocessCopyVisitor<ExecutionContext> copyPhase = new PreprocessCopyVisitor<>(
                                 sourceFile,
                                 relativeTo,
@@ -100,14 +104,10 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                                 cobolDialect);
 
                         CobolPreprocessor.CompilationUnit afterCopy = (CobolPreprocessor.CompilationUnit) copyPhase.visit(preprocessedCU, new InMemoryExecutionContext());
-                        if (afterCopy != null) {
-                            // Add other printer here for debugging.
-                            afterCopy.printAll();
-                        }
 
                         sample.stop(MetricsHelper.successTags(timer).register(Metrics.globalRegistry));
                         parsingListener.parsed(sourceFile, preprocessedCU);
-                        return preprocessedCU;
+                        return afterCopy;
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
                         ctx.getOnError().accept(new IllegalStateException(sourceFile.getPath() + " " + t.getMessage(), t));
@@ -147,6 +147,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
      * Temporarily hardcoded to implement COPY/REPLACE, but this SHOULD be auto-detected / configurable.
      * A temp ADHOC solution may be an auto-detected style that contains all the relevant info.
      */
+    // TODO: this is temp, files should be converted to Parser.Input.
     private List<File> getCopyBooks() {
         String userDir = System.getProperty("user.dir");
         String copyBooks = "/src/test/resources/gov/nist/copybooks";

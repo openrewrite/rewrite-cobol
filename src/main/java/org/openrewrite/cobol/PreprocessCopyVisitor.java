@@ -10,7 +10,6 @@ import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
 import org.openrewrite.cobol.proprocessor.*;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
-import org.openrewrite.cobol.tree.CopyBook;
 import org.openrewrite.cobol.tree.Space;
 import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.lang.Nullable;
@@ -110,16 +109,15 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
                 CobolPreprocessor.CompilationUnit cu = parserVisitor.visitStartRule(parser.startRule());
                 CobolPreprocessor parsedCopySource = cu.getCobols().get(0);
 
-                CopyBook copyBook = new CopyBook(
+                CobolPreprocessor.CopyBook copyBook = new CobolPreprocessor.CopyBook(
                         randomId(),
                         Space.EMPTY,
                         Markers.EMPTY,
                         copyBookPath,
-                        source,
                         parsedCopySource,
                         cu.getEof()
                 );
-                c = c.withSourceFile(copyBook);
+                c = c.withCopyBook(copyBook);
             }
         }
         return c;

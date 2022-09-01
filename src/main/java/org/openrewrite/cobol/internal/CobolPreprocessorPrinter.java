@@ -81,6 +81,11 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
         return compilerXOpts;
     }
 
+    public CobolPreprocessor visitCopyBook(CobolPreprocessor.CopyBook copyBook, PrintOutputCapture<P> p) {
+        // The CopyBook is not printed as a part of the original source.
+        return copyBook;
+    }
+
     public CobolPreprocessor visitCopySource(CobolPreprocessor.CopySource copySource, PrintOutputCapture<P> p) {
         visitSpace(copySource.getPrefix(), p);
         visitMarkers(copySource.getMarkers(), p);
@@ -280,9 +285,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
             indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
 
             visitSpace(word.getPrefix(), p);
-            if (!"<EOF>".equals(word.getWord())) {
-                p.append(word.getWord());
-            }
+            p.append(word.getWord());
 
             Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
             commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));

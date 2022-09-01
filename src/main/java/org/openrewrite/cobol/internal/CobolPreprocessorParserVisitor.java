@@ -738,11 +738,13 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitTerminal(TerminalNode node) {
         List<Marker> markers = new ArrayList<>();
         Space prefix = processTokenText(node.getText(), markers);
+        String text = "<EOF>".equals(node.getText()) ? "" :
+                node.getText().startsWith(COMMENT_ENTRY_TAG) ? node.getText().substring(COMMENT_ENTRY_TAG.length()) : node.getText();
         return new CobolPreprocessor.Word(
                 randomId(),
                 prefix,
                 markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
-                node.getText().startsWith(COMMENT_ENTRY_TAG) ? node.getText().substring(COMMENT_ENTRY_TAG.length()) : node.getText()
+                text
         );
     }
 

@@ -51,6 +51,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final CobolDialect cobolDialect;
 
     // TODO: Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
+    // The String is primarily used for debugging parsing issues, since the column positions are set prior to the parsing.
     private final Map<Integer, String> sequenceAreas = new HashMap<>();
     private final Map<Integer, String> indicatorAreas = new HashMap<>();
     private final Map<Integer, String> commentAreas = new HashMap<>();
@@ -5857,11 +5858,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     public Cobol.Word visitTerminal(TerminalNode node) {
         List<Marker> markers = new ArrayList<>();
         Space prefix = processTokenText(node.getText(), markers);
+        String text = "<EOF>".equals(node.getText()) ? "" :
+                node.getText().startsWith(COMMENT_ENTRY_TAG) ? node.getText().substring(COMMENT_ENTRY_TAG.length()) : node.getText();
         return new Cobol.Word(
                 randomId(),
                 prefix,
                 markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
-                node.getText().startsWith(COMMENT_ENTRY_TAG) ? node.getText().substring(COMMENT_ENTRY_TAG.length()) : node.getText()
+                text
         );
     }
 

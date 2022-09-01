@@ -18,23 +18,44 @@ package org.openrewrite.cobol.internal;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.tree.*;
 
+// TODO: add CobolSourceFile with additional prints that use applicable printers.
+
 public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P> {
 
     @Override
+    public CobolPreprocessor visitCopyBook(CobolPreprocessor.CopyBook copyBook, PrintOutputCapture<P> p) {
+        visitSpace(copyBook.getPrefix(), p);
+        visitMarkers(copyBook.getMarkers(), p);
+        visit(copyBook.getAst(), p);
+        visit(copyBook.getEof(), p);
+        return copyBook;
+    }
+
+    @Override
     public CobolPreprocessor visitCopyStatement(CobolPreprocessor.CopyStatement copyStatement, PrintOutputCapture<P> p) {
+        visitSpace(copyStatement.getPrefix(), p);
+        visitMarkers(copyStatement.getMarkers(), p);
+        visit(copyStatement.getCopyBook(), p);
         return copyStatement;
     }
 
     @Override
     public CobolPreprocessor visitReplaceArea(CobolPreprocessor.ReplaceArea replaceArea, PrintOutputCapture<P> p) {
+        visitSpace(replaceArea.getPrefix(), p);
+        visitMarkers(replaceArea.getMarkers(), p);
         return replaceArea;
     }
 
-    public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
-        // TODO: fix comment area whitespace.
-        visitSpace(word.getPrefix(), p);
-        visitMarkers(word.getMarkers(), p);
-        p.append(word.getWord());
-        return word;
-    }
+    // Prints AST without column areas.
+//    @Override
+//    public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
+//        // print applicable empty lines.
+//        visitSpace(word.getPrefix(), p);
+//        visitMarkers(word.getMarkers(), p);
+//        p.append(word.getWord());
+//        Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
+//        commentArea.ifPresent(area -> visitSpace(area.getPrefix(), p));
+//        commentArea.ifPresent(area -> visitSpace(area.getEndOfLine(), p));
+//        return word;
+//    }
 }

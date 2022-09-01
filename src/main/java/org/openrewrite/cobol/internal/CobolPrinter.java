@@ -3910,9 +3910,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
 
             visitSpace(word.getPrefix(), p);
-            if (!"<EOF>".equals(word.getWord())) {
-                p.append(word.getWord());
-            }
+            p.append(word.getWord());
 
             Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
             commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
