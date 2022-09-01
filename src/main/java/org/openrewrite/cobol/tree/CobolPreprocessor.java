@@ -21,7 +21,6 @@ import org.openrewrite.cobol.CobolPreprocessorVisitor;
 import org.openrewrite.cobol.internal.CobolPreprocessorPrinter;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Markers;
-import org.openrewrite.text.PlainText;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
