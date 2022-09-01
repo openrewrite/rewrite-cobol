@@ -105,9 +105,12 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
                         CobolPreprocessor.CompilationUnit afterCopy = (CobolPreprocessor.CompilationUnit) copyPhase.visit(preprocessedCU, new InMemoryExecutionContext());
 
+                        PreprocessReplaceVisitor<ExecutionContext> replacePhase = new PreprocessReplaceVisitor<>();
+                        CobolPreprocessor.CompilationUnit afterReplace = (CobolPreprocessor.CompilationUnit) replacePhase.visit(afterCopy, new InMemoryExecutionContext());
+
                         sample.stop(MetricsHelper.successTags(timer).register(Metrics.globalRegistry));
                         parsingListener.parsed(sourceFile, preprocessedCU);
-                        return afterCopy;
+                        return afterReplace;
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
                         ctx.getOnError().accept(new IllegalStateException(sourceFile.getPath() + " " + t.getMessage(), t));

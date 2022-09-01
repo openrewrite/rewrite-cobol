@@ -386,7 +386,7 @@ public interface CobolPreprocessor extends Tree {
         Word doubleEqualOpen;
 
         @Nullable
-        CobolPreprocessor charData;
+        CharData charData;
 
         Word doubleEqualClose;
 

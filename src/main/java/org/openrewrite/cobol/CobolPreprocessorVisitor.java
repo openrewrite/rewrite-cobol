@@ -155,7 +155,7 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         pp = pp.withPrefix(visitSpace(pp.getPrefix(), p));
         pp = pp.withMarkers(visitMarkers(pp.getMarkers(), p));
         pp = pp.withDoubleEqualOpen((CobolPreprocessor.Word) visit(pp.getDoubleEqualOpen(), p));
-        pp = pp.withCharData(visit(pp.getCharData(), p));
+        pp = pp.withCharData((CobolPreprocessor.CharData) visit(pp.getCharData(), p));
         pp = pp.withDoubleEqualClose((CobolPreprocessor.Word) visit(pp.getDoubleEqualClose(), p));
         return pp;
     }
