@@ -5,7 +5,7 @@ import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
-import org.openrewrite.cobol.internal.CobolPreprocessorWordPrinter;
+import org.openrewrite.cobol.internal.CobolPreprocessorPrinter;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.StringUtils;
@@ -78,5 +78,27 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
             throw new UnsupportedOperationException("Implement me.");
         }
         return result.trim();
+    }
+
+    private static class CobolPreprocessorWordPrinter<P> extends CobolPreprocessorPrinter<P> {
+
+        @Override
+        public CobolPreprocessor visitCopyBook(CobolPreprocessor.CopyBook copyBook, PrintOutputCapture<P> p) {
+            visit(copyBook.getAst(), p);
+            return copyBook;
+        }
+
+        @Override
+        public CobolPreprocessor visitCopyStatement(CobolPreprocessor.CopyStatement copyStatement, PrintOutputCapture<P> p) {
+            visit(copyStatement.getCopyBook(), p);
+            return copyStatement;
+        }
+
+        @Override
+        public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
+            p.append(" ");
+            p.append(word.getWord());
+            return word;
+        }
     }
 }
