@@ -20,7 +20,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
     @Override
     public CobolPreprocessor.ReplaceArea visitReplaceArea(CobolPreprocessor.ReplaceArea replaceArea, P p) {
         CobolPreprocessor.ReplaceArea r = super.visitReplaceArea(replaceArea, p);
-        // Refactor this could be done dynamically through visitWord.
+
         Map<String, String> replacements = getReplacements(replaceArea.getReplaceByStatement());
         ReplaceVisitor replaceVisitor = new ReplaceVisitor(replacements);
         r = r.withCobols(ListUtils.map(r.getCobols(), it -> replaceVisitor.visit(it, new InMemoryExecutionContext(), getCursor())));
@@ -37,6 +37,10 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         @Override
         public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
             if (replacements.containsKey(word.getWord().trim())) {
+                if (replacements.get(word.getWord()).isEmpty()) {
+                    //noinspection ConstantConditions
+                    return null;
+                }
                 return word.withWord(replacements.get(word.getWord()));
             }
             return super.visitWord(word, executionContext);
@@ -44,16 +48,14 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
     }
 
     private Map<String, String> getReplacements(CobolPreprocessor.ReplaceByStatement replaceByStatement) {
-        // TODO: initially works for single words ... modify to match AST for multi word rules.
         Map<String, String> replacements = new HashMap<>();
         for (CobolPreprocessor.ReplaceClause clause : replaceByStatement.getClauses()) {
             String replaceable = resolveReplace(clause.getReplaceable());
             String replacement = resolveReplace(clause.getReplacement());
-            if (!StringUtils.isBlank(replaceable) && !StringUtils.isBlank(replacement)) {
+            if (!StringUtils.isBlank(replaceable)) {
                 replacements.put(replaceable, replacement);
             }
         }
-
         return replacements;
     }
 
@@ -65,8 +67,6 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         if (cobolPreprocessor instanceof CobolPreprocessor.PseudoText) {
             CobolPreprocessor.PseudoText pseudoText = (CobolPreprocessor.PseudoText) cobolPreprocessor;
             if (pseudoText.getCharData() != null) {
-                // TODO: implement a printer that replaces prefixes of words with a single place.
-                // Issue: separators like `; ` and `, ` are considered whitespace in COBOL.
                 printer.visit(pseudoText.getCharData(), output);
                 result = output.getOut();
             }
