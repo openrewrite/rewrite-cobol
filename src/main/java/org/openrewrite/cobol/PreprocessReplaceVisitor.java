@@ -4,6 +4,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.PrintOutputCapture;
+import org.openrewrite.cobol.internal.CobolPreprocessorWordPrinter;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.StringUtils;
@@ -21,7 +23,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         // Refactor this could be done dynamically through visitWord.
         Map<String, String> replacements = getReplacements(replaceArea.getReplaceByStatement());
         ReplaceVisitor replaceVisitor = new ReplaceVisitor(replacements);
-        r = r.withCobols(ListUtils.map(r.getCobols(), it -> replaceVisitor.visit(it, new InMemoryExecutionContext())));
+        r = r.withCobols(ListUtils.map(r.getCobols(), it -> replaceVisitor.visit(it, new InMemoryExecutionContext(), getCursor())));
         return r;
     }
 
@@ -34,7 +36,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
 
         @Override
         public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
-            if (replacements.containsKey(word.getWord())) {
+            if (replacements.containsKey(word.getWord().trim())) {
                 return word.withWord(replacements.get(word.getWord()));
             }
             return super.visitWord(word, executionContext);
@@ -57,10 +59,16 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
 
     private String resolveReplace(CobolPreprocessor cobolPreprocessor) {
         String result = "";
+        PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
+        CobolPreprocessorWordPrinter<ExecutionContext> printer = new CobolPreprocessorWordPrinter<>();
+
         if (cobolPreprocessor instanceof CobolPreprocessor.PseudoText) {
             CobolPreprocessor.PseudoText pseudoText = (CobolPreprocessor.PseudoText) cobolPreprocessor;
             if (pseudoText.getCharData() != null) {
-                result = pseudoText.getCharData().print(getCursor());
+                // TODO: implement a printer that replaces prefixes of words with a single place.
+                // Issue: separators like `; ` and `, ` are considered whitespace in COBOL.
+                printer.visit(pseudoText.getCharData(), output);
+                result = output.getOut();
             }
         } else if (cobolPreprocessor instanceof CobolPreprocessor.CharDataLine) {
             throw new UnsupportedOperationException("Implement me.");
