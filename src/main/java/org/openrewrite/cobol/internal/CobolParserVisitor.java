@@ -4474,17 +4474,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
     @Override
     public Object visitReportGroupSumClause(CobolParser.ReportGroupSumClauseContext ctx) {
-        throw new UnsupportedOperationException("Fix me. The rule requires ctx.COMMACHAR() to be split up.");
-//        // TODO: fix me.
-//        return new Cobol.ReportGroupSumClause(
-//                randomId(),
-//                Space.EMPTY,
-//                Markers.EMPTY,
-//                (Cobol.Word) visit(ctx.SUM()),
-//                convertAllList(ctx.COMMACHAR(), ctx.identifier()),
-//                visitNullable(ctx.UPON()),
-//                convertAllList(ctx.COMMACHAR(), ctx.dataName())
-//        );
+        return new Cobol.ReportGroupSumClause(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                convertAllList(singletonList(ctx.SUM()), ctx.COMMACHAR(), ctx.identifier(), singletonList(ctx.UPON()), ctx.dataName())
+        );
     }
 
     @Override

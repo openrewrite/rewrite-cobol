@@ -2795,10 +2795,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitReportGroupSumClause(Cobol.ReportGroupSumClause reportGroupSumClause, PrintOutputCapture<P> p) {
         visitSpace(reportGroupSumClause.getPrefix(), p);
         visitMarkers(reportGroupSumClause.getMarkers(), p);
-        visit(reportGroupSumClause.getWords(), p);
-        visit(reportGroupSumClause.getIdentifiers(), p);
-        visit(reportGroupSumClause.getUpon(), p);
-        visit(reportGroupSumClause.getDataNames(), p);
+        visit(reportGroupSumClause.getCobols(), p);
         return reportGroupSumClause;
     }
 

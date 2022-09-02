@@ -2777,8 +2777,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.ReportGroupSumClause r = reportGroupSumClause;
         r = r.withPrefix(visitSpace(r.getPrefix(), p));
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
-        r = r.withIdentifiers(ListUtils.map(r.getIdentifiers(), t -> visit(t, p)));
-        r = r.withDataNames(ListUtils.map(r.getDataNames(), t -> visit(t, p)));
+        r = r.withCobols(ListUtils.map(r.getCobols(), it -> visit(it, p)));
         return r;
     }
 

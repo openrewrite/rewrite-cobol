@@ -6731,14 +6731,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
-        List<Cobol> identifiers;
-
-        @Nullable
-        Cobol.Word upon;
-
-        List<Cobol> dataNames;
-
+        List<Cobol> cobols;
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitReportGroupSumClause(this, p);
