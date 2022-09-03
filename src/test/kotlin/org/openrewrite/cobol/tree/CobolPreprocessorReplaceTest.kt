@@ -19,18 +19,13 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.InMemoryExecutionContext
-import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.Assertions.cobolCopy
 import org.openrewrite.cobol.CobolIbmAnsi85Parser
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.PreprocessReplaceVisitor
-import org.openrewrite.cobol.internal.CobolPostPreprocessorPrinter
-import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
-import java.nio.file.Files
-import java.nio.file.Path
 
 class CobolPreprocessorReplaceTest : RewriteTest {
 
@@ -1338,6 +1333,19 @@ class CobolPreprocessorReplaceTest : RewriteTest {
             064100 CCVS-999999.                                                     SM2084.2
             064200     GO TO CLOSE-FILES.                                           SM2084.2
                   *END-OF,SM208A                                                                  
-        """)
+        """) { spec ->
+            spec.afterRecipe { cu ->
+                object : CobolPreprocessorVisitor<ExecutionContext>() {
+                    override fun visitCopyBook(
+                        copyBook: CobolPreprocessor.CopyBook,
+                        p: ExecutionContext
+                    ): CobolPreprocessor {
+                        val word = (copyBook.ast as CobolPreprocessor.CharDataLine).words[1] as CobolPreprocessor.Word
+                        assertThat(word.word).isEqualTo("\"PASS\"")
+                        return copyBook
+                    }
+                }.visit(cu, InMemoryExecutionContext())
+            }
+        }
     )
 }
