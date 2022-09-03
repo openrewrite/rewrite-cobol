@@ -21,8 +21,9 @@ import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.InMemoryExecutionContext
 import org.openrewrite.PrintOutputCapture
-import org.openrewrite.cobol.Assertions.preprocessCobol
+import org.openrewrite.cobol.Assertions.cobolCopy
 import org.openrewrite.cobol.CobolIbmAnsi85Parser
+import org.openrewrite.cobol.CobolPreprocessorParser
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.internal.CobolPostPreprocessorPrinter
 import org.openrewrite.internal.EncodingDetectingInputStream
@@ -35,7 +36,8 @@ import java.nio.file.Path
 class CobolPreprocessorCopyTest : RewriteTest {
 
     override fun defaults(spec: RecipeSpec) {
-        spec.recipe(toRecipe {
+        spec.parser(CobolPreprocessorParser.builder().enableCopy())
+            .recipe(toRecipe {
             object : CobolPreprocessorVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
                     val whitespace = space.whitespace.trim()
@@ -79,7 +81,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm101A() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM101A                                                            
             000100 IDENTIFICATION DIVISION.                                         SM1014.2
             000200 PROGRAM-ID.                                                      SM1014.2
@@ -656,7 +658,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm103A() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM103A                                                            
             000100 IDENTIFICATION DIVISION.                                         SM1034.2
             000200 PROGRAM-ID.                                                      SM1034.2
@@ -1219,7 +1221,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm105A() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM105A                                                            
             000100 IDENTIFICATION DIVISION.                                         SM1054.2
             000200 PROGRAM-ID.                                                      SM1054.2
@@ -1839,7 +1841,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm106A() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM106A                                                            
             000100 IDENTIFICATION DIVISION.                                         SM1064.2
             000200 PROGRAM-ID.                                                      SM1064.2
@@ -1876,7 +1878,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm107A() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM107A                                                            
             000100 IDENTIFICATION DIVISION.                                         SM1074.2
             000200 PROGRAM-ID.                                                      SM1074.2
@@ -2196,7 +2198,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm201A() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM201A                                                            
             000100 IDENTIFICATION DIVISION.                                         SM2014.2
             000200 PROGRAM-ID.                                                      SM2014.2
@@ -2838,7 +2840,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm202A() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM201A,SUBPRG,SM202A                                              
             000100 IDENTIFICATION DIVISION.                                         SM2024.2
             000200 PROGRAM-ID.                                                      SM2024.2
@@ -3375,7 +3377,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm203A() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM203A                                                            
             000100 IDENTIFICATION DIVISION.                                         SM2034.2
             000200 PROGRAM-ID.                                                      SM2034.2
@@ -3762,7 +3764,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm205A() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM205A                                                            
             000100 IDENTIFICATION DIVISION.                                         SM2054.2
             000200 PROGRAM-ID.                                                      SM2054.2
@@ -4392,7 +4394,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
     @Disabled("Requires continuation markers for tokens.")
     @Test
     fun sm206A() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM206A                                                            
             000100 IDENTIFICATION DIVISION.                                         SM2064.2
             000200 PROGRAM-ID.                                                      SM2064.2
@@ -5111,7 +5113,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm207A() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM207A                                                            
             000100 IDENTIFICATION DIVISION.                                         SM2074.2
             000200 PROGRAM-ID.                                                      SM2074.2
@@ -5481,7 +5483,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm301M() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM301M                                                            
             000100 IDENTIFICATION DIVISION.                                         SM3014.2
             000200 PROGRAM-ID.                                                      SM3014.2
@@ -5516,7 +5518,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm401M() = rewriteRun(
-        preprocessCobol("""
+        cobolCopy("""
                   *HEADER,COBOL,SM401M                                                            
             000100 IDENTIFICATION DIVISION.                                         SM4014.2
             000200 PROGRAM-ID.                                                      SM4014.2

@@ -54,13 +54,19 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private final CobolDialect cobolDialect;
     private final org.openrewrite.cobol.proprocessor.CobolDialect preprocessorDialect;
     private final org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum sourceFormat;
+    private final boolean enableCopy;
+    private final boolean enableReplace;
 
     public CobolPreprocessorParser(CobolDialect cobolDialect,
                                    org.openrewrite.cobol.proprocessor.CobolDialect preprocessorDialect,
-                                   org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum sourceFormat) {
+                                   org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum sourceFormat,
+                                   boolean enableCopy,
+                                   boolean enableReplace) {
         this.cobolDialect = cobolDialect;
         this.preprocessorDialect = preprocessorDialect;
         this.sourceFormat = sourceFormat;
+        this.enableCopy = enableCopy;
+        this.enableReplace = enableReplace;
     }
 
     @Override
@@ -92,25 +98,31 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
                         CobolPreprocessor.CompilationUnit preprocessedCU = parserVisitor.visitStartRule(parser.startRule());
 
-                        // TODO: move to preprocess COBOL.
-                        // Add a COBOL parser that generates that runs CobolPreprocessorParserVisitor, PreprocessCobol,
-                        // and CobolParserVisitor.
-                        PreprocessCopyVisitor<ExecutionContext> copyPhase = new PreprocessCopyVisitor<>(
-                                sourceFile,
-                                relativeTo,
-                                emptyList(),
-                                getCopyBooks().stream().map(it -> it.toPath().toString()).collect(toList()),
-                                getCobolFileExtensions(),
-                                cobolDialect);
+                        if (enableCopy) {
+                            PreprocessCopyVisitor<ExecutionContext> copyPhase = new PreprocessCopyVisitor<>(
+                                    sourceFile,
+                                    relativeTo,
+                                    emptyList(),
+                                    getCopyBooks().stream().map(it -> it.toPath().toString()).collect(toList()),
+                                    getCobolFileExtensions(),
+                                    cobolDialect);
 
-                        CobolPreprocessor.CompilationUnit afterCopy = (CobolPreprocessor.CompilationUnit) copyPhase.visit(preprocessedCU, new InMemoryExecutionContext());
+                            // CU after copy includes the copied source.
+                            preprocessedCU = (CobolPreprocessor.CompilationUnit) copyPhase.visit(preprocessedCU, new InMemoryExecutionContext());
+                        }
 
-                        PreprocessReplaceVisitor<ExecutionContext> replacePhase = new PreprocessReplaceVisitor<>();
-                        CobolPreprocessor.CompilationUnit afterReplace = (CobolPreprocessor.CompilationUnit) replacePhase.visit(afterCopy, new InMemoryExecutionContext());
+                        if (enableReplace) {
+                            PreprocessReplaceVisitor<ExecutionContext> replacePhase = new PreprocessReplaceVisitor<>();
+
+                            // CU after replace has replaced words in each ReplaceArea based on the ReplaceClause.
+                            preprocessedCU = (CobolPreprocessor.CompilationUnit) replacePhase.visit(preprocessedCU, new InMemoryExecutionContext());
+                        }
+
+                        assert preprocessedCU != null;
 
                         sample.stop(MetricsHelper.successTags(timer).register(Metrics.globalRegistry));
                         parsingListener.parsed(sourceFile, preprocessedCU);
-                        return afterReplace;
+                        return preprocessedCU;
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
                         ctx.getOnError().accept(new IllegalStateException(sourceFile.getPath() + " " + t.getMessage(), t));
@@ -188,13 +200,26 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
     public static class Builder extends org.openrewrite.Parser.Builder {
 
+        boolean enableCopy;
+        boolean enableReplace;
+
         public Builder() {
             super(Cobol.CompilationUnit.class);
         }
 
         @Override
         public CobolPreprocessorParser build() {
-            return new CobolPreprocessorParser(new IbmAnsi85(), ANSI85, FIXED);
+            return new CobolPreprocessorParser(new IbmAnsi85(), ANSI85, FIXED, enableCopy, enableReplace);
+        }
+
+        public Builder enableCopy() {
+            this.enableCopy = true;
+            return this;
+        }
+
+        public Builder enableReplace() {
+            this.enableReplace = true;
+            return this;
         }
 
         @Override

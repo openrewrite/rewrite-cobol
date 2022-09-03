@@ -18,7 +18,7 @@ package org.openrewrite.cobol.tree
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
-import org.openrewrite.cobol.Assertions.preprocessCobol
+import org.openrewrite.cobol.Assertions.cobolPreprocess
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
@@ -43,7 +43,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun helloWorld() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION  DIVISION .                                       C_AREA.01
             000002 PROGRAM-ID    . HELLO     .                                      C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -54,7 +54,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun arithmetic() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION .                                        C_AREA.01
             000002 PROGRAM-ID . HELLO-WORLD .                                       C_AREA.02
             000003 DATA DIVISION .                                                  C_AREA.03
@@ -73,7 +73,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun environmentDivision() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID.                                                      C_AREA.02
             000003     IC109A.                                                      C_AREA.03
@@ -100,7 +100,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun inputOutputSection() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID.                                                      C_AREA.02
             000003     IC109A.                                                      C_AREA.03
@@ -129,7 +129,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun procedureDivision() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION  DIVISION .                                       C_AREA.01
             000002 PROGRAM-ID    . HELLO     .                                      C_AREA.02
             000003 PROCEDURE DIVISION USING GRP-01 GIVING dataName.                 C_AREA.03
@@ -142,7 +142,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun divisionUsing() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION  DIVISION .                                       C_AREA.01
             000002 PROGRAM-ID    . HELLO     .                                      C_AREA.02
             000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.03
@@ -152,7 +152,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun ic109a() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID.                                                      C_AREA.02
             000003     IC109A.                                                      C_AREA.03
@@ -204,7 +204,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun moveStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.1
             000002 PROGRAM-ID. MOVETEST.                                            C_AREA.2
             000003 DATA DIVISION.                                                   C_AREA.3
@@ -217,7 +217,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun mergeStatement() = rewriteRun(
-        preprocessCobol(
+        cobolPreprocess(
             """
             000001 IDENTIFICATION DIVISION.                                         C_AREA.1
             000002 PROGRAM-ID. MERGETEST.                                           C_AREA.2
@@ -232,7 +232,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun multiplyStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.1
             000002 PROGRAM-ID. MULTIPLYTEST.                                        C_AREA.2
             000003 PROCEDURE DIVISION.                                              C_AREA.3
@@ -242,7 +242,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun openStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.1
             000002 PROGRAM-ID. OPENTEST.                                            C_AREA.2
             000003 PROCEDURE DIVISION.                                              C_AREA.3
@@ -254,7 +254,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun performStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.1
             000002 PROGRAM-ID. PARSERTEST.                                          C_AREA.2
             000003 PROCEDURE DIVISION.                                              C_AREA.3
@@ -264,7 +264,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun readStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.1
             000002 PROGRAM-ID. READTEST.                                            C_AREA.2
             000003 PROCEDURE DIVISION.                                              C_AREA.3
@@ -274,7 +274,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun receiveStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.1
             000002 PROGRAM-ID. MERGETEST.                                           C_AREA.2
             000003 PROCEDURE DIVISION.                                              C_AREA.3
@@ -285,7 +285,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun fileSection() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID.                                                      C_AREA.02
             000003     IC109A.                                                      C_AREA.03
@@ -315,7 +315,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun linkageSection() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002     PROGRAM-ID.                                                  C_AREA.02
             000003         IC109A.                                                  C_AREA.03
@@ -339,7 +339,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun localStorageSection() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. LocalStorage.                                        C_AREA.02
             000003 DATA DIVISION.                                                   C_AREA.03
@@ -350,7 +350,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun dataBaseSection() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. DBSection.                                           C_AREA.02
             000003 DATA DIVISION.                                                   C_AREA.03
@@ -361,7 +361,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun screenSection() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. DBSection.                                           C_AREA.02
             000003 DATA DIVISION.                                                   C_AREA.03
@@ -400,7 +400,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
     @Disabled("Potential lexer issue: The REVERSE-VIDEO token maps to RESERVE-VIDEO")
     @Test
     fun reverseVideo() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. DBSection.                                           C_AREA.02
             000003 DATA DIVISION.                                                   C_AREA.03
@@ -411,7 +411,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun acceptStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -425,7 +425,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun alterStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION .                                        C_AREA.01
             000002 PROGRAM-ID . HELLO-WORLD .                                       C_AREA.02
             000003 PROCEDURE DIVISION .                                             C_AREA.03
@@ -436,7 +436,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun cancelStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -449,7 +449,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun closeStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -465,7 +465,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun rewriteStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -476,7 +476,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun callStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.03
@@ -494,7 +494,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun writeStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.03
@@ -512,7 +512,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun computeStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION .                                        C_AREA.01
             000002 PROGRAM-ID . HELLO-WORLD .                                       C_AREA.02
             000003 PROCEDURE DIVISION .                                             C_AREA.03
@@ -527,7 +527,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun divideStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.03
@@ -543,7 +543,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun evaluateStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.03
@@ -564,7 +564,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun conditions() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION USING GRP-01.                                 C_AREA.03
@@ -579,7 +579,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun conditionNameSubscriptReference() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -591,7 +591,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun sendStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -602,7 +602,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun tableCallTest() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -615,7 +615,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun functionCallTest() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -629,7 +629,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun relationConditions() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -644,7 +644,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun multiElementLiteral() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -655,7 +655,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun multiElementIdentifier() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -666,7 +666,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun openMultipleStatements() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -684,7 +684,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun outOfOrderOpenStatements() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -696,7 +696,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun unstringStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. acceptStatement.                                     C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -713,7 +713,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun terminateStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. terminateStatement.                                  C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -724,7 +724,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun generateStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. terminateStatement.                                  C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -736,7 +736,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun subtractStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -749,7 +749,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun exitStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. exitStatement.                                       C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -760,7 +760,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun sortStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. sortStatement.                                       C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -778,7 +778,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun stringStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -792,7 +792,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun startStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -805,7 +805,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun goToStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -818,7 +818,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun ifStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -833,7 +833,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun initializeStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -846,7 +846,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun initiateStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -858,7 +858,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun dataValueInterval() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000100 IDENTIFICATION DIVISION.                                         CM1014.2
             000200 PROGRAM-ID.                                                      CM1014.2
             000300     CM101M.                                                      CM1014.2
@@ -873,7 +873,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun inspectStatement() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. subtractStatement.                                   C_AREA.02
             000003 PROCEDURE DIVISION.                                              C_AREA.03
@@ -896,7 +896,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun communicationSection() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. communicationSection.                                C_AREA.02
             000003 DATA DIVISION.                                                   C_AREA.03
@@ -909,7 +909,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun reportSection() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. communicationSection.                                C_AREA.02
             000003 DATA DIVISION.                                                   C_AREA.03
@@ -921,7 +921,7 @@ class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
 
     @Test
     fun programLibrarySection() = rewriteRun(
-        preprocessCobol("""
+        cobolPreprocess("""
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID. communicationSection.                                C_AREA.02
             000003 DATA DIVISION.                                                   C_AREA.03
