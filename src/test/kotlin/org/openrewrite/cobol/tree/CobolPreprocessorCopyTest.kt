@@ -55,7 +55,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
                     val copyBook = copyStatement.copyBook!!
 
                     val output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-                    val printer = CobolPostPreprocessorPrinter<ExecutionContext>()
+                    val printer = CobolPostPreprocessorPrinter<ExecutionContext>(true)
                     printer.visit(copyBook, output)
 
                     val source = getSource(copyBook.sourcePath)

@@ -25,6 +25,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * TODO: explain.
+ */
 public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintOutputCapture<P>> {
 
     public CobolPreprocessor visitCharData(CobolPreprocessor.CharData charData, PrintOutputCapture<P> p) {

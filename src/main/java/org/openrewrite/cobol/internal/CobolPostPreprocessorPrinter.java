@@ -18,9 +18,18 @@ package org.openrewrite.cobol.internal;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.tree.*;
 
-// TODO: add CobolSourceFile with additional prints that use applicable printers.
+import java.util.Optional;
 
+/**
+ * TODO: explain.
+ */
 public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P> {
+
+    boolean printWithColumnAreas;
+
+    public CobolPostPreprocessorPrinter(boolean printWithColumnAreas) {
+        this.printWithColumnAreas = printWithColumnAreas;
+    }
 
     @Override
     public CobolPreprocessor visitCopyBook(CobolPreprocessor.CopyBook copyBook, PrintOutputCapture<P> p) {
@@ -41,21 +50,33 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
 
     @Override
     public CobolPreprocessor visitReplaceArea(CobolPreprocessor.ReplaceArea replaceArea, PrintOutputCapture<P> p) {
-        visitSpace(replaceArea.getPrefix(), p);
-        visitMarkers(replaceArea.getMarkers(), p);
+        if (replaceArea.getCobols() != null) {
+            for (CobolPreprocessor cobol : replaceArea.getCobols()) {
+                visit(cobol, p);
+            }
+        }
         return replaceArea;
     }
 
-    // Prints AST without column areas.
-//    @Override
-//    public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
-//        // print applicable empty lines.
-//        visitSpace(word.getPrefix(), p);
-//        visitMarkers(word.getMarkers(), p);
-//        p.append(word.getWord());
-//        Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-//        commentArea.ifPresent(area -> visitSpace(area.getPrefix(), p));
-//        commentArea.ifPresent(area -> visitSpace(area.getEndOfLine(), p));
-//        return word;
-//    }
+    @Override
+    public CobolPreprocessor visitReplaceOffStatement(CobolPreprocessor.ReplaceOffStatement replaceOffStatement, PrintOutputCapture<P> p) {
+        // Do not print.
+        return replaceOffStatement;
+    }
+
+    @Override
+    public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
+        if (printWithColumnAreas) {
+            super.visitWord(word, p);
+        } else {
+            // print applicable empty lines.
+            visitSpace(word.getPrefix(), p);
+            visitMarkers(word.getMarkers(), p);
+            p.append(word.getWord());
+            Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
+            commentArea.ifPresent(area -> visitSpace(area.getPrefix(), p));
+            commentArea.ifPresent(area -> visitSpace(area.getEndOfLine(), p));
+        }
+        return word;
+    }
 }

@@ -26,6 +26,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * TODO: explain.
+ */
 public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
     public Cobol visitAbbreviation(Cobol.Abbreviation abbreviation, PrintOutputCapture<P> p) {
