@@ -70,8 +70,8 @@ class CobolPreprocessorCopyTest : RewriteTest {
         var source = ""
         try {
             Files.newInputStream(copyBook).use { inputStream ->
-                val `is` = EncodingDetectingInputStream(inputStream)
-                source = `is`.readFully()
+                val input = EncodingDetectingInputStream(inputStream)
+                source = input.readFully()
             }
         } catch (e: Exception) {
             throw RuntimeException(e)
