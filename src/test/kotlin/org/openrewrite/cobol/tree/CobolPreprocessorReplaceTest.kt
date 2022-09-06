@@ -1642,7 +1642,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                         GO TO   REP-INIT-2.                                          
                     REP-TEST-1-1.                                                    
                         MOVE   "*" TO WRK-XN-00001.                                  
-                        IF      WRK-XN-00001 EQUAL "*"            PERFORM PASS                                         
+                        IF      WRK-XN-00001 EQUAL "*"                                   
+                                PERFORM PASS                                         
                                 PERFORM PRINT-DETAIL                                 
                         ELSE                                                         
                                 MOVE   "REPLACE FAILED" TO RE-MARK                   
@@ -1651,7 +1652,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                                 PERFORM FAIL                                         
                                 PERFORM PRINT-DETAIL.                                
                     REP-INIT-2.                                                      
-                        MOVE   "XII-6 3.3 (SR5&6) AND XII-8 3.4(GR11)"         TO ANSI-REFERENCE.                                      
+                        MOVE   "XII-6 3.3 (SR5&6) AND XII-8 3.4(GR11)"               
+                             TO ANSI-REFERENCE.                                      
                         MOVE   "REP-TEST-2" TO PAR-NAME.                             
                         MOVE    SPACES      TO WRK-XN-00322.                         
                         MOVE    1 TO REC-CT.                                         
@@ -1666,7 +1668,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                         IF      WRK-XN-00322 =                      ""${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}${'"'}            PERFORM PASS                                         
                                 PERFORM PRINT-DETAIL                                 
                         ELSE                                                         
-                                MOVE   "REPLACING SINGLE CHARACTER BY 160 QUOTES"                 TO RE-MARK                                      
+                                MOVE   "REPLACING SINGLE CHARACTER BY 160 QUOTES"    
+                                     TO RE-MARK                                      
                                 MOVE   ""${'"'}${'"'} TO CORRECT-X                             
                                 MOVE    WRK-XN-00322-1 TO COMPUTED-X                 
                                 PERFORM FAIL                                         
@@ -1684,7 +1687,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                                    PERFORM PRINT-DETAIL                              
                                 END-PERFORM.                                         
                     REP-INIT-3.                                                      
-                        MOVE   "XII-6 3.3 (SR5&6) AND XII-8 3.4(GR11)"         TO ANSI-REFERENCE.                                      
+                        MOVE   "XII-6 3.3 (SR5&6) AND XII-8 3.4(GR11)"               
+                             TO ANSI-REFERENCE.                                      
                         MOVE   "REP-TEST-3" TO PAR-NAME.                             
                         MOVE    SPACES      TO WRK-XN-00322.                         
                         MOVE    1 TO REC-CT.                                         
@@ -1696,11 +1700,13 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                         PERFORM PRINT-DETAIL.                                        
                         GO TO   REP-INIT-4.                                          
                     REP-TEST-3-1.                                                    
-                        IF      WRK-XN-00322-1 = "Y"        AND WRK-XN-00322-2-322 = SPACES                          
+                        IF      WRK-XN-00322-1 = "Y"                                 
+                            AND WRK-XN-00322-2-322 = SPACES                          
                                 PERFORM PASS                                         
                                 PERFORM PRINT-DETAIL                                 
                         ELSE                                                         
-                                MOVE   "REPLACING 160 QUOTES BY A SINGLE CHARACTER"                 TO RE-MARK                                      
+                                MOVE   "REPLACING 160 QUOTES BY A SINGLE CHARACTER"  
+                                     TO RE-MARK                                      
                                 MOVE   "Y"  TO CORRECT-X                             
                                 MOVE    WRK-XN-00322-1 TO COMPUTED-X                 
                                 PERFORM FAIL                                         
@@ -1729,7 +1735,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                         GO TO   REP-INIT-5.                                          
                     REP-TEST-4-1.                                                    
                         MOVE   "*" TO WRK-XN-00001.                                  
-                        IF      WRK-XN-00001 = "*"            PERFORM PASS                                         
+                        IF      WRK-XN-00001 = "*"                                   
+                                PERFORM PASS                                         
                                 PERFORM PRINT-DETAIL                                 
                         ELSE                                                         
                                 MOVE   "REPLACE FAILED" TO RE-MARK                   
@@ -1770,7 +1777,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                         PERFORM PRINT-DETAIL.                                        
                         GO TO   REP-INIT-7.                                          
                     REP-TEST-6-1.                                                    
-                        IF      P-OR-F = "PASS"            PERFORM PASS                                         
+                        IF      P-OR-F = "PASS"                                      
+                                PERFORM PASS                                         
                                 PERFORM PRINT-DETAIL                                 
                         ELSE                                                         
                                 MOVE   "REPLACE FAILED" TO RE-MARK                   
@@ -1794,7 +1802,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                         PERFORM PRINT-DETAIL.                                        
                         GO TO   REP-INIT-8.                                          
                     REP-TEST-7-1.                                                    
-                        IF      WS-B = "C"            PERFORM PASS                                         
+                        IF      WS-B = "C"                                           
+                                PERFORM PASS                                         
                                 PERFORM PRINT-DETAIL                                 
                         ELSE                                                         
                                 MOVE   "REPLACE FAILED" TO RE-MARK                   
@@ -1814,7 +1823,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                         PERFORM PRINT-DETAIL.                                        
                         GO TO   REP-INIT-9.                                          
                     REP-TEST-8-1.                                                    
-                        IF      P-OR-F = "PASS"            PERFORM PASS                                         
+                        IF      P-OR-F = "PASS"                                      
+                                PERFORM PASS                                         
                                 PERFORM PRINT-DETAIL                                 
                         ELSE                                                         
                                 MOVE   "REPLACE FAILED" TO RE-MARK                   
@@ -1834,7 +1844,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                         PERFORM PRINT-DETAIL.                                        
                         GO TO   CCVS-EXIT.                                           
                     REP-TEST-9-1.                                                    
-                        IF      P-OR-F = "PASS"            PERFORM PASS                                         
+                        IF      P-OR-F = "PASS"                                      
+                                PERFORM PASS                                         
                                 PERFORM PRINT-DETAIL                                 
                         ELSE                                                         
                                 MOVE   "REPLACE FAILED" TO RE-MARK                   

@@ -845,11 +845,16 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             delimiter = text.charAt(0);
         }
 
-        String current = delimiter == null ? null : source.substring(source.indexOf(delimiter));
+        int saveCursor = cursor;
+        sequenceArea();
+        indicatorArea(null);
+
+        Optional<Integer> nextIndicator = indicatorAreas.keySet().stream().sorted().filter(it -> it > cursor).findFirst();
+        boolean isContinued = nextIndicator.isPresent() && indicatorAreas.get(nextIndicator.get()).equals("-");
+        cursor = saveCursor;
+
         // Detect a literal continued on a new line.
-        if (current != null &&
-                current.length() > text.length() &&
-                !current.substring(0, current.substring(1).indexOf(delimiter) + 2).equals(text)) {
+        if (delimiter != null && isContinued) {
             return processLiteral(text, markers, delimiter);
         } else if ("<EOF>".equals(text) && source.substring(cursor).isEmpty()) {
             return Space.EMPTY;
@@ -1080,7 +1085,6 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
         if (commentAreas.containsKey(cursor)) {
             comment = commentAreas.get(cursor);
-
             cursor += comment.length();
             endLine = whitespace();
         }
