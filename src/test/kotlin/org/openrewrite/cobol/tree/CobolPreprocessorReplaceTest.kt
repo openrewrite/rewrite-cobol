@@ -1771,7 +1771,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                         MOVE   "REP-TEST-6" TO PAR-NAME.                             
                     REP-TEST-6-0.                                                    
                          MOVE                                                        
-                        "PASS"    TO P-OR-F.                                                   
+                        "PASS"                                                       
+                        TO P-OR-F.                                                   
                         GO TO   REP-TEST-6-1.                                        
                     REP-DELETE-6.                                                    
                         PERFORM DE-LETE.                                             
