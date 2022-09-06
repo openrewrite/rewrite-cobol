@@ -1635,24 +1635,8 @@ class CobolPreprocessorParserNistTest : RewriteTest {
     )
 
     @Test
-    fun sm106A() = rewriteRun(
-        cobolPreprocess(getNistSource("SM106A.CBL"))
-    )
-
-    @Test
-    fun sm107A() = rewriteRun(
-        cobolPreprocess(getNistSource("SM107A.CBL"))
-    )
-
-    @Test
     fun sm204A() = rewriteRun(
         cobolPreprocess(getNistSource("SM204A.CBL"))
-    )
-
-    @Disabled("Requires continuation between tokens.")
-    @Test
-    fun sm206A() = rewriteRun(
-        cobolPreprocess(getNistSource("SM206A.CBL"))
     )
 
     @Test
