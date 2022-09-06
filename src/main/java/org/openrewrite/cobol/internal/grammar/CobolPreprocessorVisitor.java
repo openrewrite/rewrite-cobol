@@ -191,6 +191,12 @@ public interface CobolPreprocessorVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFilename(CobolPreprocessorParser.FilenameContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CobolPreprocessorParser#commentEntry}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCommentEntry(CobolPreprocessorParser.CommentEntryContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CobolPreprocessorParser#charDataKeyword}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

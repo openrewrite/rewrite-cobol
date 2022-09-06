@@ -308,6 +308,16 @@ public interface CobolPreprocessorListener extends ParseTreeListener {
 	 */
 	void exitFilename(CobolPreprocessorParser.FilenameContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CobolPreprocessorParser#commentEntry}.
+	 * @param ctx the parse tree
+	 */
+	void enterCommentEntry(CobolPreprocessorParser.CommentEntryContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CobolPreprocessorParser#commentEntry}.
+	 * @param ctx the parse tree
+	 */
+	void exitCommentEntry(CobolPreprocessorParser.CommentEntryContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CobolPreprocessorParser#charDataKeyword}.
 	 * @param ctx the parse tree
 	 */

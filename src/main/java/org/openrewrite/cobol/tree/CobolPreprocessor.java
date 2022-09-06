@@ -18,6 +18,7 @@ package org.openrewrite.cobol.tree;
 import lombok.*;
 import org.openrewrite.*;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
+import org.openrewrite.cobol.CobolVisitor;
 import org.openrewrite.cobol.internal.CobolPreprocessorPrinter;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Markers;
@@ -105,6 +106,23 @@ public interface CobolPreprocessor extends Tree {
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
             return v.visitCharDataSql(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class CommentEntry implements CobolPreprocessor, Comment {
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        List<Word> comments;
+
+        @Override
+        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
+            return v.visitCommentEntry(this, p);
         }
     }
 

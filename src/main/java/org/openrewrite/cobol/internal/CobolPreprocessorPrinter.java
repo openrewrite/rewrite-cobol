@@ -51,6 +51,14 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
         return charDataSql;
     }
 
+    @Override
+    public CobolPreprocessor visitCommentEntry(CobolPreprocessor.CommentEntry commentEntry, PrintOutputCapture<P> p) {
+        visitSpace(commentEntry.getPrefix(), p);
+        visitMarkers(commentEntry.getMarkers(), p);
+        visit(commentEntry.getComments(), p);
+        return commentEntry;
+    }
+
     public CobolPreprocessor visitCompilationUnit(CobolPreprocessor.CompilationUnit compilationUnit, PrintOutputCapture<P> p) {
         visitSpace(compilationUnit.getPrefix(), p);
         visitMarkers(compilationUnit.getMarkers(), p);

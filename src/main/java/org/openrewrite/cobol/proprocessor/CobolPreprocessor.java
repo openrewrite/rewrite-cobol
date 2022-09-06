@@ -41,12 +41,6 @@ public class CobolPreprocessor {
     CobolLineIndicatorProcessor cobolLineIndicatorProcessor;
     CobolLineReader cobolLineReader;
 
-    public String rewriteLines(String cobolCode, CobolParserParams params) {
-        List<CobolLine> lines = readLines(cobolCode, params);
-        List<CobolLine> rewrittenLines = rewriteLines(lines);
-        return CobolLineWriter.write(rewrittenLines);
-    }
-
     String parseDocument(List<CobolLine> lines, CobolParserParams params) {
         String code = CobolLineWriter.write(lines);
         return cobolDocumentParser.processLines(code, params);

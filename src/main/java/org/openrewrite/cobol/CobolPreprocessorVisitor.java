@@ -45,6 +45,14 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         return c;
     }
 
+    public CobolPreprocessor visitCommentEntry(CobolPreprocessor.CommentEntry commentEntry, P p) {
+        CobolPreprocessor.CommentEntry c = commentEntry;
+        c = c.withPrefix(visitSpace(c.getPrefix(), p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withComments(ListUtils.map(c.getComments(), it -> (CobolPreprocessor.Word) visit(it, p)));
+        return c;
+    }
+
     public CobolPreprocessor visitCompilationUnit(CobolPreprocessor.CompilationUnit compilationUnit, P p) {
         CobolPreprocessor.CompilationUnit c = compilationUnit;
         c = c.withPrefix(visitSpace(c.getPrefix(), p));

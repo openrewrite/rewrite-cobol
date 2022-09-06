@@ -150,7 +150,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 randomId(),
                 Space.EMPTY,
                 Markers.EMPTY,
-                convertAllList(ctx.cobolWord(), ctx.literal(), ctx.filename(), ctx.TEXT(), ctx.DOT(), ctx.LPARENCHAR(), ctx.RPARENCHAR())
+                convertAllList(ctx.cobolWord(), ctx.literal(), ctx.filename(), ctx.commentEntry(), ctx.TEXT(), ctx.DOT(), ctx.LPARENCHAR(), ctx.RPARENCHAR())
         );
     }
 
@@ -168,6 +168,16 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitCobolWord(CobolPreprocessorParser.CobolWordContext ctx) {
         // Pass through.
         return super.visitCobolWord(ctx);
+    }
+
+    @Override
+    public Object visitCommentEntry(CobolPreprocessorParser.CommentEntryContext ctx) {
+        return new CobolPreprocessor.CommentEntry(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                convertAll(ctx.COMMENTENTRYLINE())
+        );
     }
 
     @Override

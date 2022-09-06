@@ -257,7 +257,7 @@ charDataSql
    ;
 
 charDataLine
-   : (cobolWord | literal | filename | TEXT | DOT | LPARENCHAR | RPARENCHAR)+
+   : (cobolWord | literal | filename | commentEntry | TEXT | DOT | LPARENCHAR | RPARENCHAR)+
    ;
 
 cobolWord
@@ -270,6 +270,10 @@ literal
 
 filename
    : FILENAME
+   ;
+
+commentEntry
+   : COMMENTENTRYLINE+
    ;
 
 // keywords ----------------------------------
@@ -615,6 +619,7 @@ X_CHAR : X;
 
 
 // symbols
+COMMENTENTRYTAG : '*>CE';
 COMMENTTAG : '*>';
 COMMACHAR : ',';
 DOT : '.';
@@ -640,7 +645,8 @@ FILENAME : [a-zA-Z0-9]+ '.' [a-zA-Z0-9]+;
 
 // whitespace, line breaks, comments, ...
 NEWLINE : '\r'? '\n' -> channel(HIDDEN);
-COMMENTLINE : COMMENTTAG ~('\n' | '\r')* -> channel(HIDDEN);
+COMMENTENTRYLINE : COMMENTENTRYTAG WS ~('\n' | '\r')*;
+COMMENTLINE : COMMENTTAG WS ~('\n' | '\r')* -> channel(HIDDEN);
 WS : [ \t\f;]+ -> channel(HIDDEN);
 SEPARATOR : ', ' -> channel(HIDDEN);
 TEXT : ~('\n' | '\r');

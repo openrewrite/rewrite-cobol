@@ -152,7 +152,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 true
         );
 
-        return cobolPreprocessor.rewriteLines(source, params);
+        return cobolPreprocessor.process(source, params);
     }
 
     /**

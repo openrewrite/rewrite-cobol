@@ -1318,6 +1318,7 @@ class CobolPreprocessorParserNistTest : RewriteTest {
         cobolPreprocess(getNistSource("NC303M.CBL"))
     )
 
+    @Disabled("Requires continuation between tokens.")
     @Test
     fun nc401M() = rewriteRun(
         cobolPreprocess(getNistSource("NC401M.CBL"))
@@ -1624,28 +1625,13 @@ class CobolPreprocessorParserNistTest : RewriteTest {
     )
 
     @Test
-    fun sm101A() = rewriteRun(
-        cobolPreprocess(getNistSource("SM101A.CBL"))
-    )
-
-    @Test
     fun sm102A() = rewriteRun(
         cobolPreprocess(getNistSource("SM102A.CBL"))
     )
 
     @Test
-    fun sm103A() = rewriteRun(
-        cobolPreprocess(getNistSource("SM103A.CBL"))
-    )
-
-    @Test
     fun sm104A() = rewriteRun(
         cobolPreprocess(getNistSource("SM104A.CBL"))
-    )
-
-    @Test
-    fun sm105A() = rewriteRun(
-        cobolPreprocess(getNistSource("SM105A.CBL"))
     )
 
     @Test
@@ -1659,54 +1645,14 @@ class CobolPreprocessorParserNistTest : RewriteTest {
     )
 
     @Test
-    fun sm201A() = rewriteRun(
-        cobolPreprocess(getNistSource("SM201A.CBL"))
-    )
-
-    @Test
-    fun sm202A() = rewriteRun(
-        cobolPreprocess(getNistSource("SM202A.CBL"))
-    )
-
-    @Test
-    fun sm203A() = rewriteRun(
-        cobolPreprocess(getNistSource("SM203A.CBL"))
-    )
-
-    @Test
     fun sm204A() = rewriteRun(
         cobolPreprocess(getNistSource("SM204A.CBL"))
-    )
-
-    @Test
-    fun sm205A() = rewriteRun(
-        cobolPreprocess(getNistSource("SM205A.CBL"))
     )
 
     @Disabled("Requires continuation between tokens.")
     @Test
     fun sm206A() = rewriteRun(
         cobolPreprocess(getNistSource("SM206A.CBL"))
-    )
-
-    @Test
-    fun sm207A() = rewriteRun(
-        cobolPreprocess(getNistSource("SM207A.CBL"))
-    )
-
-    @Test
-    fun sm208A() = rewriteRun(
-        cobolPreprocess(getNistSource("SM208A.CBL"))
-    )
-
-    @Test
-    fun sm301M() = rewriteRun(
-        cobolPreprocess(getNistSource("SM301M.CBL"))
-    )
-
-    @Test
-    fun sm401M() = rewriteRun(
-        cobolPreprocess(getNistSource("SM401M.CBL"))
     )
 
     @Test

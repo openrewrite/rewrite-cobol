@@ -227,5 +227,12 @@ public class CobolPreprocessorBaseVisitor<T> extends AbstractParseTreeVisitor<T>
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitCommentEntry(CobolPreprocessorParser.CommentEntryContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitCharDataKeyword(CobolPreprocessorParser.CharDataKeywordContext ctx) { return visitChildren(ctx); }
 }

@@ -376,6 +376,18 @@ public class CobolPreprocessorBaseListener implements CobolPreprocessorListener 
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCommentEntry(CobolPreprocessorParser.CommentEntryContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCommentEntry(CobolPreprocessorParser.CommentEntryContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCharDataKeyword(CobolPreprocessorParser.CharDataKeywordContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -31,6 +31,11 @@ public class CobolPreprocessorIsoVisitor<P> extends CobolPreprocessorVisitor<P> 
         return (CobolPreprocessor.CharDataSql) super.visitCharDataSql(charDataSql, p);
     }
 
+    @Override
+    public CobolPreprocessor visitCommentEntry(CobolPreprocessor.CommentEntry commentEntry, P p) {
+        return super.visitCommentEntry(commentEntry, p);
+    }
+
     public CobolPreprocessor.CompilationUnit visitCompilationUnit(CobolPreprocessor.CompilationUnit compilationUnit, P p) {
         return (CobolPreprocessor.CompilationUnit) super.visitCompilationUnit(compilationUnit, p);
     }
