@@ -120,8 +120,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 pos += isCRLF ? 2 : 1; // Increment for new line delimiter.
             }
 
-            // TODO: separators should likely be modeled.
-            separators.addAll(Arrays.asList(", ", "; "));
+            separators.addAll(cobolDialect.getSeparators());
         } else if (cobolDialect.getColumns() == CobolDialect.Columns.HP_TANDEM) {
             throw new UnsupportedOperationException("Implement me.");
         } else {

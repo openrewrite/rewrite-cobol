@@ -6512,13 +6512,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         if (commentAreas.containsKey(cursor)) {
             comment = commentAreas.get(cursor);
-
             cursor += comment.length();
             endLine = whitespace();
         }
 
         // Ensure the last whitespace is added to the ASt.
-        if (before.getWhitespace().endsWith("\n") || comment != null) {
+        if (source.substring(cursor).isEmpty() || before.getWhitespace().endsWith("\n") || comment != null) {
             return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine);
         }
 

@@ -558,7 +558,7 @@ public class CobolParser extends Parser {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, "'&'", "'*'", "'**'", "':'", "','", "'*>CE '", "'*>'", 
+			null, null, null, "'&'", "'*'", "'**'", "':'", "','", "'*>CE'", "'*>'", 
 			"'$'", "'\"'", null, "'='", "'*>EXECCICS'", "'*>EXECSQL'", "'*>EXECSQLIMS'", 
 			"'<'", "'<='", "'('", "'-'", "'>'", "'>='", "'<>'", "'+'", "'''", "')'", 
 			"'/'", null, "'66'", "'77'", "'88'", null, null, null, null, null, null, 
