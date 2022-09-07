@@ -32,6 +32,7 @@ import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.cobol.proprocessor.CobolDialect.ANSI85;
+import static org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum.FIXED;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
@@ -78,7 +79,7 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
                         getCobolFileExtensions(),
                         getCopyBooks(),
                         ANSI85,
-                        org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum.FIXED,
+                        FIXED,
                         true
                 );
                 // Convert the copyBook into a valid source for the CobolPreproccessor.g4

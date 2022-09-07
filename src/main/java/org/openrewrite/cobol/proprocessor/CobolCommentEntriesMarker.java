@@ -48,8 +48,8 @@ public class CobolCommentEntriesMarker {
             String whitespace = matcher.group(1);
             String trigger = matcher.group(2);
             String commentEntry = matcher.group(3);
-            String newContentArea = whitespace + trigger + CobolPreprocessor.WS
-                    + CobolPreprocessor.COMMENT_ENTRY_TAG + commentEntry;
+            String newContentArea = whitespace + trigger + CobolPreprocessor.WS +
+                    CobolPreprocessor.COMMENT_ENTRY_TAG + commentEntry;
 
             result = CobolLine.copyCobolLineWithContentArea(newContentArea, line);
         } else {
@@ -61,8 +61,7 @@ public class CobolCommentEntriesMarker {
 
     boolean isInCommentEntry(CobolLine line, boolean isContentAreaAEmpty,
                                        boolean isInOsvsCommentEntry) {
-        return CobolLineTypeEnum.COMMENT.equals(line.getType()) || isContentAreaAEmpty
-                || isInOsvsCommentEntry;
+        return CobolLineTypeEnum.COMMENT.equals(line.getType()) || isContentAreaAEmpty || isInOsvsCommentEntry;
     }
 
     /**
@@ -111,7 +110,6 @@ public class CobolCommentEntriesMarker {
         if (foundCommentEntryTriggerInCurrentLine) {
             result = escapeCommentEntry(line);
         } else if (foundCommentEntryTriggerInPreviousLine || isInCommentEntry) {
-            // TODO: FIX or REPLACE ME. `line.getContentAreaA().trim().isEmpty()` causes COPY Statements to be converted to comments.
             boolean isContentAreaAEmpty = line.getContentAreaA().trim().isEmpty();
             boolean isInOsvsCommentEntry = isInOsvsCommentEntry(line);
 

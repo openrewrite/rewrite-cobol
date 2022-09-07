@@ -22,7 +22,6 @@ import org.openrewrite.ExecutionContext
 import org.openrewrite.InMemoryExecutionContext
 import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.Assertions.cobolCopy
-import org.openrewrite.cobol.CobolIbmAnsi85Parser
 import org.openrewrite.cobol.CobolPreprocessorParser
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.internal.CobolPostPreprocessorPrinter
@@ -38,7 +37,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     companion object {
         private val userDir = System.getProperty("user.dir")
-        private val nistPath = "/src/test/resources/gov/nist/"
+        private const val nistPath = "/src/test/resources/gov/nist/"
         fun getNistSource(sourceName: String): String {
             val path = Paths.get(userDir + nistPath + sourceName)
             val inputStream = Files.newInputStream(path)

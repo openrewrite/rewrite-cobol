@@ -34,7 +34,7 @@ class CobolPreprocessorReplaceTest : RewriteTest {
 
     companion object {
         private val userDir = System.getProperty("user.dir")
-        private val nistPath = "/src/test/resources/gov/nist/"
+        private const val nistPath = "/src/test/resources/gov/nist/"
         fun getNistSource(bookName: String): String {
             val path = Paths.get(userDir + nistPath + bookName)
             val inputStream = Files.newInputStream(path)
