@@ -2873,6 +2873,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(reportGroupValueClause.getPrefix(), p);
         visitMarkers(reportGroupValueClause.getMarkers(), p);
         visit(reportGroupValueClause.getWords(), p);
+        visit(reportGroupValueClause.getLiteral(), p);
         return reportGroupValueClause;
     }
 
