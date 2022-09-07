@@ -2624,6 +2624,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(reportDescriptionFootingClause.getPrefix(), p);
         visitMarkers(reportDescriptionFootingClause.getMarkers(), p);
         visit(reportDescriptionFootingClause.getWords(), p);
+        visit(reportDescriptionFootingClause.getDataName(), p);
         return reportDescriptionFootingClause;
     }
 
@@ -2638,6 +2639,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(reportDescriptionHeadingClause.getPrefix(), p);
         visitMarkers(reportDescriptionHeadingClause.getMarkers(), p);
         visit(reportDescriptionHeadingClause.getWords(), p);
+        visit(reportDescriptionHeadingClause.getDataName(), p);
         return reportDescriptionHeadingClause;
     }
 
