@@ -270,8 +270,8 @@
 026900 CLOSE-FILES.                                                     DB1014.2
 027000     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   DB1014.2
 027100 TERMINATE-CCVS.                                                  DB1014.2
-027200*    EXIT PROGRAM.                                                DB1014.2
-027300*TERMINATE-CALL.                                                  DB1014.2
+027200S    EXIT PROGRAM.                                                DB1014.2
+027300STERMINATE-CALL.                                                  DB1014.2
 027400     STOP     RUN.                                                DB1014.2
 027500 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         DB1014.2
 027600 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           DB1014.2
@@ -333,15 +333,15 @@
 033200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           DB1014.2
 033300 WRITE-LINE.                                                      DB1014.2
 033400     ADD 1 TO RECORD-COUNT.                                       DB1014.2
-033500*    IF RECORD-COUNT GREATER 50                                   DB1014.2
-033600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB1014.2
-033700*        MOVE SPACE TO DUMMY-RECORD                               DB1014.2
-033800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB1014.2
-033900*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB1014.2
-034000*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB1014.2
-034100*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB1014.2
-034200*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB1014.2
-034300*        MOVE ZERO TO RECORD-COUNT.                               DB1014.2
+033500Y    IF RECORD-COUNT GREATER 50                                   DB1014.2
+033600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB1014.2
+033700Y        MOVE SPACE TO DUMMY-RECORD                               DB1014.2
+033800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB1014.2
+033900Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB1014.2
+034000Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB1014.2
+034100Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB1014.2
+034200Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB1014.2
+034300Y        MOVE ZERO TO RECORD-COUNT.                               DB1014.2
 034400     PERFORM WRT-LN.                                              DB1014.2
 034500 WRT-LN.                                                          DB1014.2
 034600     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               DB1014.2
