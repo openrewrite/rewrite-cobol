@@ -21,9 +21,13 @@ import org.antlr.v4.runtime.*;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Parser;
+import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolParserVisitor;
+import org.openrewrite.cobol.internal.CobolPostPreprocessorPrinter;
+import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolLexer;
+import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
 import org.openrewrite.cobol.proprocessor.*;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.internal.EncodingDetectingInputStream;
@@ -73,15 +77,51 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                         EncodingDetectingInputStream is = sourceFile.getSource();
                         String sourceStr = is.readFully();
 
-                        String processedCobol = preprocessCobol(sourceStr, is.getCharset());
+                        // TODO: fix or replace proleap CobolCommentEntriesMarker line 114.
+                        String prepareSource = preprocessCobol(sourceStr, is.getCharset());
+
+                        org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser preprocessorParser =
+                                new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
+                                        new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(prepareSource))));
+
+                        CobolPreprocessorParserVisitor parserVisitor = new CobolPreprocessorParserVisitor(
+                                sourceFile.getRelativePath(relativeTo),
+                                sourceFile.getFileAttributes(),
+                                sourceStr,
+                                is.getCharset(),
+                                is.isCharsetBomMarked(),
+                                cobolDialect
+                        );
+
+                        org.openrewrite.cobol.tree.CobolPreprocessor.CompilationUnit preprocessedCU = parserVisitor.visitStartRule(preprocessorParser.startRule());
+
+                        // Execute copy statements.
+                        PreprocessCopyVisitor<ExecutionContext> copyPhase = new PreprocessCopyVisitor<>(
+                                sourceFile,
+                                relativeTo,
+                                emptyList(),
+                                getCopyBooks().stream().map(it -> it.toPath().toString()).collect(toList()),
+                                getCobolFileExtensions(),
+                                cobolDialect);
+                        preprocessedCU = (org.openrewrite.cobol.tree.CobolPreprocessor.CompilationUnit) copyPhase.visit(preprocessedCU, new InMemoryExecutionContext());
+
+                        // Execute replace statements.
+                        PreprocessReplaceVisitor<ExecutionContext> replacePhase = new PreprocessReplaceVisitor<>();
+                        preprocessedCU = (org.openrewrite.cobol.tree.CobolPreprocessor.CompilationUnit) replacePhase.visit(preprocessedCU, new InMemoryExecutionContext());
+
+                        // Print processed code to parse COBOL.
+                        PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
+                        CobolPostPreprocessorPrinter<ExecutionContext> printer = new CobolPostPreprocessorPrinter<>(false);
+                        printer.visit(preprocessedCU, output);
+
                         org.openrewrite.cobol.internal.grammar.CobolParser parser =
                                 new org.openrewrite.cobol.internal.grammar.CobolParser(
-                                        new CommonTokenStream(new CobolLexer(CharStreams.fromString(processedCobol))));
+                                        new CommonTokenStream(new CobolLexer(CharStreams.fromString(output.getOut()))));
 
                         Cobol.CompilationUnit compilationUnit = new CobolParserVisitor(
                                 sourceFile.getRelativePath(relativeTo),
                                 sourceFile.getFileAttributes(),
-                                sourceStr,
+                                sourceStr, // TODO: print with post process printer.
                                 is.getCharset(),
                                 is.isCharsetBomMarked(),
                                 cobolDialect
@@ -100,8 +140,8 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                 .collect(toList());
     }
 
-    private String preprocessCobol(String source, Charset encoding) {
-        CobolPreprocessor cobolPreprocessor = new CobolPreprocessor(
+    private String tempComparePrint(String source, Charset encoding) {
+        org.openrewrite.cobol.proprocessor.CobolPreprocessor cobolPreprocessor = new org.openrewrite.cobol.proprocessor.CobolPreprocessor(
                 new CobolCommentEntriesMarker(),
                 new CobolDocumentParser(),
                 new CobolInlineCommentEntriesNormalizer(),
@@ -109,18 +149,39 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                 new CobolLineReader()
         );
 
-        // TODO: set dialect and format through configuration.
         CobolParserParams params = new CobolParserParams(
                 encoding,
                 emptyList(),
-                emptyList(),
-                emptyList(),
+                getCobolFileExtensions(),
+                getCopyBooks(),
                 preprocessorDialect,
                 sourceFormat,
                 true
         );
 
         return cobolPreprocessor.process(source, params);
+    }
+
+    private String preprocessCobol(String source, Charset encoding) {
+        org.openrewrite.cobol.proprocessor.CobolPreprocessor cobolPreprocessor = new org.openrewrite.cobol.proprocessor.CobolPreprocessor(
+                new CobolCommentEntriesMarker(),
+                new CobolDocumentParser(),
+                new CobolInlineCommentEntriesNormalizer(),
+                new CobolLineIndicatorProcessor(),
+                new CobolLineReader()
+        );
+
+        CobolParserParams params = new CobolParserParams(
+                encoding,
+                emptyList(),
+                getCobolFileExtensions(),
+                getCopyBooks(),
+                preprocessorDialect,
+                sourceFormat,
+                true
+        );
+
+        return cobolPreprocessor.rewriteLines(source, params);
     }
 
     /**

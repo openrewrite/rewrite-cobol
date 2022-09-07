@@ -111,7 +111,8 @@ public class CobolCommentEntriesMarker {
         if (foundCommentEntryTriggerInCurrentLine) {
             result = escapeCommentEntry(line);
         } else if (foundCommentEntryTriggerInPreviousLine || isInCommentEntry) {
-            boolean isContentAreaAEmpty = line.getContentArea().trim().isEmpty();
+            // TODO: FIX or REPLACE ME. `line.getContentAreaA().trim().isEmpty()` causes COPY Statements to be converted to comments.
+            boolean isContentAreaAEmpty = line.getContentAreaA().trim().isEmpty();
             boolean isInOsvsCommentEntry = isInOsvsCommentEntry(line);
 
             isInCommentEntry = isInCommentEntry(line, isContentAreaAEmpty, isInOsvsCommentEntry);

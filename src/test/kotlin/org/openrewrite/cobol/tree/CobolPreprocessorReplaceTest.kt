@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobolCopy
 import org.openrewrite.cobol.CobolIbmAnsi85Parser
+import org.openrewrite.cobol.CobolPreprocessorParser
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.PreprocessReplaceVisitor
 import org.openrewrite.internal.EncodingDetectingInputStream
@@ -56,7 +57,7 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                     return space
                 }
             }
-        })).parser(CobolIbmAnsi85Parser.builder())
+        })).parser(CobolPreprocessorParser.builder())
     }
 
     @Test

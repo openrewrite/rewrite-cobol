@@ -32,6 +32,18 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
     }
 
     @Override
+    public CobolPreprocessor visitCommentEntry(CobolPreprocessor.CommentEntry commentEntry, PrintOutputCapture<P> p) {
+        visitSpace(commentEntry.getPrefix(), p);
+        visitMarkers(commentEntry.getMarkers(), p);
+        for (CobolPreprocessor.Word comment : commentEntry.getComments()) {
+            p.append("*>CE ");
+            visit(comment, p);
+        }
+
+        return commentEntry;
+    }
+
+    @Override
     public CobolPreprocessor visitCopyBook(CobolPreprocessor.CopyBook copyBook, PrintOutputCapture<P> p) {
         visitSpace(copyBook.getPrefix(), p);
         visitMarkers(copyBook.getMarkers(), p);

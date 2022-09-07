@@ -56,6 +56,7 @@ class CobolParserNistTest : RewriteTest {
             }).parser(CobolIbmAnsi85Parser.builder())
     }
 
+
     @Test
     fun cm101M() = rewriteRun(
         cobol(getNistSource("CM101M.CBL"))
@@ -1318,6 +1319,7 @@ class CobolParserNistTest : RewriteTest {
         cobol(getNistSource("NC303M.CBL"))
     )
 
+    @Disabled("Requires continuation between tokens.")
     @Test
     fun nc401M() = rewriteRun(
         cobol(getNistSource("NC401M.CBL"))
@@ -1624,18 +1626,8 @@ class CobolParserNistTest : RewriteTest {
     )
 
     @Test
-    fun sm101A() = rewriteRun(
-        cobol(getNistSource("SM101A.CBL"))
-    )
-
-    @Test
     fun sm102A() = rewriteRun(
         cobol(getNistSource("SM102A.CBL"))
-    )
-
-    @Test
-    fun sm103A() = rewriteRun(
-        cobol(getNistSource("SM103A.CBL"))
     )
 
     @Test
@@ -1644,68 +1636,8 @@ class CobolParserNistTest : RewriteTest {
     )
 
     @Test
-    fun sm105A() = rewriteRun(
-        cobol(getNistSource("SM105A.CBL"))
-    )
-
-    @Test
-    fun sm106A() = rewriteRun(
-        cobol(getNistSource("SM106A.CBL"))
-    )
-
-    @Test
-    fun sm107A() = rewriteRun(
-        cobol(getNistSource("SM107A.CBL"))
-    )
-
-    @Test
-    fun sm201A() = rewriteRun(
-        cobol(getNistSource("SM201A.CBL"))
-    )
-
-    @Test
-    fun sm202A() = rewriteRun(
-        cobol(getNistSource("SM202A.CBL"))
-    )
-
-    @Test
-    fun sm203A() = rewriteRun(
-        cobol(getNistSource("SM203A.CBL"))
-    )
-
-    @Test
     fun sm204A() = rewriteRun(
         cobol(getNistSource("SM204A.CBL"))
-    )
-
-    @Test
-    fun sm205A() = rewriteRun(
-        cobol(getNistSource("SM205A.CBL"))
-    )
-
-    @Test
-    fun sm206A() = rewriteRun(
-        cobol(getNistSource("SM206A.CBL"))
-    )
-
-    @Test
-    fun sm207A() = rewriteRun(
-        cobol(getNistSource("SM207A.CBL"))
-    )
-
-    @Test
-    fun sm208A() = rewriteRun(
-        cobol(getNistSource("SM208A.CBL"))
-    )
-
-    @Test
-    fun sm301M() = rewriteRun(
-        cobol(getNistSource("SM301M.CBL"))
-    )
-
-    @Test
-    fun sm401M() = rewriteRun(
-        cobol(getNistSource("SM401M.CBL"))
     )
 
     @Test
@@ -1825,7 +1757,7 @@ class CobolParserNistTest : RewriteTest {
 
     @Test
     fun sq127A() = rewriteRun(
-            cobol(getNistSource("SQ127A.CBL"))
+        cobol(getNistSource("SQ127A.CBL"))
     )
 
     @Test

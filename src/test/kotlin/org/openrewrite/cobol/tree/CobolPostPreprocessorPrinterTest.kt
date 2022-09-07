@@ -22,6 +22,7 @@ import org.openrewrite.InMemoryExecutionContext
 import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.Assertions.cobolCopy
 import org.openrewrite.cobol.CobolIbmAnsi85Parser
+import org.openrewrite.cobol.CobolPreprocessorParser
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.PreprocessReplaceVisitor
 import org.openrewrite.cobol.internal.CobolPostPreprocessorPrinter
@@ -59,7 +60,7 @@ class CobolPostPreprocessorPrinterTest : RewriteTest {
                     return space
                 }
             }
-        })).parser(CobolIbmAnsi85Parser.builder())
+        })).parser(CobolPreprocessorParser.builder())
     }
 
     @Test
@@ -1229,7 +1230,7 @@ class CobolPostPreprocessorPrinterTest : RewriteTest {
                     CCVS-999999.                                                     
                         GO TO CLOSE-FILES.                                           
                     
-                """.trimIndent())
+                """)
             }
         }
     )

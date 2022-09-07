@@ -15,26 +15,20 @@
  */
 package org.openrewrite.cobol.tree
 
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
-import org.openrewrite.InMemoryExecutionContext
-import org.openrewrite.PrintOutputCapture
-import org.openrewrite.cobol.Assertions.cobolCopy
+import org.openrewrite.cobol.Assertions.cobol
 import org.openrewrite.cobol.CobolIbmAnsi85Parser
-import org.openrewrite.cobol.CobolPreprocessorParser
-import org.openrewrite.cobol.CobolPreprocessorVisitor
-import org.openrewrite.cobol.internal.CobolPostPreprocessorPrinter
+import org.openrewrite.cobol.CobolIsoVisitor
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
 
-class CobolPreprocessorCopyTest : RewriteTest {
+class CobolParserCopyTest : RewriteTest {
 
     companion object {
         private val userDir = System.getProperty("user.dir")
@@ -48,9 +42,9 @@ class CobolPreprocessorCopyTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.parser(CobolPreprocessorParser.builder().enableCopy())
+        spec.parser(CobolIbmAnsi85Parser.builder())
             .recipe(toRecipe {
-            object : CobolPreprocessorVisitor<ExecutionContext>() {
+            object : CobolIsoVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
                     val whitespace = space.whitespace.trim()
                     // TODO: separators should be isolated to a dialect.
@@ -59,101 +53,73 @@ class CobolPreprocessorCopyTest : RewriteTest {
                     }
                     return space
                 }
-
-                override fun visitCopyStatement(
-                    copyStatement: CobolPreprocessor.CopyStatement,
-                    p: ExecutionContext
-                ): CobolPreprocessor {
-                    val copyBook = copyStatement.copyBook!!
-
-                    val output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-                    val printer = CobolPostPreprocessorPrinter<ExecutionContext>(true)
-                    printer.visit(copyBook, output)
-
-                    val source = getSource(copyBook.sourcePath)
-                    assertThat(source).isEqualTo(output.getOut())
-                    return super.visitCopyStatement(copyStatement, p)
-                }
             }
-        }).parser(CobolPreprocessorParser.builder())
-    }
-
-    private fun getSource(copyBook: Path): String {
-        var source = ""
-        try {
-            Files.newInputStream(copyBook).use { inputStream ->
-                val input = EncodingDetectingInputStream(inputStream)
-                source = input.readFully()
-            }
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
-        return source
+        }).parser(CobolIbmAnsi85Parser.builder())
     }
 
     @Test
     fun sm101A() = rewriteRun(
-        cobolCopy(getNistSource("SM101A.CBL"))
+        cobol(getNistSource("SM101A.CBL"))
     )
 
     @Test
     fun sm103A() = rewriteRun(
-        cobolCopy(getNistSource("SM103A.CBL"))
+        cobol(getNistSource("SM103A.CBL"))
     )
 
     @Test
     fun sm105A() = rewriteRun(
-        cobolCopy(getNistSource("SM105A.CBL"))
+        cobol(getNistSource("SM105A.CBL"))
     )
 
     @Test
     fun sm106A() = rewriteRun(
-        cobolCopy(getNistSource("SM106A.CBL"))
+        cobol(getNistSource("SM106A.CBL"))
     )
 
     @Test
     fun sm107A() = rewriteRun(
-        cobolCopy(getNistSource("SM107A.CBL"))
+        cobol(getNistSource("SM107A.CBL"))
     )
 
     @Test
     fun sm201A() = rewriteRun(
-        cobolCopy(getNistSource("SM201A.CBL"))
+        cobol(getNistSource("SM201A.CBL"))
     )
 
     @Test
     fun sm202A() = rewriteRun(
-        cobolCopy(getNistSource("SM202A.CBL"))
+        cobol(getNistSource("SM202A.CBL"))
     )
 
     @Test
     fun sm203A() = rewriteRun(
-        cobolCopy(getNistSource("SM203A.CBL"))
+        cobol(getNistSource("SM203A.CBL"))
     )
 
     @Test
     fun sm205A() = rewriteRun(
-        cobolCopy(getNistSource("SM205A.CBL"))
+        cobol(getNistSource("SM205A.CBL"))
     )
 
     @Disabled("Requires continuation markers for tokens.")
     @Test
     fun sm206A() = rewriteRun(
-        cobolCopy(getNistSource("SM206A.CBL"))
+        cobol(getNistSource("SM206A.CBL"))
     )
 
     @Test
     fun sm207A() = rewriteRun(
-        cobolCopy(getNistSource("SM207A.CBL"))
+        cobol(getNistSource("SM207A.CBL"))
     )
 
     @Test
     fun sm301M() = rewriteRun(
-        cobolCopy(getNistSource("SM301M.CBL"))
+        cobol(getNistSource("SM301M.CBL"))
     )
 
     @Test
     fun sm401M() = rewriteRun(
-        cobolCopy(getNistSource("SM401M.CBL"))
+        cobol(getNistSource("SM401M.CBL"))
     )
 }

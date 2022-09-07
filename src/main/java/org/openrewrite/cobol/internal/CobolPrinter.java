@@ -2616,6 +2616,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(reportDescriptionFirstDetailClause.getPrefix(), p);
         visitMarkers(reportDescriptionFirstDetailClause.getMarkers(), p);
         visit(reportDescriptionFirstDetailClause.getWords(), p);
+        visit(reportDescriptionFirstDetailClause.getDataName(), p);
         return reportDescriptionFirstDetailClause;
     }
 
@@ -2644,6 +2645,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(reportDescriptionLastDetailClause.getPrefix(), p);
         visitMarkers(reportDescriptionLastDetailClause.getMarkers(), p);
         visit(reportDescriptionLastDetailClause.getWords(), p);
+        visit(reportDescriptionLastDetailClause.getDataName(), p);
         return reportDescriptionLastDetailClause;
     }
 
@@ -2651,6 +2653,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(reportDescriptionPageLimitClause.getPrefix(), p);
         visitMarkers(reportDescriptionPageLimitClause.getMarkers(), p);
         visit(reportDescriptionPageLimitClause.getFirstWords(), p);
+        visit(reportDescriptionPageLimitClause.getIntegerLiteral(), p);
         visit(reportDescriptionPageLimitClause.getSecondWords(), p);
         return reportDescriptionPageLimitClause;
     }
