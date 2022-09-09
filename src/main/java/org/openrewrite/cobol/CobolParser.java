@@ -109,19 +109,29 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                         PreprocessReplaceVisitor<ExecutionContext> replacePhase = new PreprocessReplaceVisitor<>();
                         preprocessedCU = (org.openrewrite.cobol.tree.CobolPreprocessor.CompilationUnit) replacePhase.visit(preprocessedCU, new InMemoryExecutionContext());
 
+                        // TODO: explicit prints are only necessary because we cannot print through the CU with printAll().
+                        // Currently, the default print is the original source code.
+                        // We may add print options to print the post processed COBOL with Columns to use as the source.
+                        // And without the columns to use in the CobolParser.
+
                         // Print processed code to parse COBOL.
-                        PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                        CobolPostPreprocessorPrinter<ExecutionContext> printer = new CobolPostPreprocessorPrinter<>(false);
-                        printer.visit(preprocessedCU, output);
+                        PrintOutputCapture<ExecutionContext> cobolParserOutput = new PrintOutputCapture<>(new InMemoryExecutionContext());
+                        CobolPostPreprocessorPrinter<ExecutionContext> printWithColumns = new CobolPostPreprocessorPrinter<>(cobolDialect, false);
+                        printWithColumns.visit(preprocessedCU, cobolParserOutput);
 
                         org.openrewrite.cobol.internal.grammar.CobolParser parser =
                                 new org.openrewrite.cobol.internal.grammar.CobolParser(
-                                        new CommonTokenStream(new CobolLexer(CharStreams.fromString(output.getOut()))));
+                                        new CommonTokenStream(new CobolLexer(CharStreams.fromString(cobolParserOutput.getOut()))));
+
+                        // Print the pre-processed code to parse COBOL.
+                        PrintOutputCapture<ExecutionContext> sourceOutput = new PrintOutputCapture<>(new InMemoryExecutionContext());
+                        CobolPostPreprocessorPrinter<ExecutionContext> printWithoutColumns = new CobolPostPreprocessorPrinter<>(cobolDialect, true);
+                        printWithoutColumns.visit(preprocessedCU, sourceOutput);
 
                         Cobol.CompilationUnit compilationUnit = new CobolParserVisitor(
                                 sourceFile.getRelativePath(relativeTo),
                                 sourceFile.getFileAttributes(),
-                                sourceStr, // TODO: print with post process printer.
+                                sourceOutput.getOut(),
                                 is.getCharset(),
                                 is.isCharsetBomMarked(),
                                 cobolDialect

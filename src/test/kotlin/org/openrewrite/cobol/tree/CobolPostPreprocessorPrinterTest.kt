@@ -21,11 +21,11 @@ import org.openrewrite.ExecutionContext
 import org.openrewrite.InMemoryExecutionContext
 import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.Assertions.cobolCopy
-import org.openrewrite.cobol.CobolIbmAnsi85Parser
 import org.openrewrite.cobol.CobolPreprocessorParser
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.PreprocessReplaceVisitor
 import org.openrewrite.cobol.internal.CobolPostPreprocessorPrinter
+import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
@@ -719,7 +719,7 @@ class CobolPostPreprocessorPrinterTest : RewriteTest {
                     }
                 }.visit(cu, InMemoryExecutionContext())
 
-                val printer = CobolPostPreprocessorPrinter<ExecutionContext>(false)
+                val printer = CobolPostPreprocessorPrinter<ExecutionContext>(IbmAnsi85(), false)
                 val output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
                 printer.visit(cu, output)
                 assertThat(output.getOut()).isEqualTo("""
@@ -1230,7 +1230,7 @@ class CobolPostPreprocessorPrinterTest : RewriteTest {
                     CCVS-999999.                                                     
                         GO TO CLOSE-FILES.                                           
                     
-                """)
+                """.trimIndent())
             }
         }
     )

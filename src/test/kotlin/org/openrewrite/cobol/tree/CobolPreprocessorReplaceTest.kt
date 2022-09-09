@@ -19,7 +19,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobolCopy
-import org.openrewrite.cobol.CobolIbmAnsi85Parser
 import org.openrewrite.cobol.CobolPreprocessorParser
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.PreprocessReplaceVisitor
@@ -33,6 +32,7 @@ import java.nio.file.Paths
 class CobolPreprocessorReplaceTest : RewriteTest {
 
     companion object {
+        // Paths.get(System.getProperty("user.home"), "rewrite-offline").toAbsolutePath();
         private val userDir = System.getProperty("user.dir")
         private const val nistPath = "/src/test/resources/gov/nist/"
         fun getNistSource(bookName: String): String {
@@ -704,7 +704,7 @@ class CobolPreprocessorReplaceTest : RewriteTest {
             064200     GO TO CLOSE-FILES.                                           SM2084.2
                   *END-OF,SM208A                                                                  
         """) { spec ->
-            spec.afterRecipe { cu ->
+            spec.afterRecipe {
                 object : CobolPreprocessorVisitor<ExecutionContext>() {
                     override fun visitCopyBook(
                         copyBook: CobolPreprocessor.CopyBook,

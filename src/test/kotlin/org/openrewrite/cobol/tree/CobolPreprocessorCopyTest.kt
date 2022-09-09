@@ -25,6 +25,7 @@ import org.openrewrite.cobol.Assertions.cobolCopy
 import org.openrewrite.cobol.CobolPreprocessorParser
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.internal.CobolPostPreprocessorPrinter
+import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
@@ -63,13 +64,13 @@ class CobolPreprocessorCopyTest : RewriteTest {
                     copyStatement: CobolPreprocessor.CopyStatement,
                     p: ExecutionContext
                 ): CobolPreprocessor {
-                    val copyBook = copyStatement.copyBook!!
+                    val copyBook = copyStatement.copyBook
 
                     val output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-                    val printer = CobolPostPreprocessorPrinter<ExecutionContext>(true)
+                    val printer = CobolPostPreprocessorPrinter<ExecutionContext>(IbmAnsi85(), true)
                     printer.visit(copyBook, output)
 
-                    val source = getSource(copyBook.sourcePath)
+                    val source = getSource(copyBook!!.sourcePath)
                     assertThat(source).isEqualTo(output.getOut())
                     return super.visitCopyStatement(copyStatement, p)
                 }
@@ -78,7 +79,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
     }
 
     private fun getSource(copyBook: Path): String {
-        var source = ""
+        var source: String
         try {
             Files.newInputStream(copyBook).use { inputStream ->
                 val input = EncodingDetectingInputStream(inputStream)

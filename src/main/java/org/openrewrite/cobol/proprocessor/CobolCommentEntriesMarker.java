@@ -59,8 +59,9 @@ public class CobolCommentEntriesMarker {
         return result;
     }
 
-    boolean isInCommentEntry(CobolLine line, boolean isContentAreaAEmpty,
-                                       boolean isInOsvsCommentEntry) {
+    boolean isInCommentEntry(CobolLine line,
+                             boolean isContentAreaAEmpty,
+                             boolean isInOsvsCommentEntry) {
         return CobolLineTypeEnum.COMMENT.equals(line.getType()) || isContentAreaAEmpty || isInOsvsCommentEntry;
     }
 

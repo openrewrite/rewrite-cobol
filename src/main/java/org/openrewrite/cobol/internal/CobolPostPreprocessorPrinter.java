@@ -17,6 +17,7 @@ package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.tree.*;
+import org.openrewrite.internal.StringUtils;
 
 import java.util.Optional;
 
@@ -25,19 +26,26 @@ import java.util.Optional;
  */
 public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P> {
 
-    boolean printWithColumnAreas;
+    private final CobolDialect cobolDialect;
+    private final boolean printWithColumnAreas;
 
-    public CobolPostPreprocessorPrinter(boolean printWithColumnAreas) {
+    public CobolPostPreprocessorPrinter(CobolDialect cobolDialect,
+                                        boolean printWithColumnAreas) {
+        this.cobolDialect = cobolDialect;
         this.printWithColumnAreas = printWithColumnAreas;
     }
 
     @Override
     public CobolPreprocessor visitCommentEntry(CobolPreprocessor.CommentEntry commentEntry, PrintOutputCapture<P> p) {
-        visitSpace(commentEntry.getPrefix(), p);
-        visitMarkers(commentEntry.getMarkers(), p);
-        for (CobolPreprocessor.Word comment : commentEntry.getComments()) {
-            p.append("*>CE ");
-            visit(comment, p);
+        if (printWithColumnAreas) {
+            super.visitCommentEntry(commentEntry, p);
+        } else {
+            visitSpace(commentEntry.getPrefix(), p);
+            visitMarkers(commentEntry.getMarkers(), p);
+            for (CobolPreprocessor.Word comment : commentEntry.getComments()) {
+                p.append("*>CE ");
+                visit(comment, p);
+            }
         }
 
         return commentEntry;
@@ -54,10 +62,112 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
 
     @Override
     public CobolPreprocessor visitCopyStatement(CobolPreprocessor.CopyStatement copyStatement, PrintOutputCapture<P> p) {
-        // TODO: Fix Me. Add markers from COPY and the source name to the CopyBook AST to print correct end of line.
         visitSpace(copyStatement.getPrefix(), p);
         visitMarkers(copyStatement.getMarkers(), p);
-        visit(copyStatement.getCopyBook(), p);
+
+        if (printWithColumnAreas) {
+            if (copyStatement.getCopyBook() != null) {
+                // TODO: Clean up. This is a POC to test linking the processed COBOL to the CobolParserVisitor.
+
+                // Print all comments that might exist before the word COPY.
+                visit(copyStatement.getWord(), p);
+
+                // Remove the prefix of and the word COPY, because the statement is replaced by the CopyBook.
+                p.out.delete(p.getOut().length() - copyStatement.getWord().getWord().length() -
+                        copyStatement.getWord().getPrefix().getWhitespace().length(), p.getOut().length());
+
+                // Find the previous line to insert a comment delimiter BEFORE the copy statement.
+                // The comment must be inserted before the statement because the COPY may happen anywhere in the next line.
+                int insertPos = p.getOut().lastIndexOf("\n");
+
+                // Save the current index to ensure the text that follows the COPY will be aligned correctly.
+                int curIndex = getIndex(p.getOut());
+
+                if (insertPos != -1 && curIndex != -1) {
+                    // Align the column area.
+                    p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - 1 - curIndex));
+
+                    StringBuilder templateStart = new StringBuilder();
+                    String sequenceArea = StringUtils.repeat(" ", cobolDialect.getColumns().getContentArea() - 1);
+
+                    // Printing the COPY statement will add comments that work similar to JavaTemplate.
+                    // Comments are added before and after the template to provide context about which AST elements
+                    // are a product of a COPY statement.
+
+                    /*
+                        I.E.
+                        Before:
+                        000001 Some COBOL tokens      COPY STATEMENT            .
+
+                        After:
+                       |      |*|__COPY_START______________________________________|
+                       |      |*|currentIndex: 24                                  |=> The start of the original copy statement.
+                       |      |*|bookName: ABC                                     |=> might be unnecessary ... but this is a POC.
+                       |      |*|UUID: 263cd588-bdea-4c06-8ba1-177e515bded2        |=> A UUID will fit in the column area, but the copy statement might not.
+                       |000001| |Some COBOL tokens|                               .|=> The index + 1 is the position of `|`.
+                       |~~~~~~| |Print the COPIED source AST. ~~~~~~~~~~~~~~~~~~~~~|=> Print the COPIED AST, which includes new column areas.
+                       |      |*|__COPY_END________________________________________|
+                       |      | |                 |=> White space is conditionally printer based on where the copy statement ends to ensure columns are aligned.
+
+                        Alignment:
+                       |      | | COPY STATEMENT.                                  |=> Requires whitespace to replace the statement for correct alignment.
+                       |      | |                                   COPY STATEMENT.|=> The next line does not require any whitespace.
+                     */
+                    String copyStartId = sequenceArea + "*__COPY_START__";
+                    templateStart.append(copyStartId);
+                    templateStart.append(StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - copyStartId.length()));
+                    templateStart.append("\n");
+
+                    // The CobolParserVisitor will read the COPIED text, which may be 1 or more tokens and span 1 or more AST elements.
+                    // currentIndex is used to identify where the original copy statement starts, since the rest of the line
+                    // is filled with whitespace.
+
+                    String currentIndexId = sequenceArea + "*currentIndex: " + curIndex;
+                    templateStart.append(currentIndexId);
+
+                    // Filled with spaces to trim the String and convert the value into an integer.
+                    templateStart.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - copyStartId.length()));
+
+                    templateStart.append(sequenceArea);
+                    String bookId = "*bookName: ";
+                    templateStart.append(bookId);
+
+                    // TODO: Unknown -- Assess whether we should save the original COPY Statement in the AST.
+                    // The copy statement would provide the original statement
+                    templateStart.append(copyStatement.getCopySource().getName().getWord());
+
+                    // Align the column area.
+                    templateStart.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() -
+                            sequenceArea.length() - bookId.length() -
+                            copyStatement.getCopySource().getName().getWord().length()));
+                    templateStart.append("\n");
+
+                    // Insert template identifier at the previous line.
+                    p.out.insert(insertPos + 1, templateStart);
+
+                    p.append("\n");
+                    visit(copyStatement.getCopyBook(), p);
+
+                    StringBuilder templateEnd = new StringBuilder();
+                    templateEnd.append(sequenceArea);
+                    templateEnd.append("*__COPY_END__");
+                    templateEnd.append(StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - templateEnd.length()));
+                    templateEnd.append("\n");
+
+                    p.append(templateEnd.toString());
+
+                    // The length of the copy, especially the lack of a "\n" sets how much whitespace should be added to
+                    // fix column alignment.
+                    String copy = copyStatement.print(getCursor());
+                    System.out.println(copy);
+                    int whitespace = copy.endsWith("\n") ? 0 : copy.length() + curIndex + 1;
+                    p.append(StringUtils.repeat(" ", whitespace));
+                }
+            }
+        } else {
+            visit(copyStatement.getCopyBook(), p);
+        }
+
         return copyStatement;
     }
 
@@ -91,5 +201,13 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
             commentArea.ifPresent(area -> visitSpace(area.getEndOfLine(), p));
         }
         return word;
+    }
+
+    private int getIndex(String output) {
+        int index = output.lastIndexOf("\n");
+        if (index >= 0) {
+            index = output.substring(index + 1).length() - 1;
+        }
+        return index;
     }
 }

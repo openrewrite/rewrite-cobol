@@ -57,6 +57,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final Map<Integer, String> commentAreas = new HashMap<>();
     private final Set<String> separators = new HashSet<>();
     private int cursor = 0;
+    private boolean inCopy = false;
 
     public CobolParserVisitor(Path path, @Nullable FileAttributes fileAttributes,
                               String source, Charset charset, boolean charsetBomMarked, CobolDialect cobolDialect) {
@@ -6279,6 +6280,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         Optional<Integer> nextIndicator = indicatorAreas.keySet().stream().sorted().filter(it -> it > cursor).findFirst();
         boolean isContinued = nextIndicator.isPresent() && indicatorAreas.get(nextIndicator.get()).equals("-");
         cursor = saveCursor;
+
+        // TODO:
+        // Split markers for comment and blank lines into a new method.
+        // Refactor processLiteral into processContinuedText.
+        // Detect continued keywords and statements, and parse correctly.
 
         // Detect a literal continued on a new line.
         if (delimiter != null && isContinued) {
