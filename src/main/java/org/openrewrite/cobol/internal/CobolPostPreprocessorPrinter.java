@@ -26,6 +26,8 @@ import java.util.Optional;
  */
 public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P> {
 
+    public static final String TEMPLATE_START = "__COPY_START__";
+    public static final String TEMPLATE_END = "__COPY_END__";
     private final CobolDialect cobolDialect;
     private final boolean printWithColumnAreas;
 
@@ -84,12 +86,6 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                 int curIndex = getIndex(p.getOut());
 
                 if (insertPos != -1 && curIndex != -1) {
-                    // Align the column area.
-                    p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - 1 - curIndex));
-
-                    StringBuilder templateStart = new StringBuilder();
-                    String sequenceArea = StringUtils.repeat(" ", cobolDialect.getColumns().getContentArea() - 1);
-
                     // Printing the COPY statement will add comments that work similar to JavaTemplate.
                     // Comments are added before and after the template to provide context about which AST elements
                     // are a product of a COPY statement.
@@ -113,7 +109,13 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                        |      | | COPY STATEMENT.                                  |=> Requires whitespace to replace the statement for correct alignment.
                        |      | |                                   COPY STATEMENT.|=> The next line does not require any whitespace.
                      */
-                    String copyStartId = sequenceArea + "*__COPY_START__";
+
+                    p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - 1 - curIndex));
+
+                    StringBuilder templateStart = new StringBuilder();
+                    String sequenceArea = StringUtils.repeat(" ", cobolDialect.getColumns().getContentArea() - 1);
+
+                    String copyStartId = sequenceArea + "*" + TEMPLATE_START;
                     templateStart.append(copyStartId);
                     templateStart.append(StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - copyStartId.length()));
                     templateStart.append("\n");
@@ -128,15 +130,9 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                     // Filled with spaces to trim the String and convert the value into an integer.
                     templateStart.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - copyStartId.length()));
 
-                    templateStart.append(sequenceArea);
-                    String bookId = "*bookName: ";
+                    String bookId = sequenceArea + "*bookName: ";
                     templateStart.append(bookId);
-
-                    // TODO: Unknown -- Assess whether we should save the original COPY Statement in the AST.
-                    // The copy statement would provide the original statement
                     templateStart.append(copyStatement.getCopySource().getName().getWord());
-
-                    // Align the column area.
                     templateStart.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() -
                             sequenceArea.length() - bookId.length() -
                             copyStatement.getCopySource().getName().getWord().length()));
@@ -148,18 +144,15 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                     p.append("\n");
                     visit(copyStatement.getCopyBook(), p);
 
-                    StringBuilder templateEnd = new StringBuilder();
-                    templateEnd.append(sequenceArea);
-                    templateEnd.append("*__COPY_END__");
-                    templateEnd.append(StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - templateEnd.length()));
-                    templateEnd.append("\n");
+                    String copyEndId = sequenceArea + "*" + TEMPLATE_END;
+                    String templateEnd = copyEndId +
+                            StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - copyEndId.length()) +
+                            "\n";
 
-                    p.append(templateEnd.toString());
+                    p.append(templateEnd);
 
-                    // The length of the copy, especially the lack of a "\n" sets how much whitespace should be added to
-                    // fix column alignment.
+                    // Add whitespace until the next token will be aligned with the column area.
                     String copy = copyStatement.print(getCursor());
-                    System.out.println(copy);
                     int whitespace = copy.endsWith("\n") ? 0 : copy.length() + curIndex + 1;
                     p.append(StringUtils.repeat(" ", whitespace));
                 }
