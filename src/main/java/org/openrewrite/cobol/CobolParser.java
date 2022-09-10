@@ -37,16 +37,11 @@ import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.tree.ParsingEventListener;
 import org.openrewrite.tree.ParsingExecutionContextView;
 
-import java.io.File;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
@@ -54,15 +49,15 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
     private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
 
     private final CobolDialect cobolDialect;
-    private final ProLeapCobolDialect preprocessorDialect;
+    private final ProLeapCobolDialect proLeapCobolDialect;
     private final ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat;
 
     public CobolParser(CobolDialect cobolDialect,
-                       ProLeapCobolDialect preprocessorDialect,
+                       ProLeapCobolDialect proLeapCobolDialect,
                        ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat) {
 
         this.cobolDialect = cobolDialect;
-        this.preprocessorDialect = preprocessorDialect;
+        this.proLeapCobolDialect = proLeapCobolDialect;
         this.sourceFormat = sourceFormat;
     }
 
@@ -77,39 +72,16 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                     Timer.Sample sample = Timer.start();
                     try {
                         EncodingDetectingInputStream is = sourceFile.getSource();
-                        String sourceStr = is.readFully();
 
-                        // TODO: fix or replace proleap CobolCommentEntriesMarker line 114.
-                        String prepareSource = preprocessCobol(sourceStr, is.getCharset());
+                        CobolPreprocessorParser cobolPreprocessorParser = CobolPreprocessorParser.builder()
+                                .setCobolDialect(cobolDialect)
+                                .setProLeapCobolDialect(proLeapCobolDialect)
+                                .setSourceFormat(sourceFormat)
+                                .enableCopy()
+                                .enableReplace()
+                                .build();
 
-                        org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser preprocessorParser =
-                                new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
-                                        new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(prepareSource))));
-
-                        CobolPreprocessorParserVisitor parserVisitor = new CobolPreprocessorParserVisitor(
-                                sourceFile.getRelativePath(relativeTo),
-                                sourceFile.getFileAttributes(),
-                                sourceStr,
-                                is.getCharset(),
-                                is.isCharsetBomMarked(),
-                                cobolDialect
-                        );
-
-                        org.openrewrite.cobol.tree.CobolPreprocessor.CompilationUnit preprocessedCU = parserVisitor.visitStartRule(preprocessorParser.startRule());
-
-                        // Execute copy statements.
-                        PreprocessCopyVisitor<ExecutionContext> copyPhase = new PreprocessCopyVisitor<>(
-                                sourceFile,
-                                relativeTo,
-                                emptyList(),
-                                getCopyBooks().stream().map(it -> it.toPath().toString()).collect(toList()),
-                                getCobolFileExtensions(),
-                                cobolDialect);
-                        preprocessedCU = (org.openrewrite.cobol.tree.CobolPreprocessor.CompilationUnit) copyPhase.visit(preprocessedCU, new InMemoryExecutionContext());
-
-                        // Execute replace statements.
-                        PreprocessReplaceVisitor<ExecutionContext> replacePhase = new PreprocessReplaceVisitor<>();
-                        preprocessedCU = (org.openrewrite.cobol.tree.CobolPreprocessor.CompilationUnit) replacePhase.visit(preprocessedCU, new InMemoryExecutionContext());
+                        CobolPreprocessor.CompilationUnit preprocessedCU = cobolPreprocessorParser.parseInputs(singletonList(sourceFile), relativeTo, ctx).get(0);
 
                         // TODO: explicit prints are only necessary because we cannot print through the CU with printAll().
                         // Currently, the default print is the original source code.
@@ -118,8 +90,8 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         // Print processed code to parse COBOL.
                         PrintOutputCapture<ExecutionContext> cobolParserOutput = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                        CobolPostPreprocessorPrinter<ExecutionContext> printWithColumns = new CobolPostPreprocessorPrinter<>(cobolDialect, false);
-                        printWithColumns.visit(preprocessedCU, cobolParserOutput);
+                        CobolPostPreprocessorPrinter<ExecutionContext> printWithoutColumns = new CobolPostPreprocessorPrinter<>(cobolDialect, false);
+                        printWithoutColumns.visit(preprocessedCU, cobolParserOutput);
 
                         org.openrewrite.cobol.internal.grammar.CobolParser parser =
                                 new org.openrewrite.cobol.internal.grammar.CobolParser(
@@ -127,10 +99,10 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         // Print the pre-processed code to parse COBOL.
                         PrintOutputCapture<ExecutionContext> sourceOutput = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                        CobolPostPreprocessorPrinter<ExecutionContext> printWithoutColumns = new CobolPostPreprocessorPrinter<>(cobolDialect, true);
-                        printWithoutColumns.visit(preprocessedCU, sourceOutput);
+                        CobolPostPreprocessorPrinter<ExecutionContext> printWithColumns = new CobolPostPreprocessorPrinter<>(cobolDialect, true);
+                        printWithColumns.visit(preprocessedCU, sourceOutput);
 
-                        List<CobolPreprocessor.CopyStatement> statements = getCopyStatements(preprocessedCU);
+                        List<CobolPreprocessor.CopyStatement> statements = cobolPreprocessorParser.getCopyStatements(preprocessedCU);
 
                         Cobol.CompilationUnit compilationUnit = new CobolParserVisitor(
                                 sourceFile.getRelativePath(relativeTo),
@@ -153,45 +125,6 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                 })
                 .filter(Objects::nonNull)
                 .collect(toList());
-    }
-
-    private String preprocessCobol(String source, Charset encoding) {
-        ProLeapCobolPreprocessor proleapCobolPreprocessor = new ProLeapCobolPreprocessor(
-                new CobolCommentEntriesMarker(),
-                new CobolDocumentParser(),
-                new CobolInlineCommentEntriesNormalizer(),
-                new CobolLineIndicatorProcessor(),
-                new CobolLineReader()
-        );
-
-        CobolParserParams params = new CobolParserParams(
-                encoding,
-                emptyList(),
-                getCobolFileExtensions(),
-                getCopyBooks(),
-                preprocessorDialect,
-                sourceFormat,
-                true
-        );
-
-        return proleapCobolPreprocessor.rewriteLines(source, params);
-    }
-
-    /**
-     * There may be A LOT of copy books in a COBOL codebase, but we do not know how the parser is provided the copy books.
-     * We also do not know how they are detected or what types of conventions exist.
-     *
-     * Temporarily hardcoded to implement COPY/REPLACE, but this SHOULD be auto-detected / configurable.
-     * A temp ADHOC solution may be an auto-detected style that contains all the relevant info.
-     */
-    private List<File> getCopyBooks() {
-        String userDir = System.getProperty("user.dir");
-        String copyBooks = "/src/test/resources/gov/nist/copybooks";
-        return Arrays.stream(Objects.requireNonNull(Paths.get(userDir + copyBooks).toFile().listFiles())).collect(toList());
-    }
-
-    private List<String> getCobolFileExtensions() {
-        return singletonList("CPY");
     }
 
     @Override
@@ -230,20 +163,5 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
             ctx.getOnError().accept(new CobolParsingException(sourcePath,
                     String.format("Syntax error in %s at line %d:%d %s.", sourcePath, line, charPositionInLine, msg), e));
         }
-    }
-
-    private List<CobolPreprocessor.CopyStatement> getCopyStatements(@Nullable CobolPreprocessor.CompilationUnit cu) {
-        List<CobolPreprocessor.CopyStatement> statements = new ArrayList<>();
-        CobolPreprocessorIsoVisitor<List<CobolPreprocessor.CopyStatement>> visitor = new CobolPreprocessorIsoVisitor<List<CobolPreprocessor.CopyStatement>>() {
-            @Override
-            public CobolPreprocessor.CopyStatement visitCopyStatement(CobolPreprocessor.CopyStatement copyStatement,
-                                                                      List<CobolPreprocessor.CopyStatement> statementList) {
-                statements.add(copyStatement);
-                return super.visitCopyStatement(copyStatement, statementList);
-            }
-        };
-
-        visitor.visit(cu, statements);
-        return statements;
     }
 }
