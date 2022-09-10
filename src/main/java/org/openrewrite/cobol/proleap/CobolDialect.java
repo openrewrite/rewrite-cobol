@@ -6,8 +6,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-package org.openrewrite.cobol.proprocessor;
+package org.openrewrite.cobol.proleap;
 
-public enum CobolLineTypeEnum {
-    BLANK, COMMENT, COMPILER_DIRECTIVE, CONTINUATION, DEBUG, NORMAL
+public enum CobolDialect {
+    ANSI85, MF, OSVS
 }

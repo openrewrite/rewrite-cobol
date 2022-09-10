@@ -1,4 +1,4 @@
-package org.openrewrite.cobol.proprocessor;
+package org.openrewrite.cobol.proleap;
 
 import lombok.Value;
 

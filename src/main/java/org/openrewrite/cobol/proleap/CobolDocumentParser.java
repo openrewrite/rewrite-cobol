@@ -6,7 +6,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-package org.openrewrite.cobol.proprocessor;
+package org.openrewrite.cobol.proleap;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;

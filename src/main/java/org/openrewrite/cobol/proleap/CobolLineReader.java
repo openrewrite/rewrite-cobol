@@ -6,7 +6,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-package org.openrewrite.cobol.proprocessor;
+package org.openrewrite.cobol.proleap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.openrewrite.cobol.proprocessor.CobolLineTypeEnum.NORMAL;
+import static org.openrewrite.cobol.proleap.CobolLineTypeEnum.NORMAL;
 
 public class CobolLineReader {
 

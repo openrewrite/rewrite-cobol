@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 @NonNullApi
-package org.openrewrite.cobol.proprocessor;
+package org.openrewrite.cobol.proleap;
 
 import org.openrewrite.internal.lang.NonNullApi;
