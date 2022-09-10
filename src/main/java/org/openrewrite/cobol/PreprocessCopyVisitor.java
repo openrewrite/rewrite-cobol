@@ -8,7 +8,7 @@ import org.openrewrite.Parser;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
-import org.openrewrite.cobol.proprocessor.*;
+import org.openrewrite.cobol.proleap.*;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.cobol.tree.Space;
 import org.openrewrite.internal.EncodingDetectingInputStream;
@@ -31,8 +31,8 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.openrewrite.Tree.randomId;
-import static org.openrewrite.cobol.proprocessor.CobolDialect.ANSI85;
-import static org.openrewrite.cobol.proprocessor.ProleapCobolPreprocessor.CobolSourceFormatEnum.FIXED;
+import static org.openrewrite.cobol.proleap.ProLeapCobolDialect.ANSI85;
+import static org.openrewrite.cobol.proleap.ProLeapCobolPreprocessor.CobolSourceFormatEnum.FIXED;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
@@ -84,7 +84,7 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
                         true
                 );
                 // Convert the copyBook into a valid source for the CobolPreproccessor.g4
-                result = new ProleapCobolPreprocessor(
+                result = new ProLeapCobolPreprocessor(
                         new CobolCommentEntriesMarker(),
                         new CobolDocumentParser(),
                         new CobolInlineCommentEntriesNormalizer(),

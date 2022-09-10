@@ -25,7 +25,7 @@ import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
-import org.openrewrite.cobol.proprocessor.*;
+import org.openrewrite.cobol.proleap.*;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.internal.EncodingDetectingInputStream;
@@ -45,21 +45,21 @@ import java.util.Objects;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
-import static org.openrewrite.cobol.proprocessor.CobolDialect.ANSI85;
-import static org.openrewrite.cobol.proprocessor.ProleapCobolPreprocessor.CobolSourceFormatEnum.FIXED;
+import static org.openrewrite.cobol.proleap.ProLeapCobolDialect.ANSI85;
+import static org.openrewrite.cobol.proleap.ProLeapCobolPreprocessor.CobolSourceFormatEnum.FIXED;
 
 public class CobolPreprocessorParser implements Parser<CobolPreprocessor.CompilationUnit> {
     private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
 
     private final CobolDialect cobolDialect;
-    private final org.openrewrite.cobol.proprocessor.CobolDialect preprocessorDialect;
-    private final ProleapCobolPreprocessor.CobolSourceFormatEnum sourceFormat;
+    private final ProLeapCobolDialect preprocessorDialect;
+    private final ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat;
     private final boolean enableCopy;
     private final boolean enableReplace;
 
     public CobolPreprocessorParser(CobolDialect cobolDialect,
-                                   org.openrewrite.cobol.proprocessor.CobolDialect preprocessorDialect,
-                                   ProleapCobolPreprocessor.CobolSourceFormatEnum sourceFormat,
+                                   ProLeapCobolDialect preprocessorDialect,
+                                   ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat,
                                    boolean enableCopy,
                                    boolean enableReplace) {
         this.cobolDialect = cobolDialect;
@@ -134,7 +134,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     }
 
     private String preprocessCobol(String source, Charset encoding) {
-        ProleapCobolPreprocessor proleapCobolPreprocessor = new ProleapCobolPreprocessor(
+        ProLeapCobolPreprocessor proleapCobolPreprocessor = new ProLeapCobolPreprocessor(
                 new CobolCommentEntriesMarker(),
                 new CobolDocumentParser(),
                 new CobolInlineCommentEntriesNormalizer(),

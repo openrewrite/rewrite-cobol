@@ -49,12 +49,12 @@ public class CobolLineIndicatorProcessor {
 
         switch (line.getType()) {
             case DEBUG:
-                result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProleapCobolPreprocessor.WS,
+                result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProLeapCobolPreprocessor.WS,
                         conditionalRightTrimmedContentArea, line);
                 break;
             case CONTINUATION:
                 if (conditionalRightTrimmedContentArea.isEmpty()) {
-                    result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProleapCobolPreprocessor.WS, EMPTY_STRING, line);
+                    result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProLeapCobolPreprocessor.WS, EMPTY_STRING, line);
                 }
                 /*
                  * If a line, which is continued on the next line, ends in column 72 with a
@@ -74,7 +74,7 @@ public class CobolLineIndicatorProcessor {
                          * quotation mark from the continued line and the 2 quotations marks from the
                          * continuation line become 2 successive quotation marks.
                          */
-                        result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProleapCobolPreprocessor.WS,
+                        result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProLeapCobolPreprocessor.WS,
                                 trimLeadingChar(trimmedContentArea), line);
                     }
                     /*
@@ -85,7 +85,7 @@ public class CobolLineIndicatorProcessor {
                         /*
                          * ... where we simply remove leading whitespace.
                          */
-                        result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProleapCobolPreprocessor.WS,
+                        result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProLeapCobolPreprocessor.WS,
                                 trimLeadingWhitespace(conditionalRightTrimmedContentArea), line);
                     }
                 }
@@ -103,10 +103,10 @@ public class CobolLineIndicatorProcessor {
                         /*
                          * so we are removing the leading quotation mark to keep the literal open.
                          */
-                        result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProleapCobolPreprocessor.WS,
+                        result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProLeapCobolPreprocessor.WS,
                                 trimLeadingChar(trimmedContentArea), line);
                     } else {
-                        result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProleapCobolPreprocessor.WS,
+                        result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProLeapCobolPreprocessor.WS,
                                 conditionalRightTrimmedContentArea, line);
                     }
                 }
@@ -119,8 +119,8 @@ public class CobolLineIndicatorProcessor {
                     /*
                      * ... prepend a whitespace to the continuation line
                      */
-                    result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProleapCobolPreprocessor.WS,
-                            ProleapCobolPreprocessor.WS + trimLeadingWhitespace(conditionalRightTrimmedContentArea), line);
+                    result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProLeapCobolPreprocessor.WS,
+                            ProLeapCobolPreprocessor.WS + trimLeadingWhitespace(conditionalRightTrimmedContentArea), line);
                 }
                 /*
                  * As fallback ...
@@ -129,20 +129,20 @@ public class CobolLineIndicatorProcessor {
                     /*
                      * ... trim leading whitespace.
                      */
-                    result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProleapCobolPreprocessor.WS,
+                    result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProLeapCobolPreprocessor.WS,
                             trimLeadingWhitespace(conditionalRightTrimmedContentArea), line);
                 }
                 break;
             case COMMENT:
                 result = CobolLine.copyCobolLineWithIndicatorAndContentArea(
-                        ProleapCobolPreprocessor.COMMENT_TAG + ProleapCobolPreprocessor.WS, conditionalRightTrimmedContentArea, line);
+                        ProLeapCobolPreprocessor.COMMENT_TAG + ProLeapCobolPreprocessor.WS, conditionalRightTrimmedContentArea, line);
                 break;
             case COMPILER_DIRECTIVE:
-                result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProleapCobolPreprocessor.WS, EMPTY_STRING, line);
+                result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProLeapCobolPreprocessor.WS, EMPTY_STRING, line);
                 break;
             case NORMAL:
             default:
-                result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProleapCobolPreprocessor.WS,
+                result = CobolLine.copyCobolLineWithIndicatorAndContentArea(ProLeapCobolPreprocessor.WS,
                         conditionalRightTrimmedContentArea, line);
                 break;
         }
@@ -180,7 +180,7 @@ public class CobolLineIndicatorProcessor {
             char lastCharAtTrimmedLineArea = contentArea.charAt(contentArea.length() - 1);
 
             if (lastCharAtTrimmedLineArea == ',' || lastCharAtTrimmedLineArea == ';') {
-                result = contentArea + ProleapCobolPreprocessor.WS;
+                result = contentArea + ProLeapCobolPreprocessor.WS;
             } else {
                 result = contentArea;
             }

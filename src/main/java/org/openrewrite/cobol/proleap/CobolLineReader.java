@@ -22,21 +22,21 @@ public class CobolLineReader {
         CobolLineTypeEnum result;
 
         switch (indicatorArea) {
-            case ProleapCobolPreprocessor.CHAR_D:
-            case ProleapCobolPreprocessor.CHAR_D_:
+            case ProLeapCobolPreprocessor.CHAR_D:
+            case ProLeapCobolPreprocessor.CHAR_D_:
                 result = CobolLineTypeEnum.DEBUG;
                 break;
-            case ProleapCobolPreprocessor.CHAR_MINUS:
+            case ProLeapCobolPreprocessor.CHAR_MINUS:
                 result = CobolLineTypeEnum.CONTINUATION;
                 break;
-            case ProleapCobolPreprocessor.CHAR_ASTERISK:
-            case ProleapCobolPreprocessor.CHAR_SLASH:
+            case ProLeapCobolPreprocessor.CHAR_ASTERISK:
+            case ProLeapCobolPreprocessor.CHAR_SLASH:
                 result = CobolLineTypeEnum.COMMENT;
                 break;
-            case ProleapCobolPreprocessor.CHAR_DOLLAR_SIGN:
+            case ProLeapCobolPreprocessor.CHAR_DOLLAR_SIGN:
                 result = CobolLineTypeEnum.COMPILER_DIRECTIVE;
                 break;
-            case ProleapCobolPreprocessor.WS:
+            case ProLeapCobolPreprocessor.WS:
             default:
                 result = NORMAL;
                 break;
@@ -46,7 +46,7 @@ public class CobolLineReader {
     }
 
     public CobolLine parseLine(String line, int lineNumber, CobolParserParams params) {
-        ProleapCobolPreprocessor.CobolSourceFormatEnum format = params.getFormat();
+        ProLeapCobolPreprocessor.CobolSourceFormatEnum format = params.getFormat();
         Pattern pattern = format.getPattern();
         Matcher matcher = pattern.matcher(line);
 

@@ -8,6 +8,6 @@
 
 package org.openrewrite.cobol.proleap;
 
-public enum CobolDialect {
+public enum ProLeapCobolDialect {
     ANSI85, MF, OSVS
 }

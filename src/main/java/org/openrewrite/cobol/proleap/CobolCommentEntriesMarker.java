@@ -33,7 +33,7 @@ public class CobolCommentEntriesMarker {
     }
 
     CobolLine buildMultiLineCommentEntryLine(CobolLine line) {
-        return CobolLine.copyCobolLineWithIndicatorArea(ProleapCobolPreprocessor.COMMENT_ENTRY_TAG, line);
+        return CobolLine.copyCobolLineWithIndicatorArea(ProLeapCobolPreprocessor.COMMENT_ENTRY_TAG, line);
     }
 
     /**
@@ -48,8 +48,8 @@ public class CobolCommentEntriesMarker {
             String whitespace = matcher.group(1);
             String trigger = matcher.group(2);
             String commentEntry = matcher.group(3);
-            String newContentArea = whitespace + trigger + ProleapCobolPreprocessor.WS +
-                    ProleapCobolPreprocessor.COMMENT_ENTRY_TAG + commentEntry;
+            String newContentArea = whitespace + trigger + ProLeapCobolPreprocessor.WS +
+                    ProLeapCobolPreprocessor.COMMENT_ENTRY_TAG + commentEntry;
 
             result = CobolLine.copyCobolLineWithContentArea(newContentArea, line);
         } else {
@@ -72,7 +72,7 @@ public class CobolCommentEntriesMarker {
      * next paragraph or division.
      */
     boolean isInOsvsCommentEntry(CobolLine line) {
-        return CobolDialect.OSVS.equals(line.getDialect()) && !startsWithTrigger(line, triggersEnd);
+        return ProLeapCobolDialect.OSVS.equals(line.getDialect()) && !startsWithTrigger(line, triggersEnd);
     }
 
     public CobolLine processLine(CobolLine line) {

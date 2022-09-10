@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @Value
-public class ProleapCobolPreprocessor {
+public class ProLeapCobolPreprocessor {
     public static final String INDICATOR_FIELD = "([ABCdDGJSTXY$\\t\\-/*# ])";
     public static final String NEWLINE = "\n";
     public static final String WS = " ";

@@ -26,8 +26,8 @@ public class CobolInlineCommentEntriesNormalizer {
         if (!matcher.find()) {
             result = line;
         } else {
-            String newContentArea = line.getContentArea().replace(ProleapCobolPreprocessor.COMMENT_TAG,
-                    ProleapCobolPreprocessor.COMMENT_TAG + ProleapCobolPreprocessor.WS);
+            String newContentArea = line.getContentArea().replace(ProLeapCobolPreprocessor.COMMENT_TAG,
+                    ProLeapCobolPreprocessor.COMMENT_TAG + ProLeapCobolPreprocessor.WS);
             result = CobolLine.copyCobolLineWithContentArea(newContentArea, line);
         }
 

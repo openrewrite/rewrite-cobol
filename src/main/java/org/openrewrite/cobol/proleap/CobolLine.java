@@ -40,8 +40,8 @@ public class CobolLine {
                 line.predecessor, line.successor);
     }
 
-    public static String createBlankSequenceArea(ProleapCobolPreprocessor.CobolSourceFormatEnum format) {
-        return ProleapCobolPreprocessor.CobolSourceFormatEnum.TANDEM.equals(format) ? "" : IntStream.range(0, 6).mapToObj(i -> ProleapCobolPreprocessor.WS).collect(Collectors.joining(""));
+    public static String createBlankSequenceArea(ProLeapCobolPreprocessor.CobolSourceFormatEnum format) {
+        return ProLeapCobolPreprocessor.CobolSourceFormatEnum.TANDEM.equals(format) ? "" : IntStream.range(0, 6).mapToObj(i -> ProLeapCobolPreprocessor.WS).collect(Collectors.joining(""));
     }
 
     static String extractContentAreaA(String contentArea) {
@@ -54,7 +54,7 @@ public class CobolLine {
 
     public static CobolLine newCobolLine(String sequenceArea, String indicatorArea,
                                          String contentAreaA, String contentAreaB, String commentArea,
-                                         ProleapCobolPreprocessor.CobolSourceFormatEnum format, CobolDialect dialect, int number,
+                                         ProLeapCobolPreprocessor.CobolSourceFormatEnum format, ProLeapCobolDialect dialect, int number,
                                          CobolLineTypeEnum type) {
         return new CobolLine(sequenceArea, sequenceArea, indicatorArea, indicatorArea, contentAreaA, contentAreaA,
                 contentAreaB, contentAreaB, commentArea, commentArea, format, dialect, number, type, null, null);
@@ -72,9 +72,9 @@ public class CobolLine {
 
     String contentAreaBOriginal;
 
-    CobolDialect dialect;
+    ProLeapCobolDialect dialect;
 
-    ProleapCobolPreprocessor.CobolSourceFormatEnum format;
+    ProLeapCobolPreprocessor.CobolSourceFormatEnum format;
 
     String indicatorArea;
 
@@ -97,7 +97,7 @@ public class CobolLine {
     CobolLine(String sequenceArea, String sequenceAreaOriginal, String indicatorArea,
               String indicatorAreaOriginal, String contentAreaA, String contentAreaAOriginal,
               String contentAreaB, String contentAreaBOriginal, String commentArea,
-              String commentAreaOriginal, ProleapCobolPreprocessor.CobolSourceFormatEnum format, CobolDialect dialect,
+              String commentAreaOriginal, ProLeapCobolPreprocessor.CobolSourceFormatEnum format, ProLeapCobolDialect dialect,
               int number, CobolLineTypeEnum type, @Nullable CobolLine predecessor, @Nullable CobolLine successor) {
 
         this.sequenceArea = sequenceArea;

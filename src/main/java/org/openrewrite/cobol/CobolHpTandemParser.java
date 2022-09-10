@@ -18,8 +18,8 @@ package org.openrewrite.cobol;
 import org.openrewrite.cobol.internal.HpTandem;
 import org.openrewrite.cobol.tree.Cobol;
 
-import static org.openrewrite.cobol.proleap.CobolDialect.ANSI85;
-import static org.openrewrite.cobol.proleap.ProleapCobolPreprocessor.CobolSourceFormatEnum.TANDEM;
+import static org.openrewrite.cobol.proleap.ProLeapCobolDialect.ANSI85;
+import static org.openrewrite.cobol.proleap.ProLeapCobolPreprocessor.CobolSourceFormatEnum.TANDEM;
 
 public class CobolHpTandemParser extends CobolParser {
 

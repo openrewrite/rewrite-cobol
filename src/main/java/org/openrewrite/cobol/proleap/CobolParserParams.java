@@ -20,7 +20,7 @@ public class CobolParserParams {
     List<File> copyBookDirectories;
     List<String> copyBookExtensions;
     List<File> copyBookFiles;
-    CobolDialect dialect;
-    ProleapCobolPreprocessor.CobolSourceFormatEnum format;
+    ProLeapCobolDialect dialect;
+    ProLeapCobolPreprocessor.CobolSourceFormatEnum format;
     boolean ignoreSyntaxErrors;
 }

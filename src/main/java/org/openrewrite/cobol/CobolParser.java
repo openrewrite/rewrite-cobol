@@ -28,7 +28,7 @@ import org.openrewrite.cobol.internal.CobolPostPreprocessorPrinter;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolLexer;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
-import org.openrewrite.cobol.proprocessor.*;
+import org.openrewrite.cobol.proleap.*;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.internal.EncodingDetectingInputStream;
@@ -54,12 +54,12 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
     private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
 
     private final CobolDialect cobolDialect;
-    private final org.openrewrite.cobol.proprocessor.CobolDialect preprocessorDialect;
-    private final ProleapCobolPreprocessor.CobolSourceFormatEnum sourceFormat;
+    private final ProLeapCobolDialect preprocessorDialect;
+    private final ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat;
 
     public CobolParser(CobolDialect cobolDialect,
-                       org.openrewrite.cobol.proprocessor.CobolDialect preprocessorDialect,
-                       ProleapCobolPreprocessor.CobolSourceFormatEnum sourceFormat) {
+                       ProLeapCobolDialect preprocessorDialect,
+                       ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat) {
 
         this.cobolDialect = cobolDialect;
         this.preprocessorDialect = preprocessorDialect;
@@ -156,7 +156,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
     }
 
     private String preprocessCobol(String source, Charset encoding) {
-        ProleapCobolPreprocessor proleapCobolPreprocessor = new ProleapCobolPreprocessor(
+        ProLeapCobolPreprocessor proleapCobolPreprocessor = new ProLeapCobolPreprocessor(
                 new CobolCommentEntriesMarker(),
                 new CobolDocumentParser(),
                 new CobolInlineCommentEntriesNormalizer(),
