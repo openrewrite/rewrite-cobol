@@ -3852,7 +3852,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
-        Optional<CopyBook> copyBook = word.getMarkers().findFirst(CopyBook.class);
+        Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
         if (copyBook.isPresent()) {
             if (!inCopy) {
                 // TODO: Get input on how to print ... POC.
