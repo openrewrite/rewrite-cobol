@@ -43,7 +43,7 @@ public class CobolLineWriter {
 
             if (notContinuationLine) {
                 if (line.getNumber() > 0) {
-                    sb.append(CobolPreprocessor.NEWLINE);
+                    sb.append(ProleapCobolPreprocessor.NEWLINE);
                 }
 
                 sb.append(line.getBlankSequenceArea());

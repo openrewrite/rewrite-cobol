@@ -53,6 +53,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final boolean charsetBomMarked;
     private final CobolDialect cobolDialect;
 
+    private final Map<String, CobolPreprocessor.CopyStatement> copyStatementMap = new HashMap<>();
     // TODO: Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
     // The String is primarily used for debugging parsing issues, since the column positions are set prior to the parsing.
     private final Map<Integer, String> sequenceAreas = new HashMap<>();
@@ -60,19 +61,28 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final Map<Integer, String> commentAreas = new HashMap<>();
     private final Set<String> separators = new HashSet<>();
     private int cursor = 0;
-    private boolean inCopy = false;
+
     private String copyStart = "";
     private String copyEnd = "";
-    private int index = 0;
 
-    public CobolParserVisitor(Path path, @Nullable FileAttributes fileAttributes,
-                              String source, Charset charset, boolean charsetBomMarked, CobolDialect cobolDialect) {
+    @Nullable
+    private CobolPreprocessor.CopyStatement currentCopy = null;
+
+    public CobolParserVisitor(Path path,
+                              @Nullable FileAttributes fileAttributes,
+                              String source,
+                              Charset charset,
+                              boolean charsetBomMarked,
+                              CobolDialect cobolDialect,
+                              List<CobolPreprocessor.CopyStatement> copyStatements) {
         this.path = path;
         this.fileAttributes = fileAttributes;
         this.source = source;
         this.charset = charset;
         this.charsetBomMarked = charsetBomMarked;
         this.cobolDialect = cobolDialect;
+
+        copyStatements.forEach(it -> copyStatementMap.putIfAbsent(it.getId().toString(), it));
     }
 
     public <T> T visit(@Nullable ParseTree... trees) {
@@ -6412,8 +6422,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         }
 
         markers.add(new Continuation(randomId(), continuations));
-        if (inCopy) {
-            System.out.println("Add copy marker to: " + text);
+        if (currentCopy != null) {
+            markers.add(new CopyBook(randomId(), currentCopy));
         }
         return prefix;
     }
@@ -6433,26 +6443,22 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         if (!isCommentEntry && indicatorArea != null) {
             String contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
             if (copyStart.equals(contentArea)) {
-                // TODO: handle the copy data.
-                inCopy = true;
                 cursor += copyStart.length();
-                cursor++;
-                cursor += 72;
-                cursor++;
-                cursor += 72;
-                cursor++;
+                cursor++; // Increment passed the \n.
 
-                // need a stopping point for copy info.
-                // need to parse
+                sequenceArea();
+                indicatorArea(null);
+                cursor += CobolPostPreprocessorPrinter.COPY_UUID.length();
+                String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+                cursor += uuid.length();
+                currentCopy = copyStatementMap.get(uuid.trim());
 
                 // Reset the areas, because parsing has passed the injected comments.
                 sequenceArea = sequenceArea();
                 indicatorArea = indicatorArea(null);
                 contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
-
-                System.out.println();
             } else if (copyEnd.equals(contentArea)) {
-                inCopy = false;
+                currentCopy = null;
                 cursor += copyEnd.length();
 
                 // Reset the areas, because parsing has passed the injected comments.
@@ -6474,26 +6480,22 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
                     contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     if (copyStart.equals(contentArea)) {
-                        // TODO: handle the copy data.
-                        inCopy = true;
                         cursor += copyStart.length();
-                        cursor++;
-                        cursor += 72;
-                        cursor++;
-                        cursor += 72;
-                        cursor++;
+                        cursor++; // Increment passed the \n.
 
-                        // need a stopping point for copy info.
-                        // need to parse
+                        sequenceArea();
+                        indicatorArea(null);
+                        cursor += CobolPostPreprocessorPrinter.COPY_UUID.length();
+                        String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+                        cursor += uuid.length();
+                        currentCopy = copyStatementMap.get(uuid.trim());
 
                         // Reset the areas, because parsing has passed the injected comments.
                         sequenceArea = sequenceArea();
                         indicatorArea = indicatorArea(null);
                         contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
-
-                        System.out.println();
                     } else if (copyEnd.equals(contentArea)) {
-                        inCopy = false;
+                        currentCopy = null;
                         cursor += copyEnd.length();
                         cursor++;
 
@@ -6538,8 +6540,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 markers.add(commentArea);
             }
         }
-        if (inCopy) {
-            System.out.println("Add copy marker to: " + text);
+        if (currentCopy != null) {
+            markers.add(new CopyBook(randomId(), currentCopy));
         }
         return prefix;
     }

@@ -28,6 +28,7 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
 
     public static final String COPY_START = "__COPY_START__";
     public static final String COPY_END = "__COPY_END__";
+    public static final String COPY_UUID = "UUID: ";
     private final CobolDialect cobolDialect;
     private final boolean printWithColumnAreas;
 
@@ -85,6 +86,9 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                     // Comments are added before and after the template to provide context about which AST elements
                     // are a product of a COPY statement.
 
+                    // TODO: FIX: Comments from the end of the COPY SOURCE should not be associated to the next AST element. OR distinguish a trailing comment in the Marker.
+                    // TODO: FIX: refactor how CommentArea is created to associate whitespace at the end of a line, and CommentArea to the next AST element.
+
                     /*
                      *  Before:
                      *      |000001| |Some COBOL tokens|      COPY STATEMENT.           |
@@ -92,9 +96,7 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                      *  After:
                      *      |000001| |Some COBOL tokens|                               .|=> The index + 1 is the position of `|`.
                      *      |      |*|__COPY_START______________________________________|
-                     *      |      |*|currentIndex: 24                                  |=> The start of the original copy statement.
-                     *      |      |*|bookName: ABC                                     |=> might be unnecessary ... but this is a POC.
-                     *      |      |*|UUID: 263cd588-bdea-4c06-8ba1-177e515bded2        |=> A UUID will fit in the column area, but the copy statement might not.
+                     *      |      |*|UUID: 263cd588-bdea-4c06-8ba1-177e515bded2        |=> UUID to the CopyStatement; a UUID will fit in the column area, but the copy statement might not.
                      *      |~~~~~~| |Print the COPIED source AST. ~~~~~~~~~~~~~~~~~~~~~|=> Print the COPIED AST, which includes new column areas.
                      *      |      |*|__COPY_END________________________________________|
                      *      |      | |[WS for tokens  ]|[WS for COPY        ]|=> White space is conditionally printer based on where the copy statement ends to ensure columns are aligned.
@@ -115,16 +117,7 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                     templateStart.append(StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - copyStartId.length()));
                     templateStart.append("\n");
 
-                    // The CobolParserVisitor will read the COPIED text, which may be 1 or more tokens and span 1 or more AST elements.
-                    // currentIndex is used to identify where the original copy statement starts, since the rest of the line
-                    // is filled with whitespace.
-
-                    String currentIndexId = sequenceArea + "*currentIndex: " + curIndex;
-                    templateStart.append(currentIndexId);
-                    templateStart.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - currentIndexId.length()));
-                    templateStart.append("\n");
-
-                    String bookId = sequenceArea + "*bookName: " + copyStatement.getCopySource().getName().getWord();
+                    String bookId = sequenceArea + "*UUID: " + copyStatement.getId();
                     templateStart.append(bookId);
                     templateStart.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - bookId.length()));
                     templateStart.append("\n");

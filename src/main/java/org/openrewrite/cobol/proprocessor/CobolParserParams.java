@@ -21,6 +21,6 @@ public class CobolParserParams {
     List<String> copyBookExtensions;
     List<File> copyBookFiles;
     CobolDialect dialect;
-    CobolPreprocessor.CobolSourceFormatEnum format;
+    ProleapCobolPreprocessor.CobolSourceFormatEnum format;
     boolean ignoreSyntaxErrors;
 }

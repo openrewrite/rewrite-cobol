@@ -15,6 +15,8 @@
  */
 package org.openrewrite.cobol.internal;
 
+import org.openrewrite.ExecutionContext;
+import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolVisitor;
 import org.openrewrite.cobol.tree.*;
@@ -30,6 +32,9 @@ import java.util.stream.Collectors;
  * TODO: explain.
  */
 public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
+
+    @Nullable
+    private boolean inCopy = false;
 
     public Cobol visitAbbreviation(Cobol.Abbreviation abbreviation, PrintOutputCapture<P> p) {
         visitSpace(abbreviation.getPrefix(), p);
@@ -3847,6 +3852,23 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
+        Optional<CopyBook> copyBook = word.getMarkers().findFirst(CopyBook.class);
+        if (copyBook.isPresent()) {
+            if (!inCopy) {
+                // TODO: Get input on how to print ... POC.
+                PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
+                CobolPreprocessorPrinter<ExecutionContext> printer = new CobolPreprocessorPrinter<>();
+                printer.visit(copyBook.get().getOriginalStatement(), output);
+                p.append(output.getOut());
+                inCopy = true;
+            }
+
+            // Do not print the AST for the copied source.
+            return word;
+        } else if (inCopy) {
+            inCopy = false;
+        }
+
         Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
         if (lines.isPresent()) {
             for (Lines.Line line : lines.get().getLines()) {

@@ -46,20 +46,20 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.openrewrite.cobol.proprocessor.CobolDialect.ANSI85;
-import static org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum.FIXED;
+import static org.openrewrite.cobol.proprocessor.ProleapCobolPreprocessor.CobolSourceFormatEnum.FIXED;
 
 public class CobolPreprocessorParser implements Parser<CobolPreprocessor.CompilationUnit> {
     private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
 
     private final CobolDialect cobolDialect;
     private final org.openrewrite.cobol.proprocessor.CobolDialect preprocessorDialect;
-    private final org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum sourceFormat;
+    private final ProleapCobolPreprocessor.CobolSourceFormatEnum sourceFormat;
     private final boolean enableCopy;
     private final boolean enableReplace;
 
     public CobolPreprocessorParser(CobolDialect cobolDialect,
                                    org.openrewrite.cobol.proprocessor.CobolDialect preprocessorDialect,
-                                   org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum sourceFormat,
+                                   ProleapCobolPreprocessor.CobolSourceFormatEnum sourceFormat,
                                    boolean enableCopy,
                                    boolean enableReplace) {
         this.cobolDialect = cobolDialect;
@@ -134,7 +134,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     }
 
     private String preprocessCobol(String source, Charset encoding) {
-        org.openrewrite.cobol.proprocessor.CobolPreprocessor cobolPreprocessor = new org.openrewrite.cobol.proprocessor.CobolPreprocessor(
+        ProleapCobolPreprocessor proleapCobolPreprocessor = new ProleapCobolPreprocessor(
                 new CobolCommentEntriesMarker(),
                 new CobolDocumentParser(),
                 new CobolInlineCommentEntriesNormalizer(),
@@ -152,7 +152,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 true
         );
 
-        return cobolPreprocessor.rewriteLines(source, params);
+        return proleapCobolPreprocessor.rewriteLines(source, params);
     }
 
     /**

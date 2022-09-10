@@ -19,7 +19,7 @@ import org.openrewrite.cobol.internal.HpTandem;
 import org.openrewrite.cobol.tree.Cobol;
 
 import static org.openrewrite.cobol.proprocessor.CobolDialect.ANSI85;
-import static org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum.TANDEM;
+import static org.openrewrite.cobol.proprocessor.ProleapCobolPreprocessor.CobolSourceFormatEnum.TANDEM;
 
 public class CobolHpTandemParser extends CobolParser {
 

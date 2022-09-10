@@ -55,14 +55,14 @@ public class CobolDocumentParserListener extends CobolPreprocessorBaseListener {
 
         while (scanner.hasNextLine()) {
             if (!firstLine) {
-                sb.append(CobolPreprocessor.NEWLINE);
+                sb.append(ProleapCobolPreprocessor.NEWLINE);
             }
 
             String line = scanner.nextLine();
             String trimmedLine = line.trim();
-            String prefixedLine = linePrefix + CobolPreprocessor.WS + trimmedLine;
+            String prefixedLine = linePrefix + ProleapCobolPreprocessor.WS + trimmedLine;
             String suffixedLine = prefixedLine.replaceAll("(?i)(end-exec)",
-                    "$1 " + CobolPreprocessor.EXEC_END_TAG);
+                    "$1 " + ProleapCobolPreprocessor.EXEC_END_TAG);
 
             sb.append(suffixedLine);
             firstLine = false;
@@ -153,7 +153,7 @@ public class CobolDocumentParserListener extends CobolPreprocessorBaseListener {
         String copyBookContent = getCopyBookContent(copySource, params);
 
         if (copyBookContent != null) {
-            context().write(copyBookContent + CobolPreprocessor.NEWLINE);
+            context().write(copyBookContent + ProleapCobolPreprocessor.NEWLINE);
             context().replaceReplaceablesByReplacements(tokens);
         }
 
@@ -182,7 +182,7 @@ public class CobolDocumentParserListener extends CobolPreprocessorBaseListener {
          */
         String text = TokenUtils.getTextIncludingHiddenTokens(ctx, tokens);
         String linePrefix = CobolLine.createBlankSequenceArea(params.getFormat())
-                + CobolPreprocessor.EXEC_CICS_TAG;
+                + ProleapCobolPreprocessor.EXEC_CICS_TAG;
         String lines = buildLines(text, linePrefix);
 
         context().write(lines);
@@ -206,7 +206,7 @@ public class CobolDocumentParserListener extends CobolPreprocessorBaseListener {
          */
         String text = TokenUtils.getTextIncludingHiddenTokens(ctx, tokens);
         String linePrefix = CobolLine.createBlankSequenceArea(params.getFormat())
-                + CobolPreprocessor.EXEC_SQLIMS_TAG;
+                + ProleapCobolPreprocessor.EXEC_SQLIMS_TAG;
         String lines = buildLines(text, linePrefix);
 
         context().write(lines);
@@ -230,7 +230,7 @@ public class CobolDocumentParserListener extends CobolPreprocessorBaseListener {
          */
         String text = TokenUtils.getTextIncludingHiddenTokens(ctx, tokens);
         String linePrefix = CobolLine.createBlankSequenceArea(params.getFormat())
-                + CobolPreprocessor.EXEC_SQL_TAG;
+                + ProleapCobolPreprocessor.EXEC_SQL_TAG;
         String lines = buildLines(text, linePrefix);
 
         context().write(lines);
@@ -307,7 +307,7 @@ public class CobolDocumentParserListener extends CobolPreprocessorBaseListener {
                     + " in directory of COBOL input file or copy books param object.");
         } else {
             try {
-                result = new CobolPreprocessor(
+                result = new ProleapCobolPreprocessor(
                         new CobolCommentEntriesMarker(),
                         new CobolDocumentParser(),
                         new CobolInlineCommentEntriesNormalizer(),

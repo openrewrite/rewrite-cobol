@@ -32,7 +32,7 @@ import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.cobol.proprocessor.CobolDialect.ANSI85;
-import static org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum.FIXED;
+import static org.openrewrite.cobol.proprocessor.ProleapCobolPreprocessor.CobolSourceFormatEnum.FIXED;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
@@ -73,6 +73,7 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
 
             try {
                 // TEMP for POC, using proleap preprocessor to produce malformed COBOL source.
+                // Note the CobolParserParams DO NOT NEED Copy book info anymore. This will be refactored/removed later.
                 CobolParserParams params = new CobolParserParams(
                         StandardCharsets.UTF_8,
                         emptyList(),
@@ -83,7 +84,7 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
                         true
                 );
                 // Convert the copyBook into a valid source for the CobolPreproccessor.g4
-                result = new org.openrewrite.cobol.proprocessor.CobolPreprocessor(
+                result = new ProleapCobolPreprocessor(
                         new CobolCommentEntriesMarker(),
                         new CobolDocumentParser(),
                         new CobolInlineCommentEntriesNormalizer(),

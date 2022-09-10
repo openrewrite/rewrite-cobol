@@ -19,7 +19,7 @@ import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.tree.Cobol;
 
 import static org.openrewrite.cobol.proprocessor.CobolDialect.ANSI85;
-import static org.openrewrite.cobol.proprocessor.CobolPreprocessor.CobolSourceFormatEnum.FIXED;
+import static org.openrewrite.cobol.proprocessor.ProleapCobolPreprocessor.CobolSourceFormatEnum.FIXED;
 
 public class CobolIbmAnsi85Parser extends CobolParser {
 
