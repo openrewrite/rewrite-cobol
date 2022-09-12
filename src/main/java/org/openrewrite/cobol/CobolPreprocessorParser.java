@@ -23,6 +23,7 @@ import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Parser;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
+import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
 import org.openrewrite.cobol.proleap.*;
 import org.openrewrite.cobol.tree.Cobol;
@@ -277,7 +278,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
         @Override
         public CobolPreprocessorParser build() {
-            return new CobolPreprocessorParser(cobolDialect,
+            return new CobolPreprocessorParser(
+                    cobolDialect == null ? new IbmAnsi85() : cobolDialect,
                     proLeapCobolDialect == null ? ANSI85 : proLeapCobolDialect,
                     sourceFormat == null ? FIXED : sourceFormat,
                     enableCopy,
