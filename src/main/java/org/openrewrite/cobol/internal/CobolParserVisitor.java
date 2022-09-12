@@ -6555,7 +6555,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             String sequence = sequenceAreas.get(cursor);
             cursor += sequence.length();
 
-            return new SequenceArea(randomId(), sequence);
+            return new SequenceArea(randomId(), Space.EMPTY, sequence);
         }
         return null;
     }

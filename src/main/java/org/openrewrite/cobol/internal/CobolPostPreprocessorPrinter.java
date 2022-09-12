@@ -94,7 +94,7 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                      *      |000001| |Some COBOL tokens|      COPY STATEMENT.           |
                      *
                      *  After:
-                     *      |000001| |Some COBOL tokens|                               .|=> The index + 1 is the position of `|`.
+                     *      |000001| |Some COBOL tokens|                                |=> The index + 1 is the position of `|`.
                      *      |      |*|__COPY_START______________________________________|
                      *      |      |*|UUID: 263cd588-bdea-4c06-8ba1-177e515bded2        |=> UUID to the CopyStatement; a UUID will fit in the column area, but the copy statement might not.
                      *      |~~~~~~| |Print the COPIED source AST. ~~~~~~~~~~~~~~~~~~~~~|=> Print the COPIED AST, which includes new column areas.

@@ -632,7 +632,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 Space.EMPTY,
                 Markers.EMPTY,
                 (CobolPreprocessor.Word) visit(ctx.ON()),
-                (CobolPreprocessor.Word) visit(ctx.literal(), ctx.cobolWord())
+                visit(ctx.literal(), ctx.cobolWord())
         );
     }
 
@@ -1054,7 +1054,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             String sequence = sequenceAreas.get(cursor);
             cursor += sequence.length();
 
-            return new SequenceArea(randomId(), sequence);
+            return new SequenceArea(randomId(), Space.EMPTY, sequence);
         }
         return null;
     }
