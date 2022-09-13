@@ -60,7 +60,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final Map<Integer, String> commentAreas = new HashMap<>();
     private final Set<String> separators = new HashSet<>();
     private int cursor = 0;
-    private boolean inCopy;
+    private boolean inCopiedText;
+    private boolean removeTemplateCommentArea;
     private String copyStart = null;
     private String copyEnd = null;
     private String copyUuid = null;
@@ -6332,7 +6333,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             if (contentArea.trim().isEmpty() || "*".equals(indicatorArea.getIndicator())) {
                 cursor += contentArea.length();
                 List<Lines.Line> lines = new ArrayList<>();
-                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
+                CommentArea commentArea = commentArea();
+                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, inCopiedText);
                 lines.add(line);
 
                 int iterations = 0;
@@ -6342,7 +6344,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
                         cursor += contentArea.length();
-                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
+                        commentArea = commentArea();
+                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, inCopiedText);
                         lines.add(line);
 
                         sequenceArea = null;
@@ -6446,7 +6449,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             if (copyStart.equals(contentArea)) {
                 cursor += copyStart.length();
                 cursor++; // Increment passed the \n.
-                inCopy = true;
+                inCopiedText = true;
+                removeTemplateCommentArea = true;
 
                 // Reset the areas, because parsing has passed the injected comments.
                 sequenceArea = sequenceArea();
@@ -6455,7 +6459,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             } else if (copyUuid.equals(contentArea)) {
                 cursor += copyUuid.length();
                 cursor++; // Increment passed the \n.
-                inCopy = false;
+                removeTemplateCommentArea = false;
 
                 sequenceArea();
                 indicatorArea(null);
@@ -6471,6 +6475,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 currentCopy = null;
                 cursor += copyEnd.length();
                 cursor++; // Increment passed the \n.
+                inCopiedText = false;
 
                 // Reset the areas, because parsing has passed the injected comments.
                 sequenceArea = sequenceArea();
@@ -6482,7 +6487,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 cursor += contentArea.length();
                 List<Lines.Line> lines = new ArrayList<>();
                 CommentArea commentArea = commentArea();
-                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea);
+                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, inCopiedText);
                 lines.add(line);
 
                 int iterations = 0;
@@ -6494,7 +6499,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     if (copyStart.equals(contentArea)) {
                         cursor += copyStart.length();
                         cursor++; // Increment passed the \n.
-                        inCopy = true;
+                        inCopiedText = true;
+                        removeTemplateCommentArea = true;
 
                         // Reset the areas, because parsing has passed the injected comments.
                         sequenceArea = sequenceArea();
@@ -6503,7 +6509,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     } else if (copyUuid.equals(contentArea)) {
                         cursor += copyUuid.length();
                         cursor++; // Increment passed the \n.
-                        inCopy = false;
+                        removeTemplateCommentArea = false;
 
                         sequenceArea();
                         indicatorArea(null);
@@ -6519,6 +6525,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                         currentCopy = null;
                         cursor += copyEnd.length();
                         cursor++; // Increment passed the \n.
+                        inCopiedText = false;
 
                         // Reset the areas, because parsing has passed the injected comments.
                         sequenceArea = sequenceArea();
@@ -6529,7 +6536,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
                         cursor += contentArea.length();
                         commentArea = commentArea();
-                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea);
+                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, inCopiedText);
                         lines.add(line);
 
                         sequenceArea = null;
@@ -6621,11 +6628,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             endLine = whitespace();
         }
 
-        if (!(inCopy && comment == null && before.getWhitespace().endsWith("\n")) && (before.getWhitespace().endsWith("\n") || comment != null)) {
+        if (!(removeTemplateCommentArea && comment == null && before.getWhitespace().endsWith("\n")) && (before.getWhitespace().endsWith("\n") || comment != null)) {
             return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine);
         }
 
-        if (!inCopy || !before.getWhitespace().endsWith("\n")) {
+        if (!removeTemplateCommentArea || !before.getWhitespace().endsWith("\n")) {
             cursor = saveCursor;
         }
         return null;

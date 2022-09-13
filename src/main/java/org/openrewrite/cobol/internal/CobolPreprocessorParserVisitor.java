@@ -888,7 +888,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 cursor += contentArea.length();
                 List<Lines.Line> lines = new ArrayList<>();
                 CommentArea commentArea = commentArea();
-                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea);
+                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, false);
                 lines.add(line);
 
                 int iterations = 0;
@@ -899,7 +899,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                     if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
                         cursor += contentArea.length();
                         commentArea = commentArea();
-                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea);
+                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, false);
                         lines.add(line);
 
                         sequenceArea = null;
@@ -1001,7 +1001,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 cursor += contentArea.length();
                 List<Lines.Line> lines = new ArrayList<>();
                 CommentArea commentArea = commentArea();
-                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea);
+                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, false);
                 lines.add(line);
 
                 int iterations = 0;
@@ -1013,7 +1013,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                     if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
                         cursor += contentArea.length();
                         commentArea = commentArea();
-                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea);
+                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, false);
                         lines.add(line);
 
                         sequenceArea = null;

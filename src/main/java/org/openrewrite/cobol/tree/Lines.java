@@ -29,5 +29,7 @@ public class Lines implements Marker {
 
         @Nullable
         CommentArea commentArea;
+
+        boolean isCopiedSource;
     }
 }

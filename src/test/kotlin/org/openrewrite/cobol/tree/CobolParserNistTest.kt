@@ -56,7 +56,6 @@ class CobolParserNistTest : RewriteTest {
             }).parser(CobolIbmAnsi85Parser.builder())
     }
 
-
     @Test
     fun cm101M() = rewriteRun(
         cobol(getNistSource("CM101M.CBL"))

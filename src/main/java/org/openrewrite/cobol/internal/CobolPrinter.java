@@ -3872,6 +3872,10 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
         if (lines.isPresent()) {
             for (Lines.Line line : lines.get().getLines()) {
+                if (line.isCopiedSource()) {
+                    continue;
+                }
+
                 if (line.getSequenceArea() != null) {
                     p.append(line.getSequenceArea().getSequence());
                 }
