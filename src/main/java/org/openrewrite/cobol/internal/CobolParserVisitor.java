@@ -60,8 +60,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final Map<Integer, String> commentAreas = new HashMap<>();
     private final Set<String> separators = new HashSet<>();
     private int cursor = 0;
+
+    // TODO: fix names and clean up.
     private boolean inCopiedText;
     private boolean removeTemplateCommentArea;
+    private boolean removeColumnMarkers;
+    private Integer copySpaces = null;
     private String copyStart = null;
     private String copyEnd = null;
     private String copyUuid = null;
@@ -6211,26 +6215,40 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     private Space whitespace() {
-        String prefix = source.substring(cursor, indexOfNextNonWhitespace(cursor, source));
+        int endIndex = indexOfNextNonWhitespace(cursor, source);
+        String prefix = source.substring(cursor, endIndex);
         cursor += prefix.length();
         return format(prefix);
     }
 
     private int indexOfNextNonWhitespace(int cursor, String source) {
         int delimIndex = cursor;
+        boolean isColumnArea = false;
         for (; delimIndex < source.length(); delimIndex++) {
             if (source.length() > delimIndex + 1) {
-                // TODO: explain.
+                // separators are equivalent to a whitespace character, but are specific combinations of characters based on the dialect.
+                // I.E. In IBM-ANSI-85, comma space `, ` or semicolon space `; ` are equivalent to a space.
                 if (separators.contains(source.substring(delimIndex, delimIndex + 2))) {
                     continue;
                 }
             }
 
-            // TODO: explain.
-            if (!Character.isWhitespace(source.substring(delimIndex, delimIndex + 1).charAt(0)) ||
-                    sequenceAreas.containsKey(delimIndex) || indicatorAreas.containsKey(delimIndex) || commentAreas.containsKey(delimIndex)) {
+            // Do not consume whitespace in blank column areas.
+            isColumnArea = sequenceAreas.containsKey(delimIndex) || indicatorAreas.containsKey(delimIndex) || commentAreas.containsKey(delimIndex);
+            if (!Character.isWhitespace(source.substring(delimIndex, delimIndex + 1).charAt(0)) || isColumnArea) {
                 break; // found it!
             }
+        }
+
+        if (!isColumnArea && copySpaces != null && copySpaces > 0) {
+            int totalWhitespace = (delimIndex - cursor);
+            int prefixCount = (totalWhitespace - copySpaces);
+            int templateWhitespace = totalWhitespace - prefixCount;
+            this.cursor += templateWhitespace;
+
+            delimIndex = this.cursor + prefixCount;
+            copySpaces = null;
+            removeColumnMarkers = true;
         }
         return delimIndex;
     }
@@ -6477,6 +6495,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 cursor++; // Increment passed the \n.
                 inCopiedText = false;
 
+                sequenceArea();
+                indicatorArea(null);
+
+                String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+                cursor += numberOfSpaces.length();
+                copySpaces = Integer.valueOf(numberOfSpaces.trim());
+
                 // Reset the areas, because parsing has passed the injected comments.
                 sequenceArea = sequenceArea();
                 indicatorArea = indicatorArea(null);
@@ -6527,6 +6552,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                         cursor++; // Increment passed the \n.
                         inCopiedText = false;
 
+                        sequenceArea();
+                        indicatorArea(null);
+
+                        String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+                        cursor += numberOfSpaces.length();
+                        copySpaces = Integer.valueOf(numberOfSpaces.trim());
+
                         // Reset the areas, because parsing has passed the injected comments.
                         sequenceArea = sequenceArea();
                         indicatorArea = indicatorArea(null);
@@ -6551,16 +6583,20 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             }
         }
 
-        if (sequenceArea != null) {
-            markers.add(sequenceArea);
-        }
-
-        if (indicatorArea != null) {
-            markers.add(indicatorArea);
-        }
-
         // An inline comment entry will have a null sequence area.
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
+        if (removeColumnMarkers) {
+            removeColumnMarkers = false;
+        } else {
+            if (sequenceArea != null) {
+                markers.add(sequenceArea);
+            }
+
+            if (indicatorArea != null) {
+                markers.add(indicatorArea);
+            }
+        }
+
         if (!"<EOF>".equals(text)) {
             cursor += text.length();
 

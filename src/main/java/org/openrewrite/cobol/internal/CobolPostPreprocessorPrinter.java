@@ -103,6 +103,7 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                      *      |      |*|263cd588-bdea-4c06-8ba1-177e515bded2              |=> UUID to the CopyStatement; a UUID will fit in the column area, but the copy statement might not.
                      *      |~~~~~~| |Print the COPIED source AST. ~~~~~~~~~~~~~~~~~~~~~|=> Print the COPIED AST, which includes new column areas.
                      *      |      |*|__COPY_END________________________________________|
+                     *      |      |*|33                                                |=> # of spaces added to align the column areas.
                      *      |      | |[WS for tokens  ]|[WS for COPY        ]|=> White space is conditionally printer based on where the copy statement ends to ensure columns are aligned.
                      *
                      *  Alignment:
@@ -113,7 +114,7 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                     insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
 
                     p.out.insert(insertIndex, getCopyStartLine());
-                    p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - 1 - curIndex));
+                    p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
                     p.append("\n");
 
                     p.append(getUuidLine());
@@ -127,8 +128,13 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
 
                     // Add whitespace until the next token will be aligned with the column area.
                     String copy = copyStatement.print(getCursor());
-                    int whitespace = copy.endsWith("\n") ? 0 : copy.length() + curIndex + 1;
-                    p.append(StringUtils.repeat(" ", whitespace));
+                    int numberOfSpaces = copy.endsWith("\n") ? 0 : copy.length() + curIndex;
+
+                    String spacesCount = getSequenceArea() + "*" + (numberOfSpaces - cobolDialect.getColumns().getContentArea());
+                    String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
+                    p.append(spacesCountLine);
+
+                    p.append(StringUtils.repeat(" ", numberOfSpaces));
                 }
             }
         } else {
@@ -204,7 +210,7 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
     private int getIndex(String output) {
         int index = output.lastIndexOf("\n");
         if (index >= 0) {
-            index = output.substring(index + 1).length() - 1;
+            index = output.substring(index + 1).length();
         }
         return index;
     }
