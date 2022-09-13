@@ -6666,18 +6666,19 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private IndicatorArea indicatorArea(@Nullable Character continuationDelimiter) {
         if (indicatorAreas.containsKey(cursor)) {
             String indicatorArea = indicatorAreas.get(cursor);
-            Space whitespace = Space.EMPTY;
+            String continuationText = null;
             if (continuationDelimiter != null) {
                 // Increment passed the start of the literal.
                 String current = source.substring(cursor + 1);
                 int pos = current.indexOf(continuationDelimiter);
                 if (pos != -1) {
-                    whitespace = Space.build(current.substring(0, current.indexOf(continuationDelimiter) + 1));
+                    continuationText = current.substring(0, current.indexOf(continuationDelimiter) + 1);
+                    cursor += continuationText.length();
                 }
             }
             cursor += indicatorArea.length();
 
-            return new IndicatorArea(randomId(), indicatorArea, whitespace);
+            return new IndicatorArea(randomId(), indicatorArea, continuationText);
         }
         return null;
     }

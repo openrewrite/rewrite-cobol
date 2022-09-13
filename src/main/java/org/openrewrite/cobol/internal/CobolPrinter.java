@@ -3881,6 +3881,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 }
                 if (line.getIndicatorArea() != null) {
                     p.append(line.getIndicatorArea().getIndicator());
+                    p.append(line.getIndicatorArea().getContinuationPrefix());
                 }
                 p.append(line.getContent());
                 if (line.getCommentArea() != null) {
@@ -3900,6 +3901,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
                 Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
                 indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
+                indicatorArea.ifPresent(it -> p.append(it.getContinuationPrefix()));
             }
 
             visitSpace(word.getPrefix(), p);
@@ -3917,6 +3919,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
                     Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
                     indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
+                    indicatorArea.ifPresent(it -> p.append(it.getContinuationPrefix()));
                 }
                 char c = charArray[i];
                 p.append(c);
@@ -3940,6 +3943,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
             Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
             indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
+            indicatorArea.ifPresent(it -> p.append(it.getContinuationPrefix()));
 
             visitSpace(word.getPrefix(), p);
             p.append(word.getWord());

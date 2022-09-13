@@ -12,8 +12,11 @@ import java.util.UUID;
  * Space is used to preserve whitespace from certain types of continuation lines that would otherwise remove whitespace.
  *
  * I.E. String literal:
- *   |000000| | Some COBOL "string literal ...             |
+ *   |000000| | Some COBOL "String literal ...             |
  *   |000001|-|    "is continued with prefixed whitespace."|
+ *
+ * Exact output is "String literal ...             is continued with prefixed whitespace."
+ * So, the indicator preserves the `    "`.
  */
 @With
 @Value
@@ -22,5 +25,9 @@ public class IndicatorArea implements Marker {
     String indicator;
 
     @Nullable
-    Space continuationWhitespace;
+    String continuationPrefix;
+
+    public String getContinuationPrefix() {
+        return continuationPrefix == null ? "" : continuationPrefix;
+    }
 }
