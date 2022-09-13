@@ -161,6 +161,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         return proleapCobolPreprocessor.rewriteLines(source, params);
     }
 
+    // Note: the NIST CopyBooks contain COBOL with the correct column areas, which may not be required.
+    // This method will break if the CopyBook does not match the dialect (fixable during print or a formatting visitor).
     public List<CobolPreprocessor.CopyBook> parseCopyBooks(List<Path> paths, @Nullable Path relativeTo) {
         List<CobolPreprocessor.CopyBook> copyBooks = new ArrayList<>();
 

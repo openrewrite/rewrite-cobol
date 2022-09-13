@@ -114,6 +114,10 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         @Override
         public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
             CobolPreprocessor.Word finalWord = word;
+            // TODO:
+            //  - preserved the original word. Note: it might be possible for multiple replaces to occur on a word.
+            //  - the preserved words may not be the same length and cause column miss-alignments.
+            //    - This is especially important for continuations.
             if (ReplacementType.SINGLE_WORD == replacementType) {
                 if (from.stream().anyMatch(it -> it.contains(finalWord))) {
                     if (to.get(0).isEmpty()) {
@@ -156,7 +160,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     }
                 }
             } else {
-                throw new UnsupportedOperationException("Implement me.");
+                // ReplacementType.ADDITIVE and ReplacementType.REDUCTIVE do not exist in the NIST test, but might be possible in COBOL.
+                throw new UnsupportedOperationException("Unsupported ReplacementType detected: " + replacementType.name());
             }
 
             return super.visitWord(word, executionContext);
