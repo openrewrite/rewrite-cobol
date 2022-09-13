@@ -89,9 +89,6 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                     // Comments are added before and after the template to provide context about which AST elements
                     // are a product of a COPY statement.
 
-                    // TODO: FIX: Comments from the end of the COPY SOURCE should not be associated to the next AST element. OR distinguish a trailing comment in the Marker.
-                    // TODO: FIX: refactor how CommentArea is created to associate whitespace at the end of a line, and CommentArea to the next AST element.
-
                     /*
                      *  Before:
                      *      |000001| |Some COBOL tokens|      COPY STATEMENT.           |
