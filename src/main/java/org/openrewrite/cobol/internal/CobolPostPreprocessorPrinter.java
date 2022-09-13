@@ -130,7 +130,7 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                     String copy = copyStatement.print(getCursor());
                     int numberOfSpaces = copy.endsWith("\n") ? 0 : copy.length() + curIndex;
 
-                    String spacesCount = getSequenceArea() + "*" + (numberOfSpaces - cobolDialect.getColumns().getContentArea());
+                    String spacesCount = getSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
                     String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
                     p.append(spacesCountLine);
 

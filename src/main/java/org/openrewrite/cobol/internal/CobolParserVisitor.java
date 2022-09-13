@@ -6465,47 +6465,37 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         if (!isCommentEntry && indicatorArea != null) {
             String contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
             if (copyStart.equals(contentArea)) {
-                cursor += copyStart.length();
-                cursor++; // Increment passed the \n.
-                inCopiedText = true;
-                removeTemplateCommentArea = true;
+                copyStart();
 
                 // Reset the areas, because parsing has passed the injected comments.
                 sequenceArea = sequenceArea();
                 indicatorArea = indicatorArea(null);
                 contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
             } else if (copyUuid.equals(contentArea)) {
-                cursor += copyUuid.length();
-                cursor++; // Increment passed the \n.
-                removeTemplateCommentArea = false;
-
-                sequenceArea();
-                indicatorArea(null);
-                String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
-                cursor += uuid.length();
-                currentCopy = copyStatementMap.get(uuid.trim());
+                copyUuid();
 
                 // Reset the areas, because parsing has passed the injected comments.
                 sequenceArea = sequenceArea();
                 indicatorArea = indicatorArea(null);
                 contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
             } else if (copyEnd.equals(contentArea)) {
-                currentCopy = null;
-                cursor += copyEnd.length();
-                cursor++; // Increment passed the \n.
-                inCopiedText = false;
+                copyEnd();
 
-                sequenceArea();
-                indicatorArea(null);
+                if (copyStart.equals(contentArea)) {
 
-                String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
-                cursor += numberOfSpaces.length();
-                copySpaces = Integer.valueOf(numberOfSpaces.trim());
-
+                }
                 // Reset the areas, because parsing has passed the injected comments.
                 sequenceArea = sequenceArea();
                 indicatorArea = indicatorArea(null);
                 contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
+
+                // Reset for sequential copy statements.
+                if (copyStart.equals(contentArea)) {
+                    copyStart();
+                    sequenceArea = sequenceArea();
+                    indicatorArea = indicatorArea(null);
+                    contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
+                }
             }
 
             if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
@@ -6522,47 +6512,34 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
                     contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     if (copyStart.equals(contentArea)) {
-                        cursor += copyStart.length();
-                        cursor++; // Increment passed the \n.
-                        inCopiedText = true;
-                        removeTemplateCommentArea = true;
+                        copyStart();
 
                         // Reset the areas, because parsing has passed the injected comments.
                         sequenceArea = sequenceArea();
                         indicatorArea = indicatorArea(null);
                         contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     } else if (copyUuid.equals(contentArea)) {
-                        cursor += copyUuid.length();
-                        cursor++; // Increment passed the \n.
-                        removeTemplateCommentArea = false;
-
-                        sequenceArea();
-                        indicatorArea(null);
-                        String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
-                        cursor += uuid.length();
-                        currentCopy = copyStatementMap.get(uuid.trim());
+                        copyUuid();
 
                         // Reset the areas, because parsing has passed the injected comments.
                         sequenceArea = sequenceArea();
                         indicatorArea = indicatorArea(null);
                         contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     } else if (copyEnd.equals(contentArea)) {
-                        currentCopy = null;
-                        cursor += copyEnd.length();
-                        cursor++; // Increment passed the \n.
-                        inCopiedText = false;
-
-                        sequenceArea();
-                        indicatorArea(null);
-
-                        String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
-                        cursor += numberOfSpaces.length();
-                        copySpaces = Integer.valueOf(numberOfSpaces.trim());
+                        copyEnd();
 
                         // Reset the areas, because parsing has passed the injected comments.
                         sequenceArea = sequenceArea();
                         indicatorArea = indicatorArea(null);
                         contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
+
+                        // Reset for sequential copy statements.
+                        if (copyStart.equals(contentArea)) {
+                            copyStart();
+                            sequenceArea = sequenceArea();
+                            indicatorArea = indicatorArea(null);
+                            contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
+                        }
                     }
 
                     if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
@@ -6609,6 +6586,47 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.add(new Copy(randomId(), currentCopy));
         }
         return prefix;
+    }
+
+    private void copyStart() {
+        cursor += copyStart.length();
+        cursor++; // Increment passed the \n.
+
+        inCopiedText = true;
+        removeTemplateCommentArea = true;
+
+        // Reset copy info.
+        currentCopy = null;
+        removeColumnMarkers = false;
+        copySpaces = null;
+    }
+
+    private void copyEnd() {
+        cursor += copyEnd.length();
+        cursor++; // Increment passed the \n.
+
+        currentCopy = null;
+        inCopiedText = false;
+
+        sequenceArea();
+        indicatorArea(null);
+
+        String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+        cursor += numberOfSpaces.length();
+        copySpaces = Integer.valueOf(numberOfSpaces.trim());
+    }
+
+    private void copyUuid() {
+        cursor += copyUuid.length();
+        cursor++; // Increment passed the \n.
+
+        removeTemplateCommentArea = false;
+
+        sequenceArea();
+        indicatorArea(null);
+        String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+        cursor += uuid.length();
+        currentCopy = copyStatementMap.get(uuid.trim());
     }
 
     /**

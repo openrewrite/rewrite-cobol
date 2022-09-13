@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
     @Nullable
-    private boolean inCopy = false;
+    private String copyUuid = null;
 
     public Cobol visitAbbreviation(Cobol.Abbreviation abbreviation, PrintOutputCapture<P> p) {
         visitSpace(abbreviation.getPrefix(), p);
@@ -3854,19 +3854,19 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
         Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
         if (copyBook.isPresent()) {
-            if (!inCopy) {
+            if (copyUuid == null || !copyUuid.equals(copyBook.get().getOriginalStatement().getId().toString())) {
                 // TODO: Get input on how to print ... POC.
                 PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
                 CobolPreprocessorPrinter<ExecutionContext> printer = new CobolPreprocessorPrinter<>();
                 printer.visit(copyBook.get().getOriginalStatement(), output);
                 p.append(output.getOut());
-                inCopy = true;
+                copyUuid = copyBook.get().getOriginalStatement().getId().toString();
             }
 
             // Do not print the AST for the copied source.
             return word;
-        } else if (inCopy) {
-            inCopy = false;
+        } else if (copyUuid != null) {
+            copyUuid = null;
         }
 
         Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
