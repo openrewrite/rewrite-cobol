@@ -24,8 +24,18 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * TODO: info on COBOL continuation.
- * Explain why continuations are split via an Integer.
+ * Continuations contain the Column area markers that need to be printed at specific indexes in a continued String
+ * literal, COBOL keyword or COBOL words.
+ *
+ * I.E. String literal:
+ *   |000000| | Some COBOL "string literal ...             |
+ *   |000001|-|    "is continued with prefixed whitespace."|
+ *
+ * I.E. COBOL keyword:
+ *   |000000| | C                                          |
+ *   |000001|-|  O                                         |
+ *   |000002|-|   P                                        |
+ *   |000003|-|    Y                                       |
  */
 @With
 @Value

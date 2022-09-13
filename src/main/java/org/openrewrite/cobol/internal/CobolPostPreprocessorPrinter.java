@@ -22,15 +22,22 @@ import org.openrewrite.internal.StringUtils;
 import java.util.Optional;
 
 /**
- * TODO: explain.
+ * Print the processed COBOL code.
+ *
+ * `printWithColumnAreas`:
+ *      true: Print as source code with modifications to distinguish changes during preprocessing like COPY and REPLACE.
+ *      false: Print as parser input for the CobolParserVisitor.
  */
 public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P> {
 
     public static final String COPY_START = "__COPY_START__";
     public static final String COPY_END = "__COPY_END__";
     public static final String COPY_UUID = "__UUID__";
+
     private final CobolDialect cobolDialect;
     private final boolean printWithColumnAreas;
+
+    // Lazily initialized Strings that are generated once with constraints based on the dialect.
     private String sequenceArea = null;
     private String copyStartLine = null;
     private String copyEndLine = null;
@@ -83,7 +90,7 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                         copyStatement.getWord().getPrefix().getWhitespace().length(), p.getOut().length());
 
                 // Save the current index to ensure the text that follows the COPY will be aligned correctly.
-                int curIndex = getIndex(p.getOut());
+                int curIndex = getCurrentIndex(p.getOut());
                 if (curIndex != -1) {
                     // Printing the COPY statement will add comments that work similar to JavaTemplate.
                     // Comments are added before and after the template to provide context about which AST elements
@@ -162,7 +169,6 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
         if (printWithColumnAreas) {
             super.visitWord(word, p);
         } else {
-            // print applicable empty lines.
             visitSpace(word.getPrefix(), p);
             visitMarkers(word.getMarkers(), p);
             p.append(word.getWord());
@@ -204,7 +210,7 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
         return sequenceArea;
     }
 
-    private int getIndex(String output) {
+    private int getCurrentIndex(String output) {
         int index = output.lastIndexOf("\n");
         if (index >= 0) {
             index = output.substring(index + 1).length();

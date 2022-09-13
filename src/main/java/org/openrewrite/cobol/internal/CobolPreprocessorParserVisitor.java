@@ -779,15 +779,16 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         int delimIndex = cursor;
         for (; delimIndex < source.length(); delimIndex++) {
             if (source.length() > delimIndex + 1) {
-                // TODO: explain.
+                // separators are equivalent to a whitespace character, but are specific combinations of characters based on the dialect.
+                // I.E. In IBM-ANSI-85, comma space `, ` or semicolon space `; ` are equivalent to a space.
                 if (separators.contains(source.substring(delimIndex, delimIndex + 2))) {
                     continue;
                 }
             }
 
-            // TODO: explain.
-            if (!Character.isWhitespace(source.substring(delimIndex, delimIndex + 1).charAt(0)) ||
-                    sequenceAreas.containsKey(delimIndex) || indicatorAreas.containsKey(delimIndex) || commentAreas.containsKey(delimIndex)) {
+            // Do not consume whitespace in blank column areas.
+            boolean isColumnArea = sequenceAreas.containsKey(delimIndex) || indicatorAreas.containsKey(delimIndex) || commentAreas.containsKey(delimIndex);
+            if (!Character.isWhitespace(source.substring(delimIndex, delimIndex + 1).charAt(0)) || isColumnArea) {
                 break; // found it!
             }
         }
@@ -990,11 +991,14 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea(null);
 
+        // CommentEntry tags are required to be recognized the COBOL grammar.
+        // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
         boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_TAG);
         if (isCommentEntry) {
             text = text.substring(COMMENT_ENTRY_TAG.length());
         }
 
+        // Add line comments and empty lines as markers.
         if (!isCommentEntry && indicatorArea != null) {
             String contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
             if (contentArea.trim().isEmpty() || "*".equals(indicatorArea.getIndicator())) {
@@ -1050,7 +1054,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     }
 
     /**
-     * TODO: explain
+     * Return the SequenceArea based on the current cursor position if it exists.
      */
     @Nullable
     private SequenceArea sequenceArea() {
@@ -1064,29 +1068,33 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     }
 
     /**
-     * TODO: explain
+     * Return the IndicatorArea based on the current cursor position if it exists.
+     *
+     * @param continuationDelimiter use for continued String literals.
+     *                              A continued String literal must start with the same character that started the literal (" or ').
      */
     @Nullable
-    private IndicatorArea indicatorArea(@Nullable Character delimiter) {
+    private IndicatorArea indicatorArea(@Nullable Character continuationDelimiter) {
         if (indicatorAreas.containsKey(cursor)) {
             String indicatorArea = indicatorAreas.get(cursor);
-            if (delimiter != null) {
+            Space whitespace = Space.EMPTY;
+            if (continuationDelimiter != null) {
                 // Increment passed the start of the literal.
                 String current = source.substring(cursor + 1);
-                int pos = current.indexOf(delimiter);
+                int pos = current.indexOf(continuationDelimiter);
                 if (pos != -1) {
-                    indicatorArea = indicatorArea + current.substring(0, current.indexOf(delimiter) + 1);
+                    whitespace = Space.build(current.substring(0, current.indexOf(continuationDelimiter) + 1));
                 }
             }
             cursor += indicatorArea.length();
 
-            return new IndicatorArea(randomId(), indicatorArea);
+            return new IndicatorArea(randomId(), indicatorArea, whitespace);
         }
         return null;
     }
 
     /**
-     * TODO: explain
+     * Return the CommentArea based on the current cursor position if it exists.
      */
     @Nullable
     private CommentArea commentArea() {

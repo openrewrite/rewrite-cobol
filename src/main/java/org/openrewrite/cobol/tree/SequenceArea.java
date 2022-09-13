@@ -7,7 +7,7 @@ import org.openrewrite.marker.Marker;
 import java.util.UUID;
 
 /**
- * TODO: explain.
+ * SequenceArea are optional areas that exist based on dialect.
  */
 @With
 @Value

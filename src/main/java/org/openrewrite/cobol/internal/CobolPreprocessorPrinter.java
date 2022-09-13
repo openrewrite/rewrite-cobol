@@ -26,7 +26,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * TODO: explain.
+ * Print the preprocessed COBOL.
+ * Note: All the logic to print column areas exists in visitWord.
  */
 public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintOutputCapture<P>> {
 

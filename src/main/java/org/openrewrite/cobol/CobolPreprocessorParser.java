@@ -55,6 +55,9 @@ import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.cobol.proleap.ProLeapCobolDialect.ANSI85;
 import static org.openrewrite.cobol.proleap.ProLeapCobolPreprocessor.CobolSourceFormatEnum.FIXED;
 
+/**
+ * Read preprocessed COBOL and execute preprocessor commands.
+ */
 public class CobolPreprocessorParser implements Parser<CobolPreprocessor.CompilationUnit> {
     private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
 
@@ -197,7 +200,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
             CobolPreprocessor.CompilationUnit cu = parserVisitor.visitStartRule(parser.startRule());
             CobolPreprocessor parsedCopySource = cu.getCobols().get(0);
 
-            // TODO: use PlainText???
+            // TODO: How should the SourceFile and CopyBook be linked together?
             CobolPreprocessor.CopyBook copyBook = new CobolPreprocessor.CopyBook(
                     randomId(),
                     Space.EMPTY,

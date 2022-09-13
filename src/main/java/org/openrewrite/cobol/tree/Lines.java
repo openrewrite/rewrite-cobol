@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * TODO: explain lines.
- * Examples: completely empty lines, blank lines with sequence areas, indicators and comment areas.
- * A line comment indicated with `*`.
- * There may be 1-M lines between ANY token via whitespace.
+ * There may be one or more comments and/or empty lines between any token via whitespace.
+ * The Lines Marker preserves the column areas for each of the lines that come before a COBOL word.
+ *
+ * Line comments are indicated with a `*` (depends on dialect) in the indicator areas.
  */
 @With
 @Value
