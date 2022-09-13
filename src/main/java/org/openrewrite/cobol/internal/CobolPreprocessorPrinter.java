@@ -262,8 +262,8 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
                 if (i != 0 && continuation.get().getContinuations().containsKey(i)) {
                     Markers markers = continuation.get().getContinuations().get(i);
                     Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
-                    commentArea.ifPresent(it -> p.append(it.getComment()));
                     commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+                    commentArea.ifPresent(it -> p.append(it.getComment()));
                     commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
 
                     Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);

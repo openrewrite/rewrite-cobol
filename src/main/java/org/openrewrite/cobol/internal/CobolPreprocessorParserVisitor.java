@@ -887,7 +887,8 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             if (contentArea.trim().isEmpty() || "*".equals(indicatorArea.getIndicator())) {
                 cursor += contentArea.length();
                 List<Lines.Line> lines = new ArrayList<>();
-                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
+                CommentArea commentArea = commentArea();
+                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea);
                 lines.add(line);
 
                 int iterations = 0;
@@ -897,7 +898,8 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                     contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
                         cursor += contentArea.length();
-                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
+                        commentArea = commentArea();
+                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea);
                         lines.add(line);
 
                         sequenceArea = null;
@@ -998,7 +1000,8 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             if (contentArea.trim().isEmpty() || "*".equals(indicatorArea.getIndicator())) {
                 cursor += contentArea.length();
                 List<Lines.Line> lines = new ArrayList<>();
-                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
+                CommentArea commentArea = commentArea();
+                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea);
                 lines.add(line);
 
                 int iterations = 0;
@@ -1009,7 +1012,8 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                     contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
                         cursor += contentArea.length();
-                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea());
+                        commentArea = commentArea();
+                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea);
                         lines.add(line);
 
                         sequenceArea = null;
@@ -1054,7 +1058,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             String sequence = sequenceAreas.get(cursor);
             cursor += sequence.length();
 
-            return new SequenceArea(randomId(), Space.EMPTY, sequence);
+            return new SequenceArea(randomId(), sequence);
         }
         return null;
     }
@@ -1098,8 +1102,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             endLine = whitespace();
         }
 
-        // Ensure the last whitespace is added to the ASt.
-        if (source.substring(cursor).isEmpty() || before.getWhitespace().endsWith("\n") || comment != null) {
+        if (before.getWhitespace().endsWith("\n") || comment != null) {
             return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine);
         }
 

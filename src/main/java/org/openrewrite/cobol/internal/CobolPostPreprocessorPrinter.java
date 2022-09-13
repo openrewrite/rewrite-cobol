@@ -28,9 +28,14 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
 
     public static final String COPY_START = "__COPY_START__";
     public static final String COPY_END = "__COPY_END__";
-    public static final String COPY_UUID = "UUID: ";
+    public static final String COPY_UUID = "__UUID__";
     private final CobolDialect cobolDialect;
     private final boolean printWithColumnAreas;
+    private String sequenceArea = null;
+    private String copyStartLine = null;
+    private String copyEndLine = null;
+    private String uuidLine = null;
+
 
     public CobolPostPreprocessorPrinter(CobolDialect cobolDialect,
                                         boolean printWithColumnAreas) {
@@ -70,9 +75,7 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
 
         if (printWithColumnAreas) {
             if (copyStatement.getCopyBook() != null) {
-                // TODO: Clean up. This is a POC to test linking the processed COBOL to the CobolParserVisitor.
-
-                // Print all comments that might exist before the word COPY.
+                // Print markers like Lines, SequenceArea, and Indicator if the line starts with COPY.
                 visit(copyStatement.getWord(), p);
 
                 // Remove the prefix of and the word COPY, because the statement is replaced by the CopyBook.
@@ -94,9 +97,10 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                      *      |000001| |Some COBOL tokens|      COPY STATEMENT.           |
                      *
                      *  After:
+                     *      |      |*|__COPY_START______________________________________|=> Trigger search for end of line to detect whitespace added from the template.
                      *      |000001| |Some COBOL tokens|                                |=> The index + 1 is the position of `|`.
-                     *      |      |*|__COPY_START______________________________________|
-                     *      |      |*|UUID: 263cd588-bdea-4c06-8ba1-177e515bded2        |=> UUID to the CopyStatement; a UUID will fit in the column area, but the copy statement might not.
+                     *      |      |*|__UUID____________________________________________|=> Detect the UUID section of the template.
+                     *      |      |*|263cd588-bdea-4c06-8ba1-177e515bded2              |=> UUID to the CopyStatement; a UUID will fit in the column area, but the copy statement might not.
                      *      |~~~~~~| |Print the COPIED source AST. ~~~~~~~~~~~~~~~~~~~~~|=> Print the COPIED AST, which includes new column areas.
                      *      |      |*|__COPY_END________________________________________|
                      *      |      | |[WS for tokens  ]|[WS for COPY        ]|=> White space is conditionally printer based on where the copy statement ends to ensure columns are aligned.
@@ -105,34 +109,21 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
                      *      |      | | COPY STATEMENT.                                  |=> Requires whitespace to replace the statement for correct alignment.
                      *      |      | |                                   COPY STATEMENT.|=> The next line does not require any whitespace.
                      */
+                    int insertIndex = p.getOut().lastIndexOf("\n");
+                    insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
 
+                    p.out.insert(insertIndex, getCopyStartLine());
                     p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - 1 - curIndex));
                     p.append("\n");
 
-                    StringBuilder templateStart = new StringBuilder();
-                    String sequenceArea = StringUtils.repeat(" ", cobolDialect.getColumns().getContentArea() - 1);
-
-                    String copyStartId = sequenceArea + "*" + COPY_START;
-                    templateStart.append(copyStartId);
-                    templateStart.append(StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - copyStartId.length()));
-                    templateStart.append("\n");
-
-                    String bookId = sequenceArea + "*UUID: " + copyStatement.getId();
-                    templateStart.append(bookId);
-                    templateStart.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - bookId.length()));
-                    templateStart.append("\n");
-
-                    // Insert template identifier at the previous line.
-                    p.append(templateStart.toString());
+                    p.append(getUuidLine());
+                    String copyUuid = getSequenceArea() + "*" + copyStatement.getId();
+                    String copyUuidLine = copyUuid + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - copyUuid.length()) + "\n";
+                    p.append(copyUuidLine);
 
                     visit(copyStatement.getCopyBook(), p);
 
-                    String copyEndId = sequenceArea + "*" + COPY_END;
-                    String templateEnd = copyEndId +
-                            StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - copyEndId.length()) +
-                            "\n";
-
-                    p.append(templateEnd);
+                    p.append(getCopyEndLine());
 
                     // Add whitespace until the next token will be aligned with the column area.
                     String copy = copyStatement.print(getCursor());
@@ -177,6 +168,37 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
             commentArea.ifPresent(area -> visitSpace(area.getEndOfLine(), p));
         }
         return word;
+    }
+
+    private String getCopyStartLine() {
+        if (copyStartLine == null) {
+            String start = getSequenceArea() + "*" + COPY_START;
+            copyStartLine = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+        }
+        return copyStartLine;
+    }
+
+    private String getCopyEndLine() {
+        if (copyEndLine == null) {
+            String start = getSequenceArea() + "*" + COPY_END;
+            copyEndLine = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+        }
+        return copyEndLine;
+    }
+
+    private String getUuidLine() {
+        if (uuidLine == null) {
+            String start = getSequenceArea() + "*" + COPY_UUID;
+            uuidLine = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+        }
+        return uuidLine;
+    }
+
+    private String getSequenceArea() {
+        if (sequenceArea == null) {
+            sequenceArea = StringUtils.repeat(" ", cobolDialect.getColumns().getContentArea() - 1);
+        }
+        return sequenceArea;
     }
 
     private int getIndex(String output) {
