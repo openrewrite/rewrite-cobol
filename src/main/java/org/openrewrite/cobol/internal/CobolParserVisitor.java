@@ -6481,9 +6481,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             } else if (copyEnd.equals(contentArea)) {
                 copyEnd();
 
-                if (copyStart.equals(contentArea)) {
-
-                }
                 // Reset the areas, because parsing has passed the injected comments.
                 sequenceArea = sequenceArea();
                 indicatorArea = indicatorArea(null);
