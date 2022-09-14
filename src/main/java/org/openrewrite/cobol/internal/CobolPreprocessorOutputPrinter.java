@@ -51,10 +51,14 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private final boolean printWithColumnAreas;
 
     // Lazily initialized Strings that are generated once with constraints based on the dialect.
-    private String sequenceArea = null;
-    private String copyStartLine = null;
-    private String copyEndLine = null;
-    private String uuidLine = null;
+    private String dialectSequenceArea = null;
+    private String copyStartComment = null;
+    private String copyEndComment = null;
+    private String replaceRuleComment = null;
+    private String replaceOffComment = null;
+    private String replaceByStartComment = null;
+    private String replaceByEndComment = null;
+    private String uuidComment = null;
 
 
     public CobolPreprocessorOutputPrinter(CobolDialect cobolDialect,
@@ -130,24 +134,24 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     int insertIndex = p.getOut().lastIndexOf("\n");
                     insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
 
-                    p.out.insert(insertIndex, getCopyStartLine());
+                    p.out.insert(insertIndex, getCopyStartComment());
                     p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
                     p.append("\n");
 
-                    p.append(getUuidLine());
-                    String copyUuid = getSequenceArea() + "*" + copyStatement.getId();
+                    p.append(getUuidKey());
+                    String copyUuid = getDialectSequenceArea() + "*" + copyStatement.getId();
                     String copyUuidLine = copyUuid + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - copyUuid.length()) + "\n";
                     p.append(copyUuidLine);
 
                     visit(copyStatement.getCopyBook(), p);
 
-                    p.append(getCopyEndLine());
+                    p.append(getCopyEndComment());
 
                     // Add whitespace until the next token will be aligned with the column area.
                     String copy = copyStatement.print(getCursor());
                     int numberOfSpaces = copy.endsWith("\n") ? 0 : copy.length() + curIndex;
 
-                    String spacesCount = getSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
+                    String spacesCount = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
                     String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
                     p.append(spacesCountLine);
 
@@ -197,37 +201,96 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return word;
     }
 
-    private String getCopyStartLine() {
-        if (copyStartLine == null) {
-            String start = getSequenceArea() + "*" + COPY_START_KEY;
-            copyStartLine = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+    /**
+     * TODO:
+     */
+    private String getCopyStartComment() {
+        if (copyStartComment == null) {
+            String start = getDialectSequenceArea() + "*" + COPY_START_KEY;
+            copyStartComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
         }
-        return copyStartLine;
+        return copyStartComment;
     }
 
-    private String getCopyEndLine() {
-        if (copyEndLine == null) {
-            String start = getSequenceArea() + "*" + COPY_END_KEY;
-            copyEndLine = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+    /**
+     * TODO:
+     */
+    private String getCopyEndComment() {
+        if (copyEndComment == null) {
+            String start = getDialectSequenceArea() + "*" + COPY_END_KEY;
+            copyEndComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
         }
-        return copyEndLine;
+        return copyEndComment;
     }
 
-    private String getUuidLine() {
-        if (uuidLine == null) {
-            String start = getSequenceArea() + "*" + UUID_KEY;
-            uuidLine = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+    /**
+     * TODO:
+     */
+    private String getReplaceRuleComment() {
+        if (replaceRuleComment == null) {
+            String start = getDialectSequenceArea() + "*" + REPLACE_RULE_KEY;
+            replaceRuleComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
         }
-        return uuidLine;
+        return replaceRuleComment;
     }
 
-    private String getSequenceArea() {
-        if (sequenceArea == null) {
-            sequenceArea = StringUtils.repeat(" ", cobolDialect.getColumns().getContentArea() - 1);
+    /**
+     * TODO:
+     */
+    private String getReplaceByStartComment() {
+        if (replaceByStartComment == null) {
+            String start = getDialectSequenceArea() + "*" + REPLACE_BY_START_KEY;
+            replaceByStartComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
         }
-        return sequenceArea;
+        return replaceByStartComment;
     }
 
+    /**
+     * TODO:
+     */
+    private String getReplaceByEndComment() {
+        if (replaceByEndComment == null) {
+            String start = getDialectSequenceArea() + "*" + REPLACE_BY_END_KEY;
+            replaceByEndComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+        }
+        return replaceByEndComment;
+    }
+
+    /**
+     * TODO:
+     */
+    private String getReplaceOffComment() {
+        if (replaceOffComment == null) {
+            String start = getDialectSequenceArea() + "*" + REPLACE_OFF_KEY;
+            replaceOffComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+        }
+        return replaceOffComment;
+    }
+
+    /**
+     * TODO:
+     */
+    private String getUuidKey() {
+        if (uuidComment == null) {
+            String start = getDialectSequenceArea() + "*" + UUID_KEY;
+            uuidComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+        }
+        return uuidComment;
+    }
+
+    /**
+     * TODO:
+     */
+    private String getDialectSequenceArea() {
+        if (dialectSequenceArea == null) {
+            dialectSequenceArea = StringUtils.repeat(" ", cobolDialect.getColumns().getContentArea() - 1);
+        }
+        return dialectSequenceArea;
+    }
+
+    /**
+     * TODO:
+     */
     private int getCurrentIndex(String output) {
         int index = output.lastIndexOf("\n");
         if (index >= 0) {
