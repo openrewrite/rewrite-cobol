@@ -122,10 +122,9 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                 if (from.stream().anyMatch(it -> it.contains(finalWord))) {
                     if (to.get(0).isEmpty()) {
                         // The word isn't removed from the AST to preserve markers.
-                        word = word.withPrefix(Space.EMPTY);
-                        word = word.withWord("");
+                        word = word.withReplacement("");
                     } else {
-                        word = word.withWord(to.get(0));
+                        word = word.withReplacement(to.get(0));
                     }
                 }
             } else if (ReplacementType.EQUAL == replacementType) {
@@ -137,7 +136,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         pos = 0;
 
                         if (!current.get(pos).getWord().equals(to.get(pos))) {
-                            word = word.withWord(to.get(pos));
+                            word = word.withReplacement(to.get(pos));
                         }
                         pos++;
                     }
@@ -145,7 +144,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     boolean isSame = current.get(pos).getWord().equals(word.getWord());
                     if (isSame) {
                         if (!current.get(pos).getWord().equals(to.get(pos))) {
-                            word = word.withWord(to.get(pos));
+                            word = word.withReplacement(to.get(pos));
                         }
 
                         if (current.size() - 1 == pos) {

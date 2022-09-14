@@ -753,7 +753,8 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 randomId(),
                 prefix,
                 markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
-                text
+                text,
+                null
         );
     }
 

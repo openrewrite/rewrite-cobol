@@ -578,6 +578,9 @@ public interface CobolPreprocessor extends Tree {
         Markers markers;
         String word;
 
+        @Nullable
+        String replacement;
+
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
             return v.visitWord(this, p);
