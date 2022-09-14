@@ -3869,24 +3869,33 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
-        if (printOriginalSource) {
-            Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
-            // The COBOL word is a product of a copy statement.
-            if (copyBook.isPresent()) {
-                // Print the original Copy Statement in place of the first word from the copied source.
-                if (copyUuid == null || !copyUuid.equals(copyBook.get().getOriginalStatement().getId().toString())) {
-                    // Print the original copy
-                    PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                    printer.visit(copyBook.get().getOriginalStatement(), output);
-                    p.append(output.getOut());
-                    copyUuid = copyBook.get().getOriginalStatement().getId().toString();
-                }
+        if (!printOriginalSource) {
+            visitSpace(word.getPrefix(), p);
+            visitMarkers(word.getMarkers(), p);
+            p.append(word.getWord());
 
-                // Do not print the AST for the copied source.
-                return word;
-            } else if (copyUuid != null) {
-                copyUuid = null;
+            Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
+            commentArea.ifPresent(area -> visitSpace(area.getPrefix(), p));
+            commentArea.ifPresent(area -> visitSpace(area.getEndOfLine(), p));
+            return word;
+        }
+
+        Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
+        // The COBOL word is a product of a copy statement.
+        if (copyBook.isPresent()) {
+            // Print the original Copy Statement in place of the first word from the copied source.
+            if (copyUuid == null || !copyUuid.equals(copyBook.get().getOriginalStatement().getId().toString())) {
+                // Print the original copy
+                PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
+                printer.visit(copyBook.get().getOriginalStatement(), output);
+                p.append(output.getOut());
+                copyUuid = copyBook.get().getOriginalStatement().getId().toString();
             }
+
+            // Do not print the AST for the copied source.
+            return word;
+        } else if (copyUuid != null) {
+            copyUuid = null;
         }
 
         Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);

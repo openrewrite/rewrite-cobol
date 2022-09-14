@@ -146,9 +146,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             separators.addAll(cobolDialect.getSeparators());
 
             int contentArea = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
-            this.copyStart = COPY_START + StringUtils.repeat("_", contentArea - COPY_START.length());
-            this.copyEnd = COPY_END + StringUtils.repeat("_", contentArea - COPY_END.length());
-            this.copyUuid = COPY_UUID + StringUtils.repeat("_", contentArea - COPY_UUID.length());
+            this.copyStart = COPY_START_KEY + StringUtils.repeat("_", contentArea - COPY_START_KEY.length());
+            this.copyEnd = COPY_END_KEY + StringUtils.repeat("_", contentArea - COPY_END_KEY.length());
+            this.copyUuid = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
         } else if (cobolDialect.getColumns() == CobolDialect.Columns.HP_TANDEM) {
             throw new UnsupportedOperationException("Implement me.");
         } else {

@@ -30,9 +30,22 @@ import java.util.Optional;
  */
 public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<P> {
 
-    public static final String COPY_START = "__COPY_START__";
-    public static final String COPY_END = "__COPY_END__";
-    public static final String COPY_UUID = "__UUID__";
+    // Mark where a ReplacementStatement should be added.
+    public static final String REPLACE_RULE_KEY = "__REPLACE_RULE__";
+
+    // Mark where a ReplaceOff should be added.
+    public static final String REPLACE_OFF_KEY = "__REPLACE_OFF__";
+
+    // START keys mark the line where whitespace is added until the end of the content area.
+    public static final String COPY_START_KEY = "__COPY_START__";
+    public static final String REPLACE_BY_START_KEY = "__REPLACE_BY_START__";
+
+    // END keys mark when the exit of a template area.
+    public static final String COPY_END_KEY = "__COPY_END__";
+    public static final String REPLACE_BY_END_KEY = "__REPLACE_BY_END__";
+
+    // Link the CobolPreprocessor AST UUID to the CobolParser.
+    public static final String UUID_KEY = "__UUID__";
 
     private final CobolDialect cobolDialect;
     private final boolean printWithColumnAreas;
@@ -186,7 +199,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
     private String getCopyStartLine() {
         if (copyStartLine == null) {
-            String start = getSequenceArea() + "*" + COPY_START;
+            String start = getSequenceArea() + "*" + COPY_START_KEY;
             copyStartLine = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
         }
         return copyStartLine;
@@ -194,7 +207,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
     private String getCopyEndLine() {
         if (copyEndLine == null) {
-            String start = getSequenceArea() + "*" + COPY_END;
+            String start = getSequenceArea() + "*" + COPY_END_KEY;
             copyEndLine = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
         }
         return copyEndLine;
@@ -202,7 +215,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
     private String getUuidLine() {
         if (uuidLine == null) {
-            String start = getSequenceArea() + "*" + COPY_UUID;
+            String start = getSequenceArea() + "*" + UUID_KEY;
             uuidLine = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
         }
         return uuidLine;
