@@ -118,6 +118,7 @@ class CobolParserCopyTest : RewriteTest {
         cobol(getNistSource("SM301M.CBL"))
     )
 
+    @Disabled("Requires linking preprocessor replace to parser.")
     @Test
     fun sm401M() = rewriteRun(
         cobol(getNistSource("SM401M.CBL"))

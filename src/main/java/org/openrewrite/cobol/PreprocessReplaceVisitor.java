@@ -5,7 +5,6 @@ import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
-import org.openrewrite.cobol.tree.Space;
 import org.openrewrite.internal.ListUtils;
 
 import java.util.*;
@@ -115,16 +114,15 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
             CobolPreprocessor.Word finalWord = word;
             // TODO:
-            //  - preserved the original word. Note: it might be possible for multiple replaces to occur on a word.
             //  - the preserved words may not be the same length and cause column miss-alignments.
-            //    - This is especially important for continuations.
+            //  - This is especially important for continuations.
             if (ReplacementType.SINGLE_WORD == replacementType) {
                 if (from.stream().anyMatch(it -> it.contains(finalWord))) {
                     if (to.get(0).isEmpty()) {
                         // The word isn't removed from the AST to preserve markers.
-                        word = word.withReplacement("");
+                        word = word.withWord("");
                     } else {
-                        word = word.withReplacement(to.get(0));
+                        word = word.withWord(to.get(0));
                     }
                 }
             } else if (ReplacementType.EQUAL == replacementType) {
@@ -136,7 +134,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         pos = 0;
 
                         if (!current.get(pos).getWord().equals(to.get(pos))) {
-                            word = word.withReplacement(to.get(pos));
+                            word = word.withWord(to.get(pos));
                         }
                         pos++;
                     }
@@ -144,7 +142,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     boolean isSame = current.get(pos).getWord().equals(word.getWord());
                     if (isSame) {
                         if (!current.get(pos).getWord().equals(to.get(pos))) {
-                            word = word.withReplacement(to.get(pos));
+                            word = word.withWord(to.get(pos));
                         }
 
                         if (current.size() - 1 == pos) {

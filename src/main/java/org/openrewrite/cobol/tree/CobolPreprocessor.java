@@ -18,7 +18,6 @@ package org.openrewrite.cobol.tree;
 import lombok.*;
 import org.openrewrite.*;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
-import org.openrewrite.cobol.CobolVisitor;
 import org.openrewrite.cobol.internal.CobolPreprocessorPrinter;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Markers;
@@ -569,17 +568,20 @@ public interface CobolPreprocessor extends Tree {
 
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
     class Word implements CobolPreprocessor {
+
+        @With
         @EqualsAndHashCode.Include
         UUID id;
 
+        @With
         Space prefix;
-        Markers markers;
-        String word;
 
-        @Nullable
-        String replacement;
+        @With
+        Markers markers;
+
+        @With
+        String word;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {

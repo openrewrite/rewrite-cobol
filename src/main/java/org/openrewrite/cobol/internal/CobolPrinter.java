@@ -29,12 +29,29 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * TODO: explain.
+ * Print the original COBOL source code.
+ *
+ * `printOriginalSource`:
+ *      true: Print as the original source code before preprecossing commands like COPY and REPLACE.
+ *      false: Print the post-processed AST.
+ *
+ * Note: All the logic to print column areas exists in visitWord.
  */
 public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
+    private final boolean printOriginalSource;
+    private final CobolPreprocessorPrinter<ExecutionContext> printer = new CobolPreprocessorPrinter<>();
+
     @Nullable
     private String copyUuid = null;
+
+    public CobolPrinter() {
+        this.printOriginalSource = true;
+    }
+
+    public CobolPrinter(boolean printOriginalSource) {
+        this.printOriginalSource = printOriginalSource;
+    }
 
     public Cobol visitAbbreviation(Cobol.Abbreviation abbreviation, PrintOutputCapture<P> p) {
         visitSpace(abbreviation.getPrefix(), p);
@@ -3852,21 +3869,24 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
-        Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
-        if (copyBook.isPresent()) {
-            if (copyUuid == null || !copyUuid.equals(copyBook.get().getOriginalStatement().getId().toString())) {
-                // TODO: Get input on how to print ... POC.
-                PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                CobolPreprocessorPrinter<ExecutionContext> printer = new CobolPreprocessorPrinter<>();
-                printer.visit(copyBook.get().getOriginalStatement(), output);
-                p.append(output.getOut());
-                copyUuid = copyBook.get().getOriginalStatement().getId().toString();
-            }
+        if (printOriginalSource) {
+            Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
+            // The COBOL word is a product of a copy statement.
+            if (copyBook.isPresent()) {
+                // Print the original Copy Statement in place of the first word from the copied source.
+                if (copyUuid == null || !copyUuid.equals(copyBook.get().getOriginalStatement().getId().toString())) {
+                    // Print the original copy
+                    PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
+                    printer.visit(copyBook.get().getOriginalStatement(), output);
+                    p.append(output.getOut());
+                    copyUuid = copyBook.get().getOriginalStatement().getId().toString();
+                }
 
-            // Do not print the AST for the copied source.
-            return word;
-        } else if (copyUuid != null) {
-            copyUuid = null;
+                // Do not print the AST for the copied source.
+                return word;
+            } else if (copyUuid != null) {
+                copyUuid = null;
+            }
         }
 
         Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);

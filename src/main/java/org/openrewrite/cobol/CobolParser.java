@@ -24,10 +24,8 @@ import org.openrewrite.Parser;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolParserVisitor;
-import org.openrewrite.cobol.internal.CobolPostPreprocessorPrinter;
-import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
+import org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter;
 import org.openrewrite.cobol.internal.grammar.CobolLexer;
-import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
 import org.openrewrite.cobol.proleap.*;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
@@ -90,7 +88,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         // Print processed code to parse COBOL.
                         PrintOutputCapture<ExecutionContext> cobolParserOutput = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                        CobolPostPreprocessorPrinter<ExecutionContext> printWithoutColumns = new CobolPostPreprocessorPrinter<>(cobolDialect, false);
+                        CobolPreprocessorOutputPrinter<ExecutionContext> printWithoutColumns = new CobolPreprocessorOutputPrinter<>(cobolDialect, false);
                         printWithoutColumns.visit(preprocessedCU, cobolParserOutput);
 
                         org.openrewrite.cobol.internal.grammar.CobolParser parser =
@@ -99,7 +97,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         // Print the pre-processed code to parse COBOL.
                         PrintOutputCapture<ExecutionContext> sourceOutput = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                        CobolPostPreprocessorPrinter<ExecutionContext> printWithColumns = new CobolPostPreprocessorPrinter<>(cobolDialect, true);
+                        CobolPreprocessorOutputPrinter<ExecutionContext> printWithColumns = new CobolPreprocessorOutputPrinter<>(cobolDialect, true);
                         printWithColumns.visit(preprocessedCU, sourceOutput);
 
                         List<CobolPreprocessor.CopyStatement> statements = cobolPreprocessorParser.getCopyStatements(preprocessedCU);

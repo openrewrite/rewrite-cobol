@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Collections.*;
 import static org.openrewrite.Tree.randomId;
-import static org.openrewrite.cobol.internal.CobolPostPreprocessorPrinter.*;
+import static org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter.*;
 import static org.openrewrite.cobol.tree.Space.format;
 
 public class CobolParserVisitor extends CobolBaseVisitor<Object> {

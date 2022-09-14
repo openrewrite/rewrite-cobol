@@ -28,7 +28,7 @@ import java.util.Optional;
  *      true: Print as source code with modifications to distinguish changes during preprocessing like COPY and REPLACE.
  *      false: Print as parser input for the CobolParserVisitor.
  */
-public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P> {
+public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<P> {
 
     public static final String COPY_START = "__COPY_START__";
     public static final String COPY_END = "__COPY_END__";
@@ -44,8 +44,8 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
     private String uuidLine = null;
 
 
-    public CobolPostPreprocessorPrinter(CobolDialect cobolDialect,
-                                        boolean printWithColumnAreas) {
+    public CobolPreprocessorOutputPrinter(CobolDialect cobolDialect,
+                                          boolean printWithColumnAreas) {
         this.cobolDialect = cobolDialect;
         this.printWithColumnAreas = printWithColumnAreas;
     }
@@ -150,6 +150,8 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
 
     @Override
     public CobolPreprocessor visitReplaceArea(CobolPreprocessor.ReplaceArea replaceArea, PrintOutputCapture<P> p) {
+        // TODO: add via template.
+
         if (replaceArea.getCobols() != null) {
             for (CobolPreprocessor cobol : replaceArea.getCobols()) {
                 visit(cobol, p);
@@ -160,6 +162,8 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
 
     @Override
     public CobolPreprocessor visitReplaceOffStatement(CobolPreprocessor.ReplaceOffStatement replaceOffStatement, PrintOutputCapture<P> p) {
+        // TODO: add via template.
+
         // Do not print.
         return replaceOffStatement;
     }
@@ -172,6 +176,7 @@ public class CobolPostPreprocessorPrinter<P> extends CobolPreprocessorPrinter<P>
             visitSpace(word.getPrefix(), p);
             visitMarkers(word.getMarkers(), p);
             p.append(word.getWord());
+
             Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
             commentArea.ifPresent(area -> visitSpace(area.getPrefix(), p));
             commentArea.ifPresent(area -> visitSpace(area.getEndOfLine(), p));
