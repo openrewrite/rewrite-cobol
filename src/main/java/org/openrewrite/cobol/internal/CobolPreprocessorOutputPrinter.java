@@ -167,7 +167,37 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
     @Override
     public CobolPreprocessor visitReplaceArea(CobolPreprocessor.ReplaceArea replaceArea, PrintOutputCapture<P> p) {
-        // TODO: add via template.
+        // TODO: note ... assess: due to the way COBOL works, it looks like the same template pattern will apply to EVERY Preprocessor AST that needs to be linked to the CobolParser.
+        if (printWithColumnAreas) {
+
+            // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
+            int curIndex = getCurrentIndex(p.getOut());
+            if (curIndex != -1) {
+                int insertIndex = p.getOut().lastIndexOf("\n");
+                insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
+
+                p.out.insert(insertIndex, getReplaceRuleStartComment());
+                p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
+                p.append("\n");
+
+                p.append(getUuidKey());
+                String copyUuid = getDialectSequenceArea() + "*" + replaceArea.getReplaceByStatement().getId();
+                String copyUuidLine = copyUuid + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - copyUuid.length()) + "\n";
+                p.append(copyUuidLine);
+
+                p.append(getReplaceRuleStopComment());
+
+                // Add whitespace until the next token will be aligned with the column area.
+                String statement = replaceArea.getReplaceByStatement().print(getCursor());
+                int numberOfSpaces = statement.endsWith("\n") ? 0 : statement.length() + curIndex;
+
+                String spacesCount = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
+                String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
+                p.append(spacesCountLine);
+
+                p.append(StringUtils.repeat(" ", numberOfSpaces));
+            }
+        }
 
         if (replaceArea.getCobols() != null) {
             for (CobolPreprocessor cobol : replaceArea.getCobols()) {
