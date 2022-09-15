@@ -50,6 +50,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
     // Lazily initialized Strings that are generated once with constraints based on the dialect.
     private String dialectSequenceArea = null;
+    private String uuidEndOfLine = null;
     private String copyStartComment = null;
     private String copyStopComment = null;
     private String replaceRuleStartComment = null;
@@ -140,7 +141,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
                     p.append(getUuidKey());
                     String copyUuid = getDialectSequenceArea() + "*" + copyStatement.getId();
-                    String copyUuidLine = copyUuid + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - copyUuid.length()) + "\n";
+                    String copyUuidLine = copyUuid + getUuidEndOfLine();
                     p.append(copyUuidLine);
 
                     visit(copyStatement.getCopyBook(), p);
@@ -169,6 +170,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     public CobolPreprocessor visitReplaceArea(CobolPreprocessor.ReplaceArea replaceArea, PrintOutputCapture<P> p) {
         // TODO: note ... assess: due to the way COBOL works, it looks like the same template pattern will apply to EVERY Preprocessor AST that needs to be linked to the CobolParser.
         if (printWithColumnAreas) {
+            CobolPreprocessor.ReplaceByStatement replaceByStatement = replaceArea.getReplaceByStatement();
+
+            // TODO: assess if it's okay to not print the original column areas for the ReplaceBy.
 
             // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
             int curIndex = getCurrentIndex(p.getOut());
@@ -181,8 +185,8 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 p.append("\n");
 
                 p.append(getUuidKey());
-                String copyUuid = getDialectSequenceArea() + "*" + replaceArea.getReplaceByStatement().getId();
-                String copyUuidLine = copyUuid + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - copyUuid.length()) + "\n";
+                String copyUuid = getDialectSequenceArea() + "*" + replaceByStatement.getId();
+                String copyUuidLine = copyUuid + getUuidEndOfLine();
                 p.append(copyUuidLine);
 
                 p.append(getReplaceRuleStopComment());
@@ -212,6 +216,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     public CobolPreprocessor visitReplaceOffStatement(CobolPreprocessor.ReplaceOffStatement replaceOffStatement, PrintOutputCapture<P> p) {
         // TODO: note ... assess: due to the way COBOL works, it looks like the same template pattern will apply to EVERY Preprocessor AST that needs to be linked to the CobolParser.
         if (printWithColumnAreas) {
+            // TODO: assess if it's okay to not print the original column areas for the ReplaceBy.
 
             // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
             int curIndex = getCurrentIndex(p.getOut());
@@ -225,7 +230,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
                 p.append(getUuidKey());
                 String copyUuid = getDialectSequenceArea() + "*" + replaceOffStatement.getId();
-                String copyUuidLine = copyUuid + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - copyUuid.length()) + "\n";
+                String copyUuidLine = copyUuid + getUuidEndOfLine();
                 p.append(copyUuidLine);
 
                 p.append(getReplaceOffStopComment());
@@ -357,6 +362,13 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             uuidComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
         }
         return uuidComment;
+    }
+
+    private String getUuidEndOfLine() {
+        if (uuidEndOfLine == null) {
+            uuidEndOfLine = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea() - 36) + "\n";
+        }
+        return uuidEndOfLine;
     }
 
     /**

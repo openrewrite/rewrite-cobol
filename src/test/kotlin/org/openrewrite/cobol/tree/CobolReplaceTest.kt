@@ -15,6 +15,7 @@
  */
 package org.openrewrite.cobol.tree
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
@@ -43,6 +44,7 @@ class CobolReplaceTest : RewriteTest {
         }
     }
 
+    @Disabled("Requires column alignment after replacements.")
     @Test
     fun sm208A() = rewriteRun(
         cobol(
