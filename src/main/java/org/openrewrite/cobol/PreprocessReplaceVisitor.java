@@ -5,6 +5,7 @@ import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
+import org.openrewrite.cobol.tree.Space;
 import org.openrewrite.internal.ListUtils;
 
 import java.util.*;
@@ -120,6 +121,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                 if (from.stream().anyMatch(it -> it.contains(finalWord))) {
                     if (to.get(0).isEmpty()) {
                         // The word isn't removed from the AST to preserve markers.
+                        word = word.withPrefix(Space.EMPTY);
                         word = word.withWord("");
                     } else {
                         word = word.withWord(to.get(0));
