@@ -135,17 +135,23 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     int insertIndex = p.getOut().lastIndexOf("\n");
                     insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
 
+                    // Add Start key.
                     p.out.insert(insertIndex, getCopyStartComment());
+
+                    // Fill the remaining line with whitespace to align the column areas.
                     p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
                     p.append("\n");
 
+                    // Add UUID key.
                     p.append(getUuidKey());
                     String copyUuid = getDialectSequenceArea() + "*" + copyStatement.getId();
                     String copyUuidLine = copyUuid + getUuidEndOfLine();
                     p.append(copyUuidLine);
 
+                    // Print copied source.
                     visit(copyStatement.getCopyBook(), p);
 
+                    // Add Stop key.
                     p.append(getCopyStopComment());
 
                     // Add whitespace until the next token will be aligned with the column area.
@@ -180,15 +186,22 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 int insertIndex = p.getOut().lastIndexOf("\n");
                 insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
 
+                // Add Start key.
                 p.out.insert(insertIndex, getReplaceRuleStartComment());
+
+                // Fill the remaining line with whitespace to align the column areas.
                 p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
                 p.append("\n");
 
+                // Add UUID key.
                 p.append(getUuidKey());
                 String copyUuid = getDialectSequenceArea() + "*" + replaceByStatement.getId();
                 String copyUuidLine = copyUuid + getUuidEndOfLine();
                 p.append(copyUuidLine);
 
+                // The Replacement rule is removed during preprocessing and is not printer here.
+
+                // Add Stop key.
                 p.append(getReplaceRuleStopComment());
 
                 // Add whitespace until the next token will be aligned with the column area.
@@ -224,15 +237,22 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 int insertIndex = p.getOut().lastIndexOf("\n");
                 insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
 
+                // Add Start key.
                 p.out.insert(insertIndex, getReplaceOffStartComment());
+
+                // Fill the remaining line with whitespace to align the column areas.
                 p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
                 p.append("\n");
 
+                // Add UUID key.
                 p.append(getUuidKey());
                 String copyUuid = getDialectSequenceArea() + "*" + replaceOffStatement.getId();
                 String copyUuidLine = copyUuid + getUuidEndOfLine();
                 p.append(copyUuidLine);
 
+                // ReplaceOff is removed during preprocessing and is not printer here.
+
+                // Add Stop key.
                 p.append(getReplaceOffStopComment());
 
                 // Add whitespace until the next token will be aligned with the column area.
@@ -252,7 +272,64 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     @Override
     public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
         if (printWithColumnAreas) {
-            super.visitWord(word, p);
+            Optional<Replace> replace = word.getMarkers().findFirst(Replace.class);
+            if (replace.isPresent()) {
+                // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
+                int curIndex = getCurrentIndex(p.getOut());
+                if (curIndex != -1) {
+                    int insertIndex = p.getOut().lastIndexOf("\n");
+                    insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
+
+                    // Add Start key.
+                    p.out.insert(insertIndex, getReplaceByStartComment());
+
+                    // Fill the remaining line with whitespace to align the column areas.
+                    p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
+                    p.append("\n");
+
+                    // Add UUID key.
+                    p.append(getUuidKey());
+                    String copyUuid = getDialectSequenceArea() + "*" + replace.get().getId();
+                    String copyUuidLine = copyUuid + getUuidEndOfLine();
+                    p.append(copyUuidLine);
+
+                    // Fill the line with whitespace until the content area.
+                    p.append(getDialectSequenceArea());
+                    p.append(" ");
+
+                    if (word.getWord().length() > replace.get().getOriginalWord().getWord().length()) {
+                        System.out.println();
+                    } else {
+                        /*  The original word is >= the length of the replaced word.
+                            To retain column alignment, the prefix is shifted left with whitespace equal to the difference between the original word and the replaced word.
+
+                            I.E. PICTURE replaced by PIC.
+                            Before:
+                                |000001| | firstWord PICTURE secondWord         |
+                            After:
+                                |000001| | firstWord     PIC secondWord         |
+                         */
+                        int difference = replace.get().getOriginalWord().getWord().length() - word.getWord().length();
+                        String additionalPrefix = StringUtils.repeat(" ", difference);
+                        p.append(additionalPrefix + word.getPrefix().getWhitespace() + word.getWord());
+                    }
+
+                    // Add Stop key.
+                    p.append(getReplaceByStopComment());
+
+                    // Add whitespace until the next token will be aligned with the column area.
+                    String statement = replace.get().getOriginalWord().print(getCursor());
+                    int numberOfSpaces = statement.endsWith("\n") ? 0 : statement.length() + curIndex;
+
+                    String spacesCount = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
+                    String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
+                    p.append(spacesCountLine);
+
+                    p.append(StringUtils.repeat(" ", numberOfSpaces));
+                }
+            } else {
+                super.visitWord(word, p);
+            }
         } else {
             visitSpace(word.getPrefix(), p);
             visitMarkers(word.getMarkers(), p);

@@ -13,5 +13,6 @@ import java.util.UUID;
 @Value
 public class Replace implements Marker {
     UUID id;
-    String originalWord;
+    // Saves the original word to preserve the markers and prefix.
+    CobolPreprocessor.Word originalWord;
 }

@@ -5,10 +5,13 @@ import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
+import org.openrewrite.cobol.tree.Replace;
 import org.openrewrite.cobol.tree.Space;
 import org.openrewrite.internal.ListUtils;
 
 import java.util.*;
+
+import static org.openrewrite.Tree.randomId;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
@@ -119,6 +122,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
             //  - This is especially important for continuations.
             if (ReplacementType.SINGLE_WORD == replacementType) {
                 if (from.stream().anyMatch(it -> it.contains(finalWord))) {
+                    Replace replace= new Replace(randomId(), word);
+                    word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                     if (to.get(0).isEmpty()) {
                         // The word isn't removed from the AST to preserve markers.
                         word = word.withPrefix(Space.EMPTY);
@@ -136,6 +141,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         pos = 0;
 
                         if (!current.get(pos).getWord().equals(to.get(pos))) {
+                            Replace replace= new Replace(randomId(), word);
+                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                             word = word.withWord(to.get(pos));
                         }
                         pos++;
@@ -144,6 +151,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     boolean isSame = current.get(pos).getWord().equals(word.getWord());
                     if (isSame) {
                         if (!current.get(pos).getWord().equals(to.get(pos))) {
+                            Replace replace= new Replace(randomId(), word);
+                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                             word = word.withWord(to.get(pos));
                         }
 
