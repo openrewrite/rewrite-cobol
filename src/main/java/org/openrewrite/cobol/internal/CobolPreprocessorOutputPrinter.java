@@ -19,6 +19,8 @@ import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -283,7 +285,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     // Add Start key.
                     p.out.insert(insertIndex, getReplaceByStartComment());
 
-                    // Fill the remaining line with whitespace to align the column areas.
                     p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
                     p.append("\n");
 
@@ -293,12 +294,80 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     String copyUuidLine = copyUuid + getUuidEndOfLine();
                     p.append(copyUuidLine);
 
-                    // Fill the line with whitespace until the content area.
-                    p.append(getDialectSequenceArea());
-                    p.append(" ");
+                    // Add Stop key.
+                    p.append(getReplaceByStopComment());
+                    p.append(StringUtils.repeat(" ", curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex));
+                    System.out.println();
 
                     if (word.getWord().length() > replace.get().getOriginalWord().getWord().length()) {
-                        System.out.println();
+                        // Add minimum whitespace separator to generate a unique token.
+                        String replacedWord = " " + word.getWord();
+
+                        int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
+                        // Check if the replaced word exceeds the length (+1 for the min WS delimiter) of the content area.
+                        if (replacedWord.length() > contentAreaLength) {
+                            // The current word must be a literal.
+                            /*
+                                I.E. "Z" replaced by """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                                Before:
+                                    |036800| |    MOVE "Z"| TO WRK-XN-00322.         |SM2084.2
+
+                                After:
+                                    |036800| |    MOVE """"""""""""""""""""""""""""""|
+                                    |      |-|"""""""""""""""""""""""""""""""""""""""|
+                                    |      |-|""""""""""""| TO WRK-XN-00322.         |SM2084.2
+                             */
+
+                            // Predetermine the length of the end of the literal to align the column areas with the next token.
+                            String dialectSequenceArea = getDialectSequenceArea();
+                            int originalLength = replace.get().getOriginalWord().getPrefix().getWhitespace().length() + replace.get().getOriginalWord().getWord().length();
+                            int endPos = replacedWord.length() - curIndex + getDialectSequenceArea().length() + 1 - originalLength;
+                            String end = dialectSequenceArea + "-" + replacedWord.substring(endPos);
+                            replacedWord = replacedWord.substring(0, replacedWord.length() - end.length());
+
+                            // Split the rest of the literal into continuable parts.
+                            int remainder = replacedWord.length() % contentAreaLength;
+                            // Precalculate the size of the array.
+                            int size = replacedWord.length() / contentAreaLength + (remainder == 0 ? 0 : 1);
+                            List<String> parts = new ArrayList<>(size);
+                            int total = replacedWord.length();
+                            for (int i = 0; i < size; i++) {
+                                if (total - contentAreaLength >= 0) {
+                                    String part = replacedWord.substring(total - contentAreaLength, total);
+                                    parts.add(part);
+                                    total -= part.length();
+                                } else {
+                                    if (total != remainder) {
+                                        throw new IllegalStateException("Oops");
+                                    }
+                                    parts.add(replacedWord.substring(0, remainder));
+                                }
+                            }
+
+                            for (int i = parts.size() - 1; i >= 0; i--) {
+                                String part = parts.get(i);
+                                if (i != parts.size() - 1) {
+                                    p.append(getDialectSequenceArea());
+                                    p.append("-");
+                                }
+                                p.append(part);
+                                if (i == parts.size() - 1 && part.length() < contentAreaLength) {
+                                    String whitespace = StringUtils.repeat(" ",
+                                            // Total area to be filled.
+                                            (getDialectSequenceArea().length() + 1 + contentAreaLength) -
+                                                    // Existing characters.
+                                                    (curIndex + part.length()));
+                                    p.append(whitespace);
+                                }
+                                p.append("\n");
+                            }
+                            p.append(end);
+                        } else {
+                            // TODO: add comment to distinguish when to use the whitespace?
+                            p.append(replacedWord);
+                            String endOfLine = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - getCurrentIndex(p.getOut())) + "\n";
+                            p.append(endOfLine);
+                        }
                     } else {
                         /*  The original word is >= the length of the replaced word.
                             To retain column alignment, the prefix is shifted left with whitespace equal to the difference between the original word and the replaced word.
@@ -310,22 +379,29 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                                 |000001| | firstWord     PIC secondWord         |
                          */
                         int difference = replace.get().getOriginalWord().getWord().length() - word.getWord().length();
-                        String additionalPrefix = StringUtils.repeat(" ", difference);
-                        p.append(additionalPrefix + word.getPrefix().getWhitespace() + word.getWord());
+                        // The difference exceeds the content area.
+                        if (curIndex + difference > cobolDialect.getColumns().getOtherArea()) {
+                            String fullWord = replace.get().getOriginalWord().print(getCursor());
+                            int lastIndex = fullWord.lastIndexOf("\n");
+
+                            String whitespace = StringUtils.repeat(" ",
+                                    // Total area to be filled.
+                                    fullWord.substring(lastIndex + 1)
+                                            .substring(cobolDialect.getColumns().getContentArea())
+                                            .length() - word.getWord().length() + getDialectSequenceArea().length() + 1);
+
+                            String endOfLine = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex) + "\n";
+                            p.append(endOfLine);
+                            p.append(whitespace);
+                            p.append(word.getWord());
+                            System.out.println();
+                        } else {
+                            String additionalPrefix = StringUtils.repeat(" ", difference);
+                            p.append(additionalPrefix);
+                            p.append(word.getPrefix().getWhitespace());
+                            p.append(word.getWord());
+                        }
                     }
-
-                    // Add Stop key.
-                    p.append(getReplaceByStopComment());
-
-                    // Add whitespace until the next token will be aligned with the column area.
-                    String statement = replace.get().getOriginalWord().print(getCursor());
-                    int numberOfSpaces = statement.endsWith("\n") ? 0 : statement.length() + curIndex;
-
-                    String spacesCount = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
-                    String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
-                    p.append(spacesCountLine);
-
-                    p.append(StringUtils.repeat(" ", numberOfSpaces));
                 }
             } else {
                 super.visitWord(word, p);
