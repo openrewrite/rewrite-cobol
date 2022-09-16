@@ -52,9 +52,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final boolean charsetBomMarked;
     private final CobolDialect cobolDialect;
 
-    private final Map<String, CobolPreprocessor.CopyStatement> copyStatementMap = new HashMap<>();
-    private final Map<String, CobolPreprocessor.ReplaceByStatement> replaceByStatementMap = new HashMap<>();
-    private final Map<String, CobolPreprocessor.ReplaceOffStatement> replaceOffStatementMap = new HashMap<>();
+    private final Map<String, CobolPreprocessor.CopyStatement> copyMap = new HashMap<>();
+    private final Map<String, CobolPreprocessor.ReplaceByStatement> replaceByMap = new HashMap<>();
+    private final Map<String, CobolPreprocessor.ReplaceOffStatement> replaceOffMap = new HashMap<>();
     private final Map<String, Replace> replaceMap = new HashMap<>();
 
     // TODO: Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
@@ -79,17 +79,17 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private String copyStopComment = null;
     private String copyUuidComment = null;
 
-    private String replaceRuleStartComment = null;
-    private String replaceRuleStopComment = null;
-    private String replaceRuleUuidComment = null;
+    private String replaceByStartComment = null;
+    private String replaceByStopComment = null;
+    private String replaceByUuidComment = null;
 
     private String replaceOffStartComment = null;
     private String replaceOffStopComment = null;
     private String replaceOffUuidComment = null;
 
-    private String replaceByStartComment = null;
-    private String replaceByStopComment = null;
-    private String replaceByUuidComment = null;
+    private String replaceStartComment = null;
+    private String replaceStopComment = null;
+    private String replaceUuidComment = null;
 
     private Integer nextCopyIndex = null;
 
@@ -97,10 +97,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private CobolPreprocessor.CopyStatement currentCopy = null;
 
     @Nullable
-    private CobolPreprocessor.ReplaceByStatement currentReplaceByStatement = null;
+    private CobolPreprocessor.ReplaceByStatement currentReplaceBy = null;
 
     @Nullable
-    private CobolPreprocessor.ReplaceOffStatement currentReplacOffStatement = null;
+    private CobolPreprocessor.ReplaceOffStatement currentReplaceOff = null;
 
     @Nullable
     private Replace currentReplace = null;
@@ -122,9 +122,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         this.charsetBomMarked = charsetBomMarked;
         this.cobolDialect = cobolDialect;
 
-        copyStatements.forEach(it -> copyStatementMap.putIfAbsent(it.getId().toString(), it));
-        replaceByStatements.forEach(it -> replaceByStatementMap.putIfAbsent(it.getId().toString(), it));
-        replaceOffStatements.forEach(it -> replaceOffStatementMap.putIfAbsent(it.getId().toString(), it));
+        copyStatements.forEach(it -> copyMap.putIfAbsent(it.getId().toString(), it));
+        replaceByStatements.forEach(it -> replaceByMap.putIfAbsent(it.getId().toString(), it));
+        replaceOffStatements.forEach(it -> replaceOffMap.putIfAbsent(it.getId().toString(), it));
         replaces.forEach(it -> replaceMap.putIfAbsent(it.getId().toString(), it));
     }
 
@@ -188,13 +188,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             this.copyStopComment = COPY_STOP_KEY + StringUtils.repeat("_", contentArea - COPY_STOP_KEY.length());
             this.copyUuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
 
-            this.replaceRuleStartComment = REPLACE_RULE_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_RULE_START_KEY.length());
-            this.replaceRuleStopComment = REPLACE_RULE_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_RULE_STOP_KEY.length());
-            this.replaceRuleUuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
-
-            this.replaceByStartComment = REPLACE_BY_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_START_KEY.length());
-            this.replaceByStopComment = REPLACE_BY_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_STOP_KEY.length());
+            this.replaceByStartComment = REPLACE_RULE_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_RULE_START_KEY.length());
+            this.replaceByStopComment = REPLACE_RULE_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_RULE_STOP_KEY.length());
             this.replaceByUuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
+
+            this.replaceStartComment = REPLACE_BY_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_START_KEY.length());
+            this.replaceStopComment = REPLACE_BY_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_STOP_KEY.length());
+            this.replaceUuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
 
             this.replaceOffStartComment = REPLACE_OFF_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_OFF_START_KEY.length());
             this.replaceOffStopComment = REPLACE_OFF_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_OFF_STOP_KEY.length());
@@ -6689,47 +6689,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         indicatorArea(null);
         String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
         cursor += uuid.length();
-        currentCopy = copyStatementMap.get(uuid.trim());
+        currentCopy = copyMap.get(uuid.trim());
     }
 
     /**
-     * Parse the `replaceRuleStartComment` start comment added by the COBOL copy template.
-     */
-    private void replaceRuleStartComment() {
-        cursor += replaceRuleStartComment.length();
-        cursor++; // Increment passed the \n.
-
-        // TODO: note this requires getting the original replace rule.
-    }
-
-    /**
-     * Parse the `replaceRuleStopComment` stop comment added by the COBOL copy template.
-     */
-    private void replaceRuleStopComment() {
-        cursor += replaceRuleStopComment.length();
-        cursor++; // Increment passed the \n.
-
-    }
-
-
-    /**
-     * Parse the `replaceRuleUuidComment` UUID comment added by the COBOL copy template.
-     */
-    private void replaceRuleUuidComment() {
-        cursor += replaceRuleUuidComment.length();
-        cursor++; // Increment passed the \n.
-
-        removeTemplateCommentArea = false;
-
-        sequenceArea();
-        indicatorArea(null);
-        String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
-        cursor += uuid.length();
-        currentReplaceRule = replaceByStatementMap.get(uuid.trim());
-    }
-
-    /**
-     * Parse the `replaceByStartComment` comment added by the COBOL copy template.
+     * Parse the `replaceByStartComment` start comment added by the COBOL copy template.
      */
     private void replaceByStartComment() {
         cursor += replaceByStartComment.length();
@@ -6739,18 +6703,54 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     /**
-     * Parse the `replaceByStopComment` comment added by the COBOL copy template.
+     * Parse the `replaceByStopComment` stop comment added by the COBOL copy template.
      */
     private void replaceByStopComment() {
         cursor += replaceByStopComment.length();
+        cursor++; // Increment passed the \n.
+
+    }
+
+
+    /**
+     * Parse the `replaceRuleUuidComment` UUID comment added by the COBOL copy template.
+     */
+    private void replaceByUuidComment() {
+        cursor += replaceByUuidComment.length();
+        cursor++; // Increment passed the \n.
+
+        removeTemplateCommentArea = false;
+
+        sequenceArea();
+        indicatorArea(null);
+        String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+        cursor += uuid.length();
+        currentReplaceBy = replaceByMap.get(uuid.trim());
+    }
+
+    /**
+     * Parse the `replaceByStartComment` comment added by the COBOL copy template.
+     */
+    private void replaceStartComment() {
+        cursor += replaceStartComment.length();
+        cursor++; // Increment passed the \n.
+
+        // TODO: note this requires getting the original replace rule.
+    }
+
+    /**
+     * Parse the `replaceByStopComment` comment added by the COBOL copy template.
+     */
+    private void replaceStopComment() {
+        cursor += replaceStopComment.length();
         cursor++; // Increment passed the \n.
     }
 
     /**
      * Parse the `replaceByUuidComment` comment added by the COBOL copy template.
      */
-    private void replaceByUuidComment() {
-        cursor += replaceByUuidComment.length();
+    private void replaceUuidComment() {
+        cursor += replaceUuidComment.length();
         cursor++; // Increment passed the \n.
 
         removeTemplateCommentArea = false;
@@ -6793,7 +6793,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         indicatorArea(null);
         String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
         cursor += uuid.length();
-        currentReplaceOff = replaceOffStatementMap.get(uuid.trim());
+        currentReplaceOff = replaceOffMap.get(uuid.trim());
     }
 
     /**
