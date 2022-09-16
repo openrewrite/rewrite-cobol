@@ -188,12 +188,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             this.copyStopComment = COPY_STOP_KEY + StringUtils.repeat("_", contentArea - COPY_STOP_KEY.length());
             this.copyUuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
 
-            this.replaceByStartComment = REPLACE_RULE_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_RULE_START_KEY.length());
-            this.replaceByStopComment = REPLACE_RULE_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_RULE_STOP_KEY.length());
+            this.replaceByStartComment = REPLACE_BY_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_START_KEY.length());
+            this.replaceByStopComment = REPLACE_BY_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_STOP_KEY.length());
             this.replaceByUuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
 
-            this.replaceStartComment = REPLACE_BY_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_START_KEY.length());
-            this.replaceStopComment = REPLACE_BY_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_STOP_KEY.length());
+            this.replaceStartComment = REPLACE_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_START_KEY.length());
+            this.replaceStopComment = REPLACE_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_STOP_KEY.length());
             this.replaceUuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
 
             this.replaceOffStartComment = REPLACE_OFF_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_OFF_START_KEY.length());
