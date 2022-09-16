@@ -297,8 +297,14 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
                     // Add Stop key.
                     p.append(getReplaceByStopComment());
+
+                    // The entire line is filled with whitespace if the curIndex is 0.
+                    int index = curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex;
+                    String spacesCount = getDialectSequenceArea() + "*" + index;
+                    String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
+                    p.append(spacesCountLine);
+
                     p.append(StringUtils.repeat(" ", curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex));
-                    System.out.println();
 
                     // Additive replacement like PIC to PICTURE.
                     if (word.getWord().length() > replace.get().getOriginalWord().getWord().length()) {
@@ -330,7 +336,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
                             // Split the rest of the literal into continuable parts.
                             int remainder = replacedWord.length() % contentAreaLength;
-                            // Precalculate the size of the array.
                             int size = replacedWord.length() / contentAreaLength + (remainder == 0 ? 0 : 1);
                             List<String> parts = new ArrayList<>(size);
                             int total = replacedWord.length();
@@ -373,10 +378,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                             p.append(word.getWord());
                         }
                     } else {
-                        if (word.getWord().equals("\"PASS\"")) {
-                            System.out.println();
-                        }
-                        /*  The original word is >= the length of the replaced word.
+                        /*  The original word is <= the length of the replaced word.
                             To retain column alignment, the prefix is shifted left with whitespace equal to the difference between the original word and the replaced word.
 
                             I.E. PICTURE replaced by PIC.
@@ -390,16 +392,14 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                         if (curIndex + difference > cobolDialect.getColumns().getOtherArea()) {
                             String fullWord = replace.get().getOriginalWord().print(getCursor());
                             int lastIndex = fullWord.lastIndexOf("\n");
+                            fullWord = fullWord.substring(lastIndex + 1);
 
-                            String whitespace = StringUtils.repeat(" ",
-                                    // Total area to be filled.
-                                    fullWord.substring(lastIndex + 1)
-                                            .substring(cobolDialect.getColumns().getContentArea())
-                                            .length() - word.getWord().length() + getDialectSequenceArea().length() + 1);
+                            if (fullWord.length() - word.getWord().length() < curIndex) {
+                                p.out.delete(p.getOut().length() - (curIndex - (fullWord.length() - word.getWord().length())), p.getOut().length());
+                            } else {
+                                p.append(StringUtils.repeat(" ", fullWord.length() - word.getWord().length() - curIndex));
+                            }
 
-                            String endOfLine = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex) + "\n";
-                            p.append(endOfLine);
-                            p.append(whitespace);
                             p.append(word.getWord());
                         } else {
                             String additionalPrefix = StringUtils.repeat(" ", difference);
