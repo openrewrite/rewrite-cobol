@@ -13,4 +13,5 @@ import java.util.UUID;
 @Value
 public class ReplaceOff implements Marker {
     UUID id;
+    CobolPreprocessor.ReplaceOffStatement replaceOff;
 }
