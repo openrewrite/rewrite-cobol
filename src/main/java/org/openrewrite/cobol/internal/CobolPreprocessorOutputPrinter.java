@@ -363,10 +363,14 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                             }
                             p.append(end);
                         } else {
-                            // TODO: add comment to distinguish when to use the whitespace?
-                            p.append(replacedWord);
-                            String endOfLine = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - getCurrentIndex(p.getOut())) + "\n";
-                            p.append(endOfLine);
+                            String first = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - getCurrentIndex(p.getOut())) + "\n";
+                            p.append(first);
+                            if (word.getWord().equals("EQUAL")) {
+                                System.out.println();
+                            }
+                            String prefix = StringUtils.repeat(" ", curIndex + word.getPrefix().getWhitespace().length() - (word.getWord().length() - replace.get().getOriginalWord().getWord().length()));
+                            p.append(prefix);
+                            p.append(word.getWord());
                         }
                     } else {
                         /*  The original word is >= the length of the replaced word.
