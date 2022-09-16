@@ -100,8 +100,6 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                         CobolPreprocessorOutputPrinter<ExecutionContext> printWithColumns = new CobolPreprocessorOutputPrinter<>(cobolDialect, true);
                         printWithColumns.visit(preprocessedCU, sourceOutput);
 
-                        List<CobolPreprocessor.CopyStatement> statements = cobolPreprocessorParser.getCopyStatements(preprocessedCU);
-
                         Cobol.CompilationUnit compilationUnit = new CobolParserVisitor(
                                 sourceFile.getRelativePath(relativeTo),
                                 sourceFile.getFileAttributes(),
@@ -109,7 +107,10 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                                 is.getCharset(),
                                 is.isCharsetBomMarked(),
                                 cobolDialect,
-                                statements
+                                cobolPreprocessorParser.getCopyStatements(preprocessedCU),
+                                cobolPreprocessorParser.getReplaceByStatements(preprocessedCU),
+                                cobolPreprocessorParser.getReplaceOffStatements(preprocessedCU),
+                                cobolPreprocessorParser.getReplaces(preprocessedCU)
                         ).visitStartRule(parser.startRule());
 
                         sample.stop(MetricsHelper.successTags(timer).register(Metrics.globalRegistry));

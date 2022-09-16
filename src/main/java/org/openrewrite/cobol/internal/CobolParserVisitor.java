@@ -53,6 +53,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final CobolDialect cobolDialect;
 
     private final Map<String, CobolPreprocessor.CopyStatement> copyStatementMap = new HashMap<>();
+    private final Map<String, CobolPreprocessor.ReplaceByStatement> replaceByStatementMap = new HashMap<>();
+    private final Map<String, CobolPreprocessor.ReplaceOffStatement> replaceOffStatementMap = new HashMap<>();
+    private final Map<String, Replace> replaceMap = new HashMap<>();
+
     // TODO: Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
     // The String is primarily used for debugging parsing issues, since the column positions are set prior to the parsing.
     private final Map<Integer, String> sequenceAreas = new HashMap<>();
@@ -61,17 +65,45 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final Set<String> separators = new HashSet<>();
     private int cursor = 0;
 
-    // TODO: fix names and clean up.
+    // TODO: fix names and clean up. Note: it might be possible to reused mechanics between COPY and REPLACE, but it is separate for now.
+    private boolean inReplaceRule;
+    private boolean inReplaceBy;
+    private boolean inReplaceOff;
     private boolean inCopiedText;
+
+    // Trigger condition to remove whitespace added by the template.
     private boolean removeTemplateCommentArea;
     private boolean removeColumnMarkers;
-    private Integer copySpaces = null;
-    private String copyStart = null;
-    private String copyEnd = null;
-    private String copyUuid = null;
+
+    private String copyStartComment = null;
+    private String copyStopComment = null;
+    private String copyUuidComment = null;
+
+    private String replaceRuleStartComment = null;
+    private String replaceRuleStopComment = null;
+    private String replaceRuleUuidComment = null;
+
+    private String replaceOffStartComment = null;
+    private String replaceOffStopComment = null;
+    private String replaceOffUuidComment = null;
+
+    private String replaceByStartComment = null;
+    private String replaceByStopComment = null;
+    private String replaceByUuidComment = null;
+
+    private Integer nextCopyIndex = null;
 
     @Nullable
     private CobolPreprocessor.CopyStatement currentCopy = null;
+
+    @Nullable
+    private CobolPreprocessor.ReplaceByStatement currentReplaceByStatement = null;
+
+    @Nullable
+    private CobolPreprocessor.ReplaceOffStatement currentReplacOffStatement = null;
+
+    @Nullable
+    private Replace currentReplace = null;
 
     public CobolParserVisitor(Path path,
                               @Nullable FileAttributes fileAttributes,
@@ -79,7 +111,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                               Charset charset,
                               boolean charsetBomMarked,
                               CobolDialect cobolDialect,
-                              List<CobolPreprocessor.CopyStatement> copyStatements) {
+                              Set<CobolPreprocessor.CopyStatement> copyStatements,
+                              Set<CobolPreprocessor.ReplaceByStatement> replaceByStatements,
+                              Set<CobolPreprocessor.ReplaceOffStatement> replaceOffStatements,
+                              Set<Replace> replaces) {
         this.path = path;
         this.fileAttributes = fileAttributes;
         this.source = source;
@@ -88,6 +123,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         this.cobolDialect = cobolDialect;
 
         copyStatements.forEach(it -> copyStatementMap.putIfAbsent(it.getId().toString(), it));
+        replaceByStatements.forEach(it -> replaceByStatementMap.putIfAbsent(it.getId().toString(), it));
+        replaceOffStatements.forEach(it -> replaceOffStatementMap.putIfAbsent(it.getId().toString(), it));
+        replaces.forEach(it -> replaceMap.putIfAbsent(it.getId().toString(), it));
     }
 
     public <T> T visit(@Nullable ParseTree... trees) {
@@ -146,9 +184,21 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             separators.addAll(cobolDialect.getSeparators());
 
             int contentArea = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
-            this.copyStart = COPY_START_KEY + StringUtils.repeat("_", contentArea - COPY_START_KEY.length());
-            this.copyEnd = COPY_STOP_KEY + StringUtils.repeat("_", contentArea - COPY_STOP_KEY.length());
-            this.copyUuid = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
+            this.copyStartComment = COPY_START_KEY + StringUtils.repeat("_", contentArea - COPY_START_KEY.length());
+            this.copyStopComment = COPY_STOP_KEY + StringUtils.repeat("_", contentArea - COPY_STOP_KEY.length());
+            this.copyUuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
+
+            this.replaceRuleStartComment = REPLACE_RULE_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_RULE_START_KEY.length());
+            this.replaceRuleStopComment = REPLACE_RULE_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_RULE_STOP_KEY.length());
+            this.replaceRuleUuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
+
+            this.replaceByStartComment = REPLACE_BY_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_START_KEY.length());
+            this.replaceByStopComment = REPLACE_BY_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_STOP_KEY.length());
+            this.replaceByUuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
+
+            this.replaceOffStartComment = REPLACE_OFF_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_OFF_START_KEY.length());
+            this.replaceOffStopComment = REPLACE_OFF_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_OFF_STOP_KEY.length());
+            this.replaceOffUuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
         } else if (cobolDialect.getColumns() == CobolDialect.Columns.HP_TANDEM) {
             throw new UnsupportedOperationException("Implement me.");
         } else {
@@ -6240,14 +6290,14 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             }
         }
 
-        if (!isColumnArea && copySpaces != null && copySpaces > 0) {
+        if (!isColumnArea && nextCopyIndex != null && nextCopyIndex > 0) {
             int totalWhitespace = (delimIndex - cursor);
-            int prefixCount = (totalWhitespace - copySpaces);
+            int prefixCount = (totalWhitespace - nextCopyIndex);
             int templateWhitespace = totalWhitespace - prefixCount;
             this.cursor += templateWhitespace;
 
             delimIndex = this.cursor + prefixCount;
-            copySpaces = null;
+            nextCopyIndex = null;
             removeColumnMarkers = true;
         }
         return delimIndex;
@@ -6469,22 +6519,22 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
             // Detect and trigger actions based on the COPY template printed in the CobolPostPreprocessorPrinter.
             // The COPY template links the original source code, and preprocess commands like COPY and REPLACE to the Cobol AST.
-            if (copyStart.equals(contentArea)) {
-                copyStart();
+            if (copyStartComment.equals(contentArea)) {
+                copyStartComment();
 
                 // Reset the column areas, because the template comments have been parsed.
                 sequenceArea = sequenceArea();
                 indicatorArea = indicatorArea(null);
                 contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
-            } else if (copyUuid.equals(contentArea)) {
-                copyUuid();
+            } else if (copyUuidComment.equals(contentArea)) {
+                copyUuidComment();
 
                 // Reset the column areas, because the template comments have been parsed.
                 sequenceArea = sequenceArea();
                 indicatorArea = indicatorArea(null);
                 contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
-            } else if (copyEnd.equals(contentArea)) {
-                copyEnd();
+            } else if (copyStopComment.equals(contentArea)) {
+                copyStopComment();
 
                 // Reset the column areas, because the template comments have been parsed.
                 sequenceArea = sequenceArea();
@@ -6492,8 +6542,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
 
                 // Handle sequential copy statements.
-                if (copyStart.equals(contentArea)) {
-                    copyStart();
+                if (copyStartComment.equals(contentArea)) {
+                    copyStartComment();
                     sequenceArea = sequenceArea();
                     indicatorArea = indicatorArea(null);
                     contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
@@ -6514,22 +6564,22 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     indicatorArea = indicatorArea(null);
 
                     contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
-                    if (copyStart.equals(contentArea)) {
-                        copyStart();
+                    if (copyStartComment.equals(contentArea)) {
+                        copyStartComment();
 
                         // Reset the column areas, because the template comments have been parsed.
                         sequenceArea = sequenceArea();
                         indicatorArea = indicatorArea(null);
                         contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
-                    } else if (copyUuid.equals(contentArea)) {
-                        copyUuid();
+                    } else if (copyUuidComment.equals(contentArea)) {
+                        copyUuidComment();
 
                         // Reset the column areas, because the template comments have been parsed.
                         sequenceArea = sequenceArea();
                         indicatorArea = indicatorArea(null);
                         contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
-                    } else if (copyEnd.equals(contentArea)) {
-                        copyEnd();
+                    } else if (copyStopComment.equals(contentArea)) {
+                        copyStopComment();
 
                         // Reset the column areas, because the template comments have been parsed.
                         sequenceArea = sequenceArea();
@@ -6537,8 +6587,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                         contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
 
                         // Handle sequential copy statements.
-                        if (copyStart.equals(contentArea)) {
-                            copyStart();
+                        if (copyStartComment.equals(contentArea)) {
+                            copyStartComment();
                             sequenceArea = sequenceArea();
                             indicatorArea = indicatorArea(null);
                             contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
@@ -6593,10 +6643,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     /**
-     * Parse the copy start comment added by the COBOL copy template.
+     * Parse the `copyStartComment` added by the COBOL copy template.
      */
-    private void copyStart() {
-        cursor += copyStart.length();
+    private void copyStartComment() {
+        cursor += copyStartComment.length();
         cursor++; // Increment passed the \n.
 
         inCopiedText = true;
@@ -6605,14 +6655,14 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         // Reset copy info.
         currentCopy = null;
         removeColumnMarkers = false;
-        copySpaces = null;
+        nextCopyIndex = null;
     }
 
     /**
-     * Parse the copy end comment added by the COBOL copy template.
+     * Parse the `copyStopComment` added by the COBOL copy template.
      */
-    private void copyEnd() {
-        cursor += copyEnd.length();
+    private void copyStopComment() {
+        cursor += copyStopComment.length();
         cursor++; // Increment passed the \n.
 
         currentCopy = null;
@@ -6623,14 +6673,14 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
         cursor += numberOfSpaces.length();
-        copySpaces = Integer.valueOf(numberOfSpaces.trim());
+        nextCopyIndex = Integer.valueOf(numberOfSpaces.trim());
     }
 
     /**
-     * Parse the UUID comment added by the COBOL copy template.
+     * Parse the `copyUuidComment` added by the COBOL copy template.
      */
-    private void copyUuid() {
-        cursor += copyUuid.length();
+    private void copyUuidComment() {
+        cursor += copyUuidComment.length();
         cursor++; // Increment passed the \n.
 
         removeTemplateCommentArea = false;
@@ -6640,6 +6690,110 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
         cursor += uuid.length();
         currentCopy = copyStatementMap.get(uuid.trim());
+    }
+
+    /**
+     * Parse the `replaceRuleStartComment` start comment added by the COBOL copy template.
+     */
+    private void replaceRuleStartComment() {
+        cursor += replaceRuleStartComment.length();
+        cursor++; // Increment passed the \n.
+
+        // TODO: note this requires getting the original replace rule.
+    }
+
+    /**
+     * Parse the `replaceRuleStopComment` stop comment added by the COBOL copy template.
+     */
+    private void replaceRuleStopComment() {
+        cursor += replaceRuleStopComment.length();
+        cursor++; // Increment passed the \n.
+
+    }
+
+
+    /**
+     * Parse the `replaceRuleUuidComment` UUID comment added by the COBOL copy template.
+     */
+    private void replaceRuleUuidComment() {
+        cursor += replaceRuleUuidComment.length();
+        cursor++; // Increment passed the \n.
+
+        removeTemplateCommentArea = false;
+
+        sequenceArea();
+        indicatorArea(null);
+        String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+        cursor += uuid.length();
+        currentReplaceRule = replaceByStatementMap.get(uuid.trim());
+    }
+
+    /**
+     * Parse the `replaceByStartComment` comment added by the COBOL copy template.
+     */
+    private void replaceByStartComment() {
+        cursor += replaceByStartComment.length();
+        cursor++; // Increment passed the \n.
+
+        // TODO: note this requires getting the original replace rule.
+    }
+
+    /**
+     * Parse the `replaceByStopComment` comment added by the COBOL copy template.
+     */
+    private void replaceByStopComment() {
+        cursor += replaceByStopComment.length();
+        cursor++; // Increment passed the \n.
+    }
+
+    /**
+     * Parse the `replaceByUuidComment` comment added by the COBOL copy template.
+     */
+    private void replaceByUuidComment() {
+        cursor += replaceByUuidComment.length();
+        cursor++; // Increment passed the \n.
+
+        removeTemplateCommentArea = false;
+
+        sequenceArea();
+        indicatorArea(null);
+        String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+        cursor += uuid.length();
+        currentReplace = replaceMap.get(uuid.trim());
+    }
+
+    /**
+     * Parse the `replaceOffStartComment` added by the COBOL copy template.
+     */
+    private void replaceOffStartComment() {
+        cursor += replaceOffStartComment.length();
+        cursor++; // Increment passed the \n.
+
+        // TODO: note this requires getting the original replace off.
+    }
+
+    /**
+     * Parse the `replaceOffStopComment` added by the COBOL copy template.
+     */
+    private void replaceOffStopComment() {
+        cursor += replaceOffStopComment.length();
+        cursor++; // Increment passed the \n.
+    }
+
+    /**
+     * Parse the `replaceOffUuidComment` comment added by the COBOL copy template.
+     */
+    private void replaceOffUuidComment() {
+        cursor += replaceOffUuidComment.length();
+        cursor++; // Increment passed the \n.
+
+        removeTemplateCommentArea = false;
+
+        sequenceArea();
+        indicatorArea(null);
+        String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+        cursor += uuid.length();
+        currentReplaceOff = replaceOffStatementMap.get(uuid.trim());
     }
 
     /**
@@ -6682,6 +6836,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         }
         return null;
     }
+
     /**
      * Return the CommentArea based on the current cursor position if it exists.
      * `removeTemplateCommentArea` is used to remove CommentAreas that were added by the COBOL copy template.

@@ -28,6 +28,7 @@ import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
 import org.openrewrite.cobol.proleap.*;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
+import org.openrewrite.cobol.tree.Replace;
 import org.openrewrite.cobol.tree.Space;
 import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.MetricsHelper;
@@ -43,10 +44,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -66,6 +64,12 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private final ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat;
     private final boolean enableCopy;
     private final boolean enableReplace;
+
+    // Lazily loaded maps of the original source objects.
+    private Set<CobolPreprocessor.CopyStatement> copyStatements = null;
+    private Set<CobolPreprocessor.ReplaceByStatement> replaceRules = null;
+    private Set<CobolPreprocessor.ReplaceOffStatement> replaceOffs = null;
+    private Set<Replace> replaces = null;
 
     public CobolPreprocessorParser(CobolDialect cobolDialect,
                                    ProLeapCobolDialect proLeapCobolDialect,
@@ -339,18 +343,70 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         }
     }
 
-    public List<CobolPreprocessor.CopyStatement> getCopyStatements(@Nullable CobolPreprocessor.CompilationUnit cu) {
-        List<CobolPreprocessor.CopyStatement> statements = new ArrayList<>();
-        CobolPreprocessorIsoVisitor<List<CobolPreprocessor.CopyStatement>> visitor = new CobolPreprocessorIsoVisitor<List<CobolPreprocessor.CopyStatement>>() {
+    // TODO clean up.
+    public Set<CobolPreprocessor.CopyStatement> getCopyStatements(@Nullable CobolPreprocessor.CompilationUnit cu) {
+        if (copyStatements == null) {
+            getOriginalSources(cu);
+        }
+        return copyStatements;
+    }
+
+    public Set<CobolPreprocessor.ReplaceByStatement> getReplaceByStatements(@Nullable CobolPreprocessor.CompilationUnit cu) {
+        if (replaceRules == null) {
+            getOriginalSources(cu);
+        }
+        return replaceRules;
+    }
+
+    public Set<CobolPreprocessor.ReplaceOffStatement> getReplaceOffStatements(@Nullable CobolPreprocessor.CompilationUnit cu) {
+        if (replaceOffs == null) {
+            getOriginalSources(cu);
+        }
+        return replaceOffs;
+    }
+
+    public Set<Replace> getReplaces(@Nullable CobolPreprocessor.CompilationUnit cu) {
+        if (replaces == null) {
+            getOriginalSources(cu);
+        }
+        return replaces;
+    }
+
+    public void getOriginalSources(@Nullable CobolPreprocessor.CompilationUnit cu) {
+        this.copyStatements = new HashSet<>();
+        this.replaceRules = new HashSet<>();
+        this.replaceOffs = new HashSet<>();
+        this.replaces = new HashSet<>();
+
+        CobolPreprocessorIsoVisitor<ExecutionContext> visitor = new CobolPreprocessorIsoVisitor<ExecutionContext>() {
             @Override
             public CobolPreprocessor.CopyStatement visitCopyStatement(CobolPreprocessor.CopyStatement copyStatement,
-                                                                      List<CobolPreprocessor.CopyStatement> statementList) {
-                statements.add(copyStatement);
-                return super.visitCopyStatement(copyStatement, statementList);
+                                                                      ExecutionContext executionContext) {
+                copyStatements.add(copyStatement);
+                return super.visitCopyStatement(copyStatement, executionContext);
+            }
+
+            @Override
+            public CobolPreprocessor.ReplaceByStatement visitReplaceByStatement(CobolPreprocessor.ReplaceByStatement replaceByStatement, ExecutionContext executionContext) {
+                replaceRules.add(replaceByStatement);
+                return super.visitReplaceByStatement(replaceByStatement, executionContext);
+            }
+
+            @Override
+            public CobolPreprocessor.ReplaceOffStatement visitReplaceOffStatement(CobolPreprocessor.ReplaceOffStatement replaceOffStatement, ExecutionContext executionContext) {
+                replaceOffs.add(replaceOffStatement);
+                return super.visitReplaceOffStatement(replaceOffStatement, executionContext);
+            }
+
+            @Override
+            public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
+                Optional<Replace> replace = word.getMarkers().findFirst(Replace.class);
+                replace.ifPresent(it -> replaces.add(it));
+                return super.visitWord(word, executionContext);
             }
         };
 
-        visitor.visit(cu, statements);
-        return statements;
+        visitor.visit(cu, new InMemoryExecutionContext());
+
     }
 }

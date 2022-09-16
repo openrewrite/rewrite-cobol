@@ -274,6 +274,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     @Override
     public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
         if (printWithColumnAreas) {
+            // Beware all who enter.
             Optional<Replace> replace = word.getMarkers().findFirst(Replace.class);
             if (replace.isPresent()) {
                 // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
