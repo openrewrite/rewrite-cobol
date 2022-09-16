@@ -62,7 +62,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private String replaceByStartComment = null;
     private String replaceByStopComment = null;
     private String uuidComment = null;
-
+    private boolean isLastWordReplaced = false;
 
     public CobolPreprocessorOutputPrinter(CobolDialect cobolDialect,
                                           boolean printWithColumnAreas) {
@@ -285,6 +285,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     // Add Start key.
                     p.out.insert(insertIndex, getReplaceByStartComment());
 
+                    // Fill in the rest of the content area with whitespace.
                     p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
                     p.append("\n");
 
@@ -299,6 +300,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     p.append(StringUtils.repeat(" ", curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex));
                     System.out.println();
 
+                    // Additive replacement like PIC to PICTURE.
                     if (word.getWord().length() > replace.get().getOriginalWord().getWord().length()) {
                         // Add minimum whitespace separator to generate a unique token.
                         String replacedWord = " " + word.getWord();
@@ -313,6 +315,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                                     |036800| |    MOVE "Z"| TO WRK-XN-00322.         |SM2084.2
 
                                 After:
+                                    |      | |REPLACE_START__________________________|
                                     |036800| |    MOVE """"""""""""""""""""""""""""""|
                                     |      |-|"""""""""""""""""""""""""""""""""""""""|
                                     |      |-|""""""""""""| TO WRK-XN-00322.         |SM2084.2
@@ -365,14 +368,14 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                         } else {
                             String first = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - getCurrentIndex(p.getOut())) + "\n";
                             p.append(first);
-                            if (word.getWord().equals("EQUAL")) {
-                                System.out.println();
-                            }
                             String prefix = StringUtils.repeat(" ", curIndex + word.getPrefix().getWhitespace().length() - (word.getWord().length() - replace.get().getOriginalWord().getWord().length()));
                             p.append(prefix);
                             p.append(word.getWord());
                         }
                     } else {
+                        if (word.getWord().equals("\"PASS\"")) {
+                            System.out.println();
+                        }
                         /*  The original word is >= the length of the replaced word.
                             To retain column alignment, the prefix is shifted left with whitespace equal to the difference between the original word and the replaced word.
 
@@ -398,7 +401,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                             p.append(endOfLine);
                             p.append(whitespace);
                             p.append(word.getWord());
-                            System.out.println();
                         } else {
                             String additionalPrefix = StringUtils.repeat(" ", difference);
                             p.append(additionalPrefix);
@@ -406,8 +408,14 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                             p.append(word.getWord());
                         }
                     }
+                    isLastWordReplaced = true;
                 }
             } else {
+                if (word.getMarkers().findFirst(SequenceArea.class).isPresent() && isLastWordReplaced) {
+                    String endOfLine = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - getCurrentIndex(p.getOut())) + "\n";
+                    p.append(endOfLine);
+                }
+                isLastWordReplaced = false;
                 super.visitWord(word, p);
             }
         } else {
