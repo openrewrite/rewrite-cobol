@@ -6518,7 +6518,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             // Each template section is separate to prevent oversights ... and will be optimized later.
 
             if (replaceByStartComment.equals(contentArea)) {
-                System.out.println();
+                ReplaceBy replaceBy = getReplaceByMarker();
+                markers.add(replaceBy);
+
+                // Reset the column areas, because the template comments have been parsed.
+                sequenceArea = sequenceArea();
+                indicatorArea = indicatorArea(null);
+                contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
             } else if (replaceByStopComment.equals(contentArea)) {
                 System.out.println();
             }
@@ -6532,11 +6538,16 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             else if (replaceOffStartComment.equals(contentArea)) {
                 ReplaceOff replaceOff = getReplaceOffMarker();
                 markers.add(replaceOff);
+
+                // Reset the column areas, because the template comments have been parsed.
+                sequenceArea = sequenceArea();
+                indicatorArea = indicatorArea(null);
+                contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
             }
 
             // Detect and trigger actions based on the COPY template printed in the CobolPostPreprocessorPrinter.
             // The COPY template links the original source code, and preprocess commands like COPY and REPLACE to the Cobol AST.
-            if (copyStartComment.equals(contentArea)) {
+            else if (copyStartComment.equals(contentArea)) {
                 copyStartComment();
 
                 // Reset the column areas, because the template comments have been parsed.
@@ -6583,7 +6594,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
 
                     if (replaceByStartComment.equals(contentArea)) {
-                        System.out.println();
+                        ReplaceBy replaceBy = getReplaceByMarker();
+                        markers.add(replaceBy);
+
+                        // Reset the column areas, because the template comments have been parsed.
+                        sequenceArea = sequenceArea();
+                        indicatorArea = indicatorArea(null);
+                        contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     } else if (replaceByStopComment.equals(contentArea)) {
                         System.out.println();
                     }
@@ -6597,9 +6614,14 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     else if (replaceOffStartComment.equals(contentArea)) {
                         ReplaceOff replaceOff = getReplaceOffMarker();
                         markers.add(replaceOff);
+
+                        // Reset the column areas, because the template comments have been parsed.
+                        sequenceArea = sequenceArea();
+                        indicatorArea = indicatorArea(null);
+                        contentArea = source.substring(cursor).isEmpty() ? "" : source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                     }
 
-                    if (copyStartComment.equals(contentArea)) {
+                    else if (copyStartComment.equals(contentArea)) {
                         copyStartComment();
 
                         // Reset the column areas, because the template comments have been parsed.
@@ -6727,6 +6749,30 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         currentCopy = copyMap.get(uuid.trim());
     }
 
+    private ReplaceBy getReplaceByMarker() {
+        replaceByStartComment();
+
+        parseComment(replaceByUuidComment);
+
+        sequenceArea();
+        indicatorArea(null);
+        String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+        cursor += uuid.length();
+
+        parseComment(replaceByStopComment);
+
+        sequenceArea();
+        indicatorArea(null);
+
+        // Unknown; this might content with other methods that set nextIndex.
+        String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+        cursor += numberOfSpaces.length();
+        nextIndex = Integer.valueOf(numberOfSpaces.trim());
+
+        CobolPreprocessor.ReplaceByStatement statement = replaceByMap.get(uuid.trim());
+        return new ReplaceBy(randomId(), statement);
+    }
+
     /**
      * Parse the `replaceByStartComment` start comment added by the COBOL copy template.
      */
@@ -6734,7 +6780,22 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         cursor += replaceByStartComment.length();
         cursor++; // Increment passed the \n.
 
-        // TODO: note this requires getting the original replace rule.
+        inReplaceBy = true;
+        removeTemplateCommentArea = true;
+
+        // Reset copy info.
+        currentReplaceBy = null;
+
+        // Unknown; this might contend with other methods.
+        removeColumnMarkers = false;
+        nextIndex = null;
+
+        String current = source.substring(cursor);
+        current = current.substring(0, current.indexOf("\n") + 1);
+        if (!current.trim().isEmpty()) {
+            throw new IllegalStateException("Unexpected source code before ReplaceOffStatement.");
+        }
+        cursor += current.length();
     }
 
     /**

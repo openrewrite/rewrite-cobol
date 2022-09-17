@@ -11,6 +11,7 @@ import java.util.UUID;
  */
 @With
 @Value
-public class ReplaceOn implements Marker {
+public class ReplaceBy implements Marker {
     UUID id;
+    CobolPreprocessor.ReplaceByStatement statement;
 }

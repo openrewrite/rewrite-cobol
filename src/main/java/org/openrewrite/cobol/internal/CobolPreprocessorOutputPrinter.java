@@ -55,12 +55,12 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private String uuidEndOfLine = null;
     private String copyStartComment = null;
     private String copyStopComment = null;
-    private String replaceRuleStartComment = null;
-    private String replaceRuleStopComment = null;
-    private String replaceOffStartComment = null;
-    private String replaceOffStopComment = null;
     private String replaceByStartComment = null;
     private String replaceByStopComment = null;
+    private String replaceOffStartComment = null;
+    private String replaceOffStopComment = null;
+    private String replaceStartComment = null;
+    private String replaceStopComment = null;
     private String uuidComment = null;
     private boolean isLastWordReplaced = false;
 
@@ -189,7 +189,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
 
                 // Add Start key.
-                p.out.insert(insertIndex, getReplaceRuleStartComment());
+                p.out.insert(insertIndex, getReplaceByStartComment());
 
                 // Fill the remaining line with whitespace to align the column areas.
                 p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
@@ -204,7 +204,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 // The Replacement rule is removed during preprocessing and is not printer here.
 
                 // Add Stop key.
-                p.append(getReplaceRuleStopComment());
+                p.append(getReplaceByStopComment());
 
                 // Add whitespace until the next token will be aligned with the column area.
                 String statement = replaceArea.getReplaceByStatement().print(getCursor());
@@ -284,7 +284,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
 
                     // Add Start key.
-                    p.out.insert(insertIndex, getReplaceByStartComment());
+                    p.out.insert(insertIndex, getReplaceStartComment());
 
                     // Fill in the rest of the content area with whitespace.
                     p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
@@ -297,7 +297,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     p.append(copyUuidLine);
 
                     // Add Stop key.
-                    p.append(getReplaceByStopComment());
+                    p.append(getReplaceStopComment());
 
                     // The entire line is filled with whitespace if the curIndex is 0.
                     int index = curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex;
@@ -456,31 +456,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     /**
      * TODO:
      */
-    private String getReplaceRuleStartComment() {
-        if (replaceRuleStartComment == null) {
-            String start = getDialectSequenceArea() + "*" + REPLACE_BY_START_KEY;
-            replaceRuleStartComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
-        }
-        return replaceRuleStartComment;
-    }
-
-    /**
-     * TODO:
-     */
-    private String getReplaceRuleStopComment() {
-        if (replaceRuleStopComment == null) {
-            String start = getDialectSequenceArea() + "*" + REPLACE_BY_STOP_KEY;
-            replaceRuleStopComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
-        }
-        return replaceRuleStopComment;
-    }
-
-    /**
-     * TODO:
-     */
     private String getReplaceByStartComment() {
         if (replaceByStartComment == null) {
-            String start = getDialectSequenceArea() + "*" + REPLACE_START_KEY;
+            String start = getDialectSequenceArea() + "*" + REPLACE_BY_START_KEY;
             replaceByStartComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
         }
         return replaceByStartComment;
@@ -491,10 +469,32 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
      */
     private String getReplaceByStopComment() {
         if (replaceByStopComment == null) {
-            String start = getDialectSequenceArea() + "*" + REPLACE_STOP_KEY;
+            String start = getDialectSequenceArea() + "*" + REPLACE_BY_STOP_KEY;
             replaceByStopComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
         }
         return replaceByStopComment;
+    }
+
+    /**
+     * TODO:
+     */
+    private String getReplaceStartComment() {
+        if (replaceStartComment == null) {
+            String start = getDialectSequenceArea() + "*" + REPLACE_START_KEY;
+            replaceStartComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+        }
+        return replaceStartComment;
+    }
+
+    /**
+     * TODO:
+     */
+    private String getReplaceStopComment() {
+        if (replaceStopComment == null) {
+            String start = getDialectSequenceArea() + "*" + REPLACE_STOP_KEY;
+            replaceStopComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+        }
+        return replaceStopComment;
     }
 
     /**
