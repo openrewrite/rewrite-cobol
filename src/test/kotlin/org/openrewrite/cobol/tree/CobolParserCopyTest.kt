@@ -18,8 +18,6 @@ package org.openrewrite.cobol.tree
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
-import org.openrewrite.InMemoryExecutionContext
-import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.Assertions.cobol
 import org.openrewrite.cobol.CobolIbmAnsi85Parser
 import org.openrewrite.cobol.CobolIsoVisitor
@@ -34,7 +32,6 @@ import java.nio.file.Paths
 class CobolParserCopyTest : RewriteTest {
 
     companion object {
-        val outputPrinter: CobolPrinter<ExecutionContext> = CobolPrinter(false)
         private val userDir = System.getProperty("user.dir")
         private val nistPath = "/src/test/resources/gov/nist/"
         fun getNistSource(sourceName: String): String {
