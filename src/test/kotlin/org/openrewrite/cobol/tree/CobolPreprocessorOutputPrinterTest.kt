@@ -561,7 +561,7 @@ class CobolPreprocessorOutputPrinterTest : RewriteTest {
             049600 REP-TEST-5-0.                                                    SM2084.2
             049700 REPLACE ==NOT== BY ====.                                         SM2084.2
             049800     MOVE   "AA BB CC DD EE FF GG" TO WRK-XN-00020.               SM2084.2
-            049900     IF WRK-XN-00020 EQUAL SPACES                             SM2084.2
+            049900     IF WRK-XN-00020  EQUAL SPACES                             SM2084.2
             050000         MOVE "*" TO WRK-XN-00001.                                SM2084.2
             050100 REPLACE OFF.                                                     SM2084.2
             050200     GO TO   REP-TEST-5-1.                                        SM2084.2
@@ -1122,7 +1122,7 @@ class CobolPreprocessorOutputPrinterTest : RewriteTest {
                         MOVE    SPACES      TO WRK-XN-00020 WRK-XN-00001.            
                     REP-TEST-5-0.                                                    
                         MOVE   "AA BB CC DD EE FF GG" TO WRK-XN-00020.               
-                        IF WRK-XN-00020 EQUAL SPACES                             
+                        IF WRK-XN-00020  EQUAL SPACES                             
                             MOVE "*" TO WRK-XN-00001.                                
                         GO TO   REP-TEST-5-1.                                        
                     REP-DELETE-5.                                                    
