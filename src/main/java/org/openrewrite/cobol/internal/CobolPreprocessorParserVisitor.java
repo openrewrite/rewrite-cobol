@@ -1112,7 +1112,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         }
 
         if (before.getWhitespace().endsWith("\n") || comment != null) {
-            return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine);
+            return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine, false);
         }
 
         cursor = saveCursor;

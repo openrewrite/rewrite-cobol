@@ -72,6 +72,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     // Trigger condition to remove whitespace added by the template.
     private boolean removeTemplateCommentArea;
     private boolean removeColumnMarkers;
+    private boolean isAdditiveCommentArea;
 
     private String copyStartComment = null;
     private String copyStopComment = null;
@@ -87,6 +88,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
     private String replaceStartComment = null;
     private String replaceStopComment = null;
+    private String replaceAdditiveComment = null;
     private String replaceUuidComment = null;
 
     private Integer nextIndex = null;
@@ -197,6 +199,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
             this.replaceStopComment = REPLACE_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_STOP_KEY.length());
             this.templateKeys.add(replaceStopComment);
+
+            this.replaceAdditiveComment = REPLACE_ADDITIVE_WORD_KEY + StringUtils.repeat("_", contentArea - REPLACE_ADDITIVE_WORD_KEY.length());
+            this.templateKeys.add(replaceAdditiveComment);
 
             this.replaceUuidComment = REPLACE_UUID_KEY + StringUtils.repeat("_", contentArea - REPLACE_UUID_KEY.length());
             this.templateKeys.add(replaceUuidComment);
@@ -6375,6 +6380,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
      */
     private Space processTokenText(String text, List<Marker> markers) {
 
+        processLeadingLines(text, markers);
+
         Character delimiter = null;
         if (text.startsWith("'") || text.startsWith("\"")) {
             delimiter = text.charAt(0);
@@ -6417,9 +6424,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         if (indicatorArea != null) {
             String contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
-            if ("*".equals(indicatorArea.getIndicator())) {
-                System.out.println("processLiteral: " + contentArea);
-            }
             if (contentArea.trim().isEmpty() || "*".equals(indicatorArea.getIndicator())) {
                 cursor += contentArea.length();
                 List<Lines.Line> lines = new ArrayList<>();
@@ -6522,21 +6526,15 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return prefix;
     }
 
-    /**
-     * TODO: explain
-     */
-    private Space processText(String text, List<Marker> markers) {
+    private void processLeadingLines(String text, List<Marker> markers) {
+        int saveCursor = cursor;
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea(null);
 
         // CommentEntry tags are required to be recognized the COBOL grammar.
         // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
         boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_TAG);
-        if (isCommentEntry) {
-            text = text.substring(COMMENT_ENTRY_TAG.length());
-        }
-
-        if (!isCommentEntry && indicatorArea != null) {
+        if (!"<EOF>".equals(text) && !isCommentEntry && indicatorArea != null) {
 
             List<Lines.Line> lines = new ArrayList<>();
 
@@ -6553,6 +6551,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                         markers.add(replaceBy);
                     } else if (replaceStartComment.equals(contentArea)) {
                         replaceStartComment();
+                    } else if (replaceAdditiveComment.equals(contentArea)) {
+                        replaceAdditiveComment();
                     } else if (replaceUuidComment.equals(contentArea)) {
                         Replace replace = getReplaceMarker();
                         markers.add(replace);
@@ -6573,11 +6573,30 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     lines.add(line);
                 }
 
+                saveCursor = cursor;
                 sequenceArea = sequenceArea();
                 indicatorArea = indicatorArea(null);
                 iterations++;
             }
-            markers.add(new Lines(randomId(), lines));
+            if (!lines.isEmpty()) {
+                markers.add(new Lines(randomId(), lines));
+            }
+        }
+
+        cursor = saveCursor;
+    }
+    /**
+     * TODO: explain
+     */
+    private Space processText(String text, List<Marker> markers) {
+        SequenceArea sequenceArea = sequenceArea();
+        IndicatorArea indicatorArea = indicatorArea(null);
+
+        // CommentEntry tags are required to be recognized the COBOL grammar.
+        // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
+        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_TAG);
+        if (isCommentEntry) {
+            text = text.substring(COMMENT_ENTRY_TAG.length());
         }
 
         // An inline comment entry will have a null sequence area.
@@ -6684,13 +6703,14 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     /**
-     * Parse the `replaceByStartComment` start comment added by the COBOL copy template.
+     * Parse the `replaceByStartComment` added by the COBOL copy template.
      */
     private void replaceByStartComment() {
         cursor += replaceByStartComment.length();
         cursor++; // Increment passed the \n.
 
         removeTemplateCommentArea = true;
+        isAdditiveCommentArea = false;
 
         // Reset replace info.
         // Unknown; this might contend with other methods.
@@ -6706,7 +6726,18 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     /**
-     * Parse the `replaceByStartComment` comment added by the COBOL copy template.
+     * Parse the `replaceAdditiveComment` added by the COBOL copy template.
+     */
+    private void replaceAdditiveComment() {
+        cursor += replaceAdditiveComment.length();
+        cursor++; // Increment passed the \n.
+
+        removeTemplateCommentArea = false;
+        isAdditiveCommentArea = true;
+    }
+
+    /**
+     * Parse the `replaceByStartComment` added by the COBOL copy template.
      */
     private void replaceStartComment() {
         cursor += replaceStartComment.length();
@@ -6721,7 +6752,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     /**
-     * Parse the `replaceByUuidComment` comment added by the COBOL copy template.
+     * TODO:
      */
     private Replace getReplaceMarker() {
         sequenceArea();
@@ -6740,17 +6771,24 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         parseComment(replaceStopComment);
 
-        sequenceArea();
-        indicatorArea(null);
+        if (isAdditiveCommentArea) {
+            isAdditiveCommentArea = false;
+        } else {
+            sequenceArea();
+            indicatorArea(null);
 
-        // Unknown; this might content with other methods that set nextIndex.
-        String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
-        cursor += numberOfSpaces.length();
-        nextIndex = Integer.valueOf(numberOfSpaces.trim());
+            // Unknown; this might content with other methods that set nextIndex.
+            String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+            cursor += numberOfSpaces.length();
+            nextIndex = Integer.valueOf(numberOfSpaces.trim());
+        }
 
         return replace;
     }
 
+    /**
+     * TODO:
+     */
     private ReplaceOff getReplaceOffMarker() {
         replaceOffStartComment();
 
@@ -6862,7 +6900,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         }
 
         if (!(removeTemplateCommentArea && comment == null && before.getWhitespace().endsWith("\n")) && (before.getWhitespace().endsWith("\n") || comment != null)) {
-            return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine);
+            return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine, isAdditiveCommentArea);
         }
 
         if (!removeTemplateCommentArea || !before.getWhitespace().endsWith("\n")) {

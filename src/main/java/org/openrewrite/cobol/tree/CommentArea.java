@@ -16,4 +16,5 @@ public class CommentArea implements Marker {
     Space prefix;
     String comment;
     Space endOfLine;
+    boolean isAdded;
 }
