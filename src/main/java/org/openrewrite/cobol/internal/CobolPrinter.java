@@ -33,27 +33,18 @@ import java.util.stream.Collectors;
  * Print the original COBOL source code.
  *
  * `printOriginalSource`:
- *      true: Print as the original source code before preprecossing commands like COPY and REPLACE.
+ *      true: Print as the original source code before preprocessing commands like COPY and REPLACE.
  *      false: Print the post-processed AST.
  *
  * Note: All the logic to print column areas exists in visitWord.
  */
 public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
-    private final boolean printOriginalSource;
     private final CobolPreprocessorPrinter<ExecutionContext> printer = new CobolPreprocessorPrinter<>();
     private int originalReplaceLength;
 
     @Nullable
     private String copyUuid = null;
-
-    public CobolPrinter() {
-        this.printOriginalSource = true;
-    }
-
-    public CobolPrinter(boolean printOriginalSource) {
-        this.printOriginalSource = printOriginalSource;
-    }
 
     public Cobol visitAbbreviation(Cobol.Abbreviation abbreviation, PrintOutputCapture<P> p) {
         visitSpace(abbreviation.getPrefix(), p);
@@ -3871,17 +3862,6 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
-        if (!printOriginalSource) {
-            visitSpace(word.getPrefix(), p);
-            visitMarkers(word.getMarkers(), p);
-            p.append(word.getWord());
-
-            Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-            commentArea.ifPresent(area -> visitSpace(area.getPrefix(), p));
-            commentArea.ifPresent(area -> visitSpace(area.getEndOfLine(), p));
-            return word;
-        }
-
         Optional<ReplaceBy> replaceBy = word.getMarkers().findFirst((ReplaceBy.class));
         if (replaceBy.isPresent()) {
             // Print the original copy

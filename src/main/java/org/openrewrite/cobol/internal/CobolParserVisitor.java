@@ -6534,12 +6534,17 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         // CommentEntry tags are required to be recognized the COBOL grammar.
         // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
         boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_TAG);
-        if (!"<EOF>".equals(text) && !isCommentEntry && indicatorArea != null) {
+        if (!isCommentEntry && indicatorArea != null) {
 
             List<Lines.Line> lines = new ArrayList<>();
 
             int iterations = 0;
             while (iterations < 250) {
+                // Stop after all the trailing comments have been parsed.
+                if (source.substring(cursor).isEmpty()) {
+                    break;
+                }
+
                 String contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
                 if (!(isCommentIndicator(indicatorArea) || contentArea.trim().isEmpty() || templateKeys.contains(contentArea))) {
                     break;
