@@ -6311,8 +6311,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             int prefixCount = (totalWhitespace - nextIndex);
             int templateWhitespace = totalWhitespace - prefixCount;
             if (prefixCount < 0) {
-                // This means there is a missing condition durin a replace prefix calculation.
-                System.out.println("Ooooops, fix me!");
+                System.out.println("Oops, fix me -- there was a missing condition during the calculation of the replace prefix.");
                 prefixCount = totalWhitespace + cobolDialect.getColumns().getContentArea() - nextIndex;
                 templateWhitespace = totalWhitespace - prefixCount;
             }
@@ -6380,7 +6379,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
      */
     private Space processTokenText(String text, List<Marker> markers) {
 
-        processLeadingLines(text, markers);
+        parseCommentsAndEmptyLines(text, markers);
 
         Character delimiter = null;
         if (text.startsWith("'") || text.startsWith("\"")) {
@@ -6412,6 +6411,71 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return processText(text, markers);
     }
 
+    private void parseCommentsAndEmptyLines(String text, List<Marker> markers) {
+        int saveCursor = cursor;
+        SequenceArea sequenceArea = sequenceArea();
+        IndicatorArea indicatorArea = indicatorArea(null);
+
+        // CommentEntry tags are required to be recognized the COBOL grammar.
+        // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
+        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_TAG);
+        if (!isCommentEntry && indicatorArea != null) {
+
+            List<Lines.Line> lines = new ArrayList<>();
+
+            int iterations = 0;
+            while (iterations < 250) {
+                // Stop after all the trailing comments have been parsed.
+                if (source.substring(cursor).isEmpty()) {
+                    break;
+                }
+
+                String contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
+                if (!(isCommentIndicator(indicatorArea) || contentArea.trim().isEmpty() || templateKeys.contains(contentArea))) {
+                    break;
+                }
+
+                if (templateKeys.contains(contentArea)) {
+                    if (replaceByStartComment.equals(contentArea)) {
+                        ReplaceBy replaceBy = getReplaceByMarker();
+                        markers.add(replaceBy);
+                    } else if (replaceStartComment.equals(contentArea)) {
+                        replaceStartComment();
+                    } else if (replaceAdditiveComment.equals(contentArea)) {
+                        replaceAdditiveComment();
+                    } else if (replaceUuidComment.equals(contentArea)) {
+                        Replace replace = getReplaceMarker();
+                        markers.add(replace);
+                    } else if (replaceOffStartComment.equals(contentArea)) {
+                        ReplaceOff replaceOff = getReplaceOffMarker();
+                        markers.add(replaceOff);
+                    } else if (copyStartComment.equals(contentArea)) {
+                        copyStartComment();
+                    } else if (copyUuidComment.equals(contentArea)) {
+                        copyUuidComment();
+                    } else if (copyStopComment.equals(contentArea)) {
+                        copyStopComment();
+                    }
+                } else {
+                    cursor += contentArea.length();
+                    CommentArea commentArea = commentArea();
+                    Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, inCopiedText);
+                    lines.add(line);
+                }
+
+                saveCursor = cursor;
+                sequenceArea = sequenceArea();
+                indicatorArea = indicatorArea(null);
+                iterations++;
+            }
+            if (!lines.isEmpty()) {
+                markers.add(new Lines(randomId(), lines));
+            }
+        }
+
+        cursor = saveCursor;
+    }
+
     /**
      * TODO: explain
      */
@@ -6421,38 +6485,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea(null);
-
-        if (indicatorArea != null) {
-            String contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
-            if (contentArea.trim().isEmpty() || "*".equals(indicatorArea.getIndicator())) {
-                cursor += contentArea.length();
-                List<Lines.Line> lines = new ArrayList<>();
-                CommentArea commentArea = commentArea();
-                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, inCopiedText);
-                lines.add(line);
-
-                int iterations = 0;
-                while (iterations < 200) {
-                    sequenceArea = sequenceArea();
-                    indicatorArea = indicatorArea(null);
-                    contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
-                    if (contentArea.trim().isEmpty() || indicatorArea != null && "*".equals(indicatorArea.getIndicator())) {
-                        cursor += contentArea.length();
-                        commentArea = commentArea();
-                        line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, inCopiedText);
-                        lines.add(line);
-
-                        sequenceArea = null;
-                        indicatorArea = null;
-                    } else {
-                        break;
-                    }
-                    iterations++;
-                }
-
-                markers.add(new Lines(randomId(), lines));
-            }
-        }
 
         if (sequenceArea != null) {
             continuation.add(sequenceArea);
@@ -6526,70 +6558,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return prefix;
     }
 
-    private void processLeadingLines(String text, List<Marker> markers) {
-        int saveCursor = cursor;
-        SequenceArea sequenceArea = sequenceArea();
-        IndicatorArea indicatorArea = indicatorArea(null);
-
-        // CommentEntry tags are required to be recognized the COBOL grammar.
-        // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
-        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_TAG);
-        if (!isCommentEntry && indicatorArea != null) {
-
-            List<Lines.Line> lines = new ArrayList<>();
-
-            int iterations = 0;
-            while (iterations < 250) {
-                // Stop after all the trailing comments have been parsed.
-                if (source.substring(cursor).isEmpty()) {
-                    break;
-                }
-
-                String contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
-                if (!(isCommentIndicator(indicatorArea) || contentArea.trim().isEmpty() || templateKeys.contains(contentArea))) {
-                    break;
-                }
-
-                if (templateKeys.contains(contentArea)) {
-                    if (replaceByStartComment.equals(contentArea)) {
-                        ReplaceBy replaceBy = getReplaceByMarker();
-                        markers.add(replaceBy);
-                    } else if (replaceStartComment.equals(contentArea)) {
-                        replaceStartComment();
-                    } else if (replaceAdditiveComment.equals(contentArea)) {
-                        replaceAdditiveComment();
-                    } else if (replaceUuidComment.equals(contentArea)) {
-                        Replace replace = getReplaceMarker();
-                        markers.add(replace);
-                    } else if (replaceOffStartComment.equals(contentArea)) {
-                        ReplaceOff replaceOff = getReplaceOffMarker();
-                        markers.add(replaceOff);
-                    } else if (copyStartComment.equals(contentArea)) {
-                        copyStartComment();
-                    } else if (copyUuidComment.equals(contentArea)) {
-                        copyUuidComment();
-                    } else if (copyStopComment.equals(contentArea)) {
-                        copyStopComment();
-                    }
-                } else {
-                    cursor += contentArea.length();
-                    CommentArea commentArea = commentArea();
-                    Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, inCopiedText);
-                    lines.add(line);
-                }
-
-                saveCursor = cursor;
-                sequenceArea = sequenceArea();
-                indicatorArea = indicatorArea(null);
-                iterations++;
-            }
-            if (!lines.isEmpty()) {
-                markers.add(new Lines(randomId(), lines));
-            }
-        }
-
-        cursor = saveCursor;
-    }
     /**
      * TODO: explain
      */
@@ -6831,7 +6799,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             throw new IllegalStateException("Unexpected source code before ReplaceOffStatement.");
         }
         cursor += current.length();
-        // TODO:
     }
 
     private void parseComment(String comment) {
@@ -6845,6 +6812,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
      private boolean isCommentIndicator(@Nullable IndicatorArea area) {
         return area != null && ("*".equals(area.getIndicator()) || "/".equals(area.getIndicator()));
      }
+
     /**
      * Return the SequenceArea based on the current cursor position if it exists.
      */

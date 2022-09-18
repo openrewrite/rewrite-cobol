@@ -118,16 +118,10 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
             CobolPreprocessor.Word finalWord = word;
             if (ReplacementType.SINGLE_WORD == replacementType) {
                 if (from.stream().anyMatch(it -> it.contains(finalWord))) {
-                    if (to.get(0).isEmpty()) {
-                        Replace replace = new Replace(randomId(), word, true);
-                        word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-                        // The word isn't removed from the AST to preserve markers.
-                        word = word.withWord("");
-                    } else {
-                        Replace replace = new Replace(randomId(), word, false);
-                        word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-                        word = word.withWord(to.get(0));
-                    }
+                    boolean isEmpty = to.get(0).isEmpty();
+                    Replace replace = new Replace(randomId(), word, isEmpty);
+                    word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                    word = word.withWord(to.get(pos));
                 }
             } else if (ReplacementType.EQUAL == replacementType) {
                 if (!inMatch) {
@@ -138,7 +132,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         pos = 0;
 
                         if (!current.get(pos).getWord().equals(to.get(pos))) {
-                            Replace replace= new Replace(randomId(), word, false);
+                            boolean isEmpty = to.get(pos).isEmpty();
+                            Replace replace = new Replace(randomId(), word, isEmpty);
                             word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                             word = word.withWord(to.get(pos));
                         }
@@ -148,7 +143,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     boolean isSame = current.get(pos).getWord().equals(word.getWord());
                     if (isSame) {
                         if (!current.get(pos).getWord().equals(to.get(pos))) {
-                            Replace replace= new Replace(randomId(), word, false);
+                            boolean isEmpty = to.get(pos).isEmpty();
+                            Replace replace = new Replace(randomId(), word, isEmpty);
                             word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                             word = word.withWord(to.get(pos));
                         }
