@@ -52,7 +52,8 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
     // TODO: Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
     private final Map<Integer, String> sequenceAreas = new HashMap<>();
-    private final Map<Integer, String> indicatorAreas = new HashMap<>();
+    // Indicators are used to collect information about the next line of code. I.E. continuation indicators.
+    private final Map<Integer, String> indicatorAreas = new LinkedHashMap<>();
     private final Map<Integer, String> commentAreas = new HashMap<>();
     private final Set<String> separators = new HashSet<>();
     private int cursor = 0;
@@ -861,8 +862,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         sequenceArea();
         indicatorArea(null);
 
-        // TODO: it is probably be more efficient to use a LinkedHashMap instead of sorting before every word.
-        Optional<Integer> nextIndicator = indicatorAreas.keySet().stream().sorted().filter(it -> it > cursor).findFirst();
+        Optional<Integer> nextIndicator = indicatorAreas.keySet().stream().filter(it -> it > cursor).findFirst();
         boolean isContinued = nextIndicator.isPresent() && indicatorAreas.get(nextIndicator.get()).equals("-");
         cursor = saveCursor;
 
