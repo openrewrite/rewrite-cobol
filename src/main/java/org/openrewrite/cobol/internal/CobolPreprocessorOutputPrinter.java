@@ -31,6 +31,7 @@ import java.util.Optional;
  *      false: Print as parser input for the CobolParserVisitor.
  */
 public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<P> {
+    // TODO: remove unnecessary keys.
 
     // START keys mark the line where whitespace is added until the end of the content area.
     public static final String COPY_START_KEY = "__COPY_START__";
@@ -45,7 +46,8 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     public static final String REPLACE_STOP_KEY = "__REPLACE_END__";
 
     // Link the CobolPreprocessor AST UUID to the CobolParser.
-    public static final String UUID_KEY = "__UUID__";
+    public static final String COPY_UUID_KEY = "__COPY_UUID__";
+    public static final String REPLACE_UUID_KEY = "__REPLACE_UUID__";
 
     private final CobolDialect cobolDialect;
     private final boolean printWithColumnAreas;
@@ -55,13 +57,14 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private String uuidEndOfLine = null;
     private String copyStartComment = null;
     private String copyStopComment = null;
+    private String copyUuidComment = null;
     private String replaceByStartComment = null;
     private String replaceByStopComment = null;
     private String replaceOffStartComment = null;
     private String replaceOffStopComment = null;
     private String replaceStartComment = null;
     private String replaceStopComment = null;
-    private String uuidComment = null;
+    private String replaceUuidComment = null;
     private boolean isLastWordReplaced = false;
 
     public CobolPreprocessorOutputPrinter(CobolDialect cobolDialect,
@@ -145,7 +148,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     p.append("\n");
 
                     // Add UUID key.
-                    p.append(getUuidKey());
+                    p.append(getCopyUuidKey());
                     String copyUuid = getDialectSequenceArea() + "*" + copyStatement.getId();
                     String copyUuidLine = copyUuid + getUuidEndOfLine();
                     p.append(copyUuidLine);
@@ -196,7 +199,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 p.append("\n");
 
                 // Add UUID key.
-                p.append(getUuidKey());
+                p.append(getReplaceUuidKey());
                 String copyUuid = getDialectSequenceArea() + "*" + replaceByStatement.getId();
                 String copyUuidLine = copyUuid + getUuidEndOfLine();
                 p.append(copyUuidLine);
@@ -247,7 +250,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 p.append("\n");
 
                 // Add UUID key.
-                p.append(getUuidKey());
+                p.append(getReplaceUuidKey());
                 String copyUuid = getDialectSequenceArea() + "*" + replaceOffStatement.getId();
                 String copyUuidLine = copyUuid + getUuidEndOfLine();
                 p.append(copyUuidLine);
@@ -291,7 +294,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     p.append("\n");
 
                     // Add UUID key.
-                    p.append(getUuidKey());
+                    p.append(getReplaceUuidKey());
                     String copyUuid = getDialectSequenceArea() + "*" + replace.get().getId();
                     String copyUuidLine = copyUuid + getUuidEndOfLine();
                     p.append(copyUuidLine);
@@ -300,7 +303,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     p.append(getReplaceStopComment());
 
                     // The entire line is filled with whitespace if the curIndex is 0.
-                    int index = curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex;
+                    int index = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex) - cobolDialect.getColumns().getContentArea();
                     String spacesCount = getDialectSequenceArea() + "*" + index;
                     String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
                     p.append(spacesCountLine);
@@ -453,6 +456,18 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return copyStopComment;
     }
 
+
+    /**
+     * TODO:
+     */
+    private String getCopyUuidKey() {
+        if (copyUuidComment == null) {
+            String start = getDialectSequenceArea() + "*" + COPY_UUID_KEY;
+            copyUuidComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+        }
+        return copyUuidComment;
+    }
+
     /**
      * TODO:
      */
@@ -522,12 +537,12 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     /**
      * TODO:
      */
-    private String getUuidKey() {
-        if (uuidComment == null) {
-            String start = getDialectSequenceArea() + "*" + UUID_KEY;
-            uuidComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+    private String getReplaceUuidKey() {
+        if (replaceUuidComment == null) {
+            String start = getDialectSequenceArea() + "*" + REPLACE_UUID_KEY;
+            replaceUuidComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
         }
-        return uuidComment;
+        return replaceUuidComment;
     }
 
     private String getUuidEndOfLine() {

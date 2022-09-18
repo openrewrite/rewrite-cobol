@@ -3880,6 +3880,31 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             return word;
         }
 
+        Optional<ReplaceBy> replaceBy = word.getMarkers().findFirst((ReplaceBy.class));
+        if (replaceBy.isPresent()) {
+            // Print the original copy
+            PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
+            printer.visit(replaceBy.get().getStatement(), output);
+            p.append(output.getOut());
+        }
+
+        Optional<ReplaceOff> replaceOff = word.getMarkers().findFirst((ReplaceOff.class));
+        if (replaceOff.isPresent()) {
+            // Print the original copy
+            PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
+            printer.visit(replaceOff.get().getReplaceOff(), output);
+            p.append(output.getOut());
+        }
+
+        Optional<Replace> replace = word.getMarkers().findFirst((Replace.class));
+        if (replace.isPresent()) {
+            // Print the original copy
+            PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
+            printer.visit(replace.get().getOriginalWord(), output);
+            p.append(output.getOut());
+            return word;
+        }
+
         Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
         // The COBOL word is a product of a copy statement.
         if (copyBook.isPresent()) {
