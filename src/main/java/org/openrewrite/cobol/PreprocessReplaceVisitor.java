@@ -116,17 +116,16 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         @Override
         public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
             CobolPreprocessor.Word finalWord = word;
-            // TODO:
-            //  - the preserved words may not be the same length and cause column miss-alignments.
-            //  - This is especially important for continuations.
             if (ReplacementType.SINGLE_WORD == replacementType) {
                 if (from.stream().anyMatch(it -> it.contains(finalWord))) {
-                    Replace replace= new Replace(randomId(), word);
-                    word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                     if (to.get(0).isEmpty()) {
+                        Replace replace = new Replace(randomId(), word, true);
+                        word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                         // The word isn't removed from the AST to preserve markers.
                         word = word.withWord("");
                     } else {
+                        Replace replace = new Replace(randomId(), word, false);
+                        word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                         word = word.withWord(to.get(0));
                     }
                 }
@@ -139,7 +138,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         pos = 0;
 
                         if (!current.get(pos).getWord().equals(to.get(pos))) {
-                            Replace replace= new Replace(randomId(), word);
+                            Replace replace= new Replace(randomId(), word, false);
                             word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                             word = word.withWord(to.get(pos));
                         }
@@ -149,7 +148,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     boolean isSame = current.get(pos).getWord().equals(word.getWord());
                     if (isSame) {
                         if (!current.get(pos).getWord().equals(to.get(pos))) {
-                            Replace replace= new Replace(randomId(), word);
+                            Replace replace= new Replace(randomId(), word, false);
                             word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                             word = word.withWord(to.get(pos));
                         }

@@ -15,4 +15,5 @@ public class Replace implements Marker {
     UUID id;
     // Saves the original word to preserve the markers and prefix.
     CobolPreprocessor.Word originalWord;
+    boolean replacedWithEmpty;
 }

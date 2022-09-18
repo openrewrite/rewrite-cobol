@@ -20,6 +20,7 @@ import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolVisitor;
 import org.openrewrite.cobol.tree.*;
+import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Markers;
 
@@ -41,6 +42,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
     private final boolean printOriginalSource;
     private final CobolPreprocessorPrinter<ExecutionContext> printer = new CobolPreprocessorPrinter<>();
+    private int originalReplaceLength;
 
     @Nullable
     private String copyUuid = null;
@@ -3897,15 +3899,21 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         }
 
         Optional<Replace> replace = word.getMarkers().findFirst((Replace.class));
-        if (replace.isPresent()) {
+        Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
+        if (replace.isPresent() && !copyBook.isPresent()) {
             // Print the original copy
             PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
             printer.visit(replace.get().getOriginalWord(), output);
             p.append(output.getOut());
-            return word;
+
+            if (replace.get().isReplacedWithEmpty()) {
+                originalReplaceLength = output.getOut().length();
+            } else {
+                originalReplaceLength = 0;
+                return word;
+            }
         }
 
-        Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
         // The COBOL word is a product of a copy statement.
         if (copyBook.isPresent()) {
             // Print the original Copy Statement in place of the first word from the copied source.
@@ -3999,7 +4007,11 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
             indicatorArea.ifPresent(it -> p.append(it.getContinuationPrefix()));
 
-            visitSpace(word.getPrefix(), p);
+            if (replace.isPresent() && replace.get().isReplacedWithEmpty()) {
+                p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
+            } else {
+                visitSpace(word.getPrefix(), p);
+            }
             p.append(word.getWord());
 
             Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
