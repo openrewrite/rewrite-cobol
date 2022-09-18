@@ -21,7 +21,6 @@ import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
 import org.openrewrite.cobol.CobolIbmAnsi85Parser
 import org.openrewrite.cobol.CobolIsoVisitor
-import org.openrewrite.cobol.internal.CobolPrinter
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest

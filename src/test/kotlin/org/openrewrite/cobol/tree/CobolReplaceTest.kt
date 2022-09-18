@@ -30,7 +30,6 @@ import java.nio.file.Paths
 class CobolReplaceTest : RewriteTest {
 
     companion object {
-        // Paths.get(System.getProperty("user.home"), "rewrite-offline").toAbsolutePath();
         private val userDir = System.getProperty("user.dir")
         private const val nistPath = "/src/test/resources/gov/nist/"
         fun getNistSource(bookName: String): String {
