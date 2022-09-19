@@ -202,7 +202,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 p.append("\n");
 
                 // Add UUID key.
-                p.append(getReplaceUuidKey());
+                p.append(getReplaceUuidComment());
                 String copyUuid = getDialectSequenceArea() + "*" + replaceByStatement.getId();
                 String copyUuidLine = copyUuid + getUuidEndOfLine();
                 p.append(copyUuidLine);
@@ -253,7 +253,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 p.append("\n");
 
                 // Add UUID key.
-                p.append(getReplaceUuidKey());
+                p.append(getReplaceUuidComment());
                 String copyUuid = getDialectSequenceArea() + "*" + replaceOffStatement.getId();
                 String copyUuidLine = copyUuid + getUuidEndOfLine();
                 p.append(copyUuidLine);
@@ -290,14 +290,14 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
 
                     boolean isLongerWord = word.getWord().length() > replace.get().getOriginalWord().getWord().length();
-
                     boolean isLiteral = word.getWord().startsWith("\"") || word.getWord().startsWith("'");
+
                     int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
                     String replacedWord = isLongerWord ? " " + word.getWord() : word.getWord();
                     boolean isContinuedLiteral = isLiteral && (curIndex + replacedWord.length()) > contentAreaLength;
-                    if (isLongerWord &&
-                            // Continued literals are you unique.
-                            !isContinuedLiteral) {
+
+                    // TODO: re-access after continued keywords are supported.
+                    if (isLongerWord && !isContinuedLiteral) {
                         // Inserted before Start key, so that the StartKey comes before the additive comment.
                         p.out.insert(insertIndex, getReplaceAdditiveWordComment());
                     }
@@ -319,7 +319,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     p.append("\n");
 
                     // Add UUID key.
-                    p.append(getReplaceUuidKey());
+                    p.append(getReplaceUuidComment());
                     String copyUuid = getDialectSequenceArea() + "*" + replace.get().getId();
                     String copyUuidLine = copyUuid + getUuidEndOfLine();
                     p.append(copyUuidLine);
@@ -329,7 +329,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
                     // Additive replacement like PIC to PICTURE.
                     if (isLongerWord) {
-                        // Check if the replaced word exceeds the length (+1 for the min WS delimiter) of the content area.
                         if (isContinuedLiteral) {
                             int index = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex) - cobolDialect.getColumns().getContentArea();
                             String spacesCount = getDialectSequenceArea() + "*" + index;
@@ -577,7 +576,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     /**
      * TODO:
      */
-    private String getReplaceUuidKey() {
+    private String getReplaceUuidComment() {
         if (replaceUuidComment == null) {
             String start = getDialectSequenceArea() + "*" + REPLACE_UUID_KEY;
             replaceUuidComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";

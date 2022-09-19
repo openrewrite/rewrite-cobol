@@ -20,6 +20,7 @@ skip = False
 for index, line in enumerate(lines):
     stripped = line.strip()
     if stripped != "" and not stripped.startswith("*") and not stripped.startswith("//") and not stripped.startswith("/*"):
+
         # Skip grammar rules.
         if skip == False and stripped[0].islower():
             skip = True
@@ -31,11 +32,24 @@ for index, line in enumerate(lines):
                 # Get keyword.
                 keyword = stripped[0:stripped.index(':')].strip()
                 keywords.add(keyword)
+
                 # Find all permutations for the keyword.
                 perms[keyword] = permute(keyword)
 
+# Print all keywords.
+print("\n\nKeywords:", end = "\n")
+first = True
+for keyword in sorted(keywords):
+    if first:
+        first = False
+    else:
+        print(",", end = "\n")
+
+    print("\"" + keyword + "\"", end = "")
+
+
 # Print each key and permutations if each substring is a COBOL keyword.
-# Key
+print("\n\nPermutations:", end = "\n")
 for key in perms:
     perm = perms[key]
     for p in perm:
