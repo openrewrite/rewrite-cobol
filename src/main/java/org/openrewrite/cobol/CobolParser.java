@@ -162,7 +162,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
         }
     }
 
-    private static final class CobolKeywords {
+    public static final class CobolKeywords {
         CobolKeywords() {}
 
         // Run `cobol_keyword_permutations.py` in antlr to print the keywords.
