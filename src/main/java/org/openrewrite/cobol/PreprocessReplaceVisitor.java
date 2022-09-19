@@ -20,6 +20,10 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
     public CobolPreprocessor.ReplaceArea visitReplaceArea(CobolPreprocessor.ReplaceArea replaceArea, P p) {
         CobolPreprocessor.ReplaceArea r = super.visitReplaceArea(replaceArea, p);
 
+        // Unknown:
+        // The CobolPreprocessor grammar does not allow a `replaceArea` in a `replaceArea`.
+        // However, a `replaceArea` may contain a `copyStatement`, and the `copyStatement` may contain a `replaceArea`.
+        // So, it might be possible for multiple replacements rules to be applied in a replaceArea.
         Map<List<String>, List<String>> replacements = getReplacements(replaceArea.getReplaceByStatement());
         for (Map.Entry<List<String>, List<String>> entry : replacements.entrySet()) {
             List<List<CobolPreprocessor.Word>> replaceWords = new ArrayList<>();
@@ -131,6 +135,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         current = firstMatch.get();
                         pos = 0;
 
+                        // Marks the changed word. Unknown: Should all the words be marked instead??
                         if (!current.get(pos).getWord().equals(to.get(pos))) {
                             boolean isEmpty = to.get(pos).isEmpty();
                             Replace replace = new Replace(randomId(), word, isEmpty);
@@ -142,6 +147,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                 } else {
                     boolean isSame = current.get(pos).getWord().equals(word.getWord());
                     if (isSame) {
+                        // Marks the changed word. Unknown: Should all the words be marked instead??
                         if (!current.get(pos).getWord().equals(to.get(pos))) {
                             boolean isEmpty = to.get(pos).isEmpty();
                             Replace replace = new Replace(randomId(), word, isEmpty);

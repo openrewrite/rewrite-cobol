@@ -27,7 +27,7 @@ import org.openrewrite.test.RewriteTest
 import java.nio.file.Files
 import java.nio.file.Paths
 
-class CobolReplaceTest : RewriteTest {
+class CobolParserReplaceTest : RewriteTest {
 
     companion object {
         private val userDir = System.getProperty("user.dir")

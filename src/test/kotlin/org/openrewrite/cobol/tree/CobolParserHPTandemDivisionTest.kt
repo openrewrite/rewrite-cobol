@@ -26,7 +26,7 @@ import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
 
 @Disabled("Requires adding comments at the first line of each test to prevent trimming the blank indicator.")
-class CobolHPTandemDivisionTest : RewriteTest {
+class CobolParserHPTandemDivisionTest : RewriteTest {
 
     override fun defaults(spec: RecipeSpec) {
         spec.recipe(toRecipe {
