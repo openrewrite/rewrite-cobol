@@ -852,6 +852,7 @@ class CobolParserRemainingNistTest : RewriteTest {
             080300 CCVS-999999.                                                     NC2054.2
             080400     GO TO CLOSE-FILES.                                           NC2054.2
                   *END-OF,NC205A                                                                  
+            
         """)
     )
 
