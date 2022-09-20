@@ -41,7 +41,6 @@ import org.openrewrite.tree.ParsingExecutionContextView;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -97,8 +96,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         EncodingDetectingInputStream is = sourceFile.getSource();
                         String sourceStr = is.readFully();
 
-                        String prepareSource = CobolLineReader.readLines(sourceStr, cobolDialect);
-
+                        String prepareSource = preprocessCobol(sourceStr, is.getCharset());
                         org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
                                 new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
                                         new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(prepareSource))));
@@ -146,6 +144,28 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 .collect(toList());
     }
 
+    private String preprocessCobol(String source, @Nullable Charset encoding) {
+        CobolParserParams params = new CobolParserParams(
+                encoding,
+                emptyList(),
+                getCobolFileExtensions(),
+                getCopyBookFiles(),
+                proLeapCobolDialect,
+                sourceFormat,
+                true
+        );
+
+        ProLeapCobolPreprocessor proleapCobolPreprocessor = new ProLeapCobolPreprocessor(
+                new CobolCommentEntriesMarker(),
+                new CobolDocumentParser(),
+                new CobolInlineCommentEntriesNormalizer(),
+                new CobolLineIndicatorProcessor(),
+                new CobolLineReader()
+        );
+
+        return proleapCobolPreprocessor.rewriteLines(source, params);
+    }
+
     // Note: the NIST CopyBooks contain COBOL with the correct column areas, which may not be required.
     // This method will break if the CopyBook does not match the dialect (fixable during print or a formatting visitor).
     public List<CobolPreprocessor.CopyBook> parseCopyBooks(List<Path> paths, @Nullable Path relativeTo) {
@@ -169,7 +189,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 throw new RuntimeException(e);
             }
 
-            String preprocessedCobol = CobolLineReader.readLines(plainText.getText(), cobolDialect);
+            String preprocessedCobol = preprocessCobol(plainText.getText(), plainText.getCharset());
             org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
                     new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
                             new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(preprocessedCobol))));
