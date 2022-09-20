@@ -866,9 +866,14 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         // Refactor processLiteral into processContinuedText.
         // Detect continued keywords and statements, and parse correctly.
 
+        Character delimiter = null;
+        if (text.startsWith("'") || text.startsWith("\"")) {
+            delimiter = text.charAt(0);
+        }
+
         // Detect a literal continued on a new line.
-        if (isContinued) {
-            return processContinuation(text, markers);
+        if (isContinued && delimiter != null) {
+            return processContinuedLiteral(text, markers, delimiter);
         } else if ("<EOF>".equals(text) && source.substring(cursor).isEmpty()) {
             return Space.EMPTY;
         }
@@ -921,7 +926,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     /**
      * TODO: explain
      */
-    private Space processContinuation(String text, List<Marker> markers) {
+    private Space processContinuedLiteral(String text, List<Marker> markers, Character delimiter) {
         Map<Integer, Markers> continuations = new HashMap<>();
         List<Marker> continuation = new ArrayList<>(2);
 
@@ -939,11 +944,6 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         Space prefix = whitespace();
         if (!continuation.isEmpty()) {
             continuations.put(0, Markers.build(continuation));
-        }
-
-        Character delimiter = null;
-        if (text.startsWith("'") || text.startsWith("\"")) {
-            delimiter = text.charAt(0);
         }
 
         int matchedCount = 0;
@@ -1014,6 +1014,10 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_TAG);
         if (isCommentEntry) {
             text = text.substring(COMMENT_ENTRY_TAG.length());
+        }
+
+        if (indicatorArea != null && indicatorArea.getIndicator().equals("-")) {
+            System.out.println(text);
         }
 
         if (sequenceArea != null) {
