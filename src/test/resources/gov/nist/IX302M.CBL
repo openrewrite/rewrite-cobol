@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IX302M                                                            
 000100 IDENTIFICATION DIVISION.                                         IX3024.2
 000200 PROGRAM-ID.                                                      IX3024.2
 000300     IX302M.                                                      IX3024.2
@@ -70,4 +69,3 @@
 006900     STOP RUN.                                                    IX3024.2
 007000                                                                  IX3024.2
 007100*TOTAL NUMBER OF FLAGS EXPECTED = 4.                              IX3024.2
-      *END-OF,IX302M                                                                  

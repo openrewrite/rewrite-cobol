@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IX217A                                                            
 000100 IDENTIFICATION DIVISION.                                         IX2174.2
 000200 PROGRAM-ID.                                                      IX2174.2
 000300     IX217A.                                                      IX2174.2
@@ -64,7 +63,7 @@
 006300                                                                  IX2174.2
 006400     SELECT OPTIONAL   IX-FS1 ASSIGN TO                           IX2174.2
 006500     XXXXP024                                                     IX2174.2
-006600*    XXXXP044                                                     IX2174.2
+006600J    XXXXP044                                                     IX2174.2
 006700     ORGANIZATION IS INDEXED                                      IX2174.2
 006800     RECORD KEY IS IX-FS1-KEY                                     IX2174.2
 006900     ACCESS MODE IS DYNAMIC                                       IX2174.2
@@ -72,7 +71,7 @@
 007100                                                                  IX2174.2
 007200     SELECT OPTIONAL   IX-VS1 ASSIGN TO                           IX2174.2
 007300     XXXXP025                                                     IX2174.2
-007400*    XXXXP045                                                     IX2174.2
+007400J    XXXXP045                                                     IX2174.2
 007500     ORGANIZATION IS INDEXED                                      IX2174.2
 007600     RECORD KEY IS IX-VS1-KEY                                     IX2174.2
 007700     ACCESS MODE IS SEQUENTIAL                                    IX2174.2
@@ -404,19 +403,19 @@
 040300     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IX2174.2
 040400 WRITE-LINE.                                                      IX2174.2
 040500     ADD 1 TO RECORD-COUNT.                                       IX2174.2
-040600*    IF RECORD-COUNT GREATER 42                                   IX2174.2
-040700*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IX2174.2
-040800*        MOVE SPACE TO DUMMY-RECORD                               IX2174.2
-040900*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IX2174.2
-041000*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX2174.2
-041100*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX2174.2
-041200*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX2174.2
-041300*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX2174.2
-041400*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            IX2174.2
-041500*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            IX2174.2
-041600*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IX2174.2
-041700*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IX2174.2
-041800*        MOVE ZERO TO RECORD-COUNT.                               IX2174.2
+040600Y    IF RECORD-COUNT GREATER 42                                   IX2174.2
+040700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IX2174.2
+040800Y        MOVE SPACE TO DUMMY-RECORD                               IX2174.2
+040900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IX2174.2
+041000Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX2174.2
+041100Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX2174.2
+041200Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX2174.2
+041300Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX2174.2
+041400Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            IX2174.2
+041500Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            IX2174.2
+041600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IX2174.2
+041700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IX2174.2
+041800Y        MOVE ZERO TO RECORD-COUNT.                               IX2174.2
 041900     PERFORM WRT-LN.                                              IX2174.2
 042000 WRT-LN.                                                          IX2174.2
 042100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IX2174.2
@@ -686,4 +685,3 @@
 068500 CCVS-EXIT SECTION.                                               IX2174.2
 068600 CCVS-999999.                                                     IX2174.2
 068700     GO TO CLOSE-FILES.                                           IX2174.2
-      *END-OF,IX217A                                                                  

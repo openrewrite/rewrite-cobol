@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IX208A                                                            
 000100 IDENTIFICATION DIVISION.                                         IX2084.2
 000200 PROGRAM-ID.                                                      IX2084.2
 000300     IX208A.                                                      IX2084.2
@@ -82,17 +81,17 @@
 008100     XXXXX083.                                                    IX2084.2
 008200 INPUT-OUTPUT SECTION.                                            IX2084.2
 008300 FILE-CONTROL.                                                    IX2084.2
-008400*    SELECT RAW-DATA   ASSIGN TO                                  IX2084.2
-008500*    XXXXX062                                                     IX2084.2
-008600*           ORGANIZATION IS INDEXED                               IX2084.2
-008700*           ACCESS MODE IS RANDOM                                 IX2084.2
-008800*           RECORD KEY IS RAW-DATA-KEY.                           IX2084.2
+008400P    SELECT RAW-DATA   ASSIGN TO                                  IX2084.2
+008500P    XXXXX062                                                     IX2084.2
+008600P           ORGANIZATION IS INDEXED                               IX2084.2
+008700P           ACCESS MODE IS RANDOM                                 IX2084.2
+008800P           RECORD KEY IS RAW-DATA-KEY.                           IX2084.2
 008900     SELECT PRINT-FILE ASSIGN TO                                  IX2084.2
 009000     XXXXX055.                                                    IX2084.2
 009100     SELECT   IX-FD1                                              IX2084.2
 009200        ASSIGN TO                                                 IX2084.2
 009300     XXXXX024                                                     IX2084.2
-009400*    XXXXX044                                                     IX2084.2
+009400J    XXXXX044                                                     IX2084.2
 009500         ORGANIZATION IS INDEXED                                  IX2084.2
 009600        ALTERNATE RECORD KEY IS IX-FD1-ALTKEY1                    IX2084.2
 009700        RECORD KEY IS   IX-FD1-KEY                                IX2084.2
@@ -100,29 +99,29 @@
 009900     SELECT   IX-FS2                                              IX2084.2
 010000         ASSIGN TO                                                IX2084.2
 010100     XXXXX025                                                     IX2084.2
-010200*    XXXXX045                                                     IX2084.2
+010200J    XXXXX045                                                     IX2084.2
 010300     RECORD KEY IS IX-FS2-KEY                                     IX2084.2
 010400        ALTERNATE RECORD KEY IS IX-FS2-ALTKEY1                    IX2084.2
 010500        ACCESS MODE IS SEQUENTIAL                                 IX2084.2
 010600         ORGANIZATION IS INDEXED.                                 IX2084.2
 010700 DATA DIVISION.                                                   IX2084.2
 010800 FILE SECTION.                                                    IX2084.2
-010900*                                                                 IX2084.2
-011000*FD  RAW-DATA.                                                    IX2084.2
-011100*                                                                 IX2084.2
-011200*01  RAW-DATA-SATZ.                                               IX2084.2
-011300*    05  RAW-DATA-KEY        PIC X(6).                            IX2084.2
-011400*    05  C-DATE              PIC 9(6).                            IX2084.2
-011500*    05  C-TIME              PIC 9(8).                            IX2084.2
-011600*    05  C-NO-OF-TESTS       PIC 99.                              IX2084.2
-011700*    05  C-OK                PIC 999.                             IX2084.2
-011800*    05  C-ALL               PIC 999.                             IX2084.2
-011900*    05  C-FAIL              PIC 999.                             IX2084.2
-012000*    05  C-DELETED           PIC 999.                             IX2084.2
-012100*    05  C-INSPECT           PIC 999.                             IX2084.2
-012200*    05  C-NOTE              PIC X(13).                           IX2084.2
-012300*    05  C-INDENT            PIC X.                               IX2084.2
-012400*    05  C-ABORT             PIC X(8).                            IX2084.2
+010900P                                                                 IX2084.2
+011000PFD  RAW-DATA.                                                    IX2084.2
+011100P                                                                 IX2084.2
+011200P01  RAW-DATA-SATZ.                                               IX2084.2
+011300P    05  RAW-DATA-KEY        PIC X(6).                            IX2084.2
+011400P    05  C-DATE              PIC 9(6).                            IX2084.2
+011500P    05  C-TIME              PIC 9(8).                            IX2084.2
+011600P    05  C-NO-OF-TESTS       PIC 99.                              IX2084.2
+011700P    05  C-OK                PIC 999.                             IX2084.2
+011800P    05  C-ALL               PIC 999.                             IX2084.2
+011900P    05  C-FAIL              PIC 999.                             IX2084.2
+012000P    05  C-DELETED           PIC 999.                             IX2084.2
+012100P    05  C-INSPECT           PIC 999.                             IX2084.2
+012200P    05  C-NOTE              PIC X(13).                           IX2084.2
+012300P    05  C-INDENT            PIC X.                               IX2084.2
+012400P    05  C-ABORT             PIC X(8).                            IX2084.2
 012500 FD  PRINT-FILE.                                                  IX2084.2
 012600 01  PRINT-REC PICTURE X(120).                                    IX2084.2
 012700 01  DUMMY-RECORD PICTURE X(120).                                 IX2084.2
@@ -136,14 +135,14 @@
 013500     10 FILLER          PICTURE X(8).                             IX2084.2
 013600     10 IX-FD1-KEY.                                               IX2084.2
 013700        15 IX-FS1-KEYNUM PICTURE 9(5).                            IX2084.2
-013800*       15 FILLER        PICTURE 9(5).                            IX2084.2
-013900*    10 FILLER           PICTURE X(5).                            IX2084.2
+013800T       15 FILLER        PICTURE 9(5).                            IX2084.2
+013900U    10 FILLER           PICTURE X(5).                            IX2084.2
 014000     10 FILLER           PICTURE X(19).                           IX2084.2
 014100     10 FILLER           PICTURE X(9).                            IX2084.2
 014200     10 IX-FD1-ALTKEY1.                                           IX2084.2
-014300*       15 FILLER        PICTURE 9(5).                            IX2084.2
+014300T       15 FILLER        PICTURE 9(5).                            IX2084.2
 014400        15 IX-FD1-ALTKEY1NUM      PICTURE 9(5).                   IX2084.2
-014500*    10 FILLER                    PICTURE 9(5).                   IX2084.2
+014500U    10 FILLER                    PICTURE 9(5).                   IX2084.2
 014600     10 FILLER                    PICTURE X(19).                  IX2084.2
 014700     10 FILLER                    PICTURE X(45).                  IX2084.2
 014800 FD  IX-FS2                                                       IX2084.2
@@ -156,14 +155,14 @@
 015500        10 FILLER                 PICTURE X(8).                   IX2084.2
 015600        10 IX-FS2-KEY.                                            IX2084.2
 015700           15 IX-FS2-KEYNUM       PICTURE 9(5).                   IX2084.2
-015800*          15 FILLER              PICTURE 9(5).                   IX2084.2
-015900*       10 FILLER                 PICTURE 9(5).                   IX2084.2
+015800T          15 FILLER              PICTURE 9(5).                   IX2084.2
+015900U       10 FILLER                 PICTURE 9(5).                   IX2084.2
 016000        10 FILLER                 PICTURE X(19).                  IX2084.2
 016100        10 FILLER                 PICTURE X(9).                   IX2084.2
 016200        10 IX-FS2-ALTKEY1.                                        IX2084.2
-016300*          15 FILLER              PICTURE 9(5).                   IX2084.2
+016300T          15 FILLER              PICTURE 9(5).                   IX2084.2
 016400           15 IX-FS2-ALTKEY1NUM   PICTURE 9(5).                   IX2084.2
-016500*       10 FILLER                 PICTURE 9(5).                   IX2084.2
+016500U       10 FILLER                 PICTURE 9(5).                   IX2084.2
 016600        10 FILLER                 PICTURE X(19).                  IX2084.2
 016700        10 FILLER                 PICTURE X(45).                  IX2084.2
 016800 WORKING-STORAGE SECTION.                                         IX2084.2
@@ -171,15 +170,15 @@
 017000 01  IX-FS2-FILESIZE              PICTURE 9(6) VALUE 300.         IX2084.2
 017100 01  WRK-IX-FD1-RECKEY.                                           IX2084.2
 017200     03 WRK-DU-05V00-001          PICTURE 9(5) VALUE ZERO.        IX2084.2
-017300*    03 FILLER                    PICTURE 9(5) VALUE ZERO.        IX2084.2
+017300T    03 FILLER                    PICTURE 9(5) VALUE ZERO.        IX2084.2
 017400 01  WRK-IX-FS2-RECKEY.                                           IX2084.2
 017500     03 WRK-DU-05V00-003          PICTURE 9(5)  VALUE  ZERO.      IX2084.2
-017600*    03 FILLER                    PICTURE 9(5)  VALUE  ZERO.      IX2084.2
+017600T    03 FILLER                    PICTURE 9(5)  VALUE  ZERO.      IX2084.2
 017700 01  WRK-IX-FD1-ALTKEY.                                           IX2084.2
-017800*    03 FILLER                    PICTURE 9(5)  VALUE  ZERO.      IX2084.2
+017800T    03 FILLER                    PICTURE 9(5)  VALUE  ZERO.      IX2084.2
 017900     03 WRK-DU-05V00-002          PICTURE 9(5)  VALUE  ZERO.      IX2084.2
 018000 01  WRK-IX-FS2-ALTKEY.                                           IX2084.2
-018100*    03 FILLER                    PICTURE 9(5)  VALUE  ZERO.      IX2084.2
+018100T    03 FILLER                    PICTURE 9(5)  VALUE  ZERO.      IX2084.2
 018200     03 WRK-DU-05V00-004          PICTURE 9(5)  VALUE  ZERO.      IX2084.2
 018300 01  EXCUT-COUNTER-06V00          PICTURE S9(6) VALUE  ZERO.      IX2084.2
 018400 01  INV-KEY-COUNTER              PICTURE S9(6) VALUE  ZERO.      IX2084.2
@@ -391,16 +390,16 @@
 039000 END DECLARATIVES.                                                IX2084.2
 039100 CCVS1 SECTION.                                                   IX2084.2
 039200 OPEN-FILES.                                                      IX2084.2
-039300*    OPEN I-O RAW-DATA.                                           IX2084.2
-039400*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            IX2084.2
-039500*    READ RAW-DATA INVALID KEY GO TO END-E-1.                     IX2084.2
-039600*    MOVE "ABORTED " TO C-ABORT.                                  IX2084.2
-039700*    ADD 1 TO C-NO-OF-TESTS.                                      IX2084.2
-039800*    ACCEPT C-DATE  FROM DATE.                                    IX2084.2
-039900*    ACCEPT C-TIME  FROM TIME.                                    IX2084.2
-040000*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             IX2084.2
-040100*END-E-1.                                                         IX2084.2
-040200*    CLOSE RAW-DATA.                                              IX2084.2
+039300P    OPEN I-O RAW-DATA.                                           IX2084.2
+039400P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            IX2084.2
+039500P    READ RAW-DATA INVALID KEY GO TO END-E-1.                     IX2084.2
+039600P    MOVE "ABORTED " TO C-ABORT.                                  IX2084.2
+039700P    ADD 1 TO C-NO-OF-TESTS.                                      IX2084.2
+039800P    ACCEPT C-DATE  FROM DATE.                                    IX2084.2
+039900P    ACCEPT C-TIME  FROM TIME.                                    IX2084.2
+040000P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             IX2084.2
+040100PEND-E-1.                                                         IX2084.2
+040200P    CLOSE RAW-DATA.                                              IX2084.2
 040300     OPEN    OUTPUT PRINT-FILE.                                   IX2084.2
 040400     MOVE  CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.  IX2084.2
 040500     MOVE    SPACE TO TEST-RESULTS.                               IX2084.2
@@ -414,22 +413,22 @@
 041300 CCVS-INIT-EXIT.                                                  IX2084.2
 041400     GO TO CCVS1-EXIT.                                            IX2084.2
 041500 CLOSE-FILES.                                                     IX2084.2
-041600*    OPEN I-O RAW-DATA.                                           IX2084.2
-041700*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            IX2084.2
-041800*    READ RAW-DATA INVALID KEY GO TO END-E-2.                     IX2084.2
-041900*    MOVE "OK.     " TO C-ABORT.                                  IX2084.2
-042000*    MOVE PASS-COUNTER TO C-OK.                                   IX2084.2
-042100*    MOVE ERROR-HOLD   TO C-ALL.                                  IX2084.2
-042200*    MOVE ERROR-COUNTER TO C-FAIL.                                IX2084.2
-042300*    MOVE DELETE-COUNTER TO C-DELETED.                            IX2084.2
-042400*    MOVE INSPECT-COUNTER TO C-INSPECT.                           IX2084.2
-042500*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             IX2084.2
-042600*END-E-2.                                                         IX2084.2
-042700*    CLOSE RAW-DATA.                                              IX2084.2
+041600P    OPEN I-O RAW-DATA.                                           IX2084.2
+041700P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            IX2084.2
+041800P    READ RAW-DATA INVALID KEY GO TO END-E-2.                     IX2084.2
+041900P    MOVE "OK.     " TO C-ABORT.                                  IX2084.2
+042000P    MOVE PASS-COUNTER TO C-OK.                                   IX2084.2
+042100P    MOVE ERROR-HOLD   TO C-ALL.                                  IX2084.2
+042200P    MOVE ERROR-COUNTER TO C-FAIL.                                IX2084.2
+042300P    MOVE DELETE-COUNTER TO C-DELETED.                            IX2084.2
+042400P    MOVE INSPECT-COUNTER TO C-INSPECT.                           IX2084.2
+042500P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             IX2084.2
+042600PEND-E-2.                                                         IX2084.2
+042700P    CLOSE RAW-DATA.                                              IX2084.2
 042800     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IX2084.2
 042900 TERMINATE-CCVS.                                                  IX2084.2
-043000*    EXIT PROGRAM.                                                IX2084.2
-043100*TERMINATE-CALL.                                                  IX2084.2
+043000S    EXIT PROGRAM.                                                IX2084.2
+043100STERMINATE-CALL.                                                  IX2084.2
 043200     STOP     RUN.                                                IX2084.2
 043300 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IX2084.2
 043400 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IX2084.2
@@ -492,19 +491,19 @@
 049100     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IX2084.2
 049200 WRITE-LINE.                                                      IX2084.2
 049300     ADD 1 TO RECORD-COUNT.                                       IX2084.2
-049400*    IF RECORD-COUNT GREATER 42                                   IX2084.2
-049500*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IX2084.2
-049600*        MOVE SPACE TO DUMMY-RECORD                               IX2084.2
-049700*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IX2084.2
-049800*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX2084.2
-049900*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX2084.2
-050000*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX2084.2
-050100*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX2084.2
-050200*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            IX2084.2
-050300*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            IX2084.2
-050400*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IX2084.2
-050500*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IX2084.2
-050600*        MOVE ZERO TO RECORD-COUNT.                               IX2084.2
+049400Y    IF RECORD-COUNT GREATER 42                                   IX2084.2
+049500Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IX2084.2
+049600Y        MOVE SPACE TO DUMMY-RECORD                               IX2084.2
+049700Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IX2084.2
+049800Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX2084.2
+049900Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX2084.2
+050000Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX2084.2
+050100Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX2084.2
+050200Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            IX2084.2
+050300Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            IX2084.2
+050400Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IX2084.2
+050500Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IX2084.2
+050600Y        MOVE ZERO TO RECORD-COUNT.                               IX2084.2
 050700     PERFORM WRT-LN.                                              IX2084.2
 050800 WRT-LN.                                                          IX2084.2
 050900     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IX2084.2
@@ -1524,4 +1523,3 @@
 152300 CCVS-EXIT SECTION.                                               IX2084.2
 152400 CCVS-999999.                                                     IX2084.2
 152500     GO TO CLOSE-FILES.                                           IX2084.2
-      *END-OF,IX208A                                                                  

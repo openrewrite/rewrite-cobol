@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IX301M                                                            
 000100 IDENTIFICATION DIVISION.                                         IX3014.2
 000200 PROGRAM-ID.                                                      IX3014.2
 000300      IX301M.                                                     IX3014.2
@@ -69,4 +68,3 @@
 006800     MOVE "DONE" TO STATE.                                        IX3014.2
 006900                                                                  IX3014.2
 007000*TOTAL NUMBER OF FLAGS EXPECTED = 7.                              IX3014.2
-      *END-OF,IX301M                                                                  

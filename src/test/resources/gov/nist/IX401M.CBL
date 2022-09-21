@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IX401M                                                            
 000100 IDENTIFICATION DIVISION.                                         IX4014.2
 000200 PROGRAM-ID.                                                      IX4014.2
 000300     IX401M.                                                      IX4014.2
@@ -83,4 +82,3 @@
 008200*Message expected for above statement: NON-CONFORMING STANDARD    IX4014.2
 008300                                                                  IX4014.2
 008400*TOTAL NUMBER OF FLAGS EXPECTED = 10.                             IX4014.2
-      *END-OF,IX401M                                                                  

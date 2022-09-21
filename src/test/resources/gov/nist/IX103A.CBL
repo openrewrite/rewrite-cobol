@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IX101A,SUBPRG,IX103A                                              
 000100 IDENTIFICATION DIVISION.                                         IX1034.2
 000200 PROGRAM-ID.                                                      IX1034.2
 000300     IX103A.                                                      IX1034.2
@@ -60,38 +59,38 @@
 005900     XXXXX083.                                                    IX1034.2
 006000 INPUT-OUTPUT SECTION.                                            IX1034.2
 006100 FILE-CONTROL.                                                    IX1034.2
-006200*    SELECT RAW-DATA   ASSIGN TO                                  IX1034.2
-006300*    XXXXX062                                                     IX1034.2
-006400*           ORGANIZATION IS INDEXED                               IX1034.2
-006500*           ACCESS MODE IS RANDOM                                 IX1034.2
-006600*           RECORD KEY IS RAW-DATA-KEY.                           IX1034.2
+006200P    SELECT RAW-DATA   ASSIGN TO                                  IX1034.2
+006300P    XXXXX062                                                     IX1034.2
+006400P           ORGANIZATION IS INDEXED                               IX1034.2
+006500P           ACCESS MODE IS RANDOM                                 IX1034.2
+006600P           RECORD KEY IS RAW-DATA-KEY.                           IX1034.2
 006700     SELECT PRINT-FILE ASSIGN TO                                  IX1034.2
 006800     XXXXX055.                                                    IX1034.2
 006900     SELECT   IX-FS1 ASSIGN TO                                    IX1034.2
 007000     XXXXD024                                                     IX1034.2
-007100*    XXXXD044                                                     IX1034.2
+007100J    XXXXD044                                                     IX1034.2
 007200                     INDEXED                                      IX1034.2
 007300     RECORD    IX-FS1-KEY.                                        IX1034.2
 007400*    THE ABSENCE OF THE ACCESS CLAUSE IS TREATED AS THOUGH        IX1034.2
 007500*        SEQUENTIAL HAD BEEN SPECIFIED.                           IX1034.2
 007600 DATA DIVISION.                                                   IX1034.2
 007700 FILE SECTION.                                                    IX1034.2
-007800*                                                                 IX1034.2
-007900*FD  RAW-DATA.                                                    IX1034.2
-008000*                                                                 IX1034.2
-008100*01  RAW-DATA-SATZ.                                               IX1034.2
-008200*    05  RAW-DATA-KEY        PIC X(6).                            IX1034.2
-008300*    05  C-DATE              PIC 9(6).                            IX1034.2
-008400*    05  C-TIME              PIC 9(8).                            IX1034.2
-008500*    05  C-NO-OF-TESTS       PIC 99.                              IX1034.2
-008600*    05  C-OK                PIC 999.                             IX1034.2
-008700*    05  C-ALL               PIC 999.                             IX1034.2
-008800*    05  C-FAIL              PIC 999.                             IX1034.2
-008900*    05  C-DELETED           PIC 999.                             IX1034.2
-009000*    05  C-INSPECT           PIC 999.                             IX1034.2
-009100*    05  C-NOTE              PIC X(13).                           IX1034.2
-009200*    05  C-INDENT            PIC X.                               IX1034.2
-009300*    05  C-ABORT             PIC X(8).                            IX1034.2
+007800P                                                                 IX1034.2
+007900PFD  RAW-DATA.                                                    IX1034.2
+008000P                                                                 IX1034.2
+008100P01  RAW-DATA-SATZ.                                               IX1034.2
+008200P    05  RAW-DATA-KEY        PIC X(6).                            IX1034.2
+008300P    05  C-DATE              PIC 9(6).                            IX1034.2
+008400P    05  C-TIME              PIC 9(8).                            IX1034.2
+008500P    05  C-NO-OF-TESTS       PIC 99.                              IX1034.2
+008600P    05  C-OK                PIC 999.                             IX1034.2
+008700P    05  C-ALL               PIC 999.                             IX1034.2
+008800P    05  C-FAIL              PIC 999.                             IX1034.2
+008900P    05  C-DELETED           PIC 999.                             IX1034.2
+009000P    05  C-INSPECT           PIC 999.                             IX1034.2
+009100P    05  C-NOTE              PIC X(13).                           IX1034.2
+009200P    05  C-INDENT            PIC X.                               IX1034.2
+009300P    05  C-ABORT             PIC X(8).                            IX1034.2
 009400 FD  PRINT-FILE.                                                  IX1034.2
 009500 01  PRINT-REC PICTURE X(120).                                    IX1034.2
 009600 01  DUMMY-RECORD PICTURE X(120).                                 IX1034.2
@@ -327,16 +326,16 @@
 032600 END DECLARATIVES.                                                IX1034.2
 032700 CCVS1 SECTION.                                                   IX1034.2
 032800 OPEN-FILES.                                                      IX1034.2
-032900*    OPEN I-O RAW-DATA.                                           IX1034.2
-033000*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            IX1034.2
-033100*    READ RAW-DATA INVALID KEY GO TO END-E-1.                     IX1034.2
-033200*    MOVE "ABORTED " TO C-ABORT.                                  IX1034.2
-033300*    ADD 1 TO C-NO-OF-TESTS.                                      IX1034.2
-033400*    ACCEPT C-DATE  FROM DATE.                                    IX1034.2
-033500*    ACCEPT C-TIME  FROM TIME.                                    IX1034.2
-033600*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             IX1034.2
-033700*END-E-1.                                                         IX1034.2
-033800*    CLOSE RAW-DATA.                                              IX1034.2
+032900P    OPEN I-O RAW-DATA.                                           IX1034.2
+033000P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            IX1034.2
+033100P    READ RAW-DATA INVALID KEY GO TO END-E-1.                     IX1034.2
+033200P    MOVE "ABORTED " TO C-ABORT.                                  IX1034.2
+033300P    ADD 1 TO C-NO-OF-TESTS.                                      IX1034.2
+033400P    ACCEPT C-DATE  FROM DATE.                                    IX1034.2
+033500P    ACCEPT C-TIME  FROM TIME.                                    IX1034.2
+033600P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             IX1034.2
+033700PEND-E-1.                                                         IX1034.2
+033800P    CLOSE RAW-DATA.                                              IX1034.2
 033900     OPEN    OUTPUT PRINT-FILE.                                   IX1034.2
 034000     MOVE  CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.  IX1034.2
 034100     MOVE    SPACE TO TEST-RESULTS.                               IX1034.2
@@ -350,22 +349,22 @@
 034900 CCVS-INIT-EXIT.                                                  IX1034.2
 035000     GO TO CCVS1-EXIT.                                            IX1034.2
 035100 CLOSE-FILES.                                                     IX1034.2
-035200*    OPEN I-O RAW-DATA.                                           IX1034.2
-035300*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            IX1034.2
-035400*    READ RAW-DATA INVALID KEY GO TO END-E-2.                     IX1034.2
-035500*    MOVE "OK.     " TO C-ABORT.                                  IX1034.2
-035600*    MOVE PASS-COUNTER TO C-OK.                                   IX1034.2
-035700*    MOVE ERROR-HOLD   TO C-ALL.                                  IX1034.2
-035800*    MOVE ERROR-COUNTER TO C-FAIL.                                IX1034.2
-035900*    MOVE DELETE-COUNTER TO C-DELETED.                            IX1034.2
-036000*    MOVE INSPECT-COUNTER TO C-INSPECT.                           IX1034.2
-036100*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             IX1034.2
-036200*END-E-2.                                                         IX1034.2
-036300*    CLOSE RAW-DATA.                                              IX1034.2
+035200P    OPEN I-O RAW-DATA.                                           IX1034.2
+035300P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            IX1034.2
+035400P    READ RAW-DATA INVALID KEY GO TO END-E-2.                     IX1034.2
+035500P    MOVE "OK.     " TO C-ABORT.                                  IX1034.2
+035600P    MOVE PASS-COUNTER TO C-OK.                                   IX1034.2
+035700P    MOVE ERROR-HOLD   TO C-ALL.                                  IX1034.2
+035800P    MOVE ERROR-COUNTER TO C-FAIL.                                IX1034.2
+035900P    MOVE DELETE-COUNTER TO C-DELETED.                            IX1034.2
+036000P    MOVE INSPECT-COUNTER TO C-INSPECT.                           IX1034.2
+036100P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             IX1034.2
+036200PEND-E-2.                                                         IX1034.2
+036300P    CLOSE RAW-DATA.                                              IX1034.2
 036400     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IX1034.2
 036500 TERMINATE-CCVS.                                                  IX1034.2
-036600*    EXIT PROGRAM.                                                IX1034.2
-036700*TERMINATE-CALL.                                                  IX1034.2
+036600S    EXIT PROGRAM.                                                IX1034.2
+036700STERMINATE-CALL.                                                  IX1034.2
 036800     STOP     RUN.                                                IX1034.2
 036900 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IX1034.2
 037000 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IX1034.2
@@ -428,19 +427,19 @@
 042700     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IX1034.2
 042800 WRITE-LINE.                                                      IX1034.2
 042900     ADD 1 TO RECORD-COUNT.                                       IX1034.2
-043000*    IF RECORD-COUNT GREATER 42                                   IX1034.2
-043100*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IX1034.2
-043200*        MOVE SPACE TO DUMMY-RECORD                               IX1034.2
-043300*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IX1034.2
-043400*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX1034.2
-043500*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX1034.2
-043600*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX1034.2
-043700*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX1034.2
-043800*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            IX1034.2
-043900*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            IX1034.2
-044000*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IX1034.2
-044100*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IX1034.2
-044200*        MOVE ZERO TO RECORD-COUNT.                               IX1034.2
+043000Y    IF RECORD-COUNT GREATER 42                                   IX1034.2
+043100Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IX1034.2
+043200Y        MOVE SPACE TO DUMMY-RECORD                               IX1034.2
+043300Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IX1034.2
+043400Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX1034.2
+043500Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX1034.2
+043600Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX1034.2
+043700Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX1034.2
+043800Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            IX1034.2
+043900Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            IX1034.2
+044000Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IX1034.2
+044100Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IX1034.2
+044200Y        MOVE ZERO TO RECORD-COUNT.                               IX1034.2
 044300     PERFORM WRT-LN.                                              IX1034.2
 044400 WRT-LN.                                                          IX1034.2
 044500     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IX1034.2
@@ -756,4 +755,3 @@
 075500 CCVS-EXIT SECTION.                                               IX1034.2
 075600 CCVS-999999.                                                     IX1034.2
 075700     GO TO CLOSE-FILES.                                           IX1034.2
-      *END-OF,IX103A                                                                  

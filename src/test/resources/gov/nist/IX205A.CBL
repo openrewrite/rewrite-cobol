@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IX205A                                                            
 000100 IDENTIFICATION DIVISION.                                         IX2054.2
 000200 PROGRAM-ID.                                                      IX2054.2
 000300     IX205A.                                                      IX2054.2
@@ -71,16 +70,16 @@
 007000     XXXXX083.                                                    IX2054.2
 007100 INPUT-OUTPUT SECTION.                                            IX2054.2
 007200 FILE-CONTROL.                                                    IX2054.2
-007300*    SELECT RAW-DATA   ASSIGN TO                                  IX2054.2
-007400*    XXXXX062                                                     IX2054.2
-007500*           ORGANIZATION IS INDEXED                               IX2054.2
-007600*           ACCESS MODE IS RANDOM                                 IX2054.2
-007700*           RECORD KEY IS RAW-DATA-KEY.                           IX2054.2
+007300P    SELECT RAW-DATA   ASSIGN TO                                  IX2054.2
+007400P    XXXXX062                                                     IX2054.2
+007500P           ORGANIZATION IS INDEXED                               IX2054.2
+007600P           ACCESS MODE IS RANDOM                                 IX2054.2
+007700P           RECORD KEY IS RAW-DATA-KEY.                           IX2054.2
 007800     SELECT PRINT-FILE ASSIGN TO                                  IX2054.2
 007900     XXXXX055.                                                    IX2054.2
 008000     SELECT   IX-FD1  ASSIGN TO                                   IX2054.2
 008100     XXXXX024                                                     IX2054.2
-008200*    XXXXX044                                                     IX2054.2
+008200J    XXXXX044                                                     IX2054.2
 008300              RESERVE  3  AREA                                    IX2054.2
 008400              ORGANIZATION IS INDEXED                             IX2054.2
 008500              ACCESS MODE IS DYNAMIC                              IX2054.2
@@ -88,7 +87,7 @@
 008700              ALTERNATE RECORD KEY IS IX-FD1-ALTKEY1.             IX2054.2
 008800     SELECT   IX-FD2    ASSIGN TO                                 IX2054.2
 008900     XXXXX025                                                     IX2054.2
-009000*    XXXXX045                                                     IX2054.2
+009000J    XXXXX045                                                     IX2054.2
 009100              RESERVE  2  AREAS                                   IX2054.2
 009200              ACCESS MODE  DYNAMIC                                IX2054.2
 009300              ORGANIZATION INDEXED                                IX2054.2
@@ -98,22 +97,22 @@
 009700     SAME   RECORD  IX-FD1  IX-FD2.                               IX2054.2
 009800 DATA DIVISION.                                                   IX2054.2
 009900 FILE SECTION.                                                    IX2054.2
-010000*                                                                 IX2054.2
-010100*FD  RAW-DATA.                                                    IX2054.2
-010200*                                                                 IX2054.2
-010300*01  RAW-DATA-SATZ.                                               IX2054.2
-010400*    05  RAW-DATA-KEY        PIC X(6).                            IX2054.2
-010500*    05  C-DATE              PIC 9(6).                            IX2054.2
-010600*    05  C-TIME              PIC 9(8).                            IX2054.2
-010700*    05  C-NO-OF-TESTS       PIC 99.                              IX2054.2
-010800*    05  C-OK                PIC 999.                             IX2054.2
-010900*    05  C-ALL               PIC 999.                             IX2054.2
-011000*    05  C-FAIL              PIC 999.                             IX2054.2
-011100*    05  C-DELETED           PIC 999.                             IX2054.2
-011200*    05  C-INSPECT           PIC 999.                             IX2054.2
-011300*    05  C-NOTE              PIC X(13).                           IX2054.2
-011400*    05  C-INDENT            PIC X.                               IX2054.2
-011500*    05  C-ABORT             PIC X(8).                            IX2054.2
+010000P                                                                 IX2054.2
+010100PFD  RAW-DATA.                                                    IX2054.2
+010200P                                                                 IX2054.2
+010300P01  RAW-DATA-SATZ.                                               IX2054.2
+010400P    05  RAW-DATA-KEY        PIC X(6).                            IX2054.2
+010500P    05  C-DATE              PIC 9(6).                            IX2054.2
+010600P    05  C-TIME              PIC 9(8).                            IX2054.2
+010700P    05  C-NO-OF-TESTS       PIC 99.                              IX2054.2
+010800P    05  C-OK                PIC 999.                             IX2054.2
+010900P    05  C-ALL               PIC 999.                             IX2054.2
+011000P    05  C-FAIL              PIC 999.                             IX2054.2
+011100P    05  C-DELETED           PIC 999.                             IX2054.2
+011200P    05  C-INSPECT           PIC 999.                             IX2054.2
+011300P    05  C-NOTE              PIC X(13).                           IX2054.2
+011400P    05  C-INDENT            PIC X.                               IX2054.2
+011500P    05  C-ABORT             PIC X(8).                            IX2054.2
 011600 FD  PRINT-FILE.                                                  IX2054.2
 011700 01  PRINT-REC PICTURE X(120).                                    IX2054.2
 011800 01  DUMMY-RECORD PICTURE X(120).                                 IX2054.2
@@ -361,16 +360,16 @@
 036000 PROCEDURE DIVISION.                                              IX2054.2
 036100 CCVS1 SECTION.                                                   IX2054.2
 036200 OPEN-FILES.                                                      IX2054.2
-036300*    OPEN I-O RAW-DATA.                                           IX2054.2
-036400*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            IX2054.2
-036500*    READ RAW-DATA INVALID KEY GO TO END-E-1.                     IX2054.2
-036600*    MOVE "ABORTED " TO C-ABORT.                                  IX2054.2
-036700*    ADD 1 TO C-NO-OF-TESTS.                                      IX2054.2
-036800*    ACCEPT C-DATE  FROM DATE.                                    IX2054.2
-036900*    ACCEPT C-TIME  FROM TIME.                                    IX2054.2
-037000*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             IX2054.2
-037100*END-E-1.                                                         IX2054.2
-037200*    CLOSE RAW-DATA.                                              IX2054.2
+036300P    OPEN I-O RAW-DATA.                                           IX2054.2
+036400P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            IX2054.2
+036500P    READ RAW-DATA INVALID KEY GO TO END-E-1.                     IX2054.2
+036600P    MOVE "ABORTED " TO C-ABORT.                                  IX2054.2
+036700P    ADD 1 TO C-NO-OF-TESTS.                                      IX2054.2
+036800P    ACCEPT C-DATE  FROM DATE.                                    IX2054.2
+036900P    ACCEPT C-TIME  FROM TIME.                                    IX2054.2
+037000P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             IX2054.2
+037100PEND-E-1.                                                         IX2054.2
+037200P    CLOSE RAW-DATA.                                              IX2054.2
 037300     OPEN    OUTPUT PRINT-FILE.                                   IX2054.2
 037400     MOVE  CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.  IX2054.2
 037500     MOVE    SPACE TO TEST-RESULTS.                               IX2054.2
@@ -384,22 +383,22 @@
 038300 CCVS-INIT-EXIT.                                                  IX2054.2
 038400     GO TO CCVS1-EXIT.                                            IX2054.2
 038500 CLOSE-FILES.                                                     IX2054.2
-038600*    OPEN I-O RAW-DATA.                                           IX2054.2
-038700*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            IX2054.2
-038800*    READ RAW-DATA INVALID KEY GO TO END-E-2.                     IX2054.2
-038900*    MOVE "OK.     " TO C-ABORT.                                  IX2054.2
-039000*    MOVE PASS-COUNTER TO C-OK.                                   IX2054.2
-039100*    MOVE ERROR-HOLD   TO C-ALL.                                  IX2054.2
-039200*    MOVE ERROR-COUNTER TO C-FAIL.                                IX2054.2
-039300*    MOVE DELETE-COUNTER TO C-DELETED.                            IX2054.2
-039400*    MOVE INSPECT-COUNTER TO C-INSPECT.                           IX2054.2
-039500*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             IX2054.2
-039600*END-E-2.                                                         IX2054.2
-039700*    CLOSE RAW-DATA.                                              IX2054.2
+038600P    OPEN I-O RAW-DATA.                                           IX2054.2
+038700P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            IX2054.2
+038800P    READ RAW-DATA INVALID KEY GO TO END-E-2.                     IX2054.2
+038900P    MOVE "OK.     " TO C-ABORT.                                  IX2054.2
+039000P    MOVE PASS-COUNTER TO C-OK.                                   IX2054.2
+039100P    MOVE ERROR-HOLD   TO C-ALL.                                  IX2054.2
+039200P    MOVE ERROR-COUNTER TO C-FAIL.                                IX2054.2
+039300P    MOVE DELETE-COUNTER TO C-DELETED.                            IX2054.2
+039400P    MOVE INSPECT-COUNTER TO C-INSPECT.                           IX2054.2
+039500P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             IX2054.2
+039600PEND-E-2.                                                         IX2054.2
+039700P    CLOSE RAW-DATA.                                              IX2054.2
 039800     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IX2054.2
 039900 TERMINATE-CCVS.                                                  IX2054.2
-040000*    EXIT PROGRAM.                                                IX2054.2
-040100*TERMINATE-CALL.                                                  IX2054.2
+040000S    EXIT PROGRAM.                                                IX2054.2
+040100STERMINATE-CALL.                                                  IX2054.2
 040200     STOP     RUN.                                                IX2054.2
 040300 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IX2054.2
 040400 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IX2054.2
@@ -462,19 +461,19 @@
 046100     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IX2054.2
 046200 WRITE-LINE.                                                      IX2054.2
 046300     ADD 1 TO RECORD-COUNT.                                       IX2054.2
-046400*    IF RECORD-COUNT GREATER 42                                   IX2054.2
-046500*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IX2054.2
-046600*        MOVE SPACE TO DUMMY-RECORD                               IX2054.2
-046700*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IX2054.2
-046800*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX2054.2
-046900*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX2054.2
-047000*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX2054.2
-047100*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX2054.2
-047200*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            IX2054.2
-047300*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            IX2054.2
-047400*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IX2054.2
-047500*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IX2054.2
-047600*        MOVE ZERO TO RECORD-COUNT.                               IX2054.2
+046400Y    IF RECORD-COUNT GREATER 42                                   IX2054.2
+046500Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IX2054.2
+046600Y        MOVE SPACE TO DUMMY-RECORD                               IX2054.2
+046700Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IX2054.2
+046800Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX2054.2
+046900Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX2054.2
+047000Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX2054.2
+047100Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX2054.2
+047200Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            IX2054.2
+047300Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            IX2054.2
+047400Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IX2054.2
+047500Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IX2054.2
+047600Y        MOVE ZERO TO RECORD-COUNT.                               IX2054.2
 047700     PERFORM WRT-LN.                                              IX2054.2
 047800 WRT-LN.                                                          IX2054.2
 047900     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IX2054.2
@@ -972,4 +971,3 @@
 097100 CCVS-EXIT SECTION.                                               IX2054.2
 097200 CCVS-999999.                                                     IX2054.2
 097300     GO TO CLOSE-FILES.                                           IX2054.2
-      *END-OF,IX205A                                                                  

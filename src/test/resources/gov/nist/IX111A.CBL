@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IX109A,SUBPRG,IX111A                                              
 000100 IDENTIFICATION DIVISION.                                         IX1114.2
 000200 PROGRAM-ID.                                                      IX1114.2
 000300     IX111A.                                                      IX1114.2
@@ -375,19 +374,19 @@
 037400     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IX1114.2
 037500 WRITE-LINE.                                                      IX1114.2
 037600     ADD 1 TO RECORD-COUNT.                                       IX1114.2
-037700*    IF RECORD-COUNT GREATER 42                                   IX1114.2
-037800*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IX1114.2
-037900*        MOVE SPACE TO DUMMY-RECORD                               IX1114.2
-038000*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IX1114.2
-038100*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX1114.2
-038200*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX1114.2
-038300*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX1114.2
-038400*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX1114.2
-038500*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            IX1114.2
-038600*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            IX1114.2
-038700*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IX1114.2
-038800*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IX1114.2
-038900*        MOVE ZERO TO RECORD-COUNT.                               IX1114.2
+037700Y    IF RECORD-COUNT GREATER 42                                   IX1114.2
+037800Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IX1114.2
+037900Y        MOVE SPACE TO DUMMY-RECORD                               IX1114.2
+038000Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IX1114.2
+038100Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX1114.2
+038200Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    IX1114.2
+038300Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX1114.2
+038400Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    IX1114.2
+038500Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            IX1114.2
+038600Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            IX1114.2
+038700Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IX1114.2
+038800Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IX1114.2
+038900Y        MOVE ZERO TO RECORD-COUNT.                               IX1114.2
 039000     PERFORM WRT-LN.                                              IX1114.2
 039100 WRT-LN.                                                          IX1114.2
 039200     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IX1114.2
@@ -443,4 +442,3 @@
 044200 CCVS-EXIT SECTION.                                               IX1114.2
 044300 CCVS-999999.                                                     IX1114.2
 044400     GO TO CLOSE-FILES.                                           IX1114.2
-      *END-OF,IX111A                                                          TES06680
