@@ -51,8 +51,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     public static final String COPY_UUID_KEY = "__COPY_UUID__";
     public static final String REPLACE_UUID_KEY = "__REPLACE_UUID__";
 
-    public static final String UNKNOWN_KEY = "__UNKNOWN__";
-
     private final CobolDialect cobolDialect;
     private final boolean printWithColumnAreas;
 
@@ -73,7 +71,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private boolean isLastWordReplaced = false;
 
     // Lines prefixed with an unknown indicator are commented out during printing until we know more about them.
-    private String unknownIndicatorComment = null;
     private boolean inUnknownIndicator = false;
 
     public CobolPreprocessorOutputPrinter(CobolDialect cobolDialect,
@@ -606,14 +603,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             replaceUuidComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
         }
         return replaceUuidComment;
-    }
-
-    private String getUnknownIndicatorComment() {
-        if (unknownIndicatorComment == null) {
-            String start = getDialectSequenceArea() + "*" + UNKNOWN_KEY;
-            unknownIndicatorComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
-        }
-        return unknownIndicatorComment;
     }
 
     private String getUuidEndOfLine() {
