@@ -96,8 +96,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         EncodingDetectingInputStream is = sourceFile.getSource();
                         String sourceStr = is.readFully();
 
-                        String prepareSource = preprocessCobol(sourceStr, is.getCharset());
-//                        String prepareSource = CobolLineReader.readLines(sourceStr, cobolDialect);
+//                        String prepareSource = preprocessCobol(sourceStr, is.getCharset());
+                        String prepareSource = CobolLineReader.readLines(sourceStr, cobolDialect);
                         org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
                                 new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
                                         new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(prepareSource))));
@@ -113,6 +113,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         );
 
                         CobolPreprocessor.CompilationUnit preprocessedCU = parserVisitor.visitStartRule(parser.startRule());
+
 //                        PreprocessLineContinuations lineContinuationPhase = new PreprocessLineContinuations();
 //                        preprocessedCU = (CobolPreprocessor.CompilationUnit) lineContinuationPhase.getVisitor().visit(preprocessedCU, new InMemoryExecutionContext());
 

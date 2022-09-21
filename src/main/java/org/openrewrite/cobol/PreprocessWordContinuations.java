@@ -13,7 +13,7 @@ import java.util.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
-public class PreprocessLineContinuations extends Recipe {
+public class PreprocessWordContinuations extends Recipe {
 
     @Override
     public String getDisplayName() {
