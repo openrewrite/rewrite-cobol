@@ -1,4 +1,3 @@
-      *HEADER,COBOL,OBIC1A,SUBRTN,OBIC2A                                              
 000100 IDENTIFICATION DIVISION.                                         OBIC24.2
 000200 PROGRAM-ID.                                                      OBIC24.2
 000300     OBIC2A.                                                      OBIC24.2
@@ -309,4 +308,3 @@
 030800     EXIT.                                                        OBIC24.2
 030900 SECT-IC219-0003-EXIT.                                            OBIC24.2
 031000     EXIT.                                                        OBIC24.2
-      *END-OF,OBIC2A                                                                  

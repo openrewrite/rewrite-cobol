@@ -1,4 +1,3 @@
-      *HEADER,COBOL,OBSQ3A,SUBPRG,OBSQ5A                                              
 000100 IDENTIFICATION DIVISION.                                         OBSQ54.2
 000200 PROGRAM-ID.                                                      OBSQ54.2
 000300     OBSQ5A.                                                      OBSQ54.2
@@ -28,11 +27,11 @@
 002700     XXXXX083.                                                    OBSQ54.2
 002800 INPUT-OUTPUT SECTION.                                            OBSQ54.2
 002900 FILE-CONTROL.                                                    OBSQ54.2
-003000*    SELECT RAW-DATA   ASSIGN TO                                  OBSQ54.2
-003100*    XXXXX062                                                     OBSQ54.2
-003200*           ORGANIZATION IS INDEXED                               OBSQ54.2
-003300*           ACCESS MODE IS RANDOM                                 OBSQ54.2
-003400*           RECORD KEY IS RAW-DATA-KEY.                           OBSQ54.2
+003000P    SELECT RAW-DATA   ASSIGN TO                                  OBSQ54.2
+003100P    XXXXX062                                                     OBSQ54.2
+003200P           ORGANIZATION IS INDEXED                               OBSQ54.2
+003300P           ACCESS MODE IS RANDOM                                 OBSQ54.2
+003400P           RECORD KEY IS RAW-DATA-KEY.                           OBSQ54.2
 003500     SELECT PRINT-FILE ASSIGN TO                                  OBSQ54.2
 003600     XXXXX055.                                                    OBSQ54.2
 003700     SELECT SQ-FS3 ASSIGN TO                                      OBSQ54.2
@@ -53,22 +52,22 @@
 005200                        SQ-FS8.                                   OBSQ54.2
 005300 DATA DIVISION.                                                   OBSQ54.2
 005400 FILE SECTION.                                                    OBSQ54.2
-005500*                                                                 OBSQ54.2
-005600*FD  RAW-DATA.                                                    OBSQ54.2
-005700*                                                                 OBSQ54.2
-005800*01  RAW-DATA-SATZ.                                               OBSQ54.2
-005900*    05  RAW-DATA-KEY        PIC X(6).                            OBSQ54.2
-006000*    05  C-DATE              PIC 9(6).                            OBSQ54.2
-006100*    05  C-TIME              PIC 9(8).                            OBSQ54.2
-006200*    05  C-NO-OF-TESTS       PIC 99.                              OBSQ54.2
-006300*    05  C-OK                PIC 999.                             OBSQ54.2
-006400*    05  C-ALL               PIC 999.                             OBSQ54.2
-006500*    05  C-FAIL              PIC 999.                             OBSQ54.2
-006600*    05  C-DELETED           PIC 999.                             OBSQ54.2
-006700*    05  C-INSPECT           PIC 999.                             OBSQ54.2
-006800*    05  C-NOTE              PIC X(13).                           OBSQ54.2
-006900*    05  C-INDENT            PIC X.                               OBSQ54.2
-007000*    05  C-ABORT             PIC X(8).                            OBSQ54.2
+005500P                                                                 OBSQ54.2
+005600PFD  RAW-DATA.                                                    OBSQ54.2
+005700P                                                                 OBSQ54.2
+005800P01  RAW-DATA-SATZ.                                               OBSQ54.2
+005900P    05  RAW-DATA-KEY        PIC X(6).                            OBSQ54.2
+006000P    05  C-DATE              PIC 9(6).                            OBSQ54.2
+006100P    05  C-TIME              PIC 9(8).                            OBSQ54.2
+006200P    05  C-NO-OF-TESTS       PIC 99.                              OBSQ54.2
+006300P    05  C-OK                PIC 999.                             OBSQ54.2
+006400P    05  C-ALL               PIC 999.                             OBSQ54.2
+006500P    05  C-FAIL              PIC 999.                             OBSQ54.2
+006600P    05  C-DELETED           PIC 999.                             OBSQ54.2
+006700P    05  C-INSPECT           PIC 999.                             OBSQ54.2
+006800P    05  C-NOTE              PIC X(13).                           OBSQ54.2
+006900P    05  C-INDENT            PIC X.                               OBSQ54.2
+007000P    05  C-ABORT             PIC X(8).                            OBSQ54.2
 007100 FD  PRINT-FILE.                                                  OBSQ54.2
 007200 01  PRINT-REC PICTURE X(120).                                    OBSQ54.2
 007300 01  DUMMY-RECORD PICTURE X(120).                                 OBSQ54.2
@@ -274,16 +273,16 @@
 027300 PROCEDURE DIVISION.                                              OBSQ54.2
 027400 CCVS1 SECTION.                                                   OBSQ54.2
 027500 OPEN-FILES.                                                      OBSQ54.2
-027600*    OPEN I-O RAW-DATA.                                           OBSQ54.2
-027700*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            OBSQ54.2
-027800*    READ RAW-DATA INVALID KEY GO TO END-E-1.                     OBSQ54.2
-027900*    MOVE "ABORTED " TO C-ABORT.                                  OBSQ54.2
-028000*    ADD 1 TO C-NO-OF-TESTS.                                      OBSQ54.2
-028100*    ACCEPT C-DATE  FROM DATE.                                    OBSQ54.2
-028200*    ACCEPT C-TIME  FROM TIME.                                    OBSQ54.2
-028300*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             OBSQ54.2
-028400*END-E-1.                                                         OBSQ54.2
-028500*    CLOSE RAW-DATA.                                              OBSQ54.2
+027600P    OPEN I-O RAW-DATA.                                           OBSQ54.2
+027700P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            OBSQ54.2
+027800P    READ RAW-DATA INVALID KEY GO TO END-E-1.                     OBSQ54.2
+027900P    MOVE "ABORTED " TO C-ABORT.                                  OBSQ54.2
+028000P    ADD 1 TO C-NO-OF-TESTS.                                      OBSQ54.2
+028100P    ACCEPT C-DATE  FROM DATE.                                    OBSQ54.2
+028200P    ACCEPT C-TIME  FROM TIME.                                    OBSQ54.2
+028300P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             OBSQ54.2
+028400PEND-E-1.                                                         OBSQ54.2
+028500P    CLOSE RAW-DATA.                                              OBSQ54.2
 028600     OPEN     OUTPUT PRINT-FILE.                                  OBSQ54.2
 028700     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   OBSQ54.2
 028800     MOVE    SPACE TO TEST-RESULTS.                               OBSQ54.2
@@ -298,21 +297,21 @@
 029700     GO TO CCVS1-EXIT.                                            OBSQ54.2
 029800 CLOSE-FILES.                                                     OBSQ54.2
 029900     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   OBSQ54.2
-030000*    OPEN I-O RAW-DATA.                                           OBSQ54.2
-030100*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            OBSQ54.2
-030200*    READ RAW-DATA INVALID KEY GO TO END-E-2.                     OBSQ54.2
-030300*    MOVE "OK.     " TO C-ABORT.                                  OBSQ54.2
-030400*    MOVE PASS-COUNTER TO C-OK.                                   OBSQ54.2
-030500*    MOVE ERROR-HOLD   TO C-ALL.                                  OBSQ54.2
-030600*    MOVE ERROR-COUNTER TO C-FAIL.                                OBSQ54.2
-030700*    MOVE DELETE-CNT TO C-DELETED.                                OBSQ54.2
-030800*    MOVE INSPECT-COUNTER TO C-INSPECT.                           OBSQ54.2
-030900*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             OBSQ54.2
-031000*END-E-2.                                                         OBSQ54.2
-031100*    CLOSE RAW-DATA.                                              OBSQ54.2
+030000P    OPEN I-O RAW-DATA.                                           OBSQ54.2
+030100P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            OBSQ54.2
+030200P    READ RAW-DATA INVALID KEY GO TO END-E-2.                     OBSQ54.2
+030300P    MOVE "OK.     " TO C-ABORT.                                  OBSQ54.2
+030400P    MOVE PASS-COUNTER TO C-OK.                                   OBSQ54.2
+030500P    MOVE ERROR-HOLD   TO C-ALL.                                  OBSQ54.2
+030600P    MOVE ERROR-COUNTER TO C-FAIL.                                OBSQ54.2
+030700P    MOVE DELETE-CNT TO C-DELETED.                                OBSQ54.2
+030800P    MOVE INSPECT-COUNTER TO C-INSPECT.                           OBSQ54.2
+030900P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             OBSQ54.2
+031000PEND-E-2.                                                         OBSQ54.2
+031100P    CLOSE RAW-DATA.                                              OBSQ54.2
 031200 TERMINATE-CCVS.                                                  OBSQ54.2
-031300*    EXIT PROGRAM.                                                OBSQ54.2
-031400*TERMINATE-CALL.                                                  OBSQ54.2
+031300S    EXIT PROGRAM.                                                OBSQ54.2
+031400STERMINATE-CALL.                                                  OBSQ54.2
 031500     STOP     RUN.                                                OBSQ54.2
 031600 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         OBSQ54.2
 031700 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           OBSQ54.2
@@ -374,15 +373,15 @@
 037300     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           OBSQ54.2
 037400 WRITE-LINE.                                                      OBSQ54.2
 037500     ADD 1 TO RECORD-COUNT.                                       OBSQ54.2
-037600*    IF RECORD-COUNT GREATER 50                                   OBSQ54.2
-037700*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          OBSQ54.2
-037800*        MOVE SPACE TO DUMMY-RECORD                               OBSQ54.2
-037900*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  OBSQ54.2
-038000*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             OBSQ54.2
-038100*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     OBSQ54.2
-038200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          OBSQ54.2
-038300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          OBSQ54.2
-038400*        MOVE ZERO TO RECORD-COUNT.                               OBSQ54.2
+037600Y    IF RECORD-COUNT GREATER 50                                   OBSQ54.2
+037700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          OBSQ54.2
+037800Y        MOVE SPACE TO DUMMY-RECORD                               OBSQ54.2
+037900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  OBSQ54.2
+038000Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             OBSQ54.2
+038100Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     OBSQ54.2
+038200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          OBSQ54.2
+038300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          OBSQ54.2
+038400Y        MOVE ZERO TO RECORD-COUNT.                               OBSQ54.2
 038500     PERFORM WRT-LN.                                              OBSQ54.2
 038600 WRT-LN.                                                          OBSQ54.2
 038700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               OBSQ54.2
@@ -625,4 +624,3 @@
 062400 CCVS-EXIT SECTION.                                               OBSQ54.2
 062500 CCVS-999999.                                                     OBSQ54.2
 062600     GO TO CLOSE-FILES.                                           OBSQ54.2
-      *END-OF,OBSQ5A                                                                  

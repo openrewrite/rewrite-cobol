@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC139A                                                            
 000100 IDENTIFICATION DIVISION.                                         NC1394.2
 000200 PROGRAM-ID.                                                      NC1394.2
 000300     NC139A.                                                      NC1394.2
@@ -232,8 +231,8 @@
 023100 CLOSE-FILES.                                                     NC1394.2
 023200     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC1394.2
 023300 TERMINATE-CCVS.                                                  NC1394.2
-023400*    EXIT PROGRAM.                                                NC1394.2
-023500*TERMINATE-CALL.                                                  NC1394.2
+023400S    EXIT PROGRAM.                                                NC1394.2
+023500STERMINATE-CALL.                                                  NC1394.2
 023600     STOP     RUN.                                                NC1394.2
 023700 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC1394.2
 023800 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC1394.2
@@ -296,19 +295,19 @@
 029500     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC1394.2
 029600 WRITE-LINE.                                                      NC1394.2
 029700     ADD 1 TO RECORD-COUNT.                                       NC1394.2
-029800*    IF RECORD-COUNT GREATER 42                                   NC1394.2
-029900*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1394.2
-030000*        MOVE SPACE TO DUMMY-RECORD                               NC1394.2
-030100*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1394.2
-030200*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1394.2
-030300*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1394.2
-030400*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1394.2
-030500*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1394.2
-030600*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1394.2
-030700*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1394.2
-030800*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1394.2
-030900*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1394.2
-031000*        MOVE ZERO TO RECORD-COUNT.                               NC1394.2
+029800Y    IF RECORD-COUNT GREATER 42                                   NC1394.2
+029900Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1394.2
+030000Y        MOVE SPACE TO DUMMY-RECORD                               NC1394.2
+030100Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1394.2
+030200Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1394.2
+030300Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1394.2
+030400Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1394.2
+030500Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1394.2
+030600Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1394.2
+030700Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1394.2
+030800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1394.2
+030900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1394.2
+031000Y        MOVE ZERO TO RECORD-COUNT.                               NC1394.2
 031100     PERFORM WRT-LN.                                              NC1394.2
 031200 WRT-LN.                                                          NC1394.2
 031300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC1394.2
@@ -616,4 +615,3 @@
 061500 CCVS-EXIT SECTION.                                               NC1394.2
 061600 CCVS-999999.                                                     NC1394.2
 061700     GO TO CLOSE-FILES.                                           NC1394.2
-      *END-OF,NC139A                                                                  

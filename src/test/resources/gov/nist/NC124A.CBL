@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC124A                                                            
 000100 IDENTIFICATION DIVISION.                                         NC1244.2
 000200 PROGRAM-ID.                                                      NC1244.2
 000300                                                                  NC1244.2
@@ -261,8 +260,8 @@
 026000 CLOSE-FILES.                                                     NC1244.2
 026100     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC1244.2
 026200 TERMINATE-CCVS.                                                  NC1244.2
-026300*    EXIT PROGRAM.                                                NC1244.2
-026400*TERMINATE-CALL.                                                  NC1244.2
+026300S    EXIT PROGRAM.                                                NC1244.2
+026400STERMINATE-CALL.                                                  NC1244.2
 026500     STOP     RUN.                                                NC1244.2
 026600 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC1244.2
 026700 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC1244.2
@@ -325,19 +324,19 @@
 032400     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC1244.2
 032500 WRITE-LINE.                                                      NC1244.2
 032600     ADD 1 TO RECORD-COUNT.                                       NC1244.2
-032700*    IF RECORD-COUNT GREATER 42                                   NC1244.2
-032800*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1244.2
-032900*        MOVE SPACE TO DUMMY-RECORD                               NC1244.2
-033000*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1244.2
-033100*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1244.2
-033200*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1244.2
-033300*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1244.2
-033400*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1244.2
-033500*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1244.2
-033600*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1244.2
-033700*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1244.2
-033800*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1244.2
-033900*        MOVE ZERO TO RECORD-COUNT.                               NC1244.2
+032700Y    IF RECORD-COUNT GREATER 42                                   NC1244.2
+032800Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1244.2
+032900Y        MOVE SPACE TO DUMMY-RECORD                               NC1244.2
+033000Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1244.2
+033100Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1244.2
+033200Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1244.2
+033300Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1244.2
+033400Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1244.2
+033500Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1244.2
+033600Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1244.2
+033700Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1244.2
+033800Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1244.2
+033900Y        MOVE ZERO TO RECORD-COUNT.                               NC1244.2
 034000     PERFORM WRT-LN.                                              NC1244.2
 034100 WRT-LN.                                                          NC1244.2
 034200     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC1244.2
@@ -2353,4 +2352,3 @@
 235200 CCVS-EXIT SECTION.                                               NC1244.2
 235300 CCVS-999999.                                                     NC1244.2
 235400     GO TO CLOSE-FILES.                                           NC1244.2
-      *END-OF,NC124A                                                                  

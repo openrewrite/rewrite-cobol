@@ -1,4 +1,3 @@
-      *HEADER,COBOL,OBIC1A                                                            
 000100 IDENTIFICATION DIVISION.                                         OBIC14.2
 000200 PROGRAM-ID.                                                      OBIC14.2
 000300     OBIC1A.                                                      OBIC14.2
@@ -79,4 +78,3 @@
 007800*                                                                 OBIC14.2
 007900 END-OF-PROGRAM.                                                  OBIC14.2
 008000     EXIT PROGRAM.                                                OBIC14.2
-      *END-OF,OBIC1A                                                                  

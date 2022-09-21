@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC246A                                                            
 000100 IDENTIFICATION DIVISION.                                         NC2464.2
 000200 PROGRAM-ID.                                                      NC2464.2
 000300     NC246A.                                                      NC2464.2
@@ -450,8 +449,8 @@
 044900 CLOSE-FILES.                                                     NC2464.2
 045000     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC2464.2
 045100 TERMINATE-CCVS.                                                  NC2464.2
-045200*    EXIT PROGRAM.                                                NC2464.2
-045300*TERMINATE-CALL.                                                  NC2464.2
+045200S    EXIT PROGRAM.                                                NC2464.2
+045300STERMINATE-CALL.                                                  NC2464.2
 045400     STOP     RUN.                                                NC2464.2
 045500 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC2464.2
 045600 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC2464.2
@@ -514,15 +513,15 @@
 051300     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC2464.2
 051400 WRITE-LINE.                                                      NC2464.2
 051500     ADD 1 TO RECORD-COUNT.                                       NC2464.2
-051600*    IF RECORD-COUNT GREATER 50                                   NC2464.2
-051700*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC2464.2
-051800*        MOVE SPACE TO DUMMY-RECORD                               NC2464.2
-051900*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC2464.2
-052000*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             NC2464.2
-052100*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     NC2464.2
-052200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC2464.2
-052300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC2464.2
-052400*        MOVE ZERO TO RECORD-COUNT.                               NC2464.2
+051600Y    IF RECORD-COUNT GREATER 50                                   NC2464.2
+051700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC2464.2
+051800Y        MOVE SPACE TO DUMMY-RECORD                               NC2464.2
+051900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC2464.2
+052000Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             NC2464.2
+052100Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     NC2464.2
+052200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC2464.2
+052300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC2464.2
+052400Y        MOVE ZERO TO RECORD-COUNT.                               NC2464.2
 052500     PERFORM WRT-LN.                                              NC2464.2
 052600 WRT-LN.                                                          NC2464.2
 052700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC2464.2
@@ -1319,4 +1318,3 @@
 131800 CCVS-EXIT SECTION.                                               NC2464.2
 131900 CCVS-999999.                                                     NC2464.2
 132000     GO TO CLOSE-FILES.                                           NC2464.2
-      *END-OF,NC246A                                                                  

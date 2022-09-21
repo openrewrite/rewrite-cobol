@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC210A                                                            
 000100 IDENTIFICATION DIVISION.                                         NC2104.2
 000200 PROGRAM-ID.                                                      NC2104.2
 000300     NC210A.                                                      NC2104.2
@@ -351,15 +350,15 @@
 035000     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC2104.2
 035100 WRITE-LINE.                                                      NC2104.2
 035200     ADD 1 TO RECORD-COUNT.                                       NC2104.2
-035300*    IF RECORD-COUNT GREATER 50                                   NC2104.2
-035400*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC2104.2
-035500*        MOVE SPACE TO DUMMY-RECORD                               NC2104.2
-035600*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC2104.2
-035700*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             NC2104.2
-035800*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     NC2104.2
-035900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC2104.2
-036000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC2104.2
-036100*        MOVE ZERO TO RECORD-COUNT.                               NC2104.2
+035300Y    IF RECORD-COUNT GREATER 50                                   NC2104.2
+035400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC2104.2
+035500Y        MOVE SPACE TO DUMMY-RECORD                               NC2104.2
+035600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC2104.2
+035700Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             NC2104.2
+035800Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     NC2104.2
+035900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC2104.2
+036000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC2104.2
+036100Y        MOVE ZERO TO RECORD-COUNT.                               NC2104.2
 036200     PERFORM WRT-LN.                                              NC2104.2
 036300 WRT-LN.                                                          NC2104.2
 036400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC2104.2
@@ -736,4 +735,3 @@
 073500 CCVS-EXIT SECTION.                                               NC2104.2
 073600 CCVS-999999.                                                     NC2104.2
 073700     GO TO CLOSE-FILES.                                           NC2104.2
-      *END-OF,NC210A                                                                  

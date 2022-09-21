@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC401M                                                            
 000100 IDENTIFICATION DIVISION.                                         NC4014.2
 000200 PROGRAM-ID.                                                      NC4014.2
 000300      NC401M.                                                     NC4014.2
@@ -331,4 +330,3 @@
 033000*TOTAL NUMBER OF FLAGS EXPECTED = 40.                             NC4014.2
 033100*Message expected for following statement: NON-CONFORMING STANDARDNC4014.2
 033200 END PROGRAM NC401M.                                              NC4014.2
-      *END-OF,NC401M                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC125A                                                            
 000100 IDENTIFICATION DIVISION.                                         NC1254.2
 000200 PROGRAM-ID.                                                      NC1254.2
 000300     NC125A.                                                      NC1254.2
@@ -279,8 +278,8 @@
 027800 CLOSE-FILES.                                                     NC1254.2
 027900     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC1254.2
 028000 TERMINATE-CCVS.                                                  NC1254.2
-028100*    EXIT PROGRAM.                                                NC1254.2
-028200*TERMINATE-CALL.                                                  NC1254.2
+028100S    EXIT PROGRAM.                                                NC1254.2
+028200STERMINATE-CALL.                                                  NC1254.2
 028300     STOP     RUN.                                                NC1254.2
 028400 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC1254.2
 028500 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC1254.2
@@ -343,19 +342,19 @@
 034200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC1254.2
 034300 WRITE-LINE.                                                      NC1254.2
 034400     ADD 1 TO RECORD-COUNT.                                       NC1254.2
-034500*    IF RECORD-COUNT GREATER 42                                   NC1254.2
-034600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1254.2
-034700*        MOVE SPACE TO DUMMY-RECORD                               NC1254.2
-034800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1254.2
-034900*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1254.2
-035000*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1254.2
-035100*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1254.2
-035200*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1254.2
-035300*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1254.2
-035400*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1254.2
-035500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1254.2
-035600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1254.2
-035700*        MOVE ZERO TO RECORD-COUNT.                               NC1254.2
+034500Y    IF RECORD-COUNT GREATER 42                                   NC1254.2
+034600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1254.2
+034700Y        MOVE SPACE TO DUMMY-RECORD                               NC1254.2
+034800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1254.2
+034900Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1254.2
+035000Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1254.2
+035100Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1254.2
+035200Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1254.2
+035300Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1254.2
+035400Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1254.2
+035500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1254.2
+035600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1254.2
+035700Y        MOVE ZERO TO RECORD-COUNT.                               NC1254.2
 035800     PERFORM WRT-LN.                                              NC1254.2
 035900 WRT-LN.                                                          NC1254.2
 036000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC1254.2
@@ -749,4 +748,3 @@
 074800 CCVS-EXIT SECTION.                                               NC1254.2
 074900 CCVS-999999.                                                     NC1254.2
 075000     GO TO CLOSE-FILES.                                           NC1254.2
-      *END-OF,NC125A                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,OBNC2M                                                            
 000100 IDENTIFICATION DIVISION.                                         OBNC24.2
 000200 PROGRAM-ID.                                                      OBNC24.2
 000300     OBNC2M.                                                      OBNC24.2
@@ -485,8 +484,8 @@
 048400 CLOSE-FILES.                                                     OBNC24.2
 048500     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   OBNC24.2
 048600 TERMINATE-CCVS.                                                  OBNC24.2
-048700*    EXIT PROGRAM.                                                OBNC24.2
-048800*TERMINATE-CALL.                                                  OBNC24.2
+048700S    EXIT PROGRAM.                                                OBNC24.2
+048800STERMINATE-CALL.                                                  OBNC24.2
 048900     STOP     RUN.                                                OBNC24.2
 049000 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         OBNC24.2
 049100 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           OBNC24.2
@@ -549,15 +548,15 @@
 054800     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           OBNC24.2
 054900 WRITE-LINE.                                                      OBNC24.2
 055000     ADD 1 TO RECORD-COUNT.                                       OBNC24.2
-055100*    IF RECORD-COUNT GREATER 50                                   OBNC24.2
-055200*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          OBNC24.2
-055300*        MOVE SPACE TO DUMMY-RECORD                               OBNC24.2
-055400*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  OBNC24.2
-055500*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             OBNC24.2
-055600*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     OBNC24.2
-055700*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          OBNC24.2
-055800*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          OBNC24.2
-055900*        MOVE ZERO TO RECORD-COUNT.                               OBNC24.2
+055100Y    IF RECORD-COUNT GREATER 50                                   OBNC24.2
+055200Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          OBNC24.2
+055300Y        MOVE SPACE TO DUMMY-RECORD                               OBNC24.2
+055400Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  OBNC24.2
+055500Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             OBNC24.2
+055600Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     OBNC24.2
+055700Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          OBNC24.2
+055800Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          OBNC24.2
+055900Y        MOVE ZERO TO RECORD-COUNT.                               OBNC24.2
 056000     PERFORM WRT-LN.                                              OBNC24.2
 056100 WRT-LN.                                                          OBNC24.2
 056200     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               OBNC24.2
@@ -928,4 +927,3 @@
 092700 CCVS-EXIT SECTION.                                               OBNC24.2
 092800 CCVS-999999.                                                     OBNC24.2
 092900     GO TO CLOSE-FILES.                                           OBNC24.2
-      *END-OF,OBNC2M                                                          TES09870

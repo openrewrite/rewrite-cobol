@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC302M                                                            
 000100 IDENTIFICATION DIVISION.                                         NC3024.2
 000200 PROGRAM-ID.                                                      NC3024.2
 000300     NC302M.                                                      NC3024.2
@@ -50,4 +49,3 @@
 004900                                                                  NC3024.2
 005000                                                                  NC3024.2
 005100*TOTAL NUMBER OF FLAGS EXPECTED = 7.                              NC3024.2
-      *END-OF,NC302M                                                                  

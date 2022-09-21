@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC127A                                                            
 000100 identification division.                                         NC1274.2
 000200 program-id.                                                      NC1274.2
 000300     nc127A.                                                      NC1274.2
@@ -196,8 +195,8 @@
 019500 CLOSE-FILES.                                                     NC1274.2
 019600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC1274.2
 019700 TERMINATE-CCVS.                                                  NC1274.2
-019800*    EXIT PROGRAM.                                                NC1274.2
-019900*TERMINATE-CALL.                                                  NC1274.2
+019800S    EXIT PROGRAM.                                                NC1274.2
+019900STERMINATE-CALL.                                                  NC1274.2
 020000     STOP     RUN.                                                NC1274.2
 020100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC1274.2
 020200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC1274.2
@@ -260,19 +259,19 @@
 025900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC1274.2
 026000 WRITE-LINE.                                                      NC1274.2
 026100     ADD 1 TO RECORD-COUNT.                                       NC1274.2
-026200*    IF RECORD-COUNT GREATER 42                                   NC1274.2
-026300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1274.2
-026400*        MOVE SPACE TO DUMMY-RECORD                               NC1274.2
-026500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1274.2
-026600*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1274.2
-026700*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1274.2
-026800*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1274.2
-026900*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1274.2
-027000*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1274.2
-027100*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1274.2
-027200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1274.2
-027300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1274.2
-027400*        MOVE ZERO TO RECORD-COUNT.                               NC1274.2
+026200Y    IF RECORD-COUNT GREATER 42                                   NC1274.2
+026300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1274.2
+026400Y        MOVE SPACE TO DUMMY-RECORD                               NC1274.2
+026500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1274.2
+026600Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1274.2
+026700Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1274.2
+026800Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1274.2
+026900Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1274.2
+027000Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1274.2
+027100Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1274.2
+027200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1274.2
+027300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1274.2
+027400Y        MOVE ZERO TO RECORD-COUNT.                               NC1274.2
 027500     PERFORM WRT-LN.                                              NC1274.2
 027600 WRT-LN.                                                          NC1274.2
 027700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC1274.2
@@ -348,4 +347,3 @@
 034700 CCVS-EXIT SECTION.                                               NC1274.2
 034800 CCVS-999999.                                                     NC1274.2
 034900     GO TO CLOSE-FILES.                                           NC1274.2
-      *END-OF,NC127A                                                                  

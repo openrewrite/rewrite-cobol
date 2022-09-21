@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC173A                                                            
 000100 IDENTIFICATION DIVISION.                                         NC1734.2
 000200 PROGRAM-ID.                                                      NC1734.2
 000300     NC173A.                                                      NC1734.2
@@ -323,8 +322,8 @@
 032200 CLOSE-FILES.                                                     NC1734.2
 032300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC1734.2
 032400 TERMINATE-CCVS.                                                  NC1734.2
-032500*    EXIT PROGRAM.                                                NC1734.2
-032600*TERMINATE-CALL.                                                  NC1734.2
+032500S    EXIT PROGRAM.                                                NC1734.2
+032600STERMINATE-CALL.                                                  NC1734.2
 032700     STOP     RUN.                                                NC1734.2
 032800 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC1734.2
 032900 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC1734.2
@@ -387,19 +386,19 @@
 038600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC1734.2
 038700 WRITE-LINE.                                                      NC1734.2
 038800     ADD 1 TO RECORD-COUNT.                                       NC1734.2
-038900*    IF RECORD-COUNT GREATER 42                                   NC1734.2
-039000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1734.2
-039100*        MOVE SPACE TO DUMMY-RECORD                               NC1734.2
-039200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1734.2
-039300*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1734.2
-039400*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1734.2
-039500*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1734.2
-039600*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1734.2
-039700*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1734.2
-039800*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1734.2
-039900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1734.2
-040000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1734.2
-040100*        MOVE ZERO TO RECORD-COUNT.                               NC1734.2
+038900Y    IF RECORD-COUNT GREATER 42                                   NC1734.2
+039000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1734.2
+039100Y        MOVE SPACE TO DUMMY-RECORD                               NC1734.2
+039200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1734.2
+039300Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1734.2
+039400Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1734.2
+039500Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1734.2
+039600Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1734.2
+039700Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1734.2
+039800Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1734.2
+039900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1734.2
+040000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1734.2
+040100Y        MOVE ZERO TO RECORD-COUNT.                               NC1734.2
 040200     PERFORM WRT-LN.                                              NC1734.2
 040300 WRT-LN.                                                          NC1734.2
 040400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC1734.2
@@ -2217,4 +2216,3 @@
 221600 CCVS-EXIT SECTION.                                               NC1734.2
 221700 CCVS-999999.                                                     NC1734.2
 221800     GO TO CLOSE-FILES.                                           NC1734.2
-      *END-OF,NC173A                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC116A                                                            
 000100 IDENTIFICATION DIVISION.                                         NC1164.2
 000200 PROGRAM-ID.                                                      NC1164.2
 000300     NC116A.                                                      NC1164.2
@@ -303,8 +302,8 @@
 030200 CLOSE-FILES.                                                     NC1164.2
 030300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC1164.2
 030400 TERMINATE-CCVS.                                                  NC1164.2
-030500*    EXIT PROGRAM.                                                NC1164.2
-030600*TERMINATE-CALL.                                                  NC1164.2
+030500S    EXIT PROGRAM.                                                NC1164.2
+030600STERMINATE-CALL.                                                  NC1164.2
 030700     STOP     RUN.                                                NC1164.2
 030800 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC1164.2
 030900 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC1164.2
@@ -367,19 +366,19 @@
 036600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC1164.2
 036700 WRITE-LINE.                                                      NC1164.2
 036800     ADD 1 TO RECORD-COUNT.                                       NC1164.2
-036900*    IF RECORD-COUNT GREATER 42                                   NC1164.2
-037000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1164.2
-037100*        MOVE SPACE TO DUMMY-RECORD                               NC1164.2
-037200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1164.2
-037300*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1164.2
-037400*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1164.2
-037500*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1164.2
-037600*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1164.2
-037700*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1164.2
-037800*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1164.2
-037900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1164.2
-038000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1164.2
-038100*        MOVE ZERO TO RECORD-COUNT.                               NC1164.2
+036900Y    IF RECORD-COUNT GREATER 42                                   NC1164.2
+037000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1164.2
+037100Y        MOVE SPACE TO DUMMY-RECORD                               NC1164.2
+037200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1164.2
+037300Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1164.2
+037400Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1164.2
+037500Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1164.2
+037600Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1164.2
+037700Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1164.2
+037800Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1164.2
+037900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1164.2
+038000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1164.2
+038100Y        MOVE ZERO TO RECORD-COUNT.                               NC1164.2
 038200     PERFORM WRT-LN.                                              NC1164.2
 038300 WRT-LN.                                                          NC1164.2
 038400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC1164.2
@@ -1492,4 +1491,3 @@
 149100 CCVS-EXIT SECTION.                                               NC1164.2
 149200 CCVS-999999.                                                     NC1164.2
 149300     GO TO CLOSE-FILES.                                           NC1164.2
-      *END-OF,NC116A                                                                  

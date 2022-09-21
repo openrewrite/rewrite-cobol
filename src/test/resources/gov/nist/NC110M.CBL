@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC110M                                                            
 000100 IDENTIFICATION DIVISION.                                         NC1104.2
 000200 PROGRAM-ID.                                                      NC1104.2
 000300     NC110M.                                                      NC1104.2
@@ -88,4 +87,3 @@
 008700 PASS.                                                            NC1104.2
 008800     DISPLAY                                                      NC1104.2
 008900     "             PASS".                                         NC1104.2
-      *END-OF,NC110M                                                                  

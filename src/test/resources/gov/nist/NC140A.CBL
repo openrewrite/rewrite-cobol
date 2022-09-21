@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC140A                                                            
 000100 IDENTIFICATION DIVISION.                                         NC1404.2
 000200 PROGRAM-ID.                                                      NC1404.2
 000300     NC140A.                                                      NC1404.2
@@ -221,8 +220,8 @@
 022000 CLOSE-FILES.                                                     NC1404.2
 022100     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC1404.2
 022200 TERMINATE-CCVS.                                                  NC1404.2
-022300*    EXIT PROGRAM.                                                NC1404.2
-022400*TERMINATE-CALL.                                                  NC1404.2
+022300S    EXIT PROGRAM.                                                NC1404.2
+022400STERMINATE-CALL.                                                  NC1404.2
 022500     STOP     RUN.                                                NC1404.2
 022600 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC1404.2
 022700 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC1404.2
@@ -285,19 +284,19 @@
 028400     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC1404.2
 028500 WRITE-LINE.                                                      NC1404.2
 028600     ADD 1 TO RECORD-COUNT.                                       NC1404.2
-028700*    IF RECORD-COUNT GREATER 42                                   NC1404.2
-028800*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1404.2
-028900*        MOVE SPACE TO DUMMY-RECORD                               NC1404.2
-029000*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1404.2
-029100*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1404.2
-029200*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1404.2
-029300*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1404.2
-029400*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1404.2
-029500*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1404.2
-029600*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1404.2
-029700*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1404.2
-029800*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1404.2
-029900*        MOVE ZERO TO RECORD-COUNT.                               NC1404.2
+028700Y    IF RECORD-COUNT GREATER 42                                   NC1404.2
+028800Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1404.2
+028900Y        MOVE SPACE TO DUMMY-RECORD                               NC1404.2
+029000Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1404.2
+029100Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1404.2
+029200Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1404.2
+029300Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1404.2
+029400Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1404.2
+029500Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1404.2
+029600Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1404.2
+029700Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1404.2
+029800Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1404.2
+029900Y        MOVE ZERO TO RECORD-COUNT.                               NC1404.2
 030000     PERFORM WRT-LN.                                              NC1404.2
 030100 WRT-LN.                                                          NC1404.2
 030200     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC1404.2
@@ -748,4 +747,3 @@
 074700 CCVS-EXIT SECTION.                                               NC1404.2
 074800 CCVS-999999.                                                     NC1404.2
 074900     GO TO CLOSE-FILES.                                           NC1404.2
-      *END-OF,NC140A                                                                  

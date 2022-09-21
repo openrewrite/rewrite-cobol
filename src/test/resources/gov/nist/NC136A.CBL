@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC136A                                                            
 000100 IDENTIFICATION DIVISION.                                         NC1364.2
 000200 PROGRAM-ID.                                                      NC1364.2
 000300     NC136A.                                                      NC1364.2
@@ -227,8 +226,8 @@
 022600 CLOSE-FILES.                                                     NC1364.2
 022700     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC1364.2
 022800 TERMINATE-CCVS.                                                  NC1364.2
-022900*    EXIT PROGRAM.                                                NC1364.2
-023000*TERMINATE-CALL.                                                  NC1364.2
+022900S    EXIT PROGRAM.                                                NC1364.2
+023000STERMINATE-CALL.                                                  NC1364.2
 023100     STOP     RUN.                                                NC1364.2
 023200 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC1364.2
 023300 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC1364.2
@@ -291,19 +290,19 @@
 029000     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC1364.2
 029100 WRITE-LINE.                                                      NC1364.2
 029200     ADD 1 TO RECORD-COUNT.                                       NC1364.2
-029300*    IF RECORD-COUNT GREATER 42                                   NC1364.2
-029400*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1364.2
-029500*        MOVE SPACE TO DUMMY-RECORD                               NC1364.2
-029600*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1364.2
-029700*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1364.2
-029800*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1364.2
-029900*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1364.2
-030000*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1364.2
-030100*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1364.2
-030200*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1364.2
-030300*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1364.2
-030400*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1364.2
-030500*        MOVE ZERO TO RECORD-COUNT.                               NC1364.2
+029300Y    IF RECORD-COUNT GREATER 42                                   NC1364.2
+029400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1364.2
+029500Y        MOVE SPACE TO DUMMY-RECORD                               NC1364.2
+029600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1364.2
+029700Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1364.2
+029800Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1364.2
+029900Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1364.2
+030000Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1364.2
+030100Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1364.2
+030200Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1364.2
+030300Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1364.2
+030400Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1364.2
+030500Y        MOVE ZERO TO RECORD-COUNT.                               NC1364.2
 030600     PERFORM WRT-LN.                                              NC1364.2
 030700 WRT-LN.                                                          NC1364.2
 030800     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC1364.2
@@ -488,4 +487,3 @@
 048700 CCVS-EXIT SECTION.                                               NC1364.2
 048800 CCVS-999999.                                                     NC1364.2
 048900     GO TO CLOSE-FILES.                                           NC1364.2
-      *END-OF,NC136A                                                                  

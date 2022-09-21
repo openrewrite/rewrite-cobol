@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC109M                                                            
 000100 IDENTIFICATION DIVISION.                                         NC1094.2
 000200 PROGRAM-ID.                                                      NC1094.2
 000300     NC109M.                                                      NC1094.2
@@ -333,8 +332,8 @@
 033200 CLOSE-FILES.                                                     NC1094.2
 033300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC1094.2
 033400 TERMINATE-CCVS.                                                  NC1094.2
-033500*    EXIT PROGRAM.                                                NC1094.2
-033600*TERMINATE-CALL.                                                  NC1094.2
+033500S    EXIT PROGRAM.                                                NC1094.2
+033600STERMINATE-CALL.                                                  NC1094.2
 033700     STOP     RUN.                                                NC1094.2
 033800 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC1094.2
 033900 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC1094.2
@@ -397,19 +396,19 @@
 039600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC1094.2
 039700 WRITE-LINE.                                                      NC1094.2
 039800     ADD 1 TO RECORD-COUNT.                                       NC1094.2
-039900*    IF RECORD-COUNT GREATER 42                                   NC1094.2
-040000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1094.2
-040100*        MOVE SPACE TO DUMMY-RECORD                               NC1094.2
-040200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1094.2
-040300*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1094.2
-040400*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1094.2
-040500*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1094.2
-040600*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1094.2
-040700*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1094.2
-040800*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1094.2
-040900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1094.2
-041000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1094.2
-041100*        MOVE ZERO TO RECORD-COUNT.                               NC1094.2
+039900Y    IF RECORD-COUNT GREATER 42                                   NC1094.2
+040000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1094.2
+040100Y        MOVE SPACE TO DUMMY-RECORD                               NC1094.2
+040200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1094.2
+040300Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1094.2
+040400Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1094.2
+040500Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1094.2
+040600Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1094.2
+040700Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1094.2
+040800Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1094.2
+040900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1094.2
+041000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1094.2
+041100Y        MOVE ZERO TO RECORD-COUNT.                               NC1094.2
 041200     PERFORM WRT-LN.                                              NC1094.2
 041300 WRT-LN.                                                          NC1094.2
 041400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC1094.2
@@ -963,4 +962,3 @@
 096200 CCVS-EXIT SECTION.                                               NC1094.2
 096300 CCVS-999999.                                                     NC1094.2
 096400     GO TO CLOSE-FILES.                                           NC1094.2
-      *END-OF,NC109M                                                                  

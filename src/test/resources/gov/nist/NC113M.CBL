@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC113M                                                            
 000100    IDENTIFICATION DIVISION.                                      NC1134.2
 000200    PROGRAM-ID.                                                   NC1134.2
 000300     NC113M.                                                      NC1134.2
@@ -261,4 +260,3 @@
 026000    BLANK-LINE-PRINT.                                             NC1134.2
 026100     MOVE     SPACE TO DUMMY-RECORD.                              NC1134.2
 026200     WRITE    DUMMY-RECORD                          AFTER 1.      NC1134.2
-      *END-OF,NC113M                                                                  

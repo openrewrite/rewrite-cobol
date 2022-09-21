@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC254A                                                            
 000100 IDENTIFICATION DIVISION.                                         NC2544.2
 000200 PROGRAM-ID.                                                      NC2544.2
 000300     NC254A.                                                      NC2544.2
@@ -412,8 +411,8 @@
 041100 CLOSE-FILES.                                                     NC2544.2
 041200     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC2544.2
 041300 TERMINATE-CCVS.                                                  NC2544.2
-041400*    EXIT PROGRAM.                                                NC2544.2
-041500*TERMINATE-CALL.                                                  NC2544.2
+041400S    EXIT PROGRAM.                                                NC2544.2
+041500STERMINATE-CALL.                                                  NC2544.2
 041600     STOP     RUN.                                                NC2544.2
 041700 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC2544.2
 041800 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC2544.2
@@ -476,19 +475,19 @@
 047500     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC2544.2
 047600 WRITE-LINE.                                                      NC2544.2
 047700     ADD 1 TO RECORD-COUNT.                                       NC2544.2
-047800*    IF RECORD-COUNT GREATER 42                                   NC2544.2
-047900*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC2544.2
-048000*        MOVE SPACE TO DUMMY-RECORD                               NC2544.2
-048100*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC2544.2
-048200*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC2544.2
-048300*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC2544.2
-048400*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC2544.2
-048500*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC2544.2
-048600*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC2544.2
-048700*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC2544.2
-048800*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC2544.2
-048900*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC2544.2
-049000*        MOVE ZERO TO RECORD-COUNT.                               NC2544.2
+047800Y    IF RECORD-COUNT GREATER 42                                   NC2544.2
+047900Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC2544.2
+048000Y        MOVE SPACE TO DUMMY-RECORD                               NC2544.2
+048100Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC2544.2
+048200Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC2544.2
+048300Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC2544.2
+048400Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC2544.2
+048500Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC2544.2
+048600Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC2544.2
+048700Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC2544.2
+048800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC2544.2
+048900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC2544.2
+049000Y        MOVE ZERO TO RECORD-COUNT.                               NC2544.2
 049100     PERFORM WRT-LN.                                              NC2544.2
 049200 WRT-LN.                                                          NC2544.2
 049300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC2544.2
@@ -670,4 +669,3 @@
 066900 CCVS-EXIT SECTION.                                               NC2544.2
 067000 CCVS-999999.                                                     NC2544.2
 067100     GO TO CLOSE-FILES.                                           NC2544.2
-      *END-OF,NC254A                                                                  

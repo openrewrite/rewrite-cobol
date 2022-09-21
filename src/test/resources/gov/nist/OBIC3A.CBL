@@ -1,4 +1,3 @@
-      *HEADER,COBOL,OBIC1A,SUBRTN,OBIC3A                                              
 000100 IDENTIFICATION DIVISION.                                         OBIC34.2
 000200 PROGRAM-ID.                                                      OBIC34.2
 000300     OBIC3A.                                                      OBIC34.2
@@ -201,8 +200,8 @@
 020000 CLOSE-FILES.                                                     OBIC34.2
 020100     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   OBIC34.2
 020200 TERMINATE-CCVS.                                                  OBIC34.2
-020300*    EXIT PROGRAM.                                                OBIC34.2
-020400*TERMINATE-CALL.                                                  OBIC34.2
+020300S    EXIT PROGRAM.                                                OBIC34.2
+020400STERMINATE-CALL.                                                  OBIC34.2
 020500     STOP     RUN.                                                OBIC34.2
 020600 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         OBIC34.2
 020700 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           OBIC34.2
@@ -265,15 +264,15 @@
 026400     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           OBIC34.2
 026500 WRITE-LINE.                                                      OBIC34.2
 026600     ADD 1 TO RECORD-COUNT.                                       OBIC34.2
-026700*    IF RECORD-COUNT GREATER 50                                   OBIC34.2
-026800*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          OBIC34.2
-026900*        MOVE SPACE TO DUMMY-RECORD                               OBIC34.2
-027000*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  OBIC34.2
-027100*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             OBIC34.2
-027200*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     OBIC34.2
-027300*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          OBIC34.2
-027400*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          OBIC34.2
-027500*        MOVE ZERO TO RECORD-COUNT.                               OBIC34.2
+026700Y    IF RECORD-COUNT GREATER 50                                   OBIC34.2
+026800Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          OBIC34.2
+026900Y        MOVE SPACE TO DUMMY-RECORD                               OBIC34.2
+027000Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  OBIC34.2
+027100Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             OBIC34.2
+027200Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     OBIC34.2
+027300Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          OBIC34.2
+027400Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          OBIC34.2
+027500Y        MOVE ZERO TO RECORD-COUNT.                               OBIC34.2
 027600     PERFORM WRT-LN.                                              OBIC34.2
 027700 WRT-LN.                                                          OBIC34.2
 027800     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               OBIC34.2
@@ -335,4 +334,3 @@
 033400     PERFORM PRINT-DETAIL.                                        OBIC34.2
 033500 IC220-EXIT.                                                      OBIC34.2
 033600     EXIT PROGRAM.                                                OBIC34.2
-      *END-OF,OBIC3A                                                                  

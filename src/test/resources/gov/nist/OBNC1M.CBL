@@ -1,4 +1,3 @@
-      *HEADER,COBOL,OBNC1M                                                            
 000100 IDENTIFICATION DIVISION.                                         OBNC14.2
 000200 PROGRAM-ID.                                                      OBNC14.2
 000300     OBNC1M.                                                      OBNC14.2
@@ -397,8 +396,8 @@
 039600 CLOSE-FILES.                                                     OBNC14.2
 039700     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   OBNC14.2
 039800 TERMINATE-CCVS.                                                  OBNC14.2
-039900*    EXIT PROGRAM.                                                OBNC14.2
-040000*TERMINATE-CALL.                                                  OBNC14.2
+039900S    EXIT PROGRAM.                                                OBNC14.2
+040000STERMINATE-CALL.                                                  OBNC14.2
 040100     STOP     RUN.                                                OBNC14.2
 040200 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         OBNC14.2
 040300 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           OBNC14.2
@@ -461,19 +460,19 @@
 046000     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           OBNC14.2
 046100 WRITE-LINE.                                                      OBNC14.2
 046200     ADD 1 TO RECORD-COUNT.                                       OBNC14.2
-046300*    IF RECORD-COUNT GREATER 42                                   OBNC14.2
-046400*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          OBNC14.2
-046500*        MOVE SPACE TO DUMMY-RECORD                               OBNC14.2
-046600*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  OBNC14.2
-046700*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   OBNC14.2
-046800*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   OBNC14.2
-046900*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   OBNC14.2
-047000*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   OBNC14.2
-047100*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           OBNC14.2
-047200*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           OBNC14.2
-047300*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          OBNC14.2
-047400*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          OBNC14.2
-047500*        MOVE ZERO TO RECORD-COUNT.                               OBNC14.2
+046300Y    IF RECORD-COUNT GREATER 42                                   OBNC14.2
+046400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          OBNC14.2
+046500Y        MOVE SPACE TO DUMMY-RECORD                               OBNC14.2
+046600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  OBNC14.2
+046700Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   OBNC14.2
+046800Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   OBNC14.2
+046900Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   OBNC14.2
+047000Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   OBNC14.2
+047100Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           OBNC14.2
+047200Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           OBNC14.2
+047300Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          OBNC14.2
+047400Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          OBNC14.2
+047500Y        MOVE ZERO TO RECORD-COUNT.                               OBNC14.2
 047600     PERFORM WRT-LN.                                              OBNC14.2
 047700 WRT-LN.                                                          OBNC14.2
 047800     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               OBNC14.2
@@ -781,4 +780,3 @@
 078000 CCVS-EXIT SECTION.                                               OBNC14.2
 078100 CCVS-999999.                                                     OBNC14.2
 078200     GO TO CLOSE-FILES.                                           OBNC14.2
-      *END-OF,OBNC1M                                                                  

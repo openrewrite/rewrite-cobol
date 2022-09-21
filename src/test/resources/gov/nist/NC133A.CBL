@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC133A                                                            
 000100 IDENTIFICATION DIVISION.                                         NC1334.2
 000200 PROGRAM-ID.                                                      NC1334.2
 000300     NC133A.                                                      NC1334.2
@@ -216,8 +215,8 @@
 021500 CLOSE-FILES.                                                     NC1334.2
 021600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC1334.2
 021700 TERMINATE-CCVS.                                                  NC1334.2
-021800*    EXIT PROGRAM.                                                NC1334.2
-021900*TERMINATE-CALL.                                                  NC1334.2
+021800S    EXIT PROGRAM.                                                NC1334.2
+021900STERMINATE-CALL.                                                  NC1334.2
 022000     STOP     RUN.                                                NC1334.2
 022100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC1334.2
 022200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC1334.2
@@ -280,19 +279,19 @@
 027900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC1334.2
 028000 WRITE-LINE.                                                      NC1334.2
 028100     ADD 1 TO RECORD-COUNT.                                       NC1334.2
-028200*    IF RECORD-COUNT GREATER 42                                   NC1334.2
-028300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1334.2
-028400*        MOVE SPACE TO DUMMY-RECORD                               NC1334.2
-028500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1334.2
-028600*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1334.2
-028700*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1334.2
-028800*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1334.2
-028900*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1334.2
-029000*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1334.2
-029100*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1334.2
-029200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1334.2
-029300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1334.2
-029400*        MOVE ZERO TO RECORD-COUNT.                               NC1334.2
+028200Y    IF RECORD-COUNT GREATER 42                                   NC1334.2
+028300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1334.2
+028400Y        MOVE SPACE TO DUMMY-RECORD                               NC1334.2
+028500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1334.2
+028600Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1334.2
+028700Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1334.2
+028800Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1334.2
+028900Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1334.2
+029000Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1334.2
+029100Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1334.2
+029200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1334.2
+029300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1334.2
+029400Y        MOVE ZERO TO RECORD-COUNT.                               NC1334.2
 029500     PERFORM WRT-LN.                                              NC1334.2
 029600 WRT-LN.                                                          NC1334.2
 029700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC1334.2
@@ -712,4 +711,3 @@
 071100 CCVS-EXIT SECTION.                                               NC1334.2
 071200 CCVS-999999.                                                     NC1334.2
 071300     GO TO CLOSE-FILES.                                           NC1334.2
-      *END-OF,NC133A                                                                  
