@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SM203A,SUBPRG,SM204A                                              
 000100 IDENTIFICATION DIVISION.                                         SM2044.2
 000200 PROGRAM-ID.                                                      SM2044.2
 000300     SM204A.                                                      SM2044.2
@@ -51,7 +50,7 @@
 005000C    XXXXX074                                                     SM2044.2
 005100C    IS                                                           SM2044.2
 005200C    XXXXX077                                                     SM2044.2
-005300*    XXXXX069                                                     SM2044.2
+005300G    XXXXX069                                                     SM2044.2
 005400     DATA RECORD PROOF-REC.                                       SM2044.2
 005500 01  PROOF-REC.                                                   SM2044.2
 005600     02  TF-1 PICTURE 9(5).                                       SM2044.2
@@ -209,8 +208,8 @@
 020800 CLOSE-FILES.                                                     SM2044.2
 020900     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SM2044.2
 021000 TERMINATE-CCVS.                                                  SM2044.2
-021100*    EXIT PROGRAM.                                                SM2044.2
-021200*TERMINATE-CALL.                                                  SM2044.2
+021100S    EXIT PROGRAM.                                                SM2044.2
+021200STERMINATE-CALL.                                                  SM2044.2
 021300     STOP     RUN.                                                SM2044.2
 021400 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SM2044.2
 021500 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SM2044.2
@@ -273,15 +272,15 @@
 027200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SM2044.2
 027300 WRITE-LINE.                                                      SM2044.2
 027400     ADD 1 TO RECORD-COUNT.                                       SM2044.2
-027500*    IF RECORD-COUNT GREATER 50                                   SM2044.2
-027600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM2044.2
-027700*        MOVE SPACE TO DUMMY-RECORD                               SM2044.2
-027800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM2044.2
-027900*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM2044.2
-028000*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM2044.2
-028100*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM2044.2
-028200*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM2044.2
-028300*        MOVE ZERO TO RECORD-COUNT.                               SM2044.2
+027500Y    IF RECORD-COUNT GREATER 50                                   SM2044.2
+027600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM2044.2
+027700Y        MOVE SPACE TO DUMMY-RECORD                               SM2044.2
+027800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM2044.2
+027900Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM2044.2
+028000Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM2044.2
+028100Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM2044.2
+028200Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM2044.2
+028300Y        MOVE ZERO TO RECORD-COUNT.                               SM2044.2
 028400     PERFORM WRT-LN.                                              SM2044.2
 028500 WRT-LN.                                                          SM2044.2
 028600     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SM2044.2
@@ -396,4 +395,3 @@
 039500 CCVS-EXIT SECTION.                                               SM2044.2
 039600 CCVS-999999.                                                     SM2044.2
 039700     GO TO CLOSE-FILES.                                           SM2044.2
-      *END-OF,SM204A                                                                  

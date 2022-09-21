@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST115A,SUBPRG,ST116A                                              
 000100 IDENTIFICATION DIVISION.                                         ST1164.2
 000200 PROGRAM-ID.                                                      ST1164.2
 000300     ST116A.                                                      ST1164.2
@@ -109,7 +108,7 @@
 010800C    XXXXX074                                                     ST1164.2
 010900C    IS                                                           ST1164.2
 011000C    XXXXX075                                                     ST1164.2
-011100*    XXXXX069                                                     ST1164.2
+011100G    XXXXX069                                                     ST1164.2
 011200     BLOCK CONTAINS 1 RECORDS                                     ST1164.2
 011300     RECORD CONTAINS 507 CHARACTERS                               ST1164.2
 011400     DATA RECORD IS SQ-FS1R1-F-G-507.                             ST1164.2
@@ -135,7 +134,7 @@
 013400C    XXXXX074                                                     ST1164.2
 013500C    IS                                                           ST1164.2
 013600C    XXXXX076                                                     ST1164.2
-013700*    XXXXX069                                                     ST1164.2
+013700G    XXXXX069                                                     ST1164.2
 013800     BLOCK CONTAINS 2 RECORDS                                     ST1164.2
 013900     RECORD CONTAINS 507 CHARACTERS                               ST1164.2
 014000     DATA RECORD IS SQ-FS2R1-F-G-507.                             ST1164.2
@@ -183,4 +182,3 @@
 018200         GIVING SQ-FS2.                                           ST1164.2
 018300 STOP-THE-RUN.                                                    ST1164.2
 018400     STOP RUN.                                                    ST1164.2
-      *END-OF,ST116A                                                                  

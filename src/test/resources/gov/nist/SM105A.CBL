@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SM105A                                                            
 000100 IDENTIFICATION DIVISION.                                         SM1054.2
 000200 PROGRAM-ID.                                                      SM1054.2
 000300     SM105A.                                                      SM1054.2
@@ -79,7 +78,7 @@
 007800C    XXXXX074                                                     SM1054.2
 007900C    IS                                                           SM1054.2
 008000C    XXXXX075                                                     SM1054.2
-008100*    XXXXX069                                                     SM1054.2
+008100G    XXXXX069                                                     SM1054.2
 008200     DATA RECORD SORTED.                                          SM1054.2
 008300 01  SORTED PICTURE X(120).                                       SM1054.2
 008400 WORKING-STORAGE SECTION.                                         SM1054.2
@@ -245,8 +244,8 @@
 024400 CLOSE-FILES.                                                     SM1054.2
 024500     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SM1054.2
 024600 TERMINATE-CCVS.                                                  SM1054.2
-024700*    EXIT PROGRAM.                                                SM1054.2
-024800*TERMINATE-CALL.                                                  SM1054.2
+024700S    EXIT PROGRAM.                                                SM1054.2
+024800STERMINATE-CALL.                                                  SM1054.2
 024900     STOP     RUN.                                                SM1054.2
 025000 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SM1054.2
 025100 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SM1054.2
@@ -309,15 +308,15 @@
 030800     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SM1054.2
 030900 WRITE-LINE.                                                      SM1054.2
 031000     ADD 1 TO RECORD-COUNT.                                       SM1054.2
-031100*    IF RECORD-COUNT GREATER 50                                   SM1054.2
-031200*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM1054.2
-031300*        MOVE SPACE TO DUMMY-RECORD                               SM1054.2
-031400*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM1054.2
-031500*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM1054.2
-031600*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM1054.2
-031700*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM1054.2
-031800*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM1054.2
-031900*        MOVE ZERO TO RECORD-COUNT.                               SM1054.2
+031100Y    IF RECORD-COUNT GREATER 50                                   SM1054.2
+031200Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM1054.2
+031300Y        MOVE SPACE TO DUMMY-RECORD                               SM1054.2
+031400Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM1054.2
+031500Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM1054.2
+031600Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM1054.2
+031700Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM1054.2
+031800Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM1054.2
+031900Y        MOVE ZERO TO RECORD-COUNT.                               SM1054.2
 032000     PERFORM WRT-LN.                                              SM1054.2
 032100 WRT-LN.                                                          SM1054.2
 032200     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SM1054.2
@@ -577,15 +576,15 @@
 057600     MOVE     SPACE TO RE-MARK.                                   SM1054.2
 057700 WRITE-LINE-1.                                                    SM1054.2
 057800     ADD 1 TO RECORD-COUNT.                                       SM1054.2
-057900*    IF RECORD-COUNT GREATER 50                                   SM1054.2
-058000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM1054.2
-058100*        MOVE SPACE TO DUMMY-RECORD                               SM1054.2
-058200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM1054.2
-058300*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-1           SM1054.2
-058400*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-1 2 TIMES   SM1054.2
-058500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-1        SM1054.2
-058600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM1054.2
-058700*        MOVE ZERO TO RECORD-COUNT.                               SM1054.2
+057900Y    IF RECORD-COUNT GREATER 50                                   SM1054.2
+058000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM1054.2
+058100Y        MOVE SPACE TO DUMMY-RECORD                               SM1054.2
+058200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM1054.2
+058300Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-1           SM1054.2
+058400Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-1 2 TIMES   SM1054.2
+058500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-1        SM1054.2
+058600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM1054.2
+058700Y        MOVE ZERO TO RECORD-COUNT.                               SM1054.2
 058800     PERFORM WRT-LN-1.                                            SM1054.2
 058900 WRT-LN-1.                                                        SM1054.2
 059000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SM1054.2
@@ -611,4 +610,3 @@
 061000 BAIL-OUT-EX-1. EXIT.                                             SM1054.2
 061100 LIB1E-EXIT.                                                      SM1054.2
 061200     EXIT.                                                        SM1054.2
-      *END-OF,SM105A                                                                  

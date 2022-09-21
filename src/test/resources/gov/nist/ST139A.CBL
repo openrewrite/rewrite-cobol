@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST139A                                                            
 000100 IDENTIFICATION DIVISION.                                         ST1394.2
 000200 PROGRAM-ID.                                                      ST1394.2
 000300     ST139A.                                                      ST1394.2
@@ -145,7 +144,7 @@
 014400C    XXXXX074                                                     ST1394.2
 014500C    XXXXX075                                                     ST1394.2
 014600C    BLOCK CONTAINS 1 RECORDS                                     ST1394.2
-014700*    XXXXX069                                                     ST1394.2
+014700G    XXXXX069                                                     ST1394.2
 014800     RECORD CONTAINS 132 CHARACTERS.                              ST1394.2
 014900 01  SQ-FS1R1-F-G-132.                                            ST1394.2
 015000     10 REC-PREAMBLE PIC X(120).                                  ST1394.2
@@ -165,7 +164,7 @@
 016400C    XXXXX074                                                     ST1394.2
 016500C    IS                                                           ST1394.2
 016600C    XXXXX076                                                     ST1394.2
-016700*    XXXXX069                                                     ST1394.2
+016700G    XXXXX069                                                     ST1394.2
 016800     ; BLOCK CONTAINS 2 RECORDS                                   ST1394.2
 016900     ; RECORD CONTAINS 132 CHARACTERS                             ST1394.2
 017000     DATA RECORD SQ-FS2R1-F-G-132.                                ST1394.2
@@ -187,7 +186,7 @@
 018600C    XXXXX074                                                     ST1394.2
 018700C    IS                                                           ST1394.2
 018800C    XXXXX077                                                     ST1394.2
-018900*    XXXXX069                                                     ST1394.2
+018900G    XXXXX069                                                     ST1394.2
 019000     ; BLOCK CONTAINS 3 RECORDS                                   ST1394.2
 019100     RECORD CONTAINS 132 CHARACTERS                               ST1394.2
 019200     DATA RECORD SQ-FS3R1-F-G-132.                                ST1394.2
@@ -465,8 +464,8 @@
 046400 CLOSE-FILES.                                                     ST1394.2
 046500     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   ST1394.2
 046600 TERMINATE-CCVS.                                                  ST1394.2
-046700*    EXIT PROGRAM.                                                ST1394.2
-046800*TERMINATE-CALL.                                                  ST1394.2
+046700S    EXIT PROGRAM.                                                ST1394.2
+046800STERMINATE-CALL.                                                  ST1394.2
 046900     STOP     RUN.                                                ST1394.2
 047000 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         ST1394.2
 047100 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           ST1394.2
@@ -529,19 +528,19 @@
 052800     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           ST1394.2
 052900 WRITE-LINE.                                                      ST1394.2
 053000     ADD 1 TO RECORD-COUNT.                                       ST1394.2
-053100*    IF RECORD-COUNT GREATER 42                                   ST1394.2
-053200*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1394.2
-053300*        MOVE SPACE TO DUMMY-RECORD                               ST1394.2
-053400*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1394.2
-053500*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1394.2
-053600*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1394.2
-053700*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1394.2
-053800*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1394.2
-053900*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1394.2
-054000*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1394.2
-054100*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1394.2
-054200*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1394.2
-054300*        MOVE ZERO TO RECORD-COUNT.                               ST1394.2
+053100Y    IF RECORD-COUNT GREATER 42                                   ST1394.2
+053200Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1394.2
+053300Y        MOVE SPACE TO DUMMY-RECORD                               ST1394.2
+053400Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1394.2
+053500Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1394.2
+053600Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1394.2
+053700Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1394.2
+053800Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1394.2
+053900Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1394.2
+054000Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1394.2
+054100Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1394.2
+054200Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1394.2
+054300Y        MOVE ZERO TO RECORD-COUNT.                               ST1394.2
 054400     PERFORM WRT-LN.                                              ST1394.2
 054500 WRT-LN.                                                          ST1394.2
 054600     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1394.2
@@ -592,8 +591,8 @@
 059100 MRG-TEST-001.                                                    ST1394.2
 059200     PERFORM MRG-TEST-001-BUILD VARYING WRK-DU-999-0001           ST1394.2
 059300         FROM 1 BY 1 UNTIL WRK-DU-999-0001 IS GREATER THAN 51.    ST1394.2
-059400*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-059500*    WRITE   PRINT-REC.                                           ST1394.2
+059400X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+059500X    WRITE   PRINT-REC.                                           ST1394.2
 059600     IF XRECORD-NUMBER (1) IS NOT EQUAL TO 000052                 ST1394.2
 059700         PERFORM FAIL MOVE "INCORR. NO. OF RECS." TO RE-MARK      ST1394.2
 059800         ELSE                                                     ST1394.2
@@ -610,9 +609,9 @@
 060900     ADD 1 TO WRK-DU-999-2.                                       ST1394.2
 061000     MOVE ASCIIS (WRK-DU-999-0001) TO COLLS (WRK-DU-999-2).       ST1394.2
 061100     ADD 1 TO WRK-DU-999-2.                                       ST1394.2
-061200*    WRITE PRINT-REC FROM SQ-FS1R1-F-G-132.                       ST1394.2
-061300*    WRITE PRINT-REC FROM REST-OF-1.                              ST1394.2
-061400*    MOVE SPACES TO PRINT-REC.                                    ST1394.2
+061200X    WRITE PRINT-REC FROM SQ-FS1R1-F-G-132.                       ST1394.2
+061300X    WRITE PRINT-REC FROM REST-OF-1.                              ST1394.2
+061400X    MOVE SPACES TO PRINT-REC.                                    ST1394.2
 061500     WRITE   SQ-FS1R1-F-G-132.                                    ST1394.2
 061600 MRG-DELETE-001.                                                  ST1394.2
 061700     PERFORM DE-LETE.                                             ST1394.2
@@ -621,8 +620,8 @@
 062000     MOVE "FIRST FILE CREATED" TO COMPUTED-A.                     ST1394.2
 062100     MOVE XRECORD-NUMBER (1) TO CORRECT-18V0.                     ST1394.2
 062200     PERFORM PRINT-DETAIL.                                        ST1394.2
-062300*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-062400*    WRITE   PRINT-REC.                                           ST1394.2
+062300X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+062400X    WRITE   PRINT-REC.                                           ST1394.2
 062500     CLOSE SQ-FS1.                                                ST1394.2
 062600 MRG-INIT-002.                                                    ST1394.2
 062700     MOVE "CREATE FILE SQ-FS2" TO FEATURE.                        ST1394.2
@@ -633,8 +632,8 @@
 063200 MRG-TEST-002.                                                    ST1394.2
 063300     PERFORM MRG-TEST-002-BUILD VARYING WRK-DU-999-0001           ST1394.2
 063400         FROM 1 BY 1 UNTIL WRK-DU-999-0001 IS GREATER THAN 51.    ST1394.2
-063500*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-063600*    WRITE   PRINT-REC.                                           ST1394.2
+063500X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+063600X    WRITE   PRINT-REC.                                           ST1394.2
 063700     IF XRECORD-NUMBER (1) IS NOT EQUAL TO 52                     ST1394.2
 063800         PERFORM FAIL MOVE "INCORR. NO. OF RECS." TO RE-MARK      ST1394.2
 063900         ELSE                                                     ST1394.2
@@ -647,9 +646,9 @@
 064600         NUM-KEY OF KEY-5 NUM-KEY OF KEY-6.                       ST1394.2
 064700     MOVE FILE-RECORD-INFO-P1-120 (1) TO REC-PRE-2.               ST1394.2
 064800     ADD 000001 TO XRECORD-NUMBER (1).                            ST1394.2
-064900*    WRITE PRINT-REC FROM SQ-FS2R1-F-G-132.                       ST1394.2
-065000*    WRITE PRINT-REC FROM REST-OF-2.                              ST1394.2
-065100*    MOVE SPACES TO PRINT-REC.                                    ST1394.2
+064900X    WRITE PRINT-REC FROM SQ-FS2R1-F-G-132.                       ST1394.2
+065000X    WRITE PRINT-REC FROM REST-OF-2.                              ST1394.2
+065100X    MOVE SPACES TO PRINT-REC.                                    ST1394.2
 065200     WRITE   SQ-FS2R1-F-G-132.                                    ST1394.2
 065300 MRG-DELETE-002.                                                  ST1394.2
 065400     PERFORM DE-LETE.                                             ST1394.2
@@ -658,8 +657,8 @@
 065700     MOVE "2ND FILE CREATED" TO COMPUTED-A.                       ST1394.2
 065800     MOVE XRECORD-NUMBER (1) TO CORRECT-18V0.                     ST1394.2
 065900     PERFORM PRINT-DETAIL.                                        ST1394.2
-066000*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-066100*    WRITE   PRINT-REC.                                           ST1394.2
+066000X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+066100X    WRITE   PRINT-REC.                                           ST1394.2
 066200     CLOSE SQ-FS2.                                                ST1394.2
 066300 MRG-INIT-003.                                                    ST1394.2
 066400     MOVE SPACES TO WRK-XN-X-0001.                                ST1394.2
@@ -673,8 +672,8 @@
 067200     OPEN INPUT SQ-FS3.                                           ST1394.2
 067300     PERFORM RD-1 THRU R1-EXIT VARYING WRK-DU-999-0001 FROM 1 BY 1ST1394.2
 067400         UNTIL WRK-DU-999-0001 IS GREATER THAN 20.                ST1394.2
-067500*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-067600*    WRITE   PRINT-REC.                                           ST1394.2
+067500X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+067600X    WRITE   PRINT-REC.                                           ST1394.2
 067700     IF WRK-XN-X-0001 IS NOT EQUAL TO WRK-XN-0002                 ST1394.2
 067800         PERFORM FAIL GO TO MRG-FAIL-003                          ST1394.2
 067900         ELSE                                                     ST1394.2
@@ -690,15 +689,15 @@
 068900     MOVE "MRG-TEST-003" TO PAR-NAME.                             ST1394.2
 069000     MOVE "STAND. COLLATING SEQ." TO FEATURE.                     ST1394.2
 069100     PERFORM PRINT-DETAIL.                                        ST1394.2
-069200*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-069300*    WRITE   PRINT-REC.                                           ST1394.2
+069200X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+069300X    WRITE   PRINT-REC.                                           ST1394.2
 069400 MRG-INIT-004.                                                    ST1394.2
 069500     MOVE SPACES TO WRK-XN-X-0001.                                ST1394.2
 069600 MRG-TEST-004.                                                    ST1394.2
 069700     PERFORM RD-1 THRU R1-EXIT VARYING WRK-DU-999-0001 FROM 1 BY 1ST1394.2
 069800         UNTIL WRK-DU-999-0001 IS GREATER THAN 20.                ST1394.2
-069900*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-070000*    WRITE   PRINT-REC.                                           ST1394.2
+069900X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+070000X    WRITE   PRINT-REC.                                           ST1394.2
 070100     IF WRK-XN-X-0001 IS NOT EQUAL TO WRK-XN-0003                 ST1394.2
 070200         PERFORM FAIL GO TO MRG-FAIL-004                          ST1394.2
 070300         ELSE                                                     ST1394.2
@@ -714,15 +713,15 @@
 071300     MOVE "MRG-TEST-004" TO PAR-NAME.                             ST1394.2
 071400     MOVE "STAND. COLLATING SEQ." TO FEATURE.                     ST1394.2
 071500     PERFORM PRINT-DETAIL.                                        ST1394.2
-071600*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-071700*    WRITE   PRINT-REC.                                           ST1394.2
+071600X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+071700X    WRITE   PRINT-REC.                                           ST1394.2
 071800 MRG-INIT-005.                                                    ST1394.2
 071900     MOVE SPACES TO WRK-XN-X-0001.                                ST1394.2
 072000 MRG-TEST-005.                                                    ST1394.2
 072100     PERFORM RD-1 THRU R1-EXIT VARYING WRK-DU-999-0001 FROM 1 BY 1ST1394.2
 072200         UNTIL WRK-DU-999-0001 IS GREATER THAN 20.                ST1394.2
-072300*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-072400*    WRITE   PRINT-REC.                                           ST1394.2
+072300X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+072400X    WRITE   PRINT-REC.                                           ST1394.2
 072500     IF WRK-XN-X-0001 IS NOT EQUAL TO WRK-XN-0004                 ST1394.2
 072600         PERFORM FAIL GO TO MRG-FAIL-005                          ST1394.2
 072700         ELSE                                                     ST1394.2
@@ -738,15 +737,15 @@
 073700     MOVE "MRG-TEST-005" TO PAR-NAME.                             ST1394.2
 073800     MOVE "STAND. COLLATING SEQ." TO FEATURE.                     ST1394.2
 073900     PERFORM PRINT-DETAIL.                                        ST1394.2
-074000*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-074100*    WRITE   PRINT-REC.                                           ST1394.2
+074000X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+074100X    WRITE   PRINT-REC.                                           ST1394.2
 074200 MRG-INIT-006.                                                    ST1394.2
 074300     MOVE SPACES TO WRK-XN-X-0001.                                ST1394.2
 074400 MRG-TEST-006.                                                    ST1394.2
 074500     PERFORM RD-1 THRU R1-EXIT VARYING WRK-DU-999-0001 FROM 1 BY 1ST1394.2
 074600         UNTIL WRK-DU-999-0001 IS GREATER THAN 20.                ST1394.2
-074700*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-074800*    WRITE   PRINT-REC.                                           ST1394.2
+074700X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+074800X    WRITE   PRINT-REC.                                           ST1394.2
 074900     IF WRK-XN-X-0001 IS NOT EQUAL TO WRK-XN-0005                 ST1394.2
 075000         PERFORM FAIL GO TO MRG-FAIL-006                          ST1394.2
 075100         ELSE                                                     ST1394.2
@@ -762,15 +761,15 @@
 076100     MOVE "MRG-TEST-006" TO PAR-NAME.                             ST1394.2
 076200     MOVE "STAND. COLLATING SEQ." TO FEATURE.                     ST1394.2
 076300     PERFORM PRINT-DETAIL.                                        ST1394.2
-076400*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-076500*    WRITE   PRINT-REC.                                           ST1394.2
+076400X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+076500X    WRITE   PRINT-REC.                                           ST1394.2
 076600 MRG-INIT-007.                                                    ST1394.2
 076700     MOVE SPACES TO WRK-XN-X-0001.                                ST1394.2
 076800 MRG-TEST-007.                                                    ST1394.2
 076900     PERFORM RD-1 THRU R1-EXIT VARYING WRK-DU-999-0001 FROM 1 BY 1ST1394.2
 077000         UNTIL WRK-DU-999-0001 IS GREATER THAN 20.                ST1394.2
-077100*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-077200*    WRITE   PRINT-REC.                                           ST1394.2
+077100X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+077200X    WRITE   PRINT-REC.                                           ST1394.2
 077300     IF WRK-XN-X-0001 IS NOT EQUAL TO WRK-XN-0006                 ST1394.2
 077400         PERFORM FAIL GO TO MRG-FAIL-007                          ST1394.2
 077500         ELSE                                                     ST1394.2
@@ -786,15 +785,15 @@
 078500     MOVE "MRG-TEST-007" TO PAR-NAME.                             ST1394.2
 078600     MOVE "STAND. COLLATING SEQ." TO FEATURE.                     ST1394.2
 078700     PERFORM PRINT-DETAIL.                                        ST1394.2
-078800*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-078900*    WRITE   PRINT-REC.                                           ST1394.2
+078800X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+078900X    WRITE   PRINT-REC.                                           ST1394.2
 079000 MRG-INIT-008.                                                    ST1394.2
 079100     MOVE SPACES TO WRK-XN-X-0001.                                ST1394.2
 079200 MRG-TEST-008.                                                    ST1394.2
 079300     PERFORM RD-1 THRU R1-EXIT VARYING WRK-DU-999-0001 FROM 1 BY 1ST1394.2
 079400         UNTIL WRK-DU-999-0001 IS GREATER THAN 2.                 ST1394.2
-079500*    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
-079600*    WRITE   PRINT-REC.                                           ST1394.2
+079500X    MOVE    SPACES TO PRINT-REC.                                 ST1394.2
+079600X    WRITE   PRINT-REC.                                           ST1394.2
 079700     IF WRK-XN-X-0001 IS NOT EQUAL TO WRK-XN-0007                 ST1394.2
 079800         PERFORM FAIL GO TO MRG-FAIL-008                          ST1394.2
 079900         ELSE                                                     ST1394.2
@@ -850,9 +849,9 @@
 084900     IF WRK-DU-9-0001 IS NOT EQUAL TO ZERO                        ST1394.2
 085000         GO TO R1-EXIT.                                           ST1394.2
 085100     READ SQ-FS3 AT END GO TO PREMATURE-EOF.                      ST1394.2
-085200*    WRITE PRINT-REC FROM SQ-FS3R1-F-G-132.                       ST1394.2
-085300*    WRITE PRINT-REC FROM REST-OF-3.                              ST1394.2
-085400*    MOVE SPACES TO PRINT-REC.                                    ST1394.2
+085200X    WRITE PRINT-REC FROM SQ-FS3R1-F-G-132.                       ST1394.2
+085300X    WRITE PRINT-REC FROM REST-OF-3.                              ST1394.2
+085400X    MOVE SPACES TO PRINT-REC.                                    ST1394.2
 085500     MOVE ALPHAN-KEY OF KEY-8 TO COMPU (WRK-DU-999-0001).         ST1394.2
 085600     GO TO R1-EXIT.                                               ST1394.2
 085700 PREMATURE-EOF.                                                   ST1394.2
@@ -863,4 +862,3 @@
 086200 CCVS-EXIT SECTION.                                               ST1394.2
 086300 CCVS-999999.                                                     ST1394.2
 086400     GO TO CLOSE-FILES.                                           ST1394.2
-      *END-OF,ST139A                                                                  

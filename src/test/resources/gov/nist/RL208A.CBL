@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL206A,SUBPRG,RL208A                                              
 000100 IDENTIFICATION DIVISION.                                         RL2084.2
 000200 PROGRAM-ID.                                                      RL2084.2
 000300     RL208A.                                                      RL2084.2
@@ -60,7 +59,7 @@
 005900C    XXXXX074                                                     RL2084.2
 006000C    IS                                                           RL2084.2
 006100C    XXXXX075                                                     RL2084.2
-006200*    XXXXX069                                                     RL2084.2
+006200G    XXXXX069                                                     RL2084.2
 006300     BLOCK CONTAINS 01 RECORDS                                    RL2084.2
 006400     RECORD IS VARYING IN SIZE                                    RL2084.2
 006500         FROM 120 TO 140 CHARACTERS.                              RL2084.2
@@ -286,8 +285,8 @@
 028500 CLOSE-FILES.                                                     RL2084.2
 028600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL2084.2
 028700 TERMINATE-CCVS.                                                  RL2084.2
-028800*    EXIT PROGRAM.                                                RL2084.2
-028900*TERMINATE-CALL.                                                  RL2084.2
+028800S    EXIT PROGRAM.                                                RL2084.2
+028900STERMINATE-CALL.                                                  RL2084.2
 029000     STOP     RUN.                                                RL2084.2
 029100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL2084.2
 029200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL2084.2
@@ -350,15 +349,15 @@
 034900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL2084.2
 035000 WRITE-LINE.                                                      RL2084.2
 035100     ADD 1 TO RECORD-COUNT.                                       RL2084.2
-035200*    IF RECORD-COUNT GREATER 50                                   RL2084.2
-035300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL2084.2
-035400*        MOVE SPACE TO DUMMY-RECORD                               RL2084.2
-035500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL2084.2
-035600*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL2084.2
-035700*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL2084.2
-035800*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL2084.2
-035900*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL2084.2
-036000*        MOVE ZERO TO RECORD-COUNT.                               RL2084.2
+035200Y    IF RECORD-COUNT GREATER 50                                   RL2084.2
+035300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL2084.2
+035400Y        MOVE SPACE TO DUMMY-RECORD                               RL2084.2
+035500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL2084.2
+035600Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL2084.2
+035700Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL2084.2
+035800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL2084.2
+035900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL2084.2
+036000Y        MOVE ZERO TO RECORD-COUNT.                               RL2084.2
 036100     PERFORM WRT-LN.                                              RL2084.2
 036200 WRT-LN.                                                          RL2084.2
 036300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL2084.2
@@ -614,4 +613,3 @@
 061300 CCVS-EXIT SECTION.                                               RL2084.2
 061400 CCVS-999999.                                                     RL2084.2
 061500     GO TO CLOSE-FILES.                                           RL2084.2
-      *END-OF,RL208A                                                                  

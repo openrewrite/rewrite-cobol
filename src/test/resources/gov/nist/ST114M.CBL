@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST112M,SUBPRG,ST114M                                              
 000100 IDENTIFICATION DIVISION.                                         ST1144.2
 000200 PROGRAM-ID.                                                      ST1144.2
 000300     ST114M.                                                      ST1144.2
@@ -42,7 +41,7 @@
 004100C    XXXXX074                                                     ST1144.2
 004200C    IS                                                           ST1144.2
 004300C    XXXXX075                                                     ST1144.2
-004400*    XXXXX069                                                     ST1144.2
+004400G    XXXXX069                                                     ST1144.2
 004500              DATA RECORDS ARE SORT-KEY.                          ST1144.2
 004600 01  SORT-KEY           PICTURE X(33).                            ST1144.2
 004700 WORKING-STORAGE SECTION.                                         ST1144.2
@@ -211,8 +210,8 @@
 021000 CLOSE-FILES.                                                     ST1144.2
 021100     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   ST1144.2
 021200 TERMINATE-CCVS.                                                  ST1144.2
-021300*    EXIT PROGRAM.                                                ST1144.2
-021400*TERMINATE-CALL.                                                  ST1144.2
+021300S    EXIT PROGRAM.                                                ST1144.2
+021400STERMINATE-CALL.                                                  ST1144.2
 021500     STOP     RUN.                                                ST1144.2
 021600 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         ST1144.2
 021700 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           ST1144.2
@@ -275,19 +274,19 @@
 027400     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           ST1144.2
 027500 WRITE-LINE.                                                      ST1144.2
 027600     ADD 1 TO RECORD-COUNT.                                       ST1144.2
-027700*    IF RECORD-COUNT GREATER 42                                   ST1144.2
-027800*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1144.2
-027900*        MOVE SPACE TO DUMMY-RECORD                               ST1144.2
-028000*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1144.2
-028100*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1144.2
-028200*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1144.2
-028300*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1144.2
-028400*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1144.2
-028500*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1144.2
-028600*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1144.2
-028700*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1144.2
-028800*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1144.2
-028900*        MOVE ZERO TO RECORD-COUNT.                               ST1144.2
+027700Y    IF RECORD-COUNT GREATER 42                                   ST1144.2
+027800Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1144.2
+027900Y        MOVE SPACE TO DUMMY-RECORD                               ST1144.2
+028000Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1144.2
+028100Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1144.2
+028200Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1144.2
+028300Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1144.2
+028400Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1144.2
+028500Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1144.2
+028600Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1144.2
+028700Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1144.2
+028800Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1144.2
+028900Y        MOVE ZERO TO RECORD-COUNT.                               ST1144.2
 029000     PERFORM WRT-LN.                                              ST1144.2
 029100 WRT-LN.                                                          ST1144.2
 029200     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1144.2
@@ -466,4 +465,3 @@
 046500 CCVS-EXIT SECTION.                                               ST1144.2
 046600 CCVS-999999.                                                     ST1144.2
 046700     GO TO CLOSE-FILES.                                           ST1144.2
-      *END-OF,ST114M                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST301M                                                            
 000100 IDENTIFICATION DIVISION.                                         ST3014.2
 000200 PROGRAM-ID.                                                      ST3014.2
 000300      ST301M.                                                     ST3014.2
@@ -83,4 +82,3 @@
 008200                                                                  ST3014.2
 008300                                                                  ST3014.2
 008400*TOTAL NUMBER OF FLAGS EXPECTED = 6.                              ST3014.2
-      *END-OF,ST301M                                                                  

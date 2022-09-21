@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ109M                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ1094.2
 000200 PROGRAM-ID.                                                      SQ1094.2
 000300     SQ109M.                                                      SQ1094.2
@@ -39,11 +38,11 @@
 003800     XXXXX083.                                                    SQ1094.2
 003900 INPUT-OUTPUT SECTION.                                            SQ1094.2
 004000 FILE-CONTROL.                                                    SQ1094.2
-004100*    SELECT RAW-DATA   ASSIGN TO                                  SQ1094.2
-004200*    XXXXX062                                                     SQ1094.2
-004300*           ORGANIZATION IS INDEXED                               SQ1094.2
-004400*           ACCESS MODE IS RANDOM                                 SQ1094.2
-004500*           RECORD KEY IS RAW-DATA-KEY.                           SQ1094.2
+004100P    SELECT RAW-DATA   ASSIGN TO                                  SQ1094.2
+004200P    XXXXX062                                                     SQ1094.2
+004300P           ORGANIZATION IS INDEXED                               SQ1094.2
+004400P           ACCESS MODE IS RANDOM                                 SQ1094.2
+004500P           RECORD KEY IS RAW-DATA-KEY.                           SQ1094.2
 004600     SELECT PRINT-FILE ASSIGN TO                                  SQ1094.2
 004700     XXXXX055.                                                    SQ1094.2
 004800     SELECT SQ-FS1 ASSIGN TO                                      SQ1094.2
@@ -52,22 +51,22 @@
 005100     ACCESS MODE IS SEQUENTIAL.                                   SQ1094.2
 005200 DATA DIVISION.                                                   SQ1094.2
 005300 FILE SECTION.                                                    SQ1094.2
-005400*                                                                 SQ1094.2
-005500*FD  RAW-DATA.                                                    SQ1094.2
-005600*                                                                 SQ1094.2
-005700*01  RAW-DATA-SATZ.                                               SQ1094.2
-005800*    05  RAW-DATA-KEY        PIC X(6).                            SQ1094.2
-005900*    05  C-DATE              PIC 9(6).                            SQ1094.2
-006000*    05  C-TIME              PIC 9(8).                            SQ1094.2
-006100*    05  C-NO-OF-TESTS       PIC 99.                              SQ1094.2
-006200*    05  C-OK                PIC 999.                             SQ1094.2
-006300*    05  C-ALL               PIC 999.                             SQ1094.2
-006400*    05  C-FAIL              PIC 999.                             SQ1094.2
-006500*    05  C-DELETED           PIC 999.                             SQ1094.2
-006600*    05  C-INSPECT           PIC 999.                             SQ1094.2
-006700*    05  C-NOTE              PIC X(13).                           SQ1094.2
-006800*    05  C-INDENT            PIC X.                               SQ1094.2
-006900*    05  C-ABORT             PIC X(8).                            SQ1094.2
+005400P                                                                 SQ1094.2
+005500PFD  RAW-DATA.                                                    SQ1094.2
+005600P                                                                 SQ1094.2
+005700P01  RAW-DATA-SATZ.                                               SQ1094.2
+005800P    05  RAW-DATA-KEY        PIC X(6).                            SQ1094.2
+005900P    05  C-DATE              PIC 9(6).                            SQ1094.2
+006000P    05  C-TIME              PIC 9(8).                            SQ1094.2
+006100P    05  C-NO-OF-TESTS       PIC 99.                              SQ1094.2
+006200P    05  C-OK                PIC 999.                             SQ1094.2
+006300P    05  C-ALL               PIC 999.                             SQ1094.2
+006400P    05  C-FAIL              PIC 999.                             SQ1094.2
+006500P    05  C-DELETED           PIC 999.                             SQ1094.2
+006600P    05  C-INSPECT           PIC 999.                             SQ1094.2
+006700P    05  C-NOTE              PIC X(13).                           SQ1094.2
+006800P    05  C-INDENT            PIC X.                               SQ1094.2
+006900P    05  C-ABORT             PIC X(8).                            SQ1094.2
 007000 FD  PRINT-FILE                                                   SQ1094.2
 007100C    LABEL RECORDS                                                SQ1094.2
 007200C    XXXXX084                                                     SQ1094.2
@@ -261,16 +260,16 @@
 026000 PROCEDURE DIVISION.                                              SQ1094.2
 026100 CCVS1 SECTION.                                                   SQ1094.2
 026200 OPEN-FILES.                                                      SQ1094.2
-026300*    OPEN I-O RAW-DATA.                                           SQ1094.2
-026400*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ1094.2
-026500*    READ RAW-DATA INVALID KEY GO TO END-E-1.                     SQ1094.2
-026600*    MOVE "ABORTED " TO C-ABORT.                                  SQ1094.2
-026700*    ADD 1 TO C-NO-OF-TESTS.                                      SQ1094.2
-026800*    ACCEPT C-DATE  FROM DATE.                                    SQ1094.2
-026900*    ACCEPT C-TIME  FROM TIME.                                    SQ1094.2
-027000*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             SQ1094.2
-027100*END-E-1.                                                         SQ1094.2
-027200*    CLOSE RAW-DATA.                                              SQ1094.2
+026300P    OPEN I-O RAW-DATA.                                           SQ1094.2
+026400P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ1094.2
+026500P    READ RAW-DATA INVALID KEY GO TO END-E-1.                     SQ1094.2
+026600P    MOVE "ABORTED " TO C-ABORT.                                  SQ1094.2
+026700P    ADD 1 TO C-NO-OF-TESTS.                                      SQ1094.2
+026800P    ACCEPT C-DATE  FROM DATE.                                    SQ1094.2
+026900P    ACCEPT C-TIME  FROM TIME.                                    SQ1094.2
+027000P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             SQ1094.2
+027100PEND-E-1.                                                         SQ1094.2
+027200P    CLOSE RAW-DATA.                                              SQ1094.2
 027300     OPEN     OUTPUT PRINT-FILE.                                  SQ1094.2
 027400     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   SQ1094.2
 027500     MOVE    SPACE TO TEST-RESULTS.                               SQ1094.2
@@ -285,21 +284,21 @@
 028400     GO TO CCVS1-EXIT.                                            SQ1094.2
 028500 CLOSE-FILES.                                                     SQ1094.2
 028600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SQ1094.2
-028700*    OPEN I-O RAW-DATA.                                           SQ1094.2
-028800*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ1094.2
-028900*    READ RAW-DATA INVALID KEY GO TO END-E-2.                     SQ1094.2
-029000*    MOVE "OK.     " TO C-ABORT.                                  SQ1094.2
-029100*    MOVE PASS-COUNTER TO C-OK.                                   SQ1094.2
-029200*    MOVE ERROR-HOLD   TO C-ALL.                                  SQ1094.2
-029300*    MOVE ERROR-COUNTER TO C-FAIL.                                SQ1094.2
-029400*    MOVE DELETE-CNT TO C-DELETED.                                SQ1094.2
-029500*    MOVE INSPECT-COUNTER TO C-INSPECT.                           SQ1094.2
-029600*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             SQ1094.2
-029700*END-E-2.                                                         SQ1094.2
-029800*    CLOSE RAW-DATA.                                              SQ1094.2
+028700P    OPEN I-O RAW-DATA.                                           SQ1094.2
+028800P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ1094.2
+028900P    READ RAW-DATA INVALID KEY GO TO END-E-2.                     SQ1094.2
+029000P    MOVE "OK.     " TO C-ABORT.                                  SQ1094.2
+029100P    MOVE PASS-COUNTER TO C-OK.                                   SQ1094.2
+029200P    MOVE ERROR-HOLD   TO C-ALL.                                  SQ1094.2
+029300P    MOVE ERROR-COUNTER TO C-FAIL.                                SQ1094.2
+029400P    MOVE DELETE-CNT TO C-DELETED.                                SQ1094.2
+029500P    MOVE INSPECT-COUNTER TO C-INSPECT.                           SQ1094.2
+029600P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             SQ1094.2
+029700PEND-E-2.                                                         SQ1094.2
+029800P    CLOSE RAW-DATA.                                              SQ1094.2
 029900 TERMINATE-CCVS.                                                  SQ1094.2
-030000*    EXIT PROGRAM.                                                SQ1094.2
-030100*TERMINATE-CALL.                                                  SQ1094.2
+030000S    EXIT PROGRAM.                                                SQ1094.2
+030100STERMINATE-CALL.                                                  SQ1094.2
 030200     STOP     RUN.                                                SQ1094.2
 030300 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SQ1094.2
 030400 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SQ1094.2
@@ -361,15 +360,15 @@
 036000     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SQ1094.2
 036100 WRITE-LINE.                                                      SQ1094.2
 036200     ADD 1 TO RECORD-COUNT.                                       SQ1094.2
-036300*    IF RECORD-COUNT GREATER 50                                   SQ1094.2
-036400*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SQ1094.2
-036500*        MOVE SPACE TO DUMMY-RECORD                               SQ1094.2
-036600*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ1094.2
-036700*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SQ1094.2
-036800*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SQ1094.2
-036900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SQ1094.2
-037000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SQ1094.2
-037100*        MOVE ZERO TO RECORD-COUNT.                               SQ1094.2
+036300Y    IF RECORD-COUNT GREATER 50                                   SQ1094.2
+036400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SQ1094.2
+036500Y        MOVE SPACE TO DUMMY-RECORD                               SQ1094.2
+036600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ1094.2
+036700Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SQ1094.2
+036800Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SQ1094.2
+036900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SQ1094.2
+037000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SQ1094.2
+037100Y        MOVE ZERO TO RECORD-COUNT.                               SQ1094.2
 037200     PERFORM WRT-LN.                                              SQ1094.2
 037300 WRT-LN.                                                          SQ1094.2
 037400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SQ1094.2
@@ -412,9 +411,9 @@
 041100     MOVE FILE-RECORD-INFO-P1-120 (1)  TO SQ-FS1R1-F-G-120.       SQ1094.2
 041200     WRITE SQ-FS1R1-F-G-120.                                      SQ1094.2
 041300     IF      XRECORD-NUMBER (1) EQUAL TO 325                      SQ1094.2
-041400*             ADD 1 TO REELUNIT-NUMBER (1)                        SQ1094.2
-041500*             CLOSE SQ-FS1 REEL.                                  SQ1094.2
-041600*    MOVE "CLOSE REEL DELETED" TO RE-MARK.                        SQ1094.2
+041400H             ADD 1 TO REELUNIT-NUMBER (1)                        SQ1094.2
+041500H             CLOSE SQ-FS1 REEL.                                  SQ1094.2
+041600I    MOVE "CLOSE REEL DELETED" TO RE-MARK.                        SQ1094.2
 041700     IF XRECORD-NUMBER (1) EQUAL TO 750                           SQ1094.2
 041800         GO TO SEQ-WRITE-001.                                     SQ1094.2
 041900     ADD 1 TO XRECORD-NUMBER (1).                                 SQ1094.2
@@ -614,4 +613,3 @@
 061300 CCVS-EXIT SECTION.                                               SQ1094.2
 061400 CCVS-999999.                                                     SQ1094.2
 061500     GO TO CLOSE-FILES.                                           SQ1094.2
-      *END-OF,SQ109M                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL302M                                                            
 000100 IDENTIFICATION DIVISION.                                         RL3024.2
 000200 PROGRAM-ID.                                                      RL3024.2
 000300     RL302M.                                                      RL3024.2
@@ -69,4 +68,3 @@
 006800     STOP RUN.                                                    RL3024.2
 006900                                                                  RL3024.2
 007000*TOTAL NUMBER OF FLAGS EXPECTED = 4.                              RL3024.2
-      *END-OF,RL302M                                                                  

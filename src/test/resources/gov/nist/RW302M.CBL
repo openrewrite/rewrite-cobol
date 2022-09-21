@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RW302M                                                            
 000100 IDENTIFICATION DIVISION.                                         RW3024.2
 000200 PROGRAM-ID.                                                      RW3024.2
 000300     RW302M.                                                      RW3024.2
@@ -78,4 +77,3 @@
 007700                                                                  RW3024.2
 007800                                                                  RW3024.2
 007900*TOTAL NUMBER OF FLAGS EXPECTED = 3.                              RW3024.2
-      *END-OF,RW302M                                                                  

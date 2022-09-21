@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SG302M                                                            
 000100 IDENTIFICATION DIVISION.                                         SG3024.2
 000200 PROGRAM-ID.                                                      SG3024.2
 000300     SG302M.                                                      SG3024.2
@@ -20,4 +19,3 @@
 001900     DISPLAY "THIS IS A DUMMY PARAGRAPH".                         SG3024.2
 002000     STOP RUN.                                                    SG3024.2
 002100*TOTAL NUMBER OF FLAGS EXPECTED = 1.                              SG3024.2
-      *END-OF,SG302M                                                                  

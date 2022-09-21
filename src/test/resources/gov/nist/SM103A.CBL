@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SM103A                                                            
 000100 IDENTIFICATION DIVISION.                                         SM1034.2
 000200 PROGRAM-ID.                                                      SM1034.2
 000300     SM103A.                                                      SM1034.2
@@ -111,7 +110,7 @@
 011000C    XXXXX074                                                     SM1034.2
 011100C    IS                                                           SM1034.2
 011200C    XXXXX075                                                     SM1034.2
-011300*    XXXXX069                                                     SM1034.2
+011300G    XXXXX069                                                     SM1034.2
 011400     DATA RECORD TEST-REC.                                        SM1034.2
 011500 01  TEST-REC.                                                    SM1034.2
 011600     02  TST-FLD-1 PICTURE 9(5).                                  SM1034.2
@@ -123,7 +122,7 @@
 012200C    XXXXX074                                                     SM1034.2
 012300C    IS                                                           SM1034.2
 012400C    XXXXX076                                                     SM1034.2
-012500*    XXXXX069                                                     SM1034.2
+012500G    XXXXX069                                                     SM1034.2
 012600     DATA RECORD TEST-REC2.                                       SM1034.2
 012700 01  TEST-REC2.                                                   SM1034.2
 012800     02  TST-FLD-3 PICTURE 9(5).                                  SM1034.2
@@ -303,8 +302,8 @@
 030200 CLOSE-FILES.                                                     SM1034.2
 030300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SM1034.2
 030400 TERMINATE-CCVS.                                                  SM1034.2
-030500*    EXIT PROGRAM.                                                SM1034.2
-030600*TERMINATE-CALL.                                                  SM1034.2
+030500S    EXIT PROGRAM.                                                SM1034.2
+030600STERMINATE-CALL.                                                  SM1034.2
 030700     STOP     RUN.                                                SM1034.2
 030800 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SM1034.2
 030900 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SM1034.2
@@ -367,15 +366,15 @@
 036600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SM1034.2
 036700 WRITE-LINE.                                                      SM1034.2
 036800     ADD 1 TO RECORD-COUNT.                                       SM1034.2
-036900*    IF RECORD-COUNT GREATER 50                                   SM1034.2
-037000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM1034.2
-037100*        MOVE SPACE TO DUMMY-RECORD                               SM1034.2
-037200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM1034.2
-037300*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM1034.2
-037400*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM1034.2
-037500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM1034.2
-037600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM1034.2
-037700*        MOVE ZERO TO RECORD-COUNT.                               SM1034.2
+036900Y    IF RECORD-COUNT GREATER 50                                   SM1034.2
+037000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM1034.2
+037100Y        MOVE SPACE TO DUMMY-RECORD                               SM1034.2
+037200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM1034.2
+037300Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM1034.2
+037400Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM1034.2
+037500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM1034.2
+037600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM1034.2
+037700Y        MOVE ZERO TO RECORD-COUNT.                               SM1034.2
 037800     PERFORM WRT-LN.                                              SM1034.2
 037900 WRT-LN.                                                          SM1034.2
 038000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SM1034.2
@@ -554,4 +553,3 @@
 055300 CCVS-EXIT SECTION.                                               SM1034.2
 055400 CCVS-999999.                                                     SM1034.2
 055500     GO TO CLOSE-FILES.                                           SM1034.2
-      *END-OF,SM103A                                                                  

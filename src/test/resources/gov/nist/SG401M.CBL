@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SG401M                                                            
 000100 IDENTIFICATION DIVISION.                                         SG4014.2
 000200 PROGRAM-ID.                                                      SG4014.2
 000300     SG401M.                                                      SG4014.2
@@ -38,4 +37,3 @@
 003700* "PHYSICALLY CONTIGUOUS IN THE SOURCE PROGRAM".                  SG4014.2
 003800                                                                  SG4014.2
 003900*TOTAL NUMBER OF FLAGS EXPECTED = 2.                              SG4014.2
-      *END-OF,SG401M                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL104A                                                            
 000100 IDENTIFICATION DIVISION.                                         RL1044.2
 000200 PROGRAM-ID.                                                      RL1044.2
 000300     RL104A.                                                      RL1044.2
@@ -68,7 +67,7 @@
 006700C    XXXXX074                                                     RL1044.2
 006800C    IS                                                           RL1044.2
 006900C    XXXXX076                                                     RL1044.2
-007000*    XXXXX069                                                     RL1044.2
+007000G    XXXXX069                                                     RL1044.2
 007100     LABEL RECORDS ARE STANDARD                                   RL1044.2
 007200     BLOCK CONTAINS 1 RECORDS                                     RL1044.2
 007300     DATA RECORD RL-FS2R1-F-G-240.                                RL1044.2
@@ -328,8 +327,8 @@
 032700 CLOSE-FILES.                                                     RL1044.2
 032800     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL1044.2
 032900 TERMINATE-CCVS.                                                  RL1044.2
-033000*    EXIT PROGRAM.                                                RL1044.2
-033100*TERMINATE-CALL.                                                  RL1044.2
+033000S    EXIT PROGRAM.                                                RL1044.2
+033100STERMINATE-CALL.                                                  RL1044.2
 033200     STOP     RUN.                                                RL1044.2
 033300 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL1044.2
 033400 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL1044.2
@@ -392,15 +391,15 @@
 039100     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL1044.2
 039200 WRITE-LINE.                                                      RL1044.2
 039300     ADD 1 TO RECORD-COUNT.                                       RL1044.2
-039400*    IF RECORD-COUNT GREATER 50                                   RL1044.2
-039500*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1044.2
-039600*        MOVE SPACE TO DUMMY-RECORD                               RL1044.2
-039700*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1044.2
-039800*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1044.2
-039900*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1044.2
-040000*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1044.2
-040100*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1044.2
-040200*        MOVE ZERO TO RECORD-COUNT.                               RL1044.2
+039400Y    IF RECORD-COUNT GREATER 50                                   RL1044.2
+039500Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1044.2
+039600Y        MOVE SPACE TO DUMMY-RECORD                               RL1044.2
+039700Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1044.2
+039800Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1044.2
+039900Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1044.2
+040000Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1044.2
+040100Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1044.2
+040200Y        MOVE ZERO TO RECORD-COUNT.                               RL1044.2
 040300     PERFORM WRT-LN.                                              RL1044.2
 040400 WRT-LN.                                                          RL1044.2
 040500     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL1044.2
@@ -638,4 +637,3 @@
 063700 CCVS-EXIT SECTION.                                               RL1044.2
 063800 CCVS-999999.                                                     RL1044.2
 063900     GO TO CLOSE-FILES.                                           RL1044.2
-      *END-OF,RL104A                                                                  

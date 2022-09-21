@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL108A                                                            
 000100 IDENTIFICATION DIVISION.                                         RL1084.2
 000200 PROGRAM-ID.                                                      RL1084.2
 000300     RL108A.                                                      RL1084.2
@@ -67,7 +66,7 @@
 006600C    XXXXX074                                                     RL1084.2
 006700C    IS                                                           RL1084.2
 006800C    XXXXX075                                                     RL1084.2
-006900*    XXXXX069                                                     RL1084.2
+006900G    XXXXX069                                                     RL1084.2
 007000     BLOCK CONTAINS 1 RECORDS                                     RL1084.2
 007100     RECORD CONTAINS 120 CHARACTERS.                              RL1084.2
 007200 01  RL-FS1R1-F-G-120.                                            RL1084.2
@@ -284,8 +283,8 @@
 028300 CLOSE-FILES.                                                     RL1084.2
 028400     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL1084.2
 028500 TERMINATE-CCVS.                                                  RL1084.2
-028600*    EXIT PROGRAM.                                                RL1084.2
-028700*TERMINATE-CALL.                                                  RL1084.2
+028600S    EXIT PROGRAM.                                                RL1084.2
+028700STERMINATE-CALL.                                                  RL1084.2
 028800     STOP     RUN.                                                RL1084.2
 028900 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL1084.2
 029000 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL1084.2
@@ -348,15 +347,15 @@
 034700     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL1084.2
 034800 WRITE-LINE.                                                      RL1084.2
 034900     ADD 1 TO RECORD-COUNT.                                       RL1084.2
-035000*    IF RECORD-COUNT GREATER 50                                   RL1084.2
-035100*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1084.2
-035200*        MOVE SPACE TO DUMMY-RECORD                               RL1084.2
-035300*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1084.2
-035400*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1084.2
-035500*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1084.2
-035600*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1084.2
-035700*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1084.2
-035800*        MOVE ZERO TO RECORD-COUNT.                               RL1084.2
+035000Y    IF RECORD-COUNT GREATER 50                                   RL1084.2
+035100Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1084.2
+035200Y        MOVE SPACE TO DUMMY-RECORD                               RL1084.2
+035300Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1084.2
+035400Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1084.2
+035500Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1084.2
+035600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1084.2
+035700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1084.2
+035800Y        MOVE ZERO TO RECORD-COUNT.                               RL1084.2
 035900     PERFORM WRT-LN.                                              RL1084.2
 036000 WRT-LN.                                                          RL1084.2
 036100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL1084.2
@@ -461,4 +460,3 @@
 046000 CCVS-EXIT SECTION.                                               RL1084.2
 046100 CCVS-999999.                                                     RL1084.2
 046200     GO TO CLOSE-FILES.                                           RL1084.2
-      *END-OF,RL108A                                                                  

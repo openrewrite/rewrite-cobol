@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL401M                                                            
 000100 IDENTIFICATION DIVISION.                                         RL4014.2
 000200 PROGRAM-ID.                                                      RL4014.2
 000300      RL401M.                                                     RL4014.2
@@ -77,4 +76,3 @@
 007600*Message expected for above statement: NON-CONFORMING STANDARD    RL4014.2
 007700                                                                  RL4014.2
 007800*TOTAL NUMBER OF FLAGS EXPECTED = 9.                              RL4014.2
-      *END-OF,RL401M                                                                  

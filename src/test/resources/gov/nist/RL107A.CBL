@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL107A                                                            
 000100 IDENTIFICATION DIVISION.                                         RL1074.2
 000200 PROGRAM-ID.                                                      RL1074.2
 000300     RL107A.                                                      RL1074.2
@@ -76,7 +75,7 @@
 007500C    XXXXX074                                                     RL1074.2
 007600C    IS                                                           RL1074.2
 007700C    XXXXX075                                                     RL1074.2
-007800*    XXXXX069                                                     RL1074.2
+007800G    XXXXX069                                                     RL1074.2
 007900     DATA RECORD IS RAC-REC-1.                                    RL1074.2
 008000 01  RAC-REC-1.                                                   RL1074.2
 008100     03  FILLER                  PICTURE IS X(24).                RL1074.2
@@ -90,7 +89,7 @@
 008900C    XXXXX074                                                     RL1074.2
 009000C    IS                                                           RL1074.2
 009100C    XXXXX076                                                     RL1074.2
-009200*    XXXXX069                                                     RL1074.2
+009200G    XXXXX069                                                     RL1074.2
 009300     DATA RECORDS ARE RAC-REC-2 RAC-REC-3.                        RL1074.2
 009400 01  RAC-REC-2.                                                   RL1074.2
 009500     03  FILLER                  PICTURE IS X(24).                RL1074.2
@@ -319,8 +318,8 @@
 031800 CLOSE-FILES.                                                     RL1074.2
 031900     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL1074.2
 032000 TERMINATE-CCVS.                                                  RL1074.2
-032100*    EXIT PROGRAM.                                                RL1074.2
-032200*TERMINATE-CALL.                                                  RL1074.2
+032100S    EXIT PROGRAM.                                                RL1074.2
+032200STERMINATE-CALL.                                                  RL1074.2
 032300     STOP     RUN.                                                RL1074.2
 032400 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL1074.2
 032500 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL1074.2
@@ -383,15 +382,15 @@
 038200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL1074.2
 038300 WRITE-LINE.                                                      RL1074.2
 038400     ADD 1 TO RECORD-COUNT.                                       RL1074.2
-038500*    IF RECORD-COUNT GREATER 50                                   RL1074.2
-038600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1074.2
-038700*        MOVE SPACE TO DUMMY-RECORD                               RL1074.2
-038800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1074.2
-038900*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1074.2
-039000*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1074.2
-039100*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1074.2
-039200*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1074.2
-039300*        MOVE ZERO TO RECORD-COUNT.                               RL1074.2
+038500Y    IF RECORD-COUNT GREATER 50                                   RL1074.2
+038600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1074.2
+038700Y        MOVE SPACE TO DUMMY-RECORD                               RL1074.2
+038800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1074.2
+038900Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1074.2
+039000Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1074.2
+039100Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1074.2
+039200Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1074.2
+039300Y        MOVE ZERO TO RECORD-COUNT.                               RL1074.2
 039400     PERFORM WRT-LN.                                              RL1074.2
 039500 WRT-LN.                                                          RL1074.2
 039600     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL1074.2
@@ -790,4 +789,3 @@
 078900 CCVS-EXIT SECTION.                                               RL1074.2
 079000 CCVS-999999.                                                     RL1074.2
 079100     GO TO CLOSE-FILES.                                           RL1074.2
-      *END-OF,RL107A                                                                  

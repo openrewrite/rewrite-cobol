@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ215A                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ2154.2
 000200 PROGRAM-ID.                                                      SQ2154.2
 000300     SQ215A.                                                      SQ2154.2
@@ -322,16 +321,16 @@
 032100*                                                                 SQ2154.2
 032200 WRITE-LINE-DECL.                                                 SQ2154.2
 032300     ADD     1 TO RECORD-COUNT.                                   SQ2154.2
-032400*    IF RECORD-COUNT GREATER 50                                   SQ2154.2
-032500*        MOVE  DUMMY-RECORD TO DUMMY-HOLD                         SQ2154.2
-032600*        MOVE  SPACE TO DUMMY-RECORD                              SQ2154.2
-032700*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2154.2
-032800*        MOVE  CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-DECL       SQ2154.2
-032900*        MOVE  CCVS-C-2 TO DUMMY-RECORD                           SQ2154.2
-033000*        PERFORM WRT-LN-DECL 2 TIMES                              SQ2154.2
-033100*        MOVE  HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-DECL    SQ2154.2
-033200*        MOVE  DUMMY-HOLD TO DUMMY-RECORD                         SQ2154.2
-033300*        MOVE  ZERO TO RECORD-COUNT.                              SQ2154.2
+032400Y    IF RECORD-COUNT GREATER 50                                   SQ2154.2
+032500Y        MOVE  DUMMY-RECORD TO DUMMY-HOLD                         SQ2154.2
+032600Y        MOVE  SPACE TO DUMMY-RECORD                              SQ2154.2
+032700Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2154.2
+032800Y        MOVE  CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-DECL       SQ2154.2
+032900Y        MOVE  CCVS-C-2 TO DUMMY-RECORD                           SQ2154.2
+033000Y        PERFORM WRT-LN-DECL 2 TIMES                              SQ2154.2
+033100Y        MOVE  HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-DECL    SQ2154.2
+033200Y        MOVE  DUMMY-HOLD TO DUMMY-RECORD                         SQ2154.2
+033300Y        MOVE  ZERO TO RECORD-COUNT.                              SQ2154.2
 033400     PERFORM WRT-LN-DECL.                                         SQ2154.2
 033500*                                                                 SQ2154.2
 033600 WRT-LN-DECL.                                                     SQ2154.2
@@ -647,4 +646,3 @@
 064600 CCVS-EXIT SECTION.                                               SQ2154.2
 064700 CCVS-999999.                                                     SQ2154.2
 064800     GO TO CLOSE-FILES.                                           SQ2154.2
-      *END-OF,SQ215A                                                                  

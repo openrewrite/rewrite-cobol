@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST135A                                                            
 000100 IDENTIFICATION DIVISION.                                         ST1354.2
 000200 PROGRAM-ID.                                                      ST1354.2
 000300     ST135A.                                                      ST1354.2
@@ -70,7 +69,7 @@
 006900C    XXXXX074                                                     ST1354.2
 007000C    IS                                                           ST1354.2
 007100C    XXXXX075                                                     ST1354.2
-007200*    XXXXX069                                                     ST1354.2
+007200G    XXXXX069                                                     ST1354.2
 007300     DATA RECORD IS SORTIN-REC.                                   ST1354.2
 007400 01  SORTIN-REC.                                                  ST1354.2
 007500     02 SORTIN-NON-KEY-1          PICTURE A(36) JUSTIFIED RIGHT.  ST1354.2
@@ -82,7 +81,7 @@
 008100C    XXXXX074                                                     ST1354.2
 008200C    IS                                                           ST1354.2
 008300C    XXXXX076                                                     ST1354.2
-008400*    XXXXX069                                                     ST1354.2
+008400G    XXXXX069                                                     ST1354.2
 008500     DATA RECORD IS SORTOUT-REC.                                  ST1354.2
 008600 01  SORTOUT-REC.                                                 ST1354.2
 008700     02 SORTOUT-NON-KEY-1         PICTURE A(36) JUSTIFIED RIGHT.  ST1354.2
@@ -94,7 +93,7 @@
 009300C    XXXXX074                                                     ST1354.2
 009400C    IS                                                           ST1354.2
 009500C    XXXXX077                                                     ST1354.2
-009600*    XXXXX069                                                     ST1354.2
+009600G    XXXXX069                                                     ST1354.2
 009700     DATA RECORD IS USELESS-REC.                                  ST1354.2
 009800 01  USELESS-REC.                                                 ST1354.2
 009900     02 FILLER                    PICTURE X(80).                  ST1354.2
@@ -104,7 +103,7 @@
 010300C    XXXXX074                                                     ST1354.2
 010400C    IS                                                           ST1354.2
 010500C    XXXXX078                                                     ST1354.2
-010600*    XXXXX069                                                     ST1354.2
+010600G    XXXXX069                                                     ST1354.2
 010700     DATA RECORD IS DEADWEIGHT-REC.                               ST1354.2
 010800 01  DEADWEIGHT-REC               PICTURE X(80).                  ST1354.2
 010900 SD  SORTFILE-2E                                                  ST1354.2
@@ -276,8 +275,8 @@
 027500 CLOSE-FILES.                                                     ST1354.2
 027600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   ST1354.2
 027700 TERMINATE-CCVS.                                                  ST1354.2
-027800*    EXIT PROGRAM.                                                ST1354.2
-027900*TERMINATE-CALL.                                                  ST1354.2
+027800S    EXIT PROGRAM.                                                ST1354.2
+027900STERMINATE-CALL.                                                  ST1354.2
 028000     STOP     RUN.                                                ST1354.2
 028100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         ST1354.2
 028200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           ST1354.2
@@ -340,19 +339,19 @@
 033900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           ST1354.2
 034000 WRITE-LINE.                                                      ST1354.2
 034100     ADD 1 TO RECORD-COUNT.                                       ST1354.2
-034200*    IF RECORD-COUNT GREATER 42                                   ST1354.2
-034300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1354.2
-034400*        MOVE SPACE TO DUMMY-RECORD                               ST1354.2
-034500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1354.2
-034600*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1354.2
-034700*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1354.2
-034800*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1354.2
-034900*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1354.2
-035000*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1354.2
-035100*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1354.2
-035200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1354.2
-035300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1354.2
-035400*        MOVE ZERO TO RECORD-COUNT.                               ST1354.2
+034200Y    IF RECORD-COUNT GREATER 42                                   ST1354.2
+034300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1354.2
+034400Y        MOVE SPACE TO DUMMY-RECORD                               ST1354.2
+034500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1354.2
+034600Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1354.2
+034700Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1354.2
+034800Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1354.2
+034900Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1354.2
+035000Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1354.2
+035100Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1354.2
+035200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1354.2
+035300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1354.2
+035400Y        MOVE ZERO TO RECORD-COUNT.                               ST1354.2
 035500     PERFORM WRT-LN.                                              ST1354.2
 035600 WRT-LN.                                                          ST1354.2
 035700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1354.2
@@ -592,4 +591,3 @@
 059100 CCVS-EXIT SECTION.                                               ST1354.2
 059200 CCVS-999999.                                                     ST1354.2
 059300     GO TO CLOSE-FILES.                                           ST1354.2
-      *END-OF,ST135A                                                          TES06520

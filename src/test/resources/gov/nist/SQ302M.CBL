@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ302M                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ3024.2
 000200 PROGRAM-ID.                                                      SQ3024.2
 000300     SQ302M.                                                      SQ3024.2
@@ -67,4 +66,3 @@
 006600     STOP RUN.                                                    SQ3024.2
 006700                                                                  SQ3024.2
 006800*TOTAL NUMBER OF FLAGS EXPECTED = 4.                              SQ3024.2
-      *END-OF,SQ302M                                                                  

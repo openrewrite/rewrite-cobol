@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST125A                                                            
 000100 IDENTIFICATION DIVISION.                                         ST1254.2
 000200 PROGRAM-ID.                                                      ST1254.2
 000300     ST125A.                                                      ST1254.2
@@ -84,7 +83,7 @@
 008300C    XXXXX074                                                     ST1254.2
 008400C    IS                                                           ST1254.2
 008500C    XXXXX075                                                     ST1254.2
-008600*    XXXXX069                                                     ST1254.2
+008600G    XXXXX069                                                     ST1254.2
 008700     RECORD CONTAINS 27 CHARACTERS.                               ST1254.2
 008800 01  SORTOUT-REC-1.                                               ST1254.2
 008900     02 FILLER          PICTURE X(27).                            ST1254.2
@@ -94,7 +93,7 @@
 009300C    XXXXX074                                                     ST1254.2
 009400C    IS                                                           ST1254.2
 009500C    XXXXX075                                                     ST1254.2
-009600*    XXXXX069                                                     ST1254.2
+009600G    XXXXX069                                                     ST1254.2
 009700     RECORD CONTAINS 27 CHARACTERS.                               ST1254.2
 009800 01  SORTOUT-REC-2.                                               ST1254.2
 009900     02 FILLER          PICTURE X(27).                            ST1254.2
@@ -104,7 +103,7 @@
 010300C    XXXXX074                                                     ST1254.2
 010400C    IS                                                           ST1254.2
 010500C    XXXXX075                                                     ST1254.2
-010600*    XXXXX069                                                     ST1254.2
+010600G    XXXXX069                                                     ST1254.2
 010700     RECORD CONTAINS 27 CHARACTERS.                               ST1254.2
 010800 01  SORTOUT-REC-3.                                               ST1254.2
 010900     02 FILLER          PICTURE X(27).                            ST1254.2
@@ -282,8 +281,8 @@
 028100 CLOSE-FILES.                                                     ST1254.2
 028200     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   ST1254.2
 028300 TERMINATE-CCVS.                                                  ST1254.2
-028400*    EXIT PROGRAM.                                                ST1254.2
-028500*TERMINATE-CALL.                                                  ST1254.2
+028400S    EXIT PROGRAM.                                                ST1254.2
+028500STERMINATE-CALL.                                                  ST1254.2
 028600     STOP     RUN.                                                ST1254.2
 028700 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         ST1254.2
 028800 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           ST1254.2
@@ -346,19 +345,19 @@
 034500     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           ST1254.2
 034600 WRITE-LINE.                                                      ST1254.2
 034700     ADD 1 TO RECORD-COUNT.                                       ST1254.2
-034800*    IF RECORD-COUNT GREATER 42                                   ST1254.2
-034900*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1254.2
-035000*        MOVE SPACE TO DUMMY-RECORD                               ST1254.2
-035100*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1254.2
-035200*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1254.2
-035300*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1254.2
-035400*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1254.2
-035500*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1254.2
-035600*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1254.2
-035700*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1254.2
-035800*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1254.2
-035900*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1254.2
-036000*        MOVE ZERO TO RECORD-COUNT.                               ST1254.2
+034800Y    IF RECORD-COUNT GREATER 42                                   ST1254.2
+034900Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1254.2
+035000Y        MOVE SPACE TO DUMMY-RECORD                               ST1254.2
+035100Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1254.2
+035200Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1254.2
+035300Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1254.2
+035400Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1254.2
+035500Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1254.2
+035600Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1254.2
+035700Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1254.2
+035800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1254.2
+035900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1254.2
+036000Y        MOVE ZERO TO RECORD-COUNT.                               ST1254.2
 036100     PERFORM WRT-LN.                                              ST1254.2
 036200 WRT-LN.                                                          ST1254.2
 036300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1254.2
@@ -433,4 +432,3 @@
 043200 INPROC-EXIT SECTION.                                             ST1254.2
 043300 EXITPARA.                                                        ST1254.2
 043400     PERFORM CLOSE-FILES.                                         ST1254.2
-      *END-OF,ST125A                                                                  

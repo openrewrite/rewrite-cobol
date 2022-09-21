@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST108A                                                            
 000100 IDENTIFICATION DIVISION.                                         ST1084.2
 000200 PROGRAM-ID.                                                      ST1084.2
 000300     ST108A.                                                      ST1084.2
@@ -506,8 +505,8 @@
 050500 CLOSE-FILES.                                                     ST1084.2
 050600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   ST1084.2
 050700 TERMINATE-CCVS.                                                  ST1084.2
-050800*    EXIT PROGRAM.                                                ST1084.2
-050900*TERMINATE-CALL.                                                  ST1084.2
+050800S    EXIT PROGRAM.                                                ST1084.2
+050900STERMINATE-CALL.                                                  ST1084.2
 051000     STOP     RUN.                                                ST1084.2
 051100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         ST1084.2
 051200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           ST1084.2
@@ -570,19 +569,19 @@
 056900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           ST1084.2
 057000 WRITE-LINE.                                                      ST1084.2
 057100     ADD 1 TO RECORD-COUNT.                                       ST1084.2
-057200*    IF RECORD-COUNT GREATER 42                                   ST1084.2
-057300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1084.2
-057400*        MOVE SPACE TO DUMMY-RECORD                               ST1084.2
-057500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1084.2
-057600*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1084.2
-057700*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1084.2
-057800*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1084.2
-057900*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1084.2
-058000*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1084.2
-058100*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1084.2
-058200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1084.2
-058300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1084.2
-058400*        MOVE ZERO TO RECORD-COUNT.                               ST1084.2
+057200Y    IF RECORD-COUNT GREATER 42                                   ST1084.2
+057300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1084.2
+057400Y        MOVE SPACE TO DUMMY-RECORD                               ST1084.2
+057500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1084.2
+057600Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1084.2
+057700Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1084.2
+057800Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1084.2
+057900Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1084.2
+058000Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1084.2
+058100Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1084.2
+058200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1084.2
+058300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1084.2
+058400Y        MOVE ZERO TO RECORD-COUNT.                               ST1084.2
 058500     PERFORM WRT-LN.                                              ST1084.2
 058600 WRT-LN.                                                          ST1084.2
 058700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1084.2
@@ -618,4 +617,3 @@
 061700 OUTPROC-EXIT SECTION.                                            ST1084.2
 061800 EXIT-ONLY.                                                       ST1084.2
 061900     PERFORM  CLOSE-FILES.                                        ST1084.2
-      *END-OF,ST108A                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL111A                                                            
 000100 IDENTIFICATION DIVISION.                                         RL1114.2
 000200 PROGRAM-ID.                                                      RL1114.2
 000300     RL111A.                                                      RL1114.2
@@ -70,7 +69,7 @@
 006900C    XXXXX074                                                     RL1114.2
 007000C    IS                                                           RL1114.2
 007100C    XXXXX076                                                     RL1114.2
-007200*    XXXXX069                                                     RL1114.2
+007200G    XXXXX069                                                     RL1114.2
 007300     LABEL RECORDS ARE STANDARD                                   RL1114.2
 007400     BLOCK CONTAINS 1 RECORDS                                     RL1114.2
 007500     DATA RECORD RL-FS2R1-F-G-240.                                RL1114.2
@@ -84,7 +83,7 @@
 008300C    XXXXX074                                                     RL1114.2
 008400C    IS                                                           RL1114.2
 008500C    XXXXX076                                                     RL1114.2
-008600*    XXXXX069                                                     RL1114.2
+008600G    XXXXX069                                                     RL1114.2
 008700     LABEL RECORDS ARE STANDARD                                   RL1114.2
 008800     BLOCK CONTAINS 1 RECORDS                                     RL1114.2
 008900     DATA RECORD RL-FS3R1-F-G-240.                                RL1114.2
@@ -353,8 +352,8 @@
 035200     PERFORM D-END-ROUTINE THRU D-END-ROUTINE-13.                 RL1114.2
 035300     CLOSE PRINT-FILE.                                            RL1114.2
 035400 D-TERMINATE-CCVS.                                                RL1114.2
-035500*    EXIT PROGRAM.                                                RL1114.2
-035600*D-TERMINATE-CALL.                                                RL1114.2
+035500S    EXIT PROGRAM.                                                RL1114.2
+035600SD-TERMINATE-CALL.                                                RL1114.2
 035700     STOP     RUN.                                                RL1114.2
 035800 D-PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.         RL1114.2
 035900 D-FAIL.  MOVE "FAIL*" TO P-OR-F.  ADD 1 TO ERROR-COUNTER.        RL1114.2
@@ -406,15 +405,15 @@
 040500     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM D-WRITE-LINE.         RL1114.2
 040600 D-WRITE-LINE.                                                    RL1114.2
 040700     ADD 1 TO RECORD-COUNT.                                       RL1114.2
-040800*    IF RECORD-COUNT GREATER 50                                   RL1114.2
-040900*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1114.2
-041000*        MOVE SPACE TO DUMMY-RECORD                               RL1114.2
-041100*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1114.2
-041200*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM D-WRT-LN           RL1114.2
-041300*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM D-WRT-LN 2 TIMES   RL1114.2
-041400*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM D-WRT-LN        RL1114.2
-041500*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1114.2
-041600*        MOVE ZERO TO RECORD-COUNT.                               RL1114.2
+040800Y    IF RECORD-COUNT GREATER 50                                   RL1114.2
+040900Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1114.2
+041000Y        MOVE SPACE TO DUMMY-RECORD                               RL1114.2
+041100Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1114.2
+041200Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM D-WRT-LN           RL1114.2
+041300Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM D-WRT-LN 2 TIMES   RL1114.2
+041400Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM D-WRT-LN        RL1114.2
+041500Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1114.2
+041600Y        MOVE ZERO TO RECORD-COUNT.                               RL1114.2
 041700     PERFORM D-WRT-LN.                                            RL1114.2
 041800 D-WRT-LN.                                                        RL1114.2
 041900     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL1114.2
@@ -475,8 +474,8 @@
 047400 CLOSE-FILES.                                                     RL1114.2
 047500     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL1114.2
 047600 TERMINATE-CCVS.                                                  RL1114.2
-047700*    EXIT PROGRAM.                                                RL1114.2
-047800*TERMINATE-CALL.                                                  RL1114.2
+047700S    EXIT PROGRAM.                                                RL1114.2
+047800STERMINATE-CALL.                                                  RL1114.2
 047900     STOP     RUN.                                                RL1114.2
 048000 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL1114.2
 048100 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL1114.2
@@ -539,15 +538,15 @@
 053800     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL1114.2
 053900 WRITE-LINE.                                                      RL1114.2
 054000     ADD 1 TO RECORD-COUNT.                                       RL1114.2
-054100*    IF RECORD-COUNT GREATER 50                                   RL1114.2
-054200*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1114.2
-054300*        MOVE SPACE TO DUMMY-RECORD                               RL1114.2
-054400*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1114.2
-054500*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1114.2
-054600*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1114.2
-054700*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1114.2
-054800*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1114.2
-054900*        MOVE ZERO TO RECORD-COUNT.                               RL1114.2
+054100Y    IF RECORD-COUNT GREATER 50                                   RL1114.2
+054200Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1114.2
+054300Y        MOVE SPACE TO DUMMY-RECORD                               RL1114.2
+054400Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1114.2
+054500Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1114.2
+054600Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1114.2
+054700Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1114.2
+054800Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1114.2
+054900Y        MOVE ZERO TO RECORD-COUNT.                               RL1114.2
 055000     PERFORM WRT-LN.                                              RL1114.2
 055100 WRT-LN.                                                          RL1114.2
 055200     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL1114.2
@@ -1093,4 +1092,3 @@
 109200 CCVS-EXIT SECTION.                                               RL1114.2
 109300 CCVS-999999.                                                     RL1114.2
 109400     GO TO CLOSE-FILES.                                           RL1114.2
-      *END-OF,RL111A                                                                  

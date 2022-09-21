@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST125A,SUBPRG,ST126A                                              
 000100 IDENTIFICATION DIVISION.                                         ST1264.2
 000200 PROGRAM-ID.                                                      ST1264.2
 000300     ST126A.                                                      ST1264.2
@@ -55,7 +54,7 @@
 005400C    XXXXX074                                                     ST1264.2
 005500C    IS                                                           ST1264.2
 005600C    XXXXX075                                                     ST1264.2
-005700*    XXXXX069                                                     ST1264.2
+005700G    XXXXX069                                                     ST1264.2
 005800     RECORD   CONTAINS 27 CHARACTERS.                             ST1264.2
 005900 01  SORTIN-REC-1.                                                ST1264.2
 006000     02 SORTKEY-3-1     PICTURE X.                                ST1264.2
@@ -67,7 +66,7 @@
 006600C    XXXXX074                                                     ST1264.2
 006700C    IS                                                           ST1264.2
 006800C    XXXXX075                                                     ST1264.2
-006900*    XXXXX069                                                     ST1264.2
+006900G    XXXXX069                                                     ST1264.2
 007000     RECORD   CONTAINS 27 CHARACTERS.                             ST1264.2
 007100 01  SORTIN-REC-2.                                                ST1264.2
 007200     02 SORTKEY-3-2     PICTURE X.                                ST1264.2
@@ -79,7 +78,7 @@
 007800C    XXXXX074                                                     ST1264.2
 007900C    IS                                                           ST1264.2
 008000C    XXXXX075                                                     ST1264.2
-008100*    XXXXX069                                                     ST1264.2
+008100G    XXXXX069                                                     ST1264.2
 008200     RECORD   CONTAINS 27 CHARACTERS.                             ST1264.2
 008300 01  SORTIN-REC-3.                                                ST1264.2
 008400     02 SORTKEY-3-3     PICTURE X.                                ST1264.2
@@ -249,8 +248,8 @@
 024800 CLOSE-FILES.                                                     ST1264.2
 024900     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   ST1264.2
 025000 TERMINATE-CCVS.                                                  ST1264.2
-025100*    EXIT PROGRAM.                                                ST1264.2
-025200*TERMINATE-CALL.                                                  ST1264.2
+025100S    EXIT PROGRAM.                                                ST1264.2
+025200STERMINATE-CALL.                                                  ST1264.2
 025300     STOP     RUN.                                                ST1264.2
 025400 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         ST1264.2
 025500 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           ST1264.2
@@ -313,19 +312,19 @@
 031200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           ST1264.2
 031300 WRITE-LINE.                                                      ST1264.2
 031400     ADD 1 TO RECORD-COUNT.                                       ST1264.2
-031500*    IF RECORD-COUNT GREATER 42                                   ST1264.2
-031600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1264.2
-031700*        MOVE SPACE TO DUMMY-RECORD                               ST1264.2
-031800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1264.2
-031900*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1264.2
-032000*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1264.2
-032100*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1264.2
-032200*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1264.2
-032300*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1264.2
-032400*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1264.2
-032500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1264.2
-032600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1264.2
-032700*        MOVE ZERO TO RECORD-COUNT.                               ST1264.2
+031500Y    IF RECORD-COUNT GREATER 42                                   ST1264.2
+031600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1264.2
+031700Y        MOVE SPACE TO DUMMY-RECORD                               ST1264.2
+031800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1264.2
+031900Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1264.2
+032000Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1264.2
+032100Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1264.2
+032200Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1264.2
+032300Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1264.2
+032400Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1264.2
+032500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1264.2
+032600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1264.2
+032700Y        MOVE ZERO TO RECORD-COUNT.                               ST1264.2
 032800     PERFORM WRT-LN.                                              ST1264.2
 032900 WRT-LN.                                                          ST1264.2
 033000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1264.2
@@ -959,4 +958,3 @@
 095800 CCVS-EXIT SECTION.                                               ST1264.2
 095900 CCVS-999999.                                                     ST1264.2
 096000     GO TO CLOSE-FILES.                                           ST1264.2
-      *END-OF,ST126A                                                                  

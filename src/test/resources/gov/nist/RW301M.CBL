@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RW301M                                                            
 000100 IDENTIFICATION DIVISION.                                         RW3014.2
 000200 PROGRAM-ID.                                                      RW3014.2
 000300     RW301M.                                                      RW3014.2
@@ -83,4 +82,3 @@
 008200                                                                  RW3014.2
 008300                                                                  RW3014.2
 008400*TOTAL NUMBER OF FLAGS EXPECTED = 10                              RW3014.2
-      *END-OF,RW301M                                                                  

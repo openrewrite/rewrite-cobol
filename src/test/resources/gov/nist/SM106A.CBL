@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SM106A                                                            
 000100 IDENTIFICATION DIVISION.                                         SM1064.2
 000200 PROGRAM-ID.                                                      SM1064.2
 000300     SM106A.                                                      SM1064.2
@@ -28,4 +27,3 @@
 002700******************** COPIED TEXT BEGINS BELOW ********************SM1064.2
 002800 COPY   K6SCA.                                                    SM1064.2
 002900*********************** END OF COPIED TEXT ***********************SM1064.2
-      *END-OF,SM106A                                                                  

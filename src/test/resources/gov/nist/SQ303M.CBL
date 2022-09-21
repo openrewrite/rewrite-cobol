@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ303M                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ3034.2
 000200 PROGRAM-ID.                                                      SQ3034.2
 000300     SQ303M.                                                      SQ3034.2
@@ -48,4 +47,3 @@
 004700                                                                  SQ3034.2
 004800                                                                  SQ3034.2
 004900*TOTAL NUMBER OF FLAGS EXPECTED = 2.                              SQ3034.2
-      *END-OF,SQ303M                                                                  

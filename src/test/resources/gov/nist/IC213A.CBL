@@ -1,4 +1,3 @@
-*HEADER,COBOL,IC213A                                                            
 000100 IDENTIFICATION DIVISION.                                         IC2134.2
 000200 PROGRAM-ID.                                                      IC2134.2
 000300     IC213A.                                                      IC2134.2

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SG101A                                                            
 000100 IDENTIFICATION DIVISION.                                         SG1014.2
 000200 PROGRAM-ID.                                                      SG1014.2
 000300     SG101A.                                                      SG1014.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             SG1014.2
 000600 INSTALLATION.                                                    SG1014.2
 000700     GENERAL SERVICES ADMINISTRATION                              SG1014.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               SG1014.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                SG1014.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 SG1014.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               SG1014.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 SG1014.2
@@ -179,8 +178,8 @@
 017800 CLOSE-FILES.                                                     SG1014.2
 017900     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SG1014.2
 018000 TERMINATE-CCVS.                                                  SG1014.2
-018100*    EXIT PROGRAM.                                                SG1014.2
-018200*TERMINATE-CALL.                                                  SG1014.2
+018100S    EXIT PROGRAM.                                                SG1014.2
+018200STERMINATE-CALL.                                                  SG1014.2
 018300     STOP     RUN.                                                SG1014.2
 018400 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SG1014.2
 018500 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SG1014.2
@@ -242,15 +241,15 @@
 024100     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SG1014.2
 024200 WRITE-LINE.                                                      SG1014.2
 024300     ADD 1 TO RECORD-COUNT.                                       SG1014.2
-024400*    IF RECORD-COUNT GREATER 50                                   SG1014.2
-024500*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG1014.2
-024600*        MOVE SPACE TO DUMMY-RECORD                               SG1014.2
-024700*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG1014.2
-024800*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SG1014.2
-024900*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SG1014.2
-025000*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SG1014.2
-025100*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG1014.2
-025200*        MOVE ZERO TO RECORD-COUNT.                               SG1014.2
+024400Y    IF RECORD-COUNT GREATER 50                                   SG1014.2
+024500Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG1014.2
+024600Y        MOVE SPACE TO DUMMY-RECORD                               SG1014.2
+024700Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG1014.2
+024800Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SG1014.2
+024900Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SG1014.2
+025000Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SG1014.2
+025100Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG1014.2
+025200Y        MOVE ZERO TO RECORD-COUNT.                               SG1014.2
 025300     PERFORM WRT-LN.                                              SG1014.2
 025400 WRT-LN.                                                          SG1014.2
 025500     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SG1014.2
@@ -2848,4 +2847,3 @@
 284700 99  SECTION 99.                                                  SG1014.2
 284800 PARA-99.                                                         SG1014.2
 284900     MOVE "GOOD" TO TEST-CHECK.                                   SG1014.2
-      *END-OF,SG101A                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST146A                                              TES00010
 000100 IDENTIFICATION DIVISION.                                         ST1464.2
 000200 PROGRAM-ID.                                                      ST1464.2
 000300     ST146A.                                                      ST1464.2
@@ -67,7 +66,7 @@
 006600C    XXXXX074                                                     ST1464.2
 006700C    IS                                                           ST1464.2
 006800C    XXXXX075                                                     ST1464.2
-006900*    XXXXX069                                                     ST1464.2
+006900G    XXXXX069                                                     ST1464.2
 007000     LABEL RECORD IS STANDARD.                                    ST1464.2
 007100 01  SQ-FS1R1-F-G-140.                                            ST1464.2
 007200     02 FS1R1-XN-120 PIC X(120).                                  ST1464.2
@@ -77,7 +76,7 @@
 007600C    XXXXX074                                                     ST1464.2
 007700C    IS                                                           ST1464.2
 007800C    XXXXX076                                                     ST1464.2
-007900*    XXXXX069                                                     ST1464.2
+007900G    XXXXX069                                                     ST1464.2
 008000     LABEL RECORD IS STANDARD.                                    ST1464.2
 008100 01  SQ-FS2R1-F-G-140.                                            ST1464.2
 008200     02  FS2R1-XN-120 PIC X(120).                                 ST1464.2
@@ -327,8 +326,8 @@
 032600 CLOSE-FILES.                                                     ST1464.2
 032700     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   ST1464.2
 032800 TERMINATE-CCVS.                                                  ST1464.2
-032900*    EXIT PROGRAM.                                                ST1464.2
-033000*TERMINATE-CALL.                                                  ST1464.2
+032900S    EXIT PROGRAM.                                                ST1464.2
+033000STERMINATE-CALL.                                                  ST1464.2
 033100     STOP     RUN.                                                ST1464.2
 033200 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         ST1464.2
 033300 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           ST1464.2
@@ -391,19 +390,19 @@
 039000     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           ST1464.2
 039100 WRITE-LINE.                                                      ST1464.2
 039200     ADD 1 TO RECORD-COUNT.                                       ST1464.2
-039300*    IF RECORD-COUNT GREATER 42                                   ST1464.2
-039400*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1464.2
-039500*        MOVE SPACE TO DUMMY-RECORD                               ST1464.2
-039600*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1464.2
-039700*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1464.2
-039800*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1464.2
-039900*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1464.2
-040000*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1464.2
-040100*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1464.2
-040200*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1464.2
-040300*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1464.2
-040400*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1464.2
-040500*        MOVE ZERO TO RECORD-COUNT.                               ST1464.2
+039300Y    IF RECORD-COUNT GREATER 42                                   ST1464.2
+039400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1464.2
+039500Y        MOVE SPACE TO DUMMY-RECORD                               ST1464.2
+039600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1464.2
+039700Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1464.2
+039800Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1464.2
+039900Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1464.2
+040000Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1464.2
+040100Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1464.2
+040200Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1464.2
+040300Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1464.2
+040400Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1464.2
+040500Y        MOVE ZERO TO RECORD-COUNT.                               ST1464.2
 040600     PERFORM WRT-LN.                                              ST1464.2
 040700 WRT-LN.                                                          ST1464.2
 040800     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1464.2
@@ -477,37 +476,37 @@
 047600     SORT ST-FR1 ON ASCENDING KEY SORT-KEY-FIELD-XN-00006         ST1464.2
 047700         INPUT PROCEDURE IS SORT-INPUT-PROCEDURES                 ST1464.2
 047800         OUTPUT PROCEDURE IS SORT-OUTPUT-PROCEDURES.              ST1464.2
-047900*FILE-DUMP SECTION.                                               ST1464.2
-048000*F-D-1.                                                           ST1464.2
-048100*    PERFORM END-ROUTINE.                                         ST1464.2
-048200*    MOVE " DUMP OF FIRST 10 (OF 1000) RECORDS FROM SQ-FS1:"      ST1464.2
-048300*        TO PRINT-REC.                                            ST1464.2
-048400*    PERFORM WRITE-LINE.                                          ST1464.2
-048500*    PERFORM F-D-2 10 TIMES.                                      ST1464.2
-048600*    GO TO F-D-3.                                                 ST1464.2
-048700*F-D-2.                                                           ST1464.2
-048800*    READ SQ-FS1 AT END GO TO F-D-3.                              ST1464.2
-048900*    MOVE FS1R1-XN-120 TO PRINT-REC.                              ST1464.2
-049000*    PERFORM WRITE-LINE.                                          ST1464.2
-049100*    MOVE FS1R1-XN-20 TO PRINT-REC.                               ST1464.2
-049200*    PERFORM WRITE-LINE.                                          ST1464.2
-049300*F-D-3.                                                           ST1464.2
-049400*    CLOSE SQ-FS1.                                                ST1464.2
-049500*    OPEN INPUT SQ-FS2.                                           ST1464.2
-049600*    PERFORM END-ROUTINE.                                         ST1464.2
-049700*    MOVE " DUMP OF FIRST 10 (OF 1000) RECORDS FROM SQ-FS2:"      ST1464.2
-049800*        TO PRINT-REC.                                            ST1464.2
-049900*    PERFORM WRITE-LINE.                                          ST1464.2
-050000*    PERFORM F-D-4 10 TIMES.                                      ST1464.2
-050100*    GO TO F-D-5.                                                 ST1464.2
-050200*F-D-4.                                                           ST1464.2
-050300*    READ SQ-FS2 AT END GO TO F-D-5.                              ST1464.2
-050400*    MOVE FS2R1-XN-120 TO PRINT-REC.                              ST1464.2
-050500*    PERFORM WRITE-LINE.                                          ST1464.2
-050600*    MOVE FS2R1-XN-20 TO PRINT-REC.                               ST1464.2
-050700*    PERFORM WRITE-LINE.                                          ST1464.2
-050800*F-D-5.                                                           ST1464.2
-050900*    CLOSE SQ-FS2.                                                ST1464.2
+047900XFILE-DUMP SECTION.                                               ST1464.2
+048000XF-D-1.                                                           ST1464.2
+048100X    PERFORM END-ROUTINE.                                         ST1464.2
+048200X    MOVE " DUMP OF FIRST 10 (OF 1000) RECORDS FROM SQ-FS1:"      ST1464.2
+048300X        TO PRINT-REC.                                            ST1464.2
+048400X    PERFORM WRITE-LINE.                                          ST1464.2
+048500X    PERFORM F-D-2 10 TIMES.                                      ST1464.2
+048600X    GO TO F-D-3.                                                 ST1464.2
+048700XF-D-2.                                                           ST1464.2
+048800X    READ SQ-FS1 AT END GO TO F-D-3.                              ST1464.2
+048900X    MOVE FS1R1-XN-120 TO PRINT-REC.                              ST1464.2
+049000X    PERFORM WRITE-LINE.                                          ST1464.2
+049100X    MOVE FS1R1-XN-20 TO PRINT-REC.                               ST1464.2
+049200X    PERFORM WRITE-LINE.                                          ST1464.2
+049300XF-D-3.                                                           ST1464.2
+049400X    CLOSE SQ-FS1.                                                ST1464.2
+049500X    OPEN INPUT SQ-FS2.                                           ST1464.2
+049600X    PERFORM END-ROUTINE.                                         ST1464.2
+049700X    MOVE " DUMP OF FIRST 10 (OF 1000) RECORDS FROM SQ-FS2:"      ST1464.2
+049800X        TO PRINT-REC.                                            ST1464.2
+049900X    PERFORM WRITE-LINE.                                          ST1464.2
+050000X    PERFORM F-D-4 10 TIMES.                                      ST1464.2
+050100X    GO TO F-D-5.                                                 ST1464.2
+050200XF-D-4.                                                           ST1464.2
+050300X    READ SQ-FS2 AT END GO TO F-D-5.                              ST1464.2
+050400X    MOVE FS2R1-XN-120 TO PRINT-REC.                              ST1464.2
+050500X    PERFORM WRITE-LINE.                                          ST1464.2
+050600X    MOVE FS2R1-XN-20 TO PRINT-REC.                               ST1464.2
+050700X    PERFORM WRITE-LINE.                                          ST1464.2
+050800XF-D-5.                                                           ST1464.2
+050900X    CLOSE SQ-FS2.                                                ST1464.2
 051000 CCVS-EXIT SECTION.                                               ST1464.2
 051100 CCVS-999999.                                                     ST1464.2
 051200     GO TO CLOSE-FILES.                                           ST1464.2
@@ -653,15 +652,15 @@
 065200     MOVE     SPACE TO RE-MARK.                                   ST1464.2
 065300 WRITE-LINE-1.                                                    ST1464.2
 065400     ADD 1 TO RECORD-COUNT.                                       ST1464.2
-065500*    IF RECORD-COUNT GREATER 50                                   ST1464.2
-065600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1464.2
-065700*        MOVE SPACE TO DUMMY-RECORD                               ST1464.2
-065800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1464.2
-065900*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-1           ST1464.2
-066000*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-1 2 TIMES   ST1464.2
-066100*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-1        ST1464.2
-066200*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1464.2
-066300*        MOVE ZERO TO RECORD-COUNT.                               ST1464.2
+065500Y    IF RECORD-COUNT GREATER 50                                   ST1464.2
+065600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1464.2
+065700Y        MOVE SPACE TO DUMMY-RECORD                               ST1464.2
+065800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1464.2
+065900Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-1           ST1464.2
+066000Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-1 2 TIMES   ST1464.2
+066100Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-1        ST1464.2
+066200Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1464.2
+066300Y        MOVE ZERO TO RECORD-COUNT.                               ST1464.2
 066400     PERFORM WRT-LN-1.                                            ST1464.2
 066500 WRT-LN-1.                                                        ST1464.2
 066600     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1464.2
@@ -687,4 +686,3 @@
 068600 BAIL-OUT-EX-1. EXIT.                                             ST1464.2
 068700 S-O-P-3.                                                         ST1464.2
 068800     CLOSE SQ-FS2.                                                ST1464.2
-      *END-OF,ST146A                                                    TES07470

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ202A,SUBPRG,SQ203A                                              
 000100 IDENTIFICATION DIVISION.                                         SQ2034.2
 000200 PROGRAM-ID.                                                      SQ2034.2
 000300     SQ203A.                                                      SQ2034.2
@@ -22,11 +21,11 @@
 002100     XXXXX083.                                                    SQ2034.2
 002200 INPUT-OUTPUT SECTION.                                            SQ2034.2
 002300 FILE-CONTROL.                                                    SQ2034.2
-002400*    SELECT RAW-DATA   ASSIGN TO                                  SQ2034.2
-002500*    XXXXX062                                                     SQ2034.2
-002600*           ORGANIZATION IS INDEXED                               SQ2034.2
-002700*           ACCESS MODE IS RANDOM                                 SQ2034.2
-002800*           RECORD KEY IS RAW-DATA-KEY.                           SQ2034.2
+002400P    SELECT RAW-DATA   ASSIGN TO                                  SQ2034.2
+002500P    XXXXX062                                                     SQ2034.2
+002600P           ORGANIZATION IS INDEXED                               SQ2034.2
+002700P           ACCESS MODE IS RANDOM                                 SQ2034.2
+002800P           RECORD KEY IS RAW-DATA-KEY.                           SQ2034.2
 002900     SELECT PRINT-FILE ASSIGN TO                                  SQ2034.2
 003000     XXXXX055.                                                    SQ2034.2
 003100     SELECT OPTIONAL SQ-FS1                                       SQ2034.2
@@ -51,22 +50,22 @@
 005000     ORGANIZATION IS SEQUENTIAL.                                  SQ2034.2
 005100 DATA DIVISION.                                                   SQ2034.2
 005200 FILE SECTION.                                                    SQ2034.2
-005300*                                                                 SQ2034.2
-005400*FD  RAW-DATA.                                                    SQ2034.2
-005500*                                                                 SQ2034.2
-005600*01  RAW-DATA-SATZ.                                               SQ2034.2
-005700*    05  RAW-DATA-KEY        PIC X(6).                            SQ2034.2
-005800*    05  C-DATE              PIC 9(6).                            SQ2034.2
-005900*    05  C-TIME              PIC 9(8).                            SQ2034.2
-006000*    05  C-NO-OF-TESTS       PIC 99.                              SQ2034.2
-006100*    05  C-OK                PIC 999.                             SQ2034.2
-006200*    05  C-ALL               PIC 999.                             SQ2034.2
-006300*    05  C-FAIL              PIC 999.                             SQ2034.2
-006400*    05  C-DELETED           PIC 999.                             SQ2034.2
-006500*    05  C-INSPECT           PIC 999.                             SQ2034.2
-006600*    05  C-NOTE              PIC X(13).                           SQ2034.2
-006700*    05  C-INDENT            PIC X.                               SQ2034.2
-006800*    05  C-ABORT             PIC X(8).                            SQ2034.2
+005300P                                                                 SQ2034.2
+005400PFD  RAW-DATA.                                                    SQ2034.2
+005500P                                                                 SQ2034.2
+005600P01  RAW-DATA-SATZ.                                               SQ2034.2
+005700P    05  RAW-DATA-KEY        PIC X(6).                            SQ2034.2
+005800P    05  C-DATE              PIC 9(6).                            SQ2034.2
+005900P    05  C-TIME              PIC 9(8).                            SQ2034.2
+006000P    05  C-NO-OF-TESTS       PIC 99.                              SQ2034.2
+006100P    05  C-OK                PIC 999.                             SQ2034.2
+006200P    05  C-ALL               PIC 999.                             SQ2034.2
+006300P    05  C-FAIL              PIC 999.                             SQ2034.2
+006400P    05  C-DELETED           PIC 999.                             SQ2034.2
+006500P    05  C-INSPECT           PIC 999.                             SQ2034.2
+006600P    05  C-NOTE              PIC X(13).                           SQ2034.2
+006700P    05  C-INDENT            PIC X.                               SQ2034.2
+006800P    05  C-ABORT             PIC X(8).                            SQ2034.2
 006900 FD  PRINT-FILE                                                   SQ2034.2
 007000C    LABEL RECORDS                                                SQ2034.2
 007100C    XXXXX084                                                     SQ2034.2
@@ -285,16 +284,16 @@
 028400 END DECLARATIVES.                                                SQ2034.2
 028500 CCVS1 SECTION.                                                   SQ2034.2
 028600 OPEN-FILES.                                                      SQ2034.2
-028700*    OPEN I-O RAW-DATA.                                           SQ2034.2
-028800*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2034.2
-028900*    READ RAW-DATA INVALID KEY GO TO END-E-1.                     SQ2034.2
-029000*    MOVE "ABORTED " TO C-ABORT.                                  SQ2034.2
-029100*    ADD 1 TO C-NO-OF-TESTS.                                      SQ2034.2
-029200*    ACCEPT C-DATE  FROM DATE.                                    SQ2034.2
-029300*    ACCEPT C-TIME  FROM TIME.                                    SQ2034.2
-029400*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             SQ2034.2
-029500*END-E-1.                                                         SQ2034.2
-029600*    CLOSE RAW-DATA.                                              SQ2034.2
+028700P    OPEN I-O RAW-DATA.                                           SQ2034.2
+028800P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2034.2
+028900P    READ RAW-DATA INVALID KEY GO TO END-E-1.                     SQ2034.2
+029000P    MOVE "ABORTED " TO C-ABORT.                                  SQ2034.2
+029100P    ADD 1 TO C-NO-OF-TESTS.                                      SQ2034.2
+029200P    ACCEPT C-DATE  FROM DATE.                                    SQ2034.2
+029300P    ACCEPT C-TIME  FROM TIME.                                    SQ2034.2
+029400P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             SQ2034.2
+029500PEND-E-1.                                                         SQ2034.2
+029600P    CLOSE RAW-DATA.                                              SQ2034.2
 029700     OPEN     OUTPUT PRINT-FILE.                                  SQ2034.2
 029800     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   SQ2034.2
 029900     MOVE    SPACE TO TEST-RESULTS.                               SQ2034.2
@@ -309,21 +308,21 @@
 030800     GO TO CCVS1-EXIT.                                            SQ2034.2
 030900 CLOSE-FILES.                                                     SQ2034.2
 031000     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SQ2034.2
-031100*    OPEN I-O RAW-DATA.                                           SQ2034.2
-031200*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2034.2
-031300*    READ RAW-DATA INVALID KEY GO TO END-E-2.                     SQ2034.2
-031400*    MOVE "OK.     " TO C-ABORT.                                  SQ2034.2
-031500*    MOVE PASS-COUNTER TO C-OK.                                   SQ2034.2
-031600*    MOVE ERROR-HOLD   TO C-ALL.                                  SQ2034.2
-031700*    MOVE ERROR-COUNTER TO C-FAIL.                                SQ2034.2
-031800*    MOVE DELETE-CNT TO C-DELETED.                                SQ2034.2
-031900*    MOVE INSPECT-COUNTER TO C-INSPECT.                           SQ2034.2
-032000*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             SQ2034.2
-032100*END-E-2.                                                         SQ2034.2
-032200*    CLOSE RAW-DATA.                                              SQ2034.2
+031100P    OPEN I-O RAW-DATA.                                           SQ2034.2
+031200P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2034.2
+031300P    READ RAW-DATA INVALID KEY GO TO END-E-2.                     SQ2034.2
+031400P    MOVE "OK.     " TO C-ABORT.                                  SQ2034.2
+031500P    MOVE PASS-COUNTER TO C-OK.                                   SQ2034.2
+031600P    MOVE ERROR-HOLD   TO C-ALL.                                  SQ2034.2
+031700P    MOVE ERROR-COUNTER TO C-FAIL.                                SQ2034.2
+031800P    MOVE DELETE-CNT TO C-DELETED.                                SQ2034.2
+031900P    MOVE INSPECT-COUNTER TO C-INSPECT.                           SQ2034.2
+032000P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             SQ2034.2
+032100PEND-E-2.                                                         SQ2034.2
+032200P    CLOSE RAW-DATA.                                              SQ2034.2
 032300 TERMINATE-CCVS.                                                  SQ2034.2
-032400*    EXIT PROGRAM.                                                SQ2034.2
-032500*TERMINATE-CALL.                                                  SQ2034.2
+032400S    EXIT PROGRAM.                                                SQ2034.2
+032500STERMINATE-CALL.                                                  SQ2034.2
 032600     STOP     RUN.                                                SQ2034.2
 032700 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SQ2034.2
 032800 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SQ2034.2
@@ -385,15 +384,15 @@
 038400     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SQ2034.2
 038500 WRITE-LINE.                                                      SQ2034.2
 038600     ADD 1 TO RECORD-COUNT.                                       SQ2034.2
-038700*    IF RECORD-COUNT GREATER 50                                   SQ2034.2
-038800*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SQ2034.2
-038900*        MOVE SPACE TO DUMMY-RECORD                               SQ2034.2
-039000*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2034.2
-039100*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SQ2034.2
-039200*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SQ2034.2
-039300*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SQ2034.2
-039400*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SQ2034.2
-039500*        MOVE ZERO TO RECORD-COUNT.                               SQ2034.2
+038700Y    IF RECORD-COUNT GREATER 50                                   SQ2034.2
+038800Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SQ2034.2
+038900Y        MOVE SPACE TO DUMMY-RECORD                               SQ2034.2
+039000Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2034.2
+039100Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SQ2034.2
+039200Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SQ2034.2
+039300Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SQ2034.2
+039400Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SQ2034.2
+039500Y        MOVE ZERO TO RECORD-COUNT.                               SQ2034.2
 039600     PERFORM WRT-LN.                                              SQ2034.2
 039700 WRT-LN.                                                          SQ2034.2
 039800     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SQ2034.2
@@ -552,4 +551,3 @@
 055100 CCVS-EXIT SECTION.                                               SQ2034.2
 055200 CCVS-999999.                                                     SQ2034.2
 055300     GO TO CLOSE-FILES.                                           SQ2034.2
-      *END-OF,SQ203A                                                                  

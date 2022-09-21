@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL206A,SUBPRG,RL207A                                              
 000100 IDENTIFICATION DIVISION.                                         RL2074.2
 000200 PROGRAM-ID.                                                      RL2074.2
 000300     RL207A.                                                      RL2074.2
@@ -61,7 +60,7 @@
 006000C    XXXXX074                                                     RL2074.2
 006100C    IS                                                           RL2074.2
 006200C    XXXXX075                                                     RL2074.2
-006300*    XXXXX069                                                     RL2074.2
+006300G    XXXXX069                                                     RL2074.2
 006400     BLOCK  CONTAINS 1 RECORDS                                    RL2074.2
 006500     RECORD VARYING 120 TO 140 DEPENDING WRK-SIZE.                RL2074.2
 006600 01  RL-FD1R1-F-G-140.                                            RL2074.2
@@ -313,8 +312,8 @@
 031200 CLOSE-FILES.                                                     RL2074.2
 031300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL2074.2
 031400 TERMINATE-CCVS.                                                  RL2074.2
-031500*    EXIT PROGRAM.                                                RL2074.2
-031600*TERMINATE-CALL.                                                  RL2074.2
+031500S    EXIT PROGRAM.                                                RL2074.2
+031600STERMINATE-CALL.                                                  RL2074.2
 031700     STOP     RUN.                                                RL2074.2
 031800 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL2074.2
 031900 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL2074.2
@@ -377,15 +376,15 @@
 037600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL2074.2
 037700 WRITE-LINE.                                                      RL2074.2
 037800     ADD 1 TO RECORD-COUNT.                                       RL2074.2
-037900*    IF RECORD-COUNT GREATER 50                                   RL2074.2
-038000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL2074.2
-038100*        MOVE SPACE TO DUMMY-RECORD                               RL2074.2
-038200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL2074.2
-038300*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL2074.2
-038400*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL2074.2
-038500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL2074.2
-038600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL2074.2
-038700*        MOVE ZERO TO RECORD-COUNT.                               RL2074.2
+037900Y    IF RECORD-COUNT GREATER 50                                   RL2074.2
+038000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL2074.2
+038100Y        MOVE SPACE TO DUMMY-RECORD                               RL2074.2
+038200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL2074.2
+038300Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL2074.2
+038400Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL2074.2
+038500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL2074.2
+038600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL2074.2
+038700Y        MOVE ZERO TO RECORD-COUNT.                               RL2074.2
 038800     PERFORM WRT-LN.                                              RL2074.2
 038900 WRT-LN.                                                          RL2074.2
 039000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL2074.2
@@ -1063,4 +1062,3 @@
 106200 CCVS-EXIT SECTION.                                               RL2074.2
 106300 CCVS-999999.                                                     RL2074.2
 106400     GO TO CLOSE-FILES.                                           RL2074.2
-      *END-OF,RL207A                                                                  

@@ -40,11 +40,13 @@ import org.openrewrite.tree.ParsingExecutionContextView;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.openrewrite.Tree.randomId;
@@ -94,8 +96,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         EncodingDetectingInputStream is = sourceFile.getSource();
                         String sourceStr = is.readFully();
 
-                        String prepareSource = CobolLineReader.readLines(sourceStr, cobolDialect);
-
+                        String prepareSource = preprocessCobol(sourceStr, is.getCharset());
+//                        String prepareSource = CobolLineReader.readLines(sourceStr, cobolDialect);
                         org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
                                 new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
                                         new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(prepareSource))));
@@ -111,8 +113,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         );
 
                         CobolPreprocessor.CompilationUnit preprocessedCU = parserVisitor.visitStartRule(parser.startRule());
-                        PreprocessLineContinuations lineContinuationPhase = new PreprocessLineContinuations();
-                        preprocessedCU = (CobolPreprocessor.CompilationUnit) lineContinuationPhase.getVisitor().visit(preprocessedCU, new InMemoryExecutionContext());
+//                        PreprocessLineContinuations lineContinuationPhase = new PreprocessLineContinuations();
+//                        preprocessedCU = (CobolPreprocessor.CompilationUnit) lineContinuationPhase.getVisitor().visit(preprocessedCU, new InMemoryExecutionContext());
 
                         if (enableCopy) {
                             List<Path> copyBookPaths = getCopyBooks();
@@ -145,8 +147,28 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 .collect(toList());
     }
 
-    // Note: the NIST CopyBooks contain COBOL with the correct column areas, which may not be required.
-    // This method will break if the CopyBook does not match the dialect (fixable during print or a formatting visitor).
+    private String preprocessCobol(String source, @Nullable Charset encoding) {
+        CobolParserParams params = new CobolParserParams(
+                encoding,
+                emptyList(),
+                getCobolFileExtensions(),
+                getCopyBookFiles(),
+                proLeapCobolDialect,
+                sourceFormat,
+                true
+        );
+
+        ProLeapCobolPreprocessor proleapCobolPreprocessor = new ProLeapCobolPreprocessor(
+                new CobolCommentEntriesMarker(),
+                new CobolDocumentParser(),
+                new CobolInlineCommentEntriesNormalizer(),
+                new CobolLineIndicatorProcessor(),
+                new org.openrewrite.cobol.proleap.CobolLineReader()
+        );
+
+        return proleapCobolPreprocessor.rewriteLines(source, params);
+    }
+
     public List<CobolPreprocessor.CopyBook> parseCopyBooks(List<Path> paths, @Nullable Path relativeTo) {
         List<CobolPreprocessor.CopyBook> copyBooks = new ArrayList<>();
 

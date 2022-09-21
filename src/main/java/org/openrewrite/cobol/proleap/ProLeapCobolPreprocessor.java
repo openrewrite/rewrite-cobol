@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 
 @Value
 public class ProLeapCobolPreprocessor {
-    public static final String INDICATOR_FIELD = "([ABCdDGJSTXY$\\t\\-/*# ])";
+    public static final String INDICATOR_FIELD = "([ABCdDEFGHIJPTSUXY$\\t\\-/*# ])";
     public static final String NEWLINE = "\n";
     public static final String WS = " ";
     public static final String CHAR_ASTERISK = "*";

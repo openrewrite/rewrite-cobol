@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST131A                                                            
 000100 IDENTIFICATION DIVISION.                                         ST1314.2
 000200 PROGRAM-ID.                                                      ST1314.2
 000300     ST131A.                                                      ST1314.2
@@ -359,8 +358,8 @@
 035800 CLOSE-FILES.                                                     ST1314.2
 035900     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   ST1314.2
 036000 TERMINATE-CCVS.                                                  ST1314.2
-036100*    EXIT PROGRAM.                                                ST1314.2
-036200*TERMINATE-CALL.                                                  ST1314.2
+036100S    EXIT PROGRAM.                                                ST1314.2
+036200STERMINATE-CALL.                                                  ST1314.2
 036300     STOP     RUN.                                                ST1314.2
 036400 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         ST1314.2
 036500 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           ST1314.2
@@ -423,19 +422,19 @@
 042200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           ST1314.2
 042300 WRITE-LINE.                                                      ST1314.2
 042400     ADD 1 TO RECORD-COUNT.                                       ST1314.2
-042500*    IF RECORD-COUNT GREATER 42                                   ST1314.2
-042600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1314.2
-042700*        MOVE SPACE TO DUMMY-RECORD                               ST1314.2
-042800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1314.2
-042900*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1314.2
-043000*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1314.2
-043100*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1314.2
-043200*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1314.2
-043300*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1314.2
-043400*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1314.2
-043500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1314.2
-043600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1314.2
-043700*        MOVE ZERO TO RECORD-COUNT.                               ST1314.2
+042500Y    IF RECORD-COUNT GREATER 42                                   ST1314.2
+042600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1314.2
+042700Y        MOVE SPACE TO DUMMY-RECORD                               ST1314.2
+042800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1314.2
+042900Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1314.2
+043000Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1314.2
+043100Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1314.2
+043200Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1314.2
+043300Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1314.2
+043400Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1314.2
+043500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1314.2
+043600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1314.2
+043700Y        MOVE ZERO TO RECORD-COUNT.                               ST1314.2
 043800     PERFORM WRT-LN.                                              ST1314.2
 043900 WRT-LN.                                                          ST1314.2
 044000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1314.2
@@ -617,15 +616,15 @@
 061600     MOVE     SPACE TO RE-MARK.                                   ST1314.2
 061700 WRITE-LINE-1.                                                    ST1314.2
 061800     ADD 1 TO RECORD-COUNT.                                       ST1314.2
-061900*    IF RECORD-COUNT GREATER 50                                   ST1314.2
-062000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1314.2
-062100*        MOVE SPACE TO DUMMY-RECORD                               ST1314.2
-062200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1314.2
-062300*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-1           ST1314.2
-062400*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-1 2 TIMES   ST1314.2
-062500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-1        ST1314.2
-062600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1314.2
-062700*        MOVE ZERO TO RECORD-COUNT.                               ST1314.2
+061900Y    IF RECORD-COUNT GREATER 50                                   ST1314.2
+062000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1314.2
+062100Y        MOVE SPACE TO DUMMY-RECORD                               ST1314.2
+062200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1314.2
+062300Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-1           ST1314.2
+062400Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-1 2 TIMES   ST1314.2
+062500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-1        ST1314.2
+062600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1314.2
+062700Y        MOVE ZERO TO RECORD-COUNT.                               ST1314.2
 062800     PERFORM WRT-LN-1.                                            ST1314.2
 062900 WRT-LN-1.                                                        ST1314.2
 063000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1314.2
@@ -774,15 +773,15 @@
 077300     MOVE     SPACE TO RE-MARK.                                   ST1314.2
 077400 WRITE-LINE-2.                                                    ST1314.2
 077500     ADD 1 TO RECORD-COUNT.                                       ST1314.2
-077600*    IF RECORD-COUNT GREATER 50                                   ST1314.2
-077700*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1314.2
-077800*        MOVE SPACE TO DUMMY-RECORD                               ST1314.2
-077900*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1314.2
-078000*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-2           ST1314.2
-078100*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-2 2 TIMES   ST1314.2
-078200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-2        ST1314.2
-078300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1314.2
-078400*        MOVE ZERO TO RECORD-COUNT.                               ST1314.2
+077600Y    IF RECORD-COUNT GREATER 50                                   ST1314.2
+077700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1314.2
+077800Y        MOVE SPACE TO DUMMY-RECORD                               ST1314.2
+077900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1314.2
+078000Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-2           ST1314.2
+078100Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-2 2 TIMES   ST1314.2
+078200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-2        ST1314.2
+078300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1314.2
+078400Y        MOVE ZERO TO RECORD-COUNT.                               ST1314.2
 078500     PERFORM WRT-LN-2.                                            ST1314.2
 078600 WRT-LN-2.                                                        ST1314.2
 078700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1314.2
@@ -959,4 +958,3 @@
 095800 CCVS-EXIT SECTION.                                               ST1314.2
 095900 CCVS-999999.                                                     ST1314.2
 096000     GO TO CLOSE-FILES.                                           ST1314.2
-      *END-OF,ST131A                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ230A                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ2304.2
 000200 PROGRAM-ID.                                                      SQ2304.2
 000300     SQ230A.                                                      SQ2304.2
@@ -385,15 +384,15 @@
 038400*                                                                 SQ2304.2
 038500 WRITE-LINE.                                                      SQ2304.2
 038600     ADD     1 TO RECORD-COUNT.                                   SQ2304.2
-038700*    IF RECORD-COUNT GREATER 50                                   SQ2304.2
-038800*        MOVE  DUMMY-RECORD TO DUMMY-HOLD                         SQ2304.2
-038900*        MOVE  SPACE TO DUMMY-RECORD                              SQ2304.2
-039000*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2304.2
-039100*        MOVE  CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN            SQ2304.2
-039200*        MOVE  CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    SQ2304.2
-039300*        MOVE  HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN         SQ2304.2
-039400*        MOVE  DUMMY-HOLD TO DUMMY-RECORD                         SQ2304.2
-039500*        MOVE  ZERO TO RECORD-COUNT.                              SQ2304.2
+038700Y    IF RECORD-COUNT GREATER 50                                   SQ2304.2
+038800Y        MOVE  DUMMY-RECORD TO DUMMY-HOLD                         SQ2304.2
+038900Y        MOVE  SPACE TO DUMMY-RECORD                              SQ2304.2
+039000Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2304.2
+039100Y        MOVE  CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN            SQ2304.2
+039200Y        MOVE  CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    SQ2304.2
+039300Y        MOVE  HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN         SQ2304.2
+039400Y        MOVE  DUMMY-HOLD TO DUMMY-RECORD                         SQ2304.2
+039500Y        MOVE  ZERO TO RECORD-COUNT.                              SQ2304.2
 039600     PERFORM WRT-LN.                                              SQ2304.2
 039700*                                                                 SQ2304.2
 039800 WRT-LN.                                                          SQ2304.2
@@ -511,4 +510,3 @@
 051000 CCVS-EXIT SECTION.                                               SQ2304.2
 051100 CCVS-999999.                                                     SQ2304.2
 051200     GO TO CLOSE-FILES.                                           SQ2304.2
-      *END-OF,SQ230A                                                                  

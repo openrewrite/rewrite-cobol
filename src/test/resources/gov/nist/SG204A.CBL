@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SG204A                                                            
 000100 IDENTIFICATION DIVISION.                                         SG2044.2
 000200 PROGRAM-ID.                                                      SG2044.2
 000300     SG204A.                                                      SG2044.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             SG2044.2
 000600 INSTALLATION.                                                    SG2044.2
 000700     GENERAL SERVICES ADMINISTRATION                              SG2044.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               SG2044.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                SG2044.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 SG2044.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               SG2044.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 SG2044.2
@@ -293,8 +292,8 @@
 029200 CLOSE-FILES.                                                     SG2044.2
 029300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SG2044.2
 029400 TERMINATE-CCVS.                                                  SG2044.2
-029500*    EXIT PROGRAM.                                                SG2044.2
-029600*TERMINATE-CALL.                                                  SG2044.2
+029500S    EXIT PROGRAM.                                                SG2044.2
+029600STERMINATE-CALL.                                                  SG2044.2
 029700     STOP     RUN.                                                SG2044.2
 029800 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SG2044.2
 029900 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SG2044.2
@@ -356,15 +355,15 @@
 035500     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SG2044.2
 035600 WRITE-LINE.                                                      SG2044.2
 035700     ADD 1 TO RECORD-COUNT.                                       SG2044.2
-035800*    IF RECORD-COUNT GREATER 50                                   SG2044.2
-035900*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG2044.2
-036000*        MOVE SPACE TO DUMMY-RECORD                               SG2044.2
-036100*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG2044.2
-036200*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SG2044.2
-036300*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SG2044.2
-036400*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SG2044.2
-036500*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG2044.2
-036600*        MOVE ZERO TO RECORD-COUNT.                               SG2044.2
+035800Y    IF RECORD-COUNT GREATER 50                                   SG2044.2
+035900Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG2044.2
+036000Y        MOVE SPACE TO DUMMY-RECORD                               SG2044.2
+036100Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG2044.2
+036200Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SG2044.2
+036300Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SG2044.2
+036400Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SG2044.2
+036500Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG2044.2
+036600Y        MOVE ZERO TO RECORD-COUNT.                               SG2044.2
 036700     PERFORM WRT-LN.                                              SG2044.2
 036800 WRT-LN.                                                          SG2044.2
 036900     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SG2044.2
@@ -539,15 +538,15 @@
 053800     MOVE     SPACE TO RE-MARK.                                   SG2044.2
 053900 WRITE-LINE-1.                                                    SG2044.2
 054000     ADD 1 TO RECORD-COUNT.                                       SG2044.2
-054100*    IF RECORD-COUNT GREATER 50                                   SG2044.2
-054200*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG2044.2
-054300*        MOVE SPACE TO DUMMY-RECORD                               SG2044.2
-054400*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG2044.2
-054500*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-1           SG2044.2
-054600*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-1 2 TIMES   SG2044.2
-054700*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-1        SG2044.2
-054800*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG2044.2
-054900*        MOVE ZERO TO RECORD-COUNT.                               SG2044.2
+054100Y    IF RECORD-COUNT GREATER 50                                   SG2044.2
+054200Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG2044.2
+054300Y        MOVE SPACE TO DUMMY-RECORD                               SG2044.2
+054400Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG2044.2
+054500Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-1           SG2044.2
+054600Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-1 2 TIMES   SG2044.2
+054700Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-1        SG2044.2
+054800Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG2044.2
+054900Y        MOVE ZERO TO RECORD-COUNT.                               SG2044.2
 055000     PERFORM WRT-LN-1.                                            SG2044.2
 055100 WRT-LN-1.                                                        SG2044.2
 055200     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SG2044.2
@@ -694,15 +693,15 @@
 069300     MOVE     SPACE TO RE-MARK.                                   SG2044.2
 069400 WRITE-LINE-2.                                                    SG2044.2
 069500     ADD 1 TO RECORD-COUNT.                                       SG2044.2
-069600*    IF RECORD-COUNT GREATER 50                                   SG2044.2
-069700*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG2044.2
-069800*        MOVE SPACE TO DUMMY-RECORD                               SG2044.2
-069900*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG2044.2
-070000*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-2           SG2044.2
-070100*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-2 2 TIMES   SG2044.2
-070200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-2        SG2044.2
-070300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG2044.2
-070400*        MOVE ZERO TO RECORD-COUNT.                               SG2044.2
+069600Y    IF RECORD-COUNT GREATER 50                                   SG2044.2
+069700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG2044.2
+069800Y        MOVE SPACE TO DUMMY-RECORD                               SG2044.2
+069900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG2044.2
+070000Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-2           SG2044.2
+070100Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-2 2 TIMES   SG2044.2
+070200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-2        SG2044.2
+070300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG2044.2
+070400Y        MOVE ZERO TO RECORD-COUNT.                               SG2044.2
 070500     PERFORM WRT-LN-2.                                            SG2044.2
 070600 WRT-LN-2.                                                        SG2044.2
 070700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SG2044.2
@@ -879,4 +878,3 @@
 087800 CCVS-EXIT SECTION.                                               SG2044.2
 087900 CCVS-999999.                                                     SG2044.2
 088000     GO TO CLOSE-FILES.                                           SG2044.2
-      *END-OF,SG204A                                                                  

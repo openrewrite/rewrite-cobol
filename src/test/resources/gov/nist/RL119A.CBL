@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL119A                                                            
 000100 IDENTIFICATION DIVISION.                                         RL1194.2
 000200 PROGRAM-ID.                                                      RL1194.2
 000300     RL119A.                                                      RL1194.2
@@ -62,7 +61,7 @@
 006100C    XXXXX074                                                     RL1194.2
 006200C    IS                                                           RL1194.2
 006300C    XXXXX076                                                     RL1194.2
-006400*    XXXXX069                                                     RL1194.2
+006400G    XXXXX069                                                     RL1194.2
 006500     LABEL RECORDS ARE STANDARD                                   RL1194.2
 006600     BLOCK CONTAINS 1 RECORDS                                     RL1194.2
 006700     DATA RECORD RL-FD3R1-F-G-240.                                RL1194.2
@@ -352,16 +351,16 @@
 035100     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM D-WRITE-LINE.         RL1194.2
 035200 D-WRITE-LINE.                                                    RL1194.2
 035300     ADD 1 TO RECORD-COUNT.                                       RL1194.2
-035400*    IF RECORD-COUNT GREATER 50                                   RL1194.2
-035500*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1194.2
-035600*        MOVE SPACE TO DUMMY-RECORD                               RL1194.2
-035700*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1194.2
-035800*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM D-WRT-LN           RL1194.2
-035900*        MOVE CCVS-C-2 TO DUMMY-RECORD                            RL1194.2
-036000*        PERFORM D-WRT-LN 2 TIMES                                 RL1194.2
-036100*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM D-WRT-LN        RL1194.2
-036200*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1194.2
-036300*        MOVE ZERO TO RECORD-COUNT.                               RL1194.2
+035400Y    IF RECORD-COUNT GREATER 50                                   RL1194.2
+035500Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1194.2
+035600Y        MOVE SPACE TO DUMMY-RECORD                               RL1194.2
+035700Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1194.2
+035800Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM D-WRT-LN           RL1194.2
+035900Y        MOVE CCVS-C-2 TO DUMMY-RECORD                            RL1194.2
+036000Y        PERFORM D-WRT-LN 2 TIMES                                 RL1194.2
+036100Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM D-WRT-LN        RL1194.2
+036200Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1194.2
+036300Y        MOVE ZERO TO RECORD-COUNT.                               RL1194.2
 036400     PERFORM D-WRT-LN.                                            RL1194.2
 036500 D-WRT-LN.                                                        RL1194.2
 036600     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL1194.2
@@ -410,8 +409,8 @@
 040900 CLOSE-FILES.                                                     RL1194.2
 041000     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL1194.2
 041100 TERMINATE-CCVS.                                                  RL1194.2
-041200*    EXIT PROGRAM.                                                RL1194.2
-041300*TERMINATE-CALL.                                                  RL1194.2
+041200S    EXIT PROGRAM.                                                RL1194.2
+041300STERMINATE-CALL.                                                  RL1194.2
 041400     STOP     RUN.                                                RL1194.2
 041500 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL1194.2
 041600 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL1194.2
@@ -474,15 +473,15 @@
 047300     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL1194.2
 047400 WRITE-LINE.                                                      RL1194.2
 047500     ADD 1 TO RECORD-COUNT.                                       RL1194.2
-047600*    IF RECORD-COUNT GREATER 50                                   RL1194.2
-047700*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1194.2
-047800*        MOVE SPACE TO DUMMY-RECORD                               RL1194.2
-047900*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1194.2
-048000*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1194.2
-048100*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1194.2
-048200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1194.2
-048300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1194.2
-048400*        MOVE ZERO TO RECORD-COUNT.                               RL1194.2
+047600Y    IF RECORD-COUNT GREATER 50                                   RL1194.2
+047700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1194.2
+047800Y        MOVE SPACE TO DUMMY-RECORD                               RL1194.2
+047900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1194.2
+048000Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1194.2
+048100Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1194.2
+048200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1194.2
+048300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1194.2
+048400Y        MOVE ZERO TO RECORD-COUNT.                               RL1194.2
 048500     PERFORM WRT-LN.                                              RL1194.2
 048600 WRT-LN.                                                          RL1194.2
 048700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL1194.2
@@ -544,4 +543,3 @@
 054300 CCVS-EXIT SECTION.                                               RL1194.2
 054400 CCVS-999999.                                                     RL1194.2
 054500     GO TO CLOSE-FILES.                                           RL1194.2
-      *END-OF,RL119A                                                                  

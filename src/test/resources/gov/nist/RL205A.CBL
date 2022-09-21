@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL205A                                                            
 000100 IDENTIFICATION DIVISION.                                         RL2054.2
 000200 PROGRAM-ID.                                                      RL2054.2
 000300     RL205A.                                                      RL2054.2
@@ -131,7 +130,7 @@
 013000C    XXXXX074                                                     RL2054.2
 013100C    IS                                                           RL2054.2
 013200C    XXXXX075                                                     RL2054.2
-013300*    XXXXX069                                                     RL2054.2
+013300G    XXXXX069                                                     RL2054.2
 013400     .                                                            RL2054.2
 013500 01  RL-FD1R1-F-G-240.                                            RL2054.2
 013600     05 RL-FD1-REC-001-120        PICTURE X(120).                 RL2054.2
@@ -152,7 +151,7 @@
 015100C    XXXXX074                                                     RL2054.2
 015200C    IS                                                           RL2054.2
 015300C    XXXXX076                                                     RL2054.2
-015400*    XXXXX069                                                     RL2054.2
+015400G    XXXXX069                                                     RL2054.2
 015500     .                                                            RL2054.2
 015600 01  RL-FS2R1-F-G-240.                                            RL2054.2
 015700     05 RL-FS2-REC-001-120        PICTURE X(120).                 RL2054.2
@@ -407,8 +406,8 @@
 040600 CLOSE-FILES.                                                     RL2054.2
 040700     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL2054.2
 040800 TERMINATE-CCVS.                                                  RL2054.2
-040900*    EXIT PROGRAM.                                                RL2054.2
-041000*TERMINATE-CALL.                                                  RL2054.2
+040900S    EXIT PROGRAM.                                                RL2054.2
+041000STERMINATE-CALL.                                                  RL2054.2
 041100     STOP     RUN.                                                RL2054.2
 041200 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL2054.2
 041300 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL2054.2
@@ -471,15 +470,15 @@
 047000     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL2054.2
 047100 WRITE-LINE.                                                      RL2054.2
 047200     ADD 1 TO RECORD-COUNT.                                       RL2054.2
-047300*    IF RECORD-COUNT GREATER 50                                   RL2054.2
-047400*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL2054.2
-047500*        MOVE SPACE TO DUMMY-RECORD                               RL2054.2
-047600*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL2054.2
-047700*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL2054.2
-047800*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL2054.2
-047900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL2054.2
-048000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL2054.2
-048100*        MOVE ZERO TO RECORD-COUNT.                               RL2054.2
+047300Y    IF RECORD-COUNT GREATER 50                                   RL2054.2
+047400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL2054.2
+047500Y        MOVE SPACE TO DUMMY-RECORD                               RL2054.2
+047600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL2054.2
+047700Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL2054.2
+047800Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL2054.2
+047900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL2054.2
+048000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL2054.2
+048100Y        MOVE ZERO TO RECORD-COUNT.                               RL2054.2
 048200     PERFORM WRT-LN.                                              RL2054.2
 048300 WRT-LN.                                                          RL2054.2
 048400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL2054.2
@@ -2409,4 +2408,3 @@
 240800 CCVS-EXIT SECTION.                                               RL2054.2
 240900 CCVS-999999.                                                     RL2054.2
 241000     GO TO CLOSE-FILES.                                           RL2054.2
-      *END-OF,RL205A                                                                  

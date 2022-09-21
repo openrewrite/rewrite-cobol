@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ122A                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ1224.2
 000200 PROGRAM-ID.                                                      SQ1224.2
 000300     SQ122A.                                                      SQ1224.2
@@ -336,17 +335,17 @@
 033500*                                                                 SQ1224.2
 033600 DECL-WRITE-LINE.                                                 SQ1224.2
 033700     ADD     1 TO RECORD-COUNT.                                   SQ1224.2
-033800*    IF RECORD-COUNT GREATER 50                                   SQ1224.2
-033900*        MOVE    DUMMY-RECORD TO DUMMY-HOLD                       SQ1224.2
-034000*        MOVE    SPACE TO DUMMY-RECORD                            SQ1224.2
-034100*        WRITE   DUMMY-RECORD AFTER ADVANCING PAGE                SQ1224.2
-034200*        MOVE    CCVS-C-1 TO DUMMY-RECORD PERFORM DECL-WRT-LN     SQ1224.2
-034300*        MOVE    CCVS-C-2 TO DUMMY-RECORD                         SQ1224.2
-034400*        PERFORM DECL-WRT-LN 2 TIMES                              SQ1224.2
-034500*        MOVE    HYPHEN-LINE TO DUMMY-RECORD                      SQ1224.2
-034600*        PERFORM DECL-WRT-LN                                      SQ1224.2
-034700*        MOVE    DUMMY-HOLD TO DUMMY-RECORD                       SQ1224.2
-034800*        MOVE    ZERO TO RECORD-COUNT.                            SQ1224.2
+033800Y    IF RECORD-COUNT GREATER 50                                   SQ1224.2
+033900Y        MOVE    DUMMY-RECORD TO DUMMY-HOLD                       SQ1224.2
+034000Y        MOVE    SPACE TO DUMMY-RECORD                            SQ1224.2
+034100Y        WRITE   DUMMY-RECORD AFTER ADVANCING PAGE                SQ1224.2
+034200Y        MOVE    CCVS-C-1 TO DUMMY-RECORD PERFORM DECL-WRT-LN     SQ1224.2
+034300Y        MOVE    CCVS-C-2 TO DUMMY-RECORD                         SQ1224.2
+034400Y        PERFORM DECL-WRT-LN 2 TIMES                              SQ1224.2
+034500Y        MOVE    HYPHEN-LINE TO DUMMY-RECORD                      SQ1224.2
+034600Y        PERFORM DECL-WRT-LN                                      SQ1224.2
+034700Y        MOVE    DUMMY-HOLD TO DUMMY-RECORD                       SQ1224.2
+034800Y        MOVE    ZERO TO RECORD-COUNT.                            SQ1224.2
 034900     PERFORM DECL-WRT-LN.                                         SQ1224.2
 035000*                                                                 SQ1224.2
 035100 DECL-WRT-LN.                                                     SQ1224.2
@@ -505,15 +504,15 @@
 050400*                                                                 SQ1224.2
 050500 WRITE-LINE.                                                      SQ1224.2
 050600     ADD     1 TO RECORD-COUNT.                                   SQ1224.2
-050700*    IF RECORD-COUNT GREATER 50                                   SQ1224.2
-050800*        MOVE  DUMMY-RECORD TO DUMMY-HOLD                         SQ1224.2
-050900*        MOVE  SPACE TO DUMMY-RECORD                              SQ1224.2
-051000*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ1224.2
-051100*        MOVE  CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN            SQ1224.2
-051200*        MOVE  CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    SQ1224.2
-051300*        MOVE  HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN         SQ1224.2
-051400*        MOVE  DUMMY-HOLD TO DUMMY-RECORD                         SQ1224.2
-051500*        MOVE  ZERO TO RECORD-COUNT.                              SQ1224.2
+050700Y    IF RECORD-COUNT GREATER 50                                   SQ1224.2
+050800Y        MOVE  DUMMY-RECORD TO DUMMY-HOLD                         SQ1224.2
+050900Y        MOVE  SPACE TO DUMMY-RECORD                              SQ1224.2
+051000Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ1224.2
+051100Y        MOVE  CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN            SQ1224.2
+051200Y        MOVE  CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    SQ1224.2
+051300Y        MOVE  HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN         SQ1224.2
+051400Y        MOVE  DUMMY-HOLD TO DUMMY-RECORD                         SQ1224.2
+051500Y        MOVE  ZERO TO RECORD-COUNT.                              SQ1224.2
 051600     PERFORM WRT-LN.                                              SQ1224.2
 051700*                                                                 SQ1224.2
 051800 WRT-LN.                                                          SQ1224.2
@@ -755,4 +754,3 @@
 075400 CCVS-EXIT SECTION.                                               SQ1224.2
 075500 CCVS-999999.                                                     SQ1224.2
 075600     GO TO   CLOSE-FILES.                                         SQ1224.2
-      *END-OF,SQ122A                                                                  

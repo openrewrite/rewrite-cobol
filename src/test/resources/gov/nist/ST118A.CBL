@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST118A                                                            
 000100 IDENTIFICATION DIVISION.                                         ST1184.2
 000200 PROGRAM-ID.                                                      ST1184.2
 000300     ST118A.                                                      ST1184.2
@@ -516,8 +515,8 @@
 051500 CLOSE-FILES.                                                     ST1184.2
 051600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   ST1184.2
 051700 TERMINATE-CCVS.                                                  ST1184.2
-051800*    EXIT PROGRAM.                                                ST1184.2
-051900*TERMINATE-CALL.                                                  ST1184.2
+051800S    EXIT PROGRAM.                                                ST1184.2
+051900STERMINATE-CALL.                                                  ST1184.2
 052000     STOP     RUN.                                                ST1184.2
 052100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         ST1184.2
 052200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           ST1184.2
@@ -580,19 +579,19 @@
 057900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           ST1184.2
 058000 WRITE-LINE.                                                      ST1184.2
 058100     ADD 1 TO RECORD-COUNT.                                       ST1184.2
-058200*    IF RECORD-COUNT GREATER 42                                   ST1184.2
-058300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1184.2
-058400*        MOVE SPACE TO DUMMY-RECORD                               ST1184.2
-058500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1184.2
-058600*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1184.2
-058700*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1184.2
-058800*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1184.2
-058900*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1184.2
-059000*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1184.2
-059100*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1184.2
-059200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1184.2
-059300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1184.2
-059400*        MOVE ZERO TO RECORD-COUNT.                               ST1184.2
+058200Y    IF RECORD-COUNT GREATER 42                                   ST1184.2
+058300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1184.2
+058400Y        MOVE SPACE TO DUMMY-RECORD                               ST1184.2
+058500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1184.2
+058600Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1184.2
+058700Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1184.2
+058800Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1184.2
+058900Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1184.2
+059000Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1184.2
+059100Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1184.2
+059200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1184.2
+059300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1184.2
+059400Y        MOVE ZERO TO RECORD-COUNT.                               ST1184.2
 059500     PERFORM WRT-LN.                                              ST1184.2
 059600 WRT-LN.                                                          ST1184.2
 059700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1184.2
@@ -628,4 +627,3 @@
 062700 OUTPROC-EXIT SECTION.                                            ST1184.2
 062800 EXIT-ONLY.                                                       ST1184.2
 062900     PERFORM  CLOSE-FILES.                                        ST1184.2
-      *END-OF,ST118A                                                                  

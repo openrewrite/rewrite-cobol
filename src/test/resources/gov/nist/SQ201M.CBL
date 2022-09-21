@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ201M                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ2014.2
 000200 PROGRAM-ID.                                                      SQ2014.2
 000300     SQ201M.                                                      SQ2014.2
@@ -36,31 +35,31 @@
 003500     XXXXX083.                                                    SQ2014.2
 003600 INPUT-OUTPUT SECTION.                                            SQ2014.2
 003700 FILE-CONTROL.                                                    SQ2014.2
-003800*    SELECT RAW-DATA   ASSIGN TO                                  SQ2014.2
-003900*    XXXXX062                                                     SQ2014.2
-004000*           ORGANIZATION IS INDEXED                               SQ2014.2
-004100*           ACCESS MODE IS RANDOM                                 SQ2014.2
-004200*           RECORD KEY IS RAW-DATA-KEY.                           SQ2014.2
+003800P    SELECT RAW-DATA   ASSIGN TO                                  SQ2014.2
+003900P    XXXXX062                                                     SQ2014.2
+004000P           ORGANIZATION IS INDEXED                               SQ2014.2
+004100P           ACCESS MODE IS RANDOM                                 SQ2014.2
+004200P           RECORD KEY IS RAW-DATA-KEY.                           SQ2014.2
 004300     SELECT PRINT-FILE ASSIGN TO                                  SQ2014.2
 004400     XXXXX055.                                                    SQ2014.2
 004500 DATA DIVISION.                                                   SQ2014.2
 004600 FILE SECTION.                                                    SQ2014.2
-004700*                                                                 SQ2014.2
-004800*FD  RAW-DATA.                                                    SQ2014.2
-004900*                                                                 SQ2014.2
-005000*01  RAW-DATA-SATZ.                                               SQ2014.2
-005100*    05  RAW-DATA-KEY        PIC X(6).                            SQ2014.2
-005200*    05  C-DATE              PIC 9(6).                            SQ2014.2
-005300*    05  C-TIME              PIC 9(8).                            SQ2014.2
-005400*    05  C-NO-OF-TESTS       PIC 99.                              SQ2014.2
-005500*    05  C-OK                PIC 999.                             SQ2014.2
-005600*    05  C-ALL               PIC 999.                             SQ2014.2
-005700*    05  C-FAIL              PIC 999.                             SQ2014.2
-005800*    05  C-DELETED           PIC 999.                             SQ2014.2
-005900*    05  C-INSPECT           PIC 999.                             SQ2014.2
-006000*    05  C-NOTE              PIC X(13).                           SQ2014.2
-006100*    05  C-INDENT            PIC X.                               SQ2014.2
-006200*    05  C-ABORT             PIC X(8).                            SQ2014.2
+004700P                                                                 SQ2014.2
+004800PFD  RAW-DATA.                                                    SQ2014.2
+004900P                                                                 SQ2014.2
+005000P01  RAW-DATA-SATZ.                                               SQ2014.2
+005100P    05  RAW-DATA-KEY        PIC X(6).                            SQ2014.2
+005200P    05  C-DATE              PIC 9(6).                            SQ2014.2
+005300P    05  C-TIME              PIC 9(8).                            SQ2014.2
+005400P    05  C-NO-OF-TESTS       PIC 99.                              SQ2014.2
+005500P    05  C-OK                PIC 999.                             SQ2014.2
+005600P    05  C-ALL               PIC 999.                             SQ2014.2
+005700P    05  C-FAIL              PIC 999.                             SQ2014.2
+005800P    05  C-DELETED           PIC 999.                             SQ2014.2
+005900P    05  C-INSPECT           PIC 999.                             SQ2014.2
+006000P    05  C-NOTE              PIC X(13).                           SQ2014.2
+006100P    05  C-INDENT            PIC X.                               SQ2014.2
+006200P    05  C-ABORT             PIC X(8).                            SQ2014.2
 006300 FD  PRINT-FILE                                                   SQ2014.2
 006400C    LABEL RECORDS                                                SQ2014.2
 006500C    XXXXX084                                                     SQ2014.2
@@ -231,38 +230,38 @@
 023000 PROCEDURE DIVISION.                                              SQ2014.2
 023100 CCVS1 SECTION.                                                   SQ2014.2
 023200 OPEN-FILES.                                                      SQ2014.2
-023300*    OPEN I-O RAW-DATA.                                           SQ2014.2
-023400*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2014.2
-023500*    MOVE "ABORTED " TO C-ABORT.                                  SQ2014.2
-023600*    READ RAW-DATA INVALID KEY GO TO END-E-1.                     SQ2014.2
-023700*    MOVE "ABORTED " TO C-ABORT.                                  SQ2014.2
-023800*    ADD 1 TO C-NO-OF-TESTS.                                      SQ2014.2
-023900*    ACCEPT C-DATE  FROM DATE.                                    SQ2014.2
-024000*    ACCEPT C-TIME  FROM TIME.                                    SQ2014.2
-024100*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             SQ2014.2
-024200*END-E-1.                                                         SQ2014.2
-024300*    CLOSE RAW-DATA.                                              SQ2014.2
+023300P    OPEN I-O RAW-DATA.                                           SQ2014.2
+023400P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2014.2
+023500P    MOVE "ABORTED " TO C-ABORT.                                  SQ2014.2
+023600P    READ RAW-DATA INVALID KEY GO TO END-E-1.                     SQ2014.2
+023700P    MOVE "ABORTED " TO C-ABORT.                                  SQ2014.2
+023800P    ADD 1 TO C-NO-OF-TESTS.                                      SQ2014.2
+023900P    ACCEPT C-DATE  FROM DATE.                                    SQ2014.2
+024000P    ACCEPT C-TIME  FROM TIME.                                    SQ2014.2
+024100P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             SQ2014.2
+024200PEND-E-1.                                                         SQ2014.2
+024300P    CLOSE RAW-DATA.                                              SQ2014.2
 024400     OPEN     OUTPUT PRINT-FILE.                                  SQ2014.2
 024500     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   SQ2014.2
 024600     MOVE    SPACE TO TEST-RESULTS.                               SQ2014.2
 024700     GO TO CCVS1-EXIT.                                            SQ2014.2
 024800 CLOSE-FILES.                                                     SQ2014.2
 024900     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SQ2014.2
-025000*    OPEN I-O RAW-DATA.                                           SQ2014.2
-025100*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2014.2
-025200*    READ RAW-DATA INVALID KEY GO TO END-E-2.                     SQ2014.2
-025300*    MOVE "OK.     " TO C-ABORT.                                  SQ2014.2
-025400*    MOVE PASS-COUNTER TO C-OK.                                   SQ2014.2
-025500*    MOVE ERROR-HOLD   TO C-ALL.                                  SQ2014.2
-025600*    MOVE ERROR-COUNTER TO C-FAIL.                                SQ2014.2
-025700*    MOVE DELETE-CNT TO C-DELETED.                                SQ2014.2
-025800*    MOVE INSPECT-COUNTER TO C-INSPECT.                           SQ2014.2
-025900*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             SQ2014.2
-026000*END-E-2.                                                         SQ2014.2
-026100*    CLOSE RAW-DATA.                                              SQ2014.2
+025000P    OPEN I-O RAW-DATA.                                           SQ2014.2
+025100P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2014.2
+025200P    READ RAW-DATA INVALID KEY GO TO END-E-2.                     SQ2014.2
+025300P    MOVE "OK.     " TO C-ABORT.                                  SQ2014.2
+025400P    MOVE PASS-COUNTER TO C-OK.                                   SQ2014.2
+025500P    MOVE ERROR-HOLD   TO C-ALL.                                  SQ2014.2
+025600P    MOVE ERROR-COUNTER TO C-FAIL.                                SQ2014.2
+025700P    MOVE DELETE-CNT TO C-DELETED.                                SQ2014.2
+025800P    MOVE INSPECT-COUNTER TO C-INSPECT.                           SQ2014.2
+025900P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             SQ2014.2
+026000PEND-E-2.                                                         SQ2014.2
+026100P    CLOSE RAW-DATA.                                              SQ2014.2
 026200 TERMINATE-CCVS.                                                  SQ2014.2
-026300*    EXIT PROGRAM.                                                SQ2014.2
-026400*TERMINATE-CALL.                                                  SQ2014.2
+026300S    EXIT PROGRAM.                                                SQ2014.2
+026400STERMINATE-CALL.                                                  SQ2014.2
 026500     STOP     RUN.                                                SQ2014.2
 026600 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SQ2014.2
 026700 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SQ2014.2
@@ -324,15 +323,15 @@
 032300     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SQ2014.2
 032400 WRITE-LINE.                                                      SQ2014.2
 032500     ADD 1 TO RECORD-COUNT.                                       SQ2014.2
-032600*    IF RECORD-COUNT GREATER 50                                   SQ2014.2
-032700*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SQ2014.2
-032800*        MOVE SPACE TO DUMMY-RECORD                               SQ2014.2
-032900*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2014.2
-033000*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SQ2014.2
-033100*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SQ2014.2
-033200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SQ2014.2
-033300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SQ2014.2
-033400*        MOVE ZERO TO RECORD-COUNT.                               SQ2014.2
+032600Y    IF RECORD-COUNT GREATER 50                                   SQ2014.2
+032700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SQ2014.2
+032800Y        MOVE SPACE TO DUMMY-RECORD                               SQ2014.2
+032900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2014.2
+033000Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SQ2014.2
+033100Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SQ2014.2
+033200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SQ2014.2
+033300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SQ2014.2
+033400Y        MOVE ZERO TO RECORD-COUNT.                               SQ2014.2
 033500     PERFORM WRT-LN.                                              SQ2014.2
 033600 WRT-LN.                                                          SQ2014.2
 033700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SQ2014.2
@@ -777,4 +776,3 @@
 077600 CCVS-EXIT SECTION.                                               SQ2014.2
 077700 CCVS-999999.                                                     SQ2014.2
 077800     GO TO CLOSE-FILES.                                           SQ2014.2
-      *END-OF,SQ201M                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST112M,SUBPRG,ST113M                                              
 000100 IDENTIFICATION DIVISION.                                         ST1134.2
 000200 PROGRAM-ID.                                                      ST1134.2
 000300     ST113M.                                                      ST1134.2
@@ -45,7 +44,7 @@
 004400C    XXXXX074                                                     ST1134.2
 004500C    IS                                                           ST1134.2
 004600C    XXXXX079                                                     ST1134.2
-004700*    XXXXX069                                                     ST1134.2
+004700G    XXXXX069                                                     ST1134.2
 004800     .                                                            ST1134.2
 004900 01  SORT-KEY-IN        PICTURE X(33).                            ST1134.2
 005000 FD  SORTOUT-1M                                                   ST1134.2
@@ -53,7 +52,7 @@
 005200C    XXXXX074                                                     ST1134.2
 005300C    IS                                                           ST1134.2
 005400C    XXXXX075                                                     ST1134.2
-005500*    XXXXX069                                                     ST1134.2
+005500G    XXXXX069                                                     ST1134.2
 005600     .                                                            ST1134.2
 005700 01  SORT-KEY-OUT       PICTURE X(33).                            ST1134.2
 005800 SD  SORTFILE-1M.                                                 ST1134.2
@@ -66,4 +65,3 @@
 006500              USING SORTIN-1M                                     ST1134.2
 006600              GIVING SORTOUT-1M.                                  ST1134.2
 006700     STOP     RUN.                                                ST1134.2
-      *END-OF,ST113M                                                                  

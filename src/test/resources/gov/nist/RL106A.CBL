@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL106A                                                            
 000100 IDENTIFICATION DIVISION.                                         RL1064.2
 000200 PROGRAM-ID.                                                      RL1064.2
 000300     RL106A.                                                      RL1064.2
@@ -74,7 +73,7 @@
 007300C    XXXXX074                                                     RL1064.2
 007400C    IS                                                           RL1064.2
 007500C    XXXXX075                                                     RL1064.2
-007600*    XXXXX069                                                     RL1064.2
+007600G    XXXXX069                                                     RL1064.2
 007700     LABEL RECORDS ARE STANDARD                                   RL1064.2
 007800     DATA RECORDS ARE GRP-1SEQ-RECORD-4A  GRP-1SEQ-RECORD-4B.     RL1064.2
 007900 01  GRP-1SEQ-RECORD-4A.                                          RL1064.2
@@ -91,7 +90,7 @@
 009000C    XXXXX074                                                     RL1064.2
 009100C    IS                                                           RL1064.2
 009200C    XXXXX076                                                     RL1064.2
-009300*    XXXXX069                                                     RL1064.2
+009300G    XXXXX069                                                     RL1064.2
 009400     LABEL RECORDS ARE STANDARD                                   RL1064.2
 009500     DATA RECORDS  GRP-1SEQ-RECORD-5A  GRP-1SEQ-RECORD-5B.        RL1064.2
 009600 01  GRP-1SEQ-RECORD-5A.                                          RL1064.2
@@ -350,8 +349,8 @@
 034900 CLOSE-FILES.                                                     RL1064.2
 035000     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL1064.2
 035100 TERMINATE-CCVS.                                                  RL1064.2
-035200*    EXIT PROGRAM.                                                RL1064.2
-035300*TERMINATE-CALL.                                                  RL1064.2
+035200S    EXIT PROGRAM.                                                RL1064.2
+035300STERMINATE-CALL.                                                  RL1064.2
 035400     STOP     RUN.                                                RL1064.2
 035500 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL1064.2
 035600 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL1064.2
@@ -414,15 +413,15 @@
 041300     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL1064.2
 041400 WRITE-LINE.                                                      RL1064.2
 041500     ADD 1 TO RECORD-COUNT.                                       RL1064.2
-041600*    IF RECORD-COUNT GREATER 50                                   RL1064.2
-041700*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1064.2
-041800*        MOVE SPACE TO DUMMY-RECORD                               RL1064.2
-041900*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1064.2
-042000*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1064.2
-042100*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1064.2
-042200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1064.2
-042300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1064.2
-042400*        MOVE ZERO TO RECORD-COUNT.                               RL1064.2
+041600Y    IF RECORD-COUNT GREATER 50                                   RL1064.2
+041700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1064.2
+041800Y        MOVE SPACE TO DUMMY-RECORD                               RL1064.2
+041900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1064.2
+042000Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1064.2
+042100Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1064.2
+042200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1064.2
+042300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1064.2
+042400Y        MOVE ZERO TO RECORD-COUNT.                               RL1064.2
 042500     PERFORM WRT-LN.                                              RL1064.2
 042600 WRT-LN.                                                          RL1064.2
 042700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL1064.2
@@ -813,4 +812,3 @@
 081200 CCVS-EXIT SECTION.                                               RL1064.2
 081300 CCVS-999999.                                                     RL1064.2
 081400     GO TO CLOSE-FILES.                                           RL1064.2
-      *END-OF,RL106A                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST119A,SUBPRG,ST120A                                              
 000100 IDENTIFICATION DIVISION.                                         ST1204.2
 000200 PROGRAM-ID.                                                      ST1204.2
 000300     ST120A.                                                      ST1204.2
@@ -53,7 +52,7 @@
 005200C    XXXXX074                                                     ST1204.2
 005300C    IS                                                           ST1204.2
 005400C    XXXXX075                                                     ST1204.2
-005500*    XXXXX069                                                     ST1204.2
+005500G    XXXXX069                                                     ST1204.2
 005600     DATA RECORD IS INSORT.                                       ST1204.2
 005700 01  INSORT PICTURE X(120).                                       ST1204.2
 005800 FD  SORTOUT-1B                                                   ST1204.2
@@ -63,7 +62,7 @@
 006200C    XXXXX074                                                     ST1204.2
 006300C    IS                                                           ST1204.2
 006400C    XXXXX076                                                     ST1204.2
-006500*    XXXXX069                                                     ST1204.2
+006500G    XXXXX069                                                     ST1204.2
 006600     DATA RECORD OUTSORT.                                         ST1204.2
 006700 01  OUTSORT PICTURE X(120).                                      ST1204.2
 006800 PROCEDURE DIVISION.                                              ST1204.2
@@ -77,4 +76,3 @@
 007600       GIVING SORTOUT-1B.                                         ST1204.2
 007700 STOP-RUN-STATEMENT.                                              ST1204.2
 007800     STOP RUN.                                                    ST1204.2
-      *END-OF,ST120A                                                                  

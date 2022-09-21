@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RW104A                                                            
 000100 IDENTIFICATION DIVISION.                                         RW1044.2
 000200 PROGRAM-ID.                                                      RW1044.2
 000300     RW104A.                                                      RW1044.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             RW1044.2
 000600 INSTALLATION.                                                    RW1044.2
 000700     GENERAL SERVICES ADMINISTRATION                              RW1044.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               RW1044.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                RW1044.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 RW1044.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               RW1044.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 RW1044.2
@@ -94,7 +93,7 @@
 009300C    XXXXX074                                                     RW1044.2
 009400C       IS                                                        RW1044.2
 009500C    XXXXX075                                                     RW1044.2
-009600*    XXXXX069                                                     RW1044.2
+009600G    XXXXX069                                                     RW1044.2
 009700     REPORT IS RW-FS4-REPORT-1.                                   RW1044.2
 009800 WORKING-STORAGE SECTION.                                         RW1044.2
 009900 01  LC-ERRORS  PIC 99   VALUE 0.                                 RW1044.2
@@ -273,8 +272,8 @@
 027200 CLOSE-FILES.                                                     RW1044.2
 027300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RW1044.2
 027400 TERMINATE-CCVS.                                                  RW1044.2
-027500*    EXIT PROGRAM.                                                RW1044.2
-027600*TERMINATE-CALL.                                                  RW1044.2
+027500S    EXIT PROGRAM.                                                RW1044.2
+027600STERMINATE-CALL.                                                  RW1044.2
 027700     STOP     RUN.                                                RW1044.2
 027800 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RW1044.2
 027900 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RW1044.2
@@ -336,15 +335,15 @@
 033500     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RW1044.2
 033600 WRITE-LINE.                                                      RW1044.2
 033700     ADD 1 TO RECORD-COUNT.                                       RW1044.2
-033800*    IF RECORD-COUNT GREATER 50                                   RW1044.2
-033900*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RW1044.2
-034000*        MOVE SPACE TO DUMMY-RECORD                               RW1044.2
-034100*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RW1044.2
-034200*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RW1044.2
-034300*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RW1044.2
-034400*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RW1044.2
-034500*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RW1044.2
-034600*        MOVE ZERO TO RECORD-COUNT.                               RW1044.2
+033800Y    IF RECORD-COUNT GREATER 50                                   RW1044.2
+033900Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RW1044.2
+034000Y        MOVE SPACE TO DUMMY-RECORD                               RW1044.2
+034100Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RW1044.2
+034200Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RW1044.2
+034300Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RW1044.2
+034400Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RW1044.2
+034500Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RW1044.2
+034600Y        MOVE ZERO TO RECORD-COUNT.                               RW1044.2
 034700     PERFORM WRT-LN.                                              RW1044.2
 034800 WRT-LN.                                                          RW1044.2
 034900     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RW1044.2
@@ -728,4 +727,3 @@
 072700 CCVS-EXIT SECTION.                                               RW1044.2
 072800 CCVS-999999.                                                     RW1044.2
 072900     GO TO CLOSE-FILES.                                           RW1044.2
-      *END-OF,RW104A                                                                  

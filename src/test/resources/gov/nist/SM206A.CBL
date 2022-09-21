@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SM206A                                                            
 000100 IDENTIFICATION DIVISION.                                         SM2064.2
 000200 PROGRAM-ID.                                                      SM2064.2
 000300     SM206A.                                                      SM2064.2
@@ -224,8 +223,8 @@
 022300 CLOSE-FILES.                                                     SM2064.2
 022400     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SM2064.2
 022500 TERMINATE-CCVS.                                                  SM2064.2
-022600*    EXIT PROGRAM.                                                SM2064.2
-022700*TERMINATE-CALL.                                                  SM2064.2
+022600S    EXIT PROGRAM.                                                SM2064.2
+022700STERMINATE-CALL.                                                  SM2064.2
 022800     STOP     RUN.                                                SM2064.2
 022900 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SM2064.2
 023000 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SM2064.2
@@ -288,15 +287,15 @@
 028700     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SM2064.2
 028800 WRITE-LINE.                                                      SM2064.2
 028900     ADD 1 TO RECORD-COUNT.                                       SM2064.2
-029000*    IF RECORD-COUNT GREATER 50                                   SM2064.2
-029100*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM2064.2
-029200*        MOVE SPACE TO DUMMY-RECORD                               SM2064.2
-029300*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM2064.2
-029400*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM2064.2
-029500*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM2064.2
-029600*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM2064.2
-029700*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM2064.2
-029800*        MOVE ZERO TO RECORD-COUNT.                               SM2064.2
+029000Y    IF RECORD-COUNT GREATER 50                                   SM2064.2
+029100Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM2064.2
+029200Y        MOVE SPACE TO DUMMY-RECORD                               SM2064.2
+029300Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM2064.2
+029400Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM2064.2
+029500Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM2064.2
+029600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM2064.2
+029700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM2064.2
+029800Y        MOVE ZERO TO RECORD-COUNT.                               SM2064.2
 029900     PERFORM WRT-LN.                                              SM2064.2
 030000 WRT-LN.                                                          SM2064.2
 030100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SM2064.2
@@ -710,4 +709,3 @@
 070900 CCVS-EXIT SECTION.                                               SM2064.2
 071000 CCVS-999999.                                                     SM2064.2
 071100     GO TO CLOSE-FILES.                                           SM2064.2
-      *END-OF,SM206A                                                                  

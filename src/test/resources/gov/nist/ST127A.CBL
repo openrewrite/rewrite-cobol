@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST127A                                                            
 000100 IDENTIFICATION DIVISION.                                         ST1274.2
 000200 PROGRAM-ID.                                                      ST1274.2
 000300     ST127A.                                                      ST1274.2
@@ -577,8 +576,8 @@
 057600 CLOSE-FILES.                                                     ST1274.2
 057700     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   ST1274.2
 057800 TERMINATE-CCVS.                                                  ST1274.2
-057900*    EXIT PROGRAM.                                                ST1274.2
-058000*TERMINATE-CALL.                                                  ST1274.2
+057900S    EXIT PROGRAM.                                                ST1274.2
+058000STERMINATE-CALL.                                                  ST1274.2
 058100     STOP     RUN.                                                ST1274.2
 058200 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         ST1274.2
 058300 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           ST1274.2
@@ -641,19 +640,19 @@
 064000     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           ST1274.2
 064100 WRITE-LINE.                                                      ST1274.2
 064200     ADD 1 TO RECORD-COUNT.                                       ST1274.2
-064300*    IF RECORD-COUNT GREATER 42                                   ST1274.2
-064400*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1274.2
-064500*        MOVE SPACE TO DUMMY-RECORD                               ST1274.2
-064600*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1274.2
-064700*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1274.2
-064800*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1274.2
-064900*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1274.2
-065000*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1274.2
-065100*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1274.2
-065200*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1274.2
-065300*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1274.2
-065400*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1274.2
-065500*        MOVE ZERO TO RECORD-COUNT.                               ST1274.2
+064300Y    IF RECORD-COUNT GREATER 42                                   ST1274.2
+064400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1274.2
+064500Y        MOVE SPACE TO DUMMY-RECORD                               ST1274.2
+064600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1274.2
+064700Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1274.2
+064800Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1274.2
+064900Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1274.2
+065000Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1274.2
+065100Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1274.2
+065200Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1274.2
+065300Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1274.2
+065400Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1274.2
+065500Y        MOVE ZERO TO RECORD-COUNT.                               ST1274.2
 065600     PERFORM WRT-LN.                                              ST1274.2
 065700 WRT-LN.                                                          ST1274.2
 065800     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1274.2
@@ -1000,4 +999,3 @@
 099900     PERFORM PRINT-DETAIL.                                        ST1274.2
 100000 CHECK-KEYS-EXIT.                                                 ST1274.2
 100100     EXIT.                                                        ST1274.2
-      *END-OF,ST127A                                                                  

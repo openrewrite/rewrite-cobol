@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL105A                                                            
 000100 IDENTIFICATION DIVISION.                                         RL1054.2
 000200 PROGRAM-ID.                                                      RL1054.2
 000300     RL105A.                                                      RL1054.2
@@ -72,7 +71,7 @@
 007100C    XXXXX074                                                     RL1054.2
 007200C    IS                                                           RL1054.2
 007300C    XXXXX075                                                     RL1054.2
-007400*    XXXXX069                                                     RL1054.2
+007400G    XXXXX069                                                     RL1054.2
 007500     LABEL RECORDS ARE STANDARD                                   RL1054.2
 007600     DATA RECORD IS GRP-1SEQ-RECORD-1.                            RL1054.2
 007700 01  GRP-1SEQ-RECORD-1.                                           RL1054.2
@@ -83,7 +82,7 @@
 008200C    XXXXX074                                                     RL1054.2
 008300C    IS                                                           RL1054.2
 008400C    XXXXX076                                                     RL1054.2
-008500*    XXXXX069                                                     RL1054.2
+008500G    XXXXX069                                                     RL1054.2
 008600     LABEL RECORDS ARE STANDARD                                   RL1054.2
 008700     DATA RECORD IS GRP-1SEQ-RECORD-2.                            RL1054.2
 008800 01  GRP-1SEQ-RECORD-2.                                           RL1054.2
@@ -93,7 +92,7 @@
 009200C    XXXXX074                                                     RL1054.2
 009300C    IS                                                           RL1054.2
 009400C    XXXXX077                                                     RL1054.2
-009500*    XXXXX069                                                     RL1054.2
+009500G    XXXXX069                                                     RL1054.2
 009600     LABEL RECORDS ARE STANDARD                                   RL1054.2
 009700     DATA RECORD IS GRP-1SEQ-RECORD-3.                            RL1054.2
 009800 01  GRP-1SEQ-RECORD-3.                                           RL1054.2
@@ -326,8 +325,8 @@
 032500 CLOSE-FILES.                                                     RL1054.2
 032600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL1054.2
 032700 TERMINATE-CCVS.                                                  RL1054.2
-032800*    EXIT PROGRAM.                                                RL1054.2
-032900*TERMINATE-CALL.                                                  RL1054.2
+032800S    EXIT PROGRAM.                                                RL1054.2
+032900STERMINATE-CALL.                                                  RL1054.2
 033000     STOP     RUN.                                                RL1054.2
 033100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL1054.2
 033200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL1054.2
@@ -390,15 +389,15 @@
 038900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL1054.2
 039000 WRITE-LINE.                                                      RL1054.2
 039100     ADD 1 TO RECORD-COUNT.                                       RL1054.2
-039200*    IF RECORD-COUNT GREATER 50                                   RL1054.2
-039300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1054.2
-039400*        MOVE SPACE TO DUMMY-RECORD                               RL1054.2
-039500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1054.2
-039600*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1054.2
-039700*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1054.2
-039800*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1054.2
-039900*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1054.2
-040000*        MOVE ZERO TO RECORD-COUNT.                               RL1054.2
+039200Y    IF RECORD-COUNT GREATER 50                                   RL1054.2
+039300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL1054.2
+039400Y        MOVE SPACE TO DUMMY-RECORD                               RL1054.2
+039500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL1054.2
+039600Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL1054.2
+039700Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL1054.2
+039800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL1054.2
+039900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL1054.2
+040000Y        MOVE ZERO TO RECORD-COUNT.                               RL1054.2
 040100     PERFORM WRT-LN.                                              RL1054.2
 040200 WRT-LN.                                                          RL1054.2
 040300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL1054.2
@@ -632,4 +631,3 @@
 063100 CCVS-EXIT SECTION.                                               RL1054.2
 063200 CCVS-999999.                                                     RL1054.2
 063300     GO TO CLOSE-FILES.                                           RL1054.2
-      *END-OF,RL105A                                                                  

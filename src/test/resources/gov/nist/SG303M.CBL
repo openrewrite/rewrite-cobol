@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SG303M                                                            
 000100 IDENTIFICATION DIVISION.                                         SG3034.2
 000200 PROGRAM-ID.                                                      SG3034.2
 000300     SG303M.                                                      SG3034.2
@@ -36,4 +35,3 @@
 003500                                                                  SG3034.2
 003600                                                                  SG3034.2
 003700*TOTAL NUMBER OF FLAGS EXPECTED = 4.                              SG3034.2
-      *END-OF,SG303M                                                                  

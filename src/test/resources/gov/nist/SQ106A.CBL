@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ106A                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ1064.2
 000200 PROGRAM-ID.                                                      SQ1064.2
 000300     SQ106A.                                                      SQ1064.2
@@ -58,11 +57,11 @@
 005700     XXXXX083.                                                    SQ1064.2
 005800 INPUT-OUTPUT SECTION.                                            SQ1064.2
 005900 FILE-CONTROL.                                                    SQ1064.2
-006000*    SELECT RAW-DATA   ASSIGN TO                                  SQ1064.2
-006100*    XXXXX062                                                     SQ1064.2
-006200*           ORGANIZATION IS INDEXED                               SQ1064.2
-006300*           ACCESS MODE IS RANDOM                                 SQ1064.2
-006400*           RECORD KEY IS RAW-DATA-KEY.                           SQ1064.2
+006000P    SELECT RAW-DATA   ASSIGN TO                                  SQ1064.2
+006100P    XXXXX062                                                     SQ1064.2
+006200P           ORGANIZATION IS INDEXED                               SQ1064.2
+006300P           ACCESS MODE IS RANDOM                                 SQ1064.2
+006400P           RECORD KEY IS RAW-DATA-KEY.                           SQ1064.2
 006500*                                                                 SQ1064.2
 006600     SELECT PRINT-FILE ASSIGN TO                                  SQ1064.2
 006700     XXXXX055.                                                    SQ1064.2
@@ -75,22 +74,22 @@
 007400*                                                                 SQ1064.2
 007500 DATA DIVISION.                                                   SQ1064.2
 007600 FILE SECTION.                                                    SQ1064.2
-007700*                                                                 SQ1064.2
-007800*FD  RAW-DATA.                                                    SQ1064.2
-007900*                                                                 SQ1064.2
-008000*01  RAW-DATA-SATZ.                                               SQ1064.2
-008100*    05  RAW-DATA-KEY        PIC X(6).                            SQ1064.2
-008200*    05  C-DATE              PIC 9(6).                            SQ1064.2
-008300*    05  C-TIME              PIC 9(8).                            SQ1064.2
-008400*    05  C-NO-OF-TESTS       PIC 99.                              SQ1064.2
-008500*    05  C-OK                PIC 999.                             SQ1064.2
-008600*    05  C-ALL               PIC 999.                             SQ1064.2
-008700*    05  C-FAIL              PIC 999.                             SQ1064.2
-008800*    05  C-DELETED           PIC 999.                             SQ1064.2
-008900*    05  C-INSPECT           PIC 999.                             SQ1064.2
-009000*    05  C-NOTE              PIC X(13).                           SQ1064.2
-009100*    05  C-INDENT            PIC X.                               SQ1064.2
-009200*    05  C-ABORT             PIC X(8).                            SQ1064.2
+007700P                                                                 SQ1064.2
+007800PFD  RAW-DATA.                                                    SQ1064.2
+007900P                                                                 SQ1064.2
+008000P01  RAW-DATA-SATZ.                                               SQ1064.2
+008100P    05  RAW-DATA-KEY        PIC X(6).                            SQ1064.2
+008200P    05  C-DATE              PIC 9(6).                            SQ1064.2
+008300P    05  C-TIME              PIC 9(8).                            SQ1064.2
+008400P    05  C-NO-OF-TESTS       PIC 99.                              SQ1064.2
+008500P    05  C-OK                PIC 999.                             SQ1064.2
+008600P    05  C-ALL               PIC 999.                             SQ1064.2
+008700P    05  C-FAIL              PIC 999.                             SQ1064.2
+008800P    05  C-DELETED           PIC 999.                             SQ1064.2
+008900P    05  C-INSPECT           PIC 999.                             SQ1064.2
+009000P    05  C-NOTE              PIC X(13).                           SQ1064.2
+009100P    05  C-INDENT            PIC X.                               SQ1064.2
+009200P    05  C-ABORT             PIC X(8).                            SQ1064.2
 009300*                                                                 SQ1064.2
 009400 FD  PRINT-FILE                                                   SQ1064.2
 009500C    LABEL RECORDS                                                SQ1064.2
@@ -358,16 +357,16 @@
 035700 PROCEDURE DIVISION.                                              SQ1064.2
 035800 CCVS1 SECTION.                                                   SQ1064.2
 035900 OPEN-FILES.                                                      SQ1064.2
-036000*    OPEN    I-O RAW-DATA.                                        SQ1064.2
-036100*    MOVE    CCVS-PGM-ID TO RAW-DATA-KEY.                         SQ1064.2
-036200*    READ    RAW-DATA INVALID KEY GO TO END-E-1.                  SQ1064.2
-036300*    MOVE   "ABORTED "   TO C-ABORT.                              SQ1064.2
-036400*    ADD     1           TO C-NO-OF-TESTS.                        SQ1064.2
-036500*    ACCEPT  C-DATE      FROM DATE.                               SQ1064.2
-036600*    ACCEPT  C-TIME      FROM TIME.                               SQ1064.2
-036700*    REWRITE RAW-DATA-SATZ INVALID KEY CONTINUE.                  SQ1064.2
-036800*END-E-1.                                                         SQ1064.2
-036900*    CLOSE   RAW-DATA.                                            SQ1064.2
+036000P    OPEN    I-O RAW-DATA.                                        SQ1064.2
+036100P    MOVE    CCVS-PGM-ID TO RAW-DATA-KEY.                         SQ1064.2
+036200P    READ    RAW-DATA INVALID KEY GO TO END-E-1.                  SQ1064.2
+036300P    MOVE   "ABORTED "   TO C-ABORT.                              SQ1064.2
+036400P    ADD     1           TO C-NO-OF-TESTS.                        SQ1064.2
+036500P    ACCEPT  C-DATE      FROM DATE.                               SQ1064.2
+036600P    ACCEPT  C-TIME      FROM TIME.                               SQ1064.2
+036700P    REWRITE RAW-DATA-SATZ INVALID KEY CONTINUE.                  SQ1064.2
+036800PEND-E-1.                                                         SQ1064.2
+036900P    CLOSE   RAW-DATA.                                            SQ1064.2
 037000     OPEN    OUTPUT PRINT-FILE.                                   SQ1064.2
 037100     MOVE    CCVS-PGM-ID TO TEST-ID.                              SQ1064.2
 037200     MOVE    CCVS-PGM-ID TO ID-AGAIN.                             SQ1064.2
@@ -385,20 +384,20 @@
 038400 CLOSE-FILES.                                                     SQ1064.2
 038500     PERFORM END-ROUTINE THRU END-ROUTINE-13.                     SQ1064.2
 038600     CLOSE   PRINT-FILE.                                          SQ1064.2
-038700*    OPEN    I-O RAW-DATA.                                        SQ1064.2
-038800*    MOVE    CCVS-PGM-ID TO RAW-DATA-KEY.                         SQ1064.2
-038900*    READ    RAW-DATA INVALID KEY GO TO END-E-2.                  SQ1064.2
-039000*    MOVE   "OK.     " TO C-ABORT.                                SQ1064.2
-039100*    MOVE    PASS-COUNTER  TO C-OK.                               SQ1064.2
-039200*    MOVE    ERROR-HOLD    TO C-ALL.                              SQ1064.2
-039300*    MOVE    ERROR-COUNTER TO C-FAIL.                             SQ1064.2
-039400*    MOVE    DELETE-CNT    TO C-DELETED.                          SQ1064.2
-039500*    MOVE    INSPECT-COUNTER TO C-INSPECT.                        SQ1064.2
-039600*    REWRITE RAW-DATA-SATZ INVALID KEY CONTINUE.                  SQ1064.2
-039700*END-E-2.                                                         SQ1064.2
-039800*    CLOSE   RAW-DATA.                                            SQ1064.2
+038700P    OPEN    I-O RAW-DATA.                                        SQ1064.2
+038800P    MOVE    CCVS-PGM-ID TO RAW-DATA-KEY.                         SQ1064.2
+038900P    READ    RAW-DATA INVALID KEY GO TO END-E-2.                  SQ1064.2
+039000P    MOVE   "OK.     " TO C-ABORT.                                SQ1064.2
+039100P    MOVE    PASS-COUNTER  TO C-OK.                               SQ1064.2
+039200P    MOVE    ERROR-HOLD    TO C-ALL.                              SQ1064.2
+039300P    MOVE    ERROR-COUNTER TO C-FAIL.                             SQ1064.2
+039400P    MOVE    DELETE-CNT    TO C-DELETED.                          SQ1064.2
+039500P    MOVE    INSPECT-COUNTER TO C-INSPECT.                        SQ1064.2
+039600P    REWRITE RAW-DATA-SATZ INVALID KEY CONTINUE.                  SQ1064.2
+039700PEND-E-2.                                                         SQ1064.2
+039800P    CLOSE   RAW-DATA.                                            SQ1064.2
 039900 TERMINATE-CCVS.                                                  SQ1064.2
-040000*    EXIT    PROGRAM.                                             SQ1064.2
+040000S    EXIT    PROGRAM.                                             SQ1064.2
 040100     STOP    RUN.                                                 SQ1064.2
 040200*                                                                 SQ1064.2
 040300 INSPT.                                                           SQ1064.2
@@ -490,15 +489,15 @@
 048900*                                                                 SQ1064.2
 049000 WRITE-LINE.                                                      SQ1064.2
 049100     ADD     1 TO RECORD-COUNT.                                   SQ1064.2
-049200*    IF RECORD-COUNT GREATER 50                                   SQ1064.2
-049300*        MOVE  DUMMY-RECORD TO DUMMY-HOLD                         SQ1064.2
-049400*        MOVE  SPACE TO DUMMY-RECORD                              SQ1064.2
-049500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ1064.2
-049600*        MOVE  CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN            SQ1064.2
-049700*        MOVE  CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    SQ1064.2
-049800*        MOVE  HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN         SQ1064.2
-049900*        MOVE  DUMMY-HOLD TO DUMMY-RECORD                         SQ1064.2
-050000*        MOVE  ZERO TO RECORD-COUNT.                              SQ1064.2
+049200Y    IF RECORD-COUNT GREATER 50                                   SQ1064.2
+049300Y        MOVE  DUMMY-RECORD TO DUMMY-HOLD                         SQ1064.2
+049400Y        MOVE  SPACE TO DUMMY-RECORD                              SQ1064.2
+049500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ1064.2
+049600Y        MOVE  CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN            SQ1064.2
+049700Y        MOVE  CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    SQ1064.2
+049800Y        MOVE  HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN         SQ1064.2
+049900Y        MOVE  DUMMY-HOLD TO DUMMY-RECORD                         SQ1064.2
+050000Y        MOVE  ZERO TO RECORD-COUNT.                              SQ1064.2
 050100     PERFORM WRT-LN.                                              SQ1064.2
 050200*                                                                 SQ1064.2
 050300 WRT-LN.                                                          SQ1064.2
@@ -2659,4 +2658,3 @@
 265800 CCVS-EXIT SECTION.                                               SQ1064.2
 265900 CCVS-999999.                                                     SQ1064.2
 266000     GO TO CLOSE-FILES.                                           SQ1064.2
-      *END-OF,SQ106A                                                                  

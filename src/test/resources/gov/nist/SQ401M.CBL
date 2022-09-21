@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ401M                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ4014.2
 000200 PROGRAM-ID.                                                      SQ4014.2
 000300     SQ401M.                                                      SQ4014.2
@@ -136,4 +135,3 @@
 013500                                                                  SQ4014.2
 013600                                                                  SQ4014.2
 013700*TOTAL NUMBER OF FLAGS EXPECTED = 18.                             SQ4014.2
-      *END-OF,SQ401M                                                                  

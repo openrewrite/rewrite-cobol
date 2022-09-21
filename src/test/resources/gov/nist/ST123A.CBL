@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST122A,SUBPRG,ST123A                                              
 000100 IDENTIFICATION DIVISION.                                         ST1234.2
 000200 PROGRAM-ID.                                                      ST1234.2
 000300     ST123A.                                                      ST1234.2
@@ -62,7 +61,7 @@
 006100C    XXXXX074                                                     ST1234.2
 006200C    IS                                                           ST1234.2
 006300C    XXXXX075                                                     ST1234.2
-006400*    XXXXX069                                                     ST1234.2
+006400G    XXXXX069                                                     ST1234.2
 006500     RECORD IS VARYING IN SIZE                                    ST1234.2
 006600     DATA RECORDS ARE SHORT-IN                                    ST1234.2
 006700                      MEDIUM-IN                                   ST1234.2
@@ -80,7 +79,7 @@
 007900C    XXXXX074                                                     ST1234.2
 008000C    IS                                                           ST1234.2
 008100C    XXXXX076                                                     ST1234.2
-008200*    XXXXX069                                                     ST1234.2
+008200G    XXXXX069                                                     ST1234.2
 008300     RECORD IS VARYING IN SIZE                                    ST1234.2
 008400     DATA RECORD SHORT-OUT                                        ST1234.2
 008500                 MEDIUM-OUT                                       ST1234.2
@@ -120,4 +119,3 @@
 011900              USING SORTIN-1J                                     ST1234.2
 012000              GIVING SORTOUT-1J.                                  ST1234.2
 012100     STOP     RUN.                                                ST1234.2
-      *END-OF,ST123A                                                                  

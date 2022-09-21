@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SG201A                                                            
 000100 IDENTIFICATION DIVISION.                                         SG2014.2
 000200 PROGRAM-ID.                                                      SG2014.2
 000300     SG201A.                                                      SG2014.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             SG2014.2
 000600 INSTALLATION.                                                    SG2014.2
 000700     GENERAL SERVICES ADMINISTRATION                              SG2014.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               SG2014.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                SG2014.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 SG2014.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               SG2014.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 SG2014.2
@@ -187,8 +186,8 @@
 018600 CLOSE-FILES.                                                     SG2014.2
 018700     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SG2014.2
 018800 TERMINATE-CCVS.                                                  SG2014.2
-018900*    EXIT PROGRAM.                                                SG2014.2
-019000*TERMINATE-CALL.                                                  SG2014.2
+018900S    EXIT PROGRAM.                                                SG2014.2
+019000STERMINATE-CALL.                                                  SG2014.2
 019100     STOP     RUN.                                                SG2014.2
 019200 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SG2014.2
 019300 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SG2014.2
@@ -250,15 +249,15 @@
 024900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SG2014.2
 025000 WRITE-LINE.                                                      SG2014.2
 025100     ADD 1 TO RECORD-COUNT.                                       SG2014.2
-025200*    IF RECORD-COUNT GREATER 50                                   SG2014.2
-025300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG2014.2
-025400*        MOVE SPACE TO DUMMY-RECORD                               SG2014.2
-025500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG2014.2
-025600*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SG2014.2
-025700*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SG2014.2
-025800*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SG2014.2
-025900*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG2014.2
-026000*        MOVE ZERO TO RECORD-COUNT.                               SG2014.2
+025200Y    IF RECORD-COUNT GREATER 50                                   SG2014.2
+025300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG2014.2
+025400Y        MOVE SPACE TO DUMMY-RECORD                               SG2014.2
+025500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG2014.2
+025600Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SG2014.2
+025700Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SG2014.2
+025800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SG2014.2
+025900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG2014.2
+026000Y        MOVE ZERO TO RECORD-COUNT.                               SG2014.2
 026100     PERFORM WRT-LN.                                              SG2014.2
 026200 WRT-LN.                                                          SG2014.2
 026300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SG2014.2
@@ -1949,4 +1948,3 @@
 194800     MOVE "GOOD" TO TEST-CHECK.                                   SG2014.2
 194900 PARA-99D.                                                        SG2014.2
 195000     EXIT.                                                        SG2014.2
-      *END-OF,SG201A                                                                  

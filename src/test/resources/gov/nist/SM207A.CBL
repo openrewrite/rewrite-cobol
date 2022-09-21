@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SM207A                                                            
 000100 IDENTIFICATION DIVISION.                                         SM2074.2
 000200 PROGRAM-ID.                                                      SM2074.2
 000300     SM207A.                                                      SM2074.2
@@ -203,8 +202,8 @@
 020200 CLOSE-FILES.                                                     SM2074.2
 020300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SM2074.2
 020400 TERMINATE-CCVS.                                                  SM2074.2
-020500*    EXIT PROGRAM.                                                SM2074.2
-020600*TERMINATE-CALL.                                                  SM2074.2
+020500S    EXIT PROGRAM.                                                SM2074.2
+020600STERMINATE-CALL.                                                  SM2074.2
 020700     STOP     RUN.                                                SM2074.2
 020800 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SM2074.2
 020900 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SM2074.2
@@ -267,15 +266,15 @@
 026600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SM2074.2
 026700 WRITE-LINE.                                                      SM2074.2
 026800     ADD 1 TO RECORD-COUNT.                                       SM2074.2
-026900*    IF RECORD-COUNT GREATER 50                                   SM2074.2
-027000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM2074.2
-027100*        MOVE SPACE TO DUMMY-RECORD                               SM2074.2
-027200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM2074.2
-027300*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM2074.2
-027400*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM2074.2
-027500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM2074.2
-027600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM2074.2
-027700*        MOVE ZERO TO RECORD-COUNT.                               SM2074.2
+026900Y    IF RECORD-COUNT GREATER 50                                   SM2074.2
+027000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM2074.2
+027100Y        MOVE SPACE TO DUMMY-RECORD                               SM2074.2
+027200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM2074.2
+027300Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM2074.2
+027400Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM2074.2
+027500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM2074.2
+027600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM2074.2
+027700Y        MOVE ZERO TO RECORD-COUNT.                               SM2074.2
 027800     PERFORM WRT-LN.                                              SM2074.2
 027900 WRT-LN.                                                          SM2074.2
 028000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SM2074.2
@@ -361,4 +360,3 @@
 036000 CCVS-EXIT SECTION.                                               SM2074.2
 036100 CCVS-999999.                                                     SM2074.2
 036200     GO TO CLOSE-FILES.                                           SM2074.2
-      *END-OF,SM207A                                                                  

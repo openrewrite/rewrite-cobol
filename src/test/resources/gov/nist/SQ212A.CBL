@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ212A                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ2124.2
 000200 PROGRAM-ID.                                                      SQ2124.2
 000300     SQ212A.                                                      SQ2124.2
@@ -45,11 +44,11 @@
 004400     XXXXX083.                                                    SQ2124.2
 004500 INPUT-OUTPUT SECTION.                                            SQ2124.2
 004600 FILE-CONTROL.                                                    SQ2124.2
-004700*    SELECT RAW-DATA   ASSIGN TO                                  SQ2124.2
-004800*    XXXXX062                                                     SQ2124.2
-004900*           ORGANIZATION IS INDEXED                               SQ2124.2
-005000*           ACCESS MODE IS RANDOM                                 SQ2124.2
-005100*           RECORD KEY IS RAW-DATA-KEY.                           SQ2124.2
+004700P    SELECT RAW-DATA   ASSIGN TO                                  SQ2124.2
+004800P    XXXXX062                                                     SQ2124.2
+004900P           ORGANIZATION IS INDEXED                               SQ2124.2
+005000P           ACCESS MODE IS RANDOM                                 SQ2124.2
+005100P           RECORD KEY IS RAW-DATA-KEY.                           SQ2124.2
 005200     SELECT PRINT-FILE ASSIGN TO                                  SQ2124.2
 005300     XXXXX055.                                                    SQ2124.2
 005400     SELECT SQ-VS7 ASSIGN TO                                      SQ2124.2
@@ -59,22 +58,22 @@
 005800     STATUS IS SQ-VS7-STATUS.                                     SQ2124.2
 005900 DATA DIVISION.                                                   SQ2124.2
 006000 FILE SECTION.                                                    SQ2124.2
-006100*                                                                 SQ2124.2
-006200*FD  RAW-DATA.                                                    SQ2124.2
-006300*                                                                 SQ2124.2
-006400*01  RAW-DATA-SATZ.                                               SQ2124.2
-006500*    05  RAW-DATA-KEY        PIC X(6).                            SQ2124.2
-006600*    05  C-DATE              PIC 9(6).                            SQ2124.2
-006700*    05  C-TIME              PIC 9(8).                            SQ2124.2
-006800*    05  C-NO-OF-TESTS       PIC 99.                              SQ2124.2
-006900*    05  C-OK                PIC 999.                             SQ2124.2
-007000*    05  C-ALL               PIC 999.                             SQ2124.2
-007100*    05  C-FAIL              PIC 999.                             SQ2124.2
-007200*    05  C-DELETED           PIC 999.                             SQ2124.2
-007300*    05  C-INSPECT           PIC 999.                             SQ2124.2
-007400*    05  C-NOTE              PIC X(13).                           SQ2124.2
-007500*    05  C-INDENT            PIC X.                               SQ2124.2
-007600*    05  C-ABORT             PIC X(8).                            SQ2124.2
+006100P                                                                 SQ2124.2
+006200PFD  RAW-DATA.                                                    SQ2124.2
+006300P                                                                 SQ2124.2
+006400P01  RAW-DATA-SATZ.                                               SQ2124.2
+006500P    05  RAW-DATA-KEY        PIC X(6).                            SQ2124.2
+006600P    05  C-DATE              PIC 9(6).                            SQ2124.2
+006700P    05  C-TIME              PIC 9(8).                            SQ2124.2
+006800P    05  C-NO-OF-TESTS       PIC 99.                              SQ2124.2
+006900P    05  C-OK                PIC 999.                             SQ2124.2
+007000P    05  C-ALL               PIC 999.                             SQ2124.2
+007100P    05  C-FAIL              PIC 999.                             SQ2124.2
+007200P    05  C-DELETED           PIC 999.                             SQ2124.2
+007300P    05  C-INSPECT           PIC 999.                             SQ2124.2
+007400P    05  C-NOTE              PIC X(13).                           SQ2124.2
+007500P    05  C-INDENT            PIC X.                               SQ2124.2
+007600P    05  C-ABORT             PIC X(8).                            SQ2124.2
 007700 FD  PRINT-FILE                                                   SQ2124.2
 007800C    LABEL RECORDS                                                SQ2124.2
 007900C    XXXXX084                                                     SQ2124.2
@@ -380,15 +379,15 @@
 037900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE1.          SQ2124.2
 038000 WRITE-LINE1.                                                     SQ2124.2
 038100     ADD 1 TO RECORD-COUNT.                                       SQ2124.2
-038200*    IF RECORD-COUNT GREATER 50                                   SQ2124.2
-038300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SQ2124.2
-038400*        MOVE SPACE TO DUMMY-RECORD                               SQ2124.2
-038500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2124.2
-038600*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN1            SQ2124.2
-038700*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN1 2 TIMES    SQ2124.2
-038800*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN1         SQ2124.2
-038900*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SQ2124.2
-039000*        MOVE ZERO TO RECORD-COUNT.                               SQ2124.2
+038200Y    IF RECORD-COUNT GREATER 50                                   SQ2124.2
+038300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SQ2124.2
+038400Y        MOVE SPACE TO DUMMY-RECORD                               SQ2124.2
+038500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2124.2
+038600Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN1            SQ2124.2
+038700Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN1 2 TIMES    SQ2124.2
+038800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN1         SQ2124.2
+038900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SQ2124.2
+039000Y        MOVE ZERO TO RECORD-COUNT.                               SQ2124.2
 039100     PERFORM WRT-LN1.                                             SQ2124.2
 039200 WRT-LN1.                                                         SQ2124.2
 039300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SQ2124.2
@@ -414,35 +413,35 @@
 041300     EXIT.                                                        SQ2124.2
 041400 CLOSE-FILES1.                                                    SQ2124.2
 041500     PERFORM END-ROUTINE1 THRU END-ROUTINE1-13. CLOSE PRINT-FILE. SQ2124.2
-041600*    OPEN I-O RAW-DATA.                                           SQ2124.2
-041700*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2124.2
-041800*    READ RAW-DATA INVALID KEY GO TO END1-E-2.                    SQ2124.2
-041900*    MOVE "OK.     " TO C-ABORT.                                  SQ2124.2
-042000*    MOVE PASS-COUNTER TO C-OK.                                   SQ2124.2
-042100*    MOVE ERROR-HOLD   TO C-ALL.                                  SQ2124.2
-042200*    MOVE ERROR-COUNTER TO C-FAIL.                                SQ2124.2
-042300*    MOVE DELETE-CNT TO C-DELETED.                                SQ2124.2
-042400*    MOVE INSPECT-COUNTER TO C-INSPECT.                           SQ2124.2
-042500*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END1-E-2.            SQ2124.2
-042600*END1-E-2.                                                        SQ2124.2
-042700*    CLOSE RAW-DATA.                                              SQ2124.2
+041600P    OPEN I-O RAW-DATA.                                           SQ2124.2
+041700P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2124.2
+041800P    READ RAW-DATA INVALID KEY GO TO END1-E-2.                    SQ2124.2
+041900P    MOVE "OK.     " TO C-ABORT.                                  SQ2124.2
+042000P    MOVE PASS-COUNTER TO C-OK.                                   SQ2124.2
+042100P    MOVE ERROR-HOLD   TO C-ALL.                                  SQ2124.2
+042200P    MOVE ERROR-COUNTER TO C-FAIL.                                SQ2124.2
+042300P    MOVE DELETE-CNT TO C-DELETED.                                SQ2124.2
+042400P    MOVE INSPECT-COUNTER TO C-INSPECT.                           SQ2124.2
+042500P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END1-E-2.            SQ2124.2
+042600PEND1-E-2.                                                        SQ2124.2
+042700P    CLOSE RAW-DATA.                                              SQ2124.2
 042800 TERMINATE1-CCVS.                                                 SQ2124.2
-042900*    EXIT PROGRAM.                                                SQ2124.2
-043000*TERMINATE1-CALL.                                                 SQ2124.2
+042900S    EXIT PROGRAM.                                                SQ2124.2
+043000STERMINATE1-CALL.                                                 SQ2124.2
 043100     STOP     RUN.                                                SQ2124.2
 043200 END DECLARATIVES.                                                SQ2124.2
 043300 CCVS1 SECTION.                                                   SQ2124.2
 043400 OPEN-FILES.                                                      SQ2124.2
-043500*    OPEN I-O RAW-DATA.                                           SQ2124.2
-043600*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2124.2
-043700*    READ RAW-DATA INVALID KEY GO TO END-E-1.                     SQ2124.2
-043800*    MOVE "ABORTED " TO C-ABORT.                                  SQ2124.2
-043900*    ADD 1 TO C-NO-OF-TESTS.                                      SQ2124.2
-044000*    ACCEPT C-DATE  FROM DATE.                                    SQ2124.2
-044100*    ACCEPT C-TIME  FROM TIME.                                    SQ2124.2
-044200*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             SQ2124.2
-044300*END-E-1.                                                         SQ2124.2
-044400*    CLOSE RAW-DATA.                                              SQ2124.2
+043500P    OPEN I-O RAW-DATA.                                           SQ2124.2
+043600P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2124.2
+043700P    READ RAW-DATA INVALID KEY GO TO END-E-1.                     SQ2124.2
+043800P    MOVE "ABORTED " TO C-ABORT.                                  SQ2124.2
+043900P    ADD 1 TO C-NO-OF-TESTS.                                      SQ2124.2
+044000P    ACCEPT C-DATE  FROM DATE.                                    SQ2124.2
+044100P    ACCEPT C-TIME  FROM TIME.                                    SQ2124.2
+044200P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             SQ2124.2
+044300PEND-E-1.                                                         SQ2124.2
+044400P    CLOSE RAW-DATA.                                              SQ2124.2
 044500     OPEN     OUTPUT PRINT-FILE.                                  SQ2124.2
 044600     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   SQ2124.2
 044700     MOVE    SPACE TO TEST-RESULTS.                               SQ2124.2
@@ -452,21 +451,21 @@
 045100     GO TO CCVS1-EXIT.                                            SQ2124.2
 045200 CLOSE-FILES.                                                     SQ2124.2
 045300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SQ2124.2
-045400*    OPEN I-O RAW-DATA.                                           SQ2124.2
-045500*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2124.2
-045600*    READ RAW-DATA INVALID KEY GO TO END-E-2.                     SQ2124.2
-045700*    MOVE "OK.     " TO C-ABORT.                                  SQ2124.2
-045800*    MOVE PASS-COUNTER TO C-OK.                                   SQ2124.2
-045900*    MOVE ERROR-HOLD   TO C-ALL.                                  SQ2124.2
-046000*    MOVE ERROR-COUNTER TO C-FAIL.                                SQ2124.2
-046100*    MOVE DELETE-CNT TO C-DELETED.                                SQ2124.2
-046200*    MOVE INSPECT-COUNTER TO C-INSPECT.                           SQ2124.2
-046300*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             SQ2124.2
-046400*END-E-2.                                                         SQ2124.2
-046500*    CLOSE RAW-DATA.                                              SQ2124.2
+045400P    OPEN I-O RAW-DATA.                                           SQ2124.2
+045500P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ2124.2
+045600P    READ RAW-DATA INVALID KEY GO TO END-E-2.                     SQ2124.2
+045700P    MOVE "OK.     " TO C-ABORT.                                  SQ2124.2
+045800P    MOVE PASS-COUNTER TO C-OK.                                   SQ2124.2
+045900P    MOVE ERROR-HOLD   TO C-ALL.                                  SQ2124.2
+046000P    MOVE ERROR-COUNTER TO C-FAIL.                                SQ2124.2
+046100P    MOVE DELETE-CNT TO C-DELETED.                                SQ2124.2
+046200P    MOVE INSPECT-COUNTER TO C-INSPECT.                           SQ2124.2
+046300P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             SQ2124.2
+046400PEND-E-2.                                                         SQ2124.2
+046500P    CLOSE RAW-DATA.                                              SQ2124.2
 046600 TERMINATE-CCVS.                                                  SQ2124.2
-046700*    EXIT PROGRAM.                                                SQ2124.2
-046800*TERMINATE-CALL.                                                  SQ2124.2
+046700S    EXIT PROGRAM.                                                SQ2124.2
+046800STERMINATE-CALL.                                                  SQ2124.2
 046900     STOP     RUN.                                                SQ2124.2
 047000 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SQ2124.2
 047100 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SQ2124.2
@@ -528,15 +527,15 @@
 052700     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SQ2124.2
 052800 WRITE-LINE.                                                      SQ2124.2
 052900     ADD 1 TO RECORD-COUNT.                                       SQ2124.2
-053000*    IF RECORD-COUNT GREATER 50                                   SQ2124.2
-053100*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SQ2124.2
-053200*        MOVE SPACE TO DUMMY-RECORD                               SQ2124.2
-053300*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2124.2
-053400*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SQ2124.2
-053500*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SQ2124.2
-053600*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SQ2124.2
-053700*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SQ2124.2
-053800*        MOVE ZERO TO RECORD-COUNT.                               SQ2124.2
+053000Y    IF RECORD-COUNT GREATER 50                                   SQ2124.2
+053100Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SQ2124.2
+053200Y        MOVE SPACE TO DUMMY-RECORD                               SQ2124.2
+053300Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2124.2
+053400Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SQ2124.2
+053500Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SQ2124.2
+053600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SQ2124.2
+053700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SQ2124.2
+053800Y        MOVE ZERO TO RECORD-COUNT.                               SQ2124.2
 053900     PERFORM WRT-LN.                                              SQ2124.2
 054000 WRT-LN.                                                          SQ2124.2
 054100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SQ2124.2
@@ -766,4 +765,3 @@
 076500 CCVS-EXIT SECTION.                                               SQ2124.2
 076600 CCVS-999999.                                                     SQ2124.2
 076700     GO TO CLOSE-FILES.                                           SQ2124.2
-      *END-OF,SQ212A                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL212A                                                            
 000100 IDENTIFICATION DIVISION.                                         RL2124.2
 000200 PROGRAM-ID.                                                      RL2124.2
 000300     RL212A.                                                      RL2124.2
@@ -57,7 +56,7 @@
 005600C    XXXXX074                                                     RL2124.2
 005700C    IS                                                           RL2124.2
 005800C    XXXXX075                                                     RL2124.2
-005900*    XXXXX069                                                     RL2124.2
+005900G    XXXXX069                                                     RL2124.2
 006000     BLOCK CONTAINS 1 RECORDS                                     RL2124.2
 006100     RECORD CONTAINS 120 CHARACTERS.                              RL2124.2
 006200 01  RL-FS1R1-F-G-120.                                            RL2124.2
@@ -274,8 +273,8 @@
 027300 CLOSE-FILES.                                                     RL2124.2
 027400     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL2124.2
 027500 TERMINATE-CCVS.                                                  RL2124.2
-027600*    EXIT PROGRAM.                                                RL2124.2
-027700*TERMINATE-CALL.                                                  RL2124.2
+027600S    EXIT PROGRAM.                                                RL2124.2
+027700STERMINATE-CALL.                                                  RL2124.2
 027800     STOP     RUN.                                                RL2124.2
 027900 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL2124.2
 028000 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL2124.2
@@ -338,15 +337,15 @@
 033700     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL2124.2
 033800 WRITE-LINE.                                                      RL2124.2
 033900     ADD 1 TO RECORD-COUNT.                                       RL2124.2
-034000*    IF RECORD-COUNT GREATER 50                                   RL2124.2
-034100*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL2124.2
-034200*        MOVE SPACE TO DUMMY-RECORD                               RL2124.2
-034300*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL2124.2
-034400*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL2124.2
-034500*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL2124.2
-034600*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL2124.2
-034700*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL2124.2
-034800*        MOVE ZERO TO RECORD-COUNT.                               RL2124.2
+034000Y    IF RECORD-COUNT GREATER 50                                   RL2124.2
+034100Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL2124.2
+034200Y        MOVE SPACE TO DUMMY-RECORD                               RL2124.2
+034300Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL2124.2
+034400Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL2124.2
+034500Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL2124.2
+034600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL2124.2
+034700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL2124.2
+034800Y        MOVE ZERO TO RECORD-COUNT.                               RL2124.2
 034900     PERFORM WRT-LN.                                              RL2124.2
 035000 WRT-LN.                                                          RL2124.2
 035100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL2124.2
@@ -443,4 +442,3 @@
 044200 CCVS-EXIT SECTION.                                               RL2124.2
 044300 CCVS-999999.                                                     RL2124.2
 044400     GO TO CLOSE-FILES.                                           RL2124.2
-      *END-OF,RL212A                                                                  

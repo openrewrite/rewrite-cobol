@@ -1,4 +1,3 @@
-      *HEADER,COBOL,ST115A,SUBPRG,ST117A                                              
 000100 IDENTIFICATION DIVISION.                                         ST1174.2
 000200 PROGRAM-ID.                                                      ST1174.2
 000300     ST117A.                                                      ST1174.2
@@ -104,7 +103,7 @@
 010300C    XXXXX074                                                     ST1174.2
 010400C    IS                                                           ST1174.2
 010500C    XXXXX076                                                     ST1174.2
-010600*    XXXXX069                                                     ST1174.2
+010600G    XXXXX069                                                     ST1174.2
 010700     BLOCK CONTAINS 2 RECORDS                                     ST1174.2
 010800     RECORD CONTAINS 507 CHARACTERS                               ST1174.2
 010900     DATA RECORD SQ-FS2R1-F-G-507.                                ST1174.2
@@ -131,7 +130,7 @@
 013000 77  WRK-DU-999-2 PIC 999 VALUE 000.                              ST1174.2
 013100 77  WRK-DU-999-3 PIC 999 VALUE ZERO.                             ST1174.2
 013200 77  NUMBER-OF-SETS PIC 999 VALUE ZERO.                           ST1174.2
-013300*77  COUNT-OF-RECS PIC 9(6) VALUE ZERO.                           ST1174.2
+013300X77  COUNT-OF-RECS PIC 9(6) VALUE ZERO.                           ST1174.2
 013400 01  WRK-XN-2    PIC X(51) VALUE                                  ST1174.2
 013500     "                     * G BAIRD, USNAVY            ".        ST1174.2
 013600 01  WRK-XN-0051F-X-0002 REDEFINES WRK-XN-2.                      ST1174.2
@@ -346,8 +345,8 @@
 034500 CLOSE-FILES.                                                     ST1174.2
 034600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   ST1174.2
 034700 TERMINATE-CCVS.                                                  ST1174.2
-034800*    EXIT PROGRAM.                                                ST1174.2
-034900*TERMINATE-CALL.                                                  ST1174.2
+034800S    EXIT PROGRAM.                                                ST1174.2
+034900STERMINATE-CALL.                                                  ST1174.2
 035000     STOP     RUN.                                                ST1174.2
 035100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         ST1174.2
 035200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           ST1174.2
@@ -410,19 +409,19 @@
 040900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           ST1174.2
 041000 WRITE-LINE.                                                      ST1174.2
 041100     ADD 1 TO RECORD-COUNT.                                       ST1174.2
-041200*    IF RECORD-COUNT GREATER 42                                   ST1174.2
-041300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1174.2
-041400*        MOVE SPACE TO DUMMY-RECORD                               ST1174.2
-041500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1174.2
-041600*        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1174.2
-041700*        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1174.2
-041800*        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1174.2
-041900*        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1174.2
-042000*        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1174.2
-042100*        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1174.2
-042200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1174.2
-042300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1174.2
-042400*        MOVE ZERO TO RECORD-COUNT.                               ST1174.2
+041200Y    IF RECORD-COUNT GREATER 42                                   ST1174.2
+041300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          ST1174.2
+041400Y        MOVE SPACE TO DUMMY-RECORD                               ST1174.2
+041500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  ST1174.2
+041600Y        MOVE CCVS-H-1  TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1174.2
+041700Y        MOVE CCVS-H-2A TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    ST1174.2
+041800Y        MOVE CCVS-H-2B TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1174.2
+041900Y        MOVE CCVS-H-3  TO DUMMY-RECORD PERFORM WRT-LN 3 TIMES    ST1174.2
+042000Y        MOVE CCVS-C-1  TO DUMMY-RECORD PERFORM WRT-LN            ST1174.2
+042100Y        MOVE CCVS-C-2  TO DUMMY-RECORD PERFORM WRT-LN            ST1174.2
+042200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          ST1174.2
+042300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          ST1174.2
+042400Y        MOVE ZERO TO RECORD-COUNT.                               ST1174.2
 042500     PERFORM WRT-LN.                                              ST1174.2
 042600 WRT-LN.                                                          ST1174.2
 042700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               ST1174.2
@@ -521,32 +520,31 @@
 052000     EXIT.                                                        ST1174.2
 052100 ST117-END.                                                       ST1174.2
 052200     EXIT.                                                        ST1174.2
-052300*FILEDUMP SECTION.                                                ST1174.2
-052400*FILE-2-DUMP-INIT.                                                ST1174.2
-052500*    OPEN INPUT SQ-FS2.                                           ST1174.2
-052600*    MOVE ZERO TO COUNT-OF-RECS.                                  ST1174.2
-052700*FILE-2-DUMP.                                                     ST1174.2
-052800*    READ SQ-FS2 RECORD                                           ST1174.2
-052900*        AT END GO TO FILE-2-DUMP-END.                            ST1174.2
-053000*    ADD 1 TO COUNT-OF-RECS.                                      ST1174.2
-053100*    IF COUNT-OF-RECS GREATER THAN                                ST1174.2
-053200*    XXXXX065                                                     ST1174.2
-053300*        MOVE " TOO MANY RECORDS" TO DUMMY-RECORD                 ST1174.2
-053400*        WRITE DUMMY-RECORD AFTER ADVANCING 1 LINES               ST1174.2
-053500*        GO TO FILE-2-DUMP-END.                                   ST1174.2
-053600*    PERFORM FILE-2-DUMP-WRITE.                                   ST1174.2
-053700*    GO TO FILE-2-DUMP.                                           ST1174.2
-053800*FILE-2-DUMP-WRITE.                                               ST1174.2
-053900*    MOVE SQ-FS2R1-F-G-507 TO DUMMY-RECORD.                       ST1174.2
-054000*    WRITE   DUMMY-RECORD AFTER ADVANCING 1 LINES.                ST1174.2
-054100*FILE-2-DUMP-END.                                                 ST1174.2
-054200*    MOVE    " NUMBER OF SORTED RECORDS ON SQ-FS2 SHOWN BELOW"    ST1174.2
-054300*        TO DUMMY-RECORD.                                         ST1174.2
-054400*    WRITE   DUMMY-RECORD AFTER ADVANCING 1 LINES.                ST1174.2
-054500*    MOVE    COUNT-OF-RECS TO DUMMY-RECORD.                       ST1174.2
-054600*    WRITE   DUMMY-RECORD AFTER ADVANCING 1 LINES.                ST1174.2
-054700*    CLOSE   SQ-FS2.                                              ST1174.2
+052300XFILEDUMP SECTION.                                                ST1174.2
+052400XFILE-2-DUMP-INIT.                                                ST1174.2
+052500X    OPEN INPUT SQ-FS2.                                           ST1174.2
+052600X    MOVE ZERO TO COUNT-OF-RECS.                                  ST1174.2
+052700XFILE-2-DUMP.                                                     ST1174.2
+052800X    READ SQ-FS2 RECORD                                           ST1174.2
+052900X        AT END GO TO FILE-2-DUMP-END.                            ST1174.2
+053000X    ADD 1 TO COUNT-OF-RECS.                                      ST1174.2
+053100X    IF COUNT-OF-RECS GREATER THAN                                ST1174.2
+053200X    XXXXX065                                                     ST1174.2
+053300X        MOVE " TOO MANY RECORDS" TO DUMMY-RECORD                 ST1174.2
+053400X        WRITE DUMMY-RECORD AFTER ADVANCING 1 LINES               ST1174.2
+053500X        GO TO FILE-2-DUMP-END.                                   ST1174.2
+053600X    PERFORM FILE-2-DUMP-WRITE.                                   ST1174.2
+053700X    GO TO FILE-2-DUMP.                                           ST1174.2
+053800XFILE-2-DUMP-WRITE.                                               ST1174.2
+053900X    MOVE SQ-FS2R1-F-G-507 TO DUMMY-RECORD.                       ST1174.2
+054000X    WRITE   DUMMY-RECORD AFTER ADVANCING 1 LINES.                ST1174.2
+054100XFILE-2-DUMP-END.                                                 ST1174.2
+054200X    MOVE    " NUMBER OF SORTED RECORDS ON SQ-FS2 SHOWN BELOW"    ST1174.2
+054300X        TO DUMMY-RECORD.                                         ST1174.2
+054400X    WRITE   DUMMY-RECORD AFTER ADVANCING 1 LINES.                ST1174.2
+054500X    MOVE    COUNT-OF-RECS TO DUMMY-RECORD.                       ST1174.2
+054600X    WRITE   DUMMY-RECORD AFTER ADVANCING 1 LINES.                ST1174.2
+054700X    CLOSE   SQ-FS2.                                              ST1174.2
 054800 CCVS-EXIT SECTION.                                               ST1174.2
 054900 CCVS-999999.                                                     ST1174.2
 055000     GO TO CLOSE-FILES.                                           ST1174.2
-      *END-OF,ST117A                                                                  

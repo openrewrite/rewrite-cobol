@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL212A,SUBPRG,RL213A                                              
 000100 IDENTIFICATION DIVISION.                                         RL2134.2
 000200 PROGRAM-ID.                                                      RL2134.2
 000300     RL213A.                                                      RL2134.2
@@ -61,7 +60,7 @@
 006000C    XXXXX074                                                     RL2134.2
 006100C    IS                                                           RL2134.2
 006200C    XXXXX075                                                     RL2134.2
-006300*    XXXXX069                                                     RL2134.2
+006300G    XXXXX069                                                     RL2134.2
 006400     BLOCK CONTAINS 1 RECORDS                                     RL2134.2
 006500     RECORD CONTAINS 120 CHARACTERS.                              RL2134.2
 006600 01  RL-FS1R1-F-G-120.                                            RL2134.2
@@ -72,7 +71,7 @@
 007100C    XXXXX074                                                     RL2134.2
 007200C    IS                                                           RL2134.2
 007300C    XXXXX075                                                     RL2134.2
-007400*    XXXXX069                                                     RL2134.2
+007400G    XXXXX069                                                     RL2134.2
 007500     BLOCK CONTAINS 1 RECORDS                                     RL2134.2
 007600     RECORD CONTAINS 120 CHARACTERS.                              RL2134.2
 007700 01  RL-FS2R1-F-G-120.                                            RL2134.2
@@ -289,8 +288,8 @@
 028800 CLOSE-FILES.                                                     RL2134.2
 028900     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL2134.2
 029000 TERMINATE-CCVS.                                                  RL2134.2
-029100*    EXIT PROGRAM.                                                RL2134.2
-029200*TERMINATE-CALL.                                                  RL2134.2
+029100S    EXIT PROGRAM.                                                RL2134.2
+029200STERMINATE-CALL.                                                  RL2134.2
 029300     STOP     RUN.                                                RL2134.2
 029400 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL2134.2
 029500 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL2134.2
@@ -353,15 +352,15 @@
 035200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL2134.2
 035300 WRITE-LINE.                                                      RL2134.2
 035400     ADD 1 TO RECORD-COUNT.                                       RL2134.2
-035500*    IF RECORD-COUNT GREATER 50                                   RL2134.2
-035600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL2134.2
-035700*        MOVE SPACE TO DUMMY-RECORD                               RL2134.2
-035800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL2134.2
-035900*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL2134.2
-036000*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL2134.2
-036100*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL2134.2
-036200*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL2134.2
-036300*        MOVE ZERO TO RECORD-COUNT.                               RL2134.2
+035500Y    IF RECORD-COUNT GREATER 50                                   RL2134.2
+035600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL2134.2
+035700Y        MOVE SPACE TO DUMMY-RECORD                               RL2134.2
+035800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL2134.2
+035900Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL2134.2
+036000Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL2134.2
+036100Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL2134.2
+036200Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL2134.2
+036300Y        MOVE ZERO TO RECORD-COUNT.                               RL2134.2
 036400     PERFORM WRT-LN.                                              RL2134.2
 036500 WRT-LN.                                                          RL2134.2
 036600     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL2134.2
@@ -474,4 +473,3 @@
 047300 CCVS-EXIT SECTION.                                               RL2134.2
 047400 CCVS-999999.                                                     RL2134.2
 047500     GO TO CLOSE-FILES.                                           RL2134.2
-      *END-OF,RL213A                                                                  

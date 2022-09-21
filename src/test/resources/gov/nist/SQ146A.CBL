@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ146A                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ1464.2
 000200 PROGRAM-ID.                                                      SQ1464.2
 000300     SQ146A.                                                      SQ1464.2
@@ -387,15 +386,15 @@
 038600*                                                                 SQ1464.2
 038700 WRITE-LINE.                                                      SQ1464.2
 038800     ADD     1 TO RECORD-COUNT.                                   SQ1464.2
-038900*    IF RECORD-COUNT GREATER 50                                   SQ1464.2
-039000*        MOVE  DUMMY-RECORD TO DUMMY-HOLD                         SQ1464.2
-039100*        MOVE  SPACE TO DUMMY-RECORD                              SQ1464.2
-039200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ1464.2
-039300*        MOVE  CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN            SQ1464.2
-039400*        MOVE  CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    SQ1464.2
-039500*        MOVE  HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN         SQ1464.2
-039600*        MOVE  DUMMY-HOLD TO DUMMY-RECORD                         SQ1464.2
-039700*        MOVE  ZERO TO RECORD-COUNT.                              SQ1464.2
+038900Y    IF RECORD-COUNT GREATER 50                                   SQ1464.2
+039000Y        MOVE  DUMMY-RECORD TO DUMMY-HOLD                         SQ1464.2
+039100Y        MOVE  SPACE TO DUMMY-RECORD                              SQ1464.2
+039200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ1464.2
+039300Y        MOVE  CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN            SQ1464.2
+039400Y        MOVE  CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    SQ1464.2
+039500Y        MOVE  HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN         SQ1464.2
+039600Y        MOVE  DUMMY-HOLD TO DUMMY-RECORD                         SQ1464.2
+039700Y        MOVE  ZERO TO RECORD-COUNT.                              SQ1464.2
 039800     PERFORM WRT-LN.                                              SQ1464.2
 039900*                                                                 SQ1464.2
 040000 WRT-LN.                                                          SQ1464.2
@@ -509,4 +508,3 @@
 050800 CCVS-EXIT SECTION.                                               SQ1464.2
 050900 CCVS-999999.                                                     SQ1464.2
 051000     GO TO CLOSE-FILES.                                           SQ1464.2
-      *END-OF,SQ146A                                                                  

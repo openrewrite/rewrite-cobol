@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ227A                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ2274.2
 000200 PROGRAM-ID.                                                      SQ2274.2
 000300     SQ227A.                                                      SQ2274.2
@@ -48,12 +47,12 @@
 004700     SELECT PRINT-FILE ASSIGN TO                                  SQ2274.2
 004800     XXXXX055.                                                    SQ2274.2
 004900*                                                                 SQ2274.2
-005000*    SELECT RAW-DATA   ASSIGN TO                                  SQ2274.2
-005100*    XXXXX062                                                     SQ2274.2
-005200*          ORGANIZATION IS INDEXED                                SQ2274.2
-005300*          ACCESS MODE  IS RANDOM                                 SQ2274.2
-005400*          RECORD-KEY   IS RAW-DATA-KEY.                          SQ2274.2
-005500*                                                                 SQ2274.2
+005000P    SELECT RAW-DATA   ASSIGN TO                                  SQ2274.2
+005100P    XXXXX062                                                     SQ2274.2
+005200P          ORGANIZATION IS INDEXED                                SQ2274.2
+005300P          ACCESS MODE  IS RANDOM                                 SQ2274.2
+005400P          RECORD-KEY   IS RAW-DATA-KEY.                          SQ2274.2
+005500P                                                                 SQ2274.2
 005600     SELECT SQ-FS4                                                SQ2274.2
 005700            ASSIGN                                                SQ2274.2
 005800     XXXXX014                                                     SQ2274.2
@@ -72,21 +71,21 @@
 007100               .                                                  SQ2274.2
 007200 01  PRINT-REC    PICTURE X(120).                                 SQ2274.2
 007300 01  DUMMY-RECORD PICTURE X(120).                                 SQ2274.2
-007400*                                                                 SQ2274.2
-007500*FD  RAW-DATA.                                                    SQ2274.2
-007600*01  RAW-DATA-SATZ.                                               SQ2274.2
-007700*    05  RAW-DATA-KEY        PIC X(6).                            SQ2274.2
-007800*    05  C-DATE              PIC 9(6).                            SQ2274.2
-007900*    05  C-TIME              PIC 9(8).                            SQ2274.2
-008000*    05  NO-OF-TESTS         PIC 99.                              SQ2274.2
-008100*    05  C-OK                PIC 999.                             SQ2274.2
-008200*    05  C-ALL               PIC 999.                             SQ2274.2
-008300*    05  C-FAIL              PIC 999.                             SQ2274.2
-008400*    05  C-DELETED           PIC 999.                             SQ2274.2
-008500*    05  C-INSPECT           PIC 999.                             SQ2274.2
-008600*    05  C-NOTE              PIC X(13).                           SQ2274.2
-008700*    05  C-INDENT            PIC X.                               SQ2274.2
-008800*    05  C-ABORT             PIC X(8).                            SQ2274.2
+007400P                                                                 SQ2274.2
+007500PFD  RAW-DATA.                                                    SQ2274.2
+007600P01  RAW-DATA-SATZ.                                               SQ2274.2
+007700P    05  RAW-DATA-KEY        PIC X(6).                            SQ2274.2
+007800P    05  C-DATE              PIC 9(6).                            SQ2274.2
+007900P    05  C-TIME              PIC 9(8).                            SQ2274.2
+008000P    05  NO-OF-TESTS         PIC 99.                              SQ2274.2
+008100P    05  C-OK                PIC 999.                             SQ2274.2
+008200P    05  C-ALL               PIC 999.                             SQ2274.2
+008300P    05  C-FAIL              PIC 999.                             SQ2274.2
+008400P    05  C-DELETED           PIC 999.                             SQ2274.2
+008500P    05  C-INSPECT           PIC 999.                             SQ2274.2
+008600P    05  C-NOTE              PIC X(13).                           SQ2274.2
+008700P    05  C-INDENT            PIC X.                               SQ2274.2
+008800P    05  C-ABORT             PIC X(8).                            SQ2274.2
 008900*                                                                 SQ2274.2
 009000 FD  SQ-FS4                                                       SQ2274.2
 009100C    LABEL RECORD IS STANDARD                                     SQ2274.2
@@ -458,17 +457,17 @@
 045700*                                                                 SQ2274.2
 045800 DECL-WRITE-LINE.                                                 SQ2274.2
 045900     ADD     1 TO RECORD-COUNT.                                   SQ2274.2
-046000*    IF RECORD-COUNT GREATER 50                                   SQ2274.2
-046100*        MOVE    DUMMY-RECORD TO DUMMY-HOLD                       SQ2274.2
-046200*        MOVE    SPACE TO DUMMY-RECORD                            SQ2274.2
-046300*        WRITE   DUMMY-RECORD AFTER ADVANCING PAGE                SQ2274.2
-046400*        MOVE    CCVS-C-1 TO DUMMY-RECORD PERFORM DECL-WRT-LN     SQ2274.2
-046500*        MOVE    CCVS-C-2 TO DUMMY-RECORD                         SQ2274.2
-046600*        PERFORM DECL-WRT-LN 2 TIMES                              SQ2274.2
-046700*        MOVE    HYPHEN-LINE TO DUMMY-RECORD                      SQ2274.2
-046800*        PERFORM DECL-WRT-LN                                      SQ2274.2
-046900*        MOVE    DUMMY-HOLD TO DUMMY-RECORD                       SQ2274.2
-047000*        MOVE    ZERO TO RECORD-COUNT.                            SQ2274.2
+046000Y    IF RECORD-COUNT GREATER 50                                   SQ2274.2
+046100Y        MOVE    DUMMY-RECORD TO DUMMY-HOLD                       SQ2274.2
+046200Y        MOVE    SPACE TO DUMMY-RECORD                            SQ2274.2
+046300Y        WRITE   DUMMY-RECORD AFTER ADVANCING PAGE                SQ2274.2
+046400Y        MOVE    CCVS-C-1 TO DUMMY-RECORD PERFORM DECL-WRT-LN     SQ2274.2
+046500Y        MOVE    CCVS-C-2 TO DUMMY-RECORD                         SQ2274.2
+046600Y        PERFORM DECL-WRT-LN 2 TIMES                              SQ2274.2
+046700Y        MOVE    HYPHEN-LINE TO DUMMY-RECORD                      SQ2274.2
+046800Y        PERFORM DECL-WRT-LN                                      SQ2274.2
+046900Y        MOVE    DUMMY-HOLD TO DUMMY-RECORD                       SQ2274.2
+047000Y        MOVE    ZERO TO RECORD-COUNT.                            SQ2274.2
 047100     PERFORM DECL-WRT-LN.                                         SQ2274.2
 047200*                                                                 SQ2274.2
 047300 DECL-WRT-LN.                                                     SQ2274.2
@@ -511,16 +510,16 @@
 051000*                                                                 SQ2274.2
 051100 CCVS1 SECTION.                                                   SQ2274.2
 051200 OPEN-FILES.                                                      SQ2274.2
-051300*    OPEN    I-O RAW-DATA.                                        SQ2274.2
-051400*    MOVE    CCVS-PGM-ID TO RAW-DATA-KEY.                         SQ2274.2
-051500*    READ    RAW-DATA INVALID KEY GO TO END-E-1.                  SQ2274.2
-051600*    MOVE   "ABORTED "   TO C-ABORT.                              SQ2274.2
-051700*    ADD     1           TO C-NO-OF-TESTS.                        SQ2274.2
-051800*    ACCEPT  C-DATE      FROM DATE.                               SQ2274.2
-051900*    ACCEPT  C-TIME      FROM TIME.                               SQ2274.2
-052000*    REWRITE RAW-DATA-SATZ INVALID KEY CONTINUE.                  SQ2274.2
-052100*END-E-1.                                                         SQ2274.2
-052200*    CLOSE   RAW-DATA.                                            SQ2274.2
+051300P    OPEN    I-O RAW-DATA.                                        SQ2274.2
+051400P    MOVE    CCVS-PGM-ID TO RAW-DATA-KEY.                         SQ2274.2
+051500P    READ    RAW-DATA INVALID KEY GO TO END-E-1.                  SQ2274.2
+051600P    MOVE   "ABORTED "   TO C-ABORT.                              SQ2274.2
+051700P    ADD     1           TO C-NO-OF-TESTS.                        SQ2274.2
+051800P    ACCEPT  C-DATE      FROM DATE.                               SQ2274.2
+051900P    ACCEPT  C-TIME      FROM TIME.                               SQ2274.2
+052000P    REWRITE RAW-DATA-SATZ INVALID KEY CONTINUE.                  SQ2274.2
+052100PEND-E-1.                                                         SQ2274.2
+052200P    CLOSE   RAW-DATA.                                            SQ2274.2
 052300     OPEN    OUTPUT PRINT-FILE.                                   SQ2274.2
 052400     MOVE    CCVS-PGM-ID TO TEST-ID.                              SQ2274.2
 052500     MOVE    CCVS-PGM-ID TO ID-AGAIN.                             SQ2274.2
@@ -538,20 +537,20 @@
 053700 CLOSE-FILES.                                                     SQ2274.2
 053800     PERFORM END-ROUTINE THRU END-ROUTINE-13.                     SQ2274.2
 053900     CLOSE   PRINT-FILE.                                          SQ2274.2
-054000*    OPEN    I-O RAW-DATA.                                        SQ2274.2
-054100*    MOVE    CCVS-PGM-ID TO RAW-DATA-KEY.                         SQ2274.2
-054200*    READ    RAW-DATA INVALID KEY GO TO END-E-2.                  SQ2274.2
-054300*    MOVE   "OK.     " TO C-ABORT.                                SQ2274.2
-054400*    MOVE    PASS-COUNTER  TO C-OK.                               SQ2274.2
-054500*    MOVE    ERROR-HOLD    TO C-ALL.                              SQ2274.2
-054600*    MOVE    ERROR-COUNTER TO C-FAIL.                             SQ2274.2
-054700*    MOVE    DELETE-CNT    TO C-DELETED.                          SQ2274.2
-054800*    MOVE    INSPECT-COUNTER TO C-INSPECT.                        SQ2274.2
-054900*    REWRITE RAW-DATA-SATZ INVALID KEY CONTINUE.                  SQ2274.2
-055000*END-E-2.                                                         SQ2274.2
-055100*    CLOSE   RAW-DATA.                                            SQ2274.2
+054000P    OPEN    I-O RAW-DATA.                                        SQ2274.2
+054100P    MOVE    CCVS-PGM-ID TO RAW-DATA-KEY.                         SQ2274.2
+054200P    READ    RAW-DATA INVALID KEY GO TO END-E-2.                  SQ2274.2
+054300P    MOVE   "OK.     " TO C-ABORT.                                SQ2274.2
+054400P    MOVE    PASS-COUNTER  TO C-OK.                               SQ2274.2
+054500P    MOVE    ERROR-HOLD    TO C-ALL.                              SQ2274.2
+054600P    MOVE    ERROR-COUNTER TO C-FAIL.                             SQ2274.2
+054700P    MOVE    DELETE-CNT    TO C-DELETED.                          SQ2274.2
+054800P    MOVE    INSPECT-COUNTER TO C-INSPECT.                        SQ2274.2
+054900P    REWRITE RAW-DATA-SATZ INVALID KEY CONTINUE.                  SQ2274.2
+055000PEND-E-2.                                                         SQ2274.2
+055100P    CLOSE   RAW-DATA.                                            SQ2274.2
 055200 TERMINATE-CCVS.                                                  SQ2274.2
-055300*    EXIT    PROGRAM.                                             SQ2274.2
+055300S    EXIT    PROGRAM.                                             SQ2274.2
 055400     STOP    RUN.                                                 SQ2274.2
 055500*                                                                 SQ2274.2
 055600 INSPT.                                                           SQ2274.2
@@ -643,15 +642,15 @@
 064200*                                                                 SQ2274.2
 064300 WRITE-LINE.                                                      SQ2274.2
 064400     ADD     1 TO RECORD-COUNT.                                   SQ2274.2
-064500*    IF RECORD-COUNT GREATER 50                                   SQ2274.2
-064600*        MOVE  DUMMY-RECORD TO DUMMY-HOLD                         SQ2274.2
-064700*        MOVE  SPACE TO DUMMY-RECORD                              SQ2274.2
-064800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2274.2
-064900*        MOVE  CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN            SQ2274.2
-065000*        MOVE  CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    SQ2274.2
-065100*        MOVE  HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN         SQ2274.2
-065200*        MOVE  DUMMY-HOLD TO DUMMY-RECORD                         SQ2274.2
-065300*        MOVE  ZERO TO RECORD-COUNT.                              SQ2274.2
+064500Y    IF RECORD-COUNT GREATER 50                                   SQ2274.2
+064600Y        MOVE  DUMMY-RECORD TO DUMMY-HOLD                         SQ2274.2
+064700Y        MOVE  SPACE TO DUMMY-RECORD                              SQ2274.2
+064800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ2274.2
+064900Y        MOVE  CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN            SQ2274.2
+065000Y        MOVE  CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES    SQ2274.2
+065100Y        MOVE  HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN         SQ2274.2
+065200Y        MOVE  DUMMY-HOLD TO DUMMY-RECORD                         SQ2274.2
+065300Y        MOVE  ZERO TO RECORD-COUNT.                              SQ2274.2
 065400     PERFORM WRT-LN.                                              SQ2274.2
 065500*                                                                 SQ2274.2
 065600 WRT-LN.                                                          SQ2274.2
@@ -1111,4 +1110,3 @@
 111000 CCVS-EXIT SECTION.                                               SQ2274.2
 111100 CCVS-999999.                                                     SQ2274.2
 111200     GO TO   CLOSE-FILES.                                         SQ2274.2
-      *END-OF,SQ227A                                                                  

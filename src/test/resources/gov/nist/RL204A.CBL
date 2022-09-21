@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL204A                                                            
 000100 IDENTIFICATION DIVISION.                                         RL2044.2
 000200 PROGRAM-ID.                                                      RL2044.2
 000300     RL204A.                                                      RL2044.2
@@ -72,7 +71,7 @@
 007100C    XXXXX074                                                     RL2044.2
 007200C    IS                                                           RL2044.2
 007300C    XXXXX076                                                     RL2044.2
-007400*    XXXXX069                                                     RL2044.2
+007400G    XXXXX069                                                     RL2044.2
 007500     LABEL RECORDS ARE STANDARD                                   RL2044.2
 007600     BLOCK CONTAINS 1 RECORDS                                     RL2044.2
 007700     DATA RECORD RL-FD2R1-F-G-240.                                RL2044.2
@@ -332,8 +331,8 @@
 033100 CLOSE-FILES.                                                     RL2044.2
 033200     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   RL2044.2
 033300 TERMINATE-CCVS.                                                  RL2044.2
-033400*    EXIT PROGRAM.                                                RL2044.2
-033500*TERMINATE-CALL.                                                  RL2044.2
+033400S    EXIT PROGRAM.                                                RL2044.2
+033500STERMINATE-CALL.                                                  RL2044.2
 033600     STOP     RUN.                                                RL2044.2
 033700 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         RL2044.2
 033800 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           RL2044.2
@@ -396,15 +395,15 @@
 039500     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           RL2044.2
 039600 WRITE-LINE.                                                      RL2044.2
 039700     ADD 1 TO RECORD-COUNT.                                       RL2044.2
-039800*    IF RECORD-COUNT GREATER 50                                   RL2044.2
-039900*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL2044.2
-040000*        MOVE SPACE TO DUMMY-RECORD                               RL2044.2
-040100*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL2044.2
-040200*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL2044.2
-040300*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL2044.2
-040400*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL2044.2
-040500*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL2044.2
-040600*        MOVE ZERO TO RECORD-COUNT.                               RL2044.2
+039800Y    IF RECORD-COUNT GREATER 50                                   RL2044.2
+039900Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          RL2044.2
+040000Y        MOVE SPACE TO DUMMY-RECORD                               RL2044.2
+040100Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  RL2044.2
+040200Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             RL2044.2
+040300Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     RL2044.2
+040400Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          RL2044.2
+040500Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          RL2044.2
+040600Y        MOVE ZERO TO RECORD-COUNT.                               RL2044.2
 040700     PERFORM WRT-LN.                                              RL2044.2
 040800 WRT-LN.                                                          RL2044.2
 040900     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               RL2044.2
@@ -643,4 +642,3 @@
 064200 CCVS-EXIT SECTION.                                               RL2044.2
 064300 CCVS-999999.                                                     RL2044.2
 064400     GO TO CLOSE-FILES.                                           RL2044.2
-      *END-OF,RL204A                                                                  

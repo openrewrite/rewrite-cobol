@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SM401M                                                            
 000100 IDENTIFICATION DIVISION.                                         SM4014.2
 000200 PROGRAM-ID.                                                      SM4014.2
 000300     SM401M.                                                      SM4014.2
@@ -29,4 +28,3 @@
 002800*Message expected for above statement: NON-CONFORMING STANDARD    SM4014.2
 002900                                                                  SM4014.2
 003000*TOTAL NUMBER OF FLAGS EXPECTED = 2.                              SM4014.2
-      *END-OF,SM401M                                                                  

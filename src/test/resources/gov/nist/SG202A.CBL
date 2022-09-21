@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SG202A                                                            
 000100 IDENTIFICATION DIVISION.                                         SG2024.2
 000200 PROGRAM-ID.                                                      SG2024.2
 000300     SG202A.                                                      SG2024.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             SG2024.2
 000600 INSTALLATION.                                                    SG2024.2
 000700     GENERAL SERVICES ADMINISTRATION                              SG2024.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               SG2024.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                SG2024.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 SG2024.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               SG2024.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 SG2024.2
@@ -196,8 +195,8 @@
 019500 CLOSE-FILES.                                                     SG2024.2
 019600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SG2024.2
 019700 TERMINATE-CCVS.                                                  SG2024.2
-019800*    EXIT PROGRAM.                                                SG2024.2
-019900*TERMINATE-CALL.                                                  SG2024.2
+019800S    EXIT PROGRAM.                                                SG2024.2
+019900STERMINATE-CALL.                                                  SG2024.2
 020000     STOP     RUN.                                                SG2024.2
 020100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SG2024.2
 020200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SG2024.2
@@ -259,15 +258,15 @@
 025800     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SG2024.2
 025900 WRITE-LINE.                                                      SG2024.2
 026000     ADD 1 TO RECORD-COUNT.                                       SG2024.2
-026100*    IF RECORD-COUNT GREATER 50                                   SG2024.2
-026200*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG2024.2
-026300*        MOVE SPACE TO DUMMY-RECORD                               SG2024.2
-026400*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG2024.2
-026500*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SG2024.2
-026600*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SG2024.2
-026700*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SG2024.2
-026800*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG2024.2
-026900*        MOVE ZERO TO RECORD-COUNT.                               SG2024.2
+026100Y    IF RECORD-COUNT GREATER 50                                   SG2024.2
+026200Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG2024.2
+026300Y        MOVE SPACE TO DUMMY-RECORD                               SG2024.2
+026400Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG2024.2
+026500Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SG2024.2
+026600Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SG2024.2
+026700Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SG2024.2
+026800Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG2024.2
+026900Y        MOVE ZERO TO RECORD-COUNT.                               SG2024.2
 027000     PERFORM WRT-LN.                                              SG2024.2
 027100 WRT-LN.                                                          SG2024.2
 027200     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SG2024.2
@@ -431,4 +430,3 @@
 043000     MOVE "Y" TO PERF-RES-OVER-B.                                 SG2024.2
 043100 P4802.                                                           SG2024.2
 043200     EXIT.                                                        SG2024.2
-      *END-OF,SG202A                                                                  

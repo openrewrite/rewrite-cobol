@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SG203A                                                            
 000100 IDENTIFICATION DIVISION.                                         SG2034.2
 000200 PROGRAM-ID.                                                      SG2034.2
 000300     SG203A.                                                      SG2034.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             SG2034.2
 000600 INSTALLATION.                                                    SG2034.2
 000700     GENERAL SERVICES ADMINISTRATION                              SG2034.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               SG2034.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                SG2034.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 SG2034.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               SG2034.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 SG2034.2
@@ -184,8 +183,8 @@
 018300 CLOSE-FILES.                                                     SG2034.2
 018400     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SG2034.2
 018500 TERMINATE-CCVS.                                                  SG2034.2
-018600*    EXIT PROGRAM.                                                SG2034.2
-018700*TERMINATE-CALL.                                                  SG2034.2
+018600S    EXIT PROGRAM.                                                SG2034.2
+018700STERMINATE-CALL.                                                  SG2034.2
 018800     STOP     RUN.                                                SG2034.2
 018900 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SG2034.2
 019000 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SG2034.2
@@ -247,15 +246,15 @@
 024600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SG2034.2
 024700 WRITE-LINE.                                                      SG2034.2
 024800     ADD 1 TO RECORD-COUNT.                                       SG2034.2
-024900*    IF RECORD-COUNT GREATER 50                                   SG2034.2
-025000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG2034.2
-025100*        MOVE SPACE TO DUMMY-RECORD                               SG2034.2
-025200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG2034.2
-025300*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SG2034.2
-025400*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SG2034.2
-025500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SG2034.2
-025600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG2034.2
-025700*        MOVE ZERO TO RECORD-COUNT.                               SG2034.2
+024900Y    IF RECORD-COUNT GREATER 50                                   SG2034.2
+025000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SG2034.2
+025100Y        MOVE SPACE TO DUMMY-RECORD                               SG2034.2
+025200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SG2034.2
+025300Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SG2034.2
+025400Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SG2034.2
+025500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SG2034.2
+025600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SG2034.2
+025700Y        MOVE ZERO TO RECORD-COUNT.                               SG2034.2
 025800     PERFORM WRT-LN.                                              SG2034.2
 025900 WRT-LN.                                                          SG2034.2
 026000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SG2034.2
@@ -793,4 +792,3 @@
 079200     MOVE "TEST BEGINS IN PARA-47" TO RE-MARK.                    SG2034.2
 079300     PERFORM PRINT-DETAIL.                                        SG2034.2
 079400     GO TO    CLOSE-FILES.                                        SG2034.2
-      *END-OF,SG203A                                                                  

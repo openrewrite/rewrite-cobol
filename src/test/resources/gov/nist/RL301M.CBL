@@ -1,4 +1,3 @@
-      *HEADER,COBOL,RL301M                                                            
 000100 IDENTIFICATION DIVISION.                                         RL3014.2
 000200 PROGRAM-ID.                                                      RL3014.2
 000300      RL301M.                                                     RL3014.2
@@ -66,4 +65,3 @@
 006500     MOVE "DONE" TO STATE.                                        RL3014.2
 006600                                                                  RL3014.2
 006700*TOTAL NUMBER OF FLAGS EXPECTED = 6.                              RL3014.2
-      *END-OF,RL301M                                                                  

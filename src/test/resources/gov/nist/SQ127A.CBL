@@ -1,4 +1,3 @@
-      *HEADER,COBOL,SQ127A                                                            
 000100 IDENTIFICATION DIVISION.                                         SQ1274.2
 000200 PROGRAM-ID.                                                      SQ1274.2
 000300     SQ127A.                                                      SQ1274.2
@@ -47,11 +46,11 @@
 004600     XXXXX083.                                                    SQ1274.2
 004700 INPUT-OUTPUT SECTION.                                            SQ1274.2
 004800 FILE-CONTROL.                                                    SQ1274.2
-004900*    SELECT RAW-DATA   ASSIGN TO                                  SQ1274.2
-005000*    XXXXX062                                                     SQ1274.2
-005100*           ORGANIZATION IS INDEXED                               SQ1274.2
-005200*           ACCESS MODE IS RANDOM                                 SQ1274.2
-005300*           RECORD KEY IS RAW-DATA-KEY.                           SQ1274.2
+004900P    SELECT RAW-DATA   ASSIGN TO                                  SQ1274.2
+005000P    XXXXX062                                                     SQ1274.2
+005100P           ORGANIZATION IS INDEXED                               SQ1274.2
+005200P           ACCESS MODE IS RANDOM                                 SQ1274.2
+005300P           RECORD KEY IS RAW-DATA-KEY.                           SQ1274.2
 005400     SELECT PRINT-FILE ASSIGN TO                                  SQ1274.2
 005500     XXXXX055.                                                    SQ1274.2
 005600     SELECT SQ-FS3 ASSIGN TO                                      SQ1274.2
@@ -60,22 +59,22 @@
 005900     ACCESS MODE IS SEQUENTIAL.                                   SQ1274.2
 006000 DATA DIVISION.                                                   SQ1274.2
 006100 FILE SECTION.                                                    SQ1274.2
-006200*                                                                 SQ1274.2
-006300*FD  RAW-DATA.                                                    SQ1274.2
-006400*                                                                 SQ1274.2
-006500*01  RAW-DATA-SATZ.                                               SQ1274.2
-006600*    05  RAW-DATA-KEY        PIC X(6).                            SQ1274.2
-006700*    05  C-DATE              PIC 9(6).                            SQ1274.2
-006800*    05  C-TIME              PIC 9(8).                            SQ1274.2
-006900*    05  C-NO-OF-TESTS       PIC 99.                              SQ1274.2
-007000*    05  C-OK                PIC 999.                             SQ1274.2
-007100*    05  C-ALL               PIC 999.                             SQ1274.2
-007200*    05  C-FAIL              PIC 999.                             SQ1274.2
-007300*    05  C-DELETED           PIC 999.                             SQ1274.2
-007400*    05  C-INSPECT           PIC 999.                             SQ1274.2
-007500*    05  C-NOTE              PIC X(13).                           SQ1274.2
-007600*    05  C-INDENT            PIC X.                               SQ1274.2
-007700*    05  C-ABORT             PIC X(8).                            SQ1274.2
+006200P                                                                 SQ1274.2
+006300PFD  RAW-DATA.                                                    SQ1274.2
+006400P                                                                 SQ1274.2
+006500P01  RAW-DATA-SATZ.                                               SQ1274.2
+006600P    05  RAW-DATA-KEY        PIC X(6).                            SQ1274.2
+006700P    05  C-DATE              PIC 9(6).                            SQ1274.2
+006800P    05  C-TIME              PIC 9(8).                            SQ1274.2
+006900P    05  C-NO-OF-TESTS       PIC 99.                              SQ1274.2
+007000P    05  C-OK                PIC 999.                             SQ1274.2
+007100P    05  C-ALL               PIC 999.                             SQ1274.2
+007200P    05  C-FAIL              PIC 999.                             SQ1274.2
+007300P    05  C-DELETED           PIC 999.                             SQ1274.2
+007400P    05  C-INSPECT           PIC 999.                             SQ1274.2
+007500P    05  C-NOTE              PIC X(13).                           SQ1274.2
+007600P    05  C-INDENT            PIC X.                               SQ1274.2
+007700P    05  C-ABORT             PIC X(8).                            SQ1274.2
 007800 FD  PRINT-FILE                                                   SQ1274.2
 007900C    LABEL RECORDS                                                SQ1274.2
 008000C    XXXXX084                                                     SQ1274.2
@@ -271,16 +270,16 @@
 027000 PROCEDURE DIVISION.                                              SQ1274.2
 027100 CCVS1 SECTION.                                                   SQ1274.2
 027200 OPEN-FILES.                                                      SQ1274.2
-027300*    OPEN I-O RAW-DATA.                                           SQ1274.2
-027400*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ1274.2
-027500*    READ RAW-DATA INVALID KEY GO TO END-E-1.                     SQ1274.2
-027600*    MOVE "ABORTED " TO C-ABORT.                                  SQ1274.2
-027700*    ADD 1 TO C-NO-OF-TESTS.                                      SQ1274.2
-027800*    ACCEPT C-DATE  FROM DATE.                                    SQ1274.2
-027900*    ACCEPT C-TIME  FROM TIME.                                    SQ1274.2
-028000*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             SQ1274.2
-028100*END-E-1.                                                         SQ1274.2
-028200*    CLOSE RAW-DATA.                                              SQ1274.2
+027300P    OPEN I-O RAW-DATA.                                           SQ1274.2
+027400P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ1274.2
+027500P    READ RAW-DATA INVALID KEY GO TO END-E-1.                     SQ1274.2
+027600P    MOVE "ABORTED " TO C-ABORT.                                  SQ1274.2
+027700P    ADD 1 TO C-NO-OF-TESTS.                                      SQ1274.2
+027800P    ACCEPT C-DATE  FROM DATE.                                    SQ1274.2
+027900P    ACCEPT C-TIME  FROM TIME.                                    SQ1274.2
+028000P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-1.             SQ1274.2
+028100PEND-E-1.                                                         SQ1274.2
+028200P    CLOSE RAW-DATA.                                              SQ1274.2
 028300     OPEN     OUTPUT PRINT-FILE.                                  SQ1274.2
 028400     MOVE CCVS-PGM-ID TO TEST-ID. MOVE CCVS-PGM-ID TO ID-AGAIN.   SQ1274.2
 028500     MOVE    SPACE TO TEST-RESULTS.                               SQ1274.2
@@ -295,21 +294,21 @@
 029400     GO TO CCVS1-EXIT.                                            SQ1274.2
 029500 CLOSE-FILES.                                                     SQ1274.2
 029600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SQ1274.2
-029700*    OPEN I-O RAW-DATA.                                           SQ1274.2
-029800*    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ1274.2
-029900*    READ RAW-DATA INVALID KEY GO TO END-E-2.                     SQ1274.2
-030000*    MOVE "OK.     " TO C-ABORT.                                  SQ1274.2
-030100*    MOVE PASS-COUNTER TO C-OK.                                   SQ1274.2
-030200*    MOVE ERROR-HOLD   TO C-ALL.                                  SQ1274.2
-030300*    MOVE ERROR-COUNTER TO C-FAIL.                                SQ1274.2
-030400*    MOVE DELETE-CNT TO C-DELETED.                                SQ1274.2
-030500*    MOVE INSPECT-COUNTER TO C-INSPECT.                           SQ1274.2
-030600*    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             SQ1274.2
-030700*END-E-2.                                                         SQ1274.2
-030800*    CLOSE RAW-DATA.                                              SQ1274.2
+029700P    OPEN I-O RAW-DATA.                                           SQ1274.2
+029800P    MOVE CCVS-PGM-ID TO RAW-DATA-KEY.                            SQ1274.2
+029900P    READ RAW-DATA INVALID KEY GO TO END-E-2.                     SQ1274.2
+030000P    MOVE "OK.     " TO C-ABORT.                                  SQ1274.2
+030100P    MOVE PASS-COUNTER TO C-OK.                                   SQ1274.2
+030200P    MOVE ERROR-HOLD   TO C-ALL.                                  SQ1274.2
+030300P    MOVE ERROR-COUNTER TO C-FAIL.                                SQ1274.2
+030400P    MOVE DELETE-CNT TO C-DELETED.                                SQ1274.2
+030500P    MOVE INSPECT-COUNTER TO C-INSPECT.                           SQ1274.2
+030600P    REWRITE RAW-DATA-SATZ INVALID KEY GO TO END-E-2.             SQ1274.2
+030700PEND-E-2.                                                         SQ1274.2
+030800P    CLOSE RAW-DATA.                                              SQ1274.2
 030900 TERMINATE-CCVS.                                                  SQ1274.2
-031000*    EXIT PROGRAM.                                                SQ1274.2
-031100*TERMINATE-CALL.                                                  SQ1274.2
+031000S    EXIT PROGRAM.                                                SQ1274.2
+031100STERMINATE-CALL.                                                  SQ1274.2
 031200     STOP     RUN.                                                SQ1274.2
 031300 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SQ1274.2
 031400 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SQ1274.2
@@ -371,15 +370,15 @@
 037000     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SQ1274.2
 037100 WRITE-LINE.                                                      SQ1274.2
 037200     ADD 1 TO RECORD-COUNT.                                       SQ1274.2
-037300*    IF RECORD-COUNT GREATER 50                                   SQ1274.2
-037400*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SQ1274.2
-037500*        MOVE SPACE TO DUMMY-RECORD                               SQ1274.2
-037600*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ1274.2
-037700*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SQ1274.2
-037800*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SQ1274.2
-037900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SQ1274.2
-038000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SQ1274.2
-038100*        MOVE ZERO TO RECORD-COUNT.                               SQ1274.2
+037300Y    IF RECORD-COUNT GREATER 50                                   SQ1274.2
+037400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SQ1274.2
+037500Y        MOVE SPACE TO DUMMY-RECORD                               SQ1274.2
+037600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SQ1274.2
+037700Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SQ1274.2
+037800Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SQ1274.2
+037900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SQ1274.2
+038000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SQ1274.2
+038100Y        MOVE ZERO TO RECORD-COUNT.                               SQ1274.2
 038200     PERFORM WRT-LN.                                              SQ1274.2
 038300 WRT-LN.                                                          SQ1274.2
 038400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SQ1274.2
@@ -618,4 +617,3 @@
 061700 CCVS-EXIT SECTION.                                               SQ1274.2
 061800 CCVS-999999.                                                     SQ1274.2
 061900     GO TO CLOSE-FILES.                                           SQ1274.2
-      *END-OF,SQ127A                                                                  

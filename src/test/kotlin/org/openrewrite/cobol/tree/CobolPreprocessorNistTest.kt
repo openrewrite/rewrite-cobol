@@ -1097,6 +1097,7 @@ class CobolPreprocessorNistTest : RewriteTest {
         cobolPreprocess(getNistSource("NC204M.CBL"))
     )
 
+    @Disabled("Requires line continuations for tokens.")
     @Test
     fun nc205A() = rewriteRun(
         cobolPreprocess(getNistSource("NC205A.CBL"))
@@ -1317,6 +1318,7 @@ class CobolPreprocessorNistTest : RewriteTest {
         cobolPreprocess(getNistSource("NC303M.CBL"))
     )
 
+    @Disabled("Requires line continuations for tokens.")
     @Test
     fun nc401M() = rewriteRun(
         cobolPreprocess(getNistSource("NC401M.CBL"))
