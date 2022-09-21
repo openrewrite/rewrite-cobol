@@ -1,4 +1,3 @@
-      *HEADER,COBOL,DB201A                                                            
 000100 IDENTIFICATION DIVISION.                                         DB2014.2
 000200 PROGRAM-ID.                                                      DB2014.2
 000300     DB201A.                                                      DB2014.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             DB2014.2
 000600 INSTALLATION.                                                    DB2014.2
 000700     GENERAL SERVICES ADMINISTRATION                              DB2014.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               DB2014.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                DB2014.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 DB2014.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               DB2014.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 DB2014.2
@@ -298,8 +297,8 @@
 029700 CLOSE-FILES.                                                     DB2014.2
 029800     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   DB2014.2
 029900 TERMINATE-CCVS.                                                  DB2014.2
-030000*    EXIT PROGRAM.                                                DB2014.2
-030100*TERMINATE-CALL.                                                  DB2014.2
+030000S    EXIT PROGRAM.                                                DB2014.2
+030100STERMINATE-CALL.                                                  DB2014.2
 030200     STOP     RUN.                                                DB2014.2
 030300 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         DB2014.2
 030400 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           DB2014.2
@@ -361,15 +360,15 @@
 036000     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           DB2014.2
 036100 WRITE-LINE.                                                      DB2014.2
 036200     ADD 1 TO RECORD-COUNT.                                       DB2014.2
-036300*    IF RECORD-COUNT GREATER 50                                   DB2014.2
-036400*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB2014.2
-036500*        MOVE SPACE TO DUMMY-RECORD                               DB2014.2
-036600*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB2014.2
-036700*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB2014.2
-036800*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB2014.2
-036900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB2014.2
-037000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB2014.2
-037100*        MOVE ZERO TO RECORD-COUNT.                               DB2014.2
+036300Y    IF RECORD-COUNT GREATER 50                                   DB2014.2
+036400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB2014.2
+036500Y        MOVE SPACE TO DUMMY-RECORD                               DB2014.2
+036600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB2014.2
+036700Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB2014.2
+036800Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB2014.2
+036900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB2014.2
+037000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB2014.2
+037100Y        MOVE ZERO TO RECORD-COUNT.                               DB2014.2
 037200     PERFORM WRT-LN.                                              DB2014.2
 037300 WRT-LN.                                                          DB2014.2
 037400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               DB2014.2
@@ -1514,4 +1513,3 @@
 151300 CCVS-EXIT SECTION.                                               DB2014.2
 151400 CCVS-999999.                                                     DB2014.2
 151500     GO TO CLOSE-FILES.                                           DB2014.2
-      *END-OF,DB201A                                                                  

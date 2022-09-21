@@ -1,4 +1,3 @@
-      *HEADER,COBOL,DB204A                                                            
 000100 IDENTIFICATION DIVISION.                                         DB2044.2
 000200 PROGRAM-ID.                                                      DB2044.2
 000300     DB204A.                                                      DB2044.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             DB2044.2
 000600 INSTALLATION.                                                    DB2044.2
 000700     GENERAL SERVICES ADMINISTRATION                              DB2044.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               DB2044.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                DB2044.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 DB2044.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               DB2044.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 DB2044.2
@@ -72,7 +71,7 @@
 007100C    IS                                                           DB2044.2
 007200C    XXXXX075                                                     DB2044.2
 007300*      XXXXX075  REPLACE WITH VALUE CLAUSE OBJECT (*OPT C ONLY)   DB2044.2
-007400*    XXXXX069                                                     DB2044.2
+007400G    XXXXX069                                                     DB2044.2
 007500*      XXXXX069  REPLACE WITH ADDITIONAL INFO (*OPT G ONLY)       DB2044.2
 007600     LABEL RECORDS ARE STANDARD.                                  DB2044.2
 007700 01  REC-1 PIC X(120).                                            DB2044.2
@@ -83,7 +82,7 @@
 008200C    IS                                                           DB2044.2
 008300C    XXXXX076                                                     DB2044.2
 008400*      XXXXX076  REPLACE WITH VALUE CLAUSE OBJECT (*OPT C ONLY)   DB2044.2
-008500*    XXXXX069                                                     DB2044.2
+008500G    XXXXX069                                                     DB2044.2
 008600*      XXXXX069  REPLACE WITH ADDITIONAL INFO (*OPT G ONLY)       DB2044.2
 008700     LABEL RECORDS ARE STANDARD.                                  DB2044.2
 008800 01  REC-2 PIC X(120).                                            DB2044.2
@@ -94,7 +93,7 @@
 009300C    IS                                                           DB2044.2
 009400C    XXXXX077                                                     DB2044.2
 009500*      XXXXX077  REPLACE WITH VALUE CLAUSE OBJECT (*OPT C ONLY)   DB2044.2
-009600*    XXXXX069                                                     DB2044.2
+009600G    XXXXX069                                                     DB2044.2
 009700*      XXXXX069  REPLACE WITH ADDITIONAL INFO (*OPT G ONLY)       DB2044.2
 009800     LABEL RECORDS ARE STANDARD.                                  DB2044.2
 009900 01  REC-3 PIC X(120).                                            DB2044.2
@@ -305,8 +304,8 @@
 030400 CLOSE-FILES.                                                     DB2044.2
 030500     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   DB2044.2
 030600 TERMINATE-CCVS.                                                  DB2044.2
-030700*    EXIT PROGRAM.                                                DB2044.2
-030800*TERMINATE-CALL.                                                  DB2044.2
+030700S    EXIT PROGRAM.                                                DB2044.2
+030800STERMINATE-CALL.                                                  DB2044.2
 030900     STOP     RUN.                                                DB2044.2
 031000 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         DB2044.2
 031100 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           DB2044.2
@@ -368,15 +367,15 @@
 036700     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           DB2044.2
 036800 WRITE-LINE.                                                      DB2044.2
 036900     ADD 1 TO RECORD-COUNT.                                       DB2044.2
-037000*    IF RECORD-COUNT GREATER 50                                   DB2044.2
-037100*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB2044.2
-037200*        MOVE SPACE TO DUMMY-RECORD                               DB2044.2
-037300*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB2044.2
-037400*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB2044.2
-037500*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB2044.2
-037600*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB2044.2
-037700*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB2044.2
-037800*        MOVE ZERO TO RECORD-COUNT.                               DB2044.2
+037000Y    IF RECORD-COUNT GREATER 50                                   DB2044.2
+037100Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB2044.2
+037200Y        MOVE SPACE TO DUMMY-RECORD                               DB2044.2
+037300Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB2044.2
+037400Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB2044.2
+037500Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB2044.2
+037600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB2044.2
+037700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB2044.2
+037800Y        MOVE ZERO TO RECORD-COUNT.                               DB2044.2
 037900     PERFORM WRT-LN.                                              DB2044.2
 038000 WRT-LN.                                                          DB2044.2
 038100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               DB2044.2
@@ -519,38 +518,37 @@
 051800 CLOSE-OUTPUT-FILE.                                               DB2044.2
 051900     CLOSE SQ-FS3.                                                DB2044.2
 052000 END-OF-DB204A SECTION.                                           DB2044.2
-052100*DUMP-SQ-FS1.                                                     DB2044.2
-052200*    OPEN INPUT SQ-FS1.                                           DB2044.2
-052300*    MOVE "DUMP OF SQ-FS1 FOLLOWS:" TO PRINT-REC.                 DB2044.2
-052400*    PERFORM WRITE-LINE.                                          DB2044.2
-052500*READ-SQ-FS1.                                                     DB2044.2
-052600*    READ SQ-FS1  AT END GO TO DUMP-SQ-FS2.                       DB2044.2
-052700*    MOVE REC-1 TO PRINT-REC.                                     DB2044.2
-052800*    PERFORM WRITE-LINE.                                          DB2044.2
-052900*    GO TO READ-SQ-FS1.                                           DB2044.2
-053000*DUMP-SQ-FS2.                                                     DB2044.2
-053100*    CLOSE SQ-FS1.                                                DB2044.2
-053200*    OPEN INPUT SQ-FS2.                                           DB2044.2
-053300*    MOVE "DUMP OF SQ-FS2 FOLLOWS:" TO PRINT-REC.                 DB2044.2
-053400*    PERFORM WRITE-LINE.                                          DB2044.2
-053500*READ-SQ-FS2.                                                     DB2044.2
-053600*    READ SQ-FS2 AT END GO TO DUMP-SQ-FS3.                        DB2044.2
-053700*    MOVE REC-2 TO PRINT-REC.                                     DB2044.2
-053800*    PERFORM WRITE-LINE.                                          DB2044.2
-053900*    GO TO READ-SQ-FS2.                                           DB2044.2
-054000*DUMP-SQ-FS3.                                                     DB2044.2
-054100*    CLOSE SQ-FS2.                                                DB2044.2
-054200*    OPEN INPUT SQ-FS3.                                           DB2044.2
-054300*    MOVE "DUMP OF SQ-FS3 FOLLOWS:" TO PRINT-REC.                 DB2044.2
-054400*    PERFORM WRITE-LINE.                                          DB2044.2
-054500*READ-SQ-FS3.                                                     DB2044.2
-054600*    READ SQ-FS3 AT END GO TO END-OF-TESTS.                       DB2044.2
-054700*    MOVE REC-3 TO PRINT-REC.                                     DB2044.2
-054800*    PERFORM WRITE-LINE.                                          DB2044.2
-054900*    GO TO READ-SQ-FS3.                                           DB2044.2
+052100XDUMP-SQ-FS1.                                                     DB2044.2
+052200X    OPEN INPUT SQ-FS1.                                           DB2044.2
+052300X    MOVE "DUMP OF SQ-FS1 FOLLOWS:" TO PRINT-REC.                 DB2044.2
+052400X    PERFORM WRITE-LINE.                                          DB2044.2
+052500XREAD-SQ-FS1.                                                     DB2044.2
+052600X    READ SQ-FS1  AT END GO TO DUMP-SQ-FS2.                       DB2044.2
+052700X    MOVE REC-1 TO PRINT-REC.                                     DB2044.2
+052800X    PERFORM WRITE-LINE.                                          DB2044.2
+052900X    GO TO READ-SQ-FS1.                                           DB2044.2
+053000XDUMP-SQ-FS2.                                                     DB2044.2
+053100X    CLOSE SQ-FS1.                                                DB2044.2
+053200X    OPEN INPUT SQ-FS2.                                           DB2044.2
+053300X    MOVE "DUMP OF SQ-FS2 FOLLOWS:" TO PRINT-REC.                 DB2044.2
+053400X    PERFORM WRITE-LINE.                                          DB2044.2
+053500XREAD-SQ-FS2.                                                     DB2044.2
+053600X    READ SQ-FS2 AT END GO TO DUMP-SQ-FS3.                        DB2044.2
+053700X    MOVE REC-2 TO PRINT-REC.                                     DB2044.2
+053800X    PERFORM WRITE-LINE.                                          DB2044.2
+053900X    GO TO READ-SQ-FS2.                                           DB2044.2
+054000XDUMP-SQ-FS3.                                                     DB2044.2
+054100X    CLOSE SQ-FS2.                                                DB2044.2
+054200X    OPEN INPUT SQ-FS3.                                           DB2044.2
+054300X    MOVE "DUMP OF SQ-FS3 FOLLOWS:" TO PRINT-REC.                 DB2044.2
+054400X    PERFORM WRITE-LINE.                                          DB2044.2
+054500XREAD-SQ-FS3.                                                     DB2044.2
+054600X    READ SQ-FS3 AT END GO TO END-OF-TESTS.                       DB2044.2
+054700X    MOVE REC-3 TO PRINT-REC.                                     DB2044.2
+054800X    PERFORM WRITE-LINE.                                          DB2044.2
+054900X    GO TO READ-SQ-FS3.                                           DB2044.2
 055000 END-OF-TESTS.                                                    DB2044.2
 055100     EXIT.                                                        DB2044.2
 055200 CCVS-EXIT SECTION.                                               DB2044.2
 055300 CCVS-999999.                                                     DB2044.2
 055400     GO TO CLOSE-FILES.                                           DB2044.2
-      *END-OF,DB204A                                                                  

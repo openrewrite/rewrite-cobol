@@ -1,4 +1,3 @@
-      *HEADER,COBOL,DB105A                                                            
 000100 IDENTIFICATION DIVISION.                                         DB1054.2
 000200 PROGRAM-ID.                                                      DB1054.2
 000300     DB105A.                                                      DB1054.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             DB1054.2
 000600 INSTALLATION.                                                    DB1054.2
 000700     GENERAL SERVICES ADMINISTRATION                              DB1054.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               DB1054.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                DB1054.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 DB1054.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               DB1054.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 DB1054.2
@@ -537,8 +536,8 @@
 053600 CLOSE-FILES.                                                     DB1054.2
 053700     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   DB1054.2
 053800 TERMINATE-CCVS.                                                  DB1054.2
-053900*    EXIT PROGRAM.                                                DB1054.2
-054000*TERMINATE-CALL.                                                  DB1054.2
+053900T    EXIT PROGRAM.                                                DB1054.2
+054000TTERMINATE-CALL.                                                  DB1054.2
 054100     STOP     RUN.                                                DB1054.2
 054200 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         DB1054.2
 054300 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           DB1054.2
@@ -598,16 +597,16 @@
 059700     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           DB1054.2
 059800 WRITE-LINE.                                                      DB1054.2
 059900     ADD 1 TO RECORD-COUNT.                                       DB1054.2
-060000*    IF RECORD-COUNT GREATER 50                                   DB1054.2
-060100*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB1054.2
-060200*        MOVE SPACE TO DUMMY-RECORD                               DB1054.2
-060300*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB1054.2
-060400*        MOVE COLUMNS-LINE-1 TO DUMMY-RECORD PERFORM WRT-LN       DB1054.2
-060500*        MOVE COLUMNS-LINE-2 TO DUMMY-RECORD PERFORM WRT-LN       DB1054.2
-060600*            2 TIMES                                              DB1054.2
-060700*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB1054.2
-060800*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB1054.2
-060900*        MOVE ZERO TO RECORD-COUNT.                               DB1054.2
+060000Y    IF RECORD-COUNT GREATER 50                                   DB1054.2
+060100Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB1054.2
+060200Y        MOVE SPACE TO DUMMY-RECORD                               DB1054.2
+060300Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB1054.2
+060400Y        MOVE COLUMNS-LINE-1 TO DUMMY-RECORD PERFORM WRT-LN       DB1054.2
+060500Y        MOVE COLUMNS-LINE-2 TO DUMMY-RECORD PERFORM WRT-LN       DB1054.2
+060600Y            2 TIMES                                              DB1054.2
+060700Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB1054.2
+060800Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB1054.2
+060900Y        MOVE ZERO TO RECORD-COUNT.                               DB1054.2
 061000     PERFORM   WRT-LN.                                            DB1054.2
 061100 WRT-LN.                                                          DB1054.2
 061200     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               DB1054.2
@@ -1451,4 +1450,3 @@
 145000 CCVS-EXIT SECTION.                                               DB1054.2
 145100 CCVS-999999.                                                     DB1054.2
 145200     GO TO CLOSE-FILES.                                           DB1054.2
-      *END-OF,DB105A                                                                  

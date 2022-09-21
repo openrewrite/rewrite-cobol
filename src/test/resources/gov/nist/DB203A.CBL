@@ -1,4 +1,3 @@
-      *HEADER,COBOL,DB203A                                                            
 000100 IDENTIFICATION DIVISION.                                         DB2034.2
 000200 PROGRAM-ID.                                                      DB2034.2
 000300     DB203A.                                                      DB2034.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             DB2034.2
 000600 INSTALLATION.                                                    DB2034.2
 000700     GENERAL SERVICES ADMINISTRATION                              DB2034.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               DB2034.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                DB2034.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 DB2034.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               DB2034.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 DB2034.2
@@ -57,7 +56,7 @@
 005600     XXXXX055.                                                    DB2034.2
 005700     SELECT IND-FILE ASSIGN TO                                    DB2034.2
 005800     XXXXX024                                                     DB2034.2
-005900*    XXXXX044                                                     DB2034.2
+005900J    XXXXX044                                                     DB2034.2
 006000*      XXXXX044  REPLACE WITH INDEX-FILE-NAME (*OPT J ONLY)       DB2034.2
 006100     ORGANIZATION IS INDEXED                                      DB2034.2
 006200     ACCESS MODE IS DYNAMIC                                       DB2034.2
@@ -77,7 +76,7 @@
 007600C    IS                                                           DB2034.2
 007700C    XXXXX075                                                     DB2034.2
 007800*      XXXXX075  REPLACE WITH VALUE CLAUSE OBJECT (*OPT C ONLY)   DB2034.2
-007900*    XXXXX069                                                     DB2034.2
+007900G    XXXXX069                                                     DB2034.2
 008000*      XXXXX069  REPLACE WITH ADDITIONAL INFO (*OPT G ONLY)       DB2034.2
 008100     LABEL RECORDS ARE STANDARD.                                  DB2034.2
 008200 01  IND-REC-1.                                                   DB2034.2
@@ -294,8 +293,8 @@
 029300 CLOSE-FILES.                                                     DB2034.2
 029400     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   DB2034.2
 029500 TERMINATE-CCVS.                                                  DB2034.2
-029600*    EXIT PROGRAM.                                                DB2034.2
-029700*TERMINATE-CALL.                                                  DB2034.2
+029600S    EXIT PROGRAM.                                                DB2034.2
+029700STERMINATE-CALL.                                                  DB2034.2
 029800     STOP     RUN.                                                DB2034.2
 029900 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         DB2034.2
 030000 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           DB2034.2
@@ -357,15 +356,15 @@
 035600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           DB2034.2
 035700 WRITE-LINE.                                                      DB2034.2
 035800     ADD 1 TO RECORD-COUNT.                                       DB2034.2
-035900*    IF RECORD-COUNT GREATER 50                                   DB2034.2
-036000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB2034.2
-036100*        MOVE SPACE TO DUMMY-RECORD                               DB2034.2
-036200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB2034.2
-036300*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB2034.2
-036400*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB2034.2
-036500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB2034.2
-036600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB2034.2
-036700*        MOVE ZERO TO RECORD-COUNT.                               DB2034.2
+035900Y    IF RECORD-COUNT GREATER 50                                   DB2034.2
+036000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB2034.2
+036100Y        MOVE SPACE TO DUMMY-RECORD                               DB2034.2
+036200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB2034.2
+036300Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB2034.2
+036400Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB2034.2
+036500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB2034.2
+036600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB2034.2
+036700Y        MOVE ZERO TO RECORD-COUNT.                               DB2034.2
 036800     PERFORM WRT-LN.                                              DB2034.2
 036900 WRT-LN.                                                          DB2034.2
 037000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               DB2034.2
@@ -799,22 +798,21 @@
 079800-            "BORTED."  UPON THE-SYSTEM-PRINTER.                  DB2034.2
 079900 CLOSE-IND-FILE.                                                  DB2034.2
 080000     CLOSE IND-FILE.                                              DB2034.2
-080100*OPEN-IND-FILE.                                                   DB2034.2
-080200*    OPEN INPUT IND-FILE.                                         DB2034.2
-080300*    MOVE SPACES TO PRINT-REC.                                    DB2034.2
-080400*    PERFORM WRITE-LINE.                                          DB2034.2
-080500*    MOVE " DUMP OF IND-FILE FOLLOWS" TO PRINT-REC.               DB2034.2
-080600*    PERFORM WRITE-LINE.                                          DB2034.2
-080700*READ-IND-FILE.                                                   DB2034.2
-080800*    READ IND-FILE NEXT RECORD  AT END GO TO CLOSE-FILE-DUMP.     DB2034.2
-080900*    MOVE IND-REC-1H TO PRINT-REC.                                DB2034.2
-081000*    PERFORM WRITE-LINE.                                          DB2034.2
-081100*    MOVE IND-REC-2H TO PRINT-REC.                                DB2034.2
-081200*    PERFORM WRITE-LINE.                                          DB2034.2
-081300*    GO TO READ-IND-FILE.                                         DB2034.2
-081400*CLOSE-FILE-DUMP.                                                 DB2034.2
-081500*    CLOSE IND-FILE.                                              DB2034.2
+080100XOPEN-IND-FILE.                                                   DB2034.2
+080200X    OPEN INPUT IND-FILE.                                         DB2034.2
+080300X    MOVE SPACES TO PRINT-REC.                                    DB2034.2
+080400X    PERFORM WRITE-LINE.                                          DB2034.2
+080500X    MOVE " DUMP OF IND-FILE FOLLOWS" TO PRINT-REC.               DB2034.2
+080600X    PERFORM WRITE-LINE.                                          DB2034.2
+080700XREAD-IND-FILE.                                                   DB2034.2
+080800X    READ IND-FILE NEXT RECORD  AT END GO TO CLOSE-FILE-DUMP.     DB2034.2
+080900X    MOVE IND-REC-1H TO PRINT-REC.                                DB2034.2
+081000X    PERFORM WRITE-LINE.                                          DB2034.2
+081100X    MOVE IND-REC-2H TO PRINT-REC.                                DB2034.2
+081200X    PERFORM WRITE-LINE.                                          DB2034.2
+081300X    GO TO READ-IND-FILE.                                         DB2034.2
+081400XCLOSE-FILE-DUMP.                                                 DB2034.2
+081500X    CLOSE IND-FILE.                                              DB2034.2
 081600 CCVS-EXIT SECTION.                                               DB2034.2
 081700 CCVS-999999.                                                     DB2034.2
 081800     GO TO CLOSE-FILES.                                           DB2034.2
-      *END-OF,DB203A                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC201A                                                            
 000100 IDENTIFICATION DIVISION.                                         IC2014.2
 000200 PROGRAM-ID.                                                      IC2014.2
 000300     IC201A.                                                      IC2014.2
@@ -204,8 +203,8 @@
 020300 CLOSE-FILES.                                                     IC2014.2
 020400     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IC2014.2
 020500 TERMINATE-CCVS.                                                  IC2014.2
-020600*    EXIT PROGRAM.                                                IC2014.2
-020700*TERMINATE-CALL.                                                  IC2014.2
+020600S    EXIT PROGRAM.                                                IC2014.2
+020700STERMINATE-CALL.                                                  IC2014.2
 020800     STOP     RUN.                                                IC2014.2
 020900 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IC2014.2
 021000 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IC2014.2
@@ -268,15 +267,15 @@
 026700     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IC2014.2
 026800 WRITE-LINE.                                                      IC2014.2
 026900     ADD 1 TO RECORD-COUNT.                                       IC2014.2
-027000*    IF RECORD-COUNT GREATER 50                                   IC2014.2
-027100*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC2014.2
-027200*        MOVE SPACE TO DUMMY-RECORD                               IC2014.2
-027300*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC2014.2
-027400*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC2014.2
-027500*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC2014.2
-027600*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC2014.2
-027700*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC2014.2
-027800*        MOVE ZERO TO RECORD-COUNT.                               IC2014.2
+027000Y    IF RECORD-COUNT GREATER 50                                   IC2014.2
+027100Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC2014.2
+027200Y        MOVE SPACE TO DUMMY-RECORD                               IC2014.2
+027300Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC2014.2
+027400Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC2014.2
+027500Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC2014.2
+027600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC2014.2
+027700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC2014.2
+027800Y        MOVE ZERO TO RECORD-COUNT.                               IC2014.2
 027900     PERFORM WRT-LN.                                              IC2014.2
 028000 WRT-LN.                                                          IC2014.2
 028100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IC2014.2
@@ -618,4 +617,3 @@
 061700 CCVS-EXIT SECTION.                                               IC2014.2
 061800 CCVS-999999.                                                     IC2014.2
 061900     GO TO CLOSE-FILES.                                           IC2014.2
-      *END-OF,IC201A                                                                  

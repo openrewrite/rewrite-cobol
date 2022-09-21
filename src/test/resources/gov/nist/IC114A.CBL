@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC114A                                                            
 000100 IDENTIFICATION DIVISION.                                         IC1144.2
 000200 PROGRAM-ID.                                                      IC1144.2
 000300     IC114A.                                                      IC1144.2
@@ -224,8 +223,8 @@
 022300 CLOSE-FILES.                                                     IC1144.2
 022400     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IC1144.2
 022500 TERMINATE-CCVS.                                                  IC1144.2
-022600*    EXIT PROGRAM.                                                IC1144.2
-022700*TERMINATE-CALL.                                                  IC1144.2
+022600S    EXIT PROGRAM.                                                IC1144.2
+022700STERMINATE-CALL.                                                  IC1144.2
 022800     STOP     RUN.                                                IC1144.2
 022900 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IC1144.2
 023000 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IC1144.2
@@ -288,15 +287,15 @@
 028700     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IC1144.2
 028800 WRITE-LINE.                                                      IC1144.2
 028900     ADD 1 TO RECORD-COUNT.                                       IC1144.2
-029000*    IF RECORD-COUNT GREATER 50                                   IC1144.2
-029100*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC1144.2
-029200*        MOVE SPACE TO DUMMY-RECORD                               IC1144.2
-029300*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC1144.2
-029400*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC1144.2
-029500*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC1144.2
-029600*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC1144.2
-029700*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC1144.2
-029800*        MOVE ZERO TO RECORD-COUNT.                               IC1144.2
+029000Y    IF RECORD-COUNT GREATER 50                                   IC1144.2
+029100Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC1144.2
+029200Y        MOVE SPACE TO DUMMY-RECORD                               IC1144.2
+029300Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC1144.2
+029400Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC1144.2
+029500Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC1144.2
+029600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC1144.2
+029700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC1144.2
+029800Y        MOVE ZERO TO RECORD-COUNT.                               IC1144.2
 029900     PERFORM WRT-LN.                                              IC1144.2
 030000 WRT-LN.                                                          IC1144.2
 030100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IC1144.2
@@ -442,32 +441,31 @@
 044100                        FILE-REC-SQ-FS3.                          IC1144.2
 044200 TERMINATE-ROUTINE.                                               IC1144.2
 044300     EXIT.                                                        IC1144.2
-044400*FILE-DUMP SECTION.                                               IC1144.2
-044500*FILE-DUMP-INIT.                                                  IC1144.2
-044600*    MOVE 3 TO CALL-FLAG.                                         IC1144.2
-044700*    MOVE ZERO TO EOF-FLAG COUNT-OF-RECORDS.                      IC1144.2
-044800*    CALL "IC115A" USING GROUP-LINKAGE-VARIABLES                  IC1144.2
-044900*                       FILE-REC-SQ-FS3.                          IC1144.2
-045000*    MOVE 4 TO CALL-FLAG.                                         IC1144.2
-045100*FILE-3-DUMP.                                                     IC1144.2
-045200*    CALL "IC115A" USING GROUP-LINKAGE-VARIABLES                  IC1144.2
-045300*                       FILE-REC-SQ-FS3.                          IC1144.2
-045400*    IF EOF-FLAG EQUAL TO 1                                       IC1144.2
-045500*             GO TO FILE-3-DUMP-END.                              IC1144.2
-045600*    ADD 1 TO COUNT-OF-RECORDS.                                   IC1144.2
-045700*    IF COUNT-OF-RECORDS EQUAL TO 650                             IC1144.2
-045800*             PERFORM BLANK-LINE-PRINT 5 TIMES.                   IC1144.2
-045900*    MOVE FILE-REC-SQ-FS3 TO DUMMY-RECORD.                        IC1144.2
-046000*    PERFORM WRITE-LINE.                                          IC1144.2
-046100*    IF COUNT-OF-RECORDS LESS THAN 669                            IC1144.2
-046200*             GO TO FILE-3-DUMP.                                  IC1144.2
-046300*FILE-3-DUMP-END.                                                 IC1144.2
-046400*    MOVE 5 TO CALL-FLAG.                                         IC1144.2
-046500*    CALL "IC115A" USING GROUP-LINKAGE-VARIABLES                  IC1144.2
-046600*                       FILE-REC-SQ-FS3.                          IC1144.2
-046700*FILE-3-DUMP-EXIT.                                                IC1144.2
-046800*    EXIT.                                                        IC1144.2
+044400XFILE-DUMP SECTION.                                               IC1144.2
+044500XFILE-DUMP-INIT.                                                  IC1144.2
+044600X    MOVE 3 TO CALL-FLAG.                                         IC1144.2
+044700X    MOVE ZERO TO EOF-FLAG COUNT-OF-RECORDS.                      IC1144.2
+044800X    CALL "IC115A" USING GROUP-LINKAGE-VARIABLES                  IC1144.2
+044900X                       FILE-REC-SQ-FS3.                          IC1144.2
+045000X    MOVE 4 TO CALL-FLAG.                                         IC1144.2
+045100XFILE-3-DUMP.                                                     IC1144.2
+045200X    CALL "IC115A" USING GROUP-LINKAGE-VARIABLES                  IC1144.2
+045300X                       FILE-REC-SQ-FS3.                          IC1144.2
+045400X    IF EOF-FLAG EQUAL TO 1                                       IC1144.2
+045500X             GO TO FILE-3-DUMP-END.                              IC1144.2
+045600X    ADD 1 TO COUNT-OF-RECORDS.                                   IC1144.2
+045700X    IF COUNT-OF-RECORDS EQUAL TO 650                             IC1144.2
+045800X             PERFORM BLANK-LINE-PRINT 5 TIMES.                   IC1144.2
+045900X    MOVE FILE-REC-SQ-FS3 TO DUMMY-RECORD.                        IC1144.2
+046000X    PERFORM WRITE-LINE.                                          IC1144.2
+046100X    IF COUNT-OF-RECORDS LESS THAN 669                            IC1144.2
+046200X             GO TO FILE-3-DUMP.                                  IC1144.2
+046300XFILE-3-DUMP-END.                                                 IC1144.2
+046400X    MOVE 5 TO CALL-FLAG.                                         IC1144.2
+046500X    CALL "IC115A" USING GROUP-LINKAGE-VARIABLES                  IC1144.2
+046600X                       FILE-REC-SQ-FS3.                          IC1144.2
+046700XFILE-3-DUMP-EXIT.                                                IC1144.2
+046800X    EXIT.                                                        IC1144.2
 046900 CCVS-EXIT SECTION.                                               IC1144.2
 047000 CCVS-999999.                                                     IC1144.2
 047100     GO TO CLOSE-FILES.                                           IC1144.2
-      *END-OF,IC114A                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,DB301M                                                            
 000100 IDENTIFICATION DIVISION.                                         DB3014.2
 000200 PROGRAM-ID.                                                      DB3014.2
 000300     DB301M.                                                      DB3014.2
@@ -44,4 +43,3 @@
 004300                                                                  DB3014.2
 004400                                                                  DB3014.2
 004500*TOTAL NUMBER OF FLAGS EXPECTED = 1.                              DB3014.2
-      *END-OF,DB301M                                                                  

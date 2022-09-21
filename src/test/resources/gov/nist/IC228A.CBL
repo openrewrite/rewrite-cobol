@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC228A                                                            
 000100 IDENTIFICATION DIVISION.                                         IC2284.2
 000200 PROGRAM-ID.                                                      IC2284.2
 000300     IC228A.                                                      IC2284.2
@@ -216,8 +215,8 @@
 021500 CLOSE-FILES.                                                     IC2284.2
 021600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IC2284.2
 021700 TERMINATE-CCVS.                                                  IC2284.2
-021800*    EXIT PROGRAM.                                                IC2284.2
-021900*TERMINATE-CALL.                                                  IC2284.2
+021800S    EXIT PROGRAM.                                                IC2284.2
+021900STERMINATE-CALL.                                                  IC2284.2
 022000     STOP     RUN.                                                IC2284.2
 022100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IC2284.2
 022200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IC2284.2
@@ -280,15 +279,15 @@
 027900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IC2284.2
 028000 WRITE-LINE.                                                      IC2284.2
 028100     ADD 1 TO RECORD-COUNT.                                       IC2284.2
-028200*    IF RECORD-COUNT GREATER 50                                   IC2284.2
-028300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC2284.2
-028400*        MOVE SPACE TO DUMMY-RECORD                               IC2284.2
-028500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC2284.2
-028600*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC2284.2
-028700*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC2284.2
-028800*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC2284.2
-028900*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC2284.2
-029000*        MOVE ZERO TO RECORD-COUNT.                               IC2284.2
+028200Y    IF RECORD-COUNT GREATER 50                                   IC2284.2
+028300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC2284.2
+028400Y        MOVE SPACE TO DUMMY-RECORD                               IC2284.2
+028500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC2284.2
+028600Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC2284.2
+028700Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC2284.2
+028800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC2284.2
+028900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC2284.2
+029000Y        MOVE ZERO TO RECORD-COUNT.                               IC2284.2
 029100     PERFORM WRT-LN.                                              IC2284.2
 029200 WRT-LN.                                                          IC2284.2
 029300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IC2284.2
@@ -444,4 +443,3 @@
 044300     EXIT PROGRAM.                                                IC2284.2
 044400 END PROGRAM IC228A-1.                                            IC2284.2
 044500 END PROGRAM IC228A.                                              IC2284.2
-      *END-OF,IC228A                                                                  

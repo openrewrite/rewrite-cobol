@@ -1,4 +1,3 @@
-      *HEADER,COBOL,DB103M                                                            
 000100 IDENTIFICATION DIVISION.                                         DB1034.2
 000200 PROGRAM-ID.                                                      DB1034.2
 000300     DB103M.                                                      DB1034.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             DB1034.2
 000600 INSTALLATION.                                                    DB1034.2
 000700     GENERAL SERVICES ADMINISTRATION                              DB1034.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               DB1034.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                DB1034.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 DB1034.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               DB1034.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 DB1034.2
@@ -256,8 +255,8 @@
 025500 CLOSE-FILES.                                                     DB1034.2
 025600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   DB1034.2
 025700 TERMINATE-CCVS.                                                  DB1034.2
-025800*    EXIT PROGRAM.                                                DB1034.2
-025900*TERMINATE-CALL.                                                  DB1034.2
+025800S    EXIT PROGRAM.                                                DB1034.2
+025900STERMINATE-CALL.                                                  DB1034.2
 026000     STOP     RUN.                                                DB1034.2
 026100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         DB1034.2
 026200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           DB1034.2
@@ -319,15 +318,15 @@
 031800     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           DB1034.2
 031900 WRITE-LINE.                                                      DB1034.2
 032000     ADD 1 TO RECORD-COUNT.                                       DB1034.2
-032100*    IF RECORD-COUNT GREATER 50                                   DB1034.2
-032200*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB1034.2
-032300*        MOVE SPACE TO DUMMY-RECORD                               DB1034.2
-032400*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB1034.2
-032500*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB1034.2
-032600*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB1034.2
-032700*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB1034.2
-032800*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB1034.2
-032900*        MOVE ZERO TO RECORD-COUNT.                               DB1034.2
+032100Y    IF RECORD-COUNT GREATER 50                                   DB1034.2
+032200Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB1034.2
+032300Y        MOVE SPACE TO DUMMY-RECORD                               DB1034.2
+032400Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB1034.2
+032500Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB1034.2
+032600Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB1034.2
+032700Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB1034.2
+032800Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB1034.2
+032900Y        MOVE ZERO TO RECORD-COUNT.                               DB1034.2
 033000     PERFORM WRT-LN.                                              DB1034.2
 033100 WRT-LN.                                                          DB1034.2
 033200     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               DB1034.2
@@ -681,4 +680,3 @@
 068000 CCVS-EXIT SECTION.                                               DB1034.2
 068100 CCVS-999999.                                                     DB1034.2
 068200     GO TO CLOSE-FILES.                                           DB1034.2
-      *END-OF,DB103M                                                                  

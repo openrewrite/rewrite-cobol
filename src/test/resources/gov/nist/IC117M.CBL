@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC116M,SUBRTN,IC117M                                              
 000100 IDENTIFICATION DIVISION.                                         IC1174.2
 000200 PROGRAM-ID.                                                      IC1174.2
 000300     IC117M.                                                      IC1174.2
@@ -70,4 +69,3 @@
 006900     DISPLAY "RETURNED TO IC117M".                                IC1174.2
 007000 IC117-EXIT.                                                      IC1174.2
 007100     EXIT PROGRAM.                                                IC1174.2
-      *END-OF,IC117M                                                                  

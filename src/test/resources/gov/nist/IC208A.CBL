@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC207A,SUBRTN,IC208A                                              
 000100 IDENTIFICATION DIVISION.                                         IC2084.2
 000200 PROGRAM-ID.                                                      IC2084.2
 000300     IC208A.                                                      IC2084.2
@@ -102,4 +101,3 @@
 010100     MOVE 9 TO DN3.                                               IC2084.2
 010200 EXIT-IC208.                                                      IC2084.2
 010300     EXIT PROGRAM.                                                IC2084.2
-      *END-OF,IC208A                                                                  

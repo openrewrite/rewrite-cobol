@@ -1,4 +1,3 @@
-      *HEADER,COBOL,CM105M                                                            
 000100 IDENTIFICATION DIVISION.                                         CM1054.2
 000200 PROGRAM-ID.                                                      CM1054.2
 000300     CM105M.                                                      CM1054.2
@@ -490,4 +489,3 @@
 048900         AFTER 5 LINES.                                           CM1054.2
 049000     MOVE HYPHEN-LINE TO PRINT-REC.                               CM1054.2
 049100     PERFORM WRITE-LINE.                                          CM1054.2
-      *END-OF,CM105M                                                                  

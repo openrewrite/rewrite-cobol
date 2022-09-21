@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC203A,SUBRTN,IC204A                                              
 000100 IDENTIFICATION DIVISION.                                         IC2044.2
 000200 PROGRAM-ID.                                                      IC2044.2
 000300     IC204A.                                                      IC2044.2
@@ -72,4 +71,3 @@
 007100*    EQUAL TO THE NUMBER OF TIMES THE SUBPROGRAM HAS BEEN         IC2044.2
 007200*    CALLED SINCE BEING INITIALIZED, EITHER BY THE FIRST CALL     IC2044.2
 007300*    OR THE FIRST CALL AFTER A CANCEL STATEMENT.                  IC2044.2
-      *END-OF,IC204A                                                                  

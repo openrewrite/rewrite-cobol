@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC116M                                                            
 000100 IDENTIFICATION DIVISION.                                         IC1164.2
 000200 PROGRAM-ID.                                                      IC1164.2
 000300     IC116M.                                                      IC1164.2
@@ -213,8 +212,8 @@
 021200 CLOSE-FILES.                                                     IC1164.2
 021300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IC1164.2
 021400 TERMINATE-CCVS.                                                  IC1164.2
-021500*    EXIT PROGRAM.                                                IC1164.2
-021600*TERMINATE-CALL.                                                  IC1164.2
+021500S    EXIT PROGRAM.                                                IC1164.2
+021600STERMINATE-CALL.                                                  IC1164.2
 021700     STOP     RUN.                                                IC1164.2
 021800 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IC1164.2
 021900 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IC1164.2
@@ -277,15 +276,15 @@
 027600     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IC1164.2
 027700 WRITE-LINE.                                                      IC1164.2
 027800     ADD 1 TO RECORD-COUNT.                                       IC1164.2
-027900*    IF RECORD-COUNT GREATER 50                                   IC1164.2
-028000*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC1164.2
-028100*        MOVE SPACE TO DUMMY-RECORD                               IC1164.2
-028200*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC1164.2
-028300*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC1164.2
-028400*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC1164.2
-028500*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC1164.2
-028600*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC1164.2
-028700*        MOVE ZERO TO RECORD-COUNT.                               IC1164.2
+027900Y    IF RECORD-COUNT GREATER 50                                   IC1164.2
+028000Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC1164.2
+028100Y        MOVE SPACE TO DUMMY-RECORD                               IC1164.2
+028200Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC1164.2
+028300Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC1164.2
+028400Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC1164.2
+028500Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC1164.2
+028600Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC1164.2
+028700Y        MOVE ZERO TO RECORD-COUNT.                               IC1164.2
 028800     PERFORM WRT-LN.                                              IC1164.2
 028900 WRT-LN.                                                          IC1164.2
 029000     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IC1164.2
@@ -342,4 +341,3 @@
 034100 CCVS-EXIT SECTION.                                               IC1164.2
 034200 CCVS-999999.                                                     IC1164.2
 034300     GO TO CLOSE-FILES.                                           IC1164.2
-      *END-OF,IC116M                                                                  

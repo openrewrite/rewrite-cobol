@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC227A                                                            
 000100 IDENTIFICATION DIVISION.                                         IC2274.2
 000200 PROGRAM-ID.                                                      IC2274.2
 000300     IC227A.                                                      IC2274.2
@@ -351,15 +350,15 @@
 035000*                                                                 IC2274.2
 035100 WRITE-LINE.                                                      IC2274.2
 035200     ADD 1 TO RECORD-COUNT.                                       IC2274.2
-035300*    IF RECORD-COUNT GREATER 50                                   IC2274.2
-035400*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC2274.2
-035500*        MOVE SPACE TO DUMMY-RECORD                               IC2274.2
-035600*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC2274.2
-035700*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC2274.2
-035800*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC2274.2
-035900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC2274.2
-036000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC2274.2
-036100*        MOVE ZERO TO RECORD-COUNT.                               IC2274.2
+035300Y    IF RECORD-COUNT GREATER 50                                   IC2274.2
+035400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC2274.2
+035500Y        MOVE SPACE TO DUMMY-RECORD                               IC2274.2
+035600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC2274.2
+035700Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC2274.2
+035800Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC2274.2
+035900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC2274.2
+036000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC2274.2
+036100Y        MOVE ZERO TO RECORD-COUNT.                               IC2274.2
 036200     PERFORM WRT-LN.                                              IC2274.2
 036300 WRT-LN.                                                          IC2274.2
 036400     WRITE   DUMMY-RECORD AFTER ADVANCING 1 LINES.                IC2274.2
@@ -1199,4 +1198,3 @@
 119800     EXIT    PROGRAM.                                             IC2274.2
 119900*                                                                 IC2274.2
 120000 END PROGRAM IC227A-1.                                            IC2274.2
-      *END-OF,IC227A                                                                  

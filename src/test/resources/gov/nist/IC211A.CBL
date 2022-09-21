@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC209A,SUBRTN,IC211A                                              
 000100 IDENTIFICATION DIVISION.                                         IC2114.2
 000200 PROGRAM-ID.                                                      IC2114.2
 000300     IC211A.                                                      IC2114.2
@@ -39,4 +38,3 @@
 003800     MOVE "Y" TO TEST2.                                           IC2114.2
 003900 IC211-EXIT.                                                      IC2114.2
 004000     EXIT PROGRAM.                                                IC2114.2
-      *END-OF,IC211A                                                                  

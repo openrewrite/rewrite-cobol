@@ -1,4 +1,3 @@
-      *HEADER,COBOL,CM303M                                                            
 000100 IDENTIFICATION DIVISION.                                         CM3034.2
 000200 PROGRAM-ID.                                                      CM3034.2
 000300     CM303M.                                                      CM3034.2
@@ -34,4 +33,3 @@
 003300*Message expected for above statement: OBSOLETE                   CM3034.2
 003400                                                                  CM3034.2
 003500*TOTAL NUMBER OF FLAGS EXPECTED = 2.                              CM3034.2
-      *END-OF,CM303M                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,DB202A                                                            
 000100 IDENTIFICATION DIVISION.                                         DB2024.2
 000200 PROGRAM-ID.                                                      DB2024.2
 000300     DB202A.                                                      DB2024.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             DB2024.2
 000600 INSTALLATION.                                                    DB2024.2
 000700     GENERAL SERVICES ADMINISTRATION                              DB2024.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               DB2024.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                DB2024.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 DB2024.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               DB2024.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 DB2024.2
@@ -67,7 +66,7 @@
 006600C    IS                                                           DB2024.2
 006700C    XXXXX075                                                     DB2024.2
 006800*      XXXXX075  REPLACE WITH VALUE CLAUSE OBJECT (*OPT C ONLY)   DB2024.2
-006900*    XXXXX069                                                     DB2024.2
+006900G    XXXXX069                                                     DB2024.2
 007000*      XXXXX069  REPLACE WITH ADDITIONAL INFO (*OPT G ONLY)       DB2024.2
 007100     LABEL RECORDS ARE STANDARD.                                  DB2024.2
 007200 01  SEQ-REC-1 PIC X(120).                                        DB2024.2
@@ -283,8 +282,8 @@
 028200 CLOSE-FILES.                                                     DB2024.2
 028300     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   DB2024.2
 028400 TERMINATE-CCVS.                                                  DB2024.2
-028500*    EXIT PROGRAM.                                                DB2024.2
-028600*TERMINATE-CALL.                                                  DB2024.2
+028500S    EXIT PROGRAM.                                                DB2024.2
+028600STERMINATE-CALL.                                                  DB2024.2
 028700     STOP     RUN.                                                DB2024.2
 028800 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         DB2024.2
 028900 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           DB2024.2
@@ -346,15 +345,15 @@
 034500     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           DB2024.2
 034600 WRITE-LINE.                                                      DB2024.2
 034700     ADD 1 TO RECORD-COUNT.                                       DB2024.2
-034800*    IF RECORD-COUNT GREATER 50                                   DB2024.2
-034900*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB2024.2
-035000*        MOVE SPACE TO DUMMY-RECORD                               DB2024.2
-035100*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB2024.2
-035200*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB2024.2
-035300*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB2024.2
-035400*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB2024.2
-035500*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB2024.2
-035600*        MOVE ZERO TO RECORD-COUNT.                               DB2024.2
+034800Y    IF RECORD-COUNT GREATER 50                                   DB2024.2
+034900Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB2024.2
+035000Y        MOVE SPACE TO DUMMY-RECORD                               DB2024.2
+035100Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB2024.2
+035200Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB2024.2
+035300Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB2024.2
+035400Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB2024.2
+035500Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB2024.2
+035600Y        MOVE ZERO TO RECORD-COUNT.                               DB2024.2
 035700     PERFORM WRT-LN.                                              DB2024.2
 035800 WRT-LN.                                                          DB2024.2
 035900     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               DB2024.2
@@ -830,17 +829,16 @@
 082900     PERFORM PRINT-DETAIL.                                        DB2024.2
 083000 CLOSE-SEQ-FILE.                                                  DB2024.2
 083100     CLOSE SEQ-FILE.                                              DB2024.2
-083200*TAPE-DUMP SECTION.                                               DB2024.2
-083300*OPEN-FILE.                                                       DB2024.2
-083400*    OPEN INPUT SEQ-FILE.                                         DB2024.2
-083500*READ-FILE.                                                       DB2024.2
-083600*    READ SEQ-FILE AT END GO TO CLOSE-FILE.                       DB2024.2
-083700*    MOVE SEQ-REC-3 TO PRINT-REC.                                 DB2024.2
-083800*    PERFORM WRITE-LINE.                                          DB2024.2
-083900*    GO TO READ-FILE.                                             DB2024.2
-084000*CLOSE-FILE.                                                      DB2024.2
-084100*    CLOSE SEQ-FILE.                                              DB2024.2
+083200XTAPE-DUMP SECTION.                                               DB2024.2
+083300XOPEN-FILE.                                                       DB2024.2
+083400X    OPEN INPUT SEQ-FILE.                                         DB2024.2
+083500XREAD-FILE.                                                       DB2024.2
+083600X    READ SEQ-FILE AT END GO TO CLOSE-FILE.                       DB2024.2
+083700X    MOVE SEQ-REC-3 TO PRINT-REC.                                 DB2024.2
+083800X    PERFORM WRITE-LINE.                                          DB2024.2
+083900X    GO TO READ-FILE.                                             DB2024.2
+084000XCLOSE-FILE.                                                      DB2024.2
+084100X    CLOSE SEQ-FILE.                                              DB2024.2
 084200 CCVS-EXIT SECTION.                                               DB2024.2
 084300 CCVS-999999.                                                     DB2024.2
 084400     GO TO CLOSE-FILES.                                           DB2024.2
-      *END-OF,DB202A                                                                  

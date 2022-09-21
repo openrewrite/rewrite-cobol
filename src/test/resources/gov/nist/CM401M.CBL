@@ -1,4 +1,3 @@
-      *HEADER,COBOL,CM401M                                                            
 000100 IDENTIFICATION DIVISION.                                         CM4014.2
 000200 PROGRAM-ID.                                                      CM4014.2
 000300      CM401M.                                                     CM4014.2
@@ -64,4 +63,3 @@
 006300*Message expected for above statement: NON-CONFORMING STANDARD    CM4014.2
 006400                                                                  CM4014.2
 006500*TOTAL NUMBER OF FLAGS EXPECTED = 10.                             CM4014.2
-      *END-OF,CM401M                                                                  

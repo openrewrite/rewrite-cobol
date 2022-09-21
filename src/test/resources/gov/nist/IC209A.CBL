@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC209A                                                            
 000100 IDENTIFICATION DIVISION.                                         IC2094.2
 000200 PROGRAM-ID.                                                      IC2094.2
 000300     IC209A.                                                      IC2094.2
@@ -194,8 +193,8 @@
 019300 CLOSE-FILES.                                                     IC2094.2
 019400     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IC2094.2
 019500 TERMINATE-CCVS.                                                  IC2094.2
-019600*    EXIT PROGRAM.                                                IC2094.2
-019700*TERMINATE-CALL.                                                  IC2094.2
+019600S    EXIT PROGRAM.                                                IC2094.2
+019700STERMINATE-CALL.                                                  IC2094.2
 019800     STOP     RUN.                                                IC2094.2
 019900 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IC2094.2
 020000 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IC2094.2
@@ -258,15 +257,15 @@
 025700     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IC2094.2
 025800 WRITE-LINE.                                                      IC2094.2
 025900     ADD 1 TO RECORD-COUNT.                                       IC2094.2
-026000*    IF RECORD-COUNT GREATER 50                                   IC2094.2
-026100*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC2094.2
-026200*        MOVE SPACE TO DUMMY-RECORD                               IC2094.2
-026300*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC2094.2
-026400*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC2094.2
-026500*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC2094.2
-026600*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC2094.2
-026700*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC2094.2
-026800*        MOVE ZERO TO RECORD-COUNT.                               IC2094.2
+026000Y    IF RECORD-COUNT GREATER 50                                   IC2094.2
+026100Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC2094.2
+026200Y        MOVE SPACE TO DUMMY-RECORD                               IC2094.2
+026300Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC2094.2
+026400Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC2094.2
+026500Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC2094.2
+026600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC2094.2
+026700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC2094.2
+026800Y        MOVE ZERO TO RECORD-COUNT.                               IC2094.2
 026900     PERFORM WRT-LN.                                              IC2094.2
 027000 WRT-LN.                                                          IC2094.2
 027100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IC2094.2
@@ -351,4 +350,3 @@
 035000 CCVS-EXIT SECTION.                                               IC2094.2
 035100 CCVS-999999.                                                     IC2094.2
 035200     GO TO CLOSE-FILES.                                           IC2094.2
-      *END-OF,IC209A                                                                  

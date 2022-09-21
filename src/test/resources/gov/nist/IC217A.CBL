@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC216A,SUBRTN,IC217A                                              
 000100 IDENTIFICATION DIVISION.                                         IC2174.2
 000200 PROGRAM-ID.                                                      IC2174.2
 000300     IC217A.                                                      IC2174.2
@@ -47,4 +46,3 @@
 004600     MOVE "NO" TO DN9.                                            IC2174.2
 004700 IC217-EXIT.                                                      IC2174.2
 004800     EXIT PROGRAM.                                                IC2174.2
-      *END-OF,IC217A                                                                  

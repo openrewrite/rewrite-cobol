@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC401M                                                            
 000100 IDENTIFICATION DIVISION.                                         IC4014.2
 000200 PROGRAM-ID.                                                      IC4014.2
 000300      IC401M IS INITIAL.                                          IC4014.2
@@ -73,4 +72,3 @@
 007200*Message expected for above statement: NON-CONFORMING STANDARD    IC4014.2
 007300*Message expected for following statement: NON-CONFORMING STANDARDIC4014.2
 007400 END PROGRAM IC401M.                                              IC4014.2
-      *END-OF,IC401M                                                                  

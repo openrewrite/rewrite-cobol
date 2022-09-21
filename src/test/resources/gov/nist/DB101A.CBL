@@ -1,4 +1,3 @@
-      *HEADER,COBOL,DB101A                                                            
 000100 IDENTIFICATION DIVISION.                                         DB1014.2
 000200 PROGRAM-ID.                                                      DB1014.2
 000300     DB101A.                                                      DB1014.2
@@ -823,4 +822,3 @@
 082200 CCVS-EXIT SECTION.                                               DB1014.2
 082300 CCVS-999999.                                                     DB1014.2
 082400     GO TO CLOSE-FILES.                                           DB1014.2
-      *END-OF,DB101A                                                                  

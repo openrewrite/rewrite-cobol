@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC213A,SUBRTN,IC215A                                              
 000100 IDENTIFICATION DIVISION.                                         IC2154.2
 000200 PROGRAM-ID.                                                      IC2154.2
 000300     IC215A.                                                      IC2154.2
@@ -39,4 +38,3 @@
 003800     MOVE 1 TO DN3.                                               IC2154.2
 003900 IC215-EXIT.                                                      IC2154.2
 004000     EXIT PROGRAM.                                                IC2154.2
-      *END-OF,IC215A                                                                  

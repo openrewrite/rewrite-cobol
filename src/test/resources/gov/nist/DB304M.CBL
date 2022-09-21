@@ -1,4 +1,3 @@
-      *HEADER,COBOL,DB304M                                                            
 000100 IDENTIFICATION DIVISION.                                         DB3044.2
 000200 PROGRAM-ID.                                                      DB3044.2
 000300     DB304M.                                                      DB3044.2
@@ -40,4 +39,3 @@
 003900     STOP RUN.                                                    DB3044.2
 004000                                                                  DB3044.2
 004100*TOTAL NUMBER OF FLAGS EXPECTED = 1.                              DB3044.2
-      *END-OF,DB304M                                                                  

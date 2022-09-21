@@ -1,4 +1,3 @@
-      *HEADER,COBOL,DB104A                                                            
 000100 IDENTIFICATION DIVISION.                                         DB1044.2
 000200 PROGRAM-ID.                                                      DB1044.2
 000300     DB104A.                                                      DB1044.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             DB1044.2
 000600 INSTALLATION.                                                    DB1044.2
 000700     GENERAL SERVICES ADMINISTRATION                              DB1044.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               DB1044.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                DB1044.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 DB1044.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               DB1044.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 DB1044.2
@@ -83,7 +82,7 @@
 008200C    IS                                                           DB1044.2
 008300C    XXXXX075                                                     DB1044.2
 008400*      XXXXX075  REPLACE WITH VALUE CLAUSE OBJECT (*OPT C ONLY)   DB1044.2
-008500*    XXXXX069                                                     DB1044.2
+008500G    XXXXX069                                                     DB1044.2
 008600*      XXXXX069  REPLACE WITH ADDITIONAL INFO (*OPT G ONLY)       DB1044.2
 008700     LABEL RECORD IS STANDARD.                                    DB1044.2
 008800 01  GEN-REC PIC X(80).                                           DB1044.2
@@ -317,8 +316,8 @@
 031600 CLOSE-FILES.                                                     DB1044.2
 031700     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   DB1044.2
 031800 TERMINATE-CCVS.                                                  DB1044.2
-031900*    EXIT PROGRAM.                                                DB1044.2
-032000*TERMINATE-CALL.                                                  DB1044.2
+031900S    EXIT PROGRAM.                                                DB1044.2
+032000STERMINATE-CALL.                                                  DB1044.2
 032100     STOP     RUN.                                                DB1044.2
 032200 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         DB1044.2
 032300 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           DB1044.2
@@ -380,15 +379,15 @@
 037900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           DB1044.2
 038000 WRITE-LINE.                                                      DB1044.2
 038100     ADD 1 TO RECORD-COUNT.                                       DB1044.2
-038200*    IF RECORD-COUNT GREATER 50                                   DB1044.2
-038300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB1044.2
-038400*        MOVE SPACE TO DUMMY-RECORD                               DB1044.2
-038500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB1044.2
-038600*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB1044.2
-038700*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB1044.2
-038800*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB1044.2
-038900*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB1044.2
-039000*        MOVE ZERO TO RECORD-COUNT.                               DB1044.2
+038200Y    IF RECORD-COUNT GREATER 50                                   DB1044.2
+038300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB1044.2
+038400Y        MOVE SPACE TO DUMMY-RECORD                               DB1044.2
+038500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB1044.2
+038600Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB1044.2
+038700Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB1044.2
+038800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB1044.2
+038900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB1044.2
+039000Y        MOVE ZERO TO RECORD-COUNT.                               DB1044.2
 039100     PERFORM WRT-LN.                                              DB1044.2
 039200 WRT-LN.                                                          DB1044.2
 039300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               DB1044.2
@@ -590,15 +589,15 @@
 058900     MOVE     SPACE TO RE-MARK.                                   DB1044.2
 059000 WRITE-LINE-1.                                                    DB1044.2
 059100     ADD 1 TO RECORD-COUNT.                                       DB1044.2
-059200*    IF RECORD-COUNT GREATER 50                                   DB1044.2
-059300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB1044.2
-059400*        MOVE SPACE TO DUMMY-RECORD                               DB1044.2
-059500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB1044.2
-059600*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-1           DB1044.2
-059700*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-1 2 TIMES   DB1044.2
-059800*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-1        DB1044.2
-059900*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB1044.2
-060000*        MOVE ZERO TO RECORD-COUNT.                               DB1044.2
+059200Y    IF RECORD-COUNT GREATER 50                                   DB1044.2
+059300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB1044.2
+059400Y        MOVE SPACE TO DUMMY-RECORD                               DB1044.2
+059500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB1044.2
+059600Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-1           DB1044.2
+059700Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-1 2 TIMES   DB1044.2
+059800Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-1        DB1044.2
+059900Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB1044.2
+060000Y        MOVE ZERO TO RECORD-COUNT.                               DB1044.2
 060100     PERFORM WRT-LN-1.                                            DB1044.2
 060200 WRT-LN-1.                                                        DB1044.2
 060300     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               DB1044.2
@@ -693,15 +692,15 @@
 069200     MOVE     SPACE TO RE-MARK.                                   DB1044.2
 069300 WRITE-LINE-2.                                                    DB1044.2
 069400     ADD 1 TO RECORD-COUNT.                                       DB1044.2
-069500*    IF RECORD-COUNT GREATER 50                                   DB1044.2
-069600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB1044.2
-069700*        MOVE SPACE TO DUMMY-RECORD                               DB1044.2
-069800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB1044.2
-069900*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-2           DB1044.2
-070000*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-2 2 TIMES   DB1044.2
-070100*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-2        DB1044.2
-070200*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB1044.2
-070300*        MOVE ZERO TO RECORD-COUNT.                               DB1044.2
+069500Y    IF RECORD-COUNT GREATER 50                                   DB1044.2
+069600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB1044.2
+069700Y        MOVE SPACE TO DUMMY-RECORD                               DB1044.2
+069800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB1044.2
+069900Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN-2           DB1044.2
+070000Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN-2 2 TIMES   DB1044.2
+070100Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN-2        DB1044.2
+070200Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB1044.2
+070300Y        MOVE ZERO TO RECORD-COUNT.                               DB1044.2
 070400     PERFORM WRT-LN-2.                                            DB1044.2
 070500 WRT-LN-2.                                                        DB1044.2
 070600     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               DB1044.2
@@ -731,20 +730,19 @@
 073000 END-OF-SORT SECTION.                                             DB1044.2
 073100 AFTER-SORT.                                                      DB1044.2
 073200     EXIT.                                                        DB1044.2
-073300*DUMP-CODING SECTION.                                             DB1044.2
-073400*BEGIN-DUMP.                                                      DB1044.2
-073500*    OPEN INPUT GEN-FILE.                                         DB1044.2
-073600*    PERFORM BLANK-LINE-PRINT.                                    DB1044.2
-073700*    MOVE " DUMP OF GEN-FILE FOLLOWS:" TO PRINT-REC.              DB1044.2
-073800*    PERFORM WRITE-LINE.                                          DB1044.2
-073900*DUMP-FILE-1.                                                     DB1044.2
-074000*    READ GEN-FILE AT END GO TO DUMP-FILE-2.                      DB1044.2
-074100*    MOVE GEN-REC TO PRINT-REC.                                   DB1044.2
-074200*    PERFORM WRITE-LINE.                                          DB1044.2
-074300*    GO TO DUMP-FILE-1.                                           DB1044.2
-074400*DUMP-FILE-2.                                                     DB1044.2
-074500*    CLOSE GEN-FILE.                                              DB1044.2
+073300XDUMP-CODING SECTION.                                             DB1044.2
+073400XBEGIN-DUMP.                                                      DB1044.2
+073500X    OPEN INPUT GEN-FILE.                                         DB1044.2
+073600X    PERFORM BLANK-LINE-PRINT.                                    DB1044.2
+073700X    MOVE " DUMP OF GEN-FILE FOLLOWS:" TO PRINT-REC.              DB1044.2
+073800X    PERFORM WRITE-LINE.                                          DB1044.2
+073900XDUMP-FILE-1.                                                     DB1044.2
+074000X    READ GEN-FILE AT END GO TO DUMP-FILE-2.                      DB1044.2
+074100X    MOVE GEN-REC TO PRINT-REC.                                   DB1044.2
+074200X    PERFORM WRITE-LINE.                                          DB1044.2
+074300X    GO TO DUMP-FILE-1.                                           DB1044.2
+074400XDUMP-FILE-2.                                                     DB1044.2
+074500X    CLOSE GEN-FILE.                                              DB1044.2
 074600 CCVS-EXIT SECTION.                                               DB1044.2
 074700 CCVS-999999.                                                     DB1044.2
 074800     GO TO CLOSE-FILES.                                           DB1044.2
-      *END-OF,DB104A                                                                  

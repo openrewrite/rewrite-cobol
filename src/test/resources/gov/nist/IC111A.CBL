@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC108A,SUBRTN,IC111A                                              
 000100 IDENTIFICATION DIVISION.                                         IC1114.2
 000200 PROGRAM-ID.                                                      IC1114.2
 000300     IC111A.                                                      IC1114.2
@@ -55,4 +54,3 @@
 005400     MOVE "A" TO LS1.                                             IC1114.2
 005500 EXIT-IC111.                                                      IC1114.2
 005600     EXIT PROGRAM.                                                IC1114.2
-      *END-OF,IC111A                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC201A,SUBRTN,IC202A                                              
 000100 IDENTIFICATION DIVISION.                                         IC2024.2
 000200 PROGRAM-ID.                                                      IC2024.2
 000300     IC202A.                                                      IC2024.2
@@ -57,4 +56,3 @@
 005600     MOVE WS2 TO DN4.                                             IC2024.2
 005700 CALL-EXIT-001.                                                   IC2024.2
 005800     EXIT PROGRAM.                                                IC2024.2
-      *END-OF,IC202A                                                                  

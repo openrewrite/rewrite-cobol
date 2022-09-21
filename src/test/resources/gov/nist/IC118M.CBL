@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC116M,SUBRTN,IC118M                                              
 000100 IDENTIFICATION DIVISION.                                         IC1184.2
 000200 PROGRAM-ID.                                                      IC1184.2
 000300     IC118M.                                                      IC1184.2
@@ -54,4 +53,3 @@
 005300     DISPLAY "IC118M CALLED".                                     IC1184.2
 005400 IC118-EXIT.                                                      IC1184.2
 005500     EXIT PROGRAM.                                                IC1184.2
-      *END-OF,IC118M                                                                  

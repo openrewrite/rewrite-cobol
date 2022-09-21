@@ -1,4 +1,3 @@
-      *HEADER,COBOL,CM201M                                                            
 000100 IDENTIFICATION DIVISION.                                         CM2014.2
 000200 PROGRAM-ID.                                                      CM2014.2
 000300     CM201M.                                                      CM2014.2
@@ -84,4 +83,3 @@
 008300     MOVE 70 TO OUT-LENGTH.                                       CM2014.2
 008400     SEND CM-OUTQUE-1 FROM RECOGNITION-MSG-2 WITH EGI.            CM2014.2
 008500     STOP RUN.                                                    CM2014.2
-      *END-OF,CM201M                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC103A,SUBRTN,IC105A                                              
 000100 IDENTIFICATION DIVISION.                                         IC1054.2
 000200 PROGRAM-ID.                                                      IC1054.2
 000300     IC105A.                                                      IC1054.2
@@ -63,4 +62,3 @@
 006200     MOVE 5 TO DN2.                                               IC1054.2
 006300 EXIT-STATEMENT-004.                                              IC1054.2
 006400     EXIT PROGRAM.                                                IC1054.2
-      *END-OF,IC105A                                                                  

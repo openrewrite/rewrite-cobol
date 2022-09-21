@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC112A                                                            
 000100 IDENTIFICATION DIVISION.                                         IC1124.2
 000200 PROGRAM-ID.                                                      IC1124.2
 000300     IC112A.                                                      IC1124.2
@@ -65,7 +64,7 @@
 006400C    XXXXX074                                                     IC1124.2
 006500C    IS                                                           IC1124.2
 006600C    XXXXX075                                                     IC1124.2
-006700*    XXXXX069                                                     IC1124.2
+006700G    XXXXX069                                                     IC1124.2
 006800     DATA RECORD SQ-FS3R1-F-G-120.                                IC1124.2
 006900 01  SQ-FS3R1-F-G-120.                                            IC1124.2
 007000     02  FILLER PIC X(120).                                       IC1124.2
@@ -277,8 +276,8 @@
 027600 CLOSE-FILES.                                                     IC1124.2
 027700     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IC1124.2
 027800 TERMINATE-CCVS.                                                  IC1124.2
-027900*    EXIT PROGRAM.                                                IC1124.2
-028000*TERMINATE-CALL.                                                  IC1124.2
+027900S    EXIT PROGRAM.                                                IC1124.2
+028000STERMINATE-CALL.                                                  IC1124.2
 028100     STOP     RUN.                                                IC1124.2
 028200 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IC1124.2
 028300 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IC1124.2
@@ -341,15 +340,15 @@
 034000     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IC1124.2
 034100 WRITE-LINE.                                                      IC1124.2
 034200     ADD 1 TO RECORD-COUNT.                                       IC1124.2
-034300*    IF RECORD-COUNT GREATER 50                                   IC1124.2
-034400*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC1124.2
-034500*        MOVE SPACE TO DUMMY-RECORD                               IC1124.2
-034600*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC1124.2
-034700*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC1124.2
-034800*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC1124.2
-034900*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC1124.2
-035000*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC1124.2
-035100*        MOVE ZERO TO RECORD-COUNT.                               IC1124.2
+034300Y    IF RECORD-COUNT GREATER 50                                   IC1124.2
+034400Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC1124.2
+034500Y        MOVE SPACE TO DUMMY-RECORD                               IC1124.2
+034600Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC1124.2
+034700Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC1124.2
+034800Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC1124.2
+034900Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC1124.2
+035000Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC1124.2
+035100Y        MOVE ZERO TO RECORD-COUNT.                               IC1124.2
 035200     PERFORM WRT-LN.                                              IC1124.2
 035300 WRT-LN.                                                          IC1124.2
 035400     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IC1124.2
@@ -523,35 +522,34 @@
 052200     CLOSE   SQ-FS3.                                              IC1124.2
 052300 EXIT-IC112.                                                      IC1124.2
 052400     EXIT.                                                        IC1124.2
-052500*FILE-DUMP SECTION.                                               IC1124.2
-052600*FILE-3-DUMP-INIT.                                                IC1124.2
-052700*    OPEN INPUT SQ-FS3.                                           IC1124.2
-052800*    MOVE ZERO TO WRK-CS-09V00.                                   IC1124.2
-052900*FILE-3-DUMP.                                                     IC1124.2
-053000*    ADD 1 TO WRK-CS-09V00.                                       IC1124.2
-053100*    IF WRK-CS-09V00 GREATER THAN 649                             IC1124.2
-053200*         GO TO FILE-3-DUMP-EXTRA.                                IC1124.2
-053300*    READ SQ-FS3 RECORD AT END                                    IC1124.2
-053400*         GO TO FILE-3-DUMP-END.                                  IC1124.2
-053500*    PERFORM FILE-3-DUMP-WRITE.                                   IC1124.2
-053600*    GO TO FILE-3-DUMP.                                           IC1124.2
-053700*FILE-3-DUMP-WRITE.                                               IC1124.2
-053800*    MOVE SQ-FS3R1-F-G-120 TO DUMMY-RECORD.                       IC1124.2
-053900*    PERFORM WRITE-LINE.                                          IC1124.2
-054000*FILE-3-DUMP-EXTRA.                                               IC1124.2
-054100*    PERFORM BLANK-LINE-PRINT 5 TIMES.                            IC1124.2
-054200*FILE-3-DUMP-MORE.                                                IC1124.2
-054300*    READ SQ-FS3 RECORD AT END                                    IC1124.2
-054400*         GO TO FILE-3-DUMP-END.                                  IC1124.2
-054500*    PERFORM FILE-3-DUMP-WRITE.                                   IC1124.2
-054600*    ADD 1 TO WRK-CS-09V00.                                       IC1124.2
-054700*    IF WRK-CS-09V00 LESS THAN 669                                IC1124.2
-054800*         GO TO FILE-3-DUMP-MORE.                                 IC1124.2
-054900*FILE-3-DUMP-END.                                                 IC1124.2
-055000*    CLOSE SQ-FS3.                                                IC1124.2
-055100*FILE-3-DUMP-EXIT.                                                IC1124.2
-055200*    EXIT.                                                        IC1124.2
+052500XFILE-DUMP SECTION.                                               IC1124.2
+052600XFILE-3-DUMP-INIT.                                                IC1124.2
+052700X    OPEN INPUT SQ-FS3.                                           IC1124.2
+052800X    MOVE ZERO TO WRK-CS-09V00.                                   IC1124.2
+052900XFILE-3-DUMP.                                                     IC1124.2
+053000X    ADD 1 TO WRK-CS-09V00.                                       IC1124.2
+053100X    IF WRK-CS-09V00 GREATER THAN 649                             IC1124.2
+053200X         GO TO FILE-3-DUMP-EXTRA.                                IC1124.2
+053300X    READ SQ-FS3 RECORD AT END                                    IC1124.2
+053400X         GO TO FILE-3-DUMP-END.                                  IC1124.2
+053500X    PERFORM FILE-3-DUMP-WRITE.                                   IC1124.2
+053600X    GO TO FILE-3-DUMP.                                           IC1124.2
+053700XFILE-3-DUMP-WRITE.                                               IC1124.2
+053800X    MOVE SQ-FS3R1-F-G-120 TO DUMMY-RECORD.                       IC1124.2
+053900X    PERFORM WRITE-LINE.                                          IC1124.2
+054000XFILE-3-DUMP-EXTRA.                                               IC1124.2
+054100X    PERFORM BLANK-LINE-PRINT 5 TIMES.                            IC1124.2
+054200XFILE-3-DUMP-MORE.                                                IC1124.2
+054300X    READ SQ-FS3 RECORD AT END                                    IC1124.2
+054400X         GO TO FILE-3-DUMP-END.                                  IC1124.2
+054500X    PERFORM FILE-3-DUMP-WRITE.                                   IC1124.2
+054600X    ADD 1 TO WRK-CS-09V00.                                       IC1124.2
+054700X    IF WRK-CS-09V00 LESS THAN 669                                IC1124.2
+054800X         GO TO FILE-3-DUMP-MORE.                                 IC1124.2
+054900XFILE-3-DUMP-END.                                                 IC1124.2
+055000X    CLOSE SQ-FS3.                                                IC1124.2
+055100XFILE-3-DUMP-EXIT.                                                IC1124.2
+055200X    EXIT.                                                        IC1124.2
 055300 CCVS-EXIT SECTION.                                               IC1124.2
 055400 CCVS-999999.                                                     IC1124.2
 055500     GO TO CLOSE-FILES.                                           IC1124.2
-      *END-OF,IC112A                                                                  

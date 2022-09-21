@@ -1,4 +1,3 @@
-CCVS85*  VERSION 4.0   01 OCT 1992 0032                                          
 000100 IDENTIFICATION DIVISION.                                         EXEC84.2
 000200                                                                  EXEC84.2
 000400 PROGRAM-ID.                                                      EXEC84.2
@@ -2258,4 +2257,3 @@ CCVS85*  VERSION 4.0   01 OCT 1992 0032
 225800 X40-EXIT.                                                        EXEC84.2
 225900     EXIT.                                                        EXEC84.2
 226000                                                                  EXEC84.2
-      *END-OF,EXEC85                                                                  

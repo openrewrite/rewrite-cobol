@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC106A,SUBRTN,IC107A                                              
 000100 IDENTIFICATION DIVISION.                                         IC1074.2
 000200 PROGRAM-ID.                                                      IC1074.2
 000300     IC107A.                                                      IC1074.2
@@ -108,4 +107,3 @@
 010700*    IN THE LINKAGE SECTION.                                      IC1074.2
 010800 EXIT-IC107.                                                      IC1074.2
 010900     EXIT PROGRAM.                                                IC1074.2
-      *END-OF,IC107A                                                                  

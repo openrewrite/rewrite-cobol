@@ -1,4 +1,3 @@
-      *HEADER,COBOL,DB205A                                                            
 000100 IDENTIFICATION DIVISION.                                         DB2054.2
 000200 PROGRAM-ID.                                                      DB2054.2
 000300     DB205A.                                                      DB2054.2
@@ -6,7 +5,7 @@
 000500     FEDERAL COMPILER TESTING CENTER.                             DB2054.2
 000600 INSTALLATION.                                                    DB2054.2
 000700     GENERAL SERVICES ADMINISTRATION                              DB2054.2
-000800*     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.               DB2054.2
+000800     AUTOMATED DATA AND TELECOMMUNICATION SERVICE.                DB2054.2
 000900     SOFTWARE DEVELOPMENT OFFICE.                                 DB2054.2
 001000     5203 LEESBURG PIKE  SUITE 1100                               DB2054.2
 001100     FALLS CHURCH VIRGINIA 22041.                                 DB2054.2
@@ -205,8 +204,8 @@
 020400 CLOSE-FILES.                                                     DB2054.2
 020500     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   DB2054.2
 020600 TERMINATE-CCVS.                                                  DB2054.2
-020700*    EXIT PROGRAM.                                                DB2054.2
-020800*TERMINATE-CALL.                                                  DB2054.2
+020700S    EXIT PROGRAM.                                                DB2054.2
+020800STERMINATE-CALL.                                                  DB2054.2
 020900     STOP     RUN.                                                DB2054.2
 021000 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         DB2054.2
 021100 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           DB2054.2
@@ -268,15 +267,15 @@
 026700     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           DB2054.2
 026800 WRITE-LINE.                                                      DB2054.2
 026900     ADD 1 TO RECORD-COUNT.                                       DB2054.2
-027000*    IF RECORD-COUNT GREATER 50                                   DB2054.2
-027100*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB2054.2
-027200*        MOVE SPACE TO DUMMY-RECORD                               DB2054.2
-027300*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB2054.2
-027400*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB2054.2
-027500*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB2054.2
-027600*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB2054.2
-027700*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB2054.2
-027800*        MOVE ZERO TO RECORD-COUNT.                               DB2054.2
+027000Y    IF RECORD-COUNT GREATER 50                                   DB2054.2
+027100Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          DB2054.2
+027200Y        MOVE SPACE TO DUMMY-RECORD                               DB2054.2
+027300Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  DB2054.2
+027400Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             DB2054.2
+027500Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     DB2054.2
+027600Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          DB2054.2
+027700Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          DB2054.2
+027800Y        MOVE ZERO TO RECORD-COUNT.                               DB2054.2
 027900     PERFORM WRT-LN.                                              DB2054.2
 028000 WRT-LN.                                                          DB2054.2
 028100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               DB2054.2
@@ -595,4 +594,3 @@
 059400 CCVS-EXIT SECTION.                                               DB2054.2
 059500 CCVS-999999.                                                     DB2054.2
 059600     GO TO CLOSE-FILES.                                           DB2054.2
-      *END-OF,DB205A                                                                  

@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC103A,SUBRTN,IC104A                                              
 000100 IDENTIFICATION DIVISION.                                         IC1044.2
 000200 PROGRAM-ID.                                                      IC1044.2
 000300     IC104A.                                                      IC1044.2
@@ -70,4 +69,3 @@
 006900     MOVE "ABCD" TO EDITED-FIELD.                                 IC1044.2
 007000 CALL-EXIT-06.                                                    IC1044.2
 007100     EXIT PROGRAM.                                                IC1044.2
-      *END-OF,IC104A                                                                  

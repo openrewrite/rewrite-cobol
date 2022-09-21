@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC108A,SUBRTN,IC109A                                              
 000100 IDENTIFICATION DIVISION.                                         IC1094.2
 000200 PROGRAM-ID.                                                      IC1094.2
 000300     IC109A.                                                      IC1094.2
@@ -64,4 +63,3 @@
 006300     MOVE WS1 TO DN9.                                             IC1094.2
 006400 EXIT-IC109.                                                      IC1094.2
 006500     EXIT PROGRAM.                                                IC1094.2
-      *END-OF,IC109A                                                                  

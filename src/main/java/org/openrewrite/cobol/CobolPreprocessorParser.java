@@ -40,14 +40,11 @@ import org.openrewrite.tree.ParsingExecutionContextView;
 
 import java.io.File;
 import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.openrewrite.Tree.randomId;
@@ -114,6 +111,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         );
 
                         CobolPreprocessor.CompilationUnit preprocessedCU = parserVisitor.visitStartRule(parser.startRule());
+                        PreprocessLineContinuations lineContinuationPhase = new PreprocessLineContinuations();
+                        preprocessedCU = (CobolPreprocessor.CompilationUnit) lineContinuationPhase.getVisitor().visit(preprocessedCU, new InMemoryExecutionContext());
 
                         if (enableCopy) {
                             List<Path> copyBookPaths = getCopyBooks();

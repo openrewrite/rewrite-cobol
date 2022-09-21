@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC203A,SUBRTN,IC205A                                              
 000100 IDENTIFICATION DIVISION.                                         IC2054.2
 000200 PROGRAM-ID.                                                      IC2054.2
 000300     IC205A.                                                      IC2054.2
@@ -69,4 +68,3 @@
 006800     CANCEL ID1.                                                  IC2054.2
 006900 EXIT-IC205.                                                      IC2054.2
 007000     EXIT PROGRAM.                                                IC2054.2
-      *END-OF,IC205A                                                                  

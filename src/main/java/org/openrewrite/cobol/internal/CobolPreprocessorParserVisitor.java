@@ -1016,10 +1016,6 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             text = text.substring(COMMENT_ENTRY_TAG.length());
         }
 
-        if (indicatorArea != null && indicatorArea.getIndicator().equals("-")) {
-            System.out.println(text);
-        }
-
         if (sequenceArea != null) {
             markers.add(sequenceArea);
         }

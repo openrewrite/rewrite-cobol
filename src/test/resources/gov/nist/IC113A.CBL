@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC112A,SUBRTN,IC113A                                              
 000100 IDENTIFICATION DIVISION.                                         IC1134.2
 000200 PROGRAM-ID.                                                      IC1134.2
 000300     IC113A.                                                      IC1134.2
@@ -77,4 +76,3 @@
 007600     ADD 1 TO RECORDS-IN-ERROR.                                   IC1134.2
 007700     MOVE 1 TO ERROR-FLAG.                                        IC1134.2
 007800     GO TO LINK-EXIT-08.                                          IC1134.2
-      *END-OF,IC113A                                                                  

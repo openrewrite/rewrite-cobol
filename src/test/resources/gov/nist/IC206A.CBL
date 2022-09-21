@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC203A,SUBRTN,IC206A                                              
 000100 IDENTIFICATION DIVISION.                                         IC2064.2
 000200 PROGRAM-ID.                                                      IC2064.2
 000300     IC206A.                                                      IC2064.2
@@ -55,4 +54,3 @@
 005400     MOVE WS1 TO DN1.                                             IC2064.2
 005500 EXIT-IC206.                                                      IC2064.2
 005600     EXIT PROGRAM.                                                IC2064.2
-      *END-OF,IC206A                                                                  

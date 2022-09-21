@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC114A,SUBRTN,IC115A                                              
 000100 IDENTIFICATION DIVISION.                                         IC1154.2
 000200 PROGRAM-ID.                                                      IC1154.2
 000300     IC115A.                                                      IC1154.2
@@ -57,7 +56,7 @@
 005600C    XXXXX074                                                     IC1154.2
 005700C    IS                                                           IC1154.2
 005800C    XXXXX075                                                     IC1154.2
-005900*    XXXXX069                                                     IC1154.2
+005900G    XXXXX069                                                     IC1154.2
 006000     DATA RECORD SQ-FS3R1-F-G-120.                                IC1154.2
 006100 01  SQ-FS3R1-F-G-120.                                            IC1154.2
 006200     02  FILLER PIC X(120).                                       IC1154.2
@@ -212,4 +211,3 @@
 021100     CLOSE SQ-FS3.                                                IC1154.2
 021200 LINK-CLOSE-EXIT-12.                                              IC1154.2
 021300     EXIT PROGRAM.                                                IC1154.2
-      *END-OF,IC115A                                                                  

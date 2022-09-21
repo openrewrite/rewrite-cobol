@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IC234A                                                            
 000100 IDENTIFICATION DIVISION.                                         IC2344.2
 000200 PROGRAM-ID.                                                      IC2344.2
 000300     IC234A.                                                      IC2344.2
@@ -230,8 +229,8 @@
 022900 CLOSE-FILES.                                                     IC2344.2
 023000     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   IC2344.2
 023100 TERMINATE-CCVS.                                                  IC2344.2
-023200*    EXIT PROGRAM.                                                IC2344.2
-023300*TERMINATE-CALL.                                                  IC2344.2
+023200S    EXIT PROGRAM.                                                IC2344.2
+023300STERMINATE-CALL.                                                  IC2344.2
 023400     STOP     RUN.                                                IC2344.2
 023500 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         IC2344.2
 023600 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           IC2344.2
@@ -294,15 +293,15 @@
 029300     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IC2344.2
 029400 WRITE-LINE.                                                      IC2344.2
 029500     ADD 1 TO RECORD-COUNT.                                       IC2344.2
-029600*    IF RECORD-COUNT GREATER 50                                   IC2344.2
-029700*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC2344.2
-029800*        MOVE SPACE TO DUMMY-RECORD                               IC2344.2
-029900*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC2344.2
-030000*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC2344.2
-030100*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC2344.2
-030200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC2344.2
-030300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC2344.2
-030400*        MOVE ZERO TO RECORD-COUNT.                               IC2344.2
+029600Y    IF RECORD-COUNT GREATER 50                                   IC2344.2
+029700Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IC2344.2
+029800Y        MOVE SPACE TO DUMMY-RECORD                               IC2344.2
+029900Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IC2344.2
+030000Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             IC2344.2
+030100Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     IC2344.2
+030200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IC2344.2
+030300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IC2344.2
+030400Y        MOVE ZERO TO RECORD-COUNT.                               IC2344.2
 030500     PERFORM WRT-LN.                                              IC2344.2
 030600 WRT-LN.                                                          IC2344.2
 030700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IC2344.2
@@ -736,4 +735,3 @@
 073500 END PROGRAM IC234A-2.                                            IC2344.2
 073600 END PROGRAM IC234A-1.                                            IC2344.2
 073700 END PROGRAM IC234A.                                              IC2344.2
-      *END-OF,IC234A                                                                  
