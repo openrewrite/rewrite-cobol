@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IF403M                                                            
 000100 IDENTIFICATION DIVISION.                                         IF4034.2
 000200 PROGRAM-ID.                                                      IF4034.2
 000300      IF403M.                                                     IF4034.2
@@ -96,4 +95,3 @@
 009500 IF403M-END.                                                      IF4034.2
 009600                                                                  IF4034.2
 009700*TOTAL NUMBER OF FLAGS EXPECTED = 13.                             IF4034.2
-      *END-OF,IF403M                                                                  

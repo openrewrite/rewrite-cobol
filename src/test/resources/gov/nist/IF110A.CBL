@@ -1,4 +1,3 @@
-      *HEADER,COBOL,IF110A                                                            
 000100 IDENTIFICATION DIVISION.                                         IF1104.2
 000200 PROGRAM-ID.                                                      IF1104.2
 000300     IF110A.                                                      IF1104.2
@@ -282,19 +281,19 @@
 028100     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           IF1104.2
 028200 WRITE-LINE.                                                      IF1104.2
 028300     ADD 1 TO RECORD-COUNT.                                       IF1104.2
-028400*    IF RECORD-COUNT GREATER 42                                   IF1104.2
-028500*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1104.2
-028600*        MOVE SPACE TO DUMMY-RECORD                               IF1104.2
-028700*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1104.2
-028800*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1104.2
-028900*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1104.2
-029000*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1104.2
-029100*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1104.2
-029200*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1104.2
-029300*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1104.2
-029400*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1104.2
-029500*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1104.2
-029600*        MOVE ZERO TO RECORD-COUNT.                               IF1104.2
+028400Y    IF RECORD-COUNT GREATER 42                                   IF1104.2
+028500Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          IF1104.2
+028600Y        MOVE SPACE TO DUMMY-RECORD                               IF1104.2
+028700Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  IF1104.2
+028800Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1104.2
+028900Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   IF1104.2
+029000Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1104.2
+029100Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   IF1104.2
+029200Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           IF1104.2
+029300Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           IF1104.2
+029400Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          IF1104.2
+029500Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          IF1104.2
+029600Y        MOVE ZERO TO RECORD-COUNT.                               IF1104.2
 029700     PERFORM WRT-LN.                                              IF1104.2
 029800 WRT-LN.                                                          IF1104.2
 029900     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               IF1104.2
@@ -499,4 +498,3 @@
 049800 CCVS-EXIT SECTION.                                               IF1104.2
 049900 CCVS-999999.                                                     IF1104.2
 050000     GO TO CLOSE-FILES.                                           IF1104.2
-      *END-OF,IF110A                                                                  
