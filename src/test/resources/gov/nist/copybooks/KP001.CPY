@@ -1,4 +1,3 @@
-      *HEADER,CLBRY,KP001                                                             
 000100 PST-TEST-001.                                                    KP0014.2
 000200     MOVE    "PSEUDO-TEXT" TO FEATURE.                            KP0014.2
 000300*    THIS        TEXT IS COPIED INTO A SOURCE PROGRAM THE PSEUDO  KP0014.2
@@ -9,4 +8,3 @@
 000800     PERFORM FAIL.                                                KP0014.2
 000900 PST-WRITE-001.                                                   KP0014.2
 001000     PERFORM PRINT-DETAIL.                                        KP0014.2
-      *END-OF,KP001                                                                   

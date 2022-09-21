@@ -1,4 +1,3 @@
-      *HEADER,CLBRY,KP004                                                             
 000100*    THIS COMMENT IS THE FIRST IMAGE IN KP004                     KP0044.2
 000200*    ADD  1 TO THE LIST.                                          KP0044.2
 000300 PST-INIT-004.                                                    KP0044.2
@@ -14,4 +13,3 @@
 001300     PERFORM DELETE.                                              KP0044.2
 001400 PST-EXIT-004.                                                    KP0044.2
 001500     EXIT.                                                        KP0044.2
-      *END-OF,KP004                                                                   

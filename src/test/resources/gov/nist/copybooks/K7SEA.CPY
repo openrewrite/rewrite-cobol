@@ -1,4 +1,3 @@
-      *HEADER,CLBRY,K7SEA                                                             
 000100 COPY-TEST-1.                                                     K7SEA4.2
 000200     MOVE     "1600-CARD LIBRARY" TO FEATURE.                     K7SEA4.2
 000300     MOVE     "COPY-TEST-1  " TO PAR-NAME.                        K7SEA4.2
@@ -1598,4 +1597,3 @@
 159700     MOVE     SPACE TO CORRECT-A.                                 K7SEA4.2
 159800     MOVE     SPACE TO RE-MARK.                                   K7SEA4.2
 159900     PERFORM  PRINT-DETAIL.                                       K7SEA4.2
-      *END-OF,K7SEA                                                                   
