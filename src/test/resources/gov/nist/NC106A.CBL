@@ -1,4 +1,3 @@
-      *HEADER,COBOL,NC106A                                                            
 000100 IDENTIFICATION DIVISION.                                         NC1064.2
 000200 PROGRAM-ID.                                                      NC1064.2
 000300     NC106A.                                                      NC1064.2
@@ -426,8 +425,8 @@
 042500 CLOSE-FILES.                                                     NC1064.2
 042600     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   NC1064.2
 042700 TERMINATE-CCVS.                                                  NC1064.2
-042800*    EXIT PROGRAM.                                                NC1064.2
-042900*TERMINATE-CALL.                                                  NC1064.2
+042800S    EXIT PROGRAM.                                                NC1064.2
+042900STERMINATE-CALL.                                                  NC1064.2
 043000     STOP     RUN.                                                NC1064.2
 043100 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         NC1064.2
 043200 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           NC1064.2
@@ -490,19 +489,19 @@
 048900     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           NC1064.2
 049000 WRITE-LINE.                                                      NC1064.2
 049100     ADD 1 TO RECORD-COUNT.                                       NC1064.2
-049200*    IF RECORD-COUNT GREATER 42                                   NC1064.2
-049300*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1064.2
-049400*        MOVE SPACE TO DUMMY-RECORD                               NC1064.2
-049500*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1064.2
-049600*        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1064.2
-049700*        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1064.2
-049800*        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1064.2
-049900*        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1064.2
-050000*        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1064.2
-050100*        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1064.2
-050200*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1064.2
-050300*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1064.2
-050400*        MOVE ZERO TO RECORD-COUNT.                               NC1064.2
+049200Y    IF RECORD-COUNT GREATER 42                                   NC1064.2
+049300Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          NC1064.2
+049400Y        MOVE SPACE TO DUMMY-RECORD                               NC1064.2
+049500Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  NC1064.2
+049600Y        MOVE CCVS-H-1  TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1064.2
+049700Y        MOVE CCVS-H-2A TO DUMMY-RECORD  PERFORM WRT-LN 2 TIMES   NC1064.2
+049800Y        MOVE CCVS-H-2B TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1064.2
+049900Y        MOVE CCVS-H-3  TO DUMMY-RECORD  PERFORM WRT-LN 3 TIMES   NC1064.2
+050000Y        MOVE CCVS-C-1  TO DUMMY-RECORD  PERFORM WRT-LN           NC1064.2
+050100Y        MOVE CCVS-C-2  TO DUMMY-RECORD  PERFORM WRT-LN           NC1064.2
+050200Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          NC1064.2
+050300Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          NC1064.2
+050400Y        MOVE ZERO TO RECORD-COUNT.                               NC1064.2
 050500     PERFORM WRT-LN.                                              NC1064.2
 050600 WRT-LN.                                                          NC1064.2
 050700     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               NC1064.2
@@ -2532,4 +2531,3 @@
 253100 CCVS-EXIT SECTION.                                               NC1064.2
 253200 CCVS-999999.                                                     NC1064.2
 253300     GO TO CLOSE-FILES.                                           NC1064.2
-      *END-OF,NC106A                                                                  
