@@ -114,8 +114,13 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
                         CobolPreprocessor.CompilationUnit preprocessedCU = parserVisitor.visitStartRule(parser.startRule());
 
-//                        PreprocessLineContinuations lineContinuationPhase = new PreprocessLineContinuations();
-//                        preprocessedCU = (CobolPreprocessor.CompilationUnit) lineContinuationPhase.getVisitor().visit(preprocessedCU, new InMemoryExecutionContext());
+                        // Apply COBOL continuation rules to String literals.
+                        PreprocessLiteralContinuations lineContinuations = new PreprocessLiteralContinuations();
+                        preprocessedCU = (CobolPreprocessor.CompilationUnit) lineContinuations.getVisitor().visit(preprocessedCU, new InMemoryExecutionContext());
+
+                        // Apply COBOL continuation rules to keywords.
+                        PreprocessWordContinuations wordContinuations = new PreprocessWordContinuations();
+                        preprocessedCU = (CobolPreprocessor.CompilationUnit) wordContinuations.getVisitor().visit(preprocessedCU, new InMemoryExecutionContext());
 
                         if (enableCopy) {
                             List<Path> copyBookPaths = getCopyBooks();
