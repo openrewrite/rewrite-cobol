@@ -6810,7 +6810,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
      private boolean isCommentIndicator(@Nullable IndicatorArea area) {
-        return area != null && ("*".equals(area.getIndicator()) || "/".equals(area.getIndicator()));
+        boolean isUnknownIndicator = area != null && ("G".equals(area.getIndicator()) || "J".equals(area.getIndicator()) || "P".equals(area.getIndicator()));
+        return area != null && (isUnknownIndicator || "*".equals(area.getIndicator()) || "/".equals(area.getIndicator()));
      }
 
     /**
