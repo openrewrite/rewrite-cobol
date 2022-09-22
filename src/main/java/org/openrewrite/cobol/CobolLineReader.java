@@ -10,8 +10,15 @@ import java.util.Scanner;
 public class CobolLineReader {
 
     private static final String EMPTY_STRING = "";
+    private static final String[] triggersStart = new String[]{"AUTHOR.", "INSTALLATION.", "DATE-WRITTEN.",
+            "DATE-COMPILED.", "SECURITY.", "REMARKS."};
 
-    public static String readLines(String source, CobolDialect cobolDialect) {
+    private static final String[] triggersEnd = new String[]{"PROGRAM-ID.", "AUTHOR.", "INSTALLATION.", "DATE-WRITTEN.",
+            "DATE-COMPILED.", "SECURITY.", "ENVIRONMENT", "DATA.", "PROCEDURE."};
+
+    private boolean inCommentEntry = false;
+
+    public String readLines(String source, CobolDialect cobolDialect) {
         int indicatorArea = cobolDialect.getColumns().getIndicatorArea();
         int contentAreaAStart = cobolDialect.getColumns().getContentArea();
         int contentAreaBEnd = cobolDialect.getColumns().getOtherArea();
@@ -26,21 +33,33 @@ public class CobolLineReader {
 
             String indicator = line.substring(indicatorArea, contentAreaAStart);
             String contentArea = line.substring(contentAreaAStart, contentAreaBEnd);
-            boolean isValidText = !"*".equals(indicator) && !(" ".equals(indicator) && contentArea.trim().isEmpty());
-            if (isValidText) {
-                if ("-".equals(indicator)) {
-                    // Trim the leading whitespace required for continuation indicators.
-                    String trimmedContentArea = trimLeadingWhitespace(contentArea);
-                    if (trimmedContentArea.startsWith("\"") || trimmedContentArea.startsWith("'")) {
-                        // Remove the previous newline character to concatenate the literal.
-                        processedSource.delete(processedSource.length() - previousNewLineLength, processedSource.length());
-                        // Remove the leading delimiter.
-                        trimmedContentArea = trimLeadingChar(trimmedContentArea);
+            boolean isValidText = !(" ".equals(indicator) && contentArea.trim().isEmpty());
 
-                        processedSource.append(trimmedContentArea);
-                    } else {
-                        processedSource.append(contentArea);
-                    }
+            if (inCommentEntry) {
+                if (startsWithTrigger(contentArea, triggersEnd)) {
+                    inCommentEntry = false;
+                } else {
+                    processedSource.append("*>CE ");
+                }
+            }
+
+            if (startsWithTrigger(contentArea, triggersStart)) {
+                inCommentEntry = true;
+            }
+
+            if (!inCommentEntry && "*".equals(indicator)) {
+                processedSource.append("*> ");
+            }
+
+            if (isValidText) {
+                String trimmedContentArea = trimLeadingWhitespace(contentArea);
+                if ("-".equals(indicator) && trimmedContentArea.startsWith("\"") || trimmedContentArea.startsWith("'")) {
+                    // Remove the previous newline character to concatenate the literal.
+                    processedSource.delete(processedSource.length() - previousNewLineLength, processedSource.length());
+                    // Remove the leading delimiter.
+                    trimmedContentArea = trimLeadingChar(trimmedContentArea);
+
+                    processedSource.append(trimmedContentArea);
                 } else {
                     processedSource.append(contentArea);
                 }
@@ -53,7 +72,7 @@ public class CobolLineReader {
 
             if (endOfLine != null) {
                 cursor += endOfLine.length();
-                if (isValidText) {
+                if (inCommentEntry || isValidText) {
                     processedSource.append(endOfLine);
                 }
             }
@@ -67,5 +86,24 @@ public class CobolLineReader {
 
     private static String trimLeadingWhitespace(String contentarea) {
         return contentarea.replaceAll("^\\s+", EMPTY_STRING);
+    }
+
+    // TODO: add method to extract the first String at the start of a line based on the end condition being WS.
+    // Change the String[] to a Set of Strings.
+    private static boolean startsWithTrigger(String line, String[] triggers) {
+        String contentAreaUpperCase = line.toUpperCase();
+
+        boolean result = false;
+
+        for (String trigger : triggers) {
+            boolean containsTrigger = contentAreaUpperCase.trim().startsWith(trigger);
+
+            if (containsTrigger) {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
     }
 }

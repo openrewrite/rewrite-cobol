@@ -96,8 +96,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         EncodingDetectingInputStream is = sourceFile.getSource();
                         String sourceStr = is.readFully();
 
-                        String proLeapSource = preprocessCobol(sourceStr, is.getCharset());
-                        String prepareSource = CobolLineReader.readLines(sourceStr, cobolDialect);
+                        String proLeapControl = preprocessCobol(sourceStr, is.getCharset());
+                        String prepareSource = new CobolLineReader().readLines(sourceStr, cobolDialect);
                         org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
                                 new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
                                         new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(prepareSource))));
@@ -192,7 +192,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 throw new RuntimeException(e);
             }
 
-            String preprocessedCobol = CobolLineReader.readLines(plainText.getText(), cobolDialect);
+            String preprocessedCobol = new CobolLineReader().readLines(plainText.getText(), cobolDialect);
             org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
                     new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
                             new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(preprocessedCobol))));
