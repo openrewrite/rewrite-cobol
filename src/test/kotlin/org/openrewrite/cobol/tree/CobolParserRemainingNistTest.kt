@@ -46,7 +46,6 @@ class CobolParserRemainingNistTest : RewriteTest {
     @Test
     fun nc205a() = rewriteRun(
         cobol("""
-                  *HEADER,COBOL,NC205A                                                            
             000100 IDENTIFICATION DIVISION.                                         NC2054.2
             000200 PROGRAM-ID.                                                      NC2054.2
             000300     NC205A.                                                      NC2054.2
@@ -851,8 +850,6 @@ class CobolParserRemainingNistTest : RewriteTest {
             080200 CCVS-EXIT SECTION.                                               NC2054.2
             080300 CCVS-999999.                                                     NC2054.2
             080400     GO TO CLOSE-FILES.                                           NC2054.2
-                  *END-OF,NC205A                                                                  
-            
         """)
     )
 
@@ -860,7 +857,7 @@ class CobolParserRemainingNistTest : RewriteTest {
     @Test
     fun sm206a() = rewriteRun(
         cobol("""
-                  *HEADER,COBOL,SM206A                                                            
+                  *HEADER,COBOL,SM206A                                                      
             000100 IDENTIFICATION DIVISION.                                         SM2064.2
             000200 PROGRAM-ID.                                                      SM2064.2
             000300     SM206A.                                                      SM2064.2
@@ -1572,7 +1569,7 @@ class CobolParserRemainingNistTest : RewriteTest {
             070900 CCVS-EXIT SECTION.                                               SM2064.2
             071000 CCVS-999999.                                                     SM2064.2
             071100     GO TO CLOSE-FILES.                                           SM2064.2
-                  *END-OF,SM206A                                                                  
+                  *END-OF,SM206A                                                            
         """)
     )
 }

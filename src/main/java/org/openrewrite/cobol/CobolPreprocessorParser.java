@@ -96,7 +96,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         EncodingDetectingInputStream is = sourceFile.getSource();
                         String sourceStr = is.readFully();
 
-//                        String prepareSource = preprocessCobol(sourceStr, is.getCharset());
+                        String proLeapSource = preprocessCobol(sourceStr, is.getCharset());
                         String prepareSource = CobolLineReader.readLines(sourceStr, cobolDialect);
                         org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
                                 new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
@@ -114,13 +114,9 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
                         CobolPreprocessor.CompilationUnit preprocessedCU = parserVisitor.visitStartRule(parser.startRule());
 
-                        // Apply COBOL continuation rules to String literals.
-                        PreprocessLiteralContinuations lineContinuations = new PreprocessLiteralContinuations();
-                        preprocessedCU = (CobolPreprocessor.CompilationUnit) lineContinuations.getVisitor().visit(preprocessedCU, new InMemoryExecutionContext());
-
                         // Apply COBOL continuation rules to keywords.
                         PreprocessWordContinuations wordContinuations = new PreprocessWordContinuations();
-                        preprocessedCU = (CobolPreprocessor.CompilationUnit) wordContinuations.getVisitor().visit(preprocessedCU, new InMemoryExecutionContext());
+//                        preprocessedCU = (CobolPreprocessor.CompilationUnit) wordContinuations.getVisitor().visit(preprocessedCU, new InMemoryExecutionContext());
 
                         if (enableCopy) {
                             List<Path> copyBookPaths = getCopyBooks();
