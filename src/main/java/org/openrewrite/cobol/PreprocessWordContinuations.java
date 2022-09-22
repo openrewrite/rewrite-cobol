@@ -12,6 +12,8 @@ import org.openrewrite.marker.Markers;
 
 import java.util.*;
 
+import static org.openrewrite.Tree.randomId;
+
 @EqualsAndHashCode(callSuper = true)
 @Value
 public class PreprocessWordContinuations extends Recipe {
@@ -130,12 +132,11 @@ public class PreprocessWordContinuations extends Recipe {
             String concatenateWord = concatenateWords(key, values);
 
             Map<Integer, Markers> continuations = new HashMap<>();
-
-
-            Continuation continuedLines = new Continuation(Tree.randomId(), continuations);
+            Continuation continuedLines = new Continuation(randomId(), continuations);
 
             CobolPreprocessor.Word newKey = key.withMarkers(key.getMarkers().addIfAbsent(continuedLines));
-            if (CobolKeywords.isReserved(concatenateWord)) {
+            boolean isTwoParts = CobolKeywords.isReserved(key.getWord()) && CobolKeywords.isReserved(concatenateWord.substring(key.getWord().length()));
+            if (CobolKeywords.isReserved(concatenateWord) || isTwoParts) {
                 List<Marker> continuation = new ArrayList<>(2);
 
                 Optional<SequenceArea> sequenceAreaOptional = newKey.getMarkers().findFirst(SequenceArea.class);
@@ -151,6 +152,11 @@ public class PreprocessWordContinuations extends Recipe {
                     continuations.put(pos, Markers.build(continuation));
                 }
 
+                if (isTwoParts) {
+                    concatenateWord = key.getWord() + " " + concatenateWord.substring(key.getWord().length());
+                    pos++;
+                }
+
                 newKey = newKey.withWord(concatenateWord);
                 pos += key.getWord().length();
 
@@ -162,12 +168,23 @@ public class PreprocessWordContinuations extends Recipe {
 
                     // Add the CommentArea from the original word to align the columns.
                     Optional<CommentArea> commentAreaOptional;
-                    if (pos == key.getWord().length()) {
+                    int firstPos = key.getWord().length() + (isTwoParts ? 1 : 0);
+                    if (pos == firstPos) {
                         commentAreaOptional = key.getMarkers().findFirst(CommentArea.class);
+                        if (commentAreaOptional.isPresent()) {
+                            CommentArea commentArea = commentAreaOptional.get();
+                            if (isTwoParts) {
+                                int removeSpace = commentArea.getPrefix().getWhitespace().length() - 1;
+                                commentArea = commentArea.withPrefix(
+                                        commentArea.getPrefix().withWhitespace(
+                                                commentArea.getPrefix().getWhitespace().substring(0, removeSpace)));
+                            }
+                            continuation.add(commentArea);
+                        }
                     } else {
                         commentAreaOptional = value.getMarkers().findFirst(CommentArea.class);
+                        commentAreaOptional.ifPresent(continuation::add);
                     }
-                    commentAreaOptional.ifPresent(continuation::add);
 
                     sequenceAreaOptional = value.getMarkers().findFirst(SequenceArea.class);
                     sequenceAreaOptional.ifPresent(continuation::add);
@@ -192,12 +209,6 @@ public class PreprocessWordContinuations extends Recipe {
                     updated = updated.withPrefix(Space.EMPTY);
                     result.put(k, updated);
                 });
-            } else if (CobolKeywords.isReserved(key.getWord()) && CobolKeywords.isReserved(concatenateWord.substring(key.getWord().length()))) {
-                for (int i = 0; i < values.size(); i++) {
-                    CobolPreprocessor.Word value = values.get(i);
-                    CobolPreprocessor.Word updated = i == 0 ? value.withPrefix(value.getPrefix().withWhitespace(" ")) : value.withWord("");
-                    result.put(value, updated);
-                }
             } else {
                 result.put(key, newKey.withWord(concatenateWord));
                 values.forEach(w -> result.put(w, w.withWord("")));
