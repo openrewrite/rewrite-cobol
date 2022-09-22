@@ -5,9 +5,7 @@ import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
-import org.openrewrite.cobol.tree.CobolPreprocessor;
-import org.openrewrite.cobol.tree.Continuation;
-import org.openrewrite.cobol.tree.IndicatorArea;
+import org.openrewrite.cobol.tree.*;
 
 import java.util.*;
 
@@ -43,40 +41,51 @@ public class PreprocessWordContinuations extends Recipe {
         public static Map<CobolPreprocessor.Word, List<CobolPreprocessor.Word>> find(CobolPreprocessor.CompilationUnit compilationUnit) {
             CobolPreprocessorIsoVisitor<Map<CobolPreprocessor.Word, List<CobolPreprocessor.Word>>> visitor =
                     new CobolPreprocessorIsoVisitor<Map<CobolPreprocessor.Word, List<CobolPreprocessor.Word>>>() {
-                        private CobolPreprocessor.Word previousWord = null;
+                        // The previous 2 values are required because the CobolProcessor.g4 considers `-` a token.
+                        private CobolPreprocessor.Word previous2 = null;
+                        private CobolPreprocessor.Word previous = null;
+
                         private CobolPreprocessor.Word currentKey = null;
                         private boolean inContinuation = false;
 
                         @Override
                         public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, Map<CobolPreprocessor.Word, List<CobolPreprocessor.Word>> continuedWords) {
-                            Optional<Continuation> continuedLines = word.getMarkers().findFirst(Continuation.class);
-                            if (continuedLines.isPresent()) {
-                                System.out.println(word.getWord());
-                            }
                             Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
                             if (indicatorArea.isPresent() && "-".equals(indicatorArea.get().getIndicator())) {
-                                if (!inContinuation) {
-                                    currentKey = previousWord;
+                                // Special case, because CobolPreprocessor creates a Word for `-` characters.
+                                if (previous != null && "-".equals(previous.getWord()) &&
+                                    // The continued `-` is a part of the previous word. I.E. CONT-B.
+                                    // Otherwise, the `-` is something like `VALUE -10`.
+                                    previous.getPrefix() == Space.EMPTY && previous2 != null) {
+                                    currentKey = previous2;
                                     inContinuation = true;
+                                    List<CobolPreprocessor.Word> words = continuedWords.computeIfAbsent(currentKey, key -> new ArrayList<>());
+                                    words.add(previous);
+                                    words.add(word);
+                                } else {
+                                    currentKey = previous;
+                                    inContinuation = true;
+                                    List<CobolPreprocessor.Word> words = continuedWords.computeIfAbsent(currentKey, key -> new ArrayList<>());
+                                    words.add(word);
                                 }
-
-                                List<CobolPreprocessor.Word> continued = continuedWords.computeIfAbsent(currentKey, k -> new ArrayList<>());
-                                continued.add(word);
-                            } else {
-                                if (inContinuation) {
+                            } else if (inContinuation) {
+                                if (word.getPrefix() != Space.EMPTY || ".".equals(word.getWord())) {
                                     inContinuation = false;
+                                } else {
+                                    List<CobolPreprocessor.Word> words = continuedWords.computeIfAbsent(currentKey, key -> new ArrayList<>());
+                                    words.add(word);
                                 }
-                                System.out.println(word.getWord());
-                                previousWord = word;
                             }
 
+                            previous2 = previous;
+                            previous = word;
                             return super.visitWord(word, continuedWords);
                         }
             };
 
-            Map<CobolPreprocessor.Word, List<CobolPreprocessor.Word>> continuedWords = new HashMap<>();
-            visitor.visit(compilationUnit, continuedWords);
-            return continuedWords;
+            Map<CobolPreprocessor.Word, List<CobolPreprocessor.Word>> orderedWords = new LinkedHashMap<>();
+            visitor.visit(compilationUnit, orderedWords);
+            return orderedWords;
         }
     }
 }
