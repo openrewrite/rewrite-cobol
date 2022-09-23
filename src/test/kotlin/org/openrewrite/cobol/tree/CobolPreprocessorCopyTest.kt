@@ -16,7 +16,6 @@
 package org.openrewrite.cobol.tree
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.InMemoryExecutionContext
@@ -136,7 +135,6 @@ class CobolPreprocessorCopyTest : RewriteTest {
         cobolCopy(getNistSource("SM205A.CBL"))
     )
 
-    @Disabled("Requires continuation markers for tokens.")
     @Test
     fun sm206A() = rewriteRun(
         cobolCopy(getNistSource("SM206A.CBL"))

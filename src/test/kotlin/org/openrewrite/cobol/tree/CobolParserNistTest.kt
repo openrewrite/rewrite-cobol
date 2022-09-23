@@ -15,7 +15,6 @@
  */
 package org.openrewrite.cobol.tree
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
@@ -916,7 +915,6 @@ class CobolParserNistTest : RewriteTest {
         cobol(getNistSource("NC113M.CBL"))
     )
 
-    @Disabled("Requires / indicator for comment entries that are moved to the top of the page.")
     @Test
     fun nc114M() = rewriteRun(
         cobol(getNistSource("NC114M.CBL"))
@@ -1097,7 +1095,6 @@ class CobolParserNistTest : RewriteTest {
         cobol(getNistSource("NC204M.CBL"))
     )
 
-    @Disabled("Requires continuation between tokens.")
     @Test
     fun nc205A() = rewriteRun(
         cobol(getNistSource("NC205A.CBL"))
@@ -1318,7 +1315,6 @@ class CobolParserNistTest : RewriteTest {
         cobol(getNistSource("NC303M.CBL"))
     )
 
-    @Disabled("Requires continuation between tokens.")
     @Test
     fun nc401M() = rewriteRun(
         cobol(getNistSource("NC401M.CBL"))

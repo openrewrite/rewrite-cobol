@@ -62,7 +62,7 @@ public class CobolLineReader {
                 }
             }
 
-            if (!inCommentEntry && "*".equals(indicator)) {
+            if (!inCommentEntry && ("*".equals(indicator) || "/".equals(indicator))) {
                 // Mark in-line comments.
                 processedSource.append("*> ");
             }

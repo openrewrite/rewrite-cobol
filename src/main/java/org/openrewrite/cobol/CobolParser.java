@@ -71,8 +71,6 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         CobolPreprocessorParser cobolPreprocessorParser = CobolPreprocessorParser.builder()
                                 .setCobolDialect(cobolDialect)
-                                .setProLeapCobolDialect(proLeapCobolDialect)
-                                .setSourceFormat(sourceFormat)
 //                                .enableCopy()
 //                                .enableReplace()
                                 .build();
