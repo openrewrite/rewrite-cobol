@@ -4,4 +4,4 @@
 000400     MOVE     FALSE-DATA-4 TO AREA-4.                             K2PRA4.2
 000500     IF       TOTAL-AREA EQUAL TO "TRUE  TWO + 2 =    4"          K2PRA4.2
 000600              PERFORM PASS ELSE PERFORM FAIL.                     K2PRA4.2
-000700     GO       TO COPY-WRITE-16.                                   K2PRA4.
+000700     GO       TO COPY-WRITE-16.                                   K2PRA4.2

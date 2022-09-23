@@ -102,7 +102,6 @@ class CobolParserCopyTest : RewriteTest {
         cobol(getNistSource("SM205A.CBL"))
     )
 
-    @Disabled("Requires continuation markers for tokens.")
     @Test
     fun sm206A() = rewriteRun(
         cobol(getNistSource("SM206A.CBL"))

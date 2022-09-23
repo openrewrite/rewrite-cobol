@@ -162,6 +162,10 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     // Print copied source.
                     visit(copyStatement.getCopyBook(), p);
 
+                    if (!p.getOut().endsWith("\n")) {
+                        p.append("\n");
+                    }
+
                     // Add Stop key.
                     p.append(getCopyStopComment());
 
@@ -185,11 +189,8 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
     @Override
     public CobolPreprocessor visitReplaceArea(CobolPreprocessor.ReplaceArea replaceArea, PrintOutputCapture<P> p) {
-        // TODO: note ... assess: due to the way COBOL works, it looks like the same template pattern will apply to EVERY Preprocessor AST that needs to be linked to the CobolParser.
         if (printWithColumnAreas) {
             CobolPreprocessor.ReplaceByStatement replaceByStatement = replaceArea.getReplaceByStatement();
-
-            // TODO: assess if it's okay to not print the original column areas for the ReplaceBy.
 
             // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
             int curIndex = getCurrentIndex(p.getOut());
