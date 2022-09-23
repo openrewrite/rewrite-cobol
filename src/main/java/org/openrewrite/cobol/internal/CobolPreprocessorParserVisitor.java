@@ -34,11 +34,11 @@ import java.util.stream.Collectors;
 
 import static java.util.Collections.singletonList;
 import static org.openrewrite.Tree.randomId;
+import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
+import static org.openrewrite.cobol.internal.CobolGrammarToken.END_OF_FILE;
 import static org.openrewrite.cobol.tree.Space.format;
 
 public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor<Object> {
-
-    private static final String COMMENT_ENTRY_TAG = "*>CE ";
 
     private final Path path;
 
@@ -748,8 +748,8 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitTerminal(TerminalNode node) {
         List<Marker> markers = new ArrayList<>();
         Space prefix = processTokenText(node.getText(), markers);
-        String text = "<EOF>".equals(node.getText()) ? "" :
-                node.getText().startsWith(COMMENT_ENTRY_TAG) ? node.getText().substring(COMMENT_ENTRY_TAG.length()) : node.getText();
+        String text = END_OF_FILE.equals(node.getText()) ? "" :
+                node.getText().startsWith(COMMENT_ENTRY) ? node.getText().substring(COMMENT_ENTRY.length()) : node.getText();
         return new CobolPreprocessor.Word(
                 randomId(),
                 prefix,
@@ -857,24 +857,21 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         sequenceArea();
         indicatorArea(null);
 
-        Optional<Integer> nextIndicator = indicatorAreas.keySet().stream().filter(it -> it > cursor).findFirst();
-        boolean isContinued = nextIndicator.isPresent() && indicatorAreas.get(nextIndicator.get()).equals("-");
+        Integer nextIndicator = indicatorAreas.keySet().stream()
+                .filter(it -> it > cursor)
+                .findFirst().orElse(null);
+        boolean isContinued = nextIndicator != null && indicatorAreas.get(nextIndicator).equals("-");
         cursor = saveCursor;
-
-        // TODO:
-        // Split markers for comment and blank lines into a new method.
-        // Refactor processLiteral into processContinuedText.
-        // Detect continued keywords and statements, and parse correctly.
 
         Character delimiter = null;
         if (text.startsWith("'") || text.startsWith("\"")) {
             delimiter = text.charAt(0);
         }
 
-        // Detect a literal continued on a new line.
+        // A literal continued on a new line.
         if (isContinued && delimiter != null) {
             return processContinuedLiteral(text, markers, delimiter);
-        } else if ("<EOF>".equals(text) && source.substring(cursor).isEmpty()) {
+        } else if (END_OF_FILE.equals(text) && source.substring(cursor).isEmpty()) {
             return Space.EMPTY;
         }
 
@@ -888,13 +885,16 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
         // CommentEntry tags are required to be recognized the COBOL grammar.
         // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
-        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_TAG);
+        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY);
         if (!isCommentEntry && indicatorArea != null) {
 
             List<Lines.Line> lines = new ArrayList<>();
 
             int iterations = 0;
             while (iterations < 250) {
+                if (iterations > 200) {
+                    System.out.println("UH OH!");
+                }
                 // Stop after all the trailing comments have been parsed.
                 if (source.substring(cursor).isEmpty()) {
                     break;
@@ -923,13 +923,11 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         cursor = saveCursor;
     }
 
-    /**
-     * TODO: explain
-     */
     private Space processContinuedLiteral(String text, List<Marker> markers, Character delimiter) {
         Map<Integer, Markers> continuations = new HashMap<>();
         List<Marker> continuation = new ArrayList<>(2);
 
+        // Check if the literal starts at the beginning of a line.
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea(null);
 
@@ -941,14 +939,20 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             continuation.add(indicatorArea);
         }
 
+        // Set the Word prefix.
         Space prefix = whitespace();
+
+        // Add a continuation at position 0 to print before the literal starts.
         if (!continuation.isEmpty()) {
             continuations.put(0, Markers.build(continuation));
         }
 
         int matchedCount = 0;
         int iterations = 0;
-        while (matchedCount < text.length() && iterations < 250) {
+        while (iterations < 250) {
+            if (iterations > 200) {
+                System.out.println("UH OH!");
+            }
             continuation = new ArrayList<>(3);
 
             String current = source.substring(cursor);
@@ -971,24 +975,21 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 continuation.add(commentArea);
             }
 
-            int saveCursor = cursor;
+            if (matchedCount == text.length()) {
+                if (!continuation.isEmpty()) {
+                    continuations.put(matchedCount + 1, Markers.build(continuation));
+                }
+                break;
+            }
+
             sequenceArea = sequenceArea();
             indicatorArea = indicatorArea(delimiter);
 
-            // Note: "-" might not be safe for all COBOL dialects.
-            if (indicatorArea != null && !indicatorArea.getIndicator().startsWith("-")) {
-                if (!continuation.isEmpty()) {
-                    continuations.put(text.length() + 1, Markers.build(continuation));
-                }
-                cursor = saveCursor;
-                break;
-            } else {
-                if (sequenceArea != null) {
-                    continuation.add(sequenceArea);
-                }
-                if (indicatorArea != null) {
-                    continuation.add(indicatorArea);
-                }
+            if (sequenceArea != null) {
+                continuation.add(sequenceArea);
+            }
+            if (indicatorArea != null) {
+                continuation.add(indicatorArea);
             }
 
             if (!continuation.isEmpty()) {
@@ -1002,18 +1003,15 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         return prefix;
     }
 
-    /**
-     * TODO: explain
-     */
     private Space processText(String text, List<Marker> markers) {
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea(null);
 
         // CommentEntry tags are required to be recognized the COBOL grammar.
         // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
-        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_TAG);
+        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY);
         if (isCommentEntry) {
-            text = text.substring(COMMENT_ENTRY_TAG.length());
+            text = text.substring(COMMENT_ENTRY.length());
         }
 
         if (sequenceArea != null) {
@@ -1026,7 +1024,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
         // An inline comment entry will have a null sequence area.
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
-        if (!"<EOF>".equals(text)) {
+        if (!END_OF_FILE.equals(text)) {
             cursor += text.length();
 
             CommentArea commentArea = commentArea();
@@ -1038,6 +1036,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     }
 
     private boolean isCommentIndicator(@Nullable IndicatorArea area) {
+        // TODO: move "/" to CobolDialect since the indicator is specific to IBM-ANSI-85.
         return area != null && ("*".equals(area.getIndicator()) || "/".equals(area.getIndicator()));
     }
 
@@ -1065,17 +1064,18 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     private IndicatorArea indicatorArea(@Nullable Character continuationDelimiter) {
         if (indicatorAreas.containsKey(cursor)) {
             String indicatorArea = indicatorAreas.get(cursor);
+            cursor += indicatorArea.length();
+
             String continuationText = null;
             if (continuationDelimiter != null) {
                 // Increment passed the start of the literal.
-                String current = source.substring(cursor + 1);
+                String current = source.substring(cursor );
                 int pos = current.indexOf(continuationDelimiter);
                 if (pos != -1) {
                     continuationText = current.substring(0, current.indexOf(continuationDelimiter) + 1);
                     cursor += continuationText.length();
                 }
             }
-            cursor += indicatorArea.length();
 
             return new IndicatorArea(randomId(), indicatorArea, continuationText);
         }
@@ -1105,314 +1105,5 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
         cursor = saveCursor;
         return null;
-    }
-
-    public static final class CobolPreProcessorKeywords {
-        CobolPreProcessorKeywords() {}
-
-        // Run `cobol_keyword_permutations.py` in antlr to print the keywords.
-        private static final String[] RESERVED_WORDS = new String[] {
-                "ADATA",
-                "ADV",
-                "ALIAS",
-                "ANSI",
-                "ANY",
-                "APOST",
-                "AR",
-                "ARITH",
-                "AUTO",
-                "AWO",
-                "BIN",
-                "BLOCK0",
-                "BUF",
-                "BUFSIZE",
-                "BY",
-                "CBL",
-                "CBLCARD",
-                "CICS",
-                "CO",
-                "COBOL2",
-                "COBOL3",
-                "CODEPAGE",
-                "COMMACHAR",
-                "COMMENTENTRYLINE",
-                "COMMENTENTRYTAG",
-                "COMMENTLINE",
-                "COMMENTTAG",
-                "COMPAT",
-                "COMPILE",
-                "COPY",
-                "CP",
-                "CPP",
-                "CPSM",
-                "CS",
-                "CURR",
-                "CURRENCY",
-                "C_CHAR",
-                "DATA",
-                "DATEPROC",
-                "DBCS",
-                "DD",
-                "DEBUG",
-                "DECK",
-                "DIAGTRUNC",
-                "DLI",
-                "DLL",
-                "DOT",
-                "DOUBLEEQUALCHAR",
-                "DP",
-                "DTR",
-                "DU",
-                "DUMP",
-                "DYN",
-                "DYNAM",
-                "D_CHAR",
-                "EDF",
-                "EJECT",
-                "EJPD",
-                "EN",
-                "END_EXEC",
-                "ENGLISH",
-                "EPILOG",
-                "EXCI",
-                "EXEC",
-                "EXIT",
-                "EXP",
-                "EXPORTALL",
-                "EXTEND",
-                "E_CHAR",
-                "FASTSRT",
-                "FEPI",
-                "FILENAME",
-                "FLAG",
-                "FLAGSTD",
-                "FSRT",
-                "FULL",
-                "F_CHAR",
-                "GDS",
-                "GRAPHIC",
-                "HOOK",
-                "H_CHAR",
-                "IDENTIFIER",
-                "IN",
-                "INTDATE",
-                "I_CHAR",
-                "JA",
-                "JP",
-                "KA",
-                "LANG",
-                "LANGUAGE",
-                "LC",
-                "LEASM",
-                "LENGTH",
-                "LIB",
-                "LILIAN",
-                "LIN",
-                "LINECOUNT",
-                "LINKAGE",
-                "LIST",
-                "LM",
-                "LONGMIXED",
-                "LONGUPPER",
-                "LPARENCHAR",
-                "LU",
-                "MAP",
-                "MARGINS",
-                "MAX",
-                "MD",
-                "MDECK",
-                "MIG",
-                "MIXED",
-                "M_CHAR",
-                "NAME",
-                "NAT",
-                "NATIONAL",
-                "NATLANG",
-                "NEWLINE",
-                "NN",
-                "NO",
-                "NOADATA",
-                "NOADV",
-                "NOALIAS",
-                "NOAWO",
-                "NOBLOCK0",
-                "NOC",
-                "NOCBLCARD",
-                "NOCICS",
-                "NOCMPR2",
-                "NOCOMPILE",
-                "NOCPSM",
-                "NOCURR",
-                "NOCURRENCY",
-                "NOD",
-                "NODATEPROC",
-                "NODBCS",
-                "NODE",
-                "NODEBUG",
-                "NODECK",
-                "NODIAGTRUNC",
-                "NODLL",
-                "NODP",
-                "NODTR",
-                "NODU",
-                "NODUMP",
-                "NODYN",
-                "NODYNAM",
-                "NOEDF",
-                "NOEJPD",
-                "NOEPILOG",
-                "NOEXIT",
-                "NOEXP",
-                "NOEXPORTALL",
-                "NOF",
-                "NOFASTSRT",
-                "NOFEPI",
-                "NOFLAG",
-                "NOFLAGMIG",
-                "NOFLAGSTD",
-                "NOFSRT",
-                "NOGRAPHIC",
-                "NOHOOK",
-                "NOLENGTH",
-                "NOLIB",
-                "NOLINKAGE",
-                "NOLIST",
-                "NOMAP",
-                "NOMD",
-                "NOMDECK",
-                "NONAME",
-                "NONNUMERICLITERAL",
-                "NONUM",
-                "NONUMBER",
-                "NOOBJ",
-                "NOOBJECT",
-                "NOOFF",
-                "NOOFFSET",
-                "NOOPSEQUENCE",
-                "NOOPT",
-                "NOOPTIMIZE",
-                "NOOPTIONS",
-                "NOP",
-                "NOPFD",
-                "NOPROLOG",
-                "NORENT",
-                "NOS",
-                "NOSEP",
-                "NOSEPARATE",
-                "NOSEQ",
-                "NOSEQUENCE",
-                "NOSOURCE",
-                "NOSPIE",
-                "NOSQL",
-                "NOSQLC",
-                "NOSQLCCSID",
-                "NOSSR",
-                "NOSSRANGE",
-                "NOSTDTRUNC",
-                "NOTERM",
-                "NOTERMINAL",
-                "NOTEST",
-                "NOTHREAD",
-                "NOTRIG",
-                "NOVBREF",
-                "NOWD",
-                "NOWORD",
-                "NOX",
-                "NOXREF",
-                "NOZWB",
-                "NS",
-                "NSEQ",
-                "NSYMBOL",
-                "NUM",
-                "NUMBER",
-                "NUMERICLITERAL",
-                "NUMPROC",
-                "N_CHAR",
-                "OBJ",
-                "OBJECT",
-                "OF",
-                "OFF",
-                "OFFSET",
-                "ON",
-                "OP",
-                "OPMARGINS",
-                "OPSEQUENCE",
-                "OPT",
-                "OPTFILE",
-                "OPTIMIZE",
-                "OPTIONS",
-                "OUT",
-                "OUTDD",
-                "PFD",
-                "PGMN",
-                "PGMNAME",
-                "PPTDBG",
-                "PROCESS",
-                "PROLOG",
-                "QUOTE",
-                "Q_CHAR",
-                "RENT",
-                "REPLACE",
-                "REPLACING",
-                "RMODE",
-                "RPARENCHAR",
-                "SEP",
-                "SEPARATE",
-                "SEPARATOR",
-                "SEQ",
-                "SEQUENCE",
-                "SHORT",
-                "SIZE",
-                "SKIP1",
-                "SKIP2",
-                "SKIP3",
-                "SOURCE",
-                "SP",
-                "SPACE",
-                "SPIE",
-                "SQL",
-                "SQLC",
-                "SQLCCSID",
-                "SQLIMS",
-                "SS",
-                "SSR",
-                "SSRANGE",
-                "STD",
-                "SUPPRESS",
-                "SYSEIB",
-                "SZ",
-                "S_CHAR",
-                "TERM",
-                "TERMINAL",
-                "TEST",
-                "TEXT",
-                "THREAD",
-                "TITLE",
-                "TRIG",
-                "TRUNC",
-                "UE",
-                "UPPER",
-                "U_CHAR",
-                "VBREF",
-                "WD",
-                "WORD",
-                "WS",
-                "W_CHAR",
-                "XMLPARSE",
-                "XMLSS",
-                "XOPTS",
-                "XP",
-                "XREF",
-                "X_CHAR",
-                "YEARWINDOW",
-                "YW",
-                "ZWB"
-        };
-
-        private static final Set<String> RESERVED_WORDS_SET = new HashSet<>(Arrays.asList(RESERVED_WORDS));
-
-        public static boolean isReserved(String word) {
-            return RESERVED_WORDS_SET.contains(word);
-        }
     }
 }

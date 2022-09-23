@@ -3459,7 +3459,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.StringDelimitedByPhrase s = stringDelimitedByPhrase;
         s = s.withPrefix(visitSpace(s.getPrefix(), p));
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
-        s = s.withIdentifier((Cobol.Word) visit(s.getIdentifier(), p));
+        s = s.withIdentifier((Name) visit(s.getIdentifier(), p));
         return s;
     }
 

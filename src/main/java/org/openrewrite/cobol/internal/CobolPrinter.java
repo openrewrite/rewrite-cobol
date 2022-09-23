@@ -3628,6 +3628,7 @@ public class CobolPrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(symbolicCharacter.getPrefix(), p);
         visitMarkers(symbolicCharacter.getMarkers(), p);
         visit(symbolicCharacter.getSymbols(), p);
+        visit(symbolicCharacter.getWords(), p);
         visit(symbolicCharacter.getLiterals(), p);
         return symbolicCharacter;
     }

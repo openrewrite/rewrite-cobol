@@ -35,12 +35,12 @@ import java.util.stream.Collectors;
 
 import static java.util.Collections.*;
 import static org.openrewrite.Tree.randomId;
+import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
+import static org.openrewrite.cobol.internal.CobolGrammarToken.END_OF_FILE;
 import static org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter.*;
 import static org.openrewrite.cobol.tree.Space.format;
 
 public class CobolParserVisitor extends CobolBaseVisitor<Object> {
-
-    private static final String COMMENT_ENTRY_TAG = "*>CE ";
 
     private final Path path;
 
@@ -59,11 +59,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final Set<String> templateKeys = new HashSet<>();
 
     // TODO: Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
-    // The String is primarily used for debugging parsing issues, since the column positions are set prior to the parsing.
+    //       The String is primarily used for debugging parsing issues, since the column positions are set prior to the parsing.
+
     private final Map<Integer, String> sequenceAreas = new HashMap<>();
     // Indicators are used to collect information about the next line of code. I.E. continuation indicators.
     private final Map<Integer, String> indicatorAreas = new LinkedHashMap<>();
-    private final Map<Integer, String> commentAreas = new HashMap<>();
+    // CommentAreas are used to determine if the current token ends the line.
+    private final Map<Integer, String> commentAreas = new LinkedHashMap<>();
     private final Set<String> separators = new HashSet<>();
     private int cursor = 0;
 
@@ -92,6 +94,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private String replaceAdditiveComment = null;
     private String replaceUuidComment = null;
 
+    // TODO: make value unique untl it's known to be safe -- this value is shared between different template types.
     private Integer nextIndex = null;
 
     @Nullable
@@ -5947,8 +5950,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     public Cobol.Word visitTerminal(TerminalNode node) {
         List<Marker> markers = new ArrayList<>();
         Space prefix = processTokenText(node.getText(), markers);
-        String text = "<EOF>".equals(node.getText()) ? "" :
-                node.getText().startsWith(COMMENT_ENTRY_TAG) ? node.getText().substring(COMMENT_ENTRY_TAG.length()) : node.getText();
+        String text = END_OF_FILE.equals(node.getText()) ? "" :
+                node.getText().startsWith(COMMENT_ENTRY) ? node.getText().substring(COMMENT_ENTRY.length()) : node.getText();
         return new Cobol.Word(
                 randomId(),
                 prefix,
@@ -6382,43 +6385,40 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         parseCommentsAndEmptyLines(text, markers);
 
+        int saveCursor = cursor;
+        sequenceArea();
+        indicatorArea();
+
+        Integer nextIndicator = indicatorAreas.keySet().stream()
+                .filter(it -> it > cursor)
+                .findFirst()
+                .orElse(null);
+        boolean isContinued = nextIndicator != null && indicatorAreas.get(nextIndicator).equals("-");
+        cursor = saveCursor;
+
         Character delimiter = null;
         if (text.startsWith("'") || text.startsWith("\"")) {
             delimiter = text.charAt(0);
         }
 
-        int saveCursor = cursor;
-        sequenceArea();
-        indicatorArea(null);
-
-        Optional<Integer> nextIndicator = indicatorAreas.keySet().stream().filter(it -> it > cursor).findFirst();
-        boolean isContinued = nextIndicator.isPresent() && indicatorAreas.get(nextIndicator.get()).equals("-");
-        cursor = saveCursor;
-
-        // TODO:
-        // Split markers for comment and blank lines into a new method.
-        // Refactor processLiteral into processContinuedText.
-        // Detect continued keywords and statements, and parse correctly.
-
-        // Detect a literal continued on a new line.
+        // A literal continued on a new line.
         if (delimiter != null && isContinued) {
-            // Process continued will handle both literals and continued statements / keywords.
             return processLiteral(text, markers, delimiter);
-        } else if ("<EOF>".equals(text) && source.substring(cursor).isEmpty()) {
+        } else if (END_OF_FILE.equals(text) && source.substring(cursor).isEmpty()) {
             return Space.EMPTY;
         }
 
-        return processText(text, markers);
+        return processText(text, markers, isContinued);
     }
 
     private void parseCommentsAndEmptyLines(String text, List<Marker> markers) {
         int saveCursor = cursor;
         SequenceArea sequenceArea = sequenceArea();
-        IndicatorArea indicatorArea = indicatorArea(null);
+        IndicatorArea indicatorArea = indicatorArea();
 
         // CommentEntry tags are required to be recognized the COBOL grammar.
         // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
-        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_TAG);
+        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY);
         if (!isCommentEntry && indicatorArea != null) {
 
             List<Lines.Line> lines = new ArrayList<>();
@@ -6465,7 +6465,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
                 saveCursor = cursor;
                 sequenceArea = sequenceArea();
-                indicatorArea = indicatorArea(null);
+                indicatorArea = indicatorArea();
                 iterations++;
             }
             if (!lines.isEmpty()) {
@@ -6484,7 +6484,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         List<Marker> continuation = new ArrayList<>(2);
 
         SequenceArea sequenceArea = sequenceArea();
-        IndicatorArea indicatorArea = indicatorArea(null);
+        IndicatorArea indicatorArea = indicatorArea();
 
         if (sequenceArea != null) {
             continuation.add(sequenceArea);
@@ -6502,6 +6502,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         int matchedCount = 0;
         int iterations = 0;
         while (matchedCount < text.length() && iterations < 250) {
+            if (iterations > 200) {
+                System.out.println("UH OH!");
+            }
+
             continuation = new ArrayList<>(3);
 
             String current = source.substring(cursor);
@@ -6524,24 +6528,21 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 continuation.add(commentArea);
             }
 
-            int saveCursor = cursor;
-            sequenceArea = sequenceArea();
-            indicatorArea = indicatorArea(delimiter);
-
-            // Note: "-" might not be safe for all COBOL dialects.
-            if (indicatorArea != null && !indicatorArea.getIndicator().startsWith("-")) {
+            if (matchedCount == text.length()) {
                 if (!continuation.isEmpty()) {
-                    continuations.put(text.length() + 1, Markers.build(continuation));
+                    continuations.put(matchedCount + 1, Markers.build(continuation));
                 }
-                cursor = saveCursor;
                 break;
-            } else {
-                if (sequenceArea != null) {
-                    continuation.add(sequenceArea);
-                }
-                if (indicatorArea != null) {
-                    continuation.add(indicatorArea);
-                }
+            }
+
+            sequenceArea = sequenceArea();
+            indicatorArea = indicatorArea(delimiter, true);
+
+            if (sequenceArea != null) {
+                continuation.add(sequenceArea);
+            }
+            if (indicatorArea != null) {
+                continuation.add(indicatorArea);
             }
 
             if (!continuation.isEmpty()) {
@@ -6561,19 +6562,107 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     /**
      * TODO: explain
      */
-    private Space processText(String text, List<Marker> markers) {
+    private Space processText(String text, List<Marker> markers, boolean checkContinuation) {
         SequenceArea sequenceArea = sequenceArea();
-        IndicatorArea indicatorArea = indicatorArea(null);
+        IndicatorArea indicatorArea = indicatorArea();
 
         // CommentEntry tags are required to be recognized the COBOL grammar.
         // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
-        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY_TAG);
+        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY);
         if (isCommentEntry) {
-            text = text.substring(COMMENT_ENTRY_TAG.length());
+            text = text.substring(COMMENT_ENTRY.length());
         }
 
         // An inline comment entry will have a null sequence area.
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
+
+        if (checkContinuation) {
+            // CommentAreas are optional text that will precede the end of line.
+            Integer nextCommentArea = commentAreas.keySet().stream()
+                    .filter(it -> it > cursor)
+                    .findFirst()
+                    .orElse(null);
+
+            String current = source.substring(cursor);
+            int newLinePos = current.indexOf("\n");
+            int endPos = (nextCommentArea != null && nextCommentArea < (newLinePos + cursor)) ? nextCommentArea : (newLinePos + cursor);
+
+            current = source.substring(cursor, endPos).trim();
+            // There are two types of continuations.
+            // 1. The text is a grammar token followed by a new line, which is handled by normal markers.
+            // 2. The text is a combination of two tokens, which has been parsed as a single word and requires continuation markers.
+            if (!current.startsWith(text)) {
+                Map<Integer, Markers> continuations = new HashMap<>();
+                List<Marker> continuation = new ArrayList<>(2);
+
+                if (sequenceArea != null) {
+                    continuation.add(sequenceArea);
+                }
+
+                if (indicatorArea != null) {
+                    continuation.add(indicatorArea);
+                }
+
+                if (!continuation.isEmpty()) {
+                    continuations.put(0, Markers.build(continuation));
+                }
+
+                int matchedCount = 0;
+                int iterations = 0;
+                while (iterations < 250) {
+                    if (iterations > 200) {
+                        System.out.println("UH OH!");
+                    }
+                    continuation = new ArrayList<>(3);
+
+                    current = source.substring(cursor);
+                    char[] charArray = text.substring(matchedCount).toCharArray();
+                    char[] sourceArray = current.toCharArray();
+
+                    int end = 0;
+                    for (; end < charArray.length; end++) {
+                        if (charArray[end] != sourceArray[end] || commentAreas.containsKey(cursor)) {
+                            break;
+                        }
+                        cursor++;
+                    }
+
+                    String matchedText = current.substring(0, end);
+                    matchedCount += matchedText.length();
+
+                    CommentArea commentArea = commentArea();
+                    if (commentArea != null) {
+                        continuation.add(commentArea);
+                    }
+
+                    if (matchedCount == text.length()) {
+                        if (!continuation.isEmpty()) {
+                            continuations.put(matchedCount + 1, Markers.build(continuation));
+                        }
+                        break;
+                    }
+
+                    sequenceArea = sequenceArea();
+                    if (sequenceArea != null) {
+                        continuation.add(sequenceArea);
+                    }
+
+                    indicatorArea = indicatorArea(text.charAt(matchedCount), false);
+                    if (indicatorArea != null) {
+                        continuation.add(indicatorArea);
+                    }
+
+                    if (!continuation.isEmpty()) {
+                        continuations.put(matchedCount, Markers.build(continuation));
+                    }
+
+                    iterations++;
+                }
+                markers.add(new Continuation(randomId(), continuations));
+                return prefix;
+            }
+        }
+
         if (removeColumnMarkers) {
             removeColumnMarkers = false;
         } else {
@@ -6586,7 +6675,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             }
         }
 
-        if (!"<EOF>".equals(text)) {
+        if (!END_OF_FILE.equals(text)) {
             cursor += text.length();
 
             CommentArea commentArea = commentArea();
@@ -6601,9 +6690,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return prefix;
     }
 
-    /**
-     * Parse the `copyStartComment` added by the COBOL copy template.
-     */
     private void copyStartComment() {
         cursor += copyStartComment.length();
         cursor++; // Increment passed the \n.
@@ -6617,9 +6703,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         nextIndex = null;
     }
 
-    /**
-     * Parse the `copyStopComment` added by the COBOL copy template.
-     */
     private void copyStopComment() {
         cursor += copyStopComment.length();
         cursor++; // Increment passed the \n.
@@ -6628,16 +6711,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         inCopiedText = false;
 
         sequenceArea();
-        indicatorArea(null);
+        indicatorArea();
 
         String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
         cursor += numberOfSpaces.length();
         nextIndex = Integer.valueOf(numberOfSpaces.trim());
     }
 
-    /**
-     * Parse the `copyUuidComment` added by the COBOL copy template.
-     */
     private void copyUuidComment() {
         cursor += copyUuidComment.length();
         cursor++; // Increment passed the \n.
@@ -6645,7 +6725,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         removeTemplateCommentArea = false;
 
         sequenceArea();
-        indicatorArea(null);
+        indicatorArea();
         String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
         cursor += uuid.length();
         currentCopy = copyMap.get(uuid.trim());
@@ -6657,16 +6737,15 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         parseComment(replaceByUuidComment);
 
         sequenceArea();
-        indicatorArea(null);
+        indicatorArea();
         String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
         cursor += uuid.length();
 
         parseComment(replaceByStopComment);
 
         sequenceArea();
-        indicatorArea(null);
+        indicatorArea();
 
-        // Unknown; this might content with other methods that set nextIndex.
         String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
         cursor += numberOfSpaces.length();
         nextIndex = Integer.valueOf(numberOfSpaces.trim());
@@ -6675,9 +6754,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return new ReplaceBy(randomId(), statement);
     }
 
-    /**
-     * Parse the `replaceByStartComment` added by the COBOL copy template.
-     */
     private void replaceByStartComment() {
         cursor += replaceByStartComment.length();
         cursor++; // Increment passed the \n.
@@ -6686,21 +6762,18 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         isAdditiveCommentArea = false;
 
         // Reset replace info.
-        // Unknown; this might contend with other methods.
         removeColumnMarkers = false;
         nextIndex = null;
 
         String current = source.substring(cursor);
         current = current.substring(0, current.indexOf("\n") + 1);
         if (!current.trim().isEmpty()) {
+            // This case does not happen in the NIST tests, but might be possible.
             throw new IllegalStateException("Unexpected source code before ReplaceOffStatement.");
         }
         cursor += current.length();
     }
 
-    /**
-     * Parse the `replaceAdditiveComment` added by the COBOL copy template.
-     */
     private void replaceAdditiveComment() {
         cursor += replaceAdditiveComment.length();
         cursor++; // Increment passed the \n.
@@ -6709,9 +6782,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         isAdditiveCommentArea = true;
     }
 
-    /**
-     * Parse the `replaceByStartComment` added by the COBOL copy template.
-     */
     private void replaceStartComment() {
         cursor += replaceStartComment.length();
         cursor++; // Increment passed the \n.
@@ -6719,17 +6789,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         removeTemplateCommentArea = true;
 
         // Reset replace info.
-        // Unknown; this might contend with other methods.
         removeColumnMarkers = false;
         nextIndex = null;
     }
 
-    /**
-     * TODO:
-     */
     private Replace getReplaceMarker() {
         sequenceArea();
-        indicatorArea(null);
+        indicatorArea();
 
         cursor += replaceUuidComment.length();
         cursor++; // Increment passed the \n.
@@ -6737,7 +6803,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         removeTemplateCommentArea = false;
 
         sequenceArea();
-        indicatorArea(null);
+        indicatorArea();
         String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
         cursor += uuid.length();
         Replace replace = replaceMap.get(uuid.trim());
@@ -6748,9 +6814,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             isAdditiveCommentArea = false;
         } else {
             sequenceArea();
-            indicatorArea(null);
+            indicatorArea();
 
-            // Unknown; this might content with other methods that set nextIndex.
             String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
             cursor += numberOfSpaces.length();
             nextIndex = Integer.valueOf(numberOfSpaces.trim());
@@ -6759,23 +6824,20 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return replace;
     }
 
-    /**
-     * TODO:
-     */
     private ReplaceOff getReplaceOffMarker() {
         replaceOffStartComment();
 
         parseComment(replaceOffUuidComment);
 
         sequenceArea();
-        indicatorArea(null);
+        indicatorArea();
         String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
         cursor += uuid.length();
 
         parseComment(replaceOffStopComment);
 
         sequenceArea();
-        indicatorArea(null);
+        indicatorArea();
 
         // Unknown; this might content with other methods that set nextIndex.
         String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
@@ -6786,9 +6848,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return new ReplaceOff(randomId(), statement);
     }
 
-    /**
-     * Parse the `replaceOffStartComment` added by the COBOL copy template.
-     */
     private void replaceOffStartComment() {
         cursor += replaceOffStartComment.length();
         cursor++; // Increment passed the \n.
@@ -6796,6 +6855,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         String current = source.substring(cursor);
         current = current.substring(0, current.indexOf("\n") + 1);
         if (!current.trim().isEmpty()) {
+            // This case does not happen in the NIST tests, but might be possible.
             throw new IllegalStateException("Unexpected source code before ReplaceOffStatement.");
         }
         cursor += current.length();
@@ -6803,7 +6863,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
     private void parseComment(String comment) {
         sequenceArea();
-        indicatorArea(null);
+        indicatorArea();
 
         cursor += comment.length();
         cursor++; // Increment passed the \n.
@@ -6814,9 +6874,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return area != null && (isUnknownIndicator || "*".equals(area.getIndicator()) || "/".equals(area.getIndicator()));
      }
 
-    /**
-     * Return the SequenceArea based on the current cursor position if it exists.
-     */
     @Nullable
     private SequenceArea sequenceArea() {
         if (sequenceAreas.containsKey(cursor)) {
@@ -6828,27 +6885,39 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return null;
     }
 
+    @Nullable
+    private IndicatorArea indicatorArea() {
+        return indicatorArea(null, false);
+    }
+
     /**
      * Return the IndicatorArea based on the current cursor position if it exists.
      *
-     * @param continuationDelimiter use for continued String literals.
-     *                              A continued String literal must start with the same character that started the literal (" or ').
+     * @param continuationDelimiter the next expected Character in the source that comes after the indicator.
+     * @param isStringLiteral String literals and Keywords/Identifiers have different rules for line continuations.
+     *                        A continued String literal will be prefixed by the delimiter (' or "),
+     *                        which needs to exist in the indicator marker.
+     *                        I.E. 000001-|<whitespace including the delimiter " or '>|some continued string literal.
+     *
+     *                        A continued Keyword/Identifier should not include the delimiter.
+     *                        I.E. 000001-|<whitespace added to indicator>|TOKEN-NAME.
      */
     @Nullable
-    private IndicatorArea indicatorArea(@Nullable Character continuationDelimiter) {
+    private IndicatorArea indicatorArea(@Nullable Character continuationDelimiter, boolean isStringLiteral) {
         if (indicatorAreas.containsKey(cursor)) {
             String indicatorArea = indicatorAreas.get(cursor);
+            cursor += indicatorArea.length();
+
             String continuationText = null;
             if (continuationDelimiter != null) {
-                // Increment passed the start of the literal.
-                String current = source.substring(cursor + 1);
+                String current = source.substring(cursor);
                 int pos = current.indexOf(continuationDelimiter);
                 if (pos != -1) {
-                    continuationText = current.substring(0, current.indexOf(continuationDelimiter) + 1);
+                    int endPos = (isStringLiteral ? 1 : 0) + current.indexOf(continuationDelimiter);
+                    continuationText = current.substring(0, endPos);
                     cursor += continuationText.length();
                 }
             }
-            cursor += indicatorArea.length();
 
             return new IndicatorArea(randomId(), indicatorArea, continuationText);
         }

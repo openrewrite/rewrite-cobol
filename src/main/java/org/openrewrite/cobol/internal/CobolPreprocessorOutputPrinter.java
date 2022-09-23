@@ -23,15 +23,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
+
 /**
- * Print the processed COBOL code.
- * <p>
+ * Print the post processed COBOL AST with comments that act like a `JavaTemplate`.
+ * The comments are used to link AST elements that contain the original source code to the COBOL AST.
+ *
+ * Each key will be added as a comment that is formatted based on the current {@link CobolDialect}.
+ *
  * `printWithColumnAreas`:
- * true: Print as source code with modifications to distinguish changes during preprocessing like COPY and REPLACE.
- * false: Print as parser input for the CobolParserVisitor.
+ *      true: Print as source code with modifications to distinguish changes during preprocessing like COPY and REPLACE.
+ *      false: Print as parser input for the CobolParserVisitor.
  */
 public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<P> {
-    // TODO: remove unnecessary keys. The keys may be replaced by UUIDs for uniqueness, but are human readable until COBOL is understood.
+    // TODO: remove unnecessary keys.
+    //       The keys may be replaced by UUIDs for uniqueness, but are human readable until COBOL is understood.
 
     // START keys mark the line where whitespace is added until the end of the content area.
     public static final String COPY_START_KEY = "__COPY_START__";
@@ -57,17 +63,28 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     // Lazily initialized Strings that are generated once with constraints based on the dialect.
     private String dialectSequenceArea = null;
     private String uuidEndOfLine = null;
+
+    // CopyStatement comments.
     private String copyStartComment = null;
     private String copyStopComment = null;
     private String copyUuidComment = null;
+
+    // ReplaceByStatement comments.
     private String replaceByStartComment = null;
     private String replaceByStopComment = null;
+
+    // ReplaceOff comments.
     private String replaceOffStartComment = null;
     private String replaceOffStopComment = null;
+
+    // Words that have been replaced by replace rules.
     private String replaceStartComment = null;
     private String replaceStopComment = null;
-    private String replaceAdditiveWordComment = null;
     private String replaceUuidComment = null;
+
+    // Represents whitespace used to keep the original AST and the processed AST aligned in the column area.
+    private String replaceAdditiveWordComment = null;
+
     private boolean isLastWordReplaced = false;
 
     // Lines prefixed with an unknown indicator are commented out during printing until we know more about them.
@@ -87,7 +104,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             visitSpace(commentEntry.getPrefix(), p);
             visitMarkers(commentEntry.getMarkers(), p);
             for (CobolPreprocessor.Word comment : commentEntry.getComments()) {
-                p.append("*>CE ");
+                p.append(COMMENT_ENTRY);
                 visit(comment, p);
             }
         }
@@ -484,9 +501,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return word;
     }
 
-    /**
-     * TODO:
-     */
     private String getCopyStartComment() {
         if (copyStartComment == null) {
             String start = getDialectSequenceArea() + "*" + COPY_START_KEY;
@@ -495,9 +509,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return copyStartComment;
     }
 
-    /**
-     * TODO:
-     */
     private String getCopyStopComment() {
         if (copyStopComment == null) {
             String start = getDialectSequenceArea() + "*" + COPY_STOP_KEY;
@@ -507,9 +518,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
 
-    /**
-     * TODO:
-     */
     private String getCopyUuidKey() {
         if (copyUuidComment == null) {
             String start = getDialectSequenceArea() + "*" + COPY_UUID_KEY;
@@ -518,9 +526,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return copyUuidComment;
     }
 
-    /**
-     * TODO:
-     */
     private String getReplaceByStartComment() {
         if (replaceByStartComment == null) {
             String start = getDialectSequenceArea() + "*" + REPLACE_BY_START_KEY;
@@ -540,9 +545,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return replaceByStopComment;
     }
 
-    /**
-     * TODO:
-     */
     private String getReplaceStartComment() {
         if (replaceStartComment == null) {
             String start = getDialectSequenceArea() + "*" + REPLACE_START_KEY;
@@ -551,9 +553,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return replaceStartComment;
     }
 
-    /**
-     * TODO:
-     */
     private String getReplaceStopComment() {
         if (replaceStopComment == null) {
             String start = getDialectSequenceArea() + "*" + REPLACE_STOP_KEY;
@@ -562,9 +561,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return replaceStopComment;
     }
 
-    /**
-     * TODO:
-     */
     private String getReplaceAdditiveWordComment() {
         if (replaceAdditiveWordComment == null) {
             String start = getDialectSequenceArea() + "*" + REPLACE_ADDITIVE_WORD_KEY;
@@ -573,9 +569,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return replaceAdditiveWordComment;
     }
 
-    /**
-     * TODO:
-     */
     private String getReplaceOffStartComment() {
         if (replaceOffStartComment == null) {
             String start = getDialectSequenceArea() + "*" + REPLACE_OFF_START_KEY;
@@ -584,9 +577,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return replaceOffStartComment;
     }
 
-    /**
-     * TODO:
-     */
     private String getReplaceOffStopComment() {
         if (replaceOffStopComment == null) {
             String start = getDialectSequenceArea() + "*" + REPLACE_OFF_STOP_KEY;
@@ -595,9 +585,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return replaceOffStopComment;
     }
 
-    /**
-     * TODO:
-     */
     private String getReplaceUuidComment() {
         if (replaceUuidComment == null) {
             String start = getDialectSequenceArea() + "*" + REPLACE_UUID_KEY;
@@ -613,9 +600,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return uuidEndOfLine;
     }
 
-    /**
-     * TODO:
-     */
     private String getDialectSequenceArea() {
         if (dialectSequenceArea == null) {
             dialectSequenceArea = StringUtils.repeat(" ", cobolDialect.getColumns().getContentArea() - 1);
@@ -623,9 +607,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return dialectSequenceArea;
     }
 
-    /**
-     * TODO:
-     */
     private int getCurrentIndex(String output) {
         int index = output.lastIndexOf("\n");
         if (index >= 0) {

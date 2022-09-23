@@ -15,13 +15,9 @@ public class CobolLineReader {
     private static final String EMPTY_STRING = "";
     private static final Set<String> triggersStart = new HashSet<>(Arrays.asList("AUTHOR.", "INSTALLATION.", "DATE-WRITTEN.",
             "DATE-COMPILED.", "SECURITY.", "REMARKS."));
-//    private static final String[] triggersStart = new String[]{"AUTHOR.", "INSTALLATION.", "DATE-WRITTEN.",
-//            "DATE-COMPILED.", "SECURITY.", "REMARKS."};
 
     private static final Set<String> triggersEnd = new HashSet<>(Arrays.asList("PROGRAM-ID.", "AUTHOR.", "INSTALLATION.",
             "DATE-WRITTEN.", "DATE-COMPILED.", "SECURITY.", "ENVIRONMENT", "DATA.", "PROCEDURE."));
-//    private static final String[] triggersEnd = new String[]{"PROGRAM-ID.", "AUTHOR.", "INSTALLATION.", "DATE-WRITTEN.",
-//            "DATE-COMPILED.", "SECURITY.", "ENVIRONMENT", "DATA.", "PROCEDURE."};
 
     private boolean inCommentEntry = false;
 
@@ -69,7 +65,7 @@ public class CobolLineReader {
 
             if (isValidText) {
                 String trimmedContentArea = trimLeadingWhitespace(contentArea);
-                if ("-".equals(indicator) && trimmedContentArea.startsWith("\"") || trimmedContentArea.startsWith("'")) {
+                if ("-".equals(indicator) && (trimmedContentArea.startsWith("\"") || trimmedContentArea.startsWith("'"))) {
                     // Remove the previous newline character to concatenate the literal.
                     processedSource.delete(processedSource.length() - previousNewLineLength, processedSource.length());
                     // Remove the leading delimiter.

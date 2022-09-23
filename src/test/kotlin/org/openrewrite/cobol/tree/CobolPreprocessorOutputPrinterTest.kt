@@ -67,7 +67,6 @@ class CobolPreprocessorOutputPrinterTest : RewriteTest {
     fun copyAndReplace() = rewriteRun(
         cobolCopy(
             getNistSource("SM208A.CBL"), """
-                  *HEADER,COBOL,SM208A                                                            
             000100 IDENTIFICATION DIVISION.                                         SM2084.2
             000200 PROGRAM-ID. SM208A.                                              SM2084.2
             000300 REPLACE OFF.                                                     SM2084.2
@@ -288,8 +287,8 @@ class CobolPreprocessorOutputPrinterTest : RewriteTest {
             021800 CLOSE-FILES.                                                     SM2084.2
             021900     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SM2084.2
             022000 TERMINATE-CCVS.                                                  SM2084.2
-            022100*    EXIT PROGRAM.                                                SM2084.2
-            022200*TERMINATE-CALL.                                                  SM2084.2
+            022100S    EXIT PROGRAM.                                                SM2084.2
+            022200STERMINATE-CALL.                                                  SM2084.2
             022300     STOP     RUN.                                                SM2084.2
             022400 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SM2084.2
             022500 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SM2084.2
@@ -352,15 +351,15 @@ class CobolPreprocessorOutputPrinterTest : RewriteTest {
             028200     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SM2084.2
             028300 WRITE-LINE.                                                      SM2084.2
             028400     ADD 1 TO RECORD-COUNT.                                       SM2084.2
-            028500*    IF RECORD-COUNT GREATER 50                                   SM2084.2
-            028600*        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM2084.2
-            028700*        MOVE SPACE TO DUMMY-RECORD                               SM2084.2
-            028800*        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM2084.2
-            028900*        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM2084.2
-            029000*        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM2084.2
-            029100*        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM2084.2
-            029200*        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM2084.2
-            029300*        MOVE ZERO TO RECORD-COUNT.                               SM2084.2
+            028500Y    IF RECORD-COUNT GREATER 50                                   SM2084.2
+            028600Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM2084.2
+            028700Y        MOVE SPACE TO DUMMY-RECORD                               SM2084.2
+            028800Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM2084.2
+            028900Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM2084.2
+            029000Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM2084.2
+            029100Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM2084.2
+            029200Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM2084.2
+            029300Y        MOVE ZERO TO RECORD-COUNT.                               SM2084.2
             029400     PERFORM WRT-LN.                                              SM2084.2
             029500 WRT-LN.                                                          SM2084.2
             029600     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SM2084.2
@@ -705,7 +704,6 @@ class CobolPreprocessorOutputPrinterTest : RewriteTest {
             064000 CCVS-EXIT SECTION.                                               SM2084.2
             064100 CCVS-999999.                                                     SM2084.2
             064200     GO TO CLOSE-FILES.                                           SM2084.2
-                  *END-OF,SM208A                                                                  
         """) { spec ->
             spec.afterRecipe { cu ->
                 object : CobolPreprocessorVisitor<ExecutionContext>() {
@@ -908,6 +906,8 @@ class CobolPreprocessorOutputPrinterTest : RewriteTest {
                     CLOSE-FILES.                                                     
                         PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   
                     TERMINATE-CCVS.                                                  
+                        EXIT PROGRAM.                                                
+                    TERMINATE-CALL.                                                  
                         STOP     RUN.                                                
                     INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         
                     PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           
@@ -969,6 +969,15 @@ class CobolPreprocessorOutputPrinterTest : RewriteTest {
                         MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           
                     WRITE-LINE.                                                      
                         ADD 1 TO RECORD-COUNT.                                       
+                        IF RECORD-COUNT GREATER 50                                   
+                            MOVE DUMMY-RECORD TO DUMMY-HOLD                          
+                            MOVE SPACE TO DUMMY-RECORD                               
+                            WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  
+                            MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             
+                            MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     
+                            MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          
+                            MOVE DUMMY-HOLD TO DUMMY-RECORD                          
+                            MOVE ZERO TO RECORD-COUNT.                               
                         PERFORM WRT-LN.                                              
                     WRT-LN.                                                          
                         WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               
@@ -1210,8 +1219,7 @@ class CobolPreprocessorOutputPrinterTest : RewriteTest {
                         MOVE   "REP-TEST-9" TO PAR-NAME.                             
                         MOVE   "FAIL"       TO P-OR-F.                               
                     REP-TEST-9-0.                                                    
-                        MOVE "PASS" TO P-OR-F.                                       
-                        GO TO   REP-TEST-9-1.                                        
+                        MOVE "PASS" TO P-OR-F.                                           GO TO   REP-TEST-9-1.                                        
                     REP-DELETE-9.                                                    
                         PERFORM DE-LETE.                                             
                         PERFORM PRINT-DETAIL.                                        
@@ -1229,7 +1237,6 @@ class CobolPreprocessorOutputPrinterTest : RewriteTest {
                     CCVS-EXIT SECTION.                                               
                     CCVS-999999.                                                     
                         GO TO CLOSE-FILES.                                           
-                    
                 """.trimIndent())
             }
         }
