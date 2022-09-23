@@ -96,7 +96,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         EncodingDetectingInputStream is = sourceFile.getSource();
                         String sourceStr = is.readFully();
 
-                        String proLeapControl = preprocessCobol(sourceStr, is.getCharset());
+//                        String prepareSource = preprocessCobol(sourceStr, is.getCharset());
                         String prepareSource = new CobolLineReader().readLines(sourceStr, cobolDialect);
                         org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
                                 new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(

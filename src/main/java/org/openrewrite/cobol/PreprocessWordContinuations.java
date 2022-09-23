@@ -113,18 +113,20 @@ public class PreprocessWordContinuations extends Recipe {
 
         @Override
         public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
-            // TODO: fix me ... requires a MARKER otherwise the original source formatting is lost.
-            if (continuedWords.containsKey(word)) {
-                Map<CobolPreprocessor.Word, CobolPreprocessor.Word> result = getReplacements(word, continuedWords.get(word));
-                if (result.containsKey(word)) {
-                    word = result.get(word);
-                    result.remove(word);
+            CobolPreprocessor.Word w = super.visitWord(word, executionContext);
+
+            if (continuedWords.containsKey(w)) {
+                Map<CobolPreprocessor.Word, CobolPreprocessor.Word> result = getReplacements(w, continuedWords.get(w));
+                if (result.containsKey(w)) {
+                    w = result.get(w);
+                    result.remove(w);
                     this.replacements = result;
                 }
-            } else if (replacements != null && replacements.containsKey(word)){
-                word = replacements.get(word);
+            } else if (replacements != null && replacements.containsKey(w)){
+                return replacements.get(w);
             }
-            return super.visitWord(word, executionContext);
+
+            return w;
         }
 
         private Map<CobolPreprocessor.Word, CobolPreprocessor.Word> getReplacements(CobolPreprocessor.Word key, List<CobolPreprocessor.Word> values) {
@@ -152,39 +154,25 @@ public class PreprocessWordContinuations extends Recipe {
                     continuations.put(pos, Markers.build(continuation));
                 }
 
-                if (isTwoParts) {
-                    concatenateWord = key.getWord() + " " + concatenateWord.substring(key.getWord().length());
-                    pos++;
-                }
-
                 newKey = newKey.withWord(concatenateWord);
                 pos += key.getWord().length();
 
                 newKey = newKey.withMarkers(newKey.getMarkers().removeByType(CommentArea.class));
                 result.put(key, newKey);
 
-                for (CobolPreprocessor.Word value : values) {
+                for (int i = 0; i < values.size(); i++) {
+                    CobolPreprocessor.Word value = values.get(i);
                     continuation = new ArrayList<>(3);
 
                     // Add the CommentArea from the original word to align the columns.
                     Optional<CommentArea> commentAreaOptional;
-                    int firstPos = key.getWord().length() + (isTwoParts ? 1 : 0);
+                    int firstPos = key.getWord().length();
                     if (pos == firstPos) {
                         commentAreaOptional = key.getMarkers().findFirst(CommentArea.class);
-                        if (commentAreaOptional.isPresent()) {
-                            CommentArea commentArea = commentAreaOptional.get();
-                            if (isTwoParts) {
-                                int removeSpace = commentArea.getPrefix().getWhitespace().length() - 1;
-                                commentArea = commentArea.withPrefix(
-                                        commentArea.getPrefix().withWhitespace(
-                                                commentArea.getPrefix().getWhitespace().substring(0, removeSpace)));
-                            }
-                            continuation.add(commentArea);
-                        }
                     } else {
-                        commentAreaOptional = value.getMarkers().findFirst(CommentArea.class);
-                        commentAreaOptional.ifPresent(continuation::add);
+                        commentAreaOptional = values.get(i - 1).getMarkers().findFirst(CommentArea.class);
                     }
+                    commentAreaOptional.ifPresent(continuation::add);
 
                     sequenceAreaOptional = value.getMarkers().findFirst(SequenceArea.class);
                     sequenceAreaOptional.ifPresent(continuation::add);
@@ -203,16 +191,79 @@ public class PreprocessWordContinuations extends Recipe {
                     pos += value.getWord().length();
                 }
 
-                values.forEach(k -> {
-                    CobolPreprocessor.Word updated = k.withWord("");
-                    updated = updated.withMarkers(Markers.EMPTY);
-                    updated = updated.withPrefix(Space.EMPTY);
-                    result.put(k, updated);
-                });
+                Optional<CommentArea> commentAreaOptional = values.get(values.size() - 1).getMarkers().findFirst(CommentArea.class);
+                if (commentAreaOptional.isPresent()) {
+                    continuation = new ArrayList<>(1);
+                    CommentArea commentArea = commentAreaOptional.get();
+                    continuation.add(commentArea);
+                    continuations.put(pos + 1, Markers.build(continuation));
+                }
+                values.forEach(k -> result.put(k, null));
             } else {
-                result.put(key, newKey.withWord(concatenateWord));
-                values.forEach(w -> result.put(w, w.withWord("")));
-                System.out.println(concatenateWord);
+                List<Marker> continuation = new ArrayList<>(2);
+
+                Optional<SequenceArea> sequenceAreaOptional = newKey.getMarkers().findFirst(SequenceArea.class);
+                sequenceAreaOptional.ifPresent(continuation::add);
+                newKey = newKey.withMarkers(newKey.getMarkers().removeByType(SequenceArea.class));
+
+                Optional<IndicatorArea> indicatorAreaOptional = newKey.getMarkers().findFirst(IndicatorArea.class);
+                indicatorAreaOptional.ifPresent(continuation::add);
+                newKey = newKey.withMarkers(newKey.getMarkers().removeByType(IndicatorArea.class));
+
+                int pos = 0;
+                if (!continuation.isEmpty()) {
+                    continuations.put(pos, Markers.build(continuation));
+                }
+
+                newKey = newKey.withWord(concatenateWord);
+                pos += key.getWord().length();
+
+                boolean isSpecialCase = false;
+                if ("-".equals(values.get(0).getWord()) && !key.getMarkers().findFirst(CommentArea.class).isPresent() && values.get(0).getMarkers().findFirst(CommentArea.class).isPresent()) {
+                    isSpecialCase = true;
+                    pos++;
+                }
+                int firstPos = pos;
+
+                newKey = newKey.withMarkers(newKey.getMarkers().removeByType(CommentArea.class));
+                result.put(key, newKey);
+
+                for (int i = isSpecialCase ? 1 : 0; i < values.size(); i++) {
+                    CobolPreprocessor.Word value = values.get(i);
+                    continuation = new ArrayList<>(3);
+
+                    // Add the CommentArea from the original word to align the columns.
+                    Optional<CommentArea> commentAreaOptional;
+                    if (pos == firstPos && !isSpecialCase) {
+                        commentAreaOptional = key.getMarkers().findFirst(CommentArea.class);
+                    } else {
+                        commentAreaOptional = values.get(i - 1).getMarkers().findFirst(CommentArea.class);
+                    }
+                    commentAreaOptional.ifPresent(continuation::add);
+
+                    sequenceAreaOptional = value.getMarkers().findFirst(SequenceArea.class);
+                    sequenceAreaOptional.ifPresent(continuation::add);
+
+                    indicatorAreaOptional = value.getMarkers().findFirst(IndicatorArea.class);
+                    // Move the prefix from the concatenated value to the indicator marker.
+                    if (indicatorAreaOptional.isPresent()) {
+                        IndicatorArea indicatorArea = indicatorAreaOptional.get();
+                        indicatorArea = indicatorArea.withContinuationPrefix(value.getPrefix().getWhitespace());
+                        continuation.add(indicatorArea);
+                    }
+
+
+                    if (!continuation.isEmpty()) {
+                        continuations.put(pos, Markers.build(continuation));
+                    }
+
+                    pos += value.getWord().length();
+                    if (isSpecialCase) {
+                        isSpecialCase = false;
+                    }
+                }
+
+                values.forEach(k -> result.put(k, null));
             }
             return result;
         }
