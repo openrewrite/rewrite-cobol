@@ -25,7 +25,6 @@ import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
-import org.openrewrite.cobol.proleap.*;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.cobol.tree.Replace;
@@ -40,18 +39,13 @@ import org.openrewrite.tree.ParsingExecutionContextView;
 
 import java.io.File;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.openrewrite.Tree.randomId;
-import static org.openrewrite.cobol.proleap.ProLeapCobolDialect.ANSI85;
-import static org.openrewrite.cobol.proleap.ProLeapCobolPreprocessor.CobolSourceFormatEnum.FIXED;
 
 /**
  * Read preprocessed COBOL and execute preprocessor commands.
@@ -60,8 +54,6 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
 
     private final CobolDialect cobolDialect;
-    private final ProLeapCobolDialect proLeapCobolDialect;
-    private final ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat;
     private final boolean enableCopy;
     private final boolean enableReplace;
 
@@ -72,13 +64,9 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private Set<Replace> replaces = null;
 
     public CobolPreprocessorParser(CobolDialect cobolDialect,
-                                   ProLeapCobolDialect proLeapCobolDialect,
-                                   ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat,
                                    boolean enableCopy,
                                    boolean enableReplace) {
         this.cobolDialect = cobolDialect;
-        this.proLeapCobolDialect = proLeapCobolDialect;
-        this.sourceFormat = sourceFormat;
         this.enableCopy = enableCopy;
         this.enableReplace = enableReplace;
     }
@@ -96,8 +84,6 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         EncodingDetectingInputStream is = sourceFile.getSource();
                         String sourceStr = is.readFully();
 
-                        // TODO: remove ProLeap after fully passing NIST tests.
-//                        String proLeapControl = preprocessCobol(sourceStr, is.getCharset());
                         String prepareSource = new CobolLineReader().readLines(sourceStr, cobolDialect);
                         org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
                                 new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
@@ -148,28 +134,6 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 })
                 .filter(Objects::nonNull)
                 .collect(toList());
-    }
-
-    private String preprocessCobol(String source, @Nullable Charset encoding) {
-        CobolParserParams params = new CobolParserParams(
-                encoding,
-                emptyList(),
-                getCobolFileExtensions(),
-                getCopyBookFiles(),
-                proLeapCobolDialect,
-                sourceFormat,
-                true
-        );
-
-        ProLeapCobolPreprocessor proleapCobolPreprocessor = new ProLeapCobolPreprocessor(
-                new CobolCommentEntriesMarker(),
-                new CobolDocumentParser(),
-                new CobolInlineCommentEntriesNormalizer(),
-                new CobolLineIndicatorProcessor(),
-                new org.openrewrite.cobol.proleap.CobolLineReader()
-        );
-
-        return proleapCobolPreprocessor.rewriteLines(source, params);
     }
 
     public List<CobolPreprocessor.CopyBook> parseCopyBooks(List<Path> paths, @Nullable Path relativeTo) {
@@ -243,16 +207,6 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 .collect(toList());
     }
 
-    private List<File> getCopyBookFiles() {
-        String userDir = System.getProperty("user.dir");
-        String copyBooks = "/src/test/resources/gov/nist/copybooks";
-        return Arrays.stream(Objects.requireNonNull(Paths.get(userDir + copyBooks).toFile().listFiles())).collect(toList());
-    }
-
-    private List<String> getCobolFileExtensions() {
-        return singletonList("CPY");
-    }
-
     @Override
     public List<CobolPreprocessor.CompilationUnit> parse(String... sources) {
         return parse(new InMemoryExecutionContext(), sources);
@@ -281,8 +235,6 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     public static class Builder extends org.openrewrite.Parser.Builder {
 
         CobolDialect cobolDialect;
-        ProLeapCobolDialect proLeapCobolDialect;
-        ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat;
         boolean enableCopy;
         boolean enableReplace;
 
@@ -294,24 +246,12 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         public CobolPreprocessorParser build() {
             return new CobolPreprocessorParser(
                     cobolDialect == null ? new IbmAnsi85() : cobolDialect,
-                    proLeapCobolDialect == null ? ANSI85 : proLeapCobolDialect,
-                    sourceFormat == null ? FIXED : sourceFormat,
                     enableCopy,
                     enableReplace);
         }
 
         public Builder setCobolDialect(CobolDialect cobolDialect) {
             this.cobolDialect = cobolDialect;
-            return this;
-        }
-
-        public Builder setProLeapCobolDialect(ProLeapCobolDialect proLeapCobolDialect) {
-            this.proLeapCobolDialect = proLeapCobolDialect;
-            return this;
-        }
-
-        public Builder setSourceFormat(ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat) {
-            this.sourceFormat = sourceFormat;
             return this;
         }
 

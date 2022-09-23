@@ -26,7 +26,6 @@ import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolParserVisitor;
 import org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter;
 import org.openrewrite.cobol.internal.grammar.CobolLexer;
-import org.openrewrite.cobol.proleap.*;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.internal.EncodingDetectingInputStream;
@@ -45,16 +44,9 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
     private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
 
     private final CobolDialect cobolDialect;
-    private final ProLeapCobolDialect proLeapCobolDialect;
-    private final ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat;
 
-    public CobolParser(CobolDialect cobolDialect,
-                       ProLeapCobolDialect proLeapCobolDialect,
-                       ProLeapCobolPreprocessor.CobolSourceFormatEnum sourceFormat) {
-
+    public CobolParser(CobolDialect cobolDialect) {
         this.cobolDialect = cobolDialect;
-        this.proLeapCobolDialect = proLeapCobolDialect;
-        this.sourceFormat = sourceFormat;
     }
 
     @Override

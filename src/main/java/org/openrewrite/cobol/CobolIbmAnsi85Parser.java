@@ -18,13 +18,10 @@ package org.openrewrite.cobol;
 import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.tree.Cobol;
 
-import static org.openrewrite.cobol.proleap.ProLeapCobolDialect.ANSI85;
-import static org.openrewrite.cobol.proleap.ProLeapCobolPreprocessor.CobolSourceFormatEnum.FIXED;
-
 public class CobolIbmAnsi85Parser extends CobolParser {
 
     public CobolIbmAnsi85Parser() {
-        super(new IbmAnsi85(), ANSI85, FIXED);
+        super(new IbmAnsi85());
     }
 
     public static Builder builder() {
