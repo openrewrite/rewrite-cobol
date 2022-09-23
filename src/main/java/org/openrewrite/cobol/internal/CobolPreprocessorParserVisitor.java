@@ -892,9 +892,6 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
             int iterations = 0;
             while (iterations < 250) {
-                if (iterations > 200) {
-                    System.out.println("UH OH!");
-                }
                 // Stop after all the trailing comments have been parsed.
                 if (source.substring(cursor).isEmpty()) {
                     break;
@@ -950,9 +947,6 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         int matchedCount = 0;
         int iterations = 0;
         while (iterations < 250) {
-            if (iterations > 200) {
-                System.out.println("UH OH!");
-            }
             continuation = new ArrayList<>(3);
 
             String current = source.substring(cursor);

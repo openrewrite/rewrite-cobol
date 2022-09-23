@@ -6476,13 +6476,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         cursor = saveCursor;
     }
 
-    /**
-     * TODO: explain
-     */
     private Space processLiteral(String text, List<Marker> markers, Character delimiter) {
         Map<Integer, Markers> continuations = new HashMap<>();
         List<Marker> continuation = new ArrayList<>(2);
 
+        // Check if the literal starts at the beginning of a line.
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea();
 
@@ -6494,7 +6492,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             continuation.add(indicatorArea);
         }
 
+        // Set the Word prefix.
         Space prefix = whitespace();
+
+        // Add a continuation at position 0 to print before the literal starts.
         if (!continuation.isEmpty()) {
             continuations.put(0, Markers.build(continuation));
         }
@@ -6502,10 +6503,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         int matchedCount = 0;
         int iterations = 0;
         while (matchedCount < text.length() && iterations < 250) {
-            if (iterations > 200) {
-                System.out.println("UH OH!");
-            }
-
             continuation = new ArrayList<>(3);
 
             String current = source.substring(cursor);
@@ -6559,9 +6556,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return prefix;
     }
 
-    /**
-     * TODO: explain
-     */
     private Space processText(String text, List<Marker> markers, boolean checkContinuation) {
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea();
@@ -6609,10 +6603,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
                 int matchedCount = 0;
                 int iterations = 0;
+                // TODO check on the max character length for a user defined identifier.
                 while (iterations < 250) {
-                    if (iterations > 200) {
-                        System.out.println("UH OH!");
-                    }
                     continuation = new ArrayList<>(3);
 
                     current = source.substring(cursor);
@@ -6870,6 +6862,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
      private boolean isCommentIndicator(@Nullable IndicatorArea area) {
+         // TODO: move "/" to CobolDialect since the indicator is specific to IBM-ANSI-85.
         boolean isUnknownIndicator = area != null && ("G".equals(area.getIndicator()) || "J".equals(area.getIndicator()) || "P".equals(area.getIndicator()));
         return area != null && (isUnknownIndicator || "*".equals(area.getIndicator()) || "/".equals(area.getIndicator()));
      }
