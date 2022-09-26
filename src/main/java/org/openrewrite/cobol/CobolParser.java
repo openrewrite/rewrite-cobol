@@ -69,11 +69,6 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         CobolPreprocessor.CompilationUnit preprocessedCU = cobolPreprocessorParser.parseInputs(singletonList(sourceFile), relativeTo, ctx).get(0);
 
-                        // TODO: explicit prints are only necessary because we cannot print through the CU with printAll().
-                        // Currently, the default print is the original source code.
-                        // We may add print options to print the post processed COBOL with Columns to use as the source.
-                        // And without the columns to use in the CobolParser.
-
                         // Print processed code to parse COBOL.
                         PrintOutputCapture<ExecutionContext> cobolParserOutput = new PrintOutputCapture<>(new InMemoryExecutionContext());
                         CobolPreprocessorOutputPrinter<ExecutionContext> printWithoutColumns = new CobolPreprocessorOutputPrinter<>(cobolDialect, false);

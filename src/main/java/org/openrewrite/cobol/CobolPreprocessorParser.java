@@ -89,7 +89,6 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                                 new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
                                         new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(prepareSource))));
 
-                        // TODO: ADD detection for other exec phases and throw unsupported.
                         CobolPreprocessorParserVisitor parserVisitor = new CobolPreprocessorParserVisitor(
                                 sourceFile.getRelativePath(relativeTo),
                                 sourceFile.getFileAttributes(),
@@ -221,6 +220,15 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
             }
         }
         return false;
+    }
+
+    @Override
+    public Parser<CobolPreprocessor.CompilationUnit> reset() {
+        this.copyStatements = null;
+        this.replaceRules = null;
+        this.replaceOffs = null;
+        this.replaces = null;
+        return this;
     }
 
     @Override
