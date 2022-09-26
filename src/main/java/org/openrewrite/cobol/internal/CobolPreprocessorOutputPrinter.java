@@ -36,8 +36,7 @@ import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
  *      false: Print as parser input for the CobolParserVisitor.
  */
 public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<P> {
-    // TODO: remove unnecessary keys.
-    //       The keys may be replaced by UUIDs for uniqueness, but are human readable until COBOL is understood.
+    // The keys may be replaced by UUIDs for uniqueness, but are human-readable until COBOL is understood.
 
     // START keys mark the line where whitespace is added until the end of the content area.
     public static final String COPY_START_KEY = "__COPY_START__";
@@ -45,7 +44,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     public static final String REPLACE_OFF_START_KEY = "__REPLACE_OFF_START__";
     public static final String REPLACE_START_KEY = "__REPLACE_START__";
 
-    // END keys mark when the exit of a template area.
+    // STOP keys mark when the exit of a template area.
     public static final String COPY_STOP_KEY = "__COPY_STOP__";
     public static final String REPLACE_BY_STOP_KEY = "__REPLACE_BY_STOP__";
     public static final String REPLACE_OFF_STOP_KEY = "__REPLACE_OFF_STOP__";
@@ -344,7 +343,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 String replacedWord = isLongerWord ? " " + word.getWord() : word.getWord();
                 boolean isContinuedLiteral = isLiteral && (curIndex + replacedWord.length()) > contentAreaLength;
 
-                // TODO: re-assess after continued keywords are supported.
                 if (isLongerWord && !isContinuedLiteral) {
                     // Inserted before Start key, so that the StartKey comes before the additive comment.
                     p.out.insert(insertIndex, getReplaceAdditiveWordComment());

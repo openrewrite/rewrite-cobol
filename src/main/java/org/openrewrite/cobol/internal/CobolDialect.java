@@ -20,7 +20,7 @@ import java.util.Set;
 
 public interface CobolDialect {
     Collection<String> getSeparators();
-
+    Collection<Character> getCommentIndicators();
     Columns getColumns();
 
     enum Columns {

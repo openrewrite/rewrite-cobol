@@ -58,20 +58,17 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final Map<String, Replace> replaceMap = new HashMap<>();
     private final Set<String> templateKeys = new HashSet<>();
 
-    // TODO: Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
-    //       The String is primarily used for debugging parsing issues, since the column positions are set prior to the parsing.
-
+    // Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
     private final Map<Integer, String> sequenceAreas = new HashMap<>();
 
-    // Indicators are used to collect information about the next line of code. I.E. continuation indicators.
+    // A LinkedHash map is used for Indicators to collect information about the next line of code. I.E. continuation indicators.
     private final Map<Integer, String> indicatorAreas = new LinkedHashMap<>();
-    // CommentAreas are used to determine if the current token ends the line.
+    // A LinkedHash map is used for CommentAreas to determine if the current token ends the line.
     private final Map<Integer, String> commentAreas = new LinkedHashMap<>();
-    private final Set<String> separators = new HashSet<>();
-    private int cursor = 0;
 
-    // TODO: fix names and clean up. Note: it might be possible to reuse mechanics between COPY and REPLACE, but it is separate for now.
-    private boolean inCopiedText;
+    private final Set<String> separators = new HashSet<>();
+    private final Set<Character> commentIndicators = new HashSet<>();
+    private int cursor = 0;
 
     // Trigger condition to remove whitespace added by the template.
     private boolean removeTemplateCommentArea;
@@ -81,6 +78,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private String copyStartComment = null;
     private String copyStopComment = null;
     private String copyUuidComment = null;
+    // Set to true when the parser detects the CopyStartComment to add the currentCopy to each `Cobol$Word`.
+    private boolean inCopiedText;
+
+    @Nullable
+    private CobolPreprocessor.CopyStatement currentCopy = null;
 
     private String replaceByStartComment = null;
     private String replaceByStopComment = null;
@@ -96,9 +98,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private String replaceUuidComment = null;
 
     private Integer nextIndex = null;
-
-    @Nullable
-    private CobolPreprocessor.CopyStatement currentCopy = null;
 
     public CobolParserVisitor(Path path,
                               @Nullable FileAttributes fileAttributes,
@@ -177,6 +176,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             }
 
             separators.addAll(cobolDialect.getSeparators());
+            commentIndicators.addAll(cobolDialect.getCommentIndicators());
 
             int contentArea = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
             // TODO: isolate key generation to the printer.
@@ -6598,7 +6598,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
                 int matchedCount = 0;
                 int iterations = 0;
-                // TODO check on the max character length for a user defined identifier.
                 while (iterations < 250) {
                     continuation = new ArrayList<>(3);
 
@@ -6857,9 +6856,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
      private boolean isCommentIndicator(@Nullable IndicatorArea area) {
-         // TODO: move "/" to CobolDialect since the indicator is specific to IBM-ANSI-85.
         boolean isUnknownIndicator = area != null && ("G".equals(area.getIndicator()) || "J".equals(area.getIndicator()) || "P".equals(area.getIndicator()));
-        return area != null && (isUnknownIndicator || "*".equals(area.getIndicator()) || "/".equals(area.getIndicator()));
+        return area != null && (isUnknownIndicator || commentIndicators.contains(area.getIndicator().charAt(0)));
      }
 
     @Nullable

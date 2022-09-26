@@ -50,12 +50,14 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     private final boolean charsetBomMarked;
     private final CobolDialect cobolDialect;
 
-    // TODO: Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
+    // Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
     private final Map<Integer, String> sequenceAreas = new HashMap<>();
-    // Indicators are used to collect information about the next line of code. I.E. continuation indicators.
-    private final Map<Integer, String> indicatorAreas = new LinkedHashMap<>();
     private final Map<Integer, String> commentAreas = new HashMap<>();
+    // A LinkedHash map is used for Indicators to collect information about the next line of code. I.E. continuation indicators.
+    private final Map<Integer, String> indicatorAreas = new LinkedHashMap<>();
+
     private final Set<String> separators = new HashSet<>();
+    private final Set<Character> commentIndicators = new HashSet<>();
     private int cursor = 0;
 
     public CobolPreprocessorParserVisitor(Path path, @Nullable FileAttributes fileAttributes,
@@ -122,6 +124,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             }
 
             separators.addAll(cobolDialect.getSeparators());
+            commentIndicators.addAll(cobolDialect.getCommentIndicators());
         } else if (cobolDialect.getColumns() == CobolDialect.Columns.HP_TANDEM) {
             throw new UnsupportedOperationException("Implement me.");
         } else {
@@ -1030,8 +1033,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     }
 
     private boolean isCommentIndicator(@Nullable IndicatorArea area) {
-        // TODO: move "/" to CobolDialect since the indicator is specific to IBM-ANSI-85.
-        return area != null && ("*".equals(area.getIndicator()) || "/".equals(area.getIndicator()));
+        return area != null && (commentIndicators.contains(area.getIndicator().charAt(0)));
     }
 
     /**
