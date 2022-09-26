@@ -49,7 +49,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     public static final String COPY_STOP_KEY = "__COPY_STOP__";
     public static final String REPLACE_BY_STOP_KEY = "__REPLACE_BY_STOP__";
     public static final String REPLACE_OFF_STOP_KEY = "__REPLACE_OFF_STOP__";
-    public static final String REPLACE_STOP_KEY = "__REPLACE_END__";
+    public static final String REPLACE_STOP_KEY = "__REPLACE_STOP__";
 
     public static final String REPLACE_ADDITIVE_WORD_KEY = "__REPLACE_ADDITIVE_WORD__";
 
@@ -329,15 +329,15 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         }
 
         // Beware all who enter.
-        Optional<Replace> replace = word.getMarkers().findFirst(Replace.class);
-        if (replace.isPresent()) {
+        Optional<Replace> replaceOptional = word.getMarkers().findFirst(Replace.class);
+        if (replaceOptional.isPresent()) {
             // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
             int curIndex = getCurrentIndex(p.getOut());
             if (curIndex != -1) {
                 int insertIndex = p.getOut().lastIndexOf("\n");
                 insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
 
-                boolean isLongerWord = word.getWord().length() > replace.get().getOriginalWord().getWord().length();
+                boolean isLongerWord = word.getWord().length() > replaceOptional.get().getOriginalWord().getWord().length();
                 boolean isLiteral = word.getWord().startsWith("\"") || word.getWord().startsWith("'");
 
                 int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
@@ -368,7 +368,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
                 // Add UUID key.
                 p.append(getReplaceUuidComment());
-                String copyUuid = getDialectSequenceArea() + "*" + replace.get().getId();
+                String copyUuid = getDialectSequenceArea() + "*" + replaceOptional.get().getId();
                 String copyUuidLine = copyUuid + getUuidEndOfLine();
                 p.append(copyUuidLine);
 
@@ -401,7 +401,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
                         // Predetermine the length of the end of the literal to align the column areas with the next token.
                         String dialectSequenceArea = getDialectSequenceArea();
-                        int originalLength = replace.get().getOriginalWord().getPrefix().getWhitespace().length() + replace.get().getOriginalWord().getWord().length();
+                        int originalLength = replaceOptional.get().getOriginalWord().getPrefix().getWhitespace().length() + replaceOptional.get().getOriginalWord().getWord().length();
                         int endPos = replacedWord.length() - curIndex + getDialectSequenceArea().length() + 1 - originalLength;
                         String end = dialectSequenceArea + "-" + replacedWord.substring(endPos);
                         replacedWord = replacedWord.substring(0, replacedWord.length() - end.length());
@@ -444,16 +444,27 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                         p.append(end);
                     } else {
                         String prefix = StringUtils.repeat(" ", curIndex -
-                                (word.getWord().length() - replace.get().getOriginalWord().getWord().length()) +
+                                (word.getWord().length() - replaceOptional.get().getOriginalWord().getWord().length()) +
                                 word.getPrefix().getWhitespace().length());
                         p.append(prefix);
                         p.append(word.getWord());
                     }
                 } else {
-                    int index = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex) - cobolDialect.getColumns().getContentArea();
-                    String spacesCount = getDialectSequenceArea() + "*" + index;
-                    String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
-                    p.append(spacesCountLine);
+                    Replace replace = replaceOptional.get();
+                    int length = curIndex + replace.getOriginalWord().getPrefix().getWhitespace().length() + replace.getOriginalWord().getWord().length();
+                    if (length > contentAreaLength) {
+                        String findEndPos = replaceOptional.get().getOriginalWord().print(getCursor());
+                        int index = getCurrentIndex(findEndPos) - cobolDialect.getColumns().getContentArea();
+                        System.out.println();
+                        String spacesCount = getDialectSequenceArea() + "*" + index;
+                        String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
+                        p.append(spacesCountLine);
+                    } else {
+                        int index = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex) - cobolDialect.getColumns().getContentArea();
+                        String spacesCount = getDialectSequenceArea() + "*" + index;
+                        String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
+                        p.append(spacesCountLine);
+                    }
 
                     // The entire line is filled with whitespace if the curIndex is 0.
                     p.append(StringUtils.repeat(" ", curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex));
@@ -467,10 +478,10 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                             After:
                                 |000001| | firstWord     PIC secondWord         |
                          */
-                    int difference = replace.get().getOriginalWord().getWord().length() - word.getWord().length();
+                    int difference = replaceOptional.get().getOriginalWord().getWord().length() - word.getWord().length();
                     // The difference exceeds the content area.
                     if (curIndex + difference > cobolDialect.getColumns().getOtherArea()) {
-                        String fullWord = replace.get().getOriginalWord().print(getCursor());
+                        String fullWord = replaceOptional.get().getOriginalWord().print(getCursor());
                         int lastIndex = fullWord.lastIndexOf("\n");
                         fullWord = fullWord.substring(lastIndex + 1);
 

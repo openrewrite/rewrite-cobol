@@ -6312,13 +6312,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         if (!isColumnArea && nextIndex != null && nextIndex > 0) {
             int totalWhitespace = (delimIndex - cursor);
-            int prefixCount = (totalWhitespace - nextIndex);
+            int prefixCount = nextIndex > totalWhitespace ? nextIndex - totalWhitespace : totalWhitespace - nextIndex;
             int templateWhitespace = totalWhitespace - prefixCount;
-            if (prefixCount < 0) {
-                System.out.println("Oops, fix me -- there was a missing condition during the calculation of the replace prefix.");
-                prefixCount = totalWhitespace + cobolDialect.getColumns().getContentArea() - nextIndex;
-                templateWhitespace = totalWhitespace - prefixCount;
-            }
             this.cursor += templateWhitespace;
 
             delimIndex = this.cursor + prefixCount;
