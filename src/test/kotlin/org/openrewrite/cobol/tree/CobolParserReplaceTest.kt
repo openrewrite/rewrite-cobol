@@ -15,7 +15,6 @@
  */
 package org.openrewrite.cobol.tree
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
@@ -57,12 +56,6 @@ class CobolParserReplaceTest : RewriteTest {
 
     @Test
     fun sm208APrintBefore() = rewriteRun(
-        cobol(getNistSource("SM208A.CBL"))
-    )
-
-    @Disabled("Add printer for AST after preprocessing ... the columns should be aligned.")
-    @Test
-    fun sm208APrintAfter() = rewriteRun(
         cobol(getNistSource("SM208A.CBL"))
     )
 }

@@ -62,6 +62,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     //       The String is primarily used for debugging parsing issues, since the column positions are set prior to the parsing.
 
     private final Map<Integer, String> sequenceAreas = new HashMap<>();
+
     // Indicators are used to collect information about the next line of code. I.E. continuation indicators.
     private final Map<Integer, String> indicatorAreas = new LinkedHashMap<>();
     // CommentAreas are used to determine if the current token ends the line.
@@ -94,7 +95,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private String replaceAdditiveComment = null;
     private String replaceUuidComment = null;
 
-    // TODO: make value unique untl it's known to be safe -- this value is shared between different template types.
     private Integer nextIndex = null;
 
     @Nullable

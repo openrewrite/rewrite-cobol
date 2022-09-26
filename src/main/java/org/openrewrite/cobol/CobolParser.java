@@ -63,8 +63,8 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         CobolPreprocessorParser cobolPreprocessorParser = CobolPreprocessorParser.builder()
                                 .setCobolDialect(cobolDialect)
-//                                .enableCopy()
-//                                .enableReplace()
+                                .enableCopy()
+                                .enableReplace()
                                 .build();
 
                         CobolPreprocessor.CompilationUnit preprocessedCU = cobolPreprocessorParser.parseInputs(singletonList(sourceFile), relativeTo, ctx).get(0);

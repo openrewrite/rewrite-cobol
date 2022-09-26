@@ -82,6 +82,7 @@ public interface Cobol extends Tree {
             return charsetName == null ? StandardCharsets.UTF_8 : Charset.forName(charsetName);
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public SourceFile withCharset(Charset charset) {
             return withCharsetName(charset.name());
@@ -97,7 +98,7 @@ public interface Cobol extends Tree {
 
         @Override
         public <P> TreeVisitor<?, PrintOutputCapture<P>> printer(Cursor cursor) {
-            return new CobolPrinter<>();
+            return new CobolPrinter<>(true);
         }
     }
 

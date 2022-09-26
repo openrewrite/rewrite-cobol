@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 @With
 @Value
-public class AdditiveReplace implements Marker {
+public class TemplateWhitespace implements Marker {
     UUID id;
     Space prefix;
 }

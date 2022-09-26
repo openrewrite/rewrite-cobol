@@ -87,7 +87,7 @@ class CobolParserCopyTest : RewriteTest {
         cobol(getNistSource("SM201A.CBL"))
     )
 
-    @Disabled("Requires fixes to CobolPreprocessor grammar, and template for CopyStatement Replacing.")
+    @Disabled("Requires information on CopyStatement Replacing rule, changes to CobolPreprocessor grammar, and template for CopyStatement Replacing.")
     @Test
     fun sm202A() = rewriteRun(
         cobol(getNistSource("SM202A.CBL"))
@@ -103,7 +103,7 @@ class CobolParserCopyTest : RewriteTest {
         cobol(getNistSource("SM205A.CBL"))
     )
 
-    @Disabled("Requires CopyStatement Replacing.")
+    @Disabled("Requires information on CopyStatement Replacing rule, changes to CobolPreprocessor grammar, and template for CopyStatement Replacing.")
     @Test
     fun sm206A() = rewriteRun(
         cobol(getNistSource("SM206A.CBL"))
