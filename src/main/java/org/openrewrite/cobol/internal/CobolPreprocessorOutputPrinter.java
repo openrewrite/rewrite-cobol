@@ -159,10 +159,8 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                      *      |      | | COPY STATEMENT.                                  |=> Requires whitespace to replace the statement for correct alignment.
                      *      |      | |                                   COPY STATEMENT.|=> The next line does not require any whitespace.
                      */
-                    int insertIndex = p.getOut().lastIndexOf("\n");
-                    insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
-
                     // Add Start key.
+                    int insertIndex = getInsertIndex(p.getOut());
                     p.out.insert(insertIndex, getCopyStartComment());
 
                     // Fill the remaining line with whitespace to align the column areas.
@@ -211,10 +209,8 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
             int curIndex = getCurrentIndex(p.getOut());
             if (curIndex != -1) {
-                int insertIndex = p.getOut().lastIndexOf("\n");
-                insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
-
                 // Add Start key.
+                int insertIndex = getInsertIndex(p.getOut());
                 p.out.insert(insertIndex, getReplaceByStartComment());
 
                 // Fill the remaining line with whitespace to align the column areas.
@@ -234,6 +230,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
                 // Add whitespace until the next token will be aligned with the column area.
                 String statement = replaceArea.getReplaceByStatement().print(getCursor());
+                if ((statement.length() + curIndex) > 65) {
+                    System.out.println("FIX ME");
+                }
                 int numberOfSpaces = statement.endsWith("\n") ? 0 : statement.length() + curIndex;
 
                 String spacesCount = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
@@ -255,17 +254,12 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
     @Override
     public CobolPreprocessor visitReplaceOffStatement(CobolPreprocessor.ReplaceOffStatement replaceOffStatement, PrintOutputCapture<P> p) {
-        // TODO: note ... assess: due to the way COBOL works, it looks like the same template pattern will apply to EVERY Preprocessor AST that needs to be linked to the CobolParser.
         if (printWithColumnAreas) {
-            // TODO: assess if it's okay to not print the original column areas for the ReplaceBy.
-
             // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
             int curIndex = getCurrentIndex(p.getOut());
             if (curIndex != -1) {
-                int insertIndex = p.getOut().lastIndexOf("\n");
-                insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
-
                 // Add Start key.
+                int insertIndex = getInsertIndex(p.getOut());
                 p.out.insert(insertIndex, getReplaceOffStartComment());
 
                 // Fill the remaining line with whitespace to align the column areas.
@@ -286,6 +280,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 // Add whitespace until the next token will be aligned with the column area.
                 String statement = replaceOffStatement.print(getCursor());
                 int numberOfSpaces = statement.endsWith("\n") ? 0 : statement.length() + curIndex;
+                if ((statement.length() + curIndex) > 65) {
+                    System.out.println("FIX ME");
+                }
 
                 String spacesCount = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
                 String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
@@ -333,9 +330,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
             int curIndex = getCurrentIndex(p.getOut());
             if (curIndex != -1) {
-                int insertIndex = p.getOut().lastIndexOf("\n");
-                insertIndex = insertIndex == -1 ? 0 : insertIndex + 1;
-
                 boolean isLongerWord = word.getWord().length() > replaceOptional.get().getOriginalWord().getWord().length();
                 boolean isLiteral = word.getWord().startsWith("\"") || word.getWord().startsWith("'");
 
@@ -343,6 +337,8 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 String replacedWord = isLongerWord ? " " + word.getWord() : word.getWord();
                 boolean isContinuedLiteral = isLiteral && (curIndex + replacedWord.length()) > contentAreaLength;
 
+                // Add Start key.
+                int insertIndex = getInsertIndex(p.getOut());
                 if (isLongerWord && !isContinuedLiteral) {
                     // Inserted before Start key, so that the StartKey comes before the additive comment.
                     p.out.insert(insertIndex, getReplaceAdditiveWordComment());
@@ -449,6 +445,10 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     }
                 } else {
                     Replace replace = replaceOptional.get();
+                    if (word.getWord().isEmpty()) {
+                        System.out.println("Implement for COPY STATEMENT REPLACING. Reductive change causes empty words.");
+                    }
+
                     int length = curIndex + replace.getOriginalWord().getPrefix().getWhitespace().length() + replace.getOriginalWord().getWord().length();
                     if (length > contentAreaLength) {
                         String findEndPos = replaceOptional.get().getOriginalWord().print(getCursor());
@@ -463,9 +463,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                         String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
                         p.append(spacesCountLine);
                     }
-
-                    // The entire line is filled with whitespace if the curIndex is 0.
-                    p.append(StringUtils.repeat(" ", curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex));
 
                         /*  The original word is <= the length of the replaced word.
                             To retain column alignment, the prefix is shifted left with whitespace equal to the difference between the original word and the replaced word.
@@ -614,6 +611,11 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             dialectSequenceArea = StringUtils.repeat(" ", cobolDialect.getColumns().getContentArea() - 1);
         }
         return dialectSequenceArea;
+    }
+
+    private int getInsertIndex(String output) {
+        int insertIndex = output.lastIndexOf("\n");
+        return insertIndex == -1 ? 0 : insertIndex + 1;
     }
 
     private int getCurrentIndex(String output) {

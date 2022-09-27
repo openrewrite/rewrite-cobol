@@ -159,6 +159,16 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     }
 
     @Override
+    public Object visitCharDataLineNoDot(CobolPreprocessorParser.CharDataLineNoDotContext ctx) {
+        return new CobolPreprocessor.CharDataLine(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                convertAllList(ctx.cobolWord(), ctx.literal(), ctx.filename(), ctx.commentEntry(), ctx.TEXT(), ctx.LPARENCHAR(), ctx.RPARENCHAR())
+        );
+    }
+
+    @Override
     public Object visitCharDataSql(CobolPreprocessorParser.CharDataSqlContext ctx) {
         return new CobolPreprocessor.CharDataSql(
                 randomId(),

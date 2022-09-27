@@ -289,6 +289,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
     }
 
     // Collect ReplaceClauses from CopyStatement Replacing.
+    @SuppressWarnings("SpellCheckingInspection")
     private Map<List<String>, List<String>> getReplacings(CobolPreprocessor.ReplacingPhrase replacingPhrase) {
         Map<List<String>, List<String>> replacements = new HashMap<>();
         for (CobolPreprocessor.ReplaceClause clause : replacingPhrase.getClauses()) {
