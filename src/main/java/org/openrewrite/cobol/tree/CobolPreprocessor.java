@@ -437,6 +437,9 @@ public interface CobolPreprocessor extends Tree {
         }
     }
 
+    /**
+     * Define the {@link ReplaceClause}s in a {@link ReplaceArea}.
+     */
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
@@ -457,7 +460,9 @@ public interface CobolPreprocessor extends Tree {
         }
     }
 
-    //    : replaceable NEWLINE* BY NEWLINE* replacement (NEWLINE* directoryPhrase)? (NEWLINE* familyPhrase)?
+    /**
+     * A ReplaceClause is a rule to change COBOL words that is applied to code in either a {@link CopyBook} or {@link ReplaceArea}.
+     */
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
@@ -484,6 +489,9 @@ public interface CobolPreprocessor extends Tree {
         }
     }
 
+    /**
+     * A ReplaceOffStatement is a part of preprocessing and marks the end of a {@link ReplaceArea}.
+     */
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
@@ -504,6 +512,9 @@ public interface CobolPreprocessor extends Tree {
         }
     }
 
+    /**
+     * Define the {@link ReplaceClause}s in a {@link ReplacingPhrase}.
+     */
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With

@@ -7,7 +7,7 @@ import org.openrewrite.marker.Marker;
 import java.util.UUID;
 
 /**
- * TODO:
+ * ReplaceBy rule from the original source code.
  */
 @With
 @Value

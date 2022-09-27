@@ -50,7 +50,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     public static final String REPLACE_OFF_STOP_KEY = "__REPLACE_OFF_STOP__";
     public static final String REPLACE_STOP_KEY = "__REPLACE_STOP__";
 
-    public static final String REPLACE_ADDITIVE_WORD_KEY = "__REPLACE_ADDITIVE_WORD__";
+    public static final String TEMPLATE_WHITESPACE_KEY = "__TEMPLATE_WHITESPACE_WORD__";
 
     // Link the CobolPreprocessor AST UUID to the CobolParser.
     public static final String COPY_UUID_KEY = "__COPY_UUID__";
@@ -82,7 +82,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private String replaceUuidComment = null;
 
     // Represents whitespace used to keep the original AST and the processed AST aligned in the column area.
-    private String replaceAdditiveWordComment = null;
+    private String templateWhitespaceComment = null;
 
     private boolean isLastWordReplaced = false;
 
@@ -127,6 +127,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
         if (printWithColumnAreas) {
             if (copyStatement.getCopyBook() != null) {
+
                 // Print markers like Lines, SequenceArea, and Indicator if the line starts with COPY.
                 visit(copyStatement.getWord(), p);
 
@@ -164,18 +165,17 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     p.out.insert(insertIndex, getCopyStartComment());
 
                     // Fill the remaining line with whitespace to align the column areas.
-                    p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
-                    p.append("\n");
+                    int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
+                    String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+                    p.append(whitespace);
 
                     // Add UUID key.
                     p.append(getCopyUuidKey());
-                    String copyUuid = getDialectSequenceArea() + "*" + copyStatement.getId();
-                    String copyUuidLine = copyUuid + getUuidEndOfLine();
+                    String copyUuidLine = getDialectSequenceArea() + "*" + copyStatement.getId() + getUuidEndOfLine();
                     p.append(copyUuidLine);
 
                     // Print copied source.
                     visit(copyStatement.getCopyBook(), p);
-
                     if (!p.getOut().endsWith("\n")) {
                         p.append("\n");
                     }
@@ -184,11 +184,18 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     p.append(getCopyStopComment());
 
                     // Add whitespace until the next token will be aligned with the column area.
+                    int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
                     String copy = copyStatement.print(getCursor());
-                    int numberOfSpaces = copy.endsWith("\n") ? 0 : copy.length() + curIndex;
+                    int numberOfSpaces;
+                    if (curIndex + copy.length() > contentAreaLength) {
+                        System.out.println("fix me");
+                        numberOfSpaces = 0;
+                    } else {
+                        numberOfSpaces = copy.endsWith("\n") ? 0 : copy.length() + curIndex;
+                    }
 
-                    String spacesCount = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
-                    String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
+                    String alignNextWord = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
+                    String spacesCountLine = alignNextWord + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - alignNextWord.length()) + "\n";
                     p.append(spacesCountLine);
 
                     p.append(StringUtils.repeat(" ", numberOfSpaces));
@@ -341,7 +348,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 int insertIndex = getInsertIndex(p.getOut());
                 if (isLongerWord && !isContinuedLiteral) {
                     // Inserted before Start key, so that the StartKey comes before the additive comment.
-                    p.out.insert(insertIndex, getReplaceAdditiveWordComment());
+                    p.out.insert(insertIndex, getTemplateWhitespaceComment());
                 }
 
                 // Add Start key.
@@ -507,96 +514,137 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return word;
     }
 
+    /**
+     * Generate a comment based on the Key and the length of the ContentArea in the COBOL dialect.
+     */
+    private String getTemplateComment(String key) {
+        String start = getDialectSequenceArea() + "*" + key;
+        return start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+    }
+
+    /**
+     * Lazily load the START of a {@link Copy} template.
+     */
     private String getCopyStartComment() {
         if (copyStartComment == null) {
-            String start = getDialectSequenceArea() + "*" + COPY_START_KEY;
-            copyStartComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+            copyStartComment = getTemplateComment(COPY_START_KEY);
         }
         return copyStartComment;
     }
 
+    /**
+     * Lazily load the STOP of a {@link Copy} template.
+     */
     private String getCopyStopComment() {
         if (copyStopComment == null) {
-            String start = getDialectSequenceArea() + "*" + COPY_STOP_KEY;
-            copyStopComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+            copyStopComment = getTemplateComment(COPY_STOP_KEY);
         }
         return copyStopComment;
     }
 
-
+    /**
+     * Lazily load the UUID of a {@link Copy} template.
+     */
     private String getCopyUuidKey() {
         if (copyUuidComment == null) {
-            String start = getDialectSequenceArea() + "*" + COPY_UUID_KEY;
-            copyUuidComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+            copyUuidComment = getTemplateComment(COPY_UUID_KEY);
         }
         return copyUuidComment;
     }
 
+    /**
+     * Lazily load the START of a {@link ReplaceBy} template.
+     */
     private String getReplaceByStartComment() {
         if (replaceByStartComment == null) {
-            String start = getDialectSequenceArea() + "*" + REPLACE_BY_START_KEY;
-            replaceByStartComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+            replaceByStartComment = getTemplateComment(REPLACE_BY_START_KEY);
         }
         return replaceByStartComment;
     }
 
     /**
-     * TODO:
+     * Lazily load the STOP of a {@link ReplaceBy} template.
      */
     private String getReplaceByStopComment() {
         if (replaceByStopComment == null) {
-            String start = getDialectSequenceArea() + "*" + REPLACE_BY_STOP_KEY;
-            replaceByStopComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+            replaceByStopComment = getTemplateComment(REPLACE_BY_STOP_KEY);
         }
         return replaceByStopComment;
     }
 
+    /**
+     * Lazily load the START of a {@link Replace} template.
+     */
     private String getReplaceStartComment() {
         if (replaceStartComment == null) {
-            String start = getDialectSequenceArea() + "*" + REPLACE_START_KEY;
-            replaceStartComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+            replaceStartComment = getTemplateComment(REPLACE_START_KEY);
         }
         return replaceStartComment;
     }
 
+    /**
+     * Lazily load the STOP of a {@link Replace} template.
+     */
     private String getReplaceStopComment() {
         if (replaceStopComment == null) {
-            String start = getDialectSequenceArea() + "*" + REPLACE_STOP_KEY;
-            replaceStopComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+            replaceStopComment = getTemplateComment(REPLACE_STOP_KEY);
         }
         return replaceStopComment;
     }
 
-    private String getReplaceAdditiveWordComment() {
-        if (replaceAdditiveWordComment == null) {
-            String start = getDialectSequenceArea() + "*" + REPLACE_ADDITIVE_WORD_KEY;
-            replaceAdditiveWordComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+    /**
+     * Lazily load the UUID of a {@link Replace} template.
+     */
+    private String getReplaceUuidComment() {
+        if (replaceUuidComment == null) {
+            replaceUuidComment = getTemplateComment(REPLACE_UUID_KEY);
         }
-        return replaceAdditiveWordComment;
+        return replaceUuidComment;
     }
 
+    /**
+     * Lazily load the {@link TemplateWhitespace} of a {@link Replace} template.
+     */
+    private String getTemplateWhitespaceComment() {
+        if (templateWhitespaceComment == null) {
+            templateWhitespaceComment = getTemplateComment(TEMPLATE_WHITESPACE_KEY);
+        }
+        return templateWhitespaceComment;
+    }
+
+    /**
+     * Lazily load the START of a {@link ReplaceOff} template.
+     */
     private String getReplaceOffStartComment() {
         if (replaceOffStartComment == null) {
-            String start = getDialectSequenceArea() + "*" + REPLACE_OFF_START_KEY;
-            replaceOffStartComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+            replaceOffStartComment = getTemplateComment(REPLACE_OFF_START_KEY);
         }
         return replaceOffStartComment;
     }
 
+    /**
+     * Lazily load the STOP of a {@link ReplaceOff} template.
+     */
     private String getReplaceOffStopComment() {
         if (replaceOffStopComment == null) {
-            String start = getDialectSequenceArea() + "*" + REPLACE_OFF_STOP_KEY;
-            replaceOffStopComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+            replaceOffStopComment = getTemplateComment(REPLACE_OFF_STOP_KEY);
         }
         return replaceOffStopComment;
     }
 
-    private String getReplaceUuidComment() {
-        if (replaceUuidComment == null) {
-            String start = getDialectSequenceArea() + "*" + REPLACE_UUID_KEY;
-            replaceUuidComment = start + StringUtils.repeat("_", cobolDialect.getColumns().getOtherArea() - start.length()) + "\n";
+    /**
+     * Calculate the whitespace required to align the column area based on the position of the previous word.
+     * Then return a Template Comment with the calculated information.
+     */
+    private String getColumnAlignmentAfterStop(int lengthOfPrefix) {
+        if (lengthOfPrefix - cobolDialect.getColumns().getContentArea() < 0) {
+            throw new IllegalStateException("Negative index detected.");
         }
-        return replaceUuidComment;
+
+        int prefixLength = lengthOfPrefix == 0 ? 0 : (lengthOfPrefix - cobolDialect.getColumns().getContentArea());
+        String alignmentKey = getDialectSequenceArea() + "*" + prefixLength;
+        String whitespace = generateWhitespace(cobolDialect.getColumns().getOtherArea() - alignmentKey.length());
+        return alignmentKey + whitespace + "\n";
     }
 
     private String getUuidEndOfLine() {
@@ -606,6 +654,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return uuidEndOfLine;
     }
 
+    /**
+     * Lazily load a String to fill the SequenceArea with whitespace based on the {@link CobolDialect}.
+     */
     private String getDialectSequenceArea() {
         if (dialectSequenceArea == null) {
             dialectSequenceArea = StringUtils.repeat(" ", cobolDialect.getColumns().getContentArea() - 1);
@@ -613,16 +664,23 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return dialectSequenceArea;
     }
 
+    /**
+     * Return the index to insert a Template START comment at.
+     */
     private int getInsertIndex(String output) {
         int insertIndex = output.lastIndexOf("\n");
         return insertIndex == -1 ? 0 : insertIndex + 1;
     }
 
+    /**
+     * Return the index position of the current line.
+     */
     private int getCurrentIndex(String output) {
         int index = output.lastIndexOf("\n");
-        if (index >= 0) {
-            index = output.substring(index + 1).length();
-        }
-        return index;
+        return index == -1 ? output.length() : output.substring(index + 1).length();
+    }
+
+    private String generateWhitespace(int count) {
+        return StringUtils.repeat(" ", count);
     }
 }
