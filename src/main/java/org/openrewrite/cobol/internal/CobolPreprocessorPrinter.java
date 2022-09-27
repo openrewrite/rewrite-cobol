@@ -312,12 +312,12 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
             visitSpace(word.getPrefix(), p);
             p.append(word.getWord());
 
+            Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
             if (printColumns) {
-                Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
                 commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
                 commentArea.ifPresent(it -> p.append(it.getComment()));
-                commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
             }
+            commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
         }
 
         return word;

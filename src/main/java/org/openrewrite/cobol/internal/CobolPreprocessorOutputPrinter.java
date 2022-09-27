@@ -197,24 +197,18 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 statementPrinter.visit(copyStatement, outputCapture);
 
                 String copy = outputCapture.getOut();
-                int totalChars = copy.length() + curIndex - cobolDialect.getColumns().getContentArea();
+                boolean isEndOfLine = copy.endsWith("\n");
+                boolean isCRLF = copy.endsWith("\r\n");
+
+                int totalChars = copy.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
                 int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
 
                 int numberOfSpaces;
-                if (totalChars > contentAreaLength) {
+                if (!isEndOfLine && totalChars > contentAreaLength) {
                     throw new UnsupportedOperationException("Recalculate prefix.");
                 } else {
-                    numberOfSpaces = totalChars == contentAreaLength ? 0 : copy.length() + curIndex;
+                    numberOfSpaces = isEndOfLine ? 0 : copy.length() + curIndex;
                 }
-
-//                String copy = copyStatement.print(getCursor());
-//                int numberOfSpaces = copy.endsWith("\n") ? 0 : copy.length() + curIndex;
-//
-//                String spacesCount = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
-//                String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
-//                p.append(spacesCountLine);
-//
-//                p.append(StringUtils.repeat(" ", numberOfSpaces));
 
                 String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
                 p.append(afterStop);
@@ -262,14 +256,17 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             statementPrinter.visit(replaceArea.getReplaceByStatement(), outputCapture);
 
             String statement = outputCapture.getOut();
-            int totalChars = statement.length() + curIndex - cobolDialect.getColumns().getContentArea();
+            boolean isEndOfLine = statement.endsWith("\n");
+            boolean isCRLF = statement.endsWith("\r\n");
+
+            int totalChars = statement.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
             int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
 
             int numberOfSpaces;
-            if (totalChars > contentAreaLength) {
+            if (!isEndOfLine && totalChars > contentAreaLength) {
                 throw new UnsupportedOperationException("Recalculate prefix.");
             } else {
-                numberOfSpaces = totalChars == contentAreaLength ? 0 : statement.length() + curIndex;
+                numberOfSpaces = isEndOfLine ? 0 : statement.length() + curIndex;
             }
 
             String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
@@ -320,14 +317,17 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             statementPrinter.visit(replaceOffStatement, outputCapture);
 
             String statement = outputCapture.getOut();
-            int totalChars = statement.length() + curIndex - cobolDialect.getColumns().getContentArea();
+            boolean isEndOfLine = statement.endsWith("\n");
+            boolean isCRLF = statement.endsWith("\r\n");
+
+            int totalChars = statement.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
             int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
 
             int numberOfSpaces;
-            if (totalChars > contentAreaLength) {
+            if (!isEndOfLine && totalChars > contentAreaLength) {
                 throw new UnsupportedOperationException("Recalculate prefix.");
             } else {
-                numberOfSpaces = totalChars == contentAreaLength ? 0 : statement.length() + curIndex;
+                numberOfSpaces = isEndOfLine ? 0 : statement.length() + curIndex;
             }
 
             String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
