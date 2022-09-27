@@ -221,8 +221,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 p.out.insert(insertIndex, getReplaceByStartComment());
 
                 // Fill the remaining line with whitespace to align the column areas.
-                p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
-                p.append("\n");
+                int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
+                String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+                p.append(whitespace);
 
                 // Add UUID key.
                 p.append(getReplaceUuidComment());
@@ -270,8 +271,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 p.out.insert(insertIndex, getReplaceOffStartComment());
 
                 // Fill the remaining line with whitespace to align the column areas.
-                p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - curIndex));
-                p.append("\n");
+                int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
+                String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+                p.append(whitespace);
 
                 // Add UUID key.
                 p.append(getReplaceUuidComment());
