@@ -7,12 +7,13 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
+import static org.openrewrite.cobol.CobolStringUtils.*;
+
 /**
  * Trim COBOL column areas, remove comments, mark comment entries, and concatenate String literals continued on new lines.
  */
 public class CobolLineReader {
 
-    private static final String EMPTY_STRING = "";
     private static final Set<String> triggersStart = new HashSet<>(Arrays.asList("AUTHOR.", "INSTALLATION.", "DATE-WRITTEN.",
             "DATE-COMPILED.", "SECURITY.", "REMARKS."));
 
@@ -99,18 +100,6 @@ public class CobolLineReader {
             }
         }
         return processedSource.toString();
-    }
-
-    private static String trimLeadingChar(String contentArea) {
-        return contentArea.substring(1);
-    }
-
-    private static String trimLeadingWhitespace(String contentArea) {
-        return contentArea.replaceAll("^\\s+", EMPTY_STRING);
-    }
-
-    protected String trimTrailingWhitespace(String contentArea) {
-        return contentArea.replaceAll("\\s+$", EMPTY_STRING);
     }
 
     private static String getFirstWords(String line) {

@@ -52,9 +52,11 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
     // Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
     private final Map<Integer, String> sequenceAreas = new HashMap<>();
-    private final Map<Integer, String> commentAreas = new HashMap<>();
+
     // A LinkedHash map is used for Indicators to collect information about the next line of code. I.E. continuation indicators.
     private final Map<Integer, String> indicatorAreas = new LinkedHashMap<>();
+    // A LinkedHash map is used for CommentAreas to determine if the current token ends the line.
+    private final Map<Integer, String> commentAreas = new LinkedHashMap<>();
 
     private final Set<String> separators = new HashSet<>();
     private final Set<Character> commentIndicators = new HashSet<>();
