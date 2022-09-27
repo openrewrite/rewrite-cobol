@@ -137,69 +137,68 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
                 // Save the current index to ensure the text that follows the COPY will be aligned correctly.
                 int curIndex = getCurrentIndex(p.getOut());
-                if (curIndex != -1) {
-                    // Printing the COPY statement will add comments that work similar to JavaTemplate.
-                    // Comments are added before and after the template to provide context about which AST elements
-                    // are a product of a COPY statement.
-
-                    /*
-                     *  Before:
-                     *      |000001| |Some COBOL tokens|      COPY STATEMENT.           |
-                     *
-                     *  After:
-                     *      |      |*|__COPY_START______________________________________|=> Trigger search for end of line to detect whitespace added from the template.
-                     *      |000001| |Some COBOL tokens|                                |=> The index + 1 is the position of `|`.
-                     *      |      |*|__UUID____________________________________________|=> Detect the UUID section of the template.
-                     *      |      |*|263cd588-bdea-4c06-8ba1-177e515bded2              |=> UUID to the CopyStatement; a UUID will fit in the column area, but the copy statement might not.
-                     *      |~~~~~~| |Print the COPIED source AST. ~~~~~~~~~~~~~~~~~~~~~|=> Print the COPIED AST, which includes new column areas.
-                     *      |      |*|__COPY_END________________________________________|
-                     *      |      |*|33                                                |=> # of spaces added to align the column areas.
-                     *      |      | |[WS for tokens  ]|[WS for COPY        ]|=> White space is conditionally printer based on where the copy statement ends to ensure columns are aligned.
-                     *
-                     *  Alignment:
-                     *      |      | | COPY STATEMENT.                                  |=> Requires whitespace to replace the statement for correct alignment.
-                     *      |      | |                                   COPY STATEMENT.|=> The next line does not require any whitespace.
-                     */
-                    // Add Start key.
-                    int insertIndex = getInsertIndex(p.getOut());
-                    p.out.insert(insertIndex, getCopyStartComment());
-
-                    // Fill the remaining line with whitespace to align the column areas.
-                    int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
-                    String whitespace = generateWhitespace(untilEndOfLine) + "\n";
-                    p.append(whitespace);
-
-                    // Add UUID key.
-                    p.append(getCopyUuidKey());
-                    String copyUuidLine = getDialectSequenceArea() + "*" + copyStatement.getId() + getUuidEndOfLine();
-                    p.append(copyUuidLine);
-
-                    // Print copied source.
-                    visit(copyStatement.getCopyBook(), p);
-                    if (!p.getOut().endsWith("\n")) {
-                        p.append("\n");
-                    }
-
-                    // Add Stop key.
-                    p.append(getCopyStopComment());
-
-                    // Add whitespace until the next token will be aligned with the column area.
-                    int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
-                    String copy = copyStatement.print(getCursor());
-                    int numberOfSpaces;
-                    if (curIndex + copy.length() > contentAreaLength) {
-                        System.out.println("fix me");
-                        numberOfSpaces = 0;
-                    } else {
-                        numberOfSpaces = copy.endsWith("\n") ? 0 : copy.length() + curIndex;
-                    }
-
-                    String alignNextWord = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
-                    String spacesCountLine = alignNextWord + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - alignNextWord.length()) + "\n";
-                    p.append(spacesCountLine);
-
-                    p.append(StringUtils.repeat(" ", numberOfSpaces));
+                if (curIndex == -1) {
+                    throw new UnsupportedOperationException("Unknown case: Detected a Replace OFF at the start of the source code.");
                 }
+
+                // Printing the COPY statement will add comments that work similar to JavaTemplate.
+                // Comments are added before and after the template to provide context about which AST elements
+                // are a product of a COPY statement.
+
+                /*
+                 *  Before:
+                 *      |000001| |Some COBOL tokens|      COPY STATEMENT.           |
+                 *
+                 *  After:
+                 *      |      |*|__COPY_START______________________________________|=> Trigger search for end of line to detect whitespace added from the template.
+                 *      |000001| |Some COBOL tokens|                                |=> The index + 1 is the position of `|`.
+                 *      |      |*|__UUID____________________________________________|=> Detect the UUID section of the template.
+                 *      |      |*|263cd588-bdea-4c06-8ba1-177e515bded2              |=> UUID to the CopyStatement; a UUID will fit in the column area, but the copy statement might not.
+                 *      |~~~~~~| |Print the COPIED source AST. ~~~~~~~~~~~~~~~~~~~~~|=> Print the COPIED AST, which includes new column areas.
+                 *      |      |*|__COPY_END________________________________________|
+                 *      |      |*|33                                                |=> # of spaces added to align the column areas.
+                 *      |      | |[WS for tokens  ]|[WS for COPY        ]|=> White space is conditionally printer based on where the copy statement ends to ensure columns are aligned.
+                 *
+                 *  Alignment:
+                 *      |      | | COPY STATEMENT.                                  |=> Requires whitespace to replace the statement for correct alignment.
+                 *      |      | |                                   COPY STATEMENT.|=> The next line does not require any whitespace.
+                 */
+                // Add Start key.
+                int insertIndex = getInsertIndex(p.getOut());
+                p.out.insert(insertIndex, getCopyStartComment());
+
+                // Fill the remaining line with whitespace to align the column areas.
+                int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
+                String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+                p.append(whitespace);
+
+                // Add UUID key.
+                p.append(getCopyUuidKey());
+                String copyUuidLine = getDialectSequenceArea() + "*" + copyStatement.getId() + getUuidEndOfLine();
+                p.append(copyUuidLine);
+
+                // Print copied source.
+                visit(copyStatement.getCopyBook(), p);
+                if (!p.getOut().endsWith("\n")) {
+                    p.append("\n");
+                }
+
+                // Add Stop key.
+                p.append(getCopyStopComment());
+
+                // Add whitespace until the next token will be aligned with the column area.
+                int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
+                String copy = copyStatement.print(getCursor());
+                int numberOfSpaces;
+                if (curIndex + copy.length() > contentAreaLength) {
+                    throw new UnsupportedOperationException("Recalculate prefix.");
+                } else {
+                    numberOfSpaces = copy.endsWith("\n") ? 0 : copy.length() + curIndex;
+                }
+
+                String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
+                p.append(afterStop);
+                p.append(StringUtils.repeat(" ", numberOfSpaces));
             }
         } else {
             visit(copyStatement.getCopyBook(), p);
@@ -215,40 +214,42 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
             // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
             int curIndex = getCurrentIndex(p.getOut());
-            if (curIndex != -1) {
-                // Add Start key.
-                int insertIndex = getInsertIndex(p.getOut());
-                p.out.insert(insertIndex, getReplaceByStartComment());
-
-                // Fill the remaining line with whitespace to align the column areas.
-                int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
-                String whitespace = generateWhitespace(untilEndOfLine) + "\n";
-                p.append(whitespace);
-
-                // Add UUID key.
-                p.append(getReplaceUuidComment());
-                String copyUuid = getDialectSequenceArea() + "*" + replaceByStatement.getId();
-                String copyUuidLine = copyUuid + getUuidEndOfLine();
-                p.append(copyUuidLine);
-
-                // The Replacement rule is removed during preprocessing and is not printer here.
-
-                // Add Stop key.
-                p.append(getReplaceByStopComment());
-
-                // Add whitespace until the next token will be aligned with the column area.
-                String statement = replaceArea.getReplaceByStatement().print(getCursor());
-                if ((statement.length() + curIndex) > 65) {
-                    System.out.println("FIX ME");
-                }
-                int numberOfSpaces = statement.endsWith("\n") ? 0 : statement.length() + curIndex;
-
-                String spacesCount = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
-                String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
-                p.append(spacesCountLine);
-
-                p.append(StringUtils.repeat(" ", numberOfSpaces));
+            if (curIndex == -1) {
+                throw new UnsupportedOperationException("Unknown case: Detected a Replace OFF at the start of the source code.");
             }
+
+            // Add Start key.
+            int insertIndex = getInsertIndex(p.getOut());
+            p.out.insert(insertIndex, getReplaceByStartComment());
+
+            // Fill the remaining line with whitespace to align the column areas.
+            int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
+            String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+            p.append(whitespace);
+
+            // Add UUID key.
+            p.append(getReplaceUuidComment());
+            String replaceUuidLine = getDialectSequenceArea() + "*" + replaceByStatement.getId() + getUuidEndOfLine();
+            p.append(replaceUuidLine);
+
+            // The Replacement rule is removed during preprocessing and is not printer here.
+
+            // Add Stop key.
+            p.append(getReplaceByStopComment());
+
+            // Add whitespace until the next token will be aligned with the column area.
+            int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
+            String statement = replaceArea.getReplaceByStatement().print(getCursor());
+            int numberOfSpaces;
+            if ((curIndex + statement.length()) > contentAreaLength) {
+                throw new UnsupportedOperationException("Recalculate prefix.");
+            } else {
+                numberOfSpaces = statement.endsWith("\n") ? 0 : statement.length() + curIndex;
+            }
+
+            String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
+            p.append(afterStop);
+            p.append(StringUtils.repeat(" ", numberOfSpaces));
         }
 
         if (replaceArea.getCobols() != null) {
@@ -265,40 +266,43 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         if (printWithColumnAreas) {
             // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
             int curIndex = getCurrentIndex(p.getOut());
-            if (curIndex != -1) {
-                // Add Start key.
-                int insertIndex = getInsertIndex(p.getOut());
-                p.out.insert(insertIndex, getReplaceOffStartComment());
-
-                // Fill the remaining line with whitespace to align the column areas.
-                int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
-                String whitespace = generateWhitespace(untilEndOfLine) + "\n";
-                p.append(whitespace);
-
-                // Add UUID key.
-                p.append(getReplaceUuidComment());
-                String copyUuid = getDialectSequenceArea() + "*" + replaceOffStatement.getId();
-                String copyUuidLine = copyUuid + getUuidEndOfLine();
-                p.append(copyUuidLine);
-
-                // ReplaceOff is removed during preprocessing and is not printer here.
-
-                // Add Stop key.
-                p.append(getReplaceOffStopComment());
-
-                // Add whitespace until the next token will be aligned with the column area.
-                String statement = replaceOffStatement.print(getCursor());
-                int numberOfSpaces = statement.endsWith("\n") ? 0 : statement.length() + curIndex;
-                if ((statement.length() + curIndex) > 65) {
-                    System.out.println("FIX ME");
-                }
-
-                String spacesCount = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
-                String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
-                p.append(spacesCountLine);
-
-                p.append(StringUtils.repeat(" ", numberOfSpaces));
+            if (curIndex == -1) {
+                throw new UnsupportedOperationException("Unknown case: Detected a Replace OFF at the start of the source code.");
             }
+
+            // Add Start key.
+            int insertIndex = getInsertIndex(p.getOut());
+            p.out.insert(insertIndex, getReplaceOffStartComment());
+
+            // Fill the remaining line with whitespace to align the column areas.
+            int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
+            String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+            p.append(whitespace);
+
+            // Add UUID key.
+            p.append(getReplaceUuidComment());
+            String copyUuid = getDialectSequenceArea() + "*" + replaceOffStatement.getId();
+            String copyUuidLine = copyUuid + getUuidEndOfLine();
+            p.append(copyUuidLine);
+
+            // ReplaceOff is removed during preprocessing and is not printer here.
+
+            // Add Stop key.
+            p.append(getReplaceOffStopComment());
+
+            // Add whitespace until the next token will be aligned with the column area.
+            int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
+            String statement = replaceOffStatement.print(getCursor());
+            int numberOfSpaces;
+            if ((statement.length() + curIndex) > contentAreaLength) {
+                throw new UnsupportedOperationException("Recalculate prefix.");
+            } else {
+                numberOfSpaces = statement.endsWith("\n") ? 0 : statement.length() + curIndex;
+            }
+
+            String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
+            p.append(afterStop);
+            p.append(StringUtils.repeat(" ", numberOfSpaces));
         }
         return replaceOffStatement;
     }
@@ -679,7 +683,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
      */
     private int getCurrentIndex(String output) {
         int index = output.lastIndexOf("\n");
-        return index == -1 ? output.length() : output.substring(index + 1).length();
+        return index == -1 ? index : output.substring(index + 1).length();
     }
 
     private String generateWhitespace(int count) {
