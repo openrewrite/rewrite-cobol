@@ -21,7 +21,9 @@ import org.antlr.v4.runtime.*;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Parser;
+import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.internal.CobolDialect;
+import org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
@@ -99,10 +101,6 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         );
 
                         CobolPreprocessor.CompilationUnit preprocessedCU = parserVisitor.visitStartRule(parser.startRule());
-
-                        // Apply COBOL continuation rules to keywords.
-                        PreprocessWordContinuations wordContinuations = new PreprocessWordContinuations();
-                        preprocessedCU = (CobolPreprocessor.CompilationUnit) wordContinuations.getVisitor().visit(preprocessedCU, new InMemoryExecutionContext());
 
                         if (enableCopy) {
                             List<Path> copyBookPaths = getCopyBooks();

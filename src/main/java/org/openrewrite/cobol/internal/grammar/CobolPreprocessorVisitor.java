@@ -167,6 +167,12 @@ public interface CobolPreprocessorVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCharDataSql(CobolPreprocessorParser.CharDataSqlContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CobolPreprocessorParser#charDataLineNoDot}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCharDataLineNoDot(CobolPreprocessorParser.CharDataLineNoDotContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CobolPreprocessorParser#charDataLine}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

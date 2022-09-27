@@ -29,6 +29,7 @@ public class CobolLineReader {
         StringBuilder processedSource = new StringBuilder();
 
         int previousNewLineLength = 0;
+        int trailingWhitespaceLength = 0;
         int cursor = 0;
         Scanner scanner = new Scanner(source);
         while (scanner.hasNextLine()) {
@@ -58,19 +59,26 @@ public class CobolLineReader {
                 }
             }
 
-            if (!inCommentEntry && ("*".equals(indicator) || "/".equals(indicator))) {
+            if (!inCommentEntry && (cobolDialect.getCommentIndicators().contains(indicator.charAt(0)))) {
                 // Mark in-line comments.
                 processedSource.append("*> ");
             }
 
             if (isValidText) {
                 String trimmedContentArea = trimLeadingWhitespace(contentArea);
-                if ("-".equals(indicator) && (trimmedContentArea.startsWith("\"") || trimmedContentArea.startsWith("'"))) {
-                    // Remove the previous newline character to concatenate the literal.
-                    processedSource.delete(processedSource.length() - previousNewLineLength, processedSource.length());
-                    // Remove the leading delimiter.
-                    trimmedContentArea = trimLeadingChar(trimmedContentArea);
+                if ("-".equals(indicator)) {
+                    if (trimmedContentArea.startsWith("\"") || trimmedContentArea.startsWith("'")) {
+                        // Remove the previous newline character to concatenate the literal.
+                        processedSource.delete(processedSource.length() - previousNewLineLength, processedSource.length());
+                        // Remove the leading delimiter.
+                        trimmedContentArea = trimLeadingChar(trimmedContentArea);
+                    } else {
+                        // Remove the previous newline character to concatenate the literal.
+                        processedSource.delete(processedSource.length() - previousNewLineLength, processedSource.length());
 
+                        // Remove trailing whitespace to concatenate the word or identifier.
+                        processedSource.delete(processedSource.length() - trailingWhitespaceLength, processedSource.length());
+                    }
                     processedSource.append(trimmedContentArea);
                 } else {
                     processedSource.append(contentArea);
@@ -78,6 +86,7 @@ public class CobolLineReader {
             }
 
             cursor += line.length();
+            trailingWhitespaceLength = contentArea.length() - trimTrailingWhitespace(contentArea).length();
             String endOfLine = source.substring(cursor).startsWith("\r\n") ? "\r\n" :
                     source.substring(cursor).startsWith("\n") ? "\n" : null;
             previousNewLineLength = endOfLine == null ? 0 : endOfLine.length();
@@ -96,8 +105,12 @@ public class CobolLineReader {
         return contentArea.substring(1);
     }
 
-    private static String trimLeadingWhitespace(String contentarea) {
-        return contentarea.replaceAll("^\\s+", EMPTY_STRING);
+    private static String trimLeadingWhitespace(String contentArea) {
+        return contentArea.replaceAll("^\\s+", EMPTY_STRING);
+    }
+
+    protected String trimTrailingWhitespace(String contentArea) {
+        return contentArea.replaceAll("\\s+$", EMPTY_STRING);
     }
 
     private static String getFirstWords(String line) {

@@ -473,7 +473,7 @@ public interface CobolPreprocessor extends Tree {
         CobolPreprocessor replacement;
 
         @Nullable
-        DirectoryPhrase directoryPhrase;
+        List<DirectoryPhrase> directoryPhrases;
 
         @Nullable
         FamilyPhrase familyPhrase;

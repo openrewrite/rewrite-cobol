@@ -184,7 +184,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
         visit(replaceClause.getReplaceable(), p);
         visit(replaceClause.getBy(), p);
         visit(replaceClause.getReplacement(), p);
-        visit(replaceClause.getDirectoryPhrase(), p);
+        visit(replaceClause.getDirectoryPhrases(), p);
         visit(replaceClause.getFamilyPhrase(), p);
         return replaceClause;
     }

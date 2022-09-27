@@ -205,7 +205,7 @@ replaceOffStatement
    ;
 
 replaceClause
-   : replaceable BY replacement (directoryPhrase)? (familyPhrase)?
+   : replaceable BY replacement (directoryPhrase)* (familyPhrase)?
    ;
 
 directoryPhrase
@@ -217,11 +217,11 @@ familyPhrase
    ;
 
 replaceable
-   : literal | cobolWord | pseudoText | charDataLine
+   : literal | cobolWord | pseudoText | charDataLineNoDot
    ;
 
 replacement
-   : literal | cobolWord | pseudoText | charDataLine
+   : literal | cobolWord | pseudoText | charDataLineNoDot
    ;
 
 // eject statement
@@ -254,6 +254,10 @@ charData
 
 charDataSql
    : (charDataLine | COPY | REPLACE)+
+   ;
+
+charDataLineNoDot
+   : (cobolWord | literal | filename | commentEntry | TEXT | LPARENCHAR | RPARENCHAR)+
    ;
 
 charDataLine

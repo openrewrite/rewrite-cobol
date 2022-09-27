@@ -703,7 +703,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 (CobolPreprocessor) visit(ctx.replaceable()),
                 (CobolPreprocessor.Word) visit(ctx.BY()),
                 (CobolPreprocessor) visit(ctx.replacement()),
-                visitNullable(ctx.directoryPhrase()),
+                convertAll(ctx.directoryPhrase()),
                 visitNullable(ctx.familyPhrase())
         );
     }
@@ -858,7 +858,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
         int saveCursor = cursor;
         sequenceArea();
-        indicatorArea(null);
+        indicatorArea();
 
         Integer nextIndicator = indicatorAreas.keySet().stream()
                 .filter(it -> it > cursor)
@@ -873,18 +873,18 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
         // A literal continued on a new line.
         if (isContinued && delimiter != null) {
-            return processContinuedLiteral(text, markers, delimiter);
+            return processLiteral(text, markers, delimiter);
         } else if (END_OF_FILE.equals(text) && source.substring(cursor).isEmpty()) {
             return Space.EMPTY;
         }
 
-        return processText(text, markers);
+        return processText(text, markers, isContinued);
     }
 
     private void parseCommentsAndEmptyLines(String text, List<Marker> markers) {
         int saveCursor = cursor;
         SequenceArea sequenceArea = sequenceArea();
-        IndicatorArea indicatorArea = indicatorArea(null);
+        IndicatorArea indicatorArea = indicatorArea();
 
         // CommentEntry tags are required to be recognized the COBOL grammar.
         // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
@@ -912,7 +912,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
                 saveCursor = cursor;
                 sequenceArea = sequenceArea();
-                indicatorArea = indicatorArea(null);
+                indicatorArea = indicatorArea();
                 iterations++;
             }
             if (!lines.isEmpty()) {
@@ -923,13 +923,13 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         cursor = saveCursor;
     }
 
-    private Space processContinuedLiteral(String text, List<Marker> markers, Character delimiter) {
+    private Space processLiteral(String text, List<Marker> markers, Character delimiter) {
         Map<Integer, Markers> continuations = new HashMap<>();
         List<Marker> continuation = new ArrayList<>(2);
 
         // Check if the literal starts at the beginning of a line.
         SequenceArea sequenceArea = sequenceArea();
-        IndicatorArea indicatorArea = indicatorArea(null);
+        IndicatorArea indicatorArea = indicatorArea();
 
         if (sequenceArea != null) {
             continuation.add(sequenceArea);
@@ -980,7 +980,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             }
 
             sequenceArea = sequenceArea();
-            indicatorArea = indicatorArea(delimiter);
+            indicatorArea = indicatorArea(delimiter, true);
 
             if (sequenceArea != null) {
                 continuation.add(sequenceArea);
@@ -1000,15 +1000,102 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         return prefix;
     }
 
-    private Space processText(String text, List<Marker> markers) {
+    private Space processText(String text, List<Marker> markers, boolean checkContinuation) {
         SequenceArea sequenceArea = sequenceArea();
-        IndicatorArea indicatorArea = indicatorArea(null);
+        IndicatorArea indicatorArea = indicatorArea();
 
         // CommentEntry tags are required to be recognized the COBOL grammar.
         // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
         boolean isCommentEntry = text.startsWith(COMMENT_ENTRY);
         if (isCommentEntry) {
             text = text.substring(COMMENT_ENTRY.length());
+        }
+
+        // An inline comment entry will have a null sequence area.
+        Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
+
+        if (checkContinuation) {
+            // CommentAreas are optional text that will precede the end of line.
+            Integer nextCommentArea = commentAreas.keySet().stream()
+                    .filter(it -> it > cursor)
+                    .findFirst()
+                    .orElse(null);
+
+            String current = source.substring(cursor);
+            int newLinePos = current.indexOf("\n");
+            int endPos = (nextCommentArea != null && nextCommentArea < (newLinePos + cursor)) ? nextCommentArea : (newLinePos + cursor);
+
+            current = source.substring(cursor, endPos).trim();
+            // There are two types of continuations.
+            // 1. The text is a grammar token followed by a new line, which is handled by normal markers.
+            // 2. The text is a combination of two tokens, which has been parsed as a single word and requires continuation markers.
+            if (!current.startsWith(text)) {
+                Map<Integer, Markers> continuations = new HashMap<>();
+                List<Marker> continuation = new ArrayList<>(2);
+
+                if (sequenceArea != null) {
+                    continuation.add(sequenceArea);
+                }
+
+                if (indicatorArea != null) {
+                    continuation.add(indicatorArea);
+                }
+
+                if (!continuation.isEmpty()) {
+                    continuations.put(0, Markers.build(continuation));
+                }
+
+                int matchedCount = 0;
+                int iterations = 0;
+                while (iterations < 250) {
+                    continuation = new ArrayList<>(3);
+
+                    current = source.substring(cursor);
+                    char[] charArray = text.substring(matchedCount).toCharArray();
+                    char[] sourceArray = current.toCharArray();
+
+                    int end = 0;
+                    for (; end < charArray.length; end++) {
+                        if (charArray[end] != sourceArray[end] || commentAreas.containsKey(cursor)) {
+                            break;
+                        }
+                        cursor++;
+                    }
+
+                    String matchedText = current.substring(0, end);
+                    matchedCount += matchedText.length();
+
+                    CommentArea commentArea = commentArea();
+                    if (commentArea != null) {
+                        continuation.add(commentArea);
+                    }
+
+                    if (matchedCount == text.length()) {
+                        if (!continuation.isEmpty()) {
+                            continuations.put(matchedCount + 1, Markers.build(continuation));
+                        }
+                        break;
+                    }
+
+                    sequenceArea = sequenceArea();
+                    if (sequenceArea != null) {
+                        continuation.add(sequenceArea);
+                    }
+
+                    indicatorArea = indicatorArea(text.charAt(matchedCount), false);
+                    if (indicatorArea != null) {
+                        continuation.add(indicatorArea);
+                    }
+
+                    if (!continuation.isEmpty()) {
+                        continuations.put(matchedCount, Markers.build(continuation));
+                    }
+
+                    iterations++;
+                }
+                markers.add(new Continuation(randomId(), continuations));
+                return prefix;
+            }
         }
 
         if (sequenceArea != null) {
@@ -1019,8 +1106,6 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             markers.add(indicatorArea);
         }
 
-        // An inline comment entry will have a null sequence area.
-        Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
         if (!END_OF_FILE.equals(text)) {
             cursor += text.length();
 
@@ -1050,25 +1135,36 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         return null;
     }
 
+    @Nullable
+    private IndicatorArea indicatorArea() {
+        return indicatorArea(null, false);
+    }
+
     /**
      * Return the IndicatorArea based on the current cursor position if it exists.
      *
-     * @param continuationDelimiter use for continued String literals.
-     *                              A continued String literal must start with the same character that started the literal (" or ').
+     * @param continuationDelimiter the next expected Character in the source that comes after the indicator.
+     * @param isStringLiteral String literals and Keywords/Identifiers have different rules for line continuations.
+     *                        A continued String literal will be prefixed by the delimiter (' or "),
+     *                        which needs to exist in the indicator marker.
+     *                        I.E. 000001-|<whitespace including the delimiter " or '>|some continued string literal.
+     *
+     *                        A continued Keyword/Identifier should not include the delimiter.
+     *                        I.E. 000001-|<whitespace added to indicator>|TOKEN-NAME.
      */
     @Nullable
-    private IndicatorArea indicatorArea(@Nullable Character continuationDelimiter) {
+    private IndicatorArea indicatorArea(@Nullable Character continuationDelimiter, boolean isStringLiteral) {
         if (indicatorAreas.containsKey(cursor)) {
             String indicatorArea = indicatorAreas.get(cursor);
             cursor += indicatorArea.length();
 
             String continuationText = null;
             if (continuationDelimiter != null) {
-                // Increment passed the start of the literal.
-                String current = source.substring(cursor );
+                String current = source.substring(cursor);
                 int pos = current.indexOf(continuationDelimiter);
                 if (pos != -1) {
-                    continuationText = current.substring(0, current.indexOf(continuationDelimiter) + 1);
+                    int endPos = (isStringLiteral ? 1 : 0) + current.indexOf(continuationDelimiter);
+                    continuationText = current.substring(0, endPos);
                     cursor += continuationText.length();
                 }
             }

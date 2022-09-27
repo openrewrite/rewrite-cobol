@@ -328,6 +328,18 @@ public class CobolPreprocessorBaseListener implements CobolPreprocessorListener 
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCharDataLineNoDot(CobolPreprocessorParser.CharDataLineNoDotContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCharDataLineNoDot(CobolPreprocessorParser.CharDataLineNoDotContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCharDataLine(CobolPreprocessorParser.CharDataLineContext ctx) { }
 	/**
 	 * {@inheritDoc}

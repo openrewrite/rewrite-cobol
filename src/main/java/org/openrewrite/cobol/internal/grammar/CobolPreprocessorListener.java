@@ -268,6 +268,16 @@ public interface CobolPreprocessorListener extends ParseTreeListener {
 	 */
 	void exitCharDataSql(CobolPreprocessorParser.CharDataSqlContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CobolPreprocessorParser#charDataLineNoDot}.
+	 * @param ctx the parse tree
+	 */
+	void enterCharDataLineNoDot(CobolPreprocessorParser.CharDataLineNoDotContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CobolPreprocessorParser#charDataLineNoDot}.
+	 * @param ctx the parse tree
+	 */
+	void exitCharDataLineNoDot(CobolPreprocessorParser.CharDataLineNoDotContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CobolPreprocessorParser#charDataLine}.
 	 * @param ctx the parse tree
 	 */

@@ -9,12 +9,46 @@ import org.openrewrite.cobol.tree.Replace;
 import org.openrewrite.internal.ListUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.openrewrite.Tree.randomId;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
 public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
+
+    @Override
+    public CobolPreprocessor.CopyStatement visitCopyStatement(CobolPreprocessor.CopyStatement copyStatement, P p) {
+        CobolPreprocessor.CopyStatement c = super.visitCopyStatement(copyStatement, p);
+
+        if (c.getCopyBook() != null) {
+            List<CobolPreprocessor.ReplacingPhrase> phrases = c.getCobols().stream()
+                    .filter(is -> is instanceof CobolPreprocessor.ReplacingPhrase)
+                    .map(it -> (CobolPreprocessor.ReplacingPhrase) it)
+                    .collect(Collectors.toList());
+
+            if (!phrases.isEmpty()) {
+                Map<List<String>, List<String>> replacements = new HashMap<>();
+                phrases.forEach(it -> replacements.putAll(getReplacings(it)));
+
+                for (Map.Entry<List<String>, List<String>> entry : replacements.entrySet()) {
+                    List<List<CobolPreprocessor.Word>> replaceWords = new ArrayList<>();
+                    FindReplaceableAreasVisitor findReplaceableAreasVisitor = new FindReplaceableAreasVisitor(entry.getKey());
+
+                    //noinspection ConstantConditions
+                    CobolPreprocessor preprocessor = c.getCopyBook().getAst();
+                    findReplaceableAreasVisitor.visit(preprocessor, replaceWords);
+
+                    if (!replaceWords.isEmpty()) {
+                        ReplaceVisitor replaceVisitor = new ReplaceVisitor(replaceWords, entry.getValue());
+                        preprocessor = replaceVisitor.visit(preprocessor, new InMemoryExecutionContext(), getCursor());
+                        c = c.withCopyBook(c.getCopyBook().withAst(preprocessor));
+                    }
+                }
+            }
+        }
+        return c;
+    }
 
     @Override
     public CobolPreprocessor.ReplaceArea visitReplaceArea(CobolPreprocessor.ReplaceArea replaceArea, P p) {
@@ -26,6 +60,11 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         // So, it might be possible for multiple replacements rules to be applied in a replaceArea.
         Map<List<String>, List<String>> replacements = getReplacements(replaceArea.getReplaceByStatement());
         for (Map.Entry<List<String>, List<String>> entry : replacements.entrySet()) {
+            if (entry.getKey().isEmpty()) {
+                System.out.println();
+            } else if (entry.getValue().isEmpty()) {
+                System.out.println();
+            }
             List<List<CobolPreprocessor.Word>> replaceWords = new ArrayList<>();
             FindReplaceableAreasVisitor findReplaceableAreasVisitor = new FindReplaceableAreasVisitor(entry.getKey());
             ListUtils.map(r.getCobols(), it -> findReplaceableAreasVisitor.visit(it, replaceWords, getCursor()));
@@ -79,6 +118,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     }
                 } else {
                     inMatch = false;
+                    replacements.clear();
                     fromPos = 0;
                 }
             }
@@ -93,7 +133,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         private final ReplacementType replacementType;
 
         private List<CobolPreprocessor.Word> current;
-        private int pos = 0;
+        private int fromPos = 0;
+        private int toPos = 0;
         boolean inMatch = false;
 
         public ReplaceVisitor(List<List<CobolPreprocessor.Word>> from,
@@ -125,7 +166,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     boolean isEmpty = to.get(0).isEmpty();
                     Replace replace = new Replace(randomId(), word, isEmpty);
                     word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-                    word = word.withWord(to.get(pos));
+                    word = word.withWord(to.get(fromPos));
                 }
             } else if (ReplacementType.EQUAL == replacementType) {
                 if (!inMatch) {
@@ -133,41 +174,94 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     if (firstMatch.isPresent()) {
                         inMatch = true;
                         current = firstMatch.get();
-                        pos = 0;
+                        fromPos = 0;
+                        toPos = 0;
 
                         // Marks the changed word. Unknown: Should all the words be marked instead??
-                        if (!current.get(pos).getWord().equals(to.get(pos))) {
-                            boolean isEmpty = to.get(pos).isEmpty();
+                        if (!current.get(fromPos).getWord().equals(to.get(toPos))) {
+                            boolean isEmpty = to.get(toPos).isEmpty();
                             Replace replace = new Replace(randomId(), word, isEmpty);
                             word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-                            word = word.withWord(to.get(pos));
+                            word = word.withWord(to.get(toPos));
                         }
-                        pos++;
+                        fromPos++;
+                        toPos++;
                     }
                 } else {
-                    boolean isSame = current.get(pos).getWord().equals(word.getWord());
+                    boolean isSame = current.get(fromPos).getWord().equals(word.getWord());
                     if (isSame) {
                         // Marks the changed word. Unknown: Should all the words be marked instead??
-                        if (!current.get(pos).getWord().equals(to.get(pos))) {
-                            boolean isEmpty = to.get(pos).isEmpty();
+                        if (!current.get(fromPos).getWord().equals(to.get(toPos))) {
+                            boolean isEmpty = to.get(toPos).isEmpty();
                             Replace replace = new Replace(randomId(), word, isEmpty);
                             word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-                            word = word.withWord(to.get(pos));
+                            word = word.withWord(to.get(toPos));
                         }
 
-                        if (current.size() - 1 == pos) {
+                        if (current.size() - 1 == fromPos) {
                             inMatch = false;
                             current = null;
-                            pos = 0;
+                            fromPos = 0;
+                            toPos = 0;
                         } else {
-                            pos++;
+                            fromPos++;
+                            toPos++;
+                        }
+                    } else {
+                        throw new IllegalStateException("Fix me, this should not have happened.");
+                    }
+                }
+            } else if (ReplacementType.REDUCTIVE == replacementType) {
+                if (!inMatch) {
+                    Optional<List<CobolPreprocessor.Word>> firstMatch = from.stream().filter(it -> it.get(0) == finalWord).findAny();
+                    if (firstMatch.isPresent()) {
+                        inMatch = true;
+                        current = firstMatch.get();
+                        fromPos = 0;
+                        toPos = 0;
+
+                        // Marks the changed word. Unknown: Should all the words be marked instead??
+                        if (!current.get(fromPos).getWord().equals(to.get(toPos))) {
+                            boolean isEmpty = to.get(toPos).isEmpty();
+                            Replace replace = new Replace(randomId(), word, isEmpty);
+                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                            word = word.withWord(to.get(toPos));
+                        }
+                        fromPos++;
+                        toPos++;
+                    }
+                } else {
+                    boolean isSame = current.get(fromPos).getWord().equals(word.getWord());
+                    if (isSame) {
+                        if (toPos >= to.size()) {
+                            Replace replace = new Replace(randomId(), word, true);
+                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                            word = word.withWord("");
+                        }
+
+                        // Marks the changed word. Unknown: Should all the words be marked instead??
+                        else if (!current.get(fromPos).getWord().equals(to.get(toPos))) {
+                            boolean isEmpty = to.get(toPos).isEmpty();
+                            Replace replace = new Replace(randomId(), word, isEmpty);
+                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                            word = word.withWord(to.get(toPos));
+                        }
+
+                        if (current.size() - 1 == fromPos) {
+                            inMatch = false;
+                            current = null;
+                            fromPos = 0;
+                            toPos = 0;
+                        } else {
+                            fromPos++;
+                            toPos++;
                         }
                     } else {
                         throw new IllegalStateException("Fix me, this should not have happened.");
                     }
                 }
             } else {
-                // ReplacementType.ADDITIVE and ReplacementType.REDUCTIVE do not exist in the NIST test, but might be possible in COBOL.
+                // ReplacementType.ADDITIVE do not exist in the NIST test, but might be possible in COBOL.
                 throw new UnsupportedOperationException("Unsupported ReplacementType detected: " + replacementType.name());
             }
 
@@ -194,6 +288,23 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         }
     }
 
+    // Collect ReplaceClauses from CopyStatement Replacing.
+    private Map<List<String>, List<String>> getReplacings(CobolPreprocessor.ReplacingPhrase replacingPhrase) {
+        Map<List<String>, List<String>> replacements = new HashMap<>();
+        for (CobolPreprocessor.ReplaceClause clause : replacingPhrase.getClauses()) {
+            List<String> replaceable = resolveReplace(clause.getReplaceable());
+            List<String> replacement = resolveReplace(clause.getReplacement());
+            if (clause.getReplacement() instanceof CobolPreprocessor.CharDataLine) {
+                return replacements;
+            }
+            if (!replaceable.isEmpty()) {
+                replacements.put(replaceable, replacement);
+            }
+        }
+        return replacements;
+    }
+
+    // Collect ReplaceClauses from ReplaceByStatement.
     private Map<List<String>, List<String>> getReplacements(CobolPreprocessor.ReplaceByStatement replaceByStatement) {
         Map<List<String>, List<String>> replacements = new HashMap<>();
         for (CobolPreprocessor.ReplaceClause clause : replaceByStatement.getClauses()) {
@@ -218,9 +329,11 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                 words.add("");
             }
         } else if (cobolPreprocessor instanceof CobolPreprocessor.CharDataLine) {
-            throw new UnsupportedOperationException("Implement me.");
+            CobolPreprocessor.CharDataLine charDataLine = (CobolPreprocessor.CharDataLine) cobolPreprocessor;
+            wordVisitor.visit(charDataLine, words);
         } else if (cobolPreprocessor instanceof CobolPreprocessor.Word) {
-            throw new UnsupportedOperationException("Implement me.");
+            CobolPreprocessor.Word word = (CobolPreprocessor.Word) cobolPreprocessor;
+            wordVisitor.visit(word, words);
         } else {
             throw new UnsupportedOperationException("Implement me.");
         }
