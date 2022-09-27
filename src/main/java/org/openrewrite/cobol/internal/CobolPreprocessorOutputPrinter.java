@@ -425,17 +425,17 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                         p.append(StringUtils.repeat(" ", curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex));
 
                         // The current word must be a literal.
-                            /*
-                                I.E. "Z" replaced by """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-                                Before:
-                                    |036800| |    MOVE "Z"| TO WRK-XN-00322.         |SM2084.2
-
-                                After:
-                                    |      | |REPLACE_START__________________________|
-                                    |036800| |    MOVE """"""""""""""""""""""""""""""|
-                                    |      |-|"""""""""""""""""""""""""""""""""""""""|
-                                    |      |-|""""""""""""| TO WRK-XN-00322.         |SM2084.2
-                             */
+                        /*
+                         *  I.E. "Z" replaced by """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                         *  Before:
+                         *      |036800| |    MOVE "Z"| TO WRK-XN-00322.         |SM2084.2
+                         *
+                         *  After:
+                         *      |      | |REPLACE_START__________________________|
+                         *      |036800| |    MOVE """"""""""""""""""""""""""""""|
+                         *      |      |-|"""""""""""""""""""""""""""""""""""""""|
+                         *      |      |-|""""""""""""| TO WRK-XN-00322.         |SM2084.2
+                         */
 
                         // Predetermine the length of the end of the literal to align the column areas with the next token.
                         String dialectSequenceArea = getDialectSequenceArea();
@@ -456,7 +456,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                                 total -= part.length();
                             } else {
                                 if (total != remainder) {
-                                    throw new IllegalStateException("Oops");
+                                    throw new IllegalStateException("Unexpected remained calculating replacement end position.");
                                 }
                                 parts.add(replacedWord.substring(0, remainder));
                             }
@@ -491,29 +491,35 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                         System.out.println("Implement for COPY STATEMENT REPLACING. Reductive change causes empty words.");
                     }
 
-                    int length = curIndex + replace.getOriginalWord().getPrefix().getWhitespace().length() + replace.getOriginalWord().getWord().length();
-                    if (length > contentAreaLength) {
-                        String findEndPos = replaceOptional.get().getOriginalWord().print(getCursor());
-                        int index = getCurrentIndex(findEndPos) - cobolDialect.getColumns().getContentArea();
-                        String spacesCount = getDialectSequenceArea() + "*" + index;
-                        String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
-                        p.append(spacesCountLine);
+                    PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
+                    statementPrinter.visit(replace.getOriginalWord(), outputCapture);
+
+                    String statement = outputCapture.getOut();
+                    boolean isEndOfLine = statement.endsWith("\n");
+                    boolean isCRLF = statement.endsWith("\r\n");
+
+                    int totalChars = statement.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
+
+                    int numberOfSpaces;
+                    if (!isEndOfLine && totalChars > contentAreaLength) {
+                        numberOfSpaces = getCurrentIndex(statement);
                     } else {
-                        int index = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex) - cobolDialect.getColumns().getContentArea();
-                        String spacesCount = getDialectSequenceArea() + "*" + index;
-                        String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
-                        p.append(spacesCountLine);
+                        numberOfSpaces = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex);
                     }
 
-                        /*  The original word is <= the length of the replaced word.
-                            To retain column alignment, the prefix is shifted left with whitespace equal to the difference between the original word and the replaced word.
+                    String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
+                    p.append(afterStop);
+                    p.append(StringUtils.repeat(" ", numberOfSpaces));
 
-                            I.E. PICTURE replaced by PIC.
-                            Before:
-                                |000001| | firstWord PICTURE secondWord         |
-                            After:
-                                |000001| | firstWord     PIC secondWord         |
-                         */
+                    /*  The original word is <= the length of the replaced word.
+                     *  To retain column alignment, the prefix is shifted left with whitespace equal to the difference between the original word and the replaced word.
+                     *
+                     *  I.E. PICTURE replaced by PIC.
+                     *  Before:
+                     *      |000001| | firstWord PICTURE secondWord         |
+                     *  After:
+                     *      |000001| | firstWord     PIC secondWord         |
+                     */
                     int difference = replaceOptional.get().getOriginalWord().getWord().length() - word.getWord().length();
                     // The difference exceeds the content area.
                     if (curIndex + difference > cobolDialect.getColumns().getOtherArea()) {
