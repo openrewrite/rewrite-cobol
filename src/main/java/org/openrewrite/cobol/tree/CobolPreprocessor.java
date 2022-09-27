@@ -171,7 +171,7 @@ public interface CobolPreprocessor extends Tree {
 
         @Override
         public <P> TreeVisitor<?, PrintOutputCapture<P>> printer(Cursor cursor) {
-            return new CobolPreprocessorPrinter<>();
+            return new CobolPreprocessorPrinter<>(true);
         }
     }
 

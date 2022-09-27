@@ -15,6 +15,7 @@
  */
 package org.openrewrite.cobol.internal;
 
+import org.openrewrite.ExecutionContext;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
 import org.openrewrite.cobol.tree.*;
@@ -30,6 +31,12 @@ import java.util.stream.Collectors;
  * Note: All the logic to print column areas exists in visitWord.
  */
 public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintOutputCapture<P>> {
+
+    private final boolean printColumns;
+
+    public CobolPreprocessorPrinter(boolean printColumns) {
+        this.printColumns = printColumns;
+    }
 
     public CobolPreprocessor visitCharData(CobolPreprocessor.CharData charData, PrintOutputCapture<P> p) {
         visitSpace(charData.getPrefix(), p);
@@ -229,7 +236,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
 
     public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
         Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
-        if (lines.isPresent()) {
+        if (printColumns && lines.isPresent()) {
             for (Lines.Line line : lines.get().getLines()) {
                 if (line.getSequenceArea() != null) {
                     p.append(line.getSequenceArea().getSequence());
@@ -248,7 +255,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
         }
 
         Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
-        if (continuation.isPresent()) {
+        if (printColumns && continuation.isPresent()) {
             if (continuation.get().getContinuations().containsKey(0)) {
                 Markers markers = continuation.get().getContinuations().get(0);
                 Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
@@ -293,20 +300,24 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
                 commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
             }
         } else {
-            Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
-            sequenceArea.ifPresent(it -> p.append(it.getSequence()));
+            if (printColumns) {
+                Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
+                sequenceArea.ifPresent(it -> p.append(it.getSequence()));
 
-            Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
-            indicatorArea.ifPresent(it -> p.append(it.getContinuationPrefix()));
+                Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
+                indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
+                indicatorArea.ifPresent(it -> p.append(it.getContinuationPrefix()));
+            }
 
             visitSpace(word.getPrefix(), p);
             p.append(word.getWord());
 
-            Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-            commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-            commentArea.ifPresent(it -> p.append(it.getComment()));
-            commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
+            if (printColumns) {
+                Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
+                commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+                commentArea.ifPresent(it -> p.append(it.getComment()));
+                commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
+            }
         }
 
         return word;

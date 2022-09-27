@@ -15,6 +15,8 @@
  */
 package org.openrewrite.cobol.internal;
 
+import org.openrewrite.ExecutionContext;
+import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
@@ -89,8 +91,12 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     // Lines prefixed with an unknown indicator are commented out during printing until we know more about them.
     private boolean inUnknownIndicator = false;
 
+    private final CobolPreprocessorPrinter<ExecutionContext> statementPrinter = new CobolPreprocessorPrinter<>(false);
+
     public CobolPreprocessorOutputPrinter(CobolDialect cobolDialect,
                                           boolean printWithColumnAreas) {
+        super(true);
+
         this.cobolDialect = cobolDialect;
         this.printWithColumnAreas = printWithColumnAreas;
     }
@@ -187,14 +193,28 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 p.append(getCopyStopComment());
 
                 // Add whitespace until the next token will be aligned with the column area.
+                PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
+                statementPrinter.visit(copyStatement, outputCapture);
+
+                String copy = outputCapture.getOut();
+                int totalChars = copy.length() + curIndex - cobolDialect.getColumns().getContentArea();
                 int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
-                String copy = copyStatement.print(getCursor());
+
                 int numberOfSpaces;
-                if (curIndex + copy.length() > contentAreaLength) {
+                if (totalChars > contentAreaLength) {
                     throw new UnsupportedOperationException("Recalculate prefix.");
                 } else {
-                    numberOfSpaces = copy.endsWith("\n") ? 0 : copy.length() + curIndex;
+                    numberOfSpaces = totalChars == contentAreaLength ? 0 : copy.length() + curIndex;
                 }
+
+//                String copy = copyStatement.print(getCursor());
+//                int numberOfSpaces = copy.endsWith("\n") ? 0 : copy.length() + curIndex;
+//
+//                String spacesCount = getDialectSequenceArea() + "*" + (numberOfSpaces == 0 ? 0 : (numberOfSpaces - cobolDialect.getColumns().getContentArea()));
+//                String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
+//                p.append(spacesCountLine);
+//
+//                p.append(StringUtils.repeat(" ", numberOfSpaces));
 
                 String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
                 p.append(afterStop);
@@ -238,13 +258,18 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             p.append(getReplaceByStopComment());
 
             // Add whitespace until the next token will be aligned with the column area.
+            PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
+            statementPrinter.visit(replaceArea.getReplaceByStatement(), outputCapture);
+
+            String statement = outputCapture.getOut();
+            int totalChars = statement.length() + curIndex - cobolDialect.getColumns().getContentArea();
             int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
-            String statement = replaceArea.getReplaceByStatement().print(getCursor());
+
             int numberOfSpaces;
-            if ((curIndex + statement.length()) > contentAreaLength) {
+            if (totalChars > contentAreaLength) {
                 throw new UnsupportedOperationException("Recalculate prefix.");
             } else {
-                numberOfSpaces = statement.endsWith("\n") ? 0 : statement.length() + curIndex;
+                numberOfSpaces = totalChars == contentAreaLength ? 0 : statement.length() + curIndex;
             }
 
             String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
@@ -291,13 +316,18 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             p.append(getReplaceOffStopComment());
 
             // Add whitespace until the next token will be aligned with the column area.
+            PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
+            statementPrinter.visit(replaceOffStatement, outputCapture);
+
+            String statement = outputCapture.getOut();
+            int totalChars = statement.length() + curIndex - cobolDialect.getColumns().getContentArea();
             int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
-            String statement = replaceOffStatement.print(getCursor());
+
             int numberOfSpaces;
-            if ((statement.length() + curIndex) > contentAreaLength) {
+            if (totalChars > contentAreaLength) {
                 throw new UnsupportedOperationException("Recalculate prefix.");
             } else {
-                numberOfSpaces = statement.endsWith("\n") ? 0 : statement.length() + curIndex;
+                numberOfSpaces = totalChars == contentAreaLength ? 0 : statement.length() + curIndex;
             }
 
             String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
@@ -643,11 +673,12 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
      * Then return a Template Comment with the calculated information.
      */
     private String getColumnAlignmentAfterStop(int lengthOfPrefix) {
-        if (lengthOfPrefix - cobolDialect.getColumns().getContentArea() < 0) {
+        if (lengthOfPrefix > 0 && lengthOfPrefix - cobolDialect.getColumns().getContentArea() < 0) {
             throw new IllegalStateException("Negative index detected.");
         }
 
         int prefixLength = lengthOfPrefix == 0 ? 0 : (lengthOfPrefix - cobolDialect.getColumns().getContentArea());
+        prefixLength = prefixLength == cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea() ? 0 : prefixLength;
         String alignmentKey = getDialectSequenceArea() + "*" + prefixLength;
         String whitespace = generateWhitespace(cobolDialect.getColumns().getOtherArea() - alignmentKey.length());
         return alignmentKey + whitespace + "\n";
@@ -687,6 +718,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     private String generateWhitespace(int count) {
+        if (count < 0) {
+            throw new IllegalStateException("Negative index detected.");
+        }
         return StringUtils.repeat(" ", count);
     }
 }

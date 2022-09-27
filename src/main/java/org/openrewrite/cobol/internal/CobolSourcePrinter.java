@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  */
 public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
-    private final CobolPreprocessorPrinter<ExecutionContext> printer = new CobolPreprocessorPrinter<>();
+    private final CobolPreprocessorPrinter<ExecutionContext> printer = new CobolPreprocessorPrinter<>(true);
     private int originalReplaceLength;
 
     @Nullable
