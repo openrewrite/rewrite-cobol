@@ -373,11 +373,12 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
             int curIndex = getCurrentIndex(p.getOut());
             if (curIndex != -1) {
-                boolean isLongerWord = word.getWord().length() > replaceOptional.get().getOriginalWord().getWord().length();
-                boolean isLiteral = word.getWord().startsWith("\"") || word.getWord().startsWith("'");
 
-                int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
+                boolean isLongerWord = word.getWord().length() > replaceOptional.get().getOriginalWord().getWord().length();
                 String replacedWord = isLongerWord ? " " + word.getWord() : word.getWord();
+
+                boolean isLiteral = word.getWord().startsWith("\"") || word.getWord().startsWith("'");
+                int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
                 boolean isContinuedLiteral = isLiteral && (curIndex + replacedWord.length()) > contentAreaLength;
 
                 // Add Start key.
@@ -399,9 +400,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 }
 
                 // Fill in the rest of the content area with whitespace.
-                int fillCount = curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex;
-                p.append(StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - fillCount));
-                p.append("\n");
+                int untilEndOfLine = curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex;
+                String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+                p.append(whitespace);
 
                 // Add UUID key.
                 p.append(getReplaceUuidComment());
@@ -469,11 +470,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                             }
                             p.append(part);
                             if (i == parts.size() - 1 && part.length() < contentAreaLength) {
-                                String whitespace = StringUtils.repeat(" ",
-                                        // Total area to be filled.
-                                        (getDialectSequenceArea().length() + 1 + contentAreaLength) -
-                                                // Existing characters.
-                                                (curIndex + part.length()));
+                                // // Total area to be filled - existing characters.
+                                untilEndOfLine = (getDialectSequenceArea().length() + 1 + contentAreaLength) - (curIndex + part.length());
+                                whitespace = generateWhitespace(untilEndOfLine);
                                 p.append(whitespace);
                             }
                             p.append("\n");
@@ -496,7 +495,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     if (length > contentAreaLength) {
                         String findEndPos = replaceOptional.get().getOriginalWord().print(getCursor());
                         int index = getCurrentIndex(findEndPos) - cobolDialect.getColumns().getContentArea();
-                        System.out.println();
                         String spacesCount = getDialectSequenceArea() + "*" + index;
                         String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
                         p.append(spacesCountLine);
