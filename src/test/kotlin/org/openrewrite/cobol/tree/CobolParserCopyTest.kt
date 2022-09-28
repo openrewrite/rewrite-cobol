@@ -83,31 +83,6 @@ class CobolParserCopyTest : RewriteTest {
     )
 
     @Test
-    fun sm201A() = rewriteRun(
-        cobol(getNistSource("SM201A.CBL"))
-    )
-
-    @Test
-    fun sm202A() = rewriteRun(
-        cobol(getNistSource("SM202A.CBL"))
-    )
-
-    @Test
-    fun sm203A() = rewriteRun(
-        cobol(getNistSource("SM203A.CBL"))
-    )
-
-    @Test
-    fun sm205A() = rewriteRun(
-        cobol(getNistSource("SM205A.CBL"))
-    )
-
-    @Test
-    fun sm206A() = rewriteRun(
-        cobol(getNistSource("SM206A.CBL"))
-    )
-
-    @Test
     fun sm207A() = rewriteRun(
         cobol(getNistSource("SM207A.CBL"))
     )

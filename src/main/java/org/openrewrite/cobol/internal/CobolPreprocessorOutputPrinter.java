@@ -416,10 +416,10 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 // Additive replacement like PIC to PICTURE.
                 if (isLongerWord) {
                     if (isContinuedLiteral) {
-                        int index = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex) - cobolDialect.getColumns().getContentArea();
-                        String spacesCount = getDialectSequenceArea() + "*" + index;
-                        String spacesCountLine = spacesCount + StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - spacesCount.length()) + "\n";
-                        p.append(spacesCountLine);
+                        int numberOfSpaces = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex) - cobolDialect.getColumns().getContentArea();
+                        String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
+                        p.append(afterStop);
+                        p.append(StringUtils.repeat(" ", numberOfSpaces));
 
                         // The entire line is filled with whitespace if the curIndex is 0.
                         p.append(StringUtils.repeat(" ", curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex));
