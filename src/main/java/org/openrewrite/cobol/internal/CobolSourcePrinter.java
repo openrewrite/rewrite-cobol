@@ -3879,11 +3879,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             p.append(output.getOut());
         }
 
-        Optional<ReplaceReductiveType> replaceReductiveType = word.getMarkers().findFirst((ReplaceReductiveType.class));
-        if (replaceReductiveType.isPresent()) {
-            System.out.println();
-        }
-
         Optional<Replace> replace = word.getMarkers().findFirst((Replace.class));
         Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
         if (replace.isPresent() && !copyBook.isPresent()) {

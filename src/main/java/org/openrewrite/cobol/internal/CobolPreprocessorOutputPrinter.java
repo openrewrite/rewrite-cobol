@@ -102,8 +102,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     // Represents whitespace used to keep the original AST and the processed AST aligned in the column area.
     private String replaceTypeAdditiveComment = null;
 
-    private boolean isLastWordReplaced = false;
-
     // Lines prefixed with an unknown indicator are commented out during printing until we know more about them.
     private boolean inUnknownIndicator = false;
 
@@ -457,17 +455,12 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             // Add whitespace until the next token will be aligned with the column area.
             String afterStop = getColumnAlignmentAfterStop(curIndex);
             p.append(afterStop);
-            p.append(StringUtils.repeat(" ", curIndex));
+            p.append(StringUtils.repeat(" ", curIndex >= contentEnd ? 0 : curIndex));
 
             super.visitWord(word, p);
 
             replaceReductiveType = null;
         } else {
-            if (word.getMarkers().findFirst(SequenceArea.class).isPresent() && isLastWordReplaced) {
-                String endOfLine = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - getCurrentIndex(p.getOut())) + "\n";
-                p.append(endOfLine);
-            }
-            isLastWordReplaced = false;
             super.visitWord(word, p);
         }
         return word;
@@ -588,10 +581,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 p.append(word.getWord());
             }
         } else {
-            if (word.getWord().isEmpty()) {
-                System.out.println("Implement for COPY STATEMENT REPLACING. Reductive change causes empty words.");
-            }
-
             PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
             statementPrinter.visit(replace.getOriginalWord(), outputCapture);
 
@@ -639,7 +628,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             } else {
                 String additionalPrefix = StringUtils.repeat(" ", difference);
                 p.append(additionalPrefix);
-                p.append(word.getPrefix().getWhitespace());
+                visitSpace(word.getPrefix(), p);
                 p.append(word.getWord());
 
                 Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
@@ -648,7 +637,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
             }
         }
-        isLastWordReplaced = true;
     }
 
     /**

@@ -20,11 +20,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.FileAttributes;
-import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.cobol.internal.grammar.CobolBaseVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolParser;
 import org.openrewrite.cobol.tree.*;
-import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
@@ -39,7 +37,6 @@ import static java.util.Collections.*;
 import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.END_OF_FILE;
-import static org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter.*;
 import static org.openrewrite.cobol.tree.Space.format;
 
 public class CobolParserVisitor extends CobolBaseVisitor<Object> {
@@ -6442,13 +6439,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 }
 
                 if (templateKeys.contains(contentArea)) {
-                    if (copyStartComment.equals(contentArea)) {
-                        copyStartComment();
-                    } else if (copyUuidComment.equals(contentArea)) {
-                        copyUuidComment();
-                    } else if (copyStopComment.equals(contentArea)) {
-                        copyStopComment();
-                    } else if (replaceByStartComment.equals(contentArea)) {
+                    if (replaceByStartComment.equals(contentArea)) {
                         ReplaceBy replaceBy = getReplaceByMarker();
                         markers.add(replaceBy);
                     } else if (replaceStartComment.equals(contentArea)) {
@@ -6464,6 +6455,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     } else if (replaceOffStartComment.equals(contentArea)) {
                         ReplaceOff replaceOff = getReplaceOffMarker();
                         markers.add(replaceOff);
+                    } else if (copyStartComment.equals(contentArea)) {
+                        copyStartComment();
+                    } else if (copyUuidComment.equals(contentArea)) {
+                        copyUuidComment();
+                    } else if (copyStopComment.equals(contentArea)) {
+                        copyStopComment();
                     }
                 } else {
                     cursor += contentArea.length();
@@ -6800,11 +6797,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     private Replace getReplaceMarker() {
-        sequenceArea();
-        indicatorArea();
-
-        cursor += replaceUuidComment.length();
-        cursor++; // Increment passed the \n.
+        parseComment(replaceUuidComment);
 
         removeTemplateCommentArea = false;
 
@@ -6833,11 +6826,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private ReplaceReductiveType getReplaceReductiveTypeMarker() {
         parseComment(replaceReductiveTypeStartComment);
 
-        sequenceArea();
-        indicatorArea();
-
-        cursor += uuidComment.length();
-        cursor++; // Increment passed the \n.
+        parseComment(uuidComment);
 
         removeTemplateCommentArea = false;
 
