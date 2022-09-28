@@ -438,8 +438,12 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             int insertIndex = getInsertIndex(p.getOut());
             p.out.insert(insertIndex, getReplaceTypeReductiveStartComment());
 
+            int contentEnd = cobolDialect.getColumns().getOtherArea();
             // Fill the remaining line with whitespace to align the column areas.
-            int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
+            // Reductive changes require printing the original column areas with the original word replaced by whitespace.
+            // The last replaced word might end the line, so the current index might be greater than (CommentArea) or
+            // equal to the end of the content area.
+            int untilEndOfLine = curIndex >= contentEnd ? 0 : cobolDialect.getColumns().getOtherArea() - curIndex;
             String whitespace = generateWhitespace(untilEndOfLine) + "\n";
             p.append(whitespace);
 
@@ -451,8 +455,15 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             // Add Stop key.
             p.append(getReplaceTypeReductiveStopComment());
 
+            // Add whitespace until the next token will be aligned with the column area.
+            String afterStop = getColumnAlignmentAfterStop(curIndex);
+            p.append(afterStop);
+            p.append(StringUtils.repeat(" ", curIndex));
+
             super.visitWord(word, p);
 
+            replaceReductiveType = null;
+            System.out.println();
         } else {
             if (word.getMarkers().findFirst(SequenceArea.class).isPresent() && isLastWordReplaced) {
                 String endOfLine = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - getCurrentIndex(p.getOut())) + "\n";
@@ -632,6 +643,11 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 p.append(additionalPrefix);
                 p.append(word.getPrefix().getWhitespace());
                 p.append(word.getWord());
+
+                Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
+                commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+                commentArea.ifPresent(it -> p.append(it.getComment()));
+                commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
             }
         }
         isLastWordReplaced = true;

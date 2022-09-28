@@ -6442,7 +6442,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 }
 
                 if (templateKeys.contains(contentArea)) {
-                    if (replaceByStartComment.equals(contentArea)) {
+                    if (copyStartComment.equals(contentArea)) {
+                        copyStartComment();
+                    } else if (copyUuidComment.equals(contentArea)) {
+                        copyUuidComment();
+                    } else if (copyStopComment.equals(contentArea)) {
+                        copyStopComment();
+                    } else if (replaceByStartComment.equals(contentArea)) {
                         ReplaceBy replaceBy = getReplaceByMarker();
                         markers.add(replaceBy);
                     } else if (replaceStartComment.equals(contentArea)) {
@@ -6452,15 +6458,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     } else if (replaceUuidComment.equals(contentArea)) {
                         Replace replace = getReplaceMarker();
                         markers.add(replace);
+                    } else if (replaceReductiveTypeStartComment.equals(contentArea)) {
+                        ReplaceReductiveType replaceReductiveType = getReplaceReductiveTypeMarker();
+                        markers.add(replaceReductiveType);
                     } else if (replaceOffStartComment.equals(contentArea)) {
                         ReplaceOff replaceOff = getReplaceOffMarker();
                         markers.add(replaceOff);
-                    } else if (copyStartComment.equals(contentArea)) {
-                        copyStartComment();
-                    } else if (copyUuidComment.equals(contentArea)) {
-                        copyUuidComment();
-                    } else if (copyStopComment.equals(contentArea)) {
-                        copyStopComment();
                     }
                 } else {
                     cursor += contentArea.length();
@@ -6825,6 +6828,37 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         }
 
         return replace;
+    }
+
+    private ReplaceReductiveType getReplaceReductiveTypeMarker() {
+        sequenceArea();
+        indicatorArea();
+
+        cursor += uuidComment.length();
+        cursor++; // Increment passed the \n.
+
+        removeTemplateCommentArea = false;
+
+        sequenceArea();
+        indicatorArea();
+        String uuid = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+        cursor += uuid.length();
+        ReplaceReductiveType replaceReductiveType = replaceReductiveTypeMap.get(uuid.trim());
+
+        parseComment(replaceReductiveTypeStopComment);
+
+        if (isAdditiveCommentArea) {
+            isAdditiveCommentArea = false;
+        } else {
+            sequenceArea();
+            indicatorArea();
+
+            String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+            cursor += numberOfSpaces.length();
+            nextIndex = Integer.valueOf(numberOfSpaces.trim());
+        }
+
+        return replaceReductiveType;
     }
 
     private ReplaceOff getReplaceOffMarker() {
