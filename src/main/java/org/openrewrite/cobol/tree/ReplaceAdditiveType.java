@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 @With
 @Value
-public class ReplaceTypeAdditive implements Marker {
+public class ReplaceAdditiveType implements Marker {
     UUID id;
     Space prefix;
 }

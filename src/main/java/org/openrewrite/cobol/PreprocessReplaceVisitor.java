@@ -6,7 +6,7 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.cobol.tree.Replace;
-import org.openrewrite.cobol.tree.ReplaceTypeReductive;
+import org.openrewrite.cobol.tree.ReplaceReductiveType;
 import org.openrewrite.internal.ListUtils;
 
 import java.util.*;
@@ -230,8 +230,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                             Replace replace = new Replace(randomId(), word, isEmpty);
                             if (isEmpty) {
                                 reductiveReplaces.add(replace);
-                                ReplaceTypeReductive replaceTypeReductive = new ReplaceTypeReductive(randomId(), reductiveReplaces);
-                                word = word.withMarkers(word.getMarkers().addIfAbsent(replaceTypeReductive));
+                                ReplaceReductiveType replaceReductiveType = new ReplaceReductiveType(randomId(), reductiveReplaces);
+                                word = word.withMarkers(word.getMarkers().addIfAbsent(replaceReductiveType));
                             } else {
                                 word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                             }
@@ -246,8 +246,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         if (toPos >= to.size()) {
                             Replace replace = new Replace(randomId(), word, true);
                             reductiveReplaces.add(replace);
-                            ReplaceTypeReductive replaceTypeReductive = new ReplaceTypeReductive(randomId(), reductiveReplaces);
-                            word = word.withMarkers(word.getMarkers().addIfAbsent(replaceTypeReductive));
+                            ReplaceReductiveType replaceReductiveType = new ReplaceReductiveType(randomId(), reductiveReplaces);
+                            word = word.withMarkers(word.getMarkers().addIfAbsent(replaceReductiveType));
                             word = word.withWord("");
                         }
 
@@ -257,8 +257,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                             Replace replace = new Replace(randomId(), word, isEmpty);
                             if (isEmpty) {
                                 reductiveReplaces.add(replace);
-                                ReplaceTypeReductive replaceTypeReductive = new ReplaceTypeReductive(randomId(), reductiveReplaces);
-                                word = word.withMarkers(word.getMarkers().addIfAbsent(replaceTypeReductive));
+                                ReplaceReductiveType replaceReductiveType = new ReplaceReductiveType(randomId(), reductiveReplaces);
+                                word = word.withMarkers(word.getMarkers().addIfAbsent(replaceReductiveType));
                             } else {
                                 word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                             }

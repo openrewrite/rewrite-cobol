@@ -21,16 +21,11 @@ import org.antlr.v4.runtime.*;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Parser;
-import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.internal.CobolDialect;
-import org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
-import org.openrewrite.cobol.tree.Cobol;
-import org.openrewrite.cobol.tree.CobolPreprocessor;
-import org.openrewrite.cobol.tree.Replace;
-import org.openrewrite.cobol.tree.Space;
+import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.MetricsHelper;
 import org.openrewrite.internal.lang.Nullable;
@@ -64,6 +59,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private Set<CobolPreprocessor.ReplaceByStatement> replaceRules = null;
     private Set<CobolPreprocessor.ReplaceOffStatement> replaceOffs = null;
     private Set<Replace> replaces = null;
+    private Set<ReplaceReductiveType> replaceReductiveTypes = null;
 
     public CobolPreprocessorParser(CobolDialect cobolDialect,
                                    boolean enableCopy,
@@ -323,11 +319,19 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         return replaces;
     }
 
+    public Set<ReplaceReductiveType> getReplaceReductiveTypes(@Nullable CobolPreprocessor.CompilationUnit cu) {
+        if (replaceReductiveTypes == null) {
+            getOriginalSources(cu);
+        }
+        return replaceReductiveTypes;
+    }
+
     public void getOriginalSources(@Nullable CobolPreprocessor.CompilationUnit cu) {
         this.copyStatements = new HashSet<>();
         this.replaceRules = new HashSet<>();
         this.replaceOffs = new HashSet<>();
         this.replaces = new HashSet<>();
+        this.replaceReductiveTypes = new HashSet<>();
 
         CobolPreprocessorIsoVisitor<ExecutionContext> visitor = new CobolPreprocessorIsoVisitor<ExecutionContext>() {
             @Override
@@ -353,6 +357,10 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
             public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
                 Optional<Replace> replace = word.getMarkers().findFirst(Replace.class);
                 replace.ifPresent(it -> replaces.add(it));
+
+                Optional<ReplaceReductiveType> replaceReductiveType = word.getMarkers().findFirst(ReplaceReductiveType.class);
+                replaceReductiveType.ifPresent(it -> replaceReductiveTypes.add(it));
+
                 return super.visitWord(word, executionContext);
             }
         };

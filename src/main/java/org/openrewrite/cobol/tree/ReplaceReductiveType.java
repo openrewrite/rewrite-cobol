@@ -23,7 +23,7 @@ import java.util.UUID;
  */
 @With
 @Value
-public class ReplaceTypeReductive implements Marker {
+public class ReplaceReductiveType implements Marker {
     UUID id;
     List<Replace> originalWords;
 }

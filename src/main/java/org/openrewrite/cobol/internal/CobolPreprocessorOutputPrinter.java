@@ -51,16 +51,21 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     public static final String REPLACE_STOP_KEY = "__REPLACE_STOP__";
     public static final String REPLACE_UUID_KEY = "__REPLACE_UUID__";
 
-    // The ReplaceBy template is fully parsed between the start and stop and do not require a UUID.
+    public static final String UUID_KEY = "__UUID__";
+
+    // The ReplaceBy template is fully parsed between the start and stop and do not require a unique UUID.
     public static final String REPLACE_BY_START_KEY = "__REPLACE_BY_START__";
     public static final String REPLACE_BY_STOP_KEY = "__REPLACE_BY_STOP__";
 
-    // The ReplaceOff template is fully parsed between the start and stop and do not require a UUID.
+    // The ReplaceOff template is fully parsed between the start and stop and do not require a unique UUID.
     public static final String REPLACE_OFF_START_KEY = "__REPLACE_OFF_START__";
     public static final String REPLACE_OFF_STOP_KEY = "__REPLACE_OFF_STOP__";
 
+    // The ReplaceTypeReductive template is fully parsed between the start and stop and do not require a unique UUID.
+    public static final String REPLACE_TYPE_REDUCTIVE_START_KEY = "__REPLACE_TYPE_START_REDUCTIVE__";
+    public static final String REPLACE_TYPE_REDUCTIVE_STOP_KEY = "__REPLACE_TYPE_STOP_REDUCTIVE__";
+
     public static final String REPLACE_TYPE_ADDITIVE_KEY = "__REPLACE_TYPE_ADDITIVE__";
-    public static final String REPLACE_TYPE_REDUCTIVE_KEY = "__REPLACE_TYPE_REDUCTIVE__";
 
     private final CobolDialect cobolDialect;
     private final boolean printWithColumnAreas;
@@ -74,6 +79,14 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private String copyStopComment = null;
     private String copyUuidComment = null;
 
+    // Words that have been replaced by replace rules.
+    private String replaceStartComment = null;
+    private String replaceStopComment = null;
+    private String replaceUuidComment = null;
+
+    // Generic UUID comment.
+    private String uuidComment = null;
+
     // ReplaceByStatement comments.
     private String replaceByStartComment = null;
     private String replaceByStopComment = null;
@@ -82,19 +95,19 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private String replaceOffStartComment = null;
     private String replaceOffStopComment = null;
 
-    // Words that have been replaced by replace rules.
-    private String replaceStartComment = null;
-    private String replaceStopComment = null;
-    private String replaceUuidComment = null;
+    // ReplaceTypeReductive comments.
+    private String replaceTypeReductiveStartComment = null;
+    private String replaceTypeReductiveStopComment = null;
 
     // Represents whitespace used to keep the original AST and the processed AST aligned in the column area.
-    private String templateWhitespaceComment = null;
+    private String replaceTypeAdditiveComment = null;
 
     private boolean isLastWordReplaced = false;
 
     // Lines prefixed with an unknown indicator are commented out during printing until we know more about them.
     private boolean inUnknownIndicator = false;
 
+    private ReplaceReductiveType replaceReductiveType = null;
     private final CobolPreprocessorPrinter<ExecutionContext> statementPrinter = new CobolPreprocessorPrinter<>(false);
 
     public CobolPreprocessorOutputPrinter(CobolDialect cobolDialect,
@@ -262,9 +275,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         p.append(whitespace);
 
         // Add UUID key.
-        p.append(getReplaceUuidComment());
-        String replaceUuidLine = getDialectSequenceArea() + "*" + replaceByStatement.getId() + getUuidEndOfLine();
-        p.append(replaceUuidLine);
+        p.append(getUuidComment());
+        String uuidLine = getDialectSequenceArea() + "*" + replaceByStatement.getId() + getUuidEndOfLine();
+        p.append(uuidLine);
 
         // The Replacement rule is removed during preprocessing and is not printer here.
 
@@ -319,10 +332,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         p.append(whitespace);
 
         // Add UUID key.
-        p.append(getReplaceUuidComment());
-        String copyUuid = getDialectSequenceArea() + "*" + replaceOffStatement.getId();
-        String copyUuidLine = copyUuid + getUuidEndOfLine();
-        p.append(copyUuidLine);
+        p.append(getUuidComment());
+        String uuidLine = getDialectSequenceArea() + "*" + replaceOffStatement.getId() + getUuidEndOfLine();
+        p.append(uuidLine);
 
         // ReplaceOff is removed during preprocessing and is not printer here.
 
@@ -384,8 +396,63 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
         // Beware all who enter.
         Optional<Replace> replaceOptional = word.getMarkers().findFirst(Replace.class);
+        Optional<ReplaceReductiveType> replaceTypeReductiveOptional = word.getMarkers().findFirst(ReplaceReductiveType.class);
         if (replaceOptional.isPresent()) {
             replaceTemplate(word, p, replaceOptional.get());
+        } else if (replaceTypeReductiveOptional.isPresent()) {
+            if (replaceReductiveType == null) {
+                replaceReductiveType = replaceTypeReductiveOptional.get();
+            }
+        } else if (replaceReductiveType != null) {
+            // Print the markers from the original words and replace the original words with whitespace.
+            for (Replace replace : replaceReductiveType.getOriginalWords()) {
+                CobolPreprocessor.Word originalWord = replace.getOriginalWord();
+                Optional<Continuation> continuation = originalWord.getMarkers().findFirst(Continuation.class);
+                if (continuation.isPresent()) {
+                    throw new UnsupportedOperationException("Implement continuation lines for a reductive replacement.");
+                }
+
+                Optional<SequenceArea> sequenceArea = originalWord.getMarkers().findFirst(SequenceArea.class);
+                sequenceArea.ifPresent(it -> p.append(it.getSequence()));
+
+                Optional<IndicatorArea> indicatorArea = originalWord.getMarkers().findFirst(IndicatorArea.class);
+                indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
+
+                visitSpace(originalWord.getPrefix(), p);
+                String replaceWithWhitespace = generateWhitespace(originalWord.getWord().length());
+                p.append(replaceWithWhitespace);
+
+                Optional<CommentArea> commentArea = originalWord.getMarkers().findFirst(CommentArea.class);
+                commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+                commentArea.ifPresent(it -> p.append(it.getComment()));
+                commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
+            }
+
+            // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
+            int curIndex = getCurrentIndex(p.getOut());
+            if (curIndex == -1) {
+                throw new UnsupportedOperationException("Unknown case: Detected a ReplaceTypeReductive at the start of the source code.");
+            }
+
+            // Add Start key.
+            int insertIndex = getInsertIndex(p.getOut());
+            p.out.insert(insertIndex, getReplaceTypeReductiveStartComment());
+
+            // Fill the remaining line with whitespace to align the column areas.
+            int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
+            String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+            p.append(whitespace);
+
+            // Add UUID key.
+            p.append(getUuidComment());
+            String uuidLine = getDialectSequenceArea() + "*" + replaceReductiveType.getId() + getUuidEndOfLine();
+            p.append(uuidLine);
+
+            // Add Stop key.
+            p.append(getReplaceTypeReductiveStopComment());
+
+            super.visitWord(word, p);
+
         } else {
             if (word.getMarkers().findFirst(SequenceArea.class).isPresent() && isLastWordReplaced) {
                 String endOfLine = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - getCurrentIndex(p.getOut())) + "\n";
@@ -400,174 +467,174 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private void replaceTemplate(CobolPreprocessor.Word word, PrintOutputCapture<P> p, Replace replace) {
         // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
         int curIndex = getCurrentIndex(p.getOut());
-        if (curIndex != -1) {
+        if (curIndex == -1) {
+            throw new UnsupportedOperationException("Unknown case: Detected a Replace at the start of the source code.");
+        }
 
-            boolean isLongerWord = word.getWord().length() > replace.getOriginalWord().getWord().length();
-            String replacedWord = isLongerWord ? " " + word.getWord() : word.getWord();
+        boolean isLongerWord = word.getWord().length() > replace.getOriginalWord().getWord().length();
+        String replacedWord = isLongerWord ? " " + word.getWord() : word.getWord();
 
-            boolean isLiteral = word.getWord().startsWith("\"") || word.getWord().startsWith("'");
-            int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
-            boolean isContinuedLiteral = isLiteral && (curIndex + replacedWord.length()) > contentAreaLength;
+        boolean isLiteral = word.getWord().startsWith("\"") || word.getWord().startsWith("'");
+        int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
+        boolean isContinuedLiteral = isLiteral && (curIndex + replacedWord.length()) > contentAreaLength;
 
-            // Add Start key.
-            int insertIndex = getInsertIndex(p.getOut());
-            if (isLongerWord && !isContinuedLiteral) {
-                // Inserted before Start key, so that the StartKey comes before the additive comment.
-                p.out.insert(insertIndex, getTemplateWhitespaceComment());
-            }
+        // Add Start key.
+        int insertIndex = getInsertIndex(p.getOut());
+        if (isLongerWord && !isContinuedLiteral) {
+            // Inserted before Start key, so that the StartKey comes before the additive comment.
+            p.out.insert(insertIndex, getReplaceTypeAdditiveComment());
+        }
 
-            // Add Start key.
-            p.out.insert(insertIndex, getReplaceStartComment());
+        // Add Start key.
+        p.out.insert(insertIndex, getReplaceStartComment());
 
-            if (curIndex == 0) {
-                Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
-                sequenceArea.ifPresent(it -> p.append(it.getSequence()));
+        if (curIndex == 0) {
+            Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
+            sequenceArea.ifPresent(it -> p.append(it.getSequence()));
 
-                Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-                indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
-            }
+            Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
+            indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
+        }
 
-            // Fill in the rest of the content area with whitespace.
-            int untilEndOfLine =  cobolDialect.getColumns().getOtherArea() - (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex);
-            String whitespace = generateWhitespace(untilEndOfLine) + "\n";
-            p.append(whitespace);
+        // Fill in the rest of the content area with whitespace.
+        int untilEndOfLine =  cobolDialect.getColumns().getOtherArea() - (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex);
+        String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+        p.append(whitespace);
 
-            // Add UUID key.
-            p.append(getReplaceUuidComment());
-            String copyUuid = getDialectSequenceArea() + "*" + replace.getId();
-            String copyUuidLine = copyUuid + getUuidEndOfLine();
-            p.append(copyUuidLine);
+        // Add UUID key.
+        p.append(getReplaceUuidComment());
+        String replaceUuidLine = getDialectSequenceArea() + "*" + replace.getId() + getUuidEndOfLine();
+        p.append(replaceUuidLine);
 
-            // Add Stop key.
-            p.append(getReplaceStopComment());
+        // Add Stop key.
+        p.append(getReplaceStopComment());
 
-            // Additive replacement like PIC to PICTURE.
-            if (isLongerWord) {
-                if (isContinuedLiteral) {
-                    int numberOfSpaces = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex);
-                    String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
-                    p.append(afterStop);
-                    p.append(StringUtils.repeat(" ", numberOfSpaces));
-
-                    // The current word must be a literal.
-                    /*
-                     *  I.E. "Z" replaced by """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-                     *  Before:
-                     *      |036800| |    MOVE "Z"| TO WRK-XN-00322.         |SM2084.2
-                     *
-                     *  After:
-                     *      |      | |REPLACE_START__________________________|
-                     *      |036800| |    MOVE """"""""""""""""""""""""""""""|
-                     *      |      |-|"""""""""""""""""""""""""""""""""""""""|
-                     *      |      |-|""""""""""""| TO WRK-XN-00322.         |SM2084.2
-                     */
-
-                    // Predetermine the length of the end of the literal to align the column areas with the next token.
-                    String dialectSequenceArea = getDialectSequenceArea();
-                    int originalLength = replace.getOriginalWord().getPrefix().getWhitespace().length() + replace.getOriginalWord().getWord().length();
-                    int endPos = replacedWord.length() - curIndex + getDialectSequenceArea().length() + 1 - originalLength;
-                    String end = dialectSequenceArea + "-" + replacedWord.substring(endPos);
-                    replacedWord = replacedWord.substring(0, replacedWord.length() - end.length());
-
-                    // Split the rest of the literal into continuable parts.
-                    int remainder = replacedWord.length() % contentAreaLength;
-                    int size = replacedWord.length() / contentAreaLength + (remainder == 0 ? 0 : 1);
-                    List<String> parts = new ArrayList<>(size);
-                    int total = replacedWord.length();
-                    for (int i = 0; i < size; i++) {
-                        if (total - contentAreaLength >= 0) {
-                            String part = replacedWord.substring(total - contentAreaLength, total);
-                            parts.add(part);
-                            total -= part.length();
-                        } else {
-                            if (total != remainder) {
-                                throw new IllegalStateException("Unexpected remained calculating replacement end position.");
-                            }
-                            parts.add(replacedWord.substring(0, remainder));
-                        }
-                    }
-
-                    for (int i = parts.size() - 1; i >= 0; i--) {
-                        String part = parts.get(i);
-                        if (i != parts.size() - 1) {
-                            p.append(getDialectSequenceArea());
-                            p.append("-");
-                        }
-                        p.append(part);
-                        if (i == parts.size() - 1 && part.length() < contentAreaLength) {
-                            // // Total area to be filled - existing characters.
-                            untilEndOfLine = (getDialectSequenceArea().length() + 1 + contentAreaLength) - (curIndex + part.length());
-                            whitespace = generateWhitespace(untilEndOfLine);
-                            p.append(whitespace);
-                        }
-                        p.append("\n");
-                    }
-                    p.append(end);
-                } else {
-                    String prefix = StringUtils.repeat(" ", curIndex -
-                            (word.getWord().length() - replace.getOriginalWord().getWord().length()) +
-                            word.getPrefix().getWhitespace().length());
-                    p.append(prefix);
-                    p.append(word.getWord());
-                }
-            } else {
-                if (word.getWord().isEmpty()) {
-                    System.out.println("Implement for COPY STATEMENT REPLACING. Reductive change causes empty words.");
-                }
-
-                PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                statementPrinter.visit(replace.getOriginalWord(), outputCapture);
-
-                String statement = outputCapture.getOut();
-                boolean isEndOfLine = statement.endsWith("\n");
-                boolean isCRLF = statement.endsWith("\r\n");
-
-                int totalChars = statement.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
-
-                int numberOfSpaces;
-                if (!isEndOfLine && totalChars > contentAreaLength) {
-                    String replacement = replace.getOriginalWord().print(getCursor());
-                    numberOfSpaces = getCurrentIndex(replacement);
-                } else {
-                    numberOfSpaces = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex);
-                }
-
+        // Additive replacement like PIC to PICTURE.
+        if (isLongerWord) {
+            if (isContinuedLiteral) {
+                int numberOfSpaces = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex);
                 String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
                 p.append(afterStop);
                 p.append(StringUtils.repeat(" ", numberOfSpaces));
 
-                /*  The original word is <= the length of the replaced word.
-                 *  To retain column alignment, the prefix is shifted left with whitespace equal to the difference between the original word and the replaced word.
-                 *
-                 *  I.E. PICTURE replaced by PIC.
+                // The current word must be a literal.
+                /*
+                 *  I.E. "Z" replaced by """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
                  *  Before:
-                 *      |000001| | firstWord PICTURE secondWord         |
+                 *      |036800| |    MOVE "Z"| TO WRK-XN-00322.         |SM2084.2
+                 *
                  *  After:
-                 *      |000001| | firstWord     PIC secondWord         |
+                 *      |      | |REPLACE_START__________________________|
+                 *      |036800| |    MOVE """"""""""""""""""""""""""""""|
+                 *      |      |-|"""""""""""""""""""""""""""""""""""""""|
+                 *      |      |-|""""""""""""| TO WRK-XN-00322.         |SM2084.2
                  */
-                int difference = replace.getOriginalWord().getWord().length() - word.getWord().length();
-                // The difference exceeds the content area.
-                if (curIndex + difference > cobolDialect.getColumns().getOtherArea()) {
-                    String fullWord = replace.getOriginalWord().print(getCursor());
-                    int lastIndex = fullWord.lastIndexOf("\n");
-                    fullWord = fullWord.substring(lastIndex + 1);
 
-                    if (fullWord.length() - word.getWord().length() < curIndex) {
-                        p.out.delete(p.getOut().length() - (curIndex - (fullWord.length() - word.getWord().length())), p.getOut().length());
+                // Predetermine the length of the end of the literal to align the column areas with the next token.
+                String dialectSequenceArea = getDialectSequenceArea();
+                int originalLength = replace.getOriginalWord().getPrefix().getWhitespace().length() + replace.getOriginalWord().getWord().length();
+                int endPos = replacedWord.length() - curIndex + getDialectSequenceArea().length() + 1 - originalLength;
+                String end = dialectSequenceArea + "-" + replacedWord.substring(endPos);
+                replacedWord = replacedWord.substring(0, replacedWord.length() - end.length());
+
+                // Split the rest of the literal into continuable parts.
+                int remainder = replacedWord.length() % contentAreaLength;
+                int size = replacedWord.length() / contentAreaLength + (remainder == 0 ? 0 : 1);
+                List<String> parts = new ArrayList<>(size);
+                int total = replacedWord.length();
+                for (int i = 0; i < size; i++) {
+                    if (total - contentAreaLength >= 0) {
+                        String part = replacedWord.substring(total - contentAreaLength, total);
+                        parts.add(part);
+                        total -= part.length();
                     } else {
-                        p.append(StringUtils.repeat(" ", fullWord.length() - word.getWord().length() - curIndex));
+                        if (total != remainder) {
+                            throw new IllegalStateException("Unexpected remained calculating replacement end position.");
+                        }
+                        parts.add(replacedWord.substring(0, remainder));
                     }
-
-                    p.append(word.getWord());
-                } else {
-                    String additionalPrefix = StringUtils.repeat(" ", difference);
-                    p.append(additionalPrefix);
-                    p.append(word.getPrefix().getWhitespace());
-                    p.append(word.getWord());
                 }
+
+                for (int i = parts.size() - 1; i >= 0; i--) {
+                    String part = parts.get(i);
+                    if (i != parts.size() - 1) {
+                        p.append(getDialectSequenceArea());
+                        p.append("-");
+                    }
+                    p.append(part);
+                    if (i == parts.size() - 1 && part.length() < contentAreaLength) {
+                        // // Total area to be filled - existing characters.
+                        untilEndOfLine = (getDialectSequenceArea().length() + 1 + contentAreaLength) - (curIndex + part.length());
+                        whitespace = generateWhitespace(untilEndOfLine);
+                        p.append(whitespace);
+                    }
+                    p.append("\n");
+                }
+                p.append(end);
+            } else {
+                String prefix = StringUtils.repeat(" ", curIndex -
+                        (word.getWord().length() - replace.getOriginalWord().getWord().length()) +
+                        word.getPrefix().getWhitespace().length());
+                p.append(prefix);
+                p.append(word.getWord());
             }
-            isLastWordReplaced = true;
+        } else {
+            if (word.getWord().isEmpty()) {
+                System.out.println("Implement for COPY STATEMENT REPLACING. Reductive change causes empty words.");
+            }
+
+            PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
+            statementPrinter.visit(replace.getOriginalWord(), outputCapture);
+
+            String statement = outputCapture.getOut();
+            boolean isEndOfLine = statement.endsWith("\n");
+            boolean isCRLF = statement.endsWith("\r\n");
+
+            int totalChars = statement.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
+
+            int numberOfSpaces;
+            if (!isEndOfLine && totalChars > contentAreaLength) {
+                String replacement = replace.getOriginalWord().print(getCursor());
+                numberOfSpaces = getCurrentIndex(replacement);
+            } else {
+                numberOfSpaces = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex);
+            }
+
+            String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
+            p.append(afterStop);
+            p.append(StringUtils.repeat(" ", numberOfSpaces));
+
+            /*  The original word is <= the length of the replaced word.
+             *  To retain column alignment, the prefix is shifted left with whitespace equal to the difference between the original word and the replaced word.
+             *
+             *  I.E. PICTURE replaced by PIC.
+             *  Before:
+             *      |000001| | firstWord PICTURE secondWord         |
+             *  After:
+             *      |000001| | firstWord     PIC secondWord         |
+             */
+            int difference = replace.getOriginalWord().getWord().length() - word.getWord().length();
+            // The difference exceeds the content area.
+            if (curIndex + difference > cobolDialect.getColumns().getOtherArea()) {
+                String fullWord = replace.getOriginalWord().print(getCursor());
+                int lastIndex = fullWord.lastIndexOf("\n");
+                fullWord = fullWord.substring(lastIndex + 1);
+
+                if (fullWord.length() - word.getWord().length() < curIndex) {
+                    p.out.delete(p.getOut().length() - (curIndex - (fullWord.length() - word.getWord().length())), p.getOut().length());
+                } else {
+                    p.append(StringUtils.repeat(" ", fullWord.length() - word.getWord().length() - curIndex));
+                }
+
+                p.append(word.getWord());
+            } else {
+                String additionalPrefix = StringUtils.repeat(" ", difference);
+                p.append(additionalPrefix);
+                p.append(word.getPrefix().getWhitespace());
+                p.append(word.getWord());
+            }
         }
+        isLastWordReplaced = true;
     }
 
     /**
@@ -579,9 +646,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Lazily load the START of a {@link Copy} template.
+     * Lazily load the START comment of a {@link Copy} template.
      */
-    private String getCopyStartComment() {
+    public String getCopyStartComment() {
         if (copyStartComment == null) {
             copyStartComment = getTemplateComment(COPY_START_KEY);
         }
@@ -589,9 +656,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Lazily load the STOP of a {@link Copy} template.
+     * Lazily load the STOP comment of a {@link Copy} template.
      */
-    private String getCopyStopComment() {
+    public String getCopyStopComment() {
         if (copyStopComment == null) {
             copyStopComment = getTemplateComment(COPY_STOP_KEY);
         }
@@ -599,9 +666,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Lazily load the UUID of a {@link Copy} template.
+     * Lazily load the UUID comment of a {@link Copy} template.
      */
-    private String getCopyUuidKey() {
+    public String getCopyUuidKey() {
         if (copyUuidComment == null) {
             copyUuidComment = getTemplateComment(COPY_UUID_KEY);
         }
@@ -609,29 +676,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Lazily load the START of a {@link ReplaceBy} template.
+     * Lazily load the START key of a {@link Replace} template.
      */
-    private String getReplaceByStartComment() {
-        if (replaceByStartComment == null) {
-            replaceByStartComment = getTemplateComment(REPLACE_BY_START_KEY);
-        }
-        return replaceByStartComment;
-    }
-
-    /**
-     * Lazily load the STOP of a {@link ReplaceBy} template.
-     */
-    private String getReplaceByStopComment() {
-        if (replaceByStopComment == null) {
-            replaceByStopComment = getTemplateComment(REPLACE_BY_STOP_KEY);
-        }
-        return replaceByStopComment;
-    }
-
-    /**
-     * Lazily load the START of a {@link Replace} template.
-     */
-    private String getReplaceStartComment() {
+    public String getReplaceStartComment() {
         if (replaceStartComment == null) {
             replaceStartComment = getTemplateComment(REPLACE_START_KEY);
         }
@@ -639,9 +686,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Lazily load the STOP of a {@link Replace} template.
+     * Lazily load the STOP comment of a {@link Replace} template.
      */
-    private String getReplaceStopComment() {
+    public String getReplaceStopComment() {
         if (replaceStopComment == null) {
             replaceStopComment = getTemplateComment(REPLACE_STOP_KEY);
         }
@@ -649,9 +696,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Lazily load the UUID of a {@link Replace} template.
+     * Lazily load the UUID comment of a {@link Replace} template.
      */
-    private String getReplaceUuidComment() {
+    public String getReplaceUuidComment() {
         if (replaceUuidComment == null) {
             replaceUuidComment = getTemplateComment(REPLACE_UUID_KEY);
         }
@@ -659,19 +706,39 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Lazily load the {@link ReplaceTypeAdditive} of a {@link Replace} template.
+     * Lazily load the START comment of a {@link ReplaceBy} template.
      */
-    private String getTemplateWhitespaceComment() {
-        if (templateWhitespaceComment == null) {
-            templateWhitespaceComment = getTemplateComment(REPLACE_TYPE_ADDITIVE_KEY);
+    public String getReplaceByStartComment() {
+        if (replaceByStartComment == null) {
+            replaceByStartComment = getTemplateComment(REPLACE_BY_START_KEY);
         }
-        return templateWhitespaceComment;
+        return replaceByStartComment;
     }
 
     /**
-     * Lazily load the START of a {@link ReplaceOff} template.
+     * Lazily load the STOP comment of a {@link ReplaceBy} template.
      */
-    private String getReplaceOffStartComment() {
+    public String getReplaceByStopComment() {
+        if (replaceByStopComment == null) {
+            replaceByStopComment = getTemplateComment(REPLACE_BY_STOP_KEY);
+        }
+        return replaceByStopComment;
+    }
+
+    /**
+     * Lazily load the {@link ReplaceAdditiveType} comment of a {@link Replace} template.
+     */
+    public String getReplaceTypeAdditiveComment() {
+        if (replaceTypeAdditiveComment == null) {
+            replaceTypeAdditiveComment = getTemplateComment(REPLACE_TYPE_ADDITIVE_KEY);
+        }
+        return replaceTypeAdditiveComment;
+    }
+
+    /**
+     * Lazily load the START comment of a {@link ReplaceOff} template.
+     */
+    public String getReplaceOffStartComment() {
         if (replaceOffStartComment == null) {
             replaceOffStartComment = getTemplateComment(REPLACE_OFF_START_KEY);
         }
@@ -679,13 +746,43 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Lazily load the STOP of a {@link ReplaceOff} template.
+     * Lazily load the STOP comment of a {@link ReplaceOff} template.
      */
-    private String getReplaceOffStopComment() {
+    public String getReplaceOffStopComment() {
         if (replaceOffStopComment == null) {
             replaceOffStopComment = getTemplateComment(REPLACE_OFF_STOP_KEY);
         }
         return replaceOffStopComment;
+    }
+
+    /**
+     * Lazily load the START comment of a {@link ReplaceReductiveType} template.
+     */
+    public String getReplaceTypeReductiveStartComment() {
+        if (replaceTypeReductiveStartComment == null) {
+            replaceTypeReductiveStartComment = getTemplateComment(REPLACE_TYPE_REDUCTIVE_START_KEY);
+        }
+        return replaceTypeReductiveStartComment;
+    }
+
+    /**
+     * Lazily load the STOP comment of a {@link ReplaceReductiveType} template.
+     */
+    public String getReplaceTypeReductiveStopComment() {
+        if (replaceTypeReductiveStopComment == null) {
+            replaceTypeReductiveStopComment = getTemplateComment(REPLACE_TYPE_REDUCTIVE_STOP_KEY);
+        }
+        return replaceTypeReductiveStopComment;
+    }
+
+    /**
+     * Lazily loaded the generic UUID comment for templates that are immediately fully parsed from START to STOP.
+     */
+    public String getUuidComment() {
+        if (uuidComment == null) {
+            uuidComment = getTemplateComment(UUID_KEY);
+        }
+        return uuidComment;
     }
 
     /**

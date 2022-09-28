@@ -18,7 +18,9 @@ package org.openrewrite.cobol.internal;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.openrewrite.ExecutionContext;
 import org.openrewrite.FileAttributes;
+import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.cobol.internal.grammar.CobolBaseVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolParser;
 import org.openrewrite.cobol.tree.*;
@@ -56,6 +58,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final Map<String, CobolPreprocessor.ReplaceByStatement> replaceByMap = new HashMap<>();
     private final Map<String, CobolPreprocessor.ReplaceOffStatement> replaceOffMap = new HashMap<>();
     private final Map<String, Replace> replaceMap = new HashMap<>();
+    private final Map<String, ReplaceReductiveType> replaceReductiveTypeMap = new HashMap<>();
     private final Set<String> templateKeys = new HashSet<>();
 
     // Areas may be a Set of Integer to reduce memory, each method to create the marker would generate the string.
@@ -84,18 +87,21 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     @Nullable
     private CobolPreprocessor.CopyStatement currentCopy = null;
 
-    private String replaceByStartComment = null;
-    private String replaceByStopComment = null;
-    private String replaceByUuidComment = null;
-
-    private String replaceOffStartComment = null;
-    private String replaceOffStopComment = null;
-    private String replaceOffUuidComment = null;
-
     private String replaceStartComment = null;
     private String replaceStopComment = null;
     private String replaceAdditiveComment = null;
     private String replaceUuidComment = null;
+
+    private String replaceByStartComment = null;
+    private String replaceByStopComment = null;
+
+    private String replaceOffStartComment = null;
+    private String replaceOffStopComment = null;
+
+    private String replaceReductiveTypeStartComment = null;
+    private String replaceReductiveTypeStopComment = null;
+
+    private String uuidComment = null;
 
     private Integer nextIndex = null;
 
@@ -108,7 +114,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                               Collection<CobolPreprocessor.CopyStatement> copyStatements,
                               Collection<CobolPreprocessor.ReplaceByStatement> replaceByStatements,
                               Collection<CobolPreprocessor.ReplaceOffStatement> replaceOffStatements,
-                              Collection<Replace> replaces) {
+                              Collection<Replace> replaces,
+                              Collection<ReplaceReductiveType> replaceReductiveTypes) {
         this.path = path;
         this.fileAttributes = fileAttributes;
         this.source = source;
@@ -120,6 +127,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         replaceByStatements.forEach(it -> replaceByMap.putIfAbsent(it.getId().toString(), it));
         replaceOffStatements.forEach(it -> replaceOffMap.putIfAbsent(it.getId().toString(), it));
         replaces.forEach(it -> replaceMap.putIfAbsent(it.getId().toString(), it));
+        replaceReductiveTypes.forEach(it -> replaceReductiveTypeMap.putIfAbsent(it.getId().toString(), it));
     }
 
     public <T> T visit(@Nullable ParseTree... trees) {
@@ -179,7 +187,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             commentIndicators.addAll(cobolDialect.getCommentIndicators());
 
             int contentArea = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
-            // TODO: isolate key generation to the printer.
+
+            CobolPreprocessorOutputPrinter<ExecutionContext> templatePrinter = new CobolPreprocessorOutputPrinter<>(cobolDialect, true);
+//            int contentAreaStart = cobolDialect.getColumns().getContentArea();
+//            templatePrinter.getCopyStartComment().substring(contentAreaStart);
+
             this.copyStartComment = COPY_START_KEY + StringUtils.repeat("_", contentArea - COPY_START_KEY.length());
             this.templateKeys.add(copyStartComment);
 
@@ -189,26 +201,23 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             this.copyUuidComment = COPY_UUID_KEY + StringUtils.repeat("_", contentArea - COPY_UUID_KEY.length());
             this.templateKeys.add(copyUuidComment);
 
-            this.replaceByStartComment = REPLACE_BY_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_START_KEY.length());
-            this.templateKeys.add(replaceByStartComment);
-
-            this.replaceByStopComment = REPLACE_BY_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_STOP_KEY.length());
-            this.templateKeys.add(replaceByStopComment);
-
-            this.replaceByUuidComment = REPLACE_UUID_KEY + StringUtils.repeat("_", contentArea - REPLACE_UUID_KEY.length());
-            this.templateKeys.add(replaceByUuidComment);
-
             this.replaceStartComment = REPLACE_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_START_KEY.length());
             this.templateKeys.add(replaceStartComment);
 
             this.replaceStopComment = REPLACE_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_STOP_KEY.length());
             this.templateKeys.add(replaceStopComment);
 
+            this.replaceUuidComment = REPLACE_UUID_KEY + StringUtils.repeat("_", contentArea - REPLACE_UUID_KEY.length());
+            this.templateKeys.add(replaceUuidComment);
+
             this.replaceAdditiveComment = REPLACE_TYPE_ADDITIVE_KEY + StringUtils.repeat("_", contentArea - REPLACE_TYPE_ADDITIVE_KEY.length());
             this.templateKeys.add(replaceAdditiveComment);
 
-            this.replaceUuidComment = REPLACE_UUID_KEY + StringUtils.repeat("_", contentArea - REPLACE_UUID_KEY.length());
-            this.templateKeys.add(replaceUuidComment);
+            this.replaceByStartComment = REPLACE_BY_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_START_KEY.length());
+            this.templateKeys.add(replaceByStartComment);
+
+            this.replaceByStopComment = REPLACE_BY_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_STOP_KEY.length());
+            this.templateKeys.add(replaceByStopComment);
 
             this.replaceOffStartComment = REPLACE_OFF_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_OFF_START_KEY.length());
             this.templateKeys.add(replaceOffStartComment);
@@ -216,8 +225,14 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             this.replaceOffStopComment = REPLACE_OFF_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_OFF_STOP_KEY.length());
             this.templateKeys.add(replaceOffStopComment);
 
-            this.replaceOffUuidComment = REPLACE_UUID_KEY + StringUtils.repeat("_", contentArea - REPLACE_UUID_KEY.length());
-            this.templateKeys.add(replaceOffUuidComment);
+            this.replaceReductiveTypeStartComment = REPLACE_TYPE_REDUCTIVE_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_TYPE_REDUCTIVE_START_KEY.length());
+            this.templateKeys.add(replaceOffStartComment);
+
+            this.replaceReductiveTypeStopComment = REPLACE_TYPE_REDUCTIVE_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_TYPE_REDUCTIVE_STOP_KEY.length());
+            this.templateKeys.add(replaceOffStopComment);
+
+            this.uuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
+            this.templateKeys.add(uuidComment);
 
         } else if (cobolDialect.getColumns() == CobolDialect.Columns.HP_TANDEM) {
             throw new UnsupportedOperationException("Implement me.");
@@ -6720,7 +6735,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private ReplaceBy getReplaceByMarker() {
         replaceByStartComment();
 
-        parseComment(replaceByUuidComment);
+        parseComment(uuidComment);
 
         sequenceArea();
         indicatorArea();
@@ -6813,7 +6828,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private ReplaceOff getReplaceOffMarker() {
         replaceOffStartComment();
 
-        parseComment(replaceOffUuidComment);
+        parseComment(uuidComment);
 
         sequenceArea();
         indicatorArea();
