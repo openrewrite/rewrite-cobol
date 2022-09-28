@@ -400,7 +400,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 }
 
                 // Fill in the rest of the content area with whitespace.
-                int untilEndOfLine = curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex;
+                int untilEndOfLine =  cobolDialect.getColumns().getOtherArea() - (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex);
                 String whitespace = generateWhitespace(untilEndOfLine) + "\n";
                 p.append(whitespace);
 
@@ -502,7 +502,8 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
                     int numberOfSpaces;
                     if (!isEndOfLine && totalChars > contentAreaLength) {
-                        numberOfSpaces = getCurrentIndex(statement);
+                        String replacement = replaceOptional.get().getOriginalWord().print(getCursor());
+                        numberOfSpaces = getCurrentIndex(replacement) - cobolDialect.getColumns().getContentArea();
                     } else {
                         numberOfSpaces = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex);
                     }
