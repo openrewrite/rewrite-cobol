@@ -15,6 +15,7 @@ import java.util.UUID;
  * I.E. PIC replaced by PICTURE
  * Before:
  *  |000001| | firstWord PIC [some words]         |
+ *
  * After:
  *  |000001| | firstWord PICTURE                  |
  *  |      | |               [some words]         |
@@ -24,7 +25,7 @@ import java.util.UUID;
  */
 @With
 @Value
-public class TemplateWhitespace implements Marker {
+public class ReplaceTypeAdditive implements Marker {
     UUID id;
     Space prefix;
 }

@@ -204,7 +204,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             this.replaceStopComment = REPLACE_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_STOP_KEY.length());
             this.templateKeys.add(replaceStopComment);
 
-            this.replaceAdditiveComment = TEMPLATE_WHITESPACE_KEY + StringUtils.repeat("_", contentArea - TEMPLATE_WHITESPACE_KEY.length());
+            this.replaceAdditiveComment = REPLACE_TYPE_ADDITIVE_KEY + StringUtils.repeat("_", contentArea - REPLACE_TYPE_ADDITIVE_KEY.length());
             this.templateKeys.add(replaceAdditiveComment);
 
             this.replaceUuidComment = REPLACE_UUID_KEY + StringUtils.repeat("_", contentArea - REPLACE_UUID_KEY.length());

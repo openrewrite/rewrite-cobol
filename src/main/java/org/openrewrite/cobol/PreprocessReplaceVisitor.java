@@ -6,6 +6,7 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.cobol.tree.Replace;
+import org.openrewrite.cobol.tree.ReplaceTypeReductive;
 import org.openrewrite.internal.ListUtils;
 
 import java.util.*;
@@ -128,11 +129,13 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
     }
 
     private static class ReplaceVisitor extends CobolPreprocessorIsoVisitor<ExecutionContext> {
+        // A replacement rule may match multiple sets of words, but will be changed to 1 output.
         private final List<List<CobolPreprocessor.Word>> from;
         private final List<String> to;
         private final ReplacementType replacementType;
 
         private List<CobolPreprocessor.Word> current;
+        private List<Replace> reductiveReplaces;
         private int fromPos = 0;
         private int toPos = 0;
         boolean inMatch = false;
@@ -161,6 +164,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         @Override
         public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
             CobolPreprocessor.Word finalWord = word;
+            // Detection of the first word using `contains` may be reduced from O(n) rather than O(1) with a set.
             if (ReplacementType.SINGLE_WORD == replacementType) {
                 if (from.stream().anyMatch(it -> it.contains(finalWord))) {
                     boolean isEmpty = to.get(0).isEmpty();
@@ -224,7 +228,13 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         if (!current.get(fromPos).getWord().equals(to.get(toPos))) {
                             boolean isEmpty = to.get(toPos).isEmpty();
                             Replace replace = new Replace(randomId(), word, isEmpty);
-                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                            if (isEmpty) {
+                                reductiveReplaces.add(replace);
+                                ReplaceTypeReductive replaceTypeReductive = new ReplaceTypeReductive(randomId(), reductiveReplaces);
+                                word = word.withMarkers(word.getMarkers().addIfAbsent(replaceTypeReductive));
+                            } else {
+                                word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                            }
                             word = word.withWord(to.get(toPos));
                         }
                         fromPos++;
@@ -235,7 +245,9 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     if (isSame) {
                         if (toPos >= to.size()) {
                             Replace replace = new Replace(randomId(), word, true);
-                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                            reductiveReplaces.add(replace);
+                            ReplaceTypeReductive replaceTypeReductive = new ReplaceTypeReductive(randomId(), reductiveReplaces);
+                            word = word.withMarkers(word.getMarkers().addIfAbsent(replaceTypeReductive));
                             word = word.withWord("");
                         }
 
@@ -243,7 +255,13 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         else if (!current.get(fromPos).getWord().equals(to.get(toPos))) {
                             boolean isEmpty = to.get(toPos).isEmpty();
                             Replace replace = new Replace(randomId(), word, isEmpty);
-                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                            if (isEmpty) {
+                                reductiveReplaces.add(replace);
+                                ReplaceTypeReductive replaceTypeReductive = new ReplaceTypeReductive(randomId(), reductiveReplaces);
+                                word = word.withMarkers(word.getMarkers().addIfAbsent(replaceTypeReductive));
+                            } else {
+                                word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                            }
                             word = word.withWord(to.get(toPos));
                         }
 
@@ -252,6 +270,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                             current = null;
                             fromPos = 0;
                             toPos = 0;
+                            reductiveReplaces = new ArrayList<>();
                         } else {
                             fromPos++;
                             toPos++;
@@ -277,14 +296,23 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                 } else if (words.size() < to.size()) {
                     return ReplacementType.ADDITIVE;
                 } else if (words.size() > from.size()) {
+                    reductiveReplaces = new ArrayList<>();
                     return ReplacementType.REDUCTIVE;
                 }
             }
             return ReplacementType.UNKNOWN;
         }
 
-        enum ReplacementType {
-            SINGLE_WORD, REDUCTIVE, ADDITIVE, EQUAL, UNKNOWN
+        public enum ReplacementType {
+            // Single word changes are isolated for simplicity. I.E. PIC => PICTURE.
+            SINGLE_WORD,
+            // A multi-word replacement of equal size. I.E. MOVE "*" AO WRK-XN-00001. => MOVE "*" TO WRK-XN-00001.
+            EQUAL,
+            // A reduction of words. I.E. PERFORM FAIL. => ""
+            REDUCTIVE,
+            // An addition of words. I.E. TO => PERFORM FAIL.
+            ADDITIVE,
+            UNKNOWN
         }
     }
 
