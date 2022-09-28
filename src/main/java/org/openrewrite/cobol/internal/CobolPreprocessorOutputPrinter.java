@@ -416,13 +416,10 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 // Additive replacement like PIC to PICTURE.
                 if (isLongerWord) {
                     if (isContinuedLiteral) {
-                        int numberOfSpaces = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex) - cobolDialect.getColumns().getContentArea();
+                        int numberOfSpaces = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex);
                         String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
                         p.append(afterStop);
                         p.append(StringUtils.repeat(" ", numberOfSpaces));
-
-                        // The entire line is filled with whitespace if the curIndex is 0.
-                        p.append(StringUtils.repeat(" ", curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex));
 
                         // The current word must be a literal.
                         /*
@@ -503,7 +500,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                     int numberOfSpaces;
                     if (!isEndOfLine && totalChars > contentAreaLength) {
                         String replacement = replaceOptional.get().getOriginalWord().print(getCursor());
-                        numberOfSpaces = getCurrentIndex(replacement) - cobolDialect.getColumns().getContentArea();
+                        numberOfSpaces = getCurrentIndex(replacement);
                     } else {
                         numberOfSpaces = (curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex);
                     }
