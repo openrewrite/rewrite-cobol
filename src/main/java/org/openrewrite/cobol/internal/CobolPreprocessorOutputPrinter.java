@@ -434,18 +434,17 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 throw new UnsupportedOperationException("Unknown case: Detected a ReplaceTypeReductive at the start of the source code.");
             }
 
-            // Add Start key.
-            int insertIndex = getInsertIndex(p.getOut());
-            p.out.insert(insertIndex, getReplaceTypeReductiveStartComment());
-
-            int contentEnd = cobolDialect.getColumns().getOtherArea();
             // Fill the remaining line with whitespace to align the column areas.
             // Reductive changes require printing the original column areas with the original word replaced by whitespace.
             // The last replaced word might end the line, so the current index might be greater than (CommentArea) or
             // equal to the end of the content area.
+            int contentEnd = cobolDialect.getColumns().getOtherArea();
             int untilEndOfLine = curIndex >= contentEnd ? 0 : cobolDialect.getColumns().getOtherArea() - curIndex;
             String whitespace = generateWhitespace(untilEndOfLine) + "\n";
             p.append(whitespace);
+
+            // Add Start key.
+            p.append(getReplaceTypeReductiveStartComment());
 
             // Add UUID key.
             p.append(getUuidComment());
@@ -463,7 +462,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             super.visitWord(word, p);
 
             replaceReductiveType = null;
-            System.out.println();
         } else {
             if (word.getMarkers().findFirst(SequenceArea.class).isPresent() && isLastWordReplaced) {
                 String endOfLine = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - getCurrentIndex(p.getOut())) + "\n";
@@ -810,10 +808,14 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             throw new IllegalStateException("Negative index detected.");
         }
 
-        int prefixLength = lengthOfPrefix == 0 ? 0 : (lengthOfPrefix - cobolDialect.getColumns().getContentArea());
-        prefixLength = prefixLength == cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea() ? 0 : prefixLength;
+        int startOfContentArea = cobolDialect.getColumns().getContentArea();
+        int endOfContentArea = cobolDialect.getColumns().getOtherArea();
+
+        int prefixLength = lengthOfPrefix == 0 || lengthOfPrefix >= endOfContentArea ? 0 : (lengthOfPrefix - startOfContentArea);
+        prefixLength = prefixLength == endOfContentArea - startOfContentArea ? 0 : prefixLength;
+
         String alignmentKey = getDialectSequenceArea() + "*" + prefixLength;
-        String whitespace = generateWhitespace(cobolDialect.getColumns().getOtherArea() - alignmentKey.length());
+        String whitespace = generateWhitespace(endOfContentArea - alignmentKey.length());
         return alignmentKey + whitespace + "\n";
     }
 

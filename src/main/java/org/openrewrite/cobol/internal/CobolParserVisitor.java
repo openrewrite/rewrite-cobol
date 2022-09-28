@@ -222,10 +222,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             this.templateKeys.add(replaceOffStopComment);
 
             this.replaceReductiveTypeStartComment = getCommentFromKey(templatePrinter.getReplaceTypeReductiveStartComment());
-            this.templateKeys.add(replaceOffStartComment);
+            this.templateKeys.add(replaceReductiveTypeStartComment);
 
             this.replaceReductiveTypeStopComment = getCommentFromKey(templatePrinter.getReplaceTypeReductiveStopComment());
-            this.templateKeys.add(replaceOffStopComment);
+            this.templateKeys.add(replaceReductiveTypeStopComment);
 
             this.uuidComment = getCommentFromKey(templatePrinter.getUuidComment());
             this.templateKeys.add(uuidComment);
@@ -6831,6 +6831,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     private ReplaceReductiveType getReplaceReductiveTypeMarker() {
+        parseComment(replaceReductiveTypeStartComment);
+
         sequenceArea();
         indicatorArea();
 
@@ -6847,16 +6849,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         parseComment(replaceReductiveTypeStopComment);
 
-        if (isAdditiveCommentArea) {
-            isAdditiveCommentArea = false;
-        } else {
-            sequenceArea();
-            indicatorArea();
+        sequenceArea();
+        indicatorArea();
 
-            String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
-            cursor += numberOfSpaces.length();
-            nextIndex = Integer.valueOf(numberOfSpaces.trim());
-        }
+        String numberOfSpaces = source.substring(cursor, cursor + source.substring(cursor).indexOf("\n") + 1);
+        cursor += numberOfSpaces.length();
+        nextIndex = Integer.valueOf(numberOfSpaces.trim());
 
         return replaceReductiveType;
     }
