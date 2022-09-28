@@ -186,52 +186,48 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             separators.addAll(cobolDialect.getSeparators());
             commentIndicators.addAll(cobolDialect.getCommentIndicators());
 
-            int contentArea = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
-
             CobolPreprocessorOutputPrinter<ExecutionContext> templatePrinter = new CobolPreprocessorOutputPrinter<>(cobolDialect, true);
-//            int contentAreaStart = cobolDialect.getColumns().getContentArea();
-//            templatePrinter.getCopyStartComment().substring(contentAreaStart);
 
-            this.copyStartComment = COPY_START_KEY + StringUtils.repeat("_", contentArea - COPY_START_KEY.length());
+            this.copyStartComment = getCommentFromKey(templatePrinter.getCopyStartComment());
             this.templateKeys.add(copyStartComment);
 
-            this.copyStopComment = COPY_STOP_KEY + StringUtils.repeat("_", contentArea - COPY_STOP_KEY.length());
+            this.copyStopComment = getCommentFromKey(templatePrinter.getCopyStopComment());
             this.templateKeys.add(copyStopComment);
 
-            this.copyUuidComment = COPY_UUID_KEY + StringUtils.repeat("_", contentArea - COPY_UUID_KEY.length());
+            this.copyUuidComment = getCommentFromKey(templatePrinter.getCopyUuidKey());
             this.templateKeys.add(copyUuidComment);
 
-            this.replaceStartComment = REPLACE_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_START_KEY.length());
+            this.replaceStartComment = getCommentFromKey(templatePrinter.getReplaceStartComment());
             this.templateKeys.add(replaceStartComment);
 
-            this.replaceStopComment = REPLACE_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_STOP_KEY.length());
+            this.replaceStopComment = getCommentFromKey(templatePrinter.getReplaceStopComment());
             this.templateKeys.add(replaceStopComment);
 
-            this.replaceUuidComment = REPLACE_UUID_KEY + StringUtils.repeat("_", contentArea - REPLACE_UUID_KEY.length());
+            this.replaceUuidComment = getCommentFromKey(templatePrinter.getReplaceUuidComment());
             this.templateKeys.add(replaceUuidComment);
 
-            this.replaceAdditiveComment = REPLACE_TYPE_ADDITIVE_KEY + StringUtils.repeat("_", contentArea - REPLACE_TYPE_ADDITIVE_KEY.length());
+            this.replaceAdditiveComment = getCommentFromKey(templatePrinter.getReplaceTypeAdditiveComment());
             this.templateKeys.add(replaceAdditiveComment);
 
-            this.replaceByStartComment = REPLACE_BY_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_START_KEY.length());
+            this.replaceByStartComment = getCommentFromKey(templatePrinter.getReplaceByStartComment());
             this.templateKeys.add(replaceByStartComment);
 
-            this.replaceByStopComment = REPLACE_BY_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_BY_STOP_KEY.length());
+            this.replaceByStopComment = getCommentFromKey(templatePrinter.getReplaceByStopComment());
             this.templateKeys.add(replaceByStopComment);
 
-            this.replaceOffStartComment = REPLACE_OFF_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_OFF_START_KEY.length());
+            this.replaceOffStartComment = getCommentFromKey(templatePrinter.getReplaceOffStartComment());
             this.templateKeys.add(replaceOffStartComment);
 
-            this.replaceOffStopComment = REPLACE_OFF_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_OFF_STOP_KEY.length());
+            this.replaceOffStopComment = getCommentFromKey(templatePrinter.getReplaceOffStopComment());
             this.templateKeys.add(replaceOffStopComment);
 
-            this.replaceReductiveTypeStartComment = REPLACE_TYPE_REDUCTIVE_START_KEY + StringUtils.repeat("_", contentArea - REPLACE_TYPE_REDUCTIVE_START_KEY.length());
+            this.replaceReductiveTypeStartComment = getCommentFromKey(templatePrinter.getReplaceTypeReductiveStartComment());
             this.templateKeys.add(replaceOffStartComment);
 
-            this.replaceReductiveTypeStopComment = REPLACE_TYPE_REDUCTIVE_STOP_KEY + StringUtils.repeat("_", contentArea - REPLACE_TYPE_REDUCTIVE_STOP_KEY.length());
+            this.replaceReductiveTypeStopComment = getCommentFromKey(templatePrinter.getReplaceTypeReductiveStopComment());
             this.templateKeys.add(replaceOffStopComment);
 
-            this.uuidComment = UUID_KEY + StringUtils.repeat("_", contentArea - UUID_KEY.length());
+            this.uuidComment = getCommentFromKey(templatePrinter.getUuidComment());
             this.templateKeys.add(uuidComment);
 
         } else if (cobolDialect.getColumns() == CobolDialect.Columns.HP_TANDEM) {
@@ -6689,6 +6685,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.add(new Copy(randomId(), currentCopy));
         }
         return prefix;
+    }
+
+    private String getCommentFromKey(String key) {
+        int contentAreaStart = cobolDialect.getColumns().getContentArea();
+        int contentAreaEnd = cobolDialect.getColumns().getOtherArea();
+        return key.substring(contentAreaStart, contentAreaEnd);
     }
 
     private void copyStartComment() {
