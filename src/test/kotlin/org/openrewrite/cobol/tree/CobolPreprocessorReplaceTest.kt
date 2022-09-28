@@ -59,6 +59,52 @@ class CobolPreprocessorReplaceTest : RewriteTest {
         })).parser(CobolPreprocessorParser.builder())
     }
 
+    // TODO: add validation for replaced COPY BOOKS.
+    @Test
+    fun sm201A() = rewriteRun(
+        cobolCopy(
+            CobolPreprocessorCopyTest.getNistSource("SM201A.CBL"),
+            // Replace is applied to CopyBooks.
+            CobolPreprocessorCopyTest.getNistSource("SM201A.CBL")
+        )
+    )
+
+    @Test
+    fun sm202A() = rewriteRun(
+        cobolCopy(
+            CobolPreprocessorCopyTest.getNistSource("SM202A.CBL"),
+            // Replace is applied to CopyBooks.
+            CobolPreprocessorCopyTest.getNistSource("SM202A.CBL")
+        )
+    )
+
+    @Test
+    fun sm203A() = rewriteRun(
+        cobolCopy(
+            CobolPreprocessorCopyTest.getNistSource("SM203A.CBL"),
+            // Replace is applied to CopyBooks.
+            CobolPreprocessorCopyTest.getNistSource("SM203A.CBL")
+        )
+    )
+
+    @Test
+    fun sm205A() = rewriteRun(
+        cobolCopy(
+            CobolPreprocessorCopyTest.getNistSource("SM205A.CBL"),
+            // Replace is applied to CopyBooks.
+            CobolPreprocessorCopyTest.getNistSource("SM205A.CBL")
+        )
+    )
+
+    @Test
+    fun sm206A() = rewriteRun(
+        cobolCopy(
+            CobolPreprocessorCopyTest.getNistSource("SM206A.CBL"),
+            // Replace is applied to CopyBooks.
+            CobolPreprocessorCopyTest.getNistSource("SM206A.CBL")
+        )
+    )
+
     @Test
     fun sm208A() = rewriteRun(
         cobolCopy(
