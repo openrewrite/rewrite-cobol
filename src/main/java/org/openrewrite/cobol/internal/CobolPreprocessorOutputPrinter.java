@@ -209,6 +209,8 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
         // Print copied source.
         visit(copyStatement.getCopyBook(), p);
+
+        // Add a new line character if the copied source does not end with one already.
         if (!p.getOut().endsWith("\n")) {
             p.append("\n");
         }
@@ -256,6 +258,13 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
     private void replaceByTemplate(CobolPreprocessor.ReplaceArea replaceArea, PrintOutputCapture<P> p) {
         CobolPreprocessor.ReplaceByStatement replaceByStatement = replaceArea.getReplaceByStatement();
+
+        // Print markers like Lines, SequenceArea, and Indicator.
+        visit(replaceByStatement.getWord(), p);
+
+        // Remove the prefix of and the word COPY, because the statement is replaced by the CopyBook.
+        p.out.delete(p.getOut().length() - replaceByStatement.getWord().getWord().length() -
+                replaceByStatement.getWord().getPrefix().getWhitespace().length(), p.getOut().length());
 
         // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
         int curIndex = getCurrentIndex(p.getOut());
@@ -314,6 +323,15 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     private void replaceOffTemplate(CobolPreprocessor.ReplaceOffStatement replaceOffStatement, PrintOutputCapture<P> p) {
+        // Print markers like Lines, SequenceArea, and Indicator.
+        if (!replaceOffStatement.getWords().isEmpty()) {
+            visit(replaceOffStatement.getWords().get(0), p);
+
+            // Remove the prefix of and the word COPY, because the statement is replaced by the CopyBook.
+            p.out.delete(p.getOut().length() - replaceOffStatement.getWords().get(0).getWord().length() -
+                    replaceOffStatement.getWords().get(0).getPrefix().getWhitespace().length(), p.getOut().length());
+        }
+
         // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
         int curIndex = getCurrentIndex(p.getOut());
         if (curIndex == -1) {

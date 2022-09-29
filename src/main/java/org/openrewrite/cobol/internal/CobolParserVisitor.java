@@ -6773,10 +6773,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         String current = source.substring(cursor);
         current = current.substring(0, current.indexOf("\n") + 1);
-        if (!current.trim().isEmpty()) {
-            // This case does not happen in the NIST tests, but might be possible.
-            throw new IllegalStateException("Unexpected source code before ReplaceOffStatement.");
-        }
         cursor += current.length();
     }
 
@@ -6881,10 +6877,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         String current = source.substring(cursor);
         current = current.substring(0, current.indexOf("\n") + 1);
-        if (!current.trim().isEmpty()) {
-            // This case does not happen in the NIST tests, but might be possible.
-            throw new IllegalStateException("Unexpected source code before ReplaceOffStatement.");
-        }
         cursor += current.length();
     }
 
