@@ -56,27 +56,27 @@ class CobolParserReplaceTest : RewriteTest {
 
     @Test
     fun sm201A() = rewriteRun(
-        cobol(CobolParserCopyTest.getNistSource("SM201A.CBL"))
+        cobol(getNistSource("SM201A.CBL"))
     )
 
     @Test
     fun sm202A() = rewriteRun(
-        cobol(CobolParserCopyTest.getNistSource("SM202A.CBL"))
+        cobol(getNistSource("SM202A.CBL"))
     )
 
     @Test
     fun sm203A() = rewriteRun(
-        cobol(CobolParserCopyTest.getNistSource("SM203A.CBL"))
+        cobol(getNistSource("SM203A.CBL"))
     )
 
     @Test
     fun sm205A() = rewriteRun(
-        cobol(CobolParserCopyTest.getNistSource("SM205A.CBL"))
+        cobol(getNistSource("SM205A.CBL"))
     )
 
     @Test
     fun sm206A() = rewriteRun(
-        cobol(CobolParserCopyTest.getNistSource("SM206A.CBL"))
+        cobol(getNistSource("SM206A.CBL"))
     )
 
     @Test

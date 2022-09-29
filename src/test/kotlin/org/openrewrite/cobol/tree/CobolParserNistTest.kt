@@ -15,7 +15,6 @@
  */
 package org.openrewrite.cobol.tree
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
@@ -1096,7 +1095,6 @@ class CobolParserNistTest : RewriteTest {
         cobol(getNistSource("NC204M.CBL"))
     )
 
-    @Disabled("Mark failing test. Requires adjustments to continuation tokens after changes to CobolLineReader.")
     @Test
     fun nc205A() = rewriteRun(
         cobol(getNistSource("NC205A.CBL"))
