@@ -24,6 +24,7 @@ import org.openrewrite.internal.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
 
@@ -158,19 +159,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     private void copyTemplate(CobolPreprocessor.CopyStatement copyStatement, PrintOutputCapture<P> p) {
-        // Print markers like Lines, SequenceArea, and Indicator if the line starts with COPY.
-        visit(copyStatement.getWord(), p);
-
-        // Remove the prefix of and the word COPY, because the statement is replaced by the CopyBook.
-        p.out.delete(p.getOut().length() - copyStatement.getWord().getWord().length() -
-                copyStatement.getWord().getPrefix().getWhitespace().length(), p.getOut().length());
-
-        // Save the current index to ensure the text that follows the COPY will be aligned correctly.
-        int curIndex = getCurrentIndex(p.getOut());
-        if (curIndex == -1) {
-            throw new UnsupportedOperationException("Unknown case: Detected a Replace OFF at the start of the source code.");
-        }
-
         // Printing the COPY statement will add comments that work similar to JavaTemplate.
         // Comments are added before and after the template to provide context about which AST elements
         // are a product of a COPY statement.
@@ -193,12 +181,20 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
          *      |      | | COPY STATEMENT.                                  |=> Requires whitespace to replace the statement for correct alignment.
          *      |      | |                                   COPY STATEMENT.|=> The next line does not require any whitespace.
          */
+
+        // Print markers like Lines, SequenceArea, and Indicator if the line starts with COPY.
+        visit(copyStatement.getWord(), p);
+
+        // Remove the prefix of and the word COPY, because the statement is replaced by the CopyBook.
+        p.out.delete(p.getOut().length() - copyStatement.getWord().getWord().length() -
+                copyStatement.getWord().getPrefix().getWhitespace().length(), p.getOut().length());
+
+        // Save the current index to ensure the text that follows the COPY will be aligned correctly.
+        int curIndex = getCurrentIndex(p.getOut());
         addStartKey(getCopyStartComment(), curIndex, p);
 
         // Add UUID key.
-        p.append(getCopyUuidKey());
-        String copyUuidLine = getDialectSequenceArea() + "*" + copyStatement.getId() + getUuidEndOfLine();
-        p.append(copyUuidLine);
+        addUuidKey(getCopyUuidKey(), copyStatement.getId(), p);
 
         // Print copied source.
         visit(copyStatement.getCopyBook(), p);
@@ -252,25 +248,12 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private void replaceByTemplate(CobolPreprocessor.ReplaceArea replaceArea, PrintOutputCapture<P> p) {
         CobolPreprocessor.ReplaceByStatement replaceByStatement = replaceArea.getReplaceByStatement();
 
-        // Print markers like Lines, SequenceArea, and Indicator.
-        visit(replaceByStatement.getWord(), p);
-
-        // Remove the prefix of and the word COPY, because the statement is replaced by the CopyBook.
-        p.out.delete(p.getOut().length() - replaceByStatement.getWord().getWord().length() -
-                replaceByStatement.getWord().getPrefix().getWhitespace().length(), p.getOut().length());
-
         // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
         int curIndex = getCurrentIndex(p.getOut());
-        if (curIndex == -1) {
-            throw new UnsupportedOperationException("Unknown case: Detected a Replace OFF at the start of the source code.");
-        }
-
         addStartKey(getReplaceByStartComment(), curIndex, p);
 
         // Add UUID key.
-        p.append(getUuidComment());
-        String uuidLine = getDialectSequenceArea() + "*" + replaceByStatement.getId() + getUuidEndOfLine();
-        p.append(uuidLine);
+        addUuidKey(getUuidComment(), replaceByStatement.getId(), p);
 
         // The Replacement rule is removed during preprocessing and is not printer here.
 
@@ -309,27 +292,12 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     private void replaceOffTemplate(CobolPreprocessor.ReplaceOffStatement replaceOffStatement, PrintOutputCapture<P> p) {
-        // Print markers like Lines, SequenceArea, and Indicator.
-        if (!replaceOffStatement.getWords().isEmpty()) {
-            visit(replaceOffStatement.getWords().get(0), p);
-
-            // Remove the prefix of and the word COPY, because the statement is replaced by the CopyBook.
-            p.out.delete(p.getOut().length() - replaceOffStatement.getWords().get(0).getWord().length() -
-                    replaceOffStatement.getWords().get(0).getPrefix().getWhitespace().length(), p.getOut().length());
-        }
-
         // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
         int curIndex = getCurrentIndex(p.getOut());
-        if (curIndex == -1) {
-            throw new UnsupportedOperationException("Unknown case: Detected a Replace OFF at the start of the source code.");
-        }
-
         addStartKey(getReplaceOffStartComment(), curIndex, p);
 
         // Add UUID key.
-        p.append(getUuidComment());
-        String uuidLine = getDialectSequenceArea() + "*" + replaceOffStatement.getId() + getUuidEndOfLine();
-        p.append(uuidLine);
+        addUuidKey(getUuidComment(), replaceOffStatement.getId(), p);
 
         // ReplaceOff is removed during preprocessing and is not printer here.
 
@@ -444,9 +412,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             p.append(getReplaceTypeReductiveStartComment());
 
             // Add UUID key.
-            p.append(getUuidComment());
-            String uuidLine = getDialectSequenceArea() + "*" + replaceReductiveType.getId() + getUuidEndOfLine();
-            p.append(uuidLine);
+            addUuidKey(getUuidComment(), replaceReductiveType.getId(), p);
 
             // Add Stop key.
             p.append(getReplaceTypeReductiveStopComment());
@@ -502,9 +468,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         p.append(whitespace);
 
         // Add UUID key.
-        p.append(getReplaceUuidComment());
-        String replaceUuidLine = getDialectSequenceArea() + "*" + replace.getId() + getUuidEndOfLine();
-        p.append(replaceUuidLine);
+        addUuidKey(getReplaceUuidComment(), replace.getId(), p);
 
         // Add Stop key.
         p.append(getReplaceStopComment());
@@ -640,17 +604,33 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Add a templates START key.
+     * Add a templates START comment.
+     * @param startComment start comment for the template type.
+     * @param curIndex the position of the current index.
      */
-    private void addStartKey(String comment, int curIndex, PrintOutputCapture<P> p) {
-        // Add Start key.
+    private void addStartKey(String startComment, int curIndex, PrintOutputCapture<P> p) {
+        if (curIndex == -1) {
+            throw new UnsupportedOperationException("Negative index detected for: " + startComment);
+        }
+
         int insertIndex = getInsertIndex(p.getOut());
-        p.out.insert(insertIndex, comment);
+        p.out.insert(insertIndex, startComment);
 
         // Fill the remaining line with whitespace to align the column areas.
         int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
         String whitespace = generateWhitespace(untilEndOfLine) + "\n";
         p.append(whitespace);
+    }
+
+    /**
+     * Add a templates UUID comment.
+     * @param uuidComment uuid comment for the template type.
+     * @param uuid uuid from an AST element to retrieve.
+     */
+    private void addUuidKey(String uuidComment, UUID uuid, PrintOutputCapture<P> p) {
+        p.append(uuidComment);
+        String replaceUuidLine = getDialectSequenceArea() + "*" + uuid + getUuidEndOfLine();
+        p.append(replaceUuidLine);
     }
 
     /**
