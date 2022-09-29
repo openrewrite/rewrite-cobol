@@ -6576,6 +6576,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         // An inline comment entry will have a null sequence area.
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
 
+        boolean isContinued = false;
         if (checkContinuation) {
             // CommentAreas are optional text that will precede the end of line.
             Integer nextCommentArea = commentAreas.keySet().stream()
@@ -6656,32 +6657,30 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     iterations++;
                 }
                 markers.add(new Continuation(randomId(), continuations));
-                // TODO: refactor to not require a return here... this was awful to track down.
-                if (currentCopy != null) {
-                    markers.add(new Copy(randomId(), currentCopy));
+                isContinued = true;
+            }
+        }
+
+        if (!isContinued) {
+            if (removeColumnMarkers) {
+                removeColumnMarkers = false;
+            } else {
+                if (sequenceArea != null) {
+                    markers.add(sequenceArea);
                 }
-                return prefix;
-            }
-        }
 
-        if (removeColumnMarkers) {
-            removeColumnMarkers = false;
-        } else {
-            if (sequenceArea != null) {
-                markers.add(sequenceArea);
+                if (indicatorArea != null) {
+                    markers.add(indicatorArea);
+                }
             }
 
-            if (indicatorArea != null) {
-                markers.add(indicatorArea);
-            }
-        }
+            if (!END_OF_FILE.equals(text)) {
+                cursor += text.length();
 
-        if (!END_OF_FILE.equals(text)) {
-            cursor += text.length();
-
-            CommentArea commentArea = commentArea();
-            if (commentArea != null) {
-                markers.add(commentArea);
+                CommentArea commentArea = commentArea();
+                if (commentArea != null) {
+                    markers.add(commentArea);
+                }
             }
         }
 
