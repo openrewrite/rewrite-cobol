@@ -191,20 +191,17 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
         // Save the current index to ensure the text that follows the COPY will be aligned correctly.
         int curIndex = getCurrentIndex(p.getOut());
-        addStartKey(getCopyStartComment(), curIndex, p);
 
-        // Add UUID key.
+        addStartKey(getCopyStartComment(), curIndex, p);
         addUuidKey(getCopyUuidKey(), copyStatement.getId(), p);
 
         // Print copied source.
         visit(copyStatement.getCopyBook(), p);
-
-        // Add a new line character if the copied source does not end with one already.
         if (!p.getOut().endsWith("\n")) {
+            // Add a new line character if the copied source does not end with one already.
             p.append("\n");
         }
 
-        // Add Stop key.
         addStopComment(getCopyStopComment(), copyStatement, curIndex, p);
     }
 
@@ -226,16 +223,11 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private void replaceByTemplate(CobolPreprocessor.ReplaceArea replaceArea, PrintOutputCapture<P> p) {
         CobolPreprocessor.ReplaceByStatement replaceByStatement = replaceArea.getReplaceByStatement();
 
-        // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
+        // Save the current index to ensure the text that follows the ReplaceByStatement will be aligned correctly.
         int curIndex = getCurrentIndex(p.getOut());
+
         addStartKey(getReplaceByStartComment(), curIndex, p);
-
-        // Add UUID key.
         addUuidKey(getUuidComment(), replaceByStatement.getId(), p);
-
-        // The Replacement rule is removed during preprocessing and is not printer here.
-
-        // Add Stop key.
         addStopComment(getReplaceByStopComment(), replaceArea.getReplaceByStatement(), curIndex, p);
     }
 
@@ -248,16 +240,11 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     private void replaceOffTemplate(CobolPreprocessor.ReplaceOffStatement replaceOffStatement, PrintOutputCapture<P> p) {
-        // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
+        // Save the current index to ensure the text that follows the ReplaceOffStatement will be aligned correctly.
         int curIndex = getCurrentIndex(p.getOut());
+
         addStartKey(getReplaceOffStartComment(), curIndex, p);
-
-        // Add UUID key.
         addUuidKey(getUuidComment(), replaceOffStatement.getId(), p);
-
-        // ReplaceOff is removed during preprocessing and is not printer here.
-
-        // Add Stop key.
         addStopComment(getReplaceOffStopComment(), replaceOffStatement, curIndex, p);
     }
 
@@ -292,6 +279,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         }
 
         // Beware all who enter.
+        // Replace contains many special cases due to changes in column alignment after a replacement.
         Optional<Replace> replaceOptional = word.getMarkers().findFirst(Replace.class);
         Optional<ReplaceReductiveType> replaceTypeReductiveOptional = word.getMarkers().findFirst(ReplaceReductiveType.class);
         if (replaceOptional.isPresent()) {
