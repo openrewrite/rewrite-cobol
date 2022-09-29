@@ -882,21 +882,38 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 .filter(it -> it > cursor)
                 .findFirst().orElse(null);
         boolean isContinued = nextIndicator != null && indicatorAreas.get(nextIndicator).equals("-");
-        cursor = saveCursor;
 
         Character delimiter = null;
         if (text.startsWith("'") || text.startsWith("\"")) {
             delimiter = text.charAt(0);
         }
 
+        if (isContinued && delimiter == null) {
+            // CommentAreas are optional text that will precede the end of line.
+            Integer nextCommentArea = commentAreas.keySet().stream()
+                    .filter(it -> it > cursor)
+                    .findFirst()
+                    .orElse(null);
+
+            String current = source.substring(cursor);
+            int newLinePos = current.indexOf("\n");
+            int endPos = (nextCommentArea != null && nextCommentArea < (newLinePos + cursor)) ? nextCommentArea : (newLinePos + cursor);
+
+            current = source.substring(cursor, endPos).trim();
+            isContinued = !current.startsWith(text);
+        }
+        cursor = saveCursor;
+
         // A literal continued on a new line.
-        if (isContinued && delimiter != null) {
-            return processLiteral(text, markers, delimiter);
+        if (isContinued) {
+            return delimiter == null ?
+                    processContinuedText(text, markers) :
+                    processLiteral(text, markers, delimiter);
         } else if (END_OF_FILE.equals(text) && source.substring(cursor).isEmpty()) {
             return Space.EMPTY;
         }
 
-        return processText(text, markers, isContinued);
+        return processText(text, markers);
     }
 
     private void parseCommentsAndEmptyLines(String text, List<Marker> markers) {
@@ -1018,7 +1035,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         return prefix;
     }
 
-    private Space processText(String text, List<Marker> markers, boolean checkContinuation) {
+    private Space processText(String text, List<Marker> markers) {
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea();
 
@@ -1031,90 +1048,6 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
         // An inline comment entry will have a null sequence area.
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
-
-        if (checkContinuation) {
-            // CommentAreas are optional text that will precede the end of line.
-            Integer nextCommentArea = commentAreas.keySet().stream()
-                    .filter(it -> it > cursor)
-                    .findFirst()
-                    .orElse(null);
-
-            String current = source.substring(cursor);
-            int newLinePos = current.indexOf("\n");
-            int endPos = (nextCommentArea != null && nextCommentArea < (newLinePos + cursor)) ? nextCommentArea : (newLinePos + cursor);
-
-            current = source.substring(cursor, endPos).trim();
-            // There are two types of continuations.
-            // 1. The text is a grammar token followed by a new line, which is handled by normal markers.
-            // 2. The text is a combination of two tokens, which has been parsed as a single word and requires continuation markers.
-            if (!current.startsWith(text)) {
-                Map<Integer, Markers> continuations = new HashMap<>();
-                List<Marker> continuation = new ArrayList<>(2);
-
-                if (sequenceArea != null) {
-                    continuation.add(sequenceArea);
-                }
-
-                if (indicatorArea != null) {
-                    continuation.add(indicatorArea);
-                }
-
-                if (!continuation.isEmpty()) {
-                    continuations.put(0, Markers.build(continuation));
-                }
-
-                int matchedCount = 0;
-                int iterations = 0;
-                while (iterations < 250) {
-                    continuation = new ArrayList<>(3);
-
-                    current = source.substring(cursor);
-                    char[] charArray = text.substring(matchedCount).toCharArray();
-                    char[] sourceArray = current.toCharArray();
-
-                    int end = 0;
-                    for (; end < charArray.length; end++) {
-                        if (charArray[end] != sourceArray[end] || commentAreas.containsKey(cursor)) {
-                            break;
-                        }
-                        cursor++;
-                    }
-
-                    String matchedText = current.substring(0, end);
-                    matchedCount += matchedText.length();
-
-                    CommentArea commentArea = commentArea();
-                    if (commentArea != null) {
-                        continuation.add(commentArea);
-                    }
-
-                    if (matchedCount == text.length()) {
-                        if (!continuation.isEmpty()) {
-                            continuations.put(matchedCount + 1, Markers.build(continuation));
-                        }
-                        break;
-                    }
-
-                    sequenceArea = sequenceArea();
-                    if (sequenceArea != null) {
-                        continuation.add(sequenceArea);
-                    }
-
-                    indicatorArea = indicatorArea(text.charAt(matchedCount), false);
-                    if (indicatorArea != null) {
-                        continuation.add(indicatorArea);
-                    }
-
-                    if (!continuation.isEmpty()) {
-                        continuations.put(matchedCount, Markers.build(continuation));
-                    }
-
-                    iterations++;
-                }
-                markers.add(new Continuation(randomId(), continuations));
-                return prefix;
-            }
-        }
 
         if (sequenceArea != null) {
             markers.add(sequenceArea);
@@ -1132,6 +1065,88 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 markers.add(commentArea);
             }
         }
+        return prefix;
+    }
+
+    private Space processContinuedText(String text, List<Marker> markers) {
+        SequenceArea sequenceArea = sequenceArea();
+        IndicatorArea indicatorArea = indicatorArea();
+
+        // CommentEntry tags are required to be recognized the COBOL grammar.
+        // The CommentEntry tag (hopefully does not exist in the original source code.) and is removed before generating the AST.
+        boolean isCommentEntry = text.startsWith(COMMENT_ENTRY);
+        if (isCommentEntry) {
+            text = text.substring(COMMENT_ENTRY.length());
+        }
+
+        // An inline comment entry will have a null sequence area.
+        Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
+
+        Map<Integer, Markers> continuations = new HashMap<>();
+        List<Marker> continuation = new ArrayList<>(2);
+
+        if (sequenceArea != null) {
+            continuation.add(sequenceArea);
+        }
+
+        if (indicatorArea != null) {
+            continuation.add(indicatorArea);
+        }
+
+        if (!continuation.isEmpty()) {
+            continuations.put(0, Markers.build(continuation));
+        }
+
+        String current;
+        int matchedCount = 0;
+        int iterations = 0;
+        while (iterations < 250) {
+            continuation = new ArrayList<>(3);
+
+            current = source.substring(cursor);
+            char[] charArray = text.substring(matchedCount).toCharArray();
+            char[] sourceArray = current.toCharArray();
+
+            int end = 0;
+            for (; end < charArray.length; end++) {
+                if (charArray[end] != sourceArray[end] || commentAreas.containsKey(cursor)) {
+                    break;
+                }
+                cursor++;
+            }
+
+            String matchedText = current.substring(0, end);
+            matchedCount += matchedText.length();
+
+            CommentArea commentArea = commentArea();
+            if (commentArea != null) {
+                continuation.add(commentArea);
+            }
+
+            if (matchedCount == text.length()) {
+                if (!continuation.isEmpty()) {
+                    continuations.put(matchedCount + 1, Markers.build(continuation));
+                }
+                break;
+            }
+
+            sequenceArea = sequenceArea();
+            if (sequenceArea != null) {
+                continuation.add(sequenceArea);
+            }
+
+            indicatorArea = indicatorArea(text.charAt(matchedCount), false);
+            if (indicatorArea != null) {
+                continuation.add(indicatorArea);
+            }
+
+            if (!continuation.isEmpty()) {
+                continuations.put(matchedCount, Markers.build(continuation));
+            }
+
+            iterations++;
+        }
+        markers.add(new Continuation(randomId(), continuations));
         return prefix;
     }
 
