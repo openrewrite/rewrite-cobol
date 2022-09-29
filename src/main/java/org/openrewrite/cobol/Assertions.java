@@ -33,7 +33,12 @@ public class Assertions {
     }
 
     public static SourceSpecs cobol(@Nullable String before, Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
-        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(Cobol.CompilationUnit.class, null, CobolIbmAnsi85Parser.builder(), before, null);
+        SourceSpec<Cobol.CompilationUnit> cobol =
+                new SourceSpec<>(Cobol.CompilationUnit.class,
+                        null,
+                        CobolParser.builder(),
+                        before,
+                        null);
         spec.accept(cobol);
         return cobol;
     }
@@ -45,7 +50,12 @@ public class Assertions {
 
     public static SourceSpecs cobol(@Nullable String before, String after,
                                     Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
-        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(Cobol.CompilationUnit.class, null, CobolIbmAnsi85Parser.builder(), before, after);
+        SourceSpec<Cobol.CompilationUnit> cobol =
+                new SourceSpec<>(Cobol.CompilationUnit.class,
+                        null,
+                        CobolParser.builder(),
+                        before,
+                        after);
         spec.accept(cobol);
         return cobol;
     }
@@ -56,7 +66,12 @@ public class Assertions {
     }
 
     public static SourceSpecs cobolPreprocess(@Nullable String before, Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        SourceSpec<CobolPreprocessor.CompilationUnit> cobol = new SourceSpec<>(CobolPreprocessor.CompilationUnit.class, null, CobolPreprocessorParser.builder(), before, null);
+        SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
+                new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
+                        null,
+                        CobolPreprocessorParser.builder(),
+                        before,
+                        null);
         spec.accept(cobol);
         return cobol;
     }
@@ -68,7 +83,12 @@ public class Assertions {
 
     public static SourceSpecs cobolPreprocess(@Nullable String before, String after,
                                               Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        SourceSpec<CobolPreprocessor.CompilationUnit> cobol = new SourceSpec<>(CobolPreprocessor.CompilationUnit.class, null, CobolPreprocessorParser.builder(), before, after);
+        SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
+                new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
+                        null,
+                        CobolPreprocessorParser.builder(),
+                        before,
+                        after);
         spec.accept(cobol);
         return cobol;
     }
@@ -79,7 +99,12 @@ public class Assertions {
     }
 
     public static SourceSpecs cobolCopy(@Nullable String before, Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        SourceSpec<CobolPreprocessor.CompilationUnit> cobol = new SourceSpec<>(CobolPreprocessor.CompilationUnit.class, null, CobolPreprocessorParser.builder().enableCopy(), before, null);
+        SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
+                new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
+                        null,
+                        CobolPreprocessorParser.builder().setEnableCopy(true),
+                        before,
+                        null);
         spec.accept(cobol);
         return cobol;
     }
@@ -91,7 +116,12 @@ public class Assertions {
 
     public static SourceSpecs cobolCopy(@Nullable String before, String after,
                                               Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        SourceSpec<CobolPreprocessor.CompilationUnit> cobol = new SourceSpec<>(CobolPreprocessor.CompilationUnit.class, null, CobolPreprocessorParser.builder().enableCopy(), before, after);
+        SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
+                new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
+                        null,
+                        CobolPreprocessorParser.builder().setEnableCopy(true),
+                        before,
+                        after);
         spec.accept(cobol);
         return cobol;
     }

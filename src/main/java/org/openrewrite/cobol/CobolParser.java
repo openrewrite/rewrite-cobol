@@ -25,6 +25,7 @@ import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolParserVisitor;
 import org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter;
+import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.internal.grammar.CobolLexer;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
@@ -44,9 +45,15 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
     private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
 
     private final CobolDialect cobolDialect;
+    private final boolean enableCopy;
+    private final boolean enableReplace;
 
-    public CobolParser(CobolDialect cobolDialect) {
+    public CobolParser(CobolDialect cobolDialect,
+                       boolean enableCopy,
+                       boolean enableReplace) {
         this.cobolDialect = cobolDialect;
+        this.enableCopy = enableCopy;
+        this.enableReplace = enableReplace;
     }
 
     @Override
@@ -63,8 +70,8 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         CobolPreprocessorParser cobolPreprocessorParser = CobolPreprocessorParser.builder()
                                 .setCobolDialect(cobolDialect)
-                                .enableCopy()
-                                .enableReplace()
+                                .setEnableCopy(enableCopy)
+                                .setEnableReplace(enableReplace)
                                 .build();
 
                         CobolPreprocessor.CompilationUnit preprocessedCU = cobolPreprocessorParser.parseInputs(singletonList(sourceFile), relativeTo, ctx).get(0);
@@ -129,6 +136,49 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
     @Override
     public Path sourcePathFromSourceText(Path prefix, String sourceCode) {
         return prefix.resolve("file.CBL");
+    }
+
+    public static CobolParser.Builder builder() {
+        return new CobolParser.Builder();
+    }
+
+    public static class Builder extends org.openrewrite.Parser.Builder {
+
+        CobolDialect cobolDialect = new IbmAnsi85();
+        boolean enableCopy = false;
+        boolean enableReplace = false;
+
+        public Builder() {
+            super(Cobol.CompilationUnit.class);
+        }
+
+        @Override
+        public CobolParser build() {
+            return new CobolParser(
+                    cobolDialect,
+                    enableCopy,
+                    enableReplace);
+        }
+
+        public CobolParser.Builder setCobolDialect(CobolDialect cobolDialect) {
+            this.cobolDialect = cobolDialect;
+            return this;
+        }
+
+        public CobolParser.Builder setEnableCopy(boolean enableCopy) {
+            this.enableCopy = enableCopy;
+            return this;
+        }
+
+        public CobolParser.Builder setEnableReplace(boolean enableReplace) {
+            this.enableReplace = enableReplace;
+            return this;
+        }
+
+        @Override
+        public String getDslName() {
+            return "cobol";
+        }
     }
 
     private static class ForwardingErrorListener extends BaseErrorListener {

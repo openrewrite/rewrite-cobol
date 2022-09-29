@@ -36,6 +36,8 @@ import java.nio.file.Paths
 class CobolPreprocessorOutputPrinterTest : RewriteTest {
 
     companion object {
+        val dialect = IbmAnsi85()
+
         private val userDir = System.getProperty("user.dir")
         private const val nistPath = "/src/test/resources/gov/nist/"
         fun getNistSource(bookName: String): String {
@@ -47,20 +49,20 @@ class CobolPreprocessorOutputPrinterTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.recipe(toRecipe {
-            PreprocessReplaceVisitor()
-        }.doNext(toRecipe {
-            object : CobolPreprocessorVisitor<ExecutionContext>() {
-                override fun visitSpace(space: Space, p: ExecutionContext): Space {
-                    val whitespace = space.whitespace.trim()
-                    // TODO: separators should be isolated to a dialect.
-                    if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {
-                        return space.withWhitespace("(~~>${space.whitespace}<~~)")
+        spec.parser(CobolPreprocessorParser.builder().setEnableCopy(true).setEnableReplace(true))
+            .recipe(toRecipe {
+                PreprocessReplaceVisitor()
+            }.doNext(toRecipe {
+                object : CobolPreprocessorVisitor<ExecutionContext>() {
+                    override fun visitSpace(space: Space, p: ExecutionContext): Space {
+                        val whitespace = space.whitespace.trim()
+                        if (!(dialect.separators.contains("$whitespace ") || whitespace.isEmpty())) {
+                            return space.withWhitespace("(~~>${space.whitespace}<~~)")
+                        }
+                        return space
                     }
-                    return space
                 }
-            }
-        })).parser(CobolPreprocessorParser.builder())
+            }))
     }
 
     @Test

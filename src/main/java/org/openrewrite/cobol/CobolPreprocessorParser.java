@@ -257,13 +257,13 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
             return this;
         }
 
-        public Builder enableCopy() {
-            this.enableCopy = true;
+        public Builder setEnableCopy(boolean enableCopy) {
+            this.enableCopy = enableCopy;
             return this;
         }
 
-        public Builder enableReplace() {
-            this.enableReplace = true;
+        public Builder setEnableReplace(boolean enableReplace) {
+            this.enableReplace = enableReplace;
             return this;
         }
 

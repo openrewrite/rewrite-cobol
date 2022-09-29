@@ -36,6 +36,8 @@ import java.nio.file.Paths
 class CobolPreprocessorCopyTest : RewriteTest {
 
     companion object {
+        val dialect = IbmAnsi85()
+
         private val userDir = System.getProperty("user.dir")
         private const val nistPath = "/src/test/resources/gov/nist/"
         fun getNistSource(sourceName: String): String {
@@ -47,13 +49,12 @@ class CobolPreprocessorCopyTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.parser(CobolPreprocessorParser.builder().enableCopy())
+        spec.parser(CobolPreprocessorParser.builder().setEnableCopy(true))
             .recipe(toRecipe {
             object : CobolPreprocessorVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
                     val whitespace = space.whitespace.trim()
-                    // TODO: separators should be isolated to a dialect.
-                    if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {
+                    if (!(dialect.separators.contains("$whitespace ") || whitespace.isEmpty())) {
                         return space.withWhitespace("(~~>${space.whitespace}<~~)")
                     }
                     return space

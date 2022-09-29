@@ -19,8 +19,9 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
-import org.openrewrite.cobol.CobolHpTandemParser
+import org.openrewrite.cobol.CobolParser
 import org.openrewrite.cobol.CobolVisitor
+import org.openrewrite.cobol.internal.HpTandem
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
@@ -28,17 +29,23 @@ import org.openrewrite.test.RewriteTest.toRecipe
 @Disabled("Requires adding comments at the first line of each test to prevent trimming the blank indicator.")
 class CobolParserHPTandemDivisionTest : RewriteTest {
 
+    companion object {
+        val dialect = HpTandem()
+    }
+
     override fun defaults(spec: RecipeSpec) {
-        spec.recipe(toRecipe {
-            object : CobolVisitor<ExecutionContext>() {
-                override fun visitSpace(space: Space, p: ExecutionContext): Space {
-                    if (space.whitespace.trim().isNotEmpty()) {
-                        return space.withWhitespace("(~~>${space.whitespace}<~~)")
+        spec.parser(CobolParser.builder().setCobolDialect(HpTandem()))
+            .recipe(toRecipe {
+                object : CobolVisitor<ExecutionContext>() {
+                    override fun visitSpace(space: Space, p: ExecutionContext): Space {
+                        val whitespace = space.whitespace.trim()
+                        if (!(dialect.separators.contains("$whitespace ") || whitespace.isEmpty())) {
+                            return space.withWhitespace("(~~>${space.whitespace}<~~)")
+                        }
+                        return space
                     }
-                    return space
                 }
-            }
-        }).parser(CobolHpTandemParser.builder())
+            })
     }
 
     @Test

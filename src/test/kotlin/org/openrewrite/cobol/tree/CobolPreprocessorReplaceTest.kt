@@ -22,6 +22,7 @@ import org.openrewrite.cobol.Assertions.cobolCopy
 import org.openrewrite.cobol.CobolPreprocessorParser
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.PreprocessReplaceVisitor
+import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
@@ -32,6 +33,8 @@ import java.nio.file.Paths
 class CobolPreprocessorReplaceTest : RewriteTest {
 
     companion object {
+        val dialect = IbmAnsi85()
+
         private val userDir = System.getProperty("user.dir")
         private const val nistPath = "/src/test/resources/gov/nist/"
         fun getNistSource(bookName: String): String {
@@ -43,20 +46,20 @@ class CobolPreprocessorReplaceTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.recipe(toRecipe {
-            PreprocessReplaceVisitor()
-        }.doNext(toRecipe {
-            object : CobolPreprocessorVisitor<ExecutionContext>() {
-                override fun visitSpace(space: Space, p: ExecutionContext): Space {
-                    val whitespace = space.whitespace.trim()
-                    // TODO: separators should be isolated to a dialect.
-                    if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {
-                        return space.withWhitespace("(~~>${space.whitespace}<~~)")
+        spec.parser(CobolPreprocessorParser.builder().setEnableCopy(true).setEnableReplace(true))
+            .recipe(toRecipe {
+                PreprocessReplaceVisitor()
+            }.doNext(toRecipe {
+                object : CobolPreprocessorVisitor<ExecutionContext>() {
+                    override fun visitSpace(space: Space, p: ExecutionContext): Space {
+                        val whitespace = space.whitespace.trim()
+                        if (!(dialect.separators.contains("$whitespace ") || whitespace.isEmpty())) {
+                            return space.withWhitespace("(~~>${space.whitespace}<~~)")
+                        }
+                        return space
                     }
-                    return space
                 }
-            }
-        })).parser(CobolPreprocessorParser.builder())
+            }))
     }
 
     // TODO: add validation for replaced COPY BOOKS.

@@ -18,8 +18,9 @@ package org.openrewrite.cobol.tree
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
-import org.openrewrite.cobol.CobolIbmAnsi85Parser
+import org.openrewrite.cobol.CobolParser
 import org.openrewrite.cobol.CobolVisitor
+import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
@@ -29,6 +30,8 @@ import java.nio.file.Paths
 class CobolParserReplaceTest : RewriteTest {
 
     companion object {
+        val dialect = IbmAnsi85()
+
         private val userDir = System.getProperty("user.dir")
         private const val nistPath = "/src/test/resources/gov/nist/"
         fun getNistSource(bookName: String): String {
@@ -40,18 +43,18 @@ class CobolParserReplaceTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.recipe(RewriteTest.toRecipe {
-            object : CobolVisitor<ExecutionContext>() {
-                override fun visitSpace(space: Space, p: ExecutionContext): Space {
-                    val whitespace = space.whitespace.trim()
-                    // TODO: separators should be isolated to a dialect.
-                    if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {
-                        return space.withWhitespace("(~~>${space.whitespace}<~~)")
+        spec.parser(CobolParser.builder().setEnableCopy(true).setEnableReplace(true))
+            .recipe(RewriteTest.toRecipe {
+                object : CobolVisitor<ExecutionContext>() {
+                    override fun visitSpace(space: Space, p: ExecutionContext): Space {
+                        val whitespace = space.whitespace.trim()
+                        if (!(dialect.separators.contains("$whitespace ") || whitespace.isEmpty())) {
+                            return space.withWhitespace("(~~>${space.whitespace}<~~)")
+                        }
+                        return space
                     }
-                    return space
                 }
-            }
-        }).parser(CobolIbmAnsi85Parser.builder())
+            })
     }
 
     @Test

@@ -18,8 +18,9 @@ package org.openrewrite.cobol.tree
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
-import org.openrewrite.cobol.CobolIbmAnsi85Parser
 import org.openrewrite.cobol.CobolIsoVisitor
+import org.openrewrite.cobol.CobolParser
+import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
@@ -29,6 +30,8 @@ import java.nio.file.Paths
 class CobolParserNistTest : RewriteTest {
 
     companion object {
+        val dialect = IbmAnsi85()
+
         private val userDir = System.getProperty("user.dir")
         private const val nistPath = "/src/test/resources/gov/nist/"
         fun getNistSource(sourceName: String): String {
@@ -40,19 +43,18 @@ class CobolParserNistTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.parser(CobolIbmAnsi85Parser.builder())
+        spec.parser(CobolParser.builder())
             .recipe(RewriteTest.toRecipe {
                 object : CobolIsoVisitor<ExecutionContext>() {
                     override fun visitSpace(space: Space, p: ExecutionContext): Space {
                         val whitespace = space.whitespace.trim()
-                        // TODO: separators should be isolated to a dialect.
-                        if (!(whitespace.equals(",") || whitespace.equals(";") || whitespace.isEmpty())) {
+                        if (!(dialect.separators.contains("$whitespace ") || whitespace.isEmpty())) {
                             return space.withWhitespace("(~~>${space.whitespace}<~~)")
                         }
                         return space
                     }
                 }
-            }).parser(CobolIbmAnsi85Parser.builder())
+            })
     }
 
     @Test
