@@ -193,14 +193,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
          *      |      | | COPY STATEMENT.                                  |=> Requires whitespace to replace the statement for correct alignment.
          *      |      | |                                   COPY STATEMENT.|=> The next line does not require any whitespace.
          */
-        // Add Start key.
-        int insertIndex = getInsertIndex(p.getOut());
-        p.out.insert(insertIndex, getCopyStartComment());
-
-        // Fill the remaining line with whitespace to align the column areas.
-        int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
-        String whitespace = generateWhitespace(untilEndOfLine) + "\n";
-        p.append(whitespace);
+        addStartKey(getCopyStartComment(), curIndex, p);
 
         // Add UUID key.
         p.append(getCopyUuidKey());
@@ -272,14 +265,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             throw new UnsupportedOperationException("Unknown case: Detected a Replace OFF at the start of the source code.");
         }
 
-        // Add Start key.
-        int insertIndex = getInsertIndex(p.getOut());
-        p.out.insert(insertIndex, getReplaceByStartComment());
-
-        // Fill the remaining line with whitespace to align the column areas.
-        int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
-        String whitespace = generateWhitespace(untilEndOfLine) + "\n";
-        p.append(whitespace);
+        addStartKey(getReplaceByStartComment(), curIndex, p);
 
         // Add UUID key.
         p.append(getUuidComment());
@@ -338,14 +324,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             throw new UnsupportedOperationException("Unknown case: Detected a Replace OFF at the start of the source code.");
         }
 
-        // Add Start key.
-        int insertIndex = getInsertIndex(p.getOut());
-        p.out.insert(insertIndex, getReplaceOffStartComment());
-
-        // Fill the remaining line with whitespace to align the column areas.
-        int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
-        String whitespace = generateWhitespace(untilEndOfLine) + "\n";
-        p.append(whitespace);
+        addStartKey(getReplaceOffStartComment(), curIndex, p);
 
         // Add UUID key.
         p.append(getUuidComment());
@@ -502,13 +481,12 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
         // Add Start key.
         int insertIndex = getInsertIndex(p.getOut());
+        p.out.insert(insertIndex, getReplaceStartComment());
+
         if (isLongerWord && !isContinuedLiteral) {
-            // Inserted before Start key, so that the StartKey comes before the additive comment.
+            insertIndex = getInsertIndex(p.getOut());
             p.out.insert(insertIndex, getReplaceTypeAdditiveComment());
         }
-
-        // Add Start key.
-        p.out.insert(insertIndex, getReplaceStartComment());
 
         if (curIndex == 0) {
             Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
@@ -659,6 +637,20 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
         Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
         commentArea.ifPresent(it -> visitCommentArea(it, p));
+    }
+
+    /**
+     * Add a templates START key.
+     */
+    private void addStartKey(String comment, int curIndex, PrintOutputCapture<P> p) {
+        // Add Start key.
+        int insertIndex = getInsertIndex(p.getOut());
+        p.out.insert(insertIndex, comment);
+
+        // Fill the remaining line with whitespace to align the column areas.
+        int untilEndOfLine = cobolDialect.getColumns().getOtherArea() - curIndex;
+        String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+        p.append(whitespace);
     }
 
     /**
