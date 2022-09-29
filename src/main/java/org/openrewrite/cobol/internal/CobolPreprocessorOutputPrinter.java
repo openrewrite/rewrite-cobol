@@ -525,6 +525,30 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         commentArea.ifPresent(it -> visitCommentArea(it, p));
     }
 
+
+    /**
+     * Return the index to insert a Template START comment at.
+     */
+    private int getInsertIndex(String output) {
+        int insertIndex = output.lastIndexOf("\n");
+        return insertIndex == -1 ? 0 : insertIndex + 1;
+    }
+
+    /**
+     * Return the index position of the current line.
+     */
+    private int getCurrentIndex(String output) {
+        int index = output.lastIndexOf("\n");
+        return index == -1 ? index : output.substring(index + 1).length();
+    }
+
+    private String generateWhitespace(int count) {
+        if (count < 0) {
+            throw new IllegalStateException("Negative index detected.");
+        }
+        return StringUtils.repeat(" ", count);
+    }
+
     /**
      * Add a templates START comment.
      * @param startComment start comment for the template type.
@@ -584,6 +608,26 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
         p.append(afterStop);
         p.append(StringUtils.repeat(" ", numberOfSpaces));
+    }
+
+    /**
+     * Calculate the whitespace required to align the column area based on the position of the previous word.
+     * Then return a Template Comment with the calculated information.
+     */
+    private String getColumnAlignmentAfterStop(int lengthOfPrefix) {
+        if (lengthOfPrefix > 0 && lengthOfPrefix - cobolDialect.getColumns().getContentArea() < 0) {
+            throw new IllegalStateException("Negative index detected.");
+        }
+
+        int startOfContentArea = cobolDialect.getColumns().getContentArea();
+        int endOfContentArea = cobolDialect.getColumns().getOtherArea();
+
+        int prefixLength = lengthOfPrefix == 0 || lengthOfPrefix >= endOfContentArea ? 0 : (lengthOfPrefix - startOfContentArea);
+        prefixLength = prefixLength == endOfContentArea - startOfContentArea ? 0 : prefixLength;
+
+        String alignmentKey = getDialectSequenceArea() + "*" + prefixLength;
+        String whitespace = generateWhitespace(endOfContentArea - alignmentKey.length());
+        return alignmentKey + whitespace + "\n";
     }
 
     /**
@@ -734,26 +778,6 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         return uuidComment;
     }
 
-    /**
-     * Calculate the whitespace required to align the column area based on the position of the previous word.
-     * Then return a Template Comment with the calculated information.
-     */
-    private String getColumnAlignmentAfterStop(int lengthOfPrefix) {
-        if (lengthOfPrefix > 0 && lengthOfPrefix - cobolDialect.getColumns().getContentArea() < 0) {
-            throw new IllegalStateException("Negative index detected.");
-        }
-
-        int startOfContentArea = cobolDialect.getColumns().getContentArea();
-        int endOfContentArea = cobolDialect.getColumns().getOtherArea();
-
-        int prefixLength = lengthOfPrefix == 0 || lengthOfPrefix >= endOfContentArea ? 0 : (lengthOfPrefix - startOfContentArea);
-        prefixLength = prefixLength == endOfContentArea - startOfContentArea ? 0 : prefixLength;
-
-        String alignmentKey = getDialectSequenceArea() + "*" + prefixLength;
-        String whitespace = generateWhitespace(endOfContentArea - alignmentKey.length());
-        return alignmentKey + whitespace + "\n";
-    }
-
     private String getUuidEndOfLine() {
         if (uuidEndOfLine == null) {
             uuidEndOfLine = StringUtils.repeat(" ", cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea() - 36) + "\n";
@@ -769,28 +793,5 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             dialectSequenceArea = StringUtils.repeat(" ", cobolDialect.getColumns().getContentArea() - 1);
         }
         return dialectSequenceArea;
-    }
-
-    /**
-     * Return the index to insert a Template START comment at.
-     */
-    private int getInsertIndex(String output) {
-        int insertIndex = output.lastIndexOf("\n");
-        return insertIndex == -1 ? 0 : insertIndex + 1;
-    }
-
-    /**
-     * Return the index position of the current line.
-     */
-    private int getCurrentIndex(String output) {
-        int index = output.lastIndexOf("\n");
-        return index == -1 ? index : output.substring(index + 1).length();
-    }
-
-    private String generateWhitespace(int count) {
-        if (count < 0) {
-            throw new IllegalStateException("Negative index detected.");
-        }
-        return StringUtils.repeat(" ", count);
     }
 }
