@@ -1167,7 +1167,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.FileDescriptionEntry f = fileDescriptionEntry;
         f = f.withPrefix(visitSpace(f.getPrefix(), p));
         f = f.withMarkers(visitMarkers(f.getMarkers(), p));
-        f = f.withWords((Cobol.Word) visit(f.getWords(), p));
+        f = f.withWord((Cobol.Word) visit(f.getWord(), p));
         f = f.withName((Cobol.Word) visit(f.getName(), p));
         f = f.withClauses(ListUtils.map(f.getClauses(), it -> visit(it, p)));
         f = f.withDataDescriptions(ListUtils.map(f.getDataDescriptions(), it -> (Cobol.DataDescriptionEntry) visit(it, p)));
@@ -1294,6 +1294,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InData i = inData;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
+        i = i.withName((Name) visit(i.getName(), p));
         return i;
     }
 
@@ -1930,7 +1932,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Open o = open;
         o = o.withPrefix(visitSpace(o.getPrefix(), p));
         o = o.withMarkers(visitMarkers(o.getMarkers(), p));
-        o = o.withWords((Cobol.Word) visit(o.getWords(), p));
+        o = o.withWord((Cobol.Word) visit(o.getWord(), p));
         o = o.withOpen(ListUtils.map(o.getOpen(), it -> visit(it, p)));
         return o;
     }
@@ -3031,7 +3033,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.ScreenDescriptionEntry s = screenDescriptionEntry;
         s = s.withPrefix(visitSpace(s.getPrefix(), p));
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
-        s = s.withWords((Cobol.Word) visit(s.getWords(), p));
+        s = s.withWord((Cobol.Word) visit(s.getWord(), p));
         s = s.withName((Cobol.Word) visit(s.getName(), p));
         s = s.withClauses(ListUtils.map(s.getClauses(), it -> visit(it, p)));
         s = s.withDot((Cobol.Word) visit(s.getDot(), p));
@@ -3395,7 +3397,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.SpecialNames s = specialNames;
         s = s.withPrefix(visitSpace(s.getPrefix(), p));
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
-        s = s.withWords((Cobol.Word) visit(s.getWords(), p));
+        s = s.withWord((Cobol.Word) visit(s.getWord(), p));
         s = s.withDot((Cobol.Word) visit(s.getDot(), p));
         s = s.withClauses(ListUtils.map(s.getClauses(), it -> visit(it, p)));
         s = s.withDot2((Cobol.Word) visit(s.getDot2(), p));

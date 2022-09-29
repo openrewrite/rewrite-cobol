@@ -6656,6 +6656,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     iterations++;
                 }
                 markers.add(new Continuation(randomId(), continuations));
+                // TODO: refactor to not require a return here... this was awful to track down.
+                if (currentCopy != null) {
+                    markers.add(new Copy(randomId(), currentCopy));
+                }
                 return prefix;
             }
         }

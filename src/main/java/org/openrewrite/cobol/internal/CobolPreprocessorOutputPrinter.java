@@ -630,13 +630,13 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 p.append(additionalPrefix);
                 visitSpace(word.getPrefix(), p);
                 p.append(word.getWord());
-
-                Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-                commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-                commentArea.ifPresent(it -> p.append(it.getComment()));
-                commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
             }
         }
+
+        Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
+        commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
+        commentArea.ifPresent(it -> p.append(it.getComment()));
+        commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
     }
 
     /**

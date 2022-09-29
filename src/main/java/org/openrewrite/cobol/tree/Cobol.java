@@ -113,13 +113,13 @@ public interface Cobol extends Tree {
         Markers markers;
 
         @Nullable
-        Cobol.Word not;
+        Word not;
 
         @Nullable
         RelationalOperator relationalOperator;
 
         @Nullable
-        Cobol.Word leftParen;
+        Word leftParen;
 
         Cobol arithmeticExpression;
 
@@ -127,7 +127,7 @@ public interface Cobol extends Tree {
         Cobol abbreviation;
 
         @Nullable
-        Cobol.Word rightParen;
+        Word rightParen;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -154,7 +154,7 @@ public interface Cobol extends Tree {
         @Nullable
         StatementPhrase notOnExceptionClause;
         @Nullable
-        Cobol.Word endAccept;
+        Word endAccept;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -272,7 +272,7 @@ public interface Cobol extends Tree {
         StatementPhrase notOnSizeError;
 
         @Nullable
-        Cobol.Word endAdd;
+        Word endAdd;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -334,7 +334,7 @@ public interface Cobol extends Tree {
         List<Name> from;
 
         @Nullable
-        Cobol.Word to;
+        Word to;
 
         @Nullable
         List<Name> names;
@@ -358,7 +358,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         List<Literal> literals;
 
         @Override
@@ -423,7 +423,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Literal literal;
 
         @Override
@@ -503,7 +503,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         List<AlterProceedTo> alterProceedTo;
 
         @Override
@@ -551,7 +551,7 @@ public interface Cobol extends Tree {
         Cobol first;
 
         @Nullable
-        Cobol.Word integerLiteral;
+        Word integerLiteral;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -616,7 +616,7 @@ public interface Cobol extends Tree {
         BlockContainsTo blockContainsTo;
 
         @Nullable
-        Cobol.Word lastWords;
+        Word lastWords;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -672,7 +672,7 @@ public interface Cobol extends Tree {
         StatementPhrase notOnExceptionClause;
 
         @Nullable
-        Cobol.Word endCall;
+        Word endCall;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -711,7 +711,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name identifier;
 
         @Override
@@ -796,11 +796,11 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Literal literal;
 
         @Nullable
-        Cobol.Word is;
+        Word is;
 
         Identifier mnemonicName;
 
@@ -841,7 +841,7 @@ public interface Cobol extends Tree {
         Markers markers;
         Name from;
         @Nullable
-        Cobol.Word through;
+        Word through;
         @Nullable
         Name to;
 
@@ -1109,7 +1109,7 @@ public interface Cobol extends Tree {
         Markers markers;
 
         @Nullable
-        Cobol.Word not;
+        Word not;
 
         Cobol simpleCondition;
 
@@ -1258,7 +1258,7 @@ public interface Cobol extends Tree {
         StatementPhrase notOnSizeErrorPhrase;
 
         @Nullable
-        Cobol.Word endCompute;
+        Word endCompute;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -1479,7 +1479,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -1501,13 +1501,13 @@ public interface Cobol extends Tree {
         List<Word> words;
 
         @Nullable
-        Cobol.Word name;
+        Word name;
 
         @Nullable
         List<Cobol> clauses;
 
         @Nullable
-        Cobol.Word dot;
+        Word dot;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -1621,7 +1621,7 @@ public interface Cobol extends Tree {
         DataOccursTo dataOccursTo;
 
         @Nullable
-        Cobol.Word times;
+        Word times;
 
         @Nullable
         DataOccursDepending dataOccursDepending;
@@ -1812,7 +1812,7 @@ public interface Cobol extends Tree {
         QualifiedDataName fromName;
 
         @Nullable
-        Cobol.Word through;
+        Word through;
 
         @Nullable
         QualifiedDataName toName;
@@ -2084,7 +2084,7 @@ public interface Cobol extends Tree {
         Name fileName;
 
         @Nullable
-        Cobol.Word record;
+        Word record;
 
         @Nullable
         StatementPhrase invalidKey;
@@ -2093,7 +2093,7 @@ public interface Cobol extends Tree {
         StatementPhrase notInvalidKey;
 
         @Nullable
-        Cobol.Word endDelete;
+        Word endDelete;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -2154,7 +2154,7 @@ public interface Cobol extends Tree {
         Name cdName;
 
         @Nullable
-        Cobol.Word with;
+        Word with;
 
         Word key;
         Name keyName;
@@ -2193,7 +2193,7 @@ public interface Cobol extends Tree {
         StatementPhrase notOnExceptionClause;
 
         @Nullable
-        Cobol.Word endDisplay;
+        Word endDisplay;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -2261,7 +2261,7 @@ public interface Cobol extends Tree {
         StatementPhrase notOnSizeErrorPhrase;
 
         @Nullable
-        Cobol.Word endDivide;
+        Word endDivide;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -2360,7 +2360,7 @@ public interface Cobol extends Tree {
         Name cdName;
 
         @Nullable
-        Cobol.Word with;
+        Word with;
 
         Word key;
         Name keyName;
@@ -2474,7 +2474,7 @@ public interface Cobol extends Tree {
         StatementPhrase whenOther;
 
         @Nullable
-        Cobol.Word endPhrase;
+        Word endPhrase;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -2515,7 +2515,7 @@ public interface Cobol extends Tree {
         Name environmentName;
 
         @Nullable
-        Cobol.Word is;
+        Word is;
 
         @Nullable
         Name mnemonicName;
@@ -2637,7 +2637,7 @@ public interface Cobol extends Tree {
         Markers markers;
 
         @Nullable
-        Cobol.Word not;
+        Word not;
 
         Cobol value;
 
@@ -2874,7 +2874,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Word name;
 
         @Nullable
@@ -3115,7 +3115,7 @@ public interface Cobol extends Tree {
         IfElse ifElse;
 
         @Nullable
-        Cobol.Word endIf;
+        Word endIf;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -3159,7 +3159,7 @@ public interface Cobol extends Tree {
         Markers markers;
 
         @Nullable
-        Cobol.Word word;
+        Word word;
 
         @Nullable
         List<Word> nextSentence;
@@ -3182,7 +3182,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name name;
 
         @Override
@@ -3200,7 +3200,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name name;
 
         @Override
@@ -3296,7 +3296,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name name;
 
         @Override
@@ -3314,7 +3314,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name name;
 
         @Override
@@ -3353,7 +3353,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name name;
 
         @Override
@@ -3669,7 +3669,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -3691,10 +3691,10 @@ public interface Cobol extends Tree {
         Word dot;
 
         @Nullable
-        Cobol.Word fileName;
+        Word fileName;
 
         @Nullable
-        Cobol.Word fileNameDot;
+        Word fileNameDot;
         @Nullable
         List<Cobol> clauses;
 
@@ -4055,7 +4055,7 @@ public interface Cobol extends Tree {
         Name name;
 
         @Nullable
-        Cobol.Word lines;
+        Word lines;
 
         @Nullable
         List<Cobol> linageAt;
@@ -4156,13 +4156,13 @@ public interface Cobol extends Tree {
         Word dot;
 
         @Nullable
-        Cobol.Word localData;
+        Word localData;
 
         @Nullable
         Name localName;
 
         @Nullable
-        Cobol.Word dot2;
+        Word dot2;
         List<DataDescriptionEntry> dataDescriptions;
 
         @Override
@@ -4181,7 +4181,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name fileName;
         List<MergeOnKeyClause> mergeOnKeyClause;
 
@@ -4274,7 +4274,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         List<MergeGiving> mergeGiving;
 
         @Override
@@ -4332,7 +4332,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         ProcedureName procedureName;
 
         @Override
@@ -4351,7 +4351,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         List<Name> fileNames;
 
         @Override
@@ -4424,7 +4424,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Identifier moveCorrespondingToSendingArea;
         Word to;
         List<Identifier> identifiers;
@@ -4481,7 +4481,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Powers powers;
 
         @Override
@@ -4542,10 +4542,10 @@ public interface Cobol extends Tree {
         Word fileName;
 
         @Nullable
-        Cobol.Word position;
+        Word position;
 
         @Nullable
-        Cobol.Word integerLiteral;
+        Word integerLiteral;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -4563,7 +4563,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name multiplicand;
         Word by;
         Cobol multiply;
@@ -4575,7 +4575,7 @@ public interface Cobol extends Tree {
         StatementPhrase notOnSizeErrorPhrase;
 
         @Nullable
-        Cobol.Word endMultiply;
+        Word endMultiply;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -4654,7 +4654,7 @@ public interface Cobol extends Tree {
         ObjectComputerDefinition computer;
 
         @Nullable
-        Cobol.Word dot;
+        Word dot;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -4709,7 +4709,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         List<Cobol> open;
 
         @Override
@@ -4748,7 +4748,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         List<Openable> openInput;
 
         @Override
@@ -4767,7 +4767,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         List<Name> fileNames;
 
         @Override
@@ -4824,7 +4824,7 @@ public interface Cobol extends Tree {
         Name paragraphName;
 
         @Nullable
-        Cobol.Word dot;
+        Word dot;
 
         @Nullable
         AlteredGoTo alteredGoTo;
@@ -4902,7 +4902,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Cobol statement;
 
         @Override
@@ -4920,7 +4920,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Cobol expression;
 
         @Override
@@ -4945,7 +4945,7 @@ public interface Cobol extends Tree {
 
         List<Statement> statements;
 
-        Word words;
+        Word word;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -4965,7 +4965,7 @@ public interface Cobol extends Tree {
         ProcedureName procedureName;
 
         @Nullable
-        Cobol.Word words;
+        Word word;
 
         @Nullable
         ProcedureName throughProcedure;
@@ -5006,7 +5006,7 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         Name value;
-        Word words;
+        Word word;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -5028,7 +5028,7 @@ public interface Cobol extends Tree {
         @Nullable
         PerformTestClause performTestClause;
 
-        Word words;
+        Word word;
         Condition condition;
 
         @Override
@@ -5064,7 +5064,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         PerformVaryingPhrase performVaryingPhrase;
         List<Performable> performAfter;
 
@@ -5142,7 +5142,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         MultDivs multDivs;
 
         @Override
@@ -5162,7 +5162,7 @@ public interface Cobol extends Tree {
         Markers markers;
 
         @Nullable
-        Cobol.Word power;
+        Word power;
 
         Cobol expression;
 
@@ -5301,7 +5301,7 @@ public interface Cobol extends Tree {
         Markers markers;
 
         @Nullable
-        Cobol.Word words;
+        Word word;
 
         Name reference;
 
@@ -5360,7 +5360,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name dataName;
 
         @Override
@@ -5378,7 +5378,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         List<Cobol> procedureDivisionUsingParameter;
 
         @Override
@@ -5467,7 +5467,7 @@ public interface Cobol extends Tree {
         List<Word> programAttributes;
 
         @Nullable
-        Cobol.Word dot2;
+        Word dot2;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -5669,7 +5669,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name fileName;
         List<Word> nextRecord;
 
@@ -5711,7 +5711,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Identifier identifier;
 
         @Override
@@ -5828,7 +5828,7 @@ public interface Cobol extends Tree {
         List<Word> words;
 
         @Nullable
-        Cobol.Word dataName;
+        Word dataName;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -5910,12 +5910,12 @@ public interface Cobol extends Tree {
         Markers markers;
 
         @Nullable
-        Cobol.Word contains;
+        Word contains;
 
         Word integerLiteral;
 
         @Nullable
-        Cobol.Word characters;
+        Word characters;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -5953,14 +5953,14 @@ public interface Cobol extends Tree {
         Markers markers;
 
         @Nullable
-        Cobol.Word contains;
+        Word contains;
 
         Word integerLiteral;
         RecordContainsTo recordContainsTo;
 
 
         @Nullable
-        Cobol.Word characters;
+        Word characters;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -6192,7 +6192,7 @@ public interface Cobol extends Tree {
         QualifiedDataName recordName;
 
         @Nullable
-        Cobol.Word from;
+        Word from;
 
         @Nullable
         QualifiedDataName qualifiedDataName;
@@ -6307,7 +6307,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name dataName;
 
         @Override
@@ -6342,7 +6342,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name dataName;
 
         @Override
@@ -6382,7 +6382,7 @@ public interface Cobol extends Tree {
         Name integerLiteral;
 
         @Nullable
-        Cobol.Word secondWords;
+        Word secondWords;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -6470,7 +6470,7 @@ public interface Cobol extends Tree {
         Word integerLiteral;
 
         @Nullable
-        Cobol.Word dataName;
+        Word dataName;
 
         @Nullable
         ReportGroupLineNumberClause reportGroupLineNumberClause;
@@ -6497,7 +6497,7 @@ public interface Cobol extends Tree {
         Word integerLiteral;
 
         @Nullable
-        Cobol.Word dataName;
+        Word dataName;
 
         @Nullable
         List<Cobol> clauses;
@@ -6965,10 +6965,10 @@ public interface Cobol extends Tree {
         Word rerun;
 
         @Nullable
-        Cobol.Word on;
+        Word on;
 
         @Nullable
-        Cobol.Word name;
+        Word name;
 
         Word every;
 
@@ -6992,7 +6992,7 @@ public interface Cobol extends Tree {
         Word integerLiteral;
 
         @Nullable
-        Cobol.Word clockUnits;
+        Word clockUnits;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -7079,11 +7079,11 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Name fileName;
 
         @Nullable
-        Cobol.Word record;
+        Word record;
 
         @Nullable
         ReturnInto into;
@@ -7094,7 +7094,7 @@ public interface Cobol extends Tree {
         StatementPhrase notAtEndPhrase;
 
         @Nullable
-        Cobol.Word endReturn;
+        Word endReturn;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -7144,7 +7144,7 @@ public interface Cobol extends Tree {
         StatementPhrase notInvalidKeyPhrase;
 
         @Nullable
-        Cobol.Word endRewrite;
+        Word endRewrite;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -7183,7 +7183,7 @@ public interface Cobol extends Tree {
         Identifier identifier;
 
         @Nullable
-        Cobol.Word rounded;
+        Word rounded;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -7362,10 +7362,10 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
 
         @Nullable
-        Cobol.Word name;
+        Word name;
 
         List<Cobol> clauses;
         Word dot;
@@ -7570,7 +7570,7 @@ public interface Cobol extends Tree {
         Word integer;
 
         @Nullable
-        Cobol.Word times;
+        Word times;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -7621,7 +7621,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -7811,7 +7811,7 @@ public interface Cobol extends Tree {
         List<SearchWhen> searchWhen;
 
         @Nullable
-        Cobol.Word endSearch;
+        Word endSearch;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -8187,7 +8187,7 @@ public interface Cobol extends Tree {
         SourceComputerDefinition computer;
 
         @Nullable
-        Cobol.Word dot;
+        Word dot;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -8226,14 +8226,14 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word words;
+        Word word;
         Word dot;
 
         @Nullable
         List<Cobol> clauses;
 
         @Nullable
-        Cobol.Word dot2;
+        Word dot2;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -8264,7 +8264,7 @@ public interface Cobol extends Tree {
         StatementPhrase notInvalidKeyPhrase;
 
         @Nullable
-        Cobol.Word endStart;
+        Word endStart;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -8460,7 +8460,7 @@ public interface Cobol extends Tree {
         StatementPhrase notOnOverflowPhrase;
 
         @Nullable
-        Cobol.Word endString;
+        Word endString;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -8500,7 +8500,7 @@ public interface Cobol extends Tree {
         Cobol first;
 
         @Nullable
-        Cobol.Word second;
+        Word second;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -8528,7 +8528,7 @@ public interface Cobol extends Tree {
         StatementPhrase notOnSizeErrorPhrase;
 
         @Nullable
-        Cobol.Word endSubtract;
+        Word endSubtract;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -8610,7 +8610,7 @@ public interface Cobol extends Tree {
         QualifiedDataName qualifiedDataName;
 
         @Nullable
-        Cobol.Word rounded;
+        Word rounded;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -8631,7 +8631,7 @@ public interface Cobol extends Tree {
         List<Word> symbols;
 
         @Nullable
-        Cobol.Word words;
+        Word word;
 
         List<Word> literals;
 
@@ -8655,7 +8655,7 @@ public interface Cobol extends Tree {
         List<SymbolicCharacter> symbols;
 
         @Nullable
-        Cobol.Word inAlphabet;
+        Word inAlphabet;
 
         @Nullable
         Identifier alphabetName;
@@ -8841,7 +8841,7 @@ public interface Cobol extends Tree {
         StatementPhrase notOnOverflowPhrase;
 
         @Nullable
-        Cobol.Word endUnstring;
+        Word endUnstring;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -9140,7 +9140,7 @@ public interface Cobol extends Tree {
         Cobol value;
 
         @Nullable
-        Cobol.Word units;
+        Word units;
 
         public enum Type {
             Memory,
@@ -9186,7 +9186,7 @@ public interface Cobol extends Tree {
         Word systemName;
 
         @Nullable
-        Cobol.Word is;
+        Word is;
 
         Name name;
 
@@ -9248,7 +9248,7 @@ public interface Cobol extends Tree {
         StatementPhrase notInvalidKeyPhrase;
 
         @Nullable
-        Cobol.Word endWrite;
+        Word endWrite;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -9266,7 +9266,7 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         Name name;
-        Word words;
+        Word word;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
