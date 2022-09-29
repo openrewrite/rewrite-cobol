@@ -574,9 +574,13 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 }
                 p.append(end);
             } else {
-                String prefix = StringUtils.repeat(" ", curIndex -
-                        (word.getWord().length() - replace.getOriginalWord().getWord().length()) +
-                        word.getPrefix().getWhitespace().length());
+                int difference = word.getWord().length() - replace.getOriginalWord().getWord().length();
+                int alignColumn = curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex;
+                int total = alignColumn + word.getPrefix().getWhitespace().length() + difference;
+                if (total > cobolDialect.getColumns().getOtherArea()) {
+                    throw new UnsupportedOperationException("The position of the replaced word exceeds the column area.");
+                }
+                String prefix = generateWhitespace(total);
                 p.append(prefix);
                 p.append(word.getWord());
             }

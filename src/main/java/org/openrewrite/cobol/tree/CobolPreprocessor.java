@@ -478,6 +478,9 @@ public interface CobolPreprocessor extends Tree {
         CobolPreprocessor replacement;
 
         @Nullable
+        List<CobolPreprocessor> subscript;
+
+        @Nullable
         List<DirectoryPhrase> directoryPhrases;
 
         @Nullable

@@ -205,7 +205,7 @@ replaceOffStatement
    ;
 
 replaceClause
-   : replaceable BY replacement (directoryPhrase)* (familyPhrase)?
+   : replaceable BY replacement subscript? (directoryPhrase)* (familyPhrase)?
    ;
 
 directoryPhrase
@@ -263,6 +263,10 @@ charDataLineNoDot
 charDataLine
    : (cobolWord | literal | filename | commentEntry | TEXT | DOT | LPARENCHAR | RPARENCHAR)+
    ;
+
+subscript
+    : LPARENCHAR (literal | cobolWord) (COMMACHAR? (literal | cobolWord))* RPARENCHAR
+    ;
 
 cobolWord
    : IDENTIFIER | charDataKeyword
@@ -631,7 +635,7 @@ DOUBLEEQUALCHAR : '==';
 
 // literals
 NONNUMERICLITERAL : STRINGLITERAL | HEXNUMBER;
-NUMERICLITERAL : [0-9]+;
+NUMERICLITERAL : ('-' | '+')? [0-9]* ('.' | COMMACHAR) [0-9]+ (('e' | 'E')  ('-' | '+')? [0-9]+)?;
 
 fragment HEXNUMBER :
 	X '"' [0-9A-F]+ '"'

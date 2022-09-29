@@ -715,6 +715,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 (CobolPreprocessor) visit(ctx.replaceable()),
                 (CobolPreprocessor.Word) visit(ctx.BY()),
                 (CobolPreprocessor) visit(ctx.replacement()),
+                visitNullable(ctx.subscript()),
                 convertAll(ctx.directoryPhrase()),
                 visitNullable(ctx.familyPhrase())
         );
@@ -757,6 +758,11 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 visit(ctx.SKIP1(), ctx.SKIP2(), ctx.SKIP3()),
                 visitNullable(ctx.DOT())
         );
+    }
+
+    @Override
+    public Object visitSubscript(CobolPreprocessorParser.SubscriptContext ctx) {
+        return convertAllList(singletonList(ctx.LPARENCHAR()), ctx.literal(), ctx.cobolWord(), ctx.COMMACHAR(), singletonList(ctx.RPARENCHAR()));
     }
 
     @Override

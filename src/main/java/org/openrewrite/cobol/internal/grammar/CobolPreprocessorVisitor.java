@@ -179,6 +179,12 @@ public interface CobolPreprocessorVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCharDataLine(CobolPreprocessorParser.CharDataLineContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CobolPreprocessorParser#subscript}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubscript(CobolPreprocessorParser.SubscriptContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CobolPreprocessorParser#cobolWord}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

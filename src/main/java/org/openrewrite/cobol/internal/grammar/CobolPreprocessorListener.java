@@ -288,6 +288,16 @@ public interface CobolPreprocessorListener extends ParseTreeListener {
 	 */
 	void exitCharDataLine(CobolPreprocessorParser.CharDataLineContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CobolPreprocessorParser#subscript}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubscript(CobolPreprocessorParser.SubscriptContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CobolPreprocessorParser#subscript}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubscript(CobolPreprocessorParser.SubscriptContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CobolPreprocessorParser#cobolWord}.
 	 * @param ctx the parse tree
 	 */
