@@ -68,7 +68,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     public static final String REPLACE_TYPE_ADDITIVE_KEY = "__REPLACE_TYPE_ADDITIVE__";
 
     private final CobolDialect cobolDialect;
-    private final boolean printWithColumnAreas;
+    private final boolean printColumns;
 
     // Lazily initialized Strings that are generated once with constraints based on the dialect.
     private String dialectSequenceArea = null;
@@ -109,16 +109,16 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private final CobolPreprocessorPrinter<ExecutionContext> statementPrinter = new CobolPreprocessorPrinter<>(false);
 
     public CobolPreprocessorOutputPrinter(CobolDialect cobolDialect,
-                                          boolean printWithColumnAreas) {
+                                          boolean printColumns) {
         super(true);
 
         this.cobolDialect = cobolDialect;
-        this.printWithColumnAreas = printWithColumnAreas;
+        this.printColumns = printColumns;
     }
 
     @Override
     public CobolPreprocessor visitCommentEntry(CobolPreprocessor.CommentEntry commentEntry, PrintOutputCapture<P> p) {
-        if (printWithColumnAreas) {
+        if (printColumns) {
             super.visitCommentEntry(commentEntry, p);
         } else {
             visitSpace(commentEntry.getPrefix(), p);
@@ -146,7 +146,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         visitSpace(copyStatement.getPrefix(), p);
         visitMarkers(copyStatement.getMarkers(), p);
 
-        if (printWithColumnAreas) {
+        if (printColumns) {
             if (copyStatement.getCopyBook() != null) {
                 copyTemplate(copyStatement, p);
             }
@@ -243,7 +243,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
     @Override
     public CobolPreprocessor visitReplaceArea(CobolPreprocessor.ReplaceArea replaceArea, PrintOutputCapture<P> p) {
-        if (printWithColumnAreas) {
+        if (printColumns) {
             replaceByTemplate(replaceArea, p);
         }
 
@@ -316,7 +316,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
     @Override
     public CobolPreprocessor visitReplaceOffStatement(CobolPreprocessor.ReplaceOffStatement replaceOffStatement, PrintOutputCapture<P> p) {
-        if (printWithColumnAreas) {
+        if (printColumns) {
             replaceOffTemplate(replaceOffStatement, p);
         }
         return replaceOffStatement;
@@ -382,7 +382,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
     @Override
     public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
-        if (!printWithColumnAreas) {
+        if (!printColumns) {
             // Do not print words on lines with an unknown indicator until we know how to handle them.
             // Note: Unknown indicators are treated as comments via source code in CobolParserVisitor#isCommentIndicator.
             Optional<IndicatorArea> maybeUnknown = word.getMarkers().findFirst(IndicatorArea.class);
@@ -414,6 +414,9 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         Optional<Replace> replaceOptional = word.getMarkers().findFirst(Replace.class);
         Optional<ReplaceReductiveType> replaceTypeReductiveOptional = word.getMarkers().findFirst(ReplaceReductiveType.class);
         if (replaceOptional.isPresent()) {
+            Optional<Lines> replaceLines = replaceOptional.get().getOriginalWord().getMarkers().findFirst(Lines.class);
+            replaceLines.ifPresent(lines -> visitLines(lines, p));
+
             replaceTemplate(word, p, replaceOptional.get());
         } else if (replaceTypeReductiveOptional.isPresent()) {
             if (replaceReductiveType == null) {
@@ -429,19 +432,18 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 }
 
                 Optional<SequenceArea> sequenceArea = originalWord.getMarkers().findFirst(SequenceArea.class);
-                sequenceArea.ifPresent(it -> p.append(it.getSequence()));
+                sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
                 Optional<IndicatorArea> indicatorArea = originalWord.getMarkers().findFirst(IndicatorArea.class);
-                indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
+                indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
 
                 visitSpace(originalWord.getPrefix(), p);
+
                 String replaceWithWhitespace = generateWhitespace(originalWord.getWord().length());
                 p.append(replaceWithWhitespace);
 
                 Optional<CommentArea> commentArea = originalWord.getMarkers().findFirst(CommentArea.class);
-                commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-                commentArea.ifPresent(it -> p.append(it.getComment()));
-                commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
+                commentArea.ifPresent(it -> visitCommentArea(it, p));
             }
 
             // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
@@ -510,10 +512,10 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
 
         if (curIndex == 0) {
             Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
-            sequenceArea.ifPresent(it -> p.append(it.getSequence()));
+            sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
             Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
+            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
         }
 
         // Fill in the rest of the content area with whitespace.
@@ -656,9 +658,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         }
 
         Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-        commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-        commentArea.ifPresent(it -> p.append(it.getComment()));
-        commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
+        commentArea.ifPresent(it -> visitCommentArea(it, p));
     }
 
     /**

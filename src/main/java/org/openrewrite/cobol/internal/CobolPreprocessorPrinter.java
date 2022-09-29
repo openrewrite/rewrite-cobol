@@ -15,7 +15,6 @@
  */
 package org.openrewrite.cobol.internal;
 
-import org.openrewrite.ExecutionContext;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
 import org.openrewrite.cobol.tree.*;
@@ -237,58 +236,63 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
 
     public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
         Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
-        if (printColumns && lines.isPresent()) {
-            for (Lines.Line line : lines.get().getLines()) {
-                if (line.getSequenceArea() != null) {
-                    p.append(line.getSequenceArea().getSequence());
-                }
-                if (line.getIndicatorArea() != null) {
-                    p.append(line.getIndicatorArea().getIndicator());
-                    p.append(line.getIndicatorArea().getContinuationPrefix());
-                }
-                p.append(line.getContent());
-                if (line.getCommentArea() != null) {
-                    visitSpace(line.getCommentArea().getPrefix(), p);
-                    p.append(line.getCommentArea().getComment());
-                    visitSpace(line.getCommentArea().getEndOfLine(), p);
-                }
-            }
-        }
+        lines.ifPresent(value -> visitLines(value, p));
 
         Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
-        if (printColumns && continuation.isPresent()) {
-            if (continuation.get().getContinuations().containsKey(0)) {
-                Markers markers = continuation.get().getContinuations().get(0);
+        if (continuation.isPresent()) {
+            visitContinuation(word, continuation.get(), p);
+        } else {
+            printWord(word, p);
+        }
+
+        return word;
+    }
+
+    private void printWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
+        Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
+        sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
+
+        Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
+        indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
+
+        visitSpace(word.getPrefix(), p);
+        p.append(word.getWord());
+
+        Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
+        commentArea.ifPresent(it -> visitCommentArea(it, p));
+    }
+
+    public void visitContinuation(CobolPreprocessor.Word word, Continuation continuation, PrintOutputCapture<P> p) {
+        if (printColumns) {
+            if (continuation.getContinuations().containsKey(0)) {
+                Markers markers = continuation.getContinuations().get(0);
                 Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
-                sequenceArea.ifPresent(it -> p.append(it.getSequence()));
+                sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
                 Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-                indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
-                indicatorArea.ifPresent(it -> p.append(it.getContinuationPrefix()));
+                indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
             }
 
             visitSpace(word.getPrefix(), p);
+
             char[] charArray = word.getWord().toCharArray();
             for (int i = 0; i < charArray.length; i++) {
-                if (i != 0 && continuation.get().getContinuations().containsKey(i)) {
-                    Markers markers = continuation.get().getContinuations().get(i);
+                if (i != 0 && continuation.getContinuations().containsKey(i)) {
+                    Markers markers = continuation.getContinuations().get(i);
                     Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
-                    commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-                    commentArea.ifPresent(it -> p.append(it.getComment()));
-                    commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
+                    commentArea.ifPresent(it -> visitCommentArea(it, p));
 
                     Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
-                    sequenceArea.ifPresent(it -> p.append(it.getSequence()));
+                    sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
                     Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-                    indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
-                    indicatorArea.ifPresent(it -> p.append(it.getContinuationPrefix()));
+                    indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
                 }
                 char c = charArray[i];
                 p.append(c);
             }
 
-            List<Markers> lastMarkers = continuation.get().getContinuations().entrySet().stream()
+            List<Markers> lastMarkers = continuation.getContinuations().entrySet().stream()
                     .filter(it -> it.getKey() > word.getWord().length())
                     .map(Map.Entry::getValue)
                     .collect(Collectors.toList());
@@ -296,31 +300,52 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorVisitor<PrintO
             if (!lastMarkers.isEmpty()) {
                 Markers markers = lastMarkers.get(0);
                 Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
-                commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-                commentArea.ifPresent(it -> p.append(it.getComment()));
-                commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
+                commentArea.ifPresent(it -> visitCommentArea(it, p));
             }
         } else {
-            if (printColumns) {
-                Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
-                sequenceArea.ifPresent(it -> p.append(it.getSequence()));
-
-                Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-                indicatorArea.ifPresent(it -> p.append(it.getIndicator()));
-                indicatorArea.ifPresent(it -> p.append(it.getContinuationPrefix()));
-            }
-
-            visitSpace(word.getPrefix(), p);
-            p.append(word.getWord());
-
-            Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-            if (printColumns) {
-                commentArea.ifPresent(it -> visitSpace(it.getPrefix(), p));
-                commentArea.ifPresent(it -> p.append(it.getComment()));
-            }
-            commentArea.ifPresent(it -> visitSpace(it.getEndOfLine(), p));
+            printWord(word, p);
         }
+    }
 
-        return word;
+    public void visitLines(Lines lines, PrintOutputCapture<P> p) {
+        for (Lines.Line line : lines.getLines()) {
+            if (line.isCopiedSource()) {
+                continue;
+            }
+
+            if (line.getSequenceArea() != null) {
+                visitSequenceArea(line.getSequenceArea(), p);
+            }
+
+            if (line.getIndicatorArea() != null) {
+                visitIndicatorArea(line.getIndicatorArea(), p);
+            }
+
+            p.append(line.getContent());
+            if (line.getCommentArea() != null) {
+                visitCommentArea(line.getCommentArea(), p);
+            }
+        }
+    }
+
+    public void visitSequenceArea(SequenceArea sequenceArea, PrintOutputCapture<P> p) {
+        if (printColumns) {
+            p.append(sequenceArea.getSequence());
+        }
+    }
+
+    public void visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
+        if (printColumns) {
+            p.append(indicatorArea.getIndicator());
+        }
+        p.append(indicatorArea.getContinuationPrefix());
+    }
+
+    public void visitCommentArea(CommentArea commentArea, PrintOutputCapture<P> p) {
+        visitSpace(commentArea.getPrefix(), p);
+        if (printColumns) {
+            p.append(commentArea.getComment());
+        }
+        visitSpace(commentArea.getEndOfLine(), p);
     }
 }
