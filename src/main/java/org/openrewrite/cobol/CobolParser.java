@@ -38,6 +38,7 @@ import org.openrewrite.tree.ParsingExecutionContextView;
 import java.nio.file.Path;
 import java.util.*;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
@@ -45,13 +46,16 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
     private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
 
     private final CobolDialect cobolDialect;
+    private final List<CobolPreprocessor.CopyBook> copyBooks;
     private final boolean enableCopy;
     private final boolean enableReplace;
 
     public CobolParser(CobolDialect cobolDialect,
+                       List<CobolPreprocessor.CopyBook> copyBooks,
                        boolean enableCopy,
                        boolean enableReplace) {
         this.cobolDialect = cobolDialect;
+        this.copyBooks = copyBooks;
         this.enableCopy = enableCopy;
         this.enableReplace = enableReplace;
     }
@@ -70,6 +74,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         CobolPreprocessorParser cobolPreprocessorParser = CobolPreprocessorParser.builder()
                                 .setCobolDialect(cobolDialect)
+                                .setCopyBooks(copyBooks)
                                 .setEnableCopy(enableCopy)
                                 .setEnableReplace(enableReplace)
                                 .build();
@@ -144,9 +149,10 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
     public static class Builder extends org.openrewrite.Parser.Builder {
 
-        CobolDialect cobolDialect = new IbmAnsi85();
-        boolean enableCopy = false;
-        boolean enableReplace = false;
+        private CobolDialect cobolDialect = new IbmAnsi85();
+        private List<CobolPreprocessor.CopyBook> copyBooks = emptyList();
+        private boolean enableCopy = false;
+        private boolean enableReplace = false;
 
         public Builder() {
             super(Cobol.CompilationUnit.class);
@@ -156,21 +162,27 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
         public CobolParser build() {
             return new CobolParser(
                     cobolDialect,
+                    copyBooks,
                     enableCopy,
                     enableReplace);
         }
 
-        public CobolParser.Builder setCobolDialect(CobolDialect cobolDialect) {
+        public Builder setCobolDialect(CobolDialect cobolDialect) {
             this.cobolDialect = cobolDialect;
             return this;
         }
 
-        public CobolParser.Builder setEnableCopy(boolean enableCopy) {
+        public Builder setCopyBooks(List<CobolPreprocessor.CopyBook> copyBooks) {
+            this.copyBooks = copyBooks;
+            return this;
+        }
+
+        public Builder setEnableCopy(boolean enableCopy) {
             this.enableCopy = enableCopy;
             return this;
         }
 
-        public CobolParser.Builder setEnableReplace(boolean enableReplace) {
+        public Builder setEnableReplace(boolean enableReplace) {
             this.enableReplace = enableReplace;
             return this;
         }

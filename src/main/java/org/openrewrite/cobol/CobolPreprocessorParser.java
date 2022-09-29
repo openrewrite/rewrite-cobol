@@ -41,6 +41,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.openrewrite.Tree.randomId;
 
@@ -51,6 +52,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
 
     private final CobolDialect cobolDialect;
+    private final List<CobolPreprocessor.CopyBook> copyBooks;
     private final boolean enableCopy;
     private final boolean enableReplace;
 
@@ -62,9 +64,11 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private Set<ReplaceReductiveType> replaceReductiveTypes = null;
 
     public CobolPreprocessorParser(CobolDialect cobolDialect,
+                                   List<CobolPreprocessor.CopyBook> copyBooks,
                                    boolean enableCopy,
                                    boolean enableReplace) {
         this.cobolDialect = cobolDialect;
+        this.copyBooks = copyBooks;
         this.enableCopy = enableCopy;
         this.enableReplace = enableReplace;
     }
@@ -100,7 +104,6 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
                         if (enableCopy) {
                             List<Path> copyBookPaths = getCopyBooks();
-                            List<CobolPreprocessor.CopyBook> copyBooks = parseCopyBooks(copyBookPaths, relativeTo);
                             PreprocessCopyVisitor<ExecutionContext> copyPhase = new PreprocessCopyVisitor<>(copyBooks);
 
                             // CU after copy includes the copied source.
@@ -239,9 +242,10 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
     public static class Builder extends org.openrewrite.Parser.Builder {
 
-        CobolDialect cobolDialect;
-        boolean enableCopy;
-        boolean enableReplace;
+        private CobolDialect cobolDialect = new IbmAnsi85();
+        private List<CobolPreprocessor.CopyBook> copyBooks = emptyList();
+        private boolean enableCopy;
+        private boolean enableReplace;
 
         public Builder() {
             super(Cobol.CompilationUnit.class);
@@ -250,13 +254,20 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         @Override
         public CobolPreprocessorParser build() {
             return new CobolPreprocessorParser(
-                    cobolDialect == null ? new IbmAnsi85() : cobolDialect,
+                    cobolDialect,
+                    copyBooks,
                     enableCopy,
-                    enableReplace);
+                    enableReplace
+            );
         }
 
         public Builder setCobolDialect(CobolDialect cobolDialect) {
             this.cobolDialect = cobolDialect;
+            return this;
+        }
+
+        public Builder setCopyBooks(List<CobolPreprocessor.CopyBook> copyBooks) {
+            this.copyBooks = copyBooks;
             return this;
         }
 
