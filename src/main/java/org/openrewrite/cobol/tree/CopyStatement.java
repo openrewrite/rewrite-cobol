@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 @Value
 @With
-public class Copy implements Marker {
+public class CopyStatement implements Marker {
     UUID id;
     CobolPreprocessor.CopyStatement originalStatement;
 }

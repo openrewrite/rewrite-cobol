@@ -238,7 +238,7 @@ public interface CobolPreprocessor extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class CopyBook implements CobolPreprocessor {
+    class CopyBook implements CobolPreprocessor, SourceFile {
 
         UUID id;
         Space prefix;
@@ -246,6 +246,30 @@ public interface CobolPreprocessor extends Tree {
 
         // ... verbose for quality assurance.
         Path sourcePath;
+
+        @Nullable
+        FileAttributes fileAttributes;
+
+        @Nullable // for backwards compatibility
+        @With(AccessLevel.PRIVATE)
+        String charsetName;
+
+        boolean charsetBomMarked;
+
+        @Nullable
+        Checksum checksum;
+
+        @Override
+        public Charset getCharset() {
+            return charsetName == null ? StandardCharsets.UTF_8 : Charset.forName(charsetName);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public SourceFile withCharset(Charset charset) {
+            return withCharsetName(charset.name());
+        }
+
         CobolPreprocessor ast;
         CobolPreprocessor.Word eof;
 

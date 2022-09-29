@@ -168,12 +168,15 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
             CobolPreprocessor.CompilationUnit cu = parserVisitor.visitStartRule(parser.startRule());
             CobolPreprocessor parsedCopySource = cu.getCobols().get(0);
 
-            // TODO: How should the SourceFile and CopyBook be linked together?
             CobolPreprocessor.CopyBook copyBook = new CobolPreprocessor.CopyBook(
                     randomId(),
                     Space.EMPTY,
                     Markers.EMPTY,
                     path,
+                    null,
+                    plainText.getCharsetName(),
+                    plainText.isCharsetBomMarked(),
+                    null,
                     parsedCopySource,
                     cu.getEof()
             );

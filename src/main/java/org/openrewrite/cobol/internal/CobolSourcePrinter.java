@@ -3883,7 +3883,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         }
 
         Optional<Replace> replace = word.getMarkers().findFirst((Replace.class));
-        Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
+        Optional<CopyStatement> copyBook = word.getMarkers().findFirst(CopyStatement.class);
         if (replace.isPresent() && !copyBook.isPresent()) {
             // Print the original copy
             PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());

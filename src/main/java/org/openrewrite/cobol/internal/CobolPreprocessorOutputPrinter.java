@@ -639,7 +639,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Lazily load the START comment of a {@link Copy} template.
+     * Lazily load the START comment of a {@link CopyStatement} template.
      */
     public String getCopyStartComment() {
         if (copyStartComment == null) {
@@ -649,7 +649,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Lazily load the STOP comment of a {@link Copy} template.
+     * Lazily load the STOP comment of a {@link CopyStatement} template.
      */
     public String getCopyStopComment() {
         if (copyStopComment == null) {
@@ -659,7 +659,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Lazily load the UUID comment of a {@link Copy} template.
+     * Lazily load the UUID comment of a {@link CopyStatement} template.
      */
     public String getCopyUuidKey() {
         if (copyUuidComment == null) {
