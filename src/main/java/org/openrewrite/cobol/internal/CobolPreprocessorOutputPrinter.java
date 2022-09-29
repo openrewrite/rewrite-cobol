@@ -205,29 +205,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         }
 
         // Add Stop key.
-        p.append(getCopyStopComment());
-
-        // Add whitespace until the next token will be aligned with the column area.
-        PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
-        statementPrinter.visit(copyStatement, outputCapture);
-
-        String copy = outputCapture.getOut();
-        boolean isEndOfLine = copy.endsWith("\n");
-        boolean isCRLF = copy.endsWith("\r\n");
-
-        int totalChars = copy.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
-        int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
-
-        int numberOfSpaces;
-        if (!isEndOfLine && totalChars > contentAreaLength) {
-            throw new UnsupportedOperationException("Recalculate prefix.");
-        } else {
-            numberOfSpaces = isEndOfLine ? 0 : copy.length() + curIndex;
-        }
-
-        String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
-        p.append(afterStop);
-        p.append(StringUtils.repeat(" ", numberOfSpaces));
+        addStopComment(getCopyStopComment(), copyStatement, curIndex, p);
     }
 
     @Override
@@ -258,29 +236,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         // The Replacement rule is removed during preprocessing and is not printer here.
 
         // Add Stop key.
-        p.append(getReplaceByStopComment());
-
-        // Add whitespace until the next token will be aligned with the column area.
-        PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
-        statementPrinter.visit(replaceArea.getReplaceByStatement(), outputCapture);
-
-        String statement = outputCapture.getOut();
-        boolean isEndOfLine = statement.endsWith("\n");
-        boolean isCRLF = statement.endsWith("\r\n");
-
-        int totalChars = statement.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
-        int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
-
-        int numberOfSpaces;
-        if (!isEndOfLine && totalChars > contentAreaLength) {
-            throw new UnsupportedOperationException("Recalculate prefix.");
-        } else {
-            numberOfSpaces = isEndOfLine ? 0 : statement.length() + curIndex;
-        }
-
-        String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
-        p.append(afterStop);
-        p.append(StringUtils.repeat(" ", numberOfSpaces));
+        addStopComment(getReplaceByStopComment(), replaceArea.getReplaceByStatement(), curIndex, p);
     }
 
     @Override
@@ -302,29 +258,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         // ReplaceOff is removed during preprocessing and is not printer here.
 
         // Add Stop key.
-        p.append(getReplaceOffStopComment());
-
-        // Add whitespace until the next token will be aligned with the column area.
-        PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
-        statementPrinter.visit(replaceOffStatement, outputCapture);
-
-        String statement = outputCapture.getOut();
-        boolean isEndOfLine = statement.endsWith("\n");
-        boolean isCRLF = statement.endsWith("\r\n");
-
-        int totalChars = statement.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
-        int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
-
-        int numberOfSpaces;
-        if (!isEndOfLine && totalChars > contentAreaLength) {
-            throw new UnsupportedOperationException("Recalculate prefix.");
-        } else {
-            numberOfSpaces = isEndOfLine ? 0 : statement.length() + curIndex;
-        }
-
-        String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
-        p.append(afterStop);
-        p.append(StringUtils.repeat(" ", numberOfSpaces));
+        addStopComment(getReplaceOffStopComment(), replaceOffStatement, curIndex, p);
     }
 
     @Override
@@ -631,6 +565,37 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         p.append(uuidComment);
         String replaceUuidLine = getDialectSequenceArea() + "*" + uuid + getUuidEndOfLine();
         p.append(replaceUuidLine);
+    }
+
+    /**
+     * Add a template STOP comment and align the whitespace for the next Word.
+     * @param stopComment STOP comment for the template type.
+     * @param statement current preprocessor element being processed.
+     * @param curIndex the cursor position before the current statement.
+     */
+    private void addStopComment(String stopComment, CobolPreprocessor statement, int curIndex, PrintOutputCapture<P> p) {
+        p.append(stopComment);
+
+        PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
+        statementPrinter.visit(statement, outputCapture);
+
+        String copy = outputCapture.getOut();
+        boolean isEndOfLine = copy.endsWith("\n");
+        boolean isCRLF = copy.endsWith("\r\n");
+
+        int totalChars = copy.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
+        int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
+
+        int numberOfSpaces;
+        if (!isEndOfLine && totalChars > contentAreaLength) {
+            throw new UnsupportedOperationException("Recalculate prefix.");
+        } else {
+            numberOfSpaces = isEndOfLine ? 0 : copy.length() + curIndex;
+        }
+
+        String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
+        p.append(afterStop);
+        p.append(StringUtils.repeat(" ", numberOfSpaces));
     }
 
     /**
