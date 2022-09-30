@@ -18,9 +18,12 @@ package org.openrewrite.cobol.tree
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
+import org.openrewrite.InMemoryExecutionContext
+import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.Assertions.cobolPreprocess
 import org.openrewrite.cobol.Assertions.cobolPreprocessorCopy
 import org.openrewrite.cobol.CobolPreprocessorVisitor
+import org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter
 import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
@@ -82,7 +85,52 @@ class CobolPreprocessorReplaceTest : RewriteTest {
     @Test
     fun sm206A() = rewriteRun(
         cobolPreprocessorCopy(
-            CobolPreprocessorCopyTest.getNistSource("SM206A.CBL"))
+            getNistSource("SM206A.CBL")) { spec ->
+                spec.afterRecipe { cu ->
+                    val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
+                    assertThat(statements.size).isEqualTo(9)
+
+                    var output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    val printer = CobolPreprocessorOutputPrinter<ExecutionContext>(dialect, false)
+                    printer.visit(statements[0], output)
+                    assertThat(output.getOut()).isEqualTo("""
+                        PST-TEST-001.                                                    
+                            MOVE    "PSEUDO-TEXT" TO FEATURE.                            
+                            MOVE    "PST-TEST-001" TO PAR-NAME                           
+                            PERFORM PASS.                                                
+                                                                             
+                        PST-WRITE-001.                                                   
+                            PERFORM PRINT-DETAIL.                                        
+                    """.trimIndent())
+
+                    output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    printer.visit(statements[1], output)
+                    assertThat(output.getOut().trimIndent()).isEqualTo("""
+                        MOVE   +00009 TO WRK-DS-05V00-O005-001  IN WRK-XN-00050-O005F-001 OF GRP-006 OF GRP-004 IN GRP-003 ( 2 ).         
+                        ADD                                                          
+                            +00001 TO                                                
+                                      WRK-DS-05V00-O005-001                               
+                                                      IN                       
+                                                               WRK-XN-00050-O005F-001                     
+                                                                IN                 
+                                     GRP-006 IN GRP-004 IN GRP-002 IN GRP-001 ( 1 ).           
+                    """.trimIndent())
+
+                    output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    printer.visit(statements[2], output)
+                    assertThat(output.getOut().trimIndent()).isEqualTo("""
+                        MOVE   +00009 TO WRK-DS-05V00-O005-001  IN WRK-XN-00050-O005F-001 OF GRP-006 OF GRP-004 IN GRP-003 ( 2 ).         
+                        ADD                                                          
+                            +00001 TO                                                
+                                      WRK-DS-05V00-O005-001                               
+                                                      IN                       
+                                                               WRK-XN-00050-O005F-001                     
+                                                                IN                 
+                                     GRP-006 IN GRP-004 IN GRP-002 IN GRP-001 ( 1 ).           
+                    """.trimIndent())
+                    println()
+                }
+            }
     )
 
     @Test

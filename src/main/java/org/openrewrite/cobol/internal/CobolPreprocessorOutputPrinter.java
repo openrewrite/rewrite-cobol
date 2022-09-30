@@ -263,6 +263,14 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             }
 
             if (!inUnknownIndicator) {
+                Optional<ReplaceAdditiveType> replaceAdditiveTypeOptional = word.getMarkers().findFirst(ReplaceAdditiveType.class);
+                if (replaceAdditiveTypeOptional.isPresent()) {
+                    ReplaceAdditiveType replaceAdditiveType = replaceAdditiveTypeOptional.get();
+                    for (Replace additionalWord : replaceAdditiveType.getAdditionalWords()) {
+                        visit(additionalWord.getOriginalWord(), p);
+                    }
+                }
+
                 visitSpace(word.getPrefix(), p);
                 visitMarkers(word.getMarkers(), p);
                 p.append(word.getWord());
@@ -292,65 +300,68 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 replaceReductiveType = replaceTypeReductiveOptional.get();
             }
         } else if (replaceReductiveType != null) {
-            // Print the markers from the original words and replace the original words with whitespace.
-            for (Replace replace : replaceReductiveType.getOriginalWords()) {
-                CobolPreprocessor.Word originalWord = replace.getOriginalWord();
-                Optional<Continuation> continuation = originalWord.getMarkers().findFirst(Continuation.class);
-                if (continuation.isPresent()) {
-                    throw new UnsupportedOperationException("Implement continuation lines for a reductive replacement.");
-                }
-
-                Optional<SequenceArea> sequenceArea = originalWord.getMarkers().findFirst(SequenceArea.class);
-                sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
-
-                Optional<IndicatorArea> indicatorArea = originalWord.getMarkers().findFirst(IndicatorArea.class);
-                indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
-
-                visitSpace(originalWord.getPrefix(), p);
-
-                String replaceWithWhitespace = generateWhitespace(originalWord.getWord().length());
-                p.append(replaceWithWhitespace);
-
-                Optional<CommentArea> commentArea = originalWord.getMarkers().findFirst(CommentArea.class);
-                commentArea.ifPresent(it -> visitCommentArea(it, p));
-            }
-
-            // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
-            int curIndex = getCurrentIndex(p.getOut());
-            if (curIndex == -1) {
-                throw new UnsupportedOperationException("Unknown case: Detected a ReplaceTypeReductive at the start of the source code.");
-            }
-
-            // Fill the remaining line with whitespace to align the column areas.
-            // Reductive changes require printing the original column areas with the original word replaced by whitespace.
-            // The last replaced word might end the line, so the current index might be greater than (CommentArea) or
-            // equal to the end of the content area.
-            int contentEnd = cobolDialect.getColumns().getOtherArea();
-            int untilEndOfLine = curIndex >= contentEnd ? 0 : cobolDialect.getColumns().getOtherArea() - curIndex;
-            String whitespace = generateWhitespace(untilEndOfLine) + "\n";
-            p.append(whitespace);
-
-            // Add Start key.
-            p.append(getReplaceTypeReductiveStartComment());
-
-            // Add UUID key.
-            addUuidKey(getUuidComment(), replaceReductiveType.getId(), p);
-
-            // Add Stop key.
-            p.append(getReplaceTypeReductiveStopComment());
-
-            // Add whitespace until the next token will be aligned with the column area.
-            String afterStop = getColumnAlignmentAfterStop(curIndex);
-            p.append(afterStop);
-            p.append(StringUtils.repeat(" ", curIndex >= contentEnd ? 0 : curIndex));
+            reductiveTemplate(p);
 
             super.visitWord(word, p);
-
             replaceReductiveType = null;
         } else {
             super.visitWord(word, p);
         }
         return word;
+    }
+
+    private void reductiveTemplate(PrintOutputCapture<P> p) {
+        // Print the markers from the original words and replace the original words with whitespace.
+        for (Replace replace : replaceReductiveType.getOriginalWords()) {
+            CobolPreprocessor.Word originalWord = replace.getOriginalWord();
+            Optional<Continuation> continuation = originalWord.getMarkers().findFirst(Continuation.class);
+            if (continuation.isPresent()) {
+                throw new UnsupportedOperationException("Implement continuation lines for a reductive replacement.");
+            }
+
+            Optional<SequenceArea> sequenceArea = originalWord.getMarkers().findFirst(SequenceArea.class);
+            sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
+
+            Optional<IndicatorArea> indicatorArea = originalWord.getMarkers().findFirst(IndicatorArea.class);
+            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
+
+            visitSpace(originalWord.getPrefix(), p);
+
+            String replaceWithWhitespace = generateWhitespace(originalWord.getWord().length());
+            p.append(replaceWithWhitespace);
+
+            Optional<CommentArea> commentArea = originalWord.getMarkers().findFirst(CommentArea.class);
+            commentArea.ifPresent(it -> visitCommentArea(it, p));
+        }
+
+        // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
+        int curIndex = getCurrentIndex(p.getOut());
+        if (curIndex == -1) {
+            throw new UnsupportedOperationException("Unknown case: Detected a ReplaceTypeReductive at the start of the source code.");
+        }
+
+        // Fill the remaining line with whitespace to align the column areas.
+        // Reductive changes require printing the original column areas with the original word replaced by whitespace.
+        // The last replaced word might end the line, so the current index might be greater than (CommentArea) or
+        // equal to the end of the content area.
+        int contentEnd = cobolDialect.getColumns().getOtherArea();
+        int untilEndOfLine = curIndex >= contentEnd ? 0 : cobolDialect.getColumns().getOtherArea() - curIndex;
+        String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+        p.append(whitespace);
+
+        // Add Start key.
+        p.append(getReplaceTypeReductiveStartComment());
+
+        // Add UUID key.
+        addUuidKey(getUuidComment(), replaceReductiveType.getId(), p);
+
+        // Add Stop key.
+        p.append(getReplaceTypeReductiveStopComment());
+
+        // Add whitespace until the next token will be aligned with the column area.
+        String afterStop = getColumnAlignmentAfterStop(curIndex);
+        p.append(afterStop);
+        p.append(StringUtils.repeat(" ", curIndex >= contentEnd ? 0 : curIndex));
     }
 
     private void replaceTemplate(CobolPreprocessor.Word word, PrintOutputCapture<P> p, Replace replace) {
