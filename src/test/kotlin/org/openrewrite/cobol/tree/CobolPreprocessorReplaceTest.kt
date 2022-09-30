@@ -202,7 +202,40 @@ class CobolPreprocessorReplaceTest : RewriteTest {
 
     @Test
     fun sm203A() = rewriteRun(
-        cobolPreprocessorCopy(getNistSource("SM203A.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM203A.CBL")) { spec ->
+            spec.afterRecipe { cu ->
+                val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
+                assertThat(statements.size).isEqualTo(3)
+
+                val k3snb = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                val printer = CobolPreprocessorOutputPrinter<ExecutionContext>(dialect, false)
+                printer.visit(statements[0], k3snb)
+                var result = k3snb.getOut().trimIndent()
+                assertThat(result).isEqualTo(
+                    """
+                        XXXXX051                                                     
+                        IS SW-1                                                
+                        ON STATUS IS SWITCH-ON                                        
+                        OFF STATUS IS SWITCH-OFF.                                     
+                    """.trimIndent())
+
+                val k3fcb = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                printer.visit(statements[1], k3fcb)
+                result = k3fcb.getOut().trimIndent()
+                assertThat(result).isEqualTo(
+                    """
+                        SELECT PRINT-FILE ASSIGN TO                                  
+                        XXXXX055.                                                    
+                        SELECT TEST-FILE ASSIGN TO                             
+                        XXXXP002.                                                    
+                    """.trimIndent())
+
+                val k3iob = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                printer.visit(statements[2], k3iob)
+                result = k3iob.getOut().trim()
+                assertThat(result).isEqualTo("SAME RECORD AREA FOR TEST-FILE, PRINT-FILE.")
+            }
+        }
     )
 
     @Test
