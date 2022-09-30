@@ -20,6 +20,7 @@ import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
+import org.openrewrite.internal.lang.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,9 +63,17 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     public static final String REPLACE_OFF_START_KEY = "__REPLACE_OFF_START__";
     public static final String REPLACE_OFF_STOP_KEY = "__REPLACE_OFF_STOP__";
 
+    // The ReplaceTypeAdditive template is fully parsed between the start and stop and do not require a unique UUID.
+    public static final String REPLACE_TYPE_ADDITIVE_START_KEY = "__REPLACE_TYPE_ADDITIVE_START__";
+    public static final String REPLACE_TYPE_ADDITIVE_STOP_KEY = "__REPLACE_TYPE_ADDITIVE_STOP__";
+
+    // The ReplaceTypeAdditive template is fully parsed between the start and stop and do not require a unique UUID.
+    public static final String REPLACE_ADD_WORD_START_KEY = "__REPLACE_ADD_WORD_START__";
+    public static final String REPLACE_ADD_WORD_STOP_KEY = "__REPLACE_ADD_WORD_STOP__";
+
     // The ReplaceTypeReductive template is fully parsed between the start and stop and do not require a unique UUID.
-    public static final String REPLACE_TYPE_REDUCTIVE_START_KEY = "__REPLACE_TYPE_START_REDUCTIVE__";
-    public static final String REPLACE_TYPE_REDUCTIVE_STOP_KEY = "__REPLACE_TYPE_STOP_REDUCTIVE__";
+    public static final String REPLACE_TYPE_REDUCTIVE_START_KEY = "__REPLACE_TYPE_REDUCTIVE_START__";
+    public static final String REPLACE_TYPE_REDUCTIVE_STOP_KEY = "__REPLACE_TYPE_REDUCTIVE_STOP__";
 
     public static final String REPLACE_ADDITIVE_WHITESPACE_KEY = "__REPLACE_ADDITIVE_WHITESPACE__";
 
@@ -95,6 +104,14 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     // ReplaceOff comments.
     private String replaceOffStartComment = null;
     private String replaceOffStopComment = null;
+
+    // ReplaceAddWord comments.
+    private String replaceAddWordStartComment = null;
+    private String replaceAddWordStopComment = null;
+
+    // ReplaceTypeAdditive comments.
+    private String replaceTypeAdditiveStartComment = null;
+    private String replaceTypeAdditiveStopComment = null;
 
     // ReplaceTypeReductive comments.
     private String replaceTypeReductiveStartComment = null;
@@ -290,6 +307,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
         // Replace contains many special cases due to changes in column alignment after a replacement.
         Optional<Replace> replaceOptional = word.getMarkers().findFirst(Replace.class);
         Optional<ReplaceReductiveType> replaceTypeReductiveOptional = word.getMarkers().findFirst(ReplaceReductiveType.class);
+        Optional<ReplaceAdditiveType> replaceAdditiveTypeOptional = word.getMarkers().findFirst(ReplaceAdditiveType.class);
         if (replaceOptional.isPresent()) {
             Optional<Lines> replaceLines = replaceOptional.get().getOriginalWord().getMarkers().findFirst(Lines.class);
             replaceLines.ifPresent(lines -> visitLines(lines, p));
@@ -300,17 +318,44 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
                 replaceReductiveType = replaceTypeReductiveOptional.get();
             }
         } else if (replaceReductiveType != null) {
-            reductiveTemplate(p);
+            replaceReductiveTemplate(p);
 
             super.visitWord(word, p);
             replaceReductiveType = null;
+        } else if (replaceAdditiveTypeOptional.isPresent()) {
+            replaceAdditiveTemplate(replaceAdditiveTypeOptional.get(), p);
+            super.visitWord(word, p);
         } else {
             super.visitWord(word, p);
         }
         return word;
     }
 
-    private void reductiveTemplate(PrintOutputCapture<P> p) {
+    private void replaceAdditiveTemplate(ReplaceAdditiveType replaceAdditiveType, PrintOutputCapture<P> p) {
+        // Fill the remaining line with whitespace to align the column areas.
+        int curIndex = getCurrentIndex(p.getOut());
+        int contentEnd = cobolDialect.getColumns().getOtherArea();
+        int untilEndOfLine = curIndex >= contentEnd ? 0 : cobolDialect.getColumns().getOtherArea() - curIndex;
+        String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+        p.append(whitespace);
+
+        int startKeyIndex = getCurrentIndex(p.getOut());
+        addStartKey(getReplaceTypeAdditiveStartComment(), startKeyIndex, p);
+        addUuidKey(getUuidComment(), replaceAdditiveType.getId(), p);
+        for (Replace additionalWord : replaceAdditiveType.getAdditionalWords()) {
+            p.append(getReplaceAddWordStartComment());
+            String addedWord = getDialectSequenceArea() + " " + additionalWord.getOriginalWord().getPrefix().getWhitespace() + additionalWord.getOriginalWord().getWord();
+            p.append(addedWord);
+            int addedIndex = getCurrentIndex(p.getOut());
+            untilEndOfLine = addedIndex >= contentEnd ? 0 : cobolDialect.getColumns().getOtherArea() - addedIndex;
+            String addWhitespace = generateWhitespace(untilEndOfLine) + "\n";
+            p.append(addWhitespace);
+            p.append(getReplaceAddWordStopComment());
+        }
+        addStopComment(getReplaceTypeAdditiveStopComment(), null, curIndex, p);
+    }
+
+    private void replaceReductiveTemplate(PrintOutputCapture<P> p) {
         // Print the markers from the original words and replace the original words with whitespace.
         for (Replace replace : replaceReductiveType.getOriginalWords()) {
             CobolPreprocessor.Word originalWord = replace.getOriginalWord();
@@ -596,24 +641,24 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
      * @param statement current preprocessor element being processed.
      * @param curIndex the cursor position before the current statement.
      */
-    private void addStopComment(String stopComment, CobolPreprocessor statement, int curIndex, PrintOutputCapture<P> p) {
+    private void addStopComment(String stopComment, @Nullable CobolPreprocessor statement, int curIndex, PrintOutputCapture<P> p) {
         p.append(stopComment);
 
         PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
         statementPrinter.visit(statement, outputCapture);
 
-        String copy = outputCapture.getOut();
-        boolean isEndOfLine = copy.endsWith("\n");
-        boolean isCRLF = copy.endsWith("\r\n");
+        String output = outputCapture.getOut();
+        boolean isEndOfLine = output.endsWith("\n");
+        boolean isCRLF = output.endsWith("\r\n");
 
-        int totalChars = copy.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
+        int totalChars = output.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
         int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
 
         int numberOfSpaces;
         if (!isEndOfLine && totalChars > contentAreaLength) {
             throw new UnsupportedOperationException("Recalculate prefix.");
         } else {
-            numberOfSpaces = isEndOfLine ? 0 : copy.length() + curIndex;
+            numberOfSpaces = isEndOfLine ? 0 : output.length() + curIndex;
         }
 
         String afterStop = getColumnAlignmentAfterStop(numberOfSpaces);
@@ -757,6 +802,46 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             replaceOffStopComment = getTemplateComment(REPLACE_OFF_STOP_KEY);
         }
         return replaceOffStopComment;
+    }
+
+    /**
+     * Lazily load the START comment of a {@link ReplaceAdditiveType} template.
+     */
+    public String getReplaceAddWordStartComment() {
+        if (replaceAddWordStartComment == null) {
+            replaceAddWordStartComment = getTemplateComment(REPLACE_ADD_WORD_START_KEY);
+        }
+        return replaceAddWordStartComment;
+    }
+
+    /**
+     * Lazily load the STOP comment of a {@link ReplaceAdditiveType} template.
+     */
+    public String getReplaceAddWordStopComment() {
+        if (replaceAddWordStopComment == null) {
+            replaceAddWordStopComment = getTemplateComment(REPLACE_ADD_WORD_STOP_KEY);
+        }
+        return replaceAddWordStopComment;
+    }
+
+    /**
+     * Lazily load the START comment of a {@link ReplaceAdditiveType} template.
+     */
+    public String getReplaceTypeAdditiveStartComment() {
+        if (replaceTypeAdditiveStartComment == null) {
+            replaceTypeAdditiveStartComment = getTemplateComment(REPLACE_TYPE_ADDITIVE_START_KEY);
+        }
+        return replaceTypeAdditiveStartComment;
+    }
+
+    /**
+     * Lazily load the STOP comment of a {@link ReplaceAdditiveType} template.
+     */
+    public String getReplaceTypeAdditiveStopComment() {
+        if (replaceTypeAdditiveStopComment == null) {
+            replaceTypeAdditiveStopComment = getTemplateComment(REPLACE_TYPE_ADDITIVE_STOP_KEY);
+        }
+        return replaceTypeAdditiveStopComment;
     }
 
     /**

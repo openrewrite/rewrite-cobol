@@ -61,6 +61,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private Set<CobolPreprocessor.ReplaceByStatement> replaceRules = null;
     private Set<CobolPreprocessor.ReplaceOffStatement> replaceOffs = null;
     private Set<Replace> replaces = null;
+    private Set<ReplaceAdditiveType> replaceAdditiveTypes = null;
     private Set<ReplaceReductiveType> replaceReductiveTypes = null;
 
     public CobolPreprocessorParser(CobolDialect cobolDialect,
@@ -103,7 +104,6 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         CobolPreprocessor.CompilationUnit preprocessedCU = parserVisitor.visitStartRule(parser.startRule());
 
                         if (enableCopy) {
-                            List<Path> copyBookPaths = getCopyBooks();
                             PreprocessCopyVisitor<ExecutionContext> copyPhase = new PreprocessCopyVisitor<>(copyBooks);
 
                             // CU after copy includes the copied source.
@@ -228,6 +228,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         this.replaceRules = null;
         this.replaceOffs = null;
         this.replaces = null;
+        this.replaceAdditiveTypes = null;
+        this.replaceReductiveTypes = null;
         return this;
     }
 
@@ -333,6 +335,13 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         return replaces;
     }
 
+    public Set<ReplaceAdditiveType> getReplaceAdditiveTypes(@Nullable CobolPreprocessor.CompilationUnit cu) {
+        if (replaceAdditiveTypes == null) {
+            getOriginalSources(cu);
+        }
+        return replaceAdditiveTypes;
+    }
+
     public Set<ReplaceReductiveType> getReplaceReductiveTypes(@Nullable CobolPreprocessor.CompilationUnit cu) {
         if (replaceReductiveTypes == null) {
             getOriginalSources(cu);
@@ -345,6 +354,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         this.replaceRules = new HashSet<>();
         this.replaceOffs = new HashSet<>();
         this.replaces = new HashSet<>();
+        this.replaceAdditiveTypes = new HashSet<>();
         this.replaceReductiveTypes = new HashSet<>();
 
         CobolPreprocessorIsoVisitor<ExecutionContext> visitor = new CobolPreprocessorIsoVisitor<ExecutionContext>() {
@@ -356,13 +366,15 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
             }
 
             @Override
-            public CobolPreprocessor.ReplaceByStatement visitReplaceByStatement(CobolPreprocessor.ReplaceByStatement replaceByStatement, ExecutionContext executionContext) {
+            public CobolPreprocessor.ReplaceByStatement visitReplaceByStatement(CobolPreprocessor.ReplaceByStatement replaceByStatement,
+                                                                                ExecutionContext executionContext) {
                 replaceRules.add(replaceByStatement);
                 return super.visitReplaceByStatement(replaceByStatement, executionContext);
             }
 
             @Override
-            public CobolPreprocessor.ReplaceOffStatement visitReplaceOffStatement(CobolPreprocessor.ReplaceOffStatement replaceOffStatement, ExecutionContext executionContext) {
+            public CobolPreprocessor.ReplaceOffStatement visitReplaceOffStatement(CobolPreprocessor.ReplaceOffStatement replaceOffStatement,
+                                                                                  ExecutionContext executionContext) {
                 replaceOffs.add(replaceOffStatement);
                 return super.visitReplaceOffStatement(replaceOffStatement, executionContext);
             }
@@ -371,6 +383,9 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
             public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
                 Optional<Replace> replace = word.getMarkers().findFirst(Replace.class);
                 replace.ifPresent(it -> replaces.add(it));
+
+                Optional<ReplaceAdditiveType> replaceAdditiveType = word.getMarkers().findFirst(ReplaceAdditiveType.class);
+                replaceAdditiveType.ifPresent(it -> replaceAdditiveTypes.add(it));
 
                 Optional<ReplaceReductiveType> replaceReductiveType = word.getMarkers().findFirst(ReplaceReductiveType.class);
                 replaceReductiveType.ifPresent(it -> replaceReductiveTypes.add(it));
