@@ -146,7 +146,58 @@ class CobolPreprocessorReplaceTest : RewriteTest {
 
     @Test
     fun sm202A() = rewriteRun(
-        cobolPreprocessorCopy(getNistSource("SM202A.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM202A.CBL")) { spec ->
+            spec.afterRecipe { cu ->
+                val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
+                assertThat(statements.size).isEqualTo(3)
+
+                val k2sea = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                val printer = CobolPreprocessorOutputPrinter<ExecutionContext>(dialect, false)
+                printer.visit(statements[0], k2sea)
+                var result = k2sea.getOut().trimIndent()
+                assertThat(result).isEqualTo(
+                    """
+                        PARA-1.                                                          
+                            ALTER    PARA-2 TO PROCEED TO PARA-4.                        
+                        PARA-2.                                                          
+                            GO       TO PARA-3.                                           
+                        PARA-3.                                                           
+                            PERFORM  FAIL.                                               
+                            GO       TO COPY-WRITE-15.                                   
+                        PARA-4.                                                          
+                            PERFORM  PASS.                                         
+                            GO       TO COPY-WRITE-15.                                   
+                    """.trimIndent())
+
+                val k2praFirst = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                printer.visit(statements[1], k2praFirst)
+                result = k2praFirst.getOut().trimIndent()
+                assertThat(result).isEqualTo(
+                    """
+                        MOVE     "TRUE " TO AREA-1.                             
+                        MOVE     " TWO${'$'}" TO AREA-2.                             
+                        MOVE     "+ 2 =" TO AREA-3.                             
+                        MOVE     4 TO AREA-4.                             
+                        IF       TOTAL-AREA EQUAL TO "TRUE  TWO + 2 =    4"          
+                                 PERFORM PASS ELSE PERFORM FAIL.                     
+                        GO       TO COPY-WRITE-16.                                   
+                    """.trimIndent())
+
+                val k2praSecond = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                printer.visit(statements[2], k2praSecond)
+                result = k2praSecond.getOut().trimIndent()
+                assertThat(result).isEqualTo(
+                    """
+                        MOVE     TRUE-Q-04 OF TRUE-Q-03                                                 IN TRUE-Q-02 TO AREA-1.                             
+                        MOVE     " TWO FIVE " TO AREA-2.                             
+                        MOVE     Z (2, 1, 1) TO AREA-3.                             
+                        MOVE     +000004.99 TO AREA-4.                             
+                        IF       TOTAL-AREA EQUAL TO "TRUE  TWO + 2 =    4"          
+                                 PERFORM PASS ELSE PERFORM FAIL.                     
+                        GO       TO COPY-WRITE-17.                                   
+                    """.trimIndent())
+            }
+        }
     )
 
     @Test

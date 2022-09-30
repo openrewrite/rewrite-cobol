@@ -392,8 +392,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         // The order of matched MUST be retained for sequential replacements to work.
         Map<List<CobolPreprocessor.Word>, List<CobolPreprocessor.Word>> replacements = new LinkedHashMap<>();
         for (CobolPreprocessor.ReplaceClause clause : replacingPhrase.getClauses()) {
-            List<CobolPreprocessor.Word> replaceable = resolveReplace(clause.getReplaceable());
-            List<CobolPreprocessor.Word> replacement = resolveReplace(clause.getReplacement());
+            List<CobolPreprocessor.Word> replaceable = resolveReplacementRule(clause.getReplaceable());
+            List<CobolPreprocessor.Word> replacement = resolveReplacement(clause);
             if (!replaceable.isEmpty()) {
                 replacements.put(replaceable, replacement);
             }
@@ -406,8 +406,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         // The order of matched MUST be retained for sequential replacements to work.
         Map<List<CobolPreprocessor.Word>, List<CobolPreprocessor.Word>> replacements = new LinkedHashMap<>();
         for (CobolPreprocessor.ReplaceClause clause : replaceByStatement.getClauses()) {
-            List<CobolPreprocessor.Word> replaceable = resolveReplace(clause.getReplaceable());
-            List<CobolPreprocessor.Word> replacement = resolveReplace(clause.getReplacement());
+            List<CobolPreprocessor.Word> replaceable = resolveReplacementRule(clause.getReplaceable());
+            List<CobolPreprocessor.Word> replacement = resolveReplacement(clause);
             if (!replaceable.isEmpty()) {
                 replacements.put(replaceable, replacement);
             }
@@ -415,7 +415,30 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         return replacements;
     }
 
-    private List<CobolPreprocessor.Word> resolveReplace(CobolPreprocessor cobolPreprocessor) {
+    /**
+     * A replacement in a {@link org.openrewrite.cobol.tree.CobolPreprocessor.ReplaceClause} contains trailing elements
+     * that need to be a part of the replacement.
+     *
+     * @param replaceClause The original ReplaceClause.
+     */
+    private List<CobolPreprocessor.Word> resolveReplacement(CobolPreprocessor.ReplaceClause replaceClause) {
+        List<CobolPreprocessor.Word> words = new ArrayList<>(resolveReplacementRule(replaceClause.getReplacement()));
+        if (replaceClause.getSubscript() != null) {
+            replaceClause.getSubscript().forEach(s -> words.addAll(resolveReplacementRule(s)));
+        }
+        if (replaceClause.getDirectoryPhrases() != null) {
+            replaceClause.getDirectoryPhrases().forEach(s -> words.addAll(resolveReplacementRule(s)));
+        }
+        if (replaceClause.getFamilyPhrase() != null) {
+            words.addAll(resolveReplacementRule(replaceClause.getFamilyPhrase()));
+        }
+        return words;
+    }
+
+    /**
+     * Generic resolve method to interpret the CobolPreprocessor object and generate the replacement rule.
+     */
+    private List<CobolPreprocessor.Word> resolveReplacementRule(CobolPreprocessor cobolPreprocessor) {
         List<CobolPreprocessor.Word> words = new ArrayList<>();
         CobolPreprocessorWordVisitor wordVisitor = new CobolPreprocessorWordVisitor();
 
@@ -437,6 +460,12 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         } else if (cobolPreprocessor instanceof CobolPreprocessor.Word) {
             CobolPreprocessor.Word word = (CobolPreprocessor.Word) cobolPreprocessor;
             wordVisitor.visit(word, words);
+        } else if (cobolPreprocessor instanceof CobolPreprocessor.DirectoryPhrase) {
+            CobolPreprocessor.DirectoryPhrase directoryPhrase = (CobolPreprocessor.DirectoryPhrase) cobolPreprocessor;
+            wordVisitor.visit(directoryPhrase, words);
+        } else if (cobolPreprocessor instanceof CobolPreprocessor.FamilyPhrase) {
+            CobolPreprocessor.FamilyPhrase familyPhrase = (CobolPreprocessor.FamilyPhrase) cobolPreprocessor;
+            wordVisitor.visit(familyPhrase, words);
         } else {
             throw new UnsupportedOperationException("Implement me.");
         }
