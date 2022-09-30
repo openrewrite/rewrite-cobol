@@ -28,7 +28,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     .collect(Collectors.toList());
 
             if (!phrases.isEmpty()) {
-                Map<List<CobolPreprocessor.Word>, List<CobolPreprocessor.Word>> replacements = new HashMap<>();
+                Map<List<CobolPreprocessor.Word>, List<CobolPreprocessor.Word>> replacements = new LinkedHashMap<>();
                 phrases.forEach(it -> replacements.putAll(getReplacings(it)));
 
                 for (Map.Entry<List<CobolPreprocessor.Word>, List<CobolPreprocessor.Word>> entry : replacements.entrySet()) {
@@ -389,7 +389,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
     // Collect ReplaceClauses from CopyStatement Replacing.
     @SuppressWarnings("SpellCheckingInspection")
     private Map<List<CobolPreprocessor.Word>, List<CobolPreprocessor.Word>> getReplacings(CobolPreprocessor.ReplacingPhrase replacingPhrase) {
-        Map<List<CobolPreprocessor.Word>, List<CobolPreprocessor.Word>> replacements = new HashMap<>();
+        // The order of matched MUST be retained for sequential replacements to work.
+        Map<List<CobolPreprocessor.Word>, List<CobolPreprocessor.Word>> replacements = new LinkedHashMap<>();
         for (CobolPreprocessor.ReplaceClause clause : replacingPhrase.getClauses()) {
             List<CobolPreprocessor.Word> replaceable = resolveReplace(clause.getReplaceable());
             List<CobolPreprocessor.Word> replacement = resolveReplace(clause.getReplacement());
@@ -402,7 +403,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
 
     // Collect ReplaceClauses from ReplaceByStatement.
     private Map<List<CobolPreprocessor.Word>, List<CobolPreprocessor.Word>> getReplacements(CobolPreprocessor.ReplaceByStatement replaceByStatement) {
-        Map<List<CobolPreprocessor.Word>, List<CobolPreprocessor.Word>> replacements = new HashMap<>();
+        // The order of matched MUST be retained for sequential replacements to work.
+        Map<List<CobolPreprocessor.Word>, List<CobolPreprocessor.Word>> replacements = new LinkedHashMap<>();
         for (CobolPreprocessor.ReplaceClause clause : replaceByStatement.getClauses()) {
             List<CobolPreprocessor.Word> replaceable = resolveReplace(clause.getReplaceable());
             List<CobolPreprocessor.Word> replacement = resolveReplace(clause.getReplacement());

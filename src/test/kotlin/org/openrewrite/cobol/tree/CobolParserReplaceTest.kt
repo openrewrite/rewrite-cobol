@@ -15,10 +15,14 @@
  */
 package org.openrewrite.cobol.tree
 
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
+import org.openrewrite.InMemoryExecutionContext
+import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.Assertions.cobolCopy
 import org.openrewrite.cobol.CobolVisitor
+import org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter
 import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec

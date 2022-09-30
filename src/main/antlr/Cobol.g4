@@ -3219,25 +3219,25 @@ SLASHCHAR : '/';
 // literals
 NONNUMERICLITERAL : STRINGLITERAL | DBCSLITERAL | HEXNUMBER  | NULLTERMINATED;
 
-fragment HEXNUMBER :
-	X '"' [0-9A-F]+ '"'
-	| X '\'' [0-9A-F]+ '\''
-;
+fragment HEXNUMBER
+    : X '"' [0-9A-F]+ '"'
+    | X '\'' [0-9A-F]+ '\''
+    ;
 
-fragment NULLTERMINATED :
-	Z '"' (~["\n\r] | '""' | '\'')* '"'
-	| Z '\'' (~['\n\r] | '\'\'' | '"')* '\''
-;
+fragment NULLTERMINATED
+    : Z '"' (~["\n\r] | '""' | '\'')* '"'
+    | Z '\'' (~['\n\r] | '\'\'' | '"')* '\''
+    ;
 
-fragment STRINGLITERAL :
-	'"' (~["\n\r] | '""' | '\'')* '"'
-	| '\'' (~['\n\r] | '\'\'' | '"')* '\''
-;
+fragment STRINGLITERAL
+    : '"' (~["\n\r] | '""' | '\'')* '"'
+    | '\'' (~['\n\r] | '\'\'' | '"')* '\''
+    ;
 
-fragment DBCSLITERAL :
-	[GN] '"' (~["\n\r] | '""' | '\'')* '"'
-	| [GN] '\'' (~['\n\r] | '\'\'' | '"')* '\''
-;
+fragment DBCSLITERAL
+    : [GN] '"' (~["\n\r] | '""' | '\'')* '"'
+    | [GN] '\'' (~['\n\r] | '\'\'' | '"')* '\''
+    ;
 
 LEVEL_NUMBER_66 : '66';
 LEVEL_NUMBER_77 : '77';

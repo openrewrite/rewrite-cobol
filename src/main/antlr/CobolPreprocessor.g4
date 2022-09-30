@@ -273,7 +273,7 @@ cobolWord
    ;
 
 literal
-   : NONNUMERICLITERAL | NUMERICLITERAL
+   : NONNUMERICLITERAL | NUMERICLITERAL | INTEGERLITERAL
    ;
 
 filename
@@ -635,17 +635,19 @@ DOUBLEEQUALCHAR : '==';
 
 // literals
 NONNUMERICLITERAL : STRINGLITERAL | HEXNUMBER;
-NUMERICLITERAL : ('-' | '+')? [0-9]* ('.' | COMMACHAR) [0-9]+ (('e' | 'E')  ('-' | '+')? [0-9]+)?;
 
-fragment HEXNUMBER :
-	X '"' [0-9A-F]+ '"'
-	| X '\'' [0-9A-F]+ '\''
-;
+INTEGERLITERAL : ('-' | '+')? [0-9]+;
+NUMERICLITERAL : ('-' | '+')? [0-9]* ('.' | COMMACHAR) [0-9]+ (('e' | 'E') ('-' | '+')? [0-9]+)?;
 
-fragment STRINGLITERAL :
-	'"' (~["\n\r] | '""' | '\'')* '"'
-	| '\'' (~['\n\r] | '\'\'' | '"')* '\''
-;
+fragment HEXNUMBER
+    : X '"' [0-9A-F]+ '"'
+    | X '\'' [0-9A-F]+ '\''
+    ;
+
+fragment STRINGLITERAL
+    : '"' (~["\n\r] | '""' | '\'')* '"'
+    | '\'' (~['\n\r] | '\'\'' | '"')* '\''
+    ;
 
 IDENTIFIER : [a-zA-Z0-9]+ ([-_]+ [a-zA-Z0-9]+)*;
 FILENAME : [a-zA-Z0-9]+ '.' [a-zA-Z0-9]+;

@@ -90,10 +90,12 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                     val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
                     assertThat(statements.size).isEqualTo(9)
 
-                    var output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    val kp001 = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
                     val printer = CobolPreprocessorOutputPrinter<ExecutionContext>(dialect, false)
-                    printer.visit(statements[0], output)
-                    assertThat(output.getOut()).isEqualTo("""
+                    printer.visit(statements[0], kp001)
+                    var result = kp001.getOut().trimIndent()
+                    assertThat(result).isEqualTo(
+                    """
                         PST-TEST-001.                                                    
                             MOVE    "PSEUDO-TEXT" TO FEATURE.                            
                             MOVE    "PST-TEST-001" TO PAR-NAME                           
@@ -103,9 +105,10 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                             PERFORM PRINT-DETAIL.                                        
                     """.trimIndent())
 
-                    output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-                    printer.visit(statements[1], output)
-                    assertThat(output.getOut().trimIndent()).isEqualTo("""
+                    val kp002 = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    printer.visit(statements[1], kp002)
+                    result = kp002.getOut().trimIndent()
+                    assertThat(result).isEqualTo("""
                         MOVE   +00009 TO WRK-DS-05V00-O005-001  IN WRK-XN-00050-O005F-001 OF GRP-006 OF GRP-004 IN GRP-003 ( 2 ).         
                         ADD                                                          
                             +00001 TO                                                
@@ -113,19 +116,62 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                                                       IN                       
                                                                WRK-XN-00050-O005F-001                     
                                                                 IN                 
-                                     GRP-006 IN GRP-004 IN GRP-002 IN GRP-001 ( 1 ).           
+                                     GRP-006 IN GRP-004 IN GRP-002 IN GRP-001 (1).           
                     """.trimIndent())
 
-                    output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-                    printer.visit(statements[2], output)
-                    assertThat(output.getOut().trimIndent()).isEqualTo("""
+                    val kp003 = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    printer.visit(statements[2], kp003)
+                    result = kp003.getOut().trimIndent()
+                    assertThat(result).isEqualTo("""
                         PST-TEST-003.                                                    
                             MOVE    +0009 TO WRK-DS-05V00-O005-001  IN GRP-003 (3).      
-                            ADD     + 2 TO WRK-DS-09V00-901.                          
-                            SUBTRACT - 3 FROM WRK-DS-05V00-O005-001 IN GRP-002 (3).        
-                         3PST-EXIT-003-X 3.                                                  
+                            ADD     +2 TO WRK-DS-09V00-901.                          
+                            SUBTRACT -3 FROM WRK-DS-05V00-O005-001 IN GRP-002 (3).        
+                        PST-EXIT-003-X.                                                  
                     """.trimIndent())
-                    println()
+
+                    val kp004 = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    printer.visit(statements[3], kp004)
+                    result = kp004.getOut().trimIndent()
+                    assertThat(result).isEqualTo("""
+                        PST-INIT-004.                                                    
+                            MOVE "PSEUDO-TEXT/WORD" TO FEATURE.                          
+                            MOVE    ZERO TO WRK-DS-09V00-901.                            
+                            MOVE    "PST-TEST-004" TO PAR-NAME.                          
+                        PST-TEST-004.                                                    
+                            ADD     5 TO WRK-DS-09V00-901.                               
+                            MOVE                           
+                                     +2 TO WRK-DS-09V00-902.                        
+                            GO TO   PST-EXIT-004.                                        
+                        PST-DELETE-004.                                                  
+                            PERFORM DE-LETE.                                              
+                        PST-EXIT-004.                                                    
+                            EXIT.                                                        
+                    """.trimIndent())
+
+                    val kp005 = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    printer.visit(statements[4], kp005)
+                    result = kp005.getOut().trim()
+                    assertThat(result).isEqualTo("MOVE 7 TO WRK-DS-09V00-901.")
+
+                    val kp006 = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    printer.visit(statements[5], kp006)
+                    result = kp006.getOut().trim()
+                    assertThat(result).isEqualTo("ADD      001005 TO WRK-DS-09V00-901.")
+
+                    val kp007 = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    printer.visit(statements[6], kp007)
+                    assertThat(kp007.getOut().trim()).isEqualTo("PERFORM PASS.")
+
+                    val kp008 = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    printer.visit(statements[7], kp008)
+                    result = kp008.getOut().trim()
+                    assertThat(result).isEqualTo("PERFORM PASS.")
+
+                    val kp009 = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                    printer.visit(statements[8], kp009)
+                    result = kp009.getOut().trim()
+                    assertThat(result).isEqualTo("IF      WRK-XN-00001 = \"T\"")
                 }
             }
     )
