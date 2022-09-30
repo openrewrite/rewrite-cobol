@@ -61,10 +61,87 @@ class CobolPreprocessorReplaceTest : RewriteTest {
         })
     }
 
-    // TODO: add validation for replaced COPY BOOKS.
     @Test
     fun sm201A() = rewriteRun(
-        cobolPreprocessorCopy(getNistSource("SM201A.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM201A.CBL")) { spec ->
+            spec.afterRecipe { cu ->
+                val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
+                assertThat(statements.size).isEqualTo(8)
+
+                val k1fda = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                val printer = CobolPreprocessorOutputPrinter<ExecutionContext>(dialect, false)
+                printer.visit(statements[0], k1fda)
+                var result = k1fda.getOut().trimIndent()
+                assertThat(result).isEqualTo(
+                    """
+                        LABEL RECORDS STANDARD                                       
+                        VALUE OF                                                     
+                        XXXXX074                                                     
+                        IS                                                           
+                        XXXXX075                                                     
+                        DATA RECORD IS TST-TEST.                                     
+                    """.trimIndent())
+
+                val k101aFirst = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                printer.visit(statements[1], k101aFirst)
+                result = k101aFirst.getOut().trimIndent()
+                assertThat(result).isEqualTo(
+                    """
+                                .                                                    
+                        02 TF-1 PICTURE 9(5).                                   
+                        02 FILLER    PICTURE X(115).                                 
+                    """.trimIndent())
+
+                val k101aSecond = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                printer.visit(statements[2], k101aSecond)
+                result = k101aSecond.getOut().trimIndent()
+                assertThat(result).isEqualTo(
+                    """
+                                .                                                    
+                        02 FILLER PICTURE X(115).                                   
+                        02 TXT-FLD-1    PIC 9(5).                                 
+                    """.trimIndent())
+
+                val k1wkaFirst = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                printer.visit(statements[3], k1wkaFirst)
+                result = k1wkaFirst.getOut().trim()
+                assertThat(result).isEqualTo("02 WSTR999 PICTURE X(3) VALUE                              \"ABC\".")
+
+                val k1wkaSecond = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                printer.visit(statements[4], k1wkaSecond)
+                result = k1wkaSecond.getOut().trim()
+                assertThat(result).isEqualTo("02 WSTR-2A PICTURE X(3) VALUE                              \"ABC\".")
+
+                val k1wkbFirst = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                printer.visit(statements[5], k1wkbFirst)
+                result = k1wkbFirst.getOut().trimIndent()
+                assertThat(result).isEqualTo(
+                    """
+                        02 WSTR91  PICTURE XXX VALUE "ABC".                          
+                        02 WSTR92  PICTURE XXX VALUE "DEF".                          
+                        02 WSTR93  PICTURE XXX VALUE "GHI".                          
+                    """.trimIndent())
+
+                val k1wkbSecond = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                printer.visit(statements[6], k1wkbSecond)
+                assertThat(k1wkbSecond.getOut().trimIndent()).isEqualTo(
+                    """
+                        02 WSTR4A  PICTURE XXX VALUE "ABC".                          
+                        02 WSTR4B  PICTURE XXX VALUE "DEF".                          
+                        02 WSTR4C  PICTURE XXX VALUE "GHI".                          
+                    """.trimIndent())
+
+                val k1prb = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                printer.visit(statements[7], k1prb)
+                result = k1prb.getOut().trimIndent()
+                assertThat(result).isEqualTo(
+                    """
+                        MOVE WSTR4B TO WSTR91.                                       
+                        MOVE WSTR4B TO WSTR93.                                       
+                        MOVE WSTR4A TO WSTR92.                                       
+                    """.trimIndent())
+            }
+        }
     )
 
     @Test
@@ -108,7 +185,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                     val kp002 = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
                     printer.visit(statements[1], kp002)
                     result = kp002.getOut().trimIndent()
-                    assertThat(result).isEqualTo("""
+                    assertThat(result).isEqualTo(
+                    """
                         MOVE   +00009 TO WRK-DS-05V00-O005-001  IN WRK-XN-00050-O005F-001 OF GRP-006 OF GRP-004 IN GRP-003 ( 2 ).         
                         ADD                                                          
                             +00001 TO                                                
@@ -122,7 +200,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                     val kp003 = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
                     printer.visit(statements[2], kp003)
                     result = kp003.getOut().trimIndent()
-                    assertThat(result).isEqualTo("""
+                    assertThat(result).isEqualTo(
+                    """
                         PST-TEST-003.                                                    
                             MOVE    +0009 TO WRK-DS-05V00-O005-001  IN GRP-003 (3).      
                             ADD     +2 TO WRK-DS-09V00-901.                          
@@ -133,7 +212,8 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                     val kp004 = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
                     printer.visit(statements[3], kp004)
                     result = kp004.getOut().trimIndent()
-                    assertThat(result).isEqualTo("""
+                    assertThat(result).isEqualTo(
+                    """
                         PST-INIT-004.                                                    
                             MOVE "PSEUDO-TEXT/WORD" TO FEATURE.                          
                             MOVE    ZERO TO WRK-DS-09V00-901.                            
