@@ -240,7 +240,33 @@ class CobolPreprocessorReplaceTest : RewriteTest {
 
     @Test
     fun sm205A() = rewriteRun(
-        cobolPreprocessorCopy(getNistSource("SM205A.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM205A.CBL")) { spec ->
+            spec.afterRecipe { cu ->
+                val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
+                assertThat(statements.size).isEqualTo(2)
+
+                val k5sdb = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                val printer = CobolPreprocessorOutputPrinter<ExecutionContext>(dialect, false)
+                printer.visit(statements[0], k5sdb)
+                var result = k5sdb.getOut().trim()
+                assertThat(result).isEqualTo("DATA RECORD S-RECORD.")
+
+                val k501b = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+                printer.visit(statements[1], k501b)
+                result = k501b.getOut().trimIndent()
+                assertThat(result).isEqualTo(
+                    """
+                        02  KEYS-GROUP.                                              
+                            03  KEY-1 PICTURE 9.                                     
+                            03  KEY-2 PICTURE 99.                                    
+                            03  KEY-3 PICTURE 999.                                   
+                            03  KEY-4 PICTURE 9999.                                  
+                            03  KEY-5 PICTURE 99999.                                 
+                        02 RDF-KEYS REDEFINES KEYS-GROUP PICTURE 9(15).              
+                        02 FILLER PICTURE X(105).                                    
+                    """.trimIndent())
+            }
+        }
     )
 
     @Test
