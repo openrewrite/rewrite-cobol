@@ -18,7 +18,6 @@ package org.openrewrite.cobol.tree
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobolPreprocess
-import org.openrewrite.cobol.CobolPreprocessorParser
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
@@ -43,8 +42,7 @@ class CobolPreprocessorNistTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.parser(CobolPreprocessorParser.builder())
-            .recipe(RewriteTest.toRecipe {
+        spec.recipe(RewriteTest.toRecipe {
                 object : CobolPreprocessorVisitor<ExecutionContext>() {
                     override fun visitSpace(space: Space, p: ExecutionContext): Space {
                         val whitespace = space.whitespace.trim()

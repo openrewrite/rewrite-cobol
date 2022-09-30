@@ -17,9 +17,8 @@ package org.openrewrite.cobol.tree
 
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
-import org.openrewrite.cobol.Assertions.cobol
+import org.openrewrite.cobol.Assertions.cobolCopy
 import org.openrewrite.cobol.CobolIsoVisitor
-import org.openrewrite.cobol.CobolParser
 import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
@@ -44,8 +43,7 @@ class CobolParserCopyTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.parser(CobolParser.builder().setEnableCopy(true).setEnableReplace(true))
-            .recipe(toRecipe {
+        spec.recipe(toRecipe {
             object : CobolIsoVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
                     val whitespace = space.whitespace.trim()
@@ -60,41 +58,41 @@ class CobolParserCopyTest : RewriteTest {
 
     @Test
     fun sm101A() = rewriteRun(
-        cobol(getNistSource("SM101A.CBL"))
+        cobolCopy(getNistSource("SM101A.CBL"))
     )
 
     @Test
     fun sm103A() = rewriteRun(
-        cobol(getNistSource("SM103A.CBL"))
+        cobolCopy(getNistSource("SM103A.CBL"))
     )
 
     @Test
     fun sm105A() = rewriteRun(
-        cobol(getNistSource("SM105A.CBL"))
+        cobolCopy(getNistSource("SM105A.CBL"))
     )
 
     @Test
     fun sm106A() = rewriteRun(
-        cobol(getNistSource("SM106A.CBL"))
+        cobolCopy(getNistSource("SM106A.CBL"))
     )
 
     @Test
     fun sm107A() = rewriteRun(
-        cobol(getNistSource("SM107A.CBL"))
+        cobolCopy(getNistSource("SM107A.CBL"))
     )
 
     @Test
     fun sm207A() = rewriteRun(
-        cobol(getNistSource("SM207A.CBL"))
+        cobolCopy(getNistSource("SM207A.CBL"))
     )
 
     @Test
     fun sm301M() = rewriteRun(
-        cobol(getNistSource("SM301M.CBL"))
+        cobolCopy(getNistSource("SM301M.CBL"))
     )
 
     @Test
     fun sm401M() = rewriteRun(
-        cobol(getNistSource("SM401M.CBL"))
+        cobolCopy(getNistSource("SM401M.CBL"))
     )
 }

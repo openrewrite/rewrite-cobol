@@ -17,8 +17,7 @@ package org.openrewrite.cobol.tree
 
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
-import org.openrewrite.cobol.Assertions.cobol
-import org.openrewrite.cobol.CobolParser
+import org.openrewrite.cobol.Assertions.cobolCopy
 import org.openrewrite.cobol.CobolVisitor
 import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
@@ -43,8 +42,7 @@ class CobolParserReplaceTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.parser(CobolParser.builder().setEnableCopy(true).setEnableReplace(true))
-            .recipe(RewriteTest.toRecipe {
+        spec.recipe(RewriteTest.toRecipe {
                 object : CobolVisitor<ExecutionContext>() {
                     override fun visitSpace(space: Space, p: ExecutionContext): Space {
                         val whitespace = space.whitespace.trim()
@@ -59,31 +57,31 @@ class CobolParserReplaceTest : RewriteTest {
 
     @Test
     fun sm201A() = rewriteRun(
-        cobol(getNistSource("SM201A.CBL"))
+        cobolCopy(getNistSource("SM201A.CBL"))
     )
 
     @Test
     fun sm202A() = rewriteRun(
-        cobol(getNistSource("SM202A.CBL"))
+        cobolCopy(getNistSource("SM202A.CBL"))
     )
 
     @Test
     fun sm203A() = rewriteRun(
-        cobol(getNistSource("SM203A.CBL"))
+        cobolCopy(getNistSource("SM203A.CBL"))
     )
 
     @Test
     fun sm205A() = rewriteRun(
-        cobol(getNistSource("SM205A.CBL"))
+        cobolCopy(getNistSource("SM205A.CBL"))
     )
 
     @Test
     fun sm206A() = rewriteRun(
-        cobol(getNistSource("SM206A.CBL"))
+        cobolCopy(getNistSource("SM206A.CBL"))
     )
 
     @Test
     fun sm208A() = rewriteRun(
-        cobol(getNistSource("SM208A.CBL"))
+        cobolCopy(getNistSource("SM208A.CBL"))
     )
 }

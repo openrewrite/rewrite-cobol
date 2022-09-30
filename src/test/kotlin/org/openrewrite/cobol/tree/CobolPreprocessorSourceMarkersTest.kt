@@ -34,8 +34,8 @@ class CobolPreprocessorSourceMarkersTest : RewriteTest {
         spec.recipe(toRecipe {
             object : CobolPreprocessorVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
-                    val whitespace = space.whitespace
-                    if (!(dialect.separators.contains("$whitespace ") || whitespace.trim().isEmpty())) {
+                    val whitespace = space.whitespace.trim()
+                    if (!(dialect.separators.contains("$whitespace ") || whitespace.isEmpty())) {
                         return space.withWhitespace("(~~>${space.whitespace}<~~)")
                     }
                     return space

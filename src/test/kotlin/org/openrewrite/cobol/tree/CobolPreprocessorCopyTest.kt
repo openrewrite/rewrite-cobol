@@ -20,8 +20,7 @@ import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.InMemoryExecutionContext
 import org.openrewrite.PrintOutputCapture
-import org.openrewrite.cobol.Assertions.cobolCopy
-import org.openrewrite.cobol.CobolPreprocessorParser
+import org.openrewrite.cobol.Assertions.cobolPreprocessorCopy
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter
 import org.openrewrite.cobol.internal.IbmAnsi85
@@ -49,8 +48,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.parser(CobolPreprocessorParser.builder().setEnableCopy(true))
-            .recipe(toRecipe {
+        spec.recipe(toRecipe {
             object : CobolPreprocessorVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
                     val whitespace = space.whitespace.trim()
@@ -75,7 +73,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
                     return super.visitCopyStatement(copyStatement, p)
                 }
             }
-        }).parser(CobolPreprocessorParser.builder())
+        })
     }
 
     private fun getSource(copyBook: Path): String {
@@ -93,41 +91,41 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm101A() = rewriteRun(
-        cobolCopy(getNistSource("SM101A.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM101A.CBL"))
     )
 
     @Test
     fun sm103A() = rewriteRun(
-        cobolCopy(getNistSource("SM103A.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM103A.CBL"))
     )
 
     @Test
     fun sm105A() = rewriteRun(
-        cobolCopy(getNistSource("SM105A.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM105A.CBL"))
     )
 
     @Test
     fun sm106A() = rewriteRun(
-        cobolCopy(getNistSource("SM106A.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM106A.CBL"))
     )
 
     @Test
     fun sm107A() = rewriteRun(
-        cobolCopy(getNistSource("SM107A.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM107A.CBL"))
     )
 
     @Test
     fun sm207A() = rewriteRun(
-        cobolCopy(getNistSource("SM207A.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM207A.CBL"))
     )
 
     @Test
     fun sm301M() = rewriteRun(
-        cobolCopy(getNistSource("SM301M.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM301M.CBL"))
     )
 
     @Test
     fun sm401M() = rewriteRun(
-        cobolCopy(getNistSource("SM401M.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM401M.CBL"))
     )
 }

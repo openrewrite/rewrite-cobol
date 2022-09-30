@@ -43,8 +43,7 @@ class CobolParserNistTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.parser(CobolParser.builder())
-            .recipe(RewriteTest.toRecipe {
+        spec.recipe(RewriteTest.toRecipe {
                 object : CobolIsoVisitor<ExecutionContext>() {
                     override fun visitSpace(space: Space, p: ExecutionContext): Space {
                         val whitespace = space.whitespace.trim()

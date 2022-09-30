@@ -323,9 +323,6 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         for (CobolPreprocessor.ReplaceClause clause : replacingPhrase.getClauses()) {
             List<String> replaceable = resolveReplace(clause.getReplaceable());
             List<String> replacement = resolveReplace(clause.getReplacement());
-            if (clause.getReplacement() instanceof CobolPreprocessor.CharDataLine) {
-                return replacements;
-            }
             if (!replaceable.isEmpty()) {
                 replacements.put(replaceable, replacement);
             }

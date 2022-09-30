@@ -132,7 +132,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 .collect(toList());
     }
 
-    public List<CobolPreprocessor.CopyBook> parseCopyBooks(List<Path> paths, @Nullable Path relativeTo) {
+    public static List<CobolPreprocessor.CopyBook> parseCopyBooks(List<Path> paths, @Nullable Path relativeTo, CobolDialect cobolDialect) {
         List<CobolPreprocessor.CopyBook> copyBooks = new ArrayList<>();
 
         for (Path path : paths) {
@@ -197,7 +197,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
      * Temporarily hardcoded to implement COPY/REPLACE, but this SHOULD be auto-detected / configurable.
      * A temp ADHOC solution may be an auto-detected style that contains all the relevant info.
      */
-    private List<Path> getCopyBooks() {
+    public static List<Path> getCopyBooks() {
         String userDir = System.getProperty("user.dir");
         String copyBooks = "/src/test/resources/gov/nist/copybooks";
         return Arrays.stream(Objects.requireNonNull(Paths.get(userDir + copyBooks).toFile().listFiles()))

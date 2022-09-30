@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
-import org.openrewrite.cobol.CobolParser
 import org.openrewrite.cobol.CobolVisitor
 import org.openrewrite.cobol.internal.HpTandem
 import org.openrewrite.test.RecipeSpec
@@ -34,8 +33,7 @@ class CobolParserHPTandemDivisionTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.parser(CobolParser.builder().setCobolDialect(HpTandem()))
-            .recipe(toRecipe {
+        spec.recipe(toRecipe {
                 object : CobolVisitor<ExecutionContext>() {
                     override fun visitSpace(space: Space, p: ExecutionContext): Space {
                         val whitespace = space.whitespace.trim()

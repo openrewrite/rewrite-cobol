@@ -719,7 +719,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     }
 
     /**
-     * Lazily load the {@link ReplaceAdditiveType} comment of a {@link Replace} template.
+     * Lazily load the {@link ReplaceAdditiveWhitespace} comment of a {@link Replace} template.
      */
     public String getReplaceTypeAdditiveComment() {
         if (replaceTypeAdditiveComment == null) {
