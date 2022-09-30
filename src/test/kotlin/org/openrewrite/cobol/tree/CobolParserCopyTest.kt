@@ -4109,7 +4109,22 @@ class CobolParserCopyTest : RewriteTest {
                 val result = outputCapture.getOut().trimIndent()
                 assertThat(result).isEqualTo(
                     """
-                        
+                        IDENTIFICATION DIVISION.                                         
+                        PROGRAM-ID.                                                      
+                             SM301M.                                                     
+                        ENVIRONMENT DIVISION.                                            
+                        CONFIGURATION SECTION.                                           
+                        SOURCE-COMPUTER.                                                 
+                            XXXXX082.                                                    
+                        OBJECT-COMPUTER.                                                 
+                            XXXXX083.                                                    
+                        DATA DIVISION.                                                   
+                        PROCEDURE DIVISION.                                              
+                        SM301M-CONTROL.                                                  
+                            PERFORM SM301M-COPY.                                         
+                            STOP RUN.                                                    
+                        SM301M-COPY.                                                     
+                            DISPLAY " ".                                                 
                     """.trimIndent()
                 )
             }
@@ -4125,7 +4140,23 @@ class CobolParserCopyTest : RewriteTest {
                 val result = outputCapture.getOut().trimIndent()
                 assertThat(result).isEqualTo(
                     """
-                        
+                        IDENTIFICATION DIVISION.                                         
+                        PROGRAM-ID.                                                      
+                            SM401M.                                                      
+                        ENVIRONMENT DIVISION.                                            
+                        CONFIGURATION SECTION.                                           
+                        SOURCE-COMPUTER.                                                 
+                            XXXXX082.                                                    
+                        OBJECT-COMPUTER.                                                 
+                            XXXXX083.                                                    
+                        DATA DIVISION.                                                   
+                        PROCEDURE DIVISION.                                              
+                        SM401M-CONTROL.                                                  
+                            PERFORM SM401M-COPYREP THRU SM401M-REPL.                     
+                            STOP RUN.                                                    
+                        SM401M-COPYREP.                                                  
+                            DISPLAY "COW SHEEP PIG HORSE LAMB DOG CAT ".                 
+                        SM401M-REPL.                                                     
                     """.trimIndent()
                 )
             }
