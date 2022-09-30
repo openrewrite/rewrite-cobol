@@ -101,22 +101,7 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm101A() = rewriteRun(
-        cobolPreprocessorCopy(getNistSource("SM101A.CBL")) { spec ->
-            spec.afterRecipe { cu ->
-                val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
-                assertThat(statements.size).isEqualTo(11)
-
-                val k1fda = statements[0]
-//                printer.visit()
-//                val k1fda = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-//                val printer =
-//                    CobolPreprocessorOutputSourcePrinter<ExecutionContext>(
-//                        CobolPreprocessorReplaceTest.dialect,
-//                        false
-//                    )
-//                printer.visit(statements.get(0))
-            }
-        }
+        cobolPreprocessorCopy(getNistSource("SM101A.CBL"))
     )
 
     @Test

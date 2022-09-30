@@ -326,22 +326,24 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     }
 
     public void visitLines(Lines lines, PrintOutputCapture<P> p) {
-        for (Lines.Line line : lines.getLines()) {
-            if (line.isCopiedSource()) {
-                continue;
-            }
+        if (printColumns) {
+            for (Lines.Line line : lines.getLines()) {
+                if (line.isCopiedSource()) {
+                    continue;
+                }
 
-            if (line.getSequenceArea() != null) {
-                visitSequenceArea(line.getSequenceArea(), p);
-            }
+                if (line.getSequenceArea() != null) {
+                    visitSequenceArea(line.getSequenceArea(), p);
+                }
 
-            if (line.getIndicatorArea() != null) {
-                visitIndicatorArea(line.getIndicatorArea(), p);
-            }
+                if (line.getIndicatorArea() != null) {
+                    visitIndicatorArea(line.getIndicatorArea(), p);
+                }
 
-            p.append(line.getContent());
-            if (line.getCommentArea() != null) {
-                visitCommentArea(line.getCommentArea(), p);
+                p.append(line.getContent());
+                if (line.getCommentArea() != null) {
+                    visitCommentArea(line.getCommentArea(), p);
+                }
             }
         }
     }

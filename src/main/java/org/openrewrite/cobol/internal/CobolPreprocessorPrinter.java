@@ -17,7 +17,6 @@ package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.tree.*;
-import org.openrewrite.internal.StringUtils;
 import org.openrewrite.marker.Markers;
 
 import java.util.List;
@@ -71,7 +70,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
         lines.ifPresent(value -> visitLines(value, p));
 
         Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
-        if (continuation.isPresent()) {
+        if (continuation.isPresent() && printColumns) {
             visitContinuation(word, continuation.get(), p);
         } else {
             Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
@@ -129,47 +128,5 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
             Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
             commentArea.ifPresent(it -> visitCommentArea(it, p));
         }
-    }
-
-    public void visitLines(Lines lines, PrintOutputCapture<P> p) {
-        for (Lines.Line line : lines.getLines()) {
-            if (line.isCopiedSource()) {
-                continue;
-            }
-
-            if (line.getSequenceArea() != null) {
-                visitSequenceArea(line.getSequenceArea(), p);
-            }
-
-            if (line.getIndicatorArea() != null) {
-                visitIndicatorArea(line.getIndicatorArea(), p);
-            }
-
-            p.append(line.getContent());
-            if (line.getCommentArea() != null) {
-                visitCommentArea(line.getCommentArea(), p);
-            }
-        }
-    }
-
-    public void visitSequenceArea(SequenceArea sequenceArea, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            p.append(sequenceArea.getSequence());
-        }
-    }
-
-    public void visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            p.append(indicatorArea.getIndicator());
-        }
-        p.append(indicatorArea.getContinuationPrefix());
-    }
-
-    public void visitCommentArea(CommentArea commentArea, PrintOutputCapture<P> p) {
-        visitSpace(commentArea.getPrefix(), p);
-        if (printColumns) {
-            p.append(commentArea.getComment());
-        }
-        visitSpace(commentArea.getEndOfLine(), p);
     }
 }
