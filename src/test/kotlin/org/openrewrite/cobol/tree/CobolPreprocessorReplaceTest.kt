@@ -119,14 +119,11 @@ class CobolPreprocessorReplaceTest : RewriteTest {
                     output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
                     printer.visit(statements[2], output)
                     assertThat(output.getOut().trimIndent()).isEqualTo("""
-                        MOVE   +00009 TO WRK-DS-05V00-O005-001  IN WRK-XN-00050-O005F-001 OF GRP-006 OF GRP-004 IN GRP-003 ( 2 ).         
-                        ADD                                                          
-                            +00001 TO                                                
-                                      WRK-DS-05V00-O005-001                               
-                                                      IN                       
-                                                               WRK-XN-00050-O005F-001                     
-                                                                IN                 
-                                     GRP-006 IN GRP-004 IN GRP-002 IN GRP-001 ( 1 ).           
+                        PST-TEST-003.                                                    
+                            MOVE    +0009 TO WRK-DS-05V00-O005-001  IN GRP-003 (3).      
+                            ADD     + 2 TO WRK-DS-09V00-901.                          
+                            SUBTRACT - 3 FROM WRK-DS-05V00-O005-001 IN GRP-002 (3).        
+                         3PST-EXIT-003-X 3.                                                  
                     """.trimIndent())
                     println()
                 }

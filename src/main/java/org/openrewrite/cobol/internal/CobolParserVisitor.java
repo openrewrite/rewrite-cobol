@@ -86,7 +86,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
     private String replaceStartComment = null;
     private String replaceStopComment = null;
-    private String replaceAdditiveComment = null;
+    private String replaceAdditiveWhitespaceComment = null;
     private String replaceUuidComment = null;
 
     private String replaceByStartComment = null;
@@ -203,8 +203,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             this.replaceUuidComment = getCommentFromKey(templatePrinter.getReplaceUuidComment());
             this.templateKeys.add(replaceUuidComment);
 
-            this.replaceAdditiveComment = getCommentFromKey(templatePrinter.getReplaceTypeAdditiveComment());
-            this.templateKeys.add(replaceAdditiveComment);
+            this.replaceAdditiveWhitespaceComment = getCommentFromKey(templatePrinter.getReplaceTypeAdditiveComment());
+            this.templateKeys.add(replaceAdditiveWhitespaceComment);
 
             this.replaceByStartComment = getCommentFromKey(templatePrinter.getReplaceByStartComment());
             this.templateKeys.add(replaceByStartComment);
@@ -6444,8 +6444,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                         markers.add(replaceBy);
                     } else if (replaceStartComment.equals(contentArea)) {
                         replaceStartComment();
-                    } else if (replaceAdditiveComment.equals(contentArea)) {
-                        replaceAdditiveComment();
+                    } else if (replaceAdditiveWhitespaceComment.equals(contentArea)) {
+                        replaceAdditiveWhitespace();
                     } else if (replaceUuidComment.equals(contentArea)) {
                         Replace replace = getReplaceMarker();
                         markers.add(replace);
@@ -6776,8 +6776,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         cursor += current.length();
     }
 
-    private void replaceAdditiveComment() {
-        cursor += replaceAdditiveComment.length();
+    private void replaceAdditiveWhitespace() {
+        cursor += replaceAdditiveWhitespaceComment.length();
         cursor++; // Increment passed the \n.
 
         removeTemplateCommentArea = false;

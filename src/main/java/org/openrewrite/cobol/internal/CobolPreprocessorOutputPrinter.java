@@ -66,7 +66,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     public static final String REPLACE_TYPE_REDUCTIVE_START_KEY = "__REPLACE_TYPE_START_REDUCTIVE__";
     public static final String REPLACE_TYPE_REDUCTIVE_STOP_KEY = "__REPLACE_TYPE_STOP_REDUCTIVE__";
 
-    public static final String REPLACE_TYPE_ADDITIVE_KEY = "__REPLACE_TYPE_ADDITIVE__";
+    public static final String REPLACE_ADDITIVE_WHITESPACE_KEY = "__REPLACE_ADDITIVE_WHITESPACE__";
 
     private final CobolDialect cobolDialect;
     private final boolean printColumns;
@@ -471,7 +471,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
             } else {
                 int difference = word.getWord().length() - replace.getOriginalWord().getWord().length();
                 int alignColumn = curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex;
-                int total = alignColumn + word.getPrefix().getWhitespace().length() + difference;
+                int total = alignColumn + word.getPrefix().getWhitespace().length() - difference;
                 if (total > cobolDialect.getColumns().getOtherArea()) {
                     throw new UnsupportedOperationException("The position of the replaced word exceeds the column area.");
                 }
@@ -734,7 +734,7 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
      */
     public String getReplaceTypeAdditiveComment() {
         if (replaceTypeAdditiveComment == null) {
-            replaceTypeAdditiveComment = getTemplateComment(REPLACE_TYPE_ADDITIVE_KEY);
+            replaceTypeAdditiveComment = getTemplateComment(REPLACE_ADDITIVE_WHITESPACE_KEY);
         }
         return replaceTypeAdditiveComment;
     }

@@ -130,6 +130,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
 
         private List<CobolPreprocessor.Word> current;
         private List<Replace> reductiveReplaces;
+        private CobolPreprocessor.Word previous;
         private int fromPos = 0;
         private int toPos = 0;
         boolean inMatch = false;
@@ -164,7 +165,10 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     boolean isEmpty = to.get(0).isEmpty();
                     Replace replace = new Replace(randomId(), word, isEmpty);
                     word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-                    word = word.withPrefix(word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
+
+                    // TODO: fix me NUMERIC values with a + or - should be detected by the grammar.
+                    boolean addSpace = !(previous != null && ("-".equals(previous.getWord()) || "+".equals(previous.getWord())));
+                    word = word.withPrefix(addSpace && word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
                     word = word.withWord(to.get(fromPos));
                 }
             } else if (ReplacementType.EQUAL == replacementType) {
@@ -181,7 +185,10 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                             boolean isEmpty = to.get(toPos).isEmpty();
                             Replace replace = new Replace(randomId(), word, isEmpty);
                             word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-                            word = word.withPrefix(word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
+
+                            // TODO: fix me NUMERIC values with a + or - should be detected by the grammar.
+                            boolean addSpace = !(previous != null && ("-".equals(previous.getWord()) || "+".equals(previous.getWord())));
+                            word = word.withPrefix(addSpace && word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
                             word = word.withWord(to.get(toPos));
                         }
                         fromPos++;
@@ -195,7 +202,10 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                             boolean isEmpty = to.get(toPos).isEmpty();
                             Replace replace = new Replace(randomId(), word, isEmpty);
                             word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-                            word = word.withPrefix(word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
+
+                            // TODO: fix me NUMERIC values with a + or - should be detected by the grammar.
+                            boolean addSpace = !(previous != null && ("-".equals(previous.getWord()) || "+".equals(previous.getWord())));
+                            word = word.withPrefix(addSpace && word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
                             word = word.withWord(to.get(toPos));
                         }
 
@@ -232,7 +242,10 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                             } else {
                                 word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                             }
-                            word = word.withPrefix(word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
+
+                            // TODO: fix me NUMERIC values with a + or - should be detected by the grammar.
+                            boolean addSpace = !(previous != null && ("-".equals(previous.getWord()) || "+".equals(previous.getWord())));
+                            word = word.withPrefix(addSpace && word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
                             word = word.withWord(to.get(toPos));
                         }
                         fromPos++;
@@ -260,7 +273,10 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                             } else {
                                 word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                             }
-                            word = word.withPrefix(word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
+
+                            // TODO: fix me NUMERIC values with a + or - should be detected by the grammar.
+                            boolean addSpace = !(previous != null && ("-".equals(previous.getWord()) || "+".equals(previous.getWord())));
+                            word = word.withPrefix(addSpace && word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
                             word = word.withWord(to.get(toPos));
                         }
 
@@ -292,58 +308,66 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                             boolean isEmpty = to.get(toPos).isEmpty();
                             Replace replace = new Replace(randomId(), word, isEmpty);
                             word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-                            word = word.withPrefix(word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
+
+                            // TODO: fix me NUMERIC values with a + or - should be detected by the grammar.
+                            boolean addSpace = !(previous != null && ("-".equals(previous.getWord()) || "+".equals(previous.getWord())));
+                            word = word.withPrefix(addSpace && word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
                             word = word.withWord(to.get(toPos));
                         }
                         fromPos++;
                         toPos++;
                     }
                 } else {
-                    boolean isSame = fromPos < current.size() && current.get(fromPos).getWord().equals(word.getWord());
-                    if (isSame) {
-                        // Marks the changed word. Unknown: Should all the words be marked instead??
-                        if (!current.get(fromPos).getWord().equals(to.get(toPos))) {
-                            boolean isEmpty = to.get(toPos).isEmpty();
-                            Replace replace = new Replace(randomId(), word, isEmpty);
-                            word = word.withPrefix(word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
-                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-                            word = word.withWord(to.get(toPos));
-                        }
+                    if (fromPos < current.size()) {
+                        boolean isSame = current.get(fromPos).getWord().equals(word.getWord());
+                        if (isSame) {
+                            // Marks the changed word. Unknown: Should all the words be marked instead??
+                            if (!current.get(fromPos).getWord().equals(to.get(toPos))) {
+                                boolean isEmpty = to.get(toPos).isEmpty();
+                                Replace replace = new Replace(randomId(), word, isEmpty);
+                                word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
 
-                        fromPos++;
-                        toPos++;
-                    } else {
-                        if (fromPos >= current.size()) {
-                            int difference = to.size() - current.size();
-
-                            List<Replace> additiveReplaces = new ArrayList<>(difference);
-                            for (int i = 0; i < difference; i++) {
-                                int cur = toPos + i;
-                                String value = to.get(cur);
-                                CobolPreprocessor.Word addedWord = new CobolPreprocessor.Word(
-                                        randomId(),
-                                        Space.build(" "),
-                                        Markers.EMPTY,
-                                        value
-                                );
-
-                                Replace replace = new Replace(randomId(), addedWord, false);
-                                additiveReplaces.add(replace);
+                                // TODO: fix me NUMERIC values with a + or - should be detected by the grammar.
+                                boolean addSpace = !(previous != null && ("-".equals(previous.getWord()) || "+".equals(previous.getWord())));
+                                word = word.withPrefix(addSpace && word.getPrefix() == Space.EMPTY ? Space.build(" ") : word.getPrefix());
+                                word = word.withWord(to.get(toPos));
                             }
-                            ReplaceAdditiveType replaceAdditiveType = new ReplaceAdditiveType(randomId(), additiveReplaces);
-                            word = word.withMarkers(word.getMarkers().addIfAbsent(replaceAdditiveType));
+                            fromPos++;
+                            toPos++;
+                        } else {
+                            throw new IllegalStateException("Fix me, this should not have happened.");
                         }
+                    } else {
+                        int difference = to.size() - current.size();
 
-                        if (current.size() - 1 == fromPos) {
-                            inMatch = false;
-                            current = null;
-                            fromPos = 0;
-                            toPos = 0;
+                        List<Replace> additiveReplaces = new ArrayList<>(difference);
+                        for (int i = 0; i < difference; i++) {
+                            int cur = toPos + i;
+                            String value = to.get(cur);
+                            // TODO: fix me NUMERIC values with a + or - should be detected by the grammar.
+                            boolean addSpace = !(previous != null && ("-".equals(previous.getWord()) || "+".equals(previous.getWord())));
+                            CobolPreprocessor.Word addedWord = new CobolPreprocessor.Word(
+                                    randomId(),
+                                    Space.build(addSpace ? " " : ""),
+                                    Markers.EMPTY,
+                                    value
+                            );
+
+                            Replace replace = new Replace(randomId(), addedWord, false);
+                            additiveReplaces.add(replace);
                         }
+                        ReplaceAdditiveType replaceAdditiveType = new ReplaceAdditiveType(randomId(), additiveReplaces);
+                        word = word.withMarkers(word.getMarkers().addIfAbsent(replaceAdditiveType));
+
+                        inMatch = false;
+                        current = null;
+                        fromPos = 0;
+                        toPos = 0;
                     }
                 }
             }
 
+            previous = word;
             return super.visitWord(word, executionContext);
         }
 
