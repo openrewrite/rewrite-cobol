@@ -23,6 +23,7 @@ import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.Assertions.cobolPreprocessorCopy
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.internal.CobolPreprocessorOutputSourcePrinter
+import org.openrewrite.cobol.internal.CobolPreprocessorPrinter
 import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
@@ -36,6 +37,11 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     companion object {
         val dialect = IbmAnsi85()
+        val printer =
+            CobolPreprocessorPrinter<ExecutionContext>(
+                false,
+                true
+            )
 
         private val userDir = System.getProperty("user.dir")
         private const val nistPath = "/src/test/resources/gov/nist/"
@@ -95,7 +101,22 @@ class CobolPreprocessorCopyTest : RewriteTest {
 
     @Test
     fun sm101A() = rewriteRun(
-        cobolPreprocessorCopy(getNistSource("SM101A.CBL"))
+        cobolPreprocessorCopy(getNistSource("SM101A.CBL")) { spec ->
+            spec.afterRecipe { cu ->
+                val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
+                assertThat(statements.size).isEqualTo(11)
+
+                val k1fda = statements[0]
+//                printer.visit()
+//                val k1fda = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
+//                val printer =
+//                    CobolPreprocessorOutputSourcePrinter<ExecutionContext>(
+//                        CobolPreprocessorReplaceTest.dialect,
+//                        false
+//                    )
+//                printer.visit(statements.get(0))
+            }
+        }
     )
 
     @Test
