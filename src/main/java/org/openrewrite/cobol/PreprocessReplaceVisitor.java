@@ -130,7 +130,6 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
 
         private List<CobolPreprocessor.Word> current;
         private List<Replace> reductiveReplaces;
-        private CobolPreprocessor.Word previous;
         private int fromPos = 0;
         private int toPos = 0;
         boolean inMatch = false;
@@ -353,7 +352,6 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                 }
             }
 
-            previous = word;
             return super.visitWord(word, executionContext);
         }
 
