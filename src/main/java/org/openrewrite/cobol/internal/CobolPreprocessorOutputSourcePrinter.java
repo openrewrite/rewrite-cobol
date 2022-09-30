@@ -39,7 +39,7 @@ import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
  *      true: Print as source code with modifications to distinguish changes during preprocessing like COPY and REPLACE.
  *      false: Print as parser input for the CobolParserVisitor.
  */
-public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<P> {
+public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSourcePrinter<P> {
     // The keys may be replaced by UUIDs for uniqueness, but are human-readable until COBOL is understood.
 
     // START keys mark the line where whitespace is added until the end of the content area.
@@ -124,10 +124,10 @@ public class CobolPreprocessorOutputPrinter<P> extends CobolPreprocessorPrinter<
     private boolean inUnknownIndicator = false;
 
     private ReplaceReductiveType replaceReductiveType = null;
-    private final CobolPreprocessorPrinter<ExecutionContext> statementPrinter = new CobolPreprocessorPrinter<>(false);
+    private final CobolPreprocessorSourcePrinter<ExecutionContext> statementPrinter = new CobolPreprocessorSourcePrinter<>(false);
 
-    public CobolPreprocessorOutputPrinter(CobolDialect cobolDialect,
-                                          boolean printColumns) {
+    public CobolPreprocessorOutputSourcePrinter(CobolDialect cobolDialect,
+                                                boolean printColumns) {
         super(true);
 
         this.cobolDialect = cobolDialect;

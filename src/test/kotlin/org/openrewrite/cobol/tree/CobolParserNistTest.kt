@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobol
 import org.openrewrite.cobol.CobolIsoVisitor
-import org.openrewrite.cobol.CobolParser
 import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec

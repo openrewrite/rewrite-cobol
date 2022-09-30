@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  */
 public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
-    private final CobolPreprocessorPrinter<ExecutionContext> printer = new CobolPreprocessorPrinter<>(true);
+    private final CobolPreprocessorSourcePrinter<ExecutionContext> printer = new CobolPreprocessorSourcePrinter<>(true);
     private int originalReplaceLength;
 
     @Nullable
@@ -3993,6 +3993,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
             if (replace.isPresent() && replace.get().isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
+                originalReplaceLength = 0;
             } else {
                 visitSpace(word.getPrefix(), p);
             }

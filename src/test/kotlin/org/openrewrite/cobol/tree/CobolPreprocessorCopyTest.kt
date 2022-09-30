@@ -22,7 +22,7 @@ import org.openrewrite.InMemoryExecutionContext
 import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.Assertions.cobolPreprocessorCopy
 import org.openrewrite.cobol.CobolPreprocessorVisitor
-import org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter
+import org.openrewrite.cobol.internal.CobolPreprocessorOutputSourcePrinter
 import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
@@ -65,7 +65,11 @@ class CobolPreprocessorCopyTest : RewriteTest {
                     val copyBook = copyStatement.copyBook
 
                     val output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-                    val printer = CobolPreprocessorOutputPrinter<ExecutionContext>(IbmAnsi85(), true)
+                    val printer =
+                        CobolPreprocessorOutputSourcePrinter<ExecutionContext>(
+                            IbmAnsi85(),
+                            true
+                        )
                     printer.visit(copyBook, output)
 
                     val source = getSource(copyBook!!.sourcePath)

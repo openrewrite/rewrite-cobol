@@ -24,7 +24,7 @@ import org.openrewrite.Parser;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolParserVisitor;
-import org.openrewrite.cobol.internal.CobolPreprocessorOutputPrinter;
+import org.openrewrite.cobol.internal.CobolPreprocessorOutputSourcePrinter;
 import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.internal.grammar.CobolLexer;
 import org.openrewrite.cobol.tree.Cobol;
@@ -83,7 +83,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         // Print processed code to parse COBOL.
                         PrintOutputCapture<ExecutionContext> cobolParserOutput = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                        CobolPreprocessorOutputPrinter<ExecutionContext> printWithoutColumns = new CobolPreprocessorOutputPrinter<>(cobolDialect, false);
+                        CobolPreprocessorOutputSourcePrinter<ExecutionContext> printWithoutColumns = new CobolPreprocessorOutputSourcePrinter<>(cobolDialect, false);
                         printWithoutColumns.visit(preprocessedCU, cobolParserOutput);
 
                         org.openrewrite.cobol.internal.grammar.CobolParser parser =
@@ -92,7 +92,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         // Print the pre-processed code to parse COBOL.
                         PrintOutputCapture<ExecutionContext> sourceOutput = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                        CobolPreprocessorOutputPrinter<ExecutionContext> printWithColumns = new CobolPreprocessorOutputPrinter<>(cobolDialect, true);
+                        CobolPreprocessorOutputSourcePrinter<ExecutionContext> printWithColumns = new CobolPreprocessorOutputSourcePrinter<>(cobolDialect, true);
                         printWithColumns.visit(preprocessedCU, sourceOutput);
 
                         Cobol.CompilationUnit compilationUnit = new CobolParserVisitor(

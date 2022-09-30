@@ -19,6 +19,7 @@ import lombok.*;
 import org.openrewrite.*;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
 import org.openrewrite.cobol.internal.CobolPreprocessorPrinter;
+import org.openrewrite.cobol.internal.CobolPreprocessorSourcePrinter;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Markers;
 
@@ -171,7 +172,7 @@ public interface CobolPreprocessor extends Tree {
 
         @Override
         public <P> TreeVisitor<?, PrintOutputCapture<P>> printer(Cursor cursor) {
-            return new CobolPreprocessorPrinter<>(true);
+            return new CobolPreprocessorPrinter<>(true, true);
         }
     }
 

@@ -196,7 +196,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             separators.addAll(cobolDialect.getSeparators());
             commentIndicators.addAll(cobolDialect.getCommentIndicators());
 
-            CobolPreprocessorOutputPrinter<ExecutionContext> templatePrinter = new CobolPreprocessorOutputPrinter<>(cobolDialect, true);
+            CobolPreprocessorOutputSourcePrinter<ExecutionContext> templatePrinter = new CobolPreprocessorOutputSourcePrinter<>(cobolDialect, true);
 
             this.copyStartComment = getCommentFromKey(templatePrinter.getCopyStartComment());
             this.templateKeys.add(copyStartComment);
