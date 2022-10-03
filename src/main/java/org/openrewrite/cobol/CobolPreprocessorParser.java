@@ -49,7 +49,7 @@ import static org.openrewrite.Tree.randomId;
  * Read preprocessed COBOL and execute preprocessor commands.
  */
 public class CobolPreprocessorParser implements Parser<CobolPreprocessor.CompilationUnit> {
-    private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
+    private static final List<String> COBOL_FILE_EXTENSIONS = Collections.singletonList(".cbl");
 
     private final CobolDialect cobolDialect;
     private final List<CobolPreprocessor.CopyBook> copyBooks;

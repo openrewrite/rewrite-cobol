@@ -43,7 +43,7 @@ import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
 public class CobolParser implements Parser<Cobol.CompilationUnit> {
-    private static final List<String> COBOL_FILE_EXTENSIONS = Arrays.asList(".cbl", ".cpy");
+    private static final List<String> COBOL_FILE_EXTENSIONS = singletonList(".cbl");
 
     private final CobolDialect cobolDialect;
     private final List<CobolPreprocessor.CopyBook> copyBooks;
