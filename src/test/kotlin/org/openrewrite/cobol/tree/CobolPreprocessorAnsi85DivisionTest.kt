@@ -17,32 +17,9 @@ package org.openrewrite.cobol.tree
 
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobolPreprocess
-import org.openrewrite.cobol.CobolPreprocessorVisitor
-import org.openrewrite.cobol.internal.IbmAnsi85
-import org.openrewrite.test.RecipeSpec
-import org.openrewrite.test.RewriteTest
-import org.openrewrite.test.RewriteTest.toRecipe
 
-class CobolPreprocessorAnsi85DivisionTest : RewriteTest {
-
-    companion object {
-        val dialect = IbmAnsi85()
-    }
-
-    override fun defaults(spec: RecipeSpec) {
-        spec.recipe(toRecipe {
-            object : CobolPreprocessorVisitor<ExecutionContext>() {
-                override fun visitSpace(space: Space, p: ExecutionContext): Space {
-                    val whitespace = space.whitespace.trim()
-                    if (!(dialect.separators.contains("$whitespace ") || whitespace.isEmpty())) {
-                        return space.withWhitespace("(~~>${space.whitespace}<~~)")
-                    }
-                    return space
-                }
-            }})
-    }
+class CobolPreprocessorAnsi85DivisionTest : CobolTest() {
 
     @Test
     fun helloWorld() = rewriteRun(

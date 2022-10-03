@@ -16,44 +16,9 @@
 package org.openrewrite.cobol.tree
 
 import org.junit.jupiter.api.Test
-import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.Assertions.cobolPreprocess
-import org.openrewrite.cobol.CobolPreprocessorVisitor
-import org.openrewrite.cobol.internal.IbmAnsi85
-import org.openrewrite.internal.EncodingDetectingInputStream
-import org.openrewrite.test.RecipeSpec
-import org.openrewrite.test.RewriteTest
-import java.nio.file.Files
-import java.nio.file.Paths
 
-class CobolPreprocessorNistTest : RewriteTest {
-
-    companion object {
-        val dialect = IbmAnsi85()
-
-        private val userDir = System.getProperty("user.dir")
-        private const val nistPath = "/src/test/resources/gov/nist/"
-        fun getNistSource(sourceName: String): String {
-            val path = Paths.get(userDir + nistPath + sourceName)
-            val inputStream = Files.newInputStream(path)
-            val encoding = EncodingDetectingInputStream(inputStream)
-            return encoding.readFully()
-        }
-    }
-
-    override fun defaults(spec: RecipeSpec) {
-        spec.recipe(RewriteTest.toRecipe {
-                object : CobolPreprocessorVisitor<ExecutionContext>() {
-                    override fun visitSpace(space: Space, p: ExecutionContext): Space {
-                        val whitespace = space.whitespace.trim()
-                        if (!(dialect.separators.contains("$whitespace ") || whitespace.isEmpty())) {
-                            return space.withWhitespace("(~~>${space.whitespace}<~~)")
-                        }
-                        return space
-                    }
-                }
-            })
-    }
+class CobolPreprocessorNistTest : CobolTest() {
 
     @Test
     fun cm101M() = rewriteRun(
@@ -2062,201 +2027,201 @@ class CobolPreprocessorNistTest : RewriteTest {
 
     @Test
     fun st101A() = rewriteRun(
-        cobolPreprocess(getNistSource("st101A.CBL"))
+        cobolPreprocess(getNistSource("ST101A.CBL"))
     )
 
     @Test
     fun st102A() = rewriteRun(
-        cobolPreprocess(getNistSource("st102A.CBL"))
+        cobolPreprocess(getNistSource("ST102A.CBL"))
     )
 
     @Test
     fun st103A() = rewriteRun(
-        cobolPreprocess(getNistSource("st103A.CBL"))
+        cobolPreprocess(getNistSource("ST103A.CBL"))
     )
 
     @Test
     fun st104A() = rewriteRun(
-        cobolPreprocess(getNistSource("st104A.CBL"))
+        cobolPreprocess(getNistSource("ST104A.CBL"))
     )
 
     @Test
     fun st105A() = rewriteRun(
-        cobolPreprocess(getNistSource("st105A.CBL"))
+        cobolPreprocess(getNistSource("ST105A.CBL"))
     )
 
     @Test
     fun st106A() = rewriteRun(
-        cobolPreprocess(getNistSource("st106A.CBL"))
+        cobolPreprocess(getNistSource("ST106A.CBL"))
     )
 
     @Test
     fun st107A() = rewriteRun(
-        cobolPreprocess(getNistSource("st107A.CBL"))
+        cobolPreprocess(getNistSource("ST107A.CBL"))
     )
 
     @Test
     fun st108A() = rewriteRun(
-        cobolPreprocess(getNistSource("st108A.CBL"))
+        cobolPreprocess(getNistSource("ST108A.CBL"))
     )
 
     @Test
     fun st109A() = rewriteRun(
-        cobolPreprocess(getNistSource("st109A.CBL"))
+        cobolPreprocess(getNistSource("ST109A.CBL"))
     )
 
     @Test
     fun st110A() = rewriteRun(
-        cobolPreprocess(getNistSource("st110A.CBL"))
+        cobolPreprocess(getNistSource("ST110A.CBL"))
     )
 
     @Test
     fun st111A() = rewriteRun(
-        cobolPreprocess(getNistSource("st111A.CBL"))
+        cobolPreprocess(getNistSource("ST111A.CBL"))
     )
 
     @Test
     fun st112M() = rewriteRun(
-        cobolPreprocess(getNistSource("st112M.CBL"))
+        cobolPreprocess(getNistSource("ST112M.CBL"))
     )
 
     @Test
     fun st113M() = rewriteRun(
-        cobolPreprocess(getNistSource("st113M.CBL"))
+        cobolPreprocess(getNistSource("ST113M.CBL"))
     )
 
     @Test
     fun st114M() = rewriteRun(
-        cobolPreprocess(getNistSource("st114M.CBL"))
+        cobolPreprocess(getNistSource("ST114M.CBL"))
     )
 
     @Test
     fun st115A() = rewriteRun(
-        cobolPreprocess(getNistSource("st115A.CBL"))
+        cobolPreprocess(getNistSource("ST115A.CBL"))
     )
 
     @Test
     fun st116A() = rewriteRun(
-        cobolPreprocess(getNistSource("st116A.CBL"))
+        cobolPreprocess(getNistSource("ST116A.CBL"))
     )
 
     @Test
     fun st117A() = rewriteRun(
-        cobolPreprocess(getNistSource("st117A.CBL"))
+        cobolPreprocess(getNistSource("ST117A.CBL"))
     )
 
     @Test
     fun st118A() = rewriteRun(
-        cobolPreprocess(getNistSource("st118A.CBL"))
+        cobolPreprocess(getNistSource("ST118A.CBL"))
     )
 
     @Test
     fun st119A() = rewriteRun(
-        cobolPreprocess(getNistSource("st119A.CBL"))
+        cobolPreprocess(getNistSource("ST119A.CBL"))
     )
 
     @Test
     fun st120A() = rewriteRun(
-        cobolPreprocess(getNistSource("st120A.CBL"))
+        cobolPreprocess(getNistSource("ST120A.CBL"))
     )
 
     @Test
     fun st121A() = rewriteRun(
-        cobolPreprocess(getNistSource("st121A.CBL"))
+        cobolPreprocess(getNistSource("ST121A.CBL"))
     )
 
     @Test
     fun st122A() = rewriteRun(
-        cobolPreprocess(getNistSource("st122A.CBL"))
+        cobolPreprocess(getNistSource("ST122A.CBL"))
     )
 
     @Test
     fun st123A() = rewriteRun(
-        cobolPreprocess(getNistSource("st123A.CBL"))
+        cobolPreprocess(getNistSource("ST123A.CBL"))
     )
 
     @Test
     fun st124A() = rewriteRun(
-        cobolPreprocess(getNistSource("st124A.CBL"))
+        cobolPreprocess(getNistSource("ST124A.CBL"))
     )
 
     @Test
     fun st125A() = rewriteRun(
-        cobolPreprocess(getNistSource("st125A.CBL"))
+        cobolPreprocess(getNistSource("ST125A.CBL"))
     )
 
     @Test
     fun st126A() = rewriteRun(
-        cobolPreprocess(getNistSource("st126A.CBL"))
+        cobolPreprocess(getNistSource("ST126A.CBL"))
     )
 
     @Test
     fun st127A() = rewriteRun(
-        cobolPreprocess(getNistSource("st127A.CBL"))
+        cobolPreprocess(getNistSource("ST127A.CBL"))
     )
 
     @Test
     fun st131A() = rewriteRun(
-        cobolPreprocess(getNistSource("st131A.CBL"))
+        cobolPreprocess(getNistSource("ST131A.CBL"))
     )
 
     @Test
     fun st132A() = rewriteRun(
-        cobolPreprocess(getNistSource("st132A.CBL"))
+        cobolPreprocess(getNistSource("ST132A.CBL"))
     )
 
     @Test
     fun st133A() = rewriteRun(
-        cobolPreprocess(getNistSource("st133A.CBL"))
+        cobolPreprocess(getNistSource("ST133A.CBL"))
     )
 
     @Test
     fun st134A() = rewriteRun(
-        cobolPreprocess(getNistSource("st134A.CBL"))
+        cobolPreprocess(getNistSource("ST134A.CBL"))
     )
 
     @Test
     fun st135A() = rewriteRun(
-        cobolPreprocess(getNistSource("st135A.CBL"))
+        cobolPreprocess(getNistSource("ST135A.CBL"))
     )
 
     @Test
     fun st136A() = rewriteRun(
-        cobolPreprocess(getNistSource("st136A.CBL"))
+        cobolPreprocess(getNistSource("ST136A.CBL"))
     )
 
     @Test
     fun st137A() = rewriteRun(
-        cobolPreprocess(getNistSource("st137A.CBL"))
+        cobolPreprocess(getNistSource("ST137A.CBL"))
     )
 
     @Test
     fun st139A() = rewriteRun(
-        cobolPreprocess(getNistSource("st139A.CBL"))
+        cobolPreprocess(getNistSource("ST139A.CBL"))
     )
 
     @Test
     fun st140A() = rewriteRun(
-        cobolPreprocess(getNistSource("st140A.CBL"))
+        cobolPreprocess(getNistSource("ST140A.CBL"))
     )
 
     @Test
     fun st144A() = rewriteRun(
-        cobolPreprocess(getNistSource("st144A.CBL"))
+        cobolPreprocess(getNistSource("ST144A.CBL"))
     )
 
     @Test
     fun st146A() = rewriteRun(
-        cobolPreprocess(getNistSource("st146A.CBL"))
+        cobolPreprocess(getNistSource("ST146A.CBL"))
     )
 
     @Test
     fun st147A() = rewriteRun(
-        cobolPreprocess(getNistSource("st147A.CBL"))
+        cobolPreprocess(getNistSource("ST147A.CBL"))
     )
 
     @Test
     fun st301M() = rewriteRun(
-        cobolPreprocess(getNistSource("st301M.CBL"))
+        cobolPreprocess(getNistSource("ST301M.CBL"))
     )
 }

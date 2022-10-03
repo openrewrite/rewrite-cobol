@@ -27,30 +27,14 @@ import org.openrewrite.cobol.internal.CobolPreprocessorPrinter
 import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
-import org.openrewrite.test.RewriteTest
 import org.openrewrite.test.RewriteTest.toRecipe
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
-class CobolPreprocessorCopyTest : RewriteTest {
+class CobolPreprocessorCopyTest : CobolTest() {
 
     companion object {
-        val dialect = IbmAnsi85()
-        val printer =
-            CobolPreprocessorPrinter<ExecutionContext>(
-                false,
-                true
-            )
-
-        private val userDir = System.getProperty("user.dir")
-        private const val nistPath = "/src/test/resources/gov/nist/"
-        fun getNistSource(sourceName: String): String {
-            val path = Paths.get(userDir + nistPath + sourceName)
-            val inputStream = Files.newInputStream(path)
-            val encoding = EncodingDetectingInputStream(inputStream)
-            return encoding.readFully()
-        }
+        val printer = CobolPreprocessorPrinter<ExecutionContext>(false, true)
     }
 
     override fun defaults(spec: RecipeSpec) {

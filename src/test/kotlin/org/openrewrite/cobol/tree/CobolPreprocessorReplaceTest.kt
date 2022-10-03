@@ -21,49 +21,13 @@ import org.openrewrite.ExecutionContext
 import org.openrewrite.InMemoryExecutionContext
 import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.Assertions.cobolPreprocessorCopy
-import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.internal.CobolPreprocessorOutputSourcePrinter
 import org.openrewrite.cobol.internal.CobolPreprocessorPrinter
-import org.openrewrite.cobol.internal.IbmAnsi85
-import org.openrewrite.internal.EncodingDetectingInputStream
-import org.openrewrite.test.RecipeSpec
-import org.openrewrite.test.RewriteTest
-import org.openrewrite.test.RewriteTest.toRecipe
-import java.nio.file.Files
-import java.nio.file.Paths
 
-class CobolPreprocessorReplaceTest : RewriteTest {
+class CobolPreprocessorReplaceTest : CobolTest() {
 
     companion object {
-        val dialect = IbmAnsi85()
-        val printer =
-            CobolPreprocessorOutputSourcePrinter<ExecutionContext>(
-                dialect,
-                false
-            )
-
-        private val userDir = System.getProperty("user.dir")
-        private const val nistPath = "/src/test/resources/gov/nist/"
-        fun getNistSource(bookName: String): String {
-            val path = Paths.get(userDir + nistPath + bookName)
-            val inputStream = Files.newInputStream(path)
-            val encoding = EncodingDetectingInputStream(inputStream)
-            return encoding.readFully()
-        }
-    }
-
-    override fun defaults(spec: RecipeSpec) {
-        spec.recipe(toRecipe {
-            object : CobolPreprocessorVisitor<ExecutionContext>() {
-                override fun visitSpace(space: Space, p: ExecutionContext): Space {
-                    val whitespace = space.whitespace.trim()
-                    if (!(dialect.separators.contains("$whitespace ") || whitespace.isEmpty())) {
-                        return space.withWhitespace("(~~>${space.whitespace}<~~)")
-                    }
-                    return space
-                }
-            }
-        })
+        val printer = CobolPreprocessorOutputSourcePrinter<ExecutionContext>(dialect, false)
     }
 
     /* CopyStatement REPLACING Tests */
