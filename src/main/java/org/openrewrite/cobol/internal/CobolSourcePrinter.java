@@ -265,7 +265,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(blockContainsClause.getFirstWords(), p);
         visit(blockContainsClause.getIntegerLiteral(), p);
         visit(blockContainsClause.getBlockContainsTo(), p);
-        visit(blockContainsClause.getLastWords(), p);
+        visit(blockContainsClause.getLastWord(), p);
         return blockContainsClause;
     }
 

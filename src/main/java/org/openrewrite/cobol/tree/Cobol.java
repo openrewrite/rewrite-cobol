@@ -616,7 +616,7 @@ public interface Cobol extends Tree {
         BlockContainsTo blockContainsTo;
 
         @Nullable
-        Word lastWords;
+        Word lastWord;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {

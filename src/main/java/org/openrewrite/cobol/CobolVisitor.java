@@ -253,8 +253,10 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.BlockContainsClause b = blockContainsClause;
         b = b.withPrefix(visitSpace(b.getPrefix(), p));
         b = b.withMarkers(visitMarkers(b.getMarkers(), p));
+        b = b.withFirstWords(ListUtils.map(b.getFirstWords(), it -> (Cobol.Word) visit(it, p)));
         b = b.withIntegerLiteral((Cobol.Word) visit(b.getIntegerLiteral(), p));
         b = b.withBlockContainsTo((Cobol.BlockContainsTo) visit(b.getBlockContainsTo(), p));
+        b = b.withLastWord((Cobol.Word) visit(b.getLastWord(), p));
         return b;
     }
 
@@ -262,6 +264,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.BlockContainsTo b = blockContainsTo;
         b = b.withPrefix(visitSpace(b.getPrefix(), p));
         b = b.withMarkers(visitMarkers(b.getMarkers(), p));
+        b = b.withTo((Cobol.Word) visit(b.getTo(), p));
         b = b.withIntegerLiteral((Cobol.Word) visit(b.getIntegerLiteral(), p));
         return b;
     }
