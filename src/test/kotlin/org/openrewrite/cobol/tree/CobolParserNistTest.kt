@@ -2027,201 +2027,201 @@ class CobolParserNistTest : CobolTest() {
 
     @Test
     fun st101A() = rewriteRun(
-        cobol(getNistSource("st101A.CBL"))
+        cobol(getNistSource("ST101A.CBL"))
     )
 
     @Test
     fun st102A() = rewriteRun(
-        cobol(getNistSource("st102A.CBL"))
+        cobol(getNistSource("ST102A.CBL"))
     )
 
     @Test
     fun st103A() = rewriteRun(
-        cobol(getNistSource("st103A.CBL"))
+        cobol(getNistSource("ST103A.CBL"))
     )
 
     @Test
     fun st104A() = rewriteRun(
-        cobol(getNistSource("st104A.CBL"))
+        cobol(getNistSource("ST104A.CBL"))
     )
 
     @Test
     fun st105A() = rewriteRun(
-        cobol(getNistSource("st105A.CBL"))
+        cobol(getNistSource("ST105A.CBL"))
     )
 
     @Test
     fun st106A() = rewriteRun(
-        cobol(getNistSource("st106A.CBL"))
+        cobol(getNistSource("ST106A.CBL"))
     )
 
     @Test
     fun st107A() = rewriteRun(
-        cobol(getNistSource("st107A.CBL"))
+        cobol(getNistSource("ST107A.CBL"))
     )
 
     @Test
     fun st108A() = rewriteRun(
-        cobol(getNistSource("st108A.CBL"))
+        cobol(getNistSource("ST108A.CBL"))
     )
 
     @Test
     fun st109A() = rewriteRun(
-        cobol(getNistSource("st109A.CBL"))
+        cobol(getNistSource("ST109A.CBL"))
     )
 
     @Test
     fun st110A() = rewriteRun(
-        cobol(getNistSource("st110A.CBL"))
+        cobol(getNistSource("ST110A.CBL"))
     )
 
     @Test
     fun st111A() = rewriteRun(
-        cobol(getNistSource("st111A.CBL"))
+        cobol(getNistSource("ST111A.CBL"))
     )
 
     @Test
     fun st112M() = rewriteRun(
-        cobol(getNistSource("st112M.CBL"))
+        cobol(getNistSource("ST112M.CBL"))
     )
 
     @Test
     fun st113M() = rewriteRun(
-        cobol(getNistSource("st113M.CBL"))
+        cobol(getNistSource("ST113M.CBL"))
     )
 
     @Test
     fun st114M() = rewriteRun(
-        cobol(getNistSource("st114M.CBL"))
+        cobol(getNistSource("ST114M.CBL"))
     )
 
     @Test
     fun st115A() = rewriteRun(
-        cobol(getNistSource("st115A.CBL"))
+        cobol(getNistSource("ST115A.CBL"))
     )
 
     @Test
     fun st116A() = rewriteRun(
-        cobol(getNistSource("st116A.CBL"))
+        cobol(getNistSource("ST116A.CBL"))
     )
 
     @Test
     fun st117A() = rewriteRun(
-        cobol(getNistSource("st117A.CBL"))
+        cobol(getNistSource("ST117A.CBL"))
     )
 
     @Test
     fun st118A() = rewriteRun(
-        cobol(getNistSource("st118A.CBL"))
+        cobol(getNistSource("ST118A.CBL"))
     )
 
     @Test
     fun st119A() = rewriteRun(
-        cobol(getNistSource("st119A.CBL"))
+        cobol(getNistSource("ST119A.CBL"))
     )
 
     @Test
     fun st120A() = rewriteRun(
-        cobol(getNistSource("st120A.CBL"))
+        cobol(getNistSource("ST120A.CBL"))
     )
 
     @Test
     fun st121A() = rewriteRun(
-        cobol(getNistSource("st121A.CBL"))
+        cobol(getNistSource("ST121A.CBL"))
     )
 
     @Test
     fun st122A() = rewriteRun(
-        cobol(getNistSource("st122A.CBL"))
+        cobol(getNistSource("ST122A.CBL"))
     )
 
     @Test
     fun st123A() = rewriteRun(
-        cobol(getNistSource("st123A.CBL"))
+        cobol(getNistSource("ST123A.CBL"))
     )
 
     @Test
     fun st124A() = rewriteRun(
-        cobol(getNistSource("st124A.CBL"))
+        cobol(getNistSource("ST124A.CBL"))
     )
 
     @Test
     fun st125A() = rewriteRun(
-        cobol(getNistSource("st125A.CBL"))
+        cobol(getNistSource("ST125A.CBL"))
     )
 
     @Test
     fun st126A() = rewriteRun(
-        cobol(getNistSource("st126A.CBL"))
+        cobol(getNistSource("ST126A.CBL"))
     )
 
     @Test
     fun st127A() = rewriteRun(
-        cobol(getNistSource("st127A.CBL"))
+        cobol(getNistSource("ST127A.CBL"))
     )
 
     @Test
     fun st131A() = rewriteRun(
-        cobol(getNistSource("st131A.CBL"))
+        cobol(getNistSource("ST131A.CBL"))
     )
 
     @Test
     fun st132A() = rewriteRun(
-        cobol(getNistSource("st132A.CBL"))
+        cobol(getNistSource("ST132A.CBL"))
     )
 
     @Test
     fun st133A() = rewriteRun(
-        cobol(getNistSource("st133A.CBL"))
+        cobol(getNistSource("ST133A.CBL"))
     )
 
     @Test
     fun st134A() = rewriteRun(
-        cobol(getNistSource("st134A.CBL"))
+        cobol(getNistSource("ST134A.CBL"))
     )
 
     @Test
     fun st135A() = rewriteRun(
-        cobol(getNistSource("st135A.CBL"))
+        cobol(getNistSource("ST135A.CBL"))
     )
 
     @Test
     fun st136A() = rewriteRun(
-        cobol(getNistSource("st136A.CBL"))
+        cobol(getNistSource("ST136A.CBL"))
     )
 
     @Test
     fun st137A() = rewriteRun(
-        cobol(getNistSource("st137A.CBL"))
+        cobol(getNistSource("ST137A.CBL"))
     )
 
     @Test
     fun st139A() = rewriteRun(
-        cobol(getNistSource("st139A.CBL"))
+        cobol(getNistSource("ST139A.CBL"))
     )
 
     @Test
     fun st140A() = rewriteRun(
-        cobol(getNistSource("st140A.CBL"))
+        cobol(getNistSource("ST140A.CBL"))
     )
 
     @Test
     fun st144A() = rewriteRun(
-        cobol(getNistSource("st144A.CBL"))
+        cobol(getNistSource("ST144A.CBL"))
     )
 
     @Test
     fun st146A() = rewriteRun(
-        cobol(getNistSource("st146A.CBL"))
+        cobol(getNistSource("ST146A.CBL"))
     )
 
     @Test
     fun st147A() = rewriteRun(
-        cobol(getNistSource("st147A.CBL"))
+        cobol(getNistSource("ST147A.CBL"))
     )
 
     @Test
     fun st301M() = rewriteRun(
-        cobol(getNistSource("st301M.CBL"))
+        cobol(getNistSource("ST301M.CBL"))
     )
 }
