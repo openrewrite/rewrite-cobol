@@ -34,11 +34,8 @@ import org.openrewrite.text.PlainText;
 import org.openrewrite.tree.ParsingEventListener;
 import org.openrewrite.tree.ParsingExecutionContextView;
 
-import java.io.File;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.*;
 
 import static java.util.Collections.emptyList;
@@ -49,6 +46,7 @@ import static org.openrewrite.Tree.randomId;
  * Read preprocessed COBOL and execute preprocessor commands.
  */
 public class CobolPreprocessorParser implements Parser<CobolPreprocessor.CompilationUnit> {
+    public static final List<String> COPYBOOK_FILE_EXTENSIONS = Collections.singletonList(".cpy");
     private static final List<String> COBOL_FILE_EXTENSIONS = Collections.singletonList(".cbl");
 
     private final CobolDialect cobolDialect;
@@ -188,22 +186,6 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         }
 
         return copyBooks;
-    }
-
-    /**
-     * There may be A LOT of copy books in a COBOL codebase, but we do not know how the parser is provided the copy books.
-     * We also do not know how they are detected or what types of conventions exist.
-     *
-     * Temporarily hardcoded to implement COPY/REPLACE, but this SHOULD be auto-detected / configurable.
-     * A temp ADHOC solution may be an auto-detected style that contains all the relevant info.
-     */
-    public static List<Path> getCopyBooks() {
-        String userDir = System.getProperty("user.dir");
-        String copyBooks = "/src/test/resources/gov/nist/copybooks";
-        return Arrays.stream(Objects.requireNonNull(Paths.get(userDir + copyBooks).toFile().listFiles()))
-                .filter(it -> !it.isDirectory())
-                .map(File::toPath)
-                .collect(toList());
     }
 
     @Override

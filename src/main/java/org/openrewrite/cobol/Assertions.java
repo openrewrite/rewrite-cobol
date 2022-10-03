@@ -22,8 +22,12 @@ import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.test.SourceSpec;
 import org.openrewrite.test.SourceSpecs;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static java.util.Collections.emptyList;
 
 public class Assertions {
     private Assertions() {
@@ -68,8 +72,7 @@ public class Assertions {
     }
 
     public static SourceSpecs cobolCopy(@Nullable String before, Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = CobolPreprocessorParser.parseCopyBooks(
-                CobolPreprocessorParser.getCopyBooks(), null, new IbmAnsi85());
+        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
 
         SourceSpec<Cobol.CompilationUnit> cobol =
                 new SourceSpec<>(Cobol.CompilationUnit.class,
@@ -88,8 +91,7 @@ public class Assertions {
 
     public static SourceSpecs cobolCopy(@Nullable String before, String after,
                                     Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = CobolPreprocessorParser.parseCopyBooks(
-                CobolPreprocessorParser.getCopyBooks(), null, new IbmAnsi85());
+        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
 
         SourceSpec<Cobol.CompilationUnit> cobol =
                 new SourceSpec<>(Cobol.CompilationUnit.class,
@@ -140,8 +142,7 @@ public class Assertions {
     }
 
     public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = CobolPreprocessorParser.parseCopyBooks(
-                CobolPreprocessorParser.getCopyBooks(), null, new IbmAnsi85());
+        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
 
         SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
                 new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
@@ -163,8 +164,7 @@ public class Assertions {
 
     public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, String after,
                                                     Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = CobolPreprocessorParser.parseCopyBooks(
-                CobolPreprocessorParser.getCopyBooks(), null, new IbmAnsi85());
+        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
 
         SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
                 new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
@@ -177,5 +177,15 @@ public class Assertions {
                         after);
         spec.accept(cobol);
         return cobol;
+    }
+
+    private static List<CobolPreprocessor.CopyBook> getCopyBookSources() {
+        CobolResourceParser resourceParser = new CobolResourceParser(Paths.get("").toAbsolutePath(), emptyList(), emptyList());
+
+        try {
+            return resourceParser.parseCopyBooks(emptyList(), new IbmAnsi85(), CobolPreprocessorParser.COPYBOOK_FILE_EXTENSIONS);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
