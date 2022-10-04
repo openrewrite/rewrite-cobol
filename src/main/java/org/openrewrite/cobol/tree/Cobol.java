@@ -5345,7 +5345,6 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         List<Word> words;
-
         List<Name> phrases;
 
         @Override
@@ -5522,6 +5521,7 @@ public interface Cobol extends Tree {
 
         @Nullable
         List<ProgramUnit> programUnits;
+
         @Nullable
         EndProgram endProgram;
 
