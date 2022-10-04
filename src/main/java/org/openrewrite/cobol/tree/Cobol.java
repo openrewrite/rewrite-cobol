@@ -3138,7 +3138,7 @@ public interface Cobol extends Tree {
         Word word;
 
         @Nullable
-        List<Word> nextSentence;
+        List<Word> nextSentences;
 
         @Nullable
         List<Statement> statements;
@@ -3164,7 +3164,7 @@ public interface Cobol extends Tree {
         Word word;
 
         @Nullable
-        List<Word> nextSentence;
+        List<Word> nextSentences;
 
         @Nullable
         List<Statement> statements;

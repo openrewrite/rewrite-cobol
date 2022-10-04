@@ -1303,7 +1303,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(ifElse.getPrefix(), p);
         visitMarkers(ifElse.getMarkers(), p);
         visit(ifElse.getWord(), p);
-        visit(ifElse.getNextSentence(), p);
+        visit(ifElse.getNextSentences(), p);
         visit(ifElse.getStatements(), p);
         return ifElse;
     }
@@ -1312,7 +1312,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(ifThen.getPrefix(), p);
         visitMarkers(ifThen.getMarkers(), p);
         visit(ifThen.getWord(), p);
-        visit(ifThen.getNextSentence(), p);
+        visit(ifThen.getNextSentences(), p);
         visit(ifThen.getStatements(), p);
         return ifThen;
     }

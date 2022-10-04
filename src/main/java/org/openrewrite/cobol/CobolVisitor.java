@@ -1416,6 +1416,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.If i = _if;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
         i = i.withCondition((Cobol.Condition) visit(i.getCondition(), p));
         i = i.withIfThen((Cobol.IfThen) visit(i.getIfThen(), p));
         i = i.withIfThen((Cobol.IfThen) visit(i.getIfThen(), p));
@@ -1427,6 +1428,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.IfElse i = ifElse;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
+        i = i.withNextSentences(ListUtils.map(i.getNextSentences(), t -> (Cobol.Word) visit(t, p)));
         i = i.withStatements(ListUtils.map(i.getStatements(), t -> (Statement) visit(t, p)));
         return i;
     }
@@ -1435,6 +1438,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.IfThen i = ifThen;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
+        i = i.withNextSentences(ListUtils.map(i.getNextSentences(), t -> (Cobol.Word) visit(t, p)));
         i = i.withStatements(ListUtils.map(i.getStatements(), t -> (Statement) visit(t, p)));
         return i;
     }
@@ -1452,6 +1457,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InFile i = inFile;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
+        i = i.withName((Name) visit(i.getName(), p));
         return i;
     }
 
@@ -1459,6 +1466,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InLibrary i = inLibrary;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
+        i = i.withName((Name) visit(i.getName(), p));
         return i;
     }
 
@@ -1466,6 +1475,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InMnemonic i = inMnemonic;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
+        i = i.withName((Name) visit(i.getName(), p));
         return i;
     }
 
@@ -1473,6 +1484,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InSection i = inSection;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
+        i = i.withName((Name) visit(i.getName(), p));
         return i;
     }
 
@@ -1480,6 +1493,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InTable i = inTable;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
         return i;
     }
 
@@ -1487,6 +1501,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Initialize i = initialize;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withInitialize((Cobol.Word) visit(i.getInitialize(), p));
         i = i.withIdentifiers(ListUtils.map(i.getIdentifiers(), t -> (Identifier) visit(t, p)));
         i = i.withInitializeReplacingPhrase((Cobol.InitializeReplacingPhrase) visit(i.getInitializeReplacingPhrase(), p));
         return i;
@@ -1496,6 +1511,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InitializeReplacingBy i = initializeReplacingBy;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWords(ListUtils.map(i.getWords(), it -> (Cobol.Word) visit(it, p)));
         i = i.withIdentifier((Cobol.Word) visit(i.getIdentifier(), p));
         return i;
     }
@@ -1504,6 +1520,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InitializeReplacingPhrase i = initializeReplacingPhrase;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withReplacing((Cobol.Word) visit(i.getReplacing(), p));
         i = i.withInitializeReplacingBy(ListUtils.map(i.getInitializeReplacingBy(), t -> (Cobol.InitializeReplacingBy) visit(t, p)));
         return i;
     }
@@ -1512,6 +1529,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Initiate i = initiate;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withInitiate((Cobol.Word) visit(i.getInitiate(), p));
         i = i.withReportNames(ListUtils.map(i.getReportNames(), t -> (Cobol.QualifiedDataName) visit(t, p)));
         return i;
     }
@@ -1520,6 +1538,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InputOutputSection i = inputOutputSection;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWords(ListUtils.map(i.getWords(), it -> (Cobol.Word) visit(it, p)));
         i = i.withParagraphs(ListUtils.map(i.getParagraphs(), t -> visit(t, p)));
         return i;
     }
@@ -1528,6 +1547,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Inspect i = inspect;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withInspect((Cobol.Word) visit(i.getInspect(), p));
+        i = i.withIdentifier((Identifier) visit(i.getIdentifier(), p));
         i = i.withPhrase(visit(i.getPhrase(), p));
         return i;
     }
@@ -1554,6 +1575,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectBeforeAfter i = inspectBeforeAfter;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWords(ListUtils.map(i.getWords(), it -> (Cobol.Word) visit(it, p)));
         i = i.withIdentifier((Name) visit(i.getIdentifier(), p));
         return i;
     }
@@ -1562,6 +1584,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectBy i = inspectBy;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withBy((Cobol.Word) visit(i.getBy(), p));
         i = i.withIdentifier((Name) visit(i.getIdentifier(), p));
         return i;
     }
@@ -1570,6 +1593,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectCharacters i = inspectCharacters;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withCharacter((Cobol.Word) visit(i.getCharacter(), p));
         i = i.withInspections(ListUtils.map(i.getInspections(), t -> (Cobol.InspectBeforeAfter) visit(t, p)));
         return i;
     }
@@ -1578,6 +1602,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectConvertingPhrase i = inspectConvertingPhrase;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withConverting((Cobol.Word) visit(i.getConverting(), p));
         i = i.withIdentifier((Name) visit(i.getIdentifier(), p));
         i = i.withInspectTo((Cobol.InspectTo) visit(i.getInspectTo(), p));
         i = i.withInspections(ListUtils.map(i.getInspections(), t -> (Cobol.InspectBeforeAfter) visit(t, p)));
@@ -1608,6 +1633,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectReplacingAllLeadings i = inspectReplacingAllLeadings;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
         i = i.withInspections(ListUtils.map(i.getInspections(), t -> (Cobol.InspectReplacingAllLeading) visit(t, p)));
         return i;
     }
@@ -1616,6 +1642,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectReplacingCharacters i = inspectReplacingCharacters;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withWord((Cobol.Word) visit(i.getWord(), p));
         i = i.withInspectBy((Cobol.InspectBy) visit(i.getInspectBy(), p));
         i = i.withInspections(ListUtils.map(i.getInspections(), t -> (Cobol.InspectBeforeAfter) visit(t, p)));
         return i;
@@ -1634,6 +1661,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectTallyingPhrase i = inspectTallyingPhrase;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withTallying((Cobol.Word) visit(i.getTallying(), p));
         i = i.withInspectFors(ListUtils.map(i.getInspectFors(), t -> (Cobol.InspectFor) visit(t, p)));
         return i;
     }
@@ -1642,6 +1670,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectTallyingReplacingPhrase i = inspectTallyingReplacingPhrase;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withTallying((Cobol.Word) visit(i.getTallying(), p));
         i = i.withInspectFors(ListUtils.map(i.getInspectFors(), t -> (Cobol.InspectFor) visit(t, p)));
         i = i.withReplacingPhrases(ListUtils.map(i.getReplacingPhrases(), t -> (Cobol.InspectReplacingPhrase) visit(t, p)));
         return i;
@@ -1651,6 +1680,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.InspectTo i = inspectTo;
         i = i.withPrefix(visitSpace(i.getPrefix(), p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        i = i.withTo((Cobol.Word) visit(i.getTo(), p));
         i = i.withIdentifier((Name) visit(i.getIdentifier(), p));
         return i;
     }
