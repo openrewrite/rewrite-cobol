@@ -840,8 +840,10 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         Name from;
+
         @Nullable
         Word through;
+
         @Nullable
         Name to;
 
