@@ -21,15 +21,20 @@ import org.openrewrite.ExecutionContext
 import org.openrewrite.InMemoryExecutionContext
 import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.Assertions.cobolCopy
+import org.openrewrite.cobol.internal.CobolPrinter
 
 class CobolParserReplaceTest : CobolTest() {
+
+    companion object {
+        val printer = CobolPrinter<ExecutionContext>(false, false)
+    }
 
     @Test
     fun sm201A() = rewriteRun(
         cobolCopy(getNistSource("SM201A.CBL")) { spec ->
             spec.afterRecipe { cu ->
                 val outputCapture = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-                CobolParserCopyTest.printer.visit(cu, outputCapture)
+                printer.visit(cu, outputCapture)
                 val result = outputCapture.getOut().trimIndent()
                 Assertions.assertThat(result).isEqualTo(
                     """
@@ -534,7 +539,7 @@ class CobolParserReplaceTest : CobolTest() {
         cobolCopy(getNistSource("SM202A.CBL")) { spec ->
             spec.afterRecipe { cu ->
                 val outputCapture = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-                CobolParserCopyTest.printer.visit(cu, outputCapture)
+                printer.visit(cu, outputCapture)
                 val result = outputCapture.getOut().trimIndent()
                 Assertions.assertThat(result).isEqualTo(
                     """
@@ -1005,7 +1010,7 @@ class CobolParserReplaceTest : CobolTest() {
         cobolCopy(getNistSource("SM203A.CBL")) { spec ->
             spec.afterRecipe { cu ->
                 val outputCapture = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-                CobolParserCopyTest.printer.visit(cu, outputCapture)
+                printer.visit(cu, outputCapture)
                 val result = outputCapture.getOut().trimIndent()
                 Assertions.assertThat(result).isEqualTo(
                     """
@@ -1343,7 +1348,7 @@ class CobolParserReplaceTest : CobolTest() {
         cobolCopy(getNistSource("SM205A.CBL")) { spec ->
             spec.afterRecipe { cu ->
                 val outputCapture = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-                CobolParserCopyTest.printer.visit(cu, outputCapture)
+                printer.visit(cu, outputCapture)
                 val result = outputCapture.getOut().trimIndent()
                 Assertions.assertThat(result).isEqualTo(
                     """
@@ -1920,7 +1925,7 @@ class CobolParserReplaceTest : CobolTest() {
         cobolCopy(getNistSource("SM206A.CBL")) { spec ->
             spec.afterRecipe { cu ->
                 val outputCapture = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-                CobolParserCopyTest.printer.visit(cu, outputCapture)
+                printer.visit(cu, outputCapture)
                 val result = outputCapture.getOut().trimIndent()
                 Assertions.assertThat(result).isEqualTo(
                     """
@@ -2499,7 +2504,7 @@ class CobolParserReplaceTest : CobolTest() {
         cobolCopy(getNistSource("SM208A.CBL")) { spec ->
             spec.afterRecipe { cu ->
                 val outputCapture = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-                CobolParserCopyTest.printer.visit(cu, outputCapture)
+                printer.visit(cu, outputCapture)
                 val result = outputCapture.getOut().trimIndent()
                 Assertions.assertThat(result).isEqualTo(
                     """

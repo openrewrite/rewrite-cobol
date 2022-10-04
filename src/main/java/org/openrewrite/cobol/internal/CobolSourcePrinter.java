@@ -18,7 +18,9 @@ package org.openrewrite.cobol.internal;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
+import org.openrewrite.cobol.CobolPrinterUtils;
 import org.openrewrite.cobol.CobolVisitor;
+import org.openrewrite.cobol.search.SearchResult;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
@@ -3871,9 +3873,13 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
+        Optional<SearchResult> searchResultOptional = word.getMarkers().findFirst(SearchResult.class);
+        SearchResult.Type type;
+        type = searchResultOptional.map(SearchResult::getType).orElse(null);
+
         Optional<ReplaceBy> replaceBy = word.getMarkers().findFirst((ReplaceBy.class));
         if (replaceBy.isPresent()) {
-            // Print the original copy
+            // Print the original replaceBy
             PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
             printer.visit(replaceBy.get().getStatement(), output);
             p.append(output.getOut());
@@ -3881,7 +3887,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
         Optional<ReplaceOff> replaceOff = word.getMarkers().findFirst((ReplaceOff.class));
         if (replaceOff.isPresent()) {
-            // Print the original copy
+            // Print the original replaceOff
             PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
             printer.visit(replaceOff.get().getReplaceOff(), output);
             p.append(output.getOut());
@@ -3890,7 +3896,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         Optional<Replace> replace = word.getMarkers().findFirst((Replace.class));
         Optional<CopyStatement> copyBook = word.getMarkers().findFirst(CopyStatement.class);
         if (replace.isPresent() && !copyBook.isPresent()) {
-            // Print the original copy
+            // Print the original replace
             PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
             printer.visit(replace.get().getOriginalWord(), output);
             p.append(output.getOut());
@@ -3931,7 +3937,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
             Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
+            indicatorArea.ifPresent(it -> visitIndicatorArea(it, type, p));
 
             if (replace.isPresent() && replace.get().isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
@@ -4013,13 +4019,17 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public void visitContinuation(Cobol.Word word, Continuation continuation, PrintOutputCapture<P> p) {
+        visitContinuation(word, continuation, null, p);
+    }
+
+    public void visitContinuation(Cobol.Word word, Continuation continuation, @Nullable SearchResult.Type type, PrintOutputCapture<P> p) {
         if (continuation.getContinuations().containsKey(0)) {
             Markers markers = continuation.getContinuations().get(0);
             Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
             Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
+            indicatorArea.ifPresent(it -> visitIndicatorArea(it, type, p));
         }
 
         visitSpace(word.getPrefix(), p);
@@ -4083,8 +4093,18 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public void visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
+        visitIndicatorArea(indicatorArea, null, p);
+    }
+
+    public void visitIndicatorArea(IndicatorArea indicatorArea, @Nullable SearchResult.Type searchType, PrintOutputCapture<P> p) {
         if (printColumns) {
+            if (searchType == SearchResult.Type.INDICATOR_AREA) {
+                p.append("~~~>");
+            }
             p.append(indicatorArea.getIndicator());
+            if (searchType == SearchResult.Type.INDICATOR_AREA) {
+                p.append("<~~~");
+            }
         }
         p.append(indicatorArea.getContinuationPrefix());
     }

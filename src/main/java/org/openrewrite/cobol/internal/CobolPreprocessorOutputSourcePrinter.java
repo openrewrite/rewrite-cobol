@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.openrewrite.cobol.CobolPrinterUtils.*;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
 
 /**
@@ -420,7 +421,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
         String replacedWord = isLongerWord ? " " + word.getWord() : word.getWord();
 
         boolean isLiteral = word.getWord().startsWith("\"") || word.getWord().startsWith("'");
-        int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
+        int contentAreaLength = getContentAreaLength(cobolDialect);
         boolean isContinuedLiteral = isLiteral && (curIndex + replacedWord.length()) > contentAreaLength;
 
         // Add Start key.
@@ -581,30 +582,6 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
         commentArea.ifPresent(it -> visitCommentArea(it, p));
     }
 
-
-    /**
-     * Return the index to insert a Template START comment at.
-     */
-    private int getInsertIndex(String output) {
-        int insertIndex = output.lastIndexOf("\n");
-        return insertIndex == -1 ? 0 : insertIndex + 1;
-    }
-
-    /**
-     * Return the index position of the current line.
-     */
-    private int getCurrentIndex(String output) {
-        int index = output.lastIndexOf("\n");
-        return index == -1 ? index : output.substring(index + 1).length();
-    }
-
-    private String generateWhitespace(int count) {
-        if (count < 0) {
-            throw new IllegalStateException("Negative index detected.");
-        }
-        return StringUtils.repeat(" ", count);
-    }
-
     /**
      * Add a templates START comment.
      * @param startComment start comment for the template type.
@@ -652,7 +629,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
         boolean isCRLF = output.endsWith("\r\n");
 
         int totalChars = output.length() + curIndex - cobolDialect.getColumns().getContentArea() - (isEndOfLine ? (isCRLF ? 2 : 1) : 0);
-        int contentAreaLength = cobolDialect.getColumns().getOtherArea() - cobolDialect.getColumns().getContentArea();
+        int contentAreaLength = getContentAreaLength(cobolDialect);
 
         int numberOfSpaces;
         if (!isEndOfLine && totalChars > contentAreaLength) {

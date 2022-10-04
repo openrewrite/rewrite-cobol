@@ -29,7 +29,6 @@ public class CobolResourceParser {
         Files.walkFileTree(baseDir, Collections.emptySet(), 16, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-                System.out.println();
                 if (isExcluded(dir) || isIgnoredDirectory(baseDir, dir) || excludedDirectories.contains(dir)) {
                     return FileVisitResult.SKIP_SUBTREE;
                 }
