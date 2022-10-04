@@ -1300,6 +1300,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.FileControlParagraph f = fileControlParagraph;
         f = f.withPrefix(visitSpace(f.getPrefix(), p));
         f = f.withMarkers(visitMarkers(f.getMarkers(), p));
+        f = f.withFileControl((Cobol.Word) visit(f.getFileControl(), p));
         f = f.withControlEntries(ListUtils.map(f.getControlEntries(), t -> visit(t, p)));
         return f;
     }
@@ -1329,6 +1330,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.FileStatusClause f = fileStatusClause;
         f = f.withPrefix(visitSpace(f.getPrefix(), p));
         f = f.withMarkers(visitMarkers(f.getMarkers(), p));
+        f = f.withWords(ListUtils.map(f.getWords(), it -> (Cobol.Word) visit(it, p)));
         f = f.withQualifiedDataNames(ListUtils.map(f.getQualifiedDataNames(), t -> (Cobol.QualifiedDataName) visit(t, p)));
         return f;
     }
@@ -1337,6 +1339,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.FunctionCall f = functionCall;
         f = f.withPrefix(visitSpace(f.getPrefix(), p));
         f = f.withMarkers(visitMarkers(f.getMarkers(), p));
+        f = f.withFunction((Cobol.Word) visit(f.getFunction(), p));
         f = f.withFunctionName((Cobol.Word) visit(f.getFunctionName(), p));
         f = f.withArguments(ListUtils.map(f.getArguments(), t -> (Cobol.Parenthesized) visit(t, p)));
         f = f.withReferenceModifier((Cobol.ReferenceModifier) visit(f.getReferenceModifier(), p));
