@@ -1582,7 +1582,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        Word redefines;
+        Word word;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -2152,7 +2152,7 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         Word disable;
-        List<Word> type;
+        List<Word> types;
         Name cdName;
 
         @Nullable
@@ -2303,7 +2303,7 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         Word giving;
-        List<Roundable> roundable;
+        List<Roundable> roundables;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -2322,7 +2322,7 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         Word into;
-        List<Roundable> roundable;
+        List<Roundable> roundables;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {

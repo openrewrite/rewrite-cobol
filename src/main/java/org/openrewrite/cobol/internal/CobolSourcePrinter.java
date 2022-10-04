@@ -668,7 +668,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitDataIntegerStringClause(Cobol.DataIntegerStringClause dataIntegerStringClause, PrintOutputCapture<P> p) {
         visitSpace(dataIntegerStringClause.getPrefix(), p);
         visitMarkers(dataIntegerStringClause.getMarkers(), p);
-        visit(dataIntegerStringClause.getRedefines(), p);
+        visit(dataIntegerStringClause.getWord(), p);
         return dataIntegerStringClause;
     }
 
@@ -907,7 +907,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(disable.getPrefix(), p);
         visitMarkers(disable.getMarkers(), p);
         visit(disable.getDisable(), p);
-        visit(disable.getType(), p);
+        visit(disable.getTypes(), p);
         visit(disable.getCdName(), p);
         visit(disable.getWith(), p);
         visit(disable.getKey(), p);
@@ -971,7 +971,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(divideGivingPhrase.getPrefix(), p);
         visitMarkers(divideGivingPhrase.getMarkers(), p);
         visit(divideGivingPhrase.getGiving(), p);
-        visit(divideGivingPhrase.getRoundable(), p);
+        visit(divideGivingPhrase.getRoundables(), p);
         return divideGivingPhrase;
     }
 
@@ -979,7 +979,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(divideInto.getPrefix(), p);
         visitMarkers(divideInto.getMarkers(), p);
         visit(divideInto.getInto(), p);
-        visit(divideInto.getRoundable(), p);
+        visit(divideInto.getRoundables(), p);
         return divideInto;
     }
 
