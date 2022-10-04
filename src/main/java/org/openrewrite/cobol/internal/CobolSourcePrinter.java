@@ -3493,8 +3493,8 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitStatementPhrase(Cobol.StatementPhrase statementPhrase, PrintOutputCapture<P> p) {
         visitSpace(statementPhrase.getPrefix(), p);
         visitMarkers(statementPhrase.getMarkers(), p);
-        visit(statementPhrase.getPhrase(), p);
-        visit(statementPhrase.getStatement(), p);
+        visit(statementPhrase.getPhrases(), p);
+        visit(statementPhrase.getStatements(), p);
         return statementPhrase;
     }
 
@@ -3525,7 +3525,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitStringDelimitedByPhrase(Cobol.StringDelimitedByPhrase stringDelimitedByPhrase, PrintOutputCapture<P> p) {
         visitSpace(stringDelimitedByPhrase.getPrefix(), p);
         visitMarkers(stringDelimitedByPhrase.getMarkers(), p);
-        visit(stringDelimitedByPhrase.getWord(), p);
+        visit(stringDelimitedByPhrase.getWords(), p);
         visit(stringDelimitedByPhrase.getIdentifier(), p);
         return stringDelimitedByPhrase;
     }

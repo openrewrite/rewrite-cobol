@@ -8304,8 +8304,8 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        List<Word> phrase;
-        List<Statement> statement;
+        List<Word> phrases;
+        List<Statement> statements;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -8358,7 +8358,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
-        List<Word> word;
+        List<Word> words;
         Name identifier;
 
         @Override
