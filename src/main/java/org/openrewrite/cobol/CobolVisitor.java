@@ -2134,6 +2134,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.NextSentence n = nextSentence;
         n = n.withPrefix(visitSpace(n.getPrefix(), p));
         n = n.withMarkers(visitMarkers(n.getMarkers(), p));
+        n = n.withWords(ListUtils.map(n.getWords(), it -> (Cobol.Word) visit(it, p)));
         return n;
     }
 
