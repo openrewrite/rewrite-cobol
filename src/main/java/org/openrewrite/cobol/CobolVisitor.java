@@ -2337,7 +2337,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.PerformVaryingPhrase pp = performVaryingPhrase;
         pp = pp.withPrefix(visitSpace(pp.getPrefix(), p));
         pp = pp.withMarkers(visitMarkers(pp.getMarkers(), p));
-        pp = pp.withName((Cobol.Word) visit(pp.getName(), p));
+        pp = pp.withName((Name) visit(pp.getName(), p));
         pp = pp.withFrom((Cobol.Performable) visit(pp.getFrom(), p));
         pp = pp.withBy((Cobol.Performable) visit(pp.getBy(), p));
         pp = pp.withUntil((Cobol.PerformUntil) visit(pp.getUntil(), p));
@@ -3680,7 +3680,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.SendAdvancingLines s = sendAdvancingLines;
         s = s.withPrefix(visitSpace(s.getPrefix(), p));
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
-        s = s.withName((Cobol.Word) visit(s.getName(), p));
+        s = s.withName((Name) visit(s.getName(), p));
         s = s.withLines((Cobol.Word) visit(s.getLines(), p));
         return s;
     }
@@ -3741,7 +3741,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
         s = s.withTo(ListUtils.map(s.getTo(), t -> (Identifier) visit(t, p)));
         s = s.withOperation(ListUtils.map(s.getOperation(), it -> (Cobol.Word) visit(it, p)));
-        s = s.withValue((Cobol.Word) visit(s.getValue(), p));
+        s = s.withValue((Name) visit(s.getValue(), p));
         return s;
     }
 
@@ -4301,6 +4301,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Write w = write;
         w = w.withPrefix(visitSpace(w.getPrefix(), p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
+        w = w.withWrite((Cobol.Word) visit(w.getWrite(), p));
         w = w.withRecordName((Cobol.QualifiedDataName) visit(w.getRecordName(), p));
         w = w.withWriteFromPhrase((Cobol.WriteFromPhrase) visit(w.getWriteFromPhrase(), p));
         w = w.withWriteAdvancingPhrase((Cobol.WriteAdvancingPhrase) visit(w.getWriteAdvancingPhrase(), p));
@@ -4316,6 +4317,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.WriteAdvancingLines w = writeAdvancingLines;
         w = w.withPrefix(visitSpace(w.getPrefix(), p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
+        w = w.withName((Name) visit(w.getName(), p));
+        w = w.withWord((Cobol.Word) visit(w.getWord(), p));
         return w;
     }
 
@@ -4323,6 +4326,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.WriteAdvancingMnemonic w = writeAdvancingMnemonic;
         w = w.withPrefix(visitSpace(w.getPrefix(), p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
+        w = w.withName((Name) visit(w.getName(), p));
         return w;
     }
 
@@ -4330,6 +4334,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.WriteAdvancingPage w = writeAdvancingPage;
         w = w.withPrefix(visitSpace(w.getPrefix(), p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
+        w = w.withPage((Cobol.Word) visit(w.getPage(), p));
         return w;
     }
 
@@ -4337,6 +4342,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.WriteAdvancingPhrase w = writeAdvancingPhrase;
         w = w.withPrefix(visitSpace(w.getPrefix(), p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
+        w = w.withWords(ListUtils.map(w.getWords(), it -> (Cobol.Word) visit(it, p)));
+        w = w.withWriteBy(visit(w.getWriteBy(), p));
         return w;
     }
 
@@ -4344,6 +4351,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.WriteFromPhrase w = writeFromPhrase;
         w = w.withPrefix(visitSpace(w.getPrefix(), p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
+        w = w.withFrom((Cobol.Word) visit(w.getFrom(), p));
+        w = w.withName((Name) visit(w.getName(), p));
         return w;
     }
 }
