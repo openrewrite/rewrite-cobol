@@ -1350,6 +1350,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Generate g = generate;
         g = g.withPrefix(visitSpace(g.getPrefix(), p));
         g = g.withMarkers(visitMarkers(g.getMarkers(), p));
+        g = g.withGenerate((Cobol.Word) visit(g.getGenerate(), p));
         g = g.withReportName((Cobol.QualifiedDataName) visit(g.getReportName(), p));
         return g;
     }
@@ -1358,6 +1359,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.GlobalClause g = globalClause;
         g = g.withPrefix(visitSpace(g.getPrefix(), p));
         g = g.withMarkers(visitMarkers(g.getMarkers(), p));
+        g = g.withWords(ListUtils.map(g.getWords(), it -> (Cobol.Word) visit(it, p)));
         return g;
     }
 
@@ -1373,6 +1375,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.GoTo g = _goTo;
         g = g.withPrefix(visitSpace(g.getPrefix(), p));
         g = g.withMarkers(visitMarkers(g.getMarkers(), p));
+        g = g.withWords(ListUtils.map(g.getWords(), it -> (Cobol.Word) visit(it, p)));
         g = g.withStatement(visit(g.getStatement(), p));
         return g;
     }
@@ -1382,6 +1385,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         g = g.withPrefix(visitSpace(g.getPrefix(), p));
         g = g.withMarkers(visitMarkers(g.getMarkers(), p));
         g = g.withProcedureNames(ListUtils.map(g.getProcedureNames(), t -> (Cobol.ProcedureName) visit(t, p)));
+        g = g.withWords(ListUtils.map(g.getWords(), it -> (Cobol.Word) visit(it, p)));
+        g = g.withIdentifier((Identifier) visit(g.getIdentifier(), p));
         return g;
     }
 
