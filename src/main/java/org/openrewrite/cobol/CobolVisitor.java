@@ -2574,6 +2574,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.QualifiedDataNameFormat1 q = qualifiedDataNameFormat1;
         q = q.withPrefix(visitSpace(q.getPrefix(), p));
         q = q.withMarkers(visitMarkers(q.getMarkers(), p));
+        q = q.withName((Name) visit(q.getName(), p));
         q = q.withQualifiedInData(ListUtils.map(q.getQualifiedInData(), t -> visit(t, p)));
         q = q.withInFile((Cobol.InFile) visit(q.getInFile(), p));
         return q;
@@ -2583,6 +2584,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.QualifiedDataNameFormat2 q = qualifiedDataNameFormat2;
         q = q.withPrefix(visitSpace(q.getPrefix(), p));
         q = q.withMarkers(visitMarkers(q.getMarkers(), p));
+        q = q.withParagraphName((Name) visit(q.getParagraphName(), p));
         q = q.withInSection((Cobol.InSection) visit(q.getInSection(), p));
         return q;
     }
@@ -2591,6 +2593,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.QualifiedDataNameFormat3 q = qualifiedDataNameFormat3;
         q = q.withPrefix(visitSpace(q.getPrefix(), p));
         q = q.withMarkers(visitMarkers(q.getMarkers(), p));
+        q = q.withTextName((Name) visit(q.getTextName(), p));
         q = q.withInLibrary((Cobol.InLibrary) visit(q.getInLibrary(), p));
         return q;
     }
@@ -2599,6 +2602,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.QualifiedDataNameFormat4 q = qualifiedDataNameFormat4;
         q = q.withPrefix(visitSpace(q.getPrefix(), p));
         q = q.withMarkers(visitMarkers(q.getMarkers(), p));
+        q = q.withLinageCounter((Cobol.Word) visit(q.getLinageCounter(), p));
         q = q.withInFile((Cobol.InFile) visit(q.getInFile(), p));
         return q;
     }
