@@ -5961,7 +5961,6 @@ public interface Cobol extends Tree {
         Word integerLiteral;
         RecordContainsTo recordContainsTo;
 
-
         @Nullable
         Word characters;
 
@@ -6506,6 +6505,7 @@ public interface Cobol extends Tree {
         List<Cobol> clauses;
 
         Word dot;
+
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitReportGroupDescriptionEntryFormat3(this, p);
