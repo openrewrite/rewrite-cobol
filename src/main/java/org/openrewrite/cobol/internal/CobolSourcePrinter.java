@@ -995,7 +995,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitSpace(enable.getPrefix(), p);
         visitMarkers(enable.getMarkers(), p);
         visit(enable.getEnable(), p);
-        visit(enable.getType(), p);
+        visit(enable.getTypes(), p);
         visit(enable.getCdName(), p);
         visit(enable.getWith(), p);
         visit(enable.getKey(), p);

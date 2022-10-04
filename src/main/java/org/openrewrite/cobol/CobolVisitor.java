@@ -1077,6 +1077,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Enable e = enable;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withEnable((Cobol.Word) visit(e.getEnable(), p));
+        e = e.withTypes(ListUtils.map(e.getTypes(), it -> (Cobol.Word) visit(it, p)));
         return e;
     }
 
@@ -1103,6 +1105,10 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Entry e = entry;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withEntry((Cobol.Word) visit(e.getEntry(), p));
+        e = e.withLiteral((Literal) visit(e.getLiteral(), p));
+        e = e.withUsing((Cobol.Word) visit(e.getUsing(), p));
+        e = e.withIdentifiers(ListUtils.map(e.getIdentifiers(), it -> (Identifier) visit(it, p)));
         return e;
     }
 
@@ -1132,6 +1138,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.EvaluateAlso e = evaluateAlso;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withAlso((Cobol.Word) visit(e.getAlso(), p));
         e = e.withSelect(visit(e.getSelect(), p));
         return e;
     }
@@ -1168,6 +1175,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.EvaluateAlsoCondition e = evaluateAlsoCondition;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withAlso((Cobol.Word) visit(e.getAlso(), p));
         e = e.withCondition((Cobol.EvaluateCondition) visit(e.getCondition(), p));
         return e;
     }
@@ -1177,6 +1185,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
         e = e.withCondition(visit(e.getCondition(), p));
+        e = e.withWords(ListUtils.map(e.getWords(), it -> (Cobol.Word) visit(it, p)));
+        e = e.withCondition(visit(e.getCondition(), p));
         e = e.withEvaluateThrough((Cobol.EvaluateThrough) visit(e.getEvaluateThrough(), p));
         return e;
     }
@@ -1185,6 +1195,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.EvaluateThrough e = evaluateThrough;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withThrough((Cobol.Word) visit(e.getThrough(), p));
         e = e.withValue(visit(e.getValue(), p));
         return e;
     }
@@ -1193,6 +1204,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.EvaluateValueThrough e = evaluateValueThrough;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withNot((Cobol.Word) visit(e.getNot(), p));
         e = e.withValue(visit(e.getValue(), p));
         e = e.withEvaluateThrough((Cobol.EvaluateThrough) visit(e.getEvaluateThrough(), p));
         return e;
@@ -1202,6 +1214,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.EvaluateWhen e = evaluateWhen;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withWhen((Cobol.Word) visit(e.getWhen(), p));
         e = e.withCondition((Cobol.EvaluateCondition) visit(e.getCondition(), p));
         e = e.withAlsoCondition(ListUtils.map(e.getAlsoCondition(), t -> (Cobol.EvaluateAlsoCondition) visit(t, p)));
         return e;
@@ -1244,6 +1257,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Exhibit e = exhibit;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withWords(ListUtils.map(e.getWords(), it -> (Cobol.Word) visit(it, p)));
         e = e.withOperands(ListUtils.map(e.getOperands(), t -> (Identifier) visit(t, p)));
         return e;
     }
@@ -1252,6 +1266,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Exit e = exit;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withWords(ListUtils.map(e.getWords(), it -> (Cobol.Word) visit(it, p)));
         return e;
     }
 
@@ -1259,6 +1274,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.ExternalClause e = externalClause;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withWords(ListUtils.map(e.getWords(), it -> (Cobol.Word) visit(it, p)));
         return e;
     }
 

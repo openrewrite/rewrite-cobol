@@ -2358,7 +2358,7 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         Word enable;
-        List<Word> type;
+        List<Word> types;
         Name cdName;
 
         @Nullable
