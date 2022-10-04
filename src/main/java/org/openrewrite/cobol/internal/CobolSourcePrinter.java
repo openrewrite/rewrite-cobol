@@ -1689,7 +1689,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(linageClause.getMarkers(), p);
         visit(linageClause.getWords(), p);
         visit(linageClause.getName(), p);
-        visit(linageClause.getLines(), p);
+        visit(linageClause.getLine(), p);
         visit(linageClause.getLinageAt(), p);
         return linageClause;
     }

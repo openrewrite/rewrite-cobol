@@ -4057,7 +4057,7 @@ public interface Cobol extends Tree {
         Name name;
 
         @Nullable
-        Word lines;
+        Word line;
 
         @Nullable
         List<Cobol> linageAt;
@@ -4165,6 +4165,7 @@ public interface Cobol extends Tree {
 
         @Nullable
         Word dot2;
+
         List<DataDescriptionEntry> dataDescriptions;
 
         @Override
