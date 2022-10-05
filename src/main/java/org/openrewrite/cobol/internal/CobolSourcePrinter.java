@@ -3923,20 +3923,22 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 p.append(output.getOut());
                 copyUuid = copyBook.get().getOriginalStatement().getId().toString();
 
+                // Printing the copied source is currently in place for debugging purposes, but might be helpful to users.
                 if (printCopiedSource) {
                     if (!p.getOut().endsWith("\n")) {
                         p.append("\n");
                     }
 
                     output = new PrintOutputCapture<>(new InMemoryExecutionContext());
+                    // Printing the CopyBook AST requires a post process printer.
                     CobolPreprocessorPrinter<ExecutionContext> copyBookAstPrinter = new CobolPreprocessorPrinter<>(false, true);
                     copyBookAstPrinter.visit(copyBook.get().getOriginalStatement().getCopyBook(), output);
 
-                    String bookName = "CopyBook " + copyBook.get().getOriginalStatement().getCopySource().getName().getWord();
+                    String bookName = "      CopyBook " + copyBook.get().getOriginalStatement().getCopySource().getName().getWord();
 
                     // This should eventually be based on the CobolDialect.
                     String start = bookName + " start ";
-                    String copiedSourceStart = "\n" + start + fillArea('*', 65 - start.length()) + "\n";
+                    String copiedSourceStart = start + fillArea('*', 72 - start.length()) + "\n";
                     p.append(copiedSourceStart);
                     p.append(output.getOut());
 
@@ -3945,7 +3947,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                     }
 
                     String end = bookName + " end ";
-                    String copiedSourceEnd = end + fillArea('*', 65 - end.length()) + "\n\n";
+                    String copiedSourceEnd = end + fillArea('*', 72 - end.length()) + "\n";
                     p.append(copiedSourceEnd);
                 }
             }
