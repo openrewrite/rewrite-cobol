@@ -2144,7 +2144,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         o = o.withMarkers(visitMarkers(o.getMarkers(), p));
         o = o.withWords(ListUtils.map(o.getWords(), it -> (Cobol.Word) visit(it, p)));
         o = o.withComputer((Cobol.ObjectComputerDefinition) visit(o.getComputer(), p));
-        o = o.withDot((Cobol.Word) visit(o.getDot(), p));
         return o;
     }
 
@@ -2154,6 +2153,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         o = o.withMarkers(visitMarkers(o.getMarkers(), p));
         o = o.withComputerName((Cobol.Word) visit(o.getComputerName(), p));
         o = o.withSpecifications(ListUtils.map(o.getSpecifications(), t -> visit(t, p)));
+        o = o.withDot((Cobol.Word) visit(o.getDot(), p));
         return o;
     }
 
@@ -3806,7 +3806,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
         s = s.withWords(ListUtils.map(s.getWords(), it -> (Cobol.Word) visit(it, p)));
         s = s.withComputer((Cobol.SourceComputerDefinition) visit(s.getComputer(), p));
-        s = s.withDot((Cobol.Word) visit(s.getDot(), p));
         return s;
     }
 
@@ -3816,6 +3815,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
         s = s.withComputerName((Cobol.Word) visit(s.getComputerName(), p));
         s = s.withDebuggingMode(ListUtils.map(s.getDebuggingMode(), it -> (Cobol.Word) visit(it, p)));
+        s = s.withDot((Cobol.Word) visit(s.getDot(), p));
         return s;
     }
 

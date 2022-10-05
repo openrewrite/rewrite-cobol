@@ -1950,7 +1950,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(objectComputer.getMarkers(), p);
         visit(objectComputer.getWords(), p);
         visit(objectComputer.getComputer(), p);
-        visit(objectComputer.getDot(), p);
         return objectComputer;
     }
 
@@ -1959,6 +1958,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(objectComputerDefinition.getMarkers(), p);
         visit(objectComputerDefinition.getComputerName(), p);
         visit(objectComputerDefinition.getSpecifications(), p);
+        visit(objectComputerDefinition.getDot(), p);
         return objectComputerDefinition;
     }
 
@@ -3449,7 +3449,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(sourceComputer.getMarkers(), p);
         visit(sourceComputer.getWords(), p);
         visit(sourceComputer.getComputer(), p);
-        visit(sourceComputer.getDot(), p);
         return sourceComputer;
     }
 
@@ -3458,6 +3457,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitMarkers(sourceComputerDefinition.getMarkers(), p);
         visit(sourceComputerDefinition.getComputerName(), p);
         visit(sourceComputerDefinition.getDebuggingMode(), p);
+        visit(sourceComputerDefinition.getDot(), p);
         return sourceComputerDefinition;
     }
 

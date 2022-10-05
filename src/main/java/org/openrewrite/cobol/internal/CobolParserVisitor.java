@@ -3232,15 +3232,14 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 Space.EMPTY,
                 Markers.EMPTY,
                 wordsList(ctx.OBJECT_COMPUTER(), ctx.DOT_FS(0)),
-                ctx.computerName() == null ? null :
-                        new Cobol.ObjectComputerDefinition(
-                                randomId(),
-                                Space.EMPTY,
-                                Markers.EMPTY,
-                                (Cobol.Word) visit(ctx.computerName()),
-                                convertAll(ctx.objectComputerClause())
-                        ),
-                ctx.DOT_FS().size() == 1 ? null : (Cobol.Word) visit(ctx.DOT_FS(1))
+                ctx.computerName() == null ? null : new Cobol.ObjectComputerDefinition(
+                        randomId(),
+                        Space.EMPTY,
+                        Markers.EMPTY,
+                        (Cobol.Word) visit(ctx.computerName()),
+                        convertAll(ctx.objectComputerClause()),
+                        (Cobol.Word) visit(ctx.DOT_FS(1))
+                )
         );
     }
 
@@ -5644,9 +5643,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                         Space.EMPTY,
                         Markers.EMPTY,
                         (Cobol.Word) visit(ctx.computerName()),
-                        wordsList(ctx.WITH(), ctx.DEBUGGING(), ctx.MODE())
-                ),
-                ctx.DOT_FS().size() == 1 ? null : (Cobol.Word) visit(ctx.DOT_FS(1))
+                        wordsList(ctx.WITH(), ctx.DEBUGGING(), ctx.MODE()),
+                        (Cobol.Word) visit(ctx.DOT_FS(1))
+                )
         );
     }
 

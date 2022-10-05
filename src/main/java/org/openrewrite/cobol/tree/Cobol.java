@@ -4656,9 +4656,6 @@ public interface Cobol extends Tree {
         @Nullable
         ObjectComputerDefinition computer;
 
-        @Nullable
-        Word dot;
-
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitObjectComputer(this, p);
@@ -4677,6 +4674,7 @@ public interface Cobol extends Tree {
         Markers markers;
         Word computerName;
         List<Cobol> specifications;
+        Word dot;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -8189,9 +8187,6 @@ public interface Cobol extends Tree {
         @Nullable
         SourceComputerDefinition computer;
 
-        @Nullable
-        Word dot;
-
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitSourceComputer(this, p);
@@ -8212,6 +8207,8 @@ public interface Cobol extends Tree {
 
         @Nullable
         List<Word> debuggingMode;
+
+        Word dot;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
