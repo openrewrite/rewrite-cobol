@@ -1080,7 +1080,7 @@ class FindIndicatorsTest : CobolTest() {
                         033700******************** COPIED TEXT BEGINS BELOW ********************SM2064.2
                         033800     COPY                                                    KP001SM2064.2
                         033900             REPLACING ==PERFORM FAIL. == BY ====.                SM2064.2
-                              CopyBook KP001 start *********************************************
+                           ~~~>CopyBook KP001 start ********************************************
                         000100 PST-TEST-001.                                                    KP0014.2
                         000200     MOVE    "PSEUDO-TEXT" TO FEATURE.                            KP0014.2
                         000300*    THIS        TEXT IS COPIED INTO A SOURCE PROGRAM THE PSEUDO  KP0014.2
@@ -1091,7 +1091,7 @@ class FindIndicatorsTest : CobolTest() {
                         000800                                                      KP0014.2
                         000900 PST-WRITE-001.                                                   KP0014.2
                         001000     PERFORM PRINT-DETAIL.                                        KP0014.2
-                              CopyBook KP001 end ***********************************************
+                           ~~~>CopyBook KP001 end **********************************************
                         034000*********************** END OF COPIED TEXT ***********************SM2064.2
                         034100 SECT-SM206-0002 SECTION.                                         SM2064.2
                         034200 PST-INIT-002.                                                    SM2064.2
@@ -1120,7 +1120,7 @@ class FindIndicatorsTest : CobolTest() {
                         036500             BY         WRK-DS-05V00-O005-001 IN WRK-XN-00050-O005SM2064.2
                         036600-                  F-001 IN GRP-006 IN GRP-004 IN GRP-002 IN GRP-0SM2064.2
                         036700-                      01 (1).                                    SM2064.2
-                              CopyBook KP002 start *********************************************
+                           ~~~>CopyBook KP002 start ********************************************
                         000100     MOVE   +00009 TO WRK-DS-05V00-O005-001  IN WRK-XN-00050-O005FKP0024.2
                         000200-            -001 OF GRP-006 OF GRP-004 IN GRP-003 ( 2 ).         KP0024.2
                         000300     ADD                                                          KP0024.2
@@ -1130,7 +1130,7 @@ class FindIndicatorsTest : CobolTest() {
                         000700                                            WRK-XN-00050-O005F-001                     KP0024.2
                         000800                                             IN                 KP0024.2
                         000900                  GRP-006 IN GRP-004 IN GRP-002 IN.           KP0024.2
-                              CopyBook KP002 end ***********************************************
+                           ~~~>CopyBook KP002 end **********************************************
                         036800*********************** END OF COPIED TEXT ***********************SM2064.2
                         036900     MOVE    "PST-TEST-002" TO PAR-NAME.                          SM2064.2
                         037000     MOVE    01 TO REC-CT.                                        SM2064.2
@@ -1191,13 +1191,13 @@ class FindIndicatorsTest : CobolTest() {
                         042500     COPY                                                    KP003SM2064.2
                         042600             REPLACING ==+00001== BY  +2                          SM2064.2
                         042700                       == 1 ==    BY  -3 .                        SM2064.2
-                              CopyBook KP003 start *********************************************
+                           ~~~>CopyBook KP003 start ********************************************
                         000100 PST-TEST-003.                                                    KP0034.2
                         000200     MOVE    +0009 TO WRK-DS-05V00-O005-001  IN GRP-003 (3).      KP0034.2
                         000300     ADD     +2 TO WRK-DS-09V00-901.                          KP0034.2
                         000400     SUBTRACT -3 FROM WRK-DS-05V00-O005-001 IN GRP-002 (3).        KP0034.2
                         000500 PST-EXIT-003-X.                                                  KP0034.2
-                              CopyBook KP003 end ***********************************************
+                           ~~~>CopyBook KP003 end **********************************************
                         042800*********************** END OF COPIED TEXT ***********************SM2064.2
                         042900 PST-TEST-003-1.                                                  SM2064.2
                         043000     MOVE    01 TO REC-CT.                                        SM2064.2
@@ -1247,7 +1247,7 @@ class FindIndicatorsTest : CobolTest() {
                         047400                 BY MOVE                                          SM2064.2
                         047500                     == DELETE==                                  SM2064.2
                         047600                 BY  DE-LETE.                                     SM2064.2
-                              CopyBook KP004 start *********************************************
+                           ~~~>CopyBook KP004 start ********************************************
                         000100*    THIS COMMENT IS THE FIRST IMAGE IN KP004                     KP0044.2
                         000200*    ADD  1 TO THE LIST.                                          KP0044.2
                         000300 PST-INIT-004.                                                    KP0044.2
@@ -1263,7 +1263,7 @@ class FindIndicatorsTest : CobolTest() {
                         001300     PERFORM DE-LETE.                                              KP0044.2
                         001400 PST-EXIT-004.                                                    KP0044.2
                         001500     EXIT.                                                        KP0044.2
-                              CopyBook KP004 end ***********************************************
+                           ~~~>CopyBook KP004 end **********************************************
                         047700*********************** END OF COPIED TEXT ***********************SM2064.2
                         047800 PST-WRITE-004.                                                   SM2064.2
                         047900     MOVE    "PST-TEST-004" TO PAR-NAME.                          SM2064.2
@@ -1296,9 +1296,9 @@ class FindIndicatorsTest : CobolTest() {
                         050600     COPY                                                    KP005SM2064.2
                         050700              REPLACING == 1 == BY  == 5 ==                       SM2064.2
                         050800                        == 5 == BY  == 7 ==.                      SM2064.2
-                              CopyBook KP005 start *********************************************
+                           ~~~>CopyBook KP005 start ********************************************
                         000100     MOVE 7 TO WRK-DS-09V00-901.                                  KP0054.2
-                              CopyBook KP005 end ***********************************************
+                           ~~~>CopyBook KP005 end **********************************************
                         050900*********************** END OF COPIED TEXT ***********************SM2064.2
                         051000     IF WRK-DS-09V00-901 IS EQUAL TO 5                            SM2064.2
                         051100         PERFORM PASS   GO TO PST-WRITE-005.                      SM2064.2
@@ -1328,10 +1328,10 @@ class FindIndicatorsTest : CobolTest() {
                         053500     COPY                                                    KP006SM2064.2
                         053600             REPLACING ==001== BY == 3 ==                         SM2064.2
                         053700                       ==005== BY == 7 ==.                        SM2064.2
-                              CopyBook KP006 start *********************************************
+                           ~~~>CopyBook KP006 start ********************************************
                         000100     ADD      001                                                 KP0064.2
                         000200-             005 TO WRK-DS-09V00-901.                            KP0064.2
-                              CopyBook KP006 end ***********************************************
+                           ~~~>CopyBook KP006 end **********************************************
                         053800*********************** END OF COPIED TEXT ***********************SM2064.2
                         053900     IF WRK-DS-09V00-901 IS EQUAL TO 1005                         SM2064.2
                         054000         PERFORM PASS   GO TO PST-WRITE-006.                      SM2064.2
@@ -1363,11 +1363,11 @@ class FindIndicatorsTest : CobolTest() {
                         056600     COPY                                                   KP007 SM2064.2
                         056700         REPLACING ==FAIL. SUBTRACT 1 FROM ERROR-COUNTER. ==      SM2064.2
                         056800         BY ==PASS. ==.                                           SM2064.2
-                              CopyBook KP007 start *********************************************
+                           ~~~>CopyBook KP007 start ********************************************
                         000100     PERFORM PASS.                                                KP0074.2
                         000200*    THIS COMMENT SHOULD NOT AFFECT PSEUDO-TEXT MATCHING.         KP0074.2
                         000300                                       KP0074.2
-                              CopyBook KP007 end ***********************************************
+                           ~~~>CopyBook KP007 end **********************************************
                         056900*********************** END OF COPIED TEXT ***********************SM2064.2
                         057000     IF P-OR-F IS EQUAL TO "FAIL*"  ADD 1 TO ERROR-COUNTER.       SM2064.2
                         057100     GO TO PST-WRITE-007.                                         SM2064.2
@@ -1412,11 +1412,11 @@ class FindIndicatorsTest : CobolTest() {
                         061000         REPLACING ==FAIL. THIS IS GARBAGE. SUBTRACT 1 FROM       SM2064.2
                         061100                     ERROR-COUNTER. ==                            SM2064.2
                         061200         BY  ==PASS. ==.                                          SM2064.2
-                              CopyBook KP008 start *********************************************
+                           ~~~>CopyBook KP008 start ********************************************
                         000100     PERFORM PASS.                                                KP0084.2
                         000200~~~>D<~~~                                                   KP0084.2
                         000300                                       KP0084.2
-                              CopyBook KP008 end ***********************************************
+                           ~~~>CopyBook KP008 end **********************************************
                         061300*********************** END OF COPIED TEXT ***********************SM2064.2
                         061400     IF P-OR-F IS EQUAL TO "FAIL*"  ADD 1 TO ERROR-COUNTER.       SM2064.2
                         061500     GO TO PST-WRITE-009.                                         SM2064.2
@@ -1443,9 +1443,9 @@ class FindIndicatorsTest : CobolTest() {
                         063600*********************END OF COPY TEXT***************************  SM2064.2
                         063700     COPY    KP009                                                SM2064.2
                         063800             REPLACING =="G"== BY =="T"==.                        SM2064.2
-                              CopyBook KP009 start *********************************************
+                           ~~~>CopyBook KP009 start ********************************************
                         000100     IF      WRK-XN-00001 = "T"                                   KP0094.2
-                              CopyBook KP009 end ***********************************************
+                           ~~~>CopyBook KP009 end **********************************************
                         063900                                                                  SM2064.2
                         064000             PERFORM PASS                                         SM2064.2
                         064100             PERFORM PRINT-DETAIL                                 SM2064.2

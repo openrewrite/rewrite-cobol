@@ -21,6 +21,7 @@ import org.openrewrite.cobol.search.SearchResult;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
+import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
 
 import java.util.List;
@@ -239,18 +240,66 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     }
 
     public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
-        Optional<ReplaceBy> replaceBy = word.getMarkers().findFirst((ReplaceBy.class));
-        replaceBy.ifPresent(by -> visit(by.getStatement(), p));
+        // Column area markers.
+        SequenceArea sequenceArea = null;
+        IndicatorArea indicatorArea = null;
+        CommentArea commentArea = null;
 
-        Optional<ReplaceOff> replaceOff = word.getMarkers().findFirst((ReplaceOff.class));
-        replaceOff.ifPresent(off -> visit(off.getReplaceOff(), p));
+        // CobolPreprocessor markers.
+        ReplaceBy replaceBy = null;
+        ReplaceOff replaceOff = null;
+        Replace replace = null;
+        Copy copy = null;
 
-        Optional<Replace> replace = word.getMarkers().findFirst((Replace.class));
-        if (replace.isPresent()) {
+        Lines lines = null;
+        Continuation continuation = null;
+
+        // Search markers.
+        SearchResult.Type indicatorSearch = null;
+        SearchResult.Type copyBookSearch = null;
+
+        for (Marker marker : word.getMarkers().getMarkers()) {
+            if (marker instanceof SequenceArea) {
+                sequenceArea = (SequenceArea) marker;
+            } else if (marker instanceof IndicatorArea) {
+                indicatorArea = (IndicatorArea) marker;
+            } else if (marker instanceof CommentArea) {
+                commentArea = (CommentArea) marker;
+            } else if (marker instanceof SearchResult) {
+                SearchResult m = (SearchResult) marker;
+                if (m.getType() == SearchResult.Type.INDICATOR_AREA) {
+                    indicatorSearch = m.getType();
+                } else if (m.getType() == SearchResult.Type.COPIED_SOURCE) {
+                    copyBookSearch = m.getType();
+                }
+            } else if (marker instanceof ReplaceBy) {
+                replaceBy = (ReplaceBy) marker;
+            } else if (marker instanceof ReplaceOff) {
+                replaceOff = (ReplaceOff) marker;
+            } else if (marker instanceof Replace) {
+                replace = (Replace) marker;
+            } else if (marker instanceof Copy) {
+                copy = (Copy) marker;
+            } else if (marker instanceof Lines) {
+                lines = (Lines) marker;
+            } else if (marker instanceof Continuation) {
+                continuation = (Continuation) marker;
+            }
+        }
+
+        if (replaceBy != null) {
+            visit(replaceBy.getStatement(), p);
+        }
+
+        if (replaceOff != null) {
+            visit(replaceOff.getReplaceOff(), p);
+        }
+
+        if (replace != null) {
             // Print the original copy
-            visit(replace.get().getOriginalWord(), p);
+            visit(replace.getOriginalWord(), p);
 
-            if (replace.get().isReplacedWithEmpty()) {
+            if (replace.isReplacedWithEmpty()) {
                 originalReplaceLength = word.getPrefix().getWhitespace().length() + word.getWord().length();
             } else {
                 originalReplaceLength = 0;
@@ -258,20 +307,22 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
             }
         }
 
-        Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
-        lines.ifPresent(value -> visitLines(value, p));
+        if (lines != null) {
+            visitLines(lines, p);
+        }
 
-        Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
-        if (continuation.isPresent()) {
-            visitContinuation(word, continuation.get(), p);
+        if (continuation != null) {
+            visitContinuation(word, continuation, p);
         } else {
-            Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
-            sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
+            if (sequenceArea != null) {
+                visitSequenceArea(sequenceArea, p);
+            }
 
-            Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
+            if (indicatorArea != null) {
+                visitIndicatorArea(indicatorArea, indicatorSearch, p);
+            }
 
-            if (replace.isPresent() && replace.get().isReplacedWithEmpty()) {
+            if (replace != null && replace.isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
                 originalReplaceLength = 0;
             } else {
@@ -279,8 +330,9 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
             }
             p.append(word.getWord());
 
-            Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-            commentArea.ifPresent(it -> visitCommentArea(it, p));
+            if (commentArea != null) {
+                visitCommentArea(commentArea, p);
+            }
         }
 
         return word;

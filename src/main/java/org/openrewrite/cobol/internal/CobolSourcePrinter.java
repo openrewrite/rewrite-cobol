@@ -23,6 +23,7 @@ import org.openrewrite.cobol.search.SearchResult;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
+import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
 
 import java.util.List;
@@ -3877,35 +3878,74 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
-        Optional<SearchResult> searchResultOptional = word.getMarkers().findFirst(SearchResult.class);
-        SearchResult.Type type;
-        type = searchResultOptional.map(SearchResult::getType).orElse(null);
+        // Column area markers.
+        SequenceArea sequenceArea = null;
+        IndicatorArea indicatorArea = null;
+        CommentArea commentArea = null;
 
-        Optional<ReplaceBy> replaceBy = word.getMarkers().findFirst((ReplaceBy.class));
-        if (replaceBy.isPresent()) {
+        // CobolPreprocessor markers.
+        ReplaceBy replaceBy = null;
+        ReplaceOff replaceOff = null;
+        Replace replace = null;
+        Copy copy = null;
+
+        Lines lines = null;
+        Continuation continuation = null;
+
+        // Search markers.
+        SearchResult.Type indicatorSearch = null;
+        SearchResult.Type copyBookSearch = null;
+
+        for (Marker marker : word.getMarkers().getMarkers()) {
+            if (marker instanceof SequenceArea) {
+                sequenceArea = (SequenceArea) marker;
+            } else if (marker instanceof IndicatorArea) {
+                indicatorArea = (IndicatorArea) marker;
+            } else if (marker instanceof CommentArea) {
+                commentArea = (CommentArea) marker;
+            } else if (marker instanceof SearchResult) {
+                SearchResult m = (SearchResult) marker;
+                if (m.getType() == SearchResult.Type.INDICATOR_AREA) {
+                    indicatorSearch = m.getType();
+                } else if (m.getType() == SearchResult.Type.COPIED_SOURCE) {
+                    copyBookSearch = m.getType();
+                }
+            } else if (marker instanceof ReplaceBy) {
+                replaceBy = (ReplaceBy) marker;
+            } else if (marker instanceof ReplaceOff) {
+                replaceOff = (ReplaceOff) marker;
+            } else if (marker instanceof Replace) {
+                replace = (Replace) marker;
+            } else if (marker instanceof Copy) {
+                copy = (Copy) marker;
+            } else if (marker instanceof Lines) {
+                lines = (Lines) marker;
+            } else if (marker instanceof Continuation) {
+                continuation = (Continuation) marker;
+            }
+        }
+
+        if (replaceBy != null) {
             // Print the original replaceBy
             PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
-            printer.visit(replaceBy.get().getStatement(), output);
+            printer.visit(replaceBy.getStatement(), output);
             p.append(output.getOut());
         }
 
-        Optional<ReplaceOff> replaceOff = word.getMarkers().findFirst((ReplaceOff.class));
-        if (replaceOff.isPresent()) {
+        if (replaceOff != null) {
             // Print the original replaceOff
             PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
-            printer.visit(replaceOff.get().getReplaceOff(), output);
+            printer.visit(replaceOff.getReplaceOff(), output);
             p.append(output.getOut());
         }
 
-        Optional<Replace> replace = word.getMarkers().findFirst((Replace.class));
-        Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
-        if (replace.isPresent() && !copyBook.isPresent()) {
+        if (replace != null && copy == null) {
             // Print the original replace
             PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
-            printer.visit(replace.get().getOriginalWord(), output);
+            printer.visit(replace.getOriginalWord(), output);
             p.append(output.getOut());
 
-            if (replace.get().isReplacedWithEmpty()) {
+            if (replace.isReplacedWithEmpty()) {
                 originalReplaceLength = output.getOut().length();
             } else {
                 originalReplaceLength = 0;
@@ -3914,17 +3954,17 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         }
 
         // The COBOL word is a product of a copy statement.
-        if (copyBook.isPresent()) {
+        if (copy != null) {
             // Print the original Copy Statement in place of the first word from the copied source.
-            if (copyUuid == null || !copyUuid.equals(copyBook.get().getOriginalStatement().getId().toString())) {
+            if (copyUuid == null || !copyUuid.equals(copy.getOriginalStatement().getId().toString())) {
                 // Print the original copy
                 PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                printer.visit(copyBook.get().getOriginalStatement(), output);
+                printer.visit(copy.getOriginalStatement(), output);
                 p.append(output.getOut());
-                copyUuid = copyBook.get().getOriginalStatement().getId().toString();
+                copyUuid = copy.getOriginalStatement().getId().toString();
 
-                // Printing the copied source is currently in place for debugging purposes, but might be helpful to users.
-                if (printCopiedSource || type == SearchResult.Type.COPIED_SOURCE) {
+                // `printCopiedSource` is for debugging purposed and may be removed after visiting preprocessing markers is more stable.
+                if (printCopiedSource || copyBookSearch != null) {
                     if (!p.getOut().endsWith("\n")) {
                         p.append("\n");
                     }
@@ -3932,10 +3972,9 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                     output = new PrintOutputCapture<>(new InMemoryExecutionContext());
                     // Printing the CopyBook AST requires a post process printer.
                     CobolPreprocessorPrinter<ExecutionContext> copyBookAstPrinter = new CobolPreprocessorPrinter<>(false, true);
-                    copyBookAstPrinter.visit(copyBook.get().getOriginalStatement().getCopyBook(), output);
+                    copyBookAstPrinter.visit(copy.getOriginalStatement().getCopyBook(), output);
 
-                    String isSearchResult = type == SearchResult.Type.COPIED_SOURCE ? "   ~~~>" : "      ";
-                    String bookName = isSearchResult + "CopyBook " + copyBook.get().getOriginalStatement().getCopySource().getName().getWord();
+                    String bookName = "   ~~~>CopyBook " + copy.getOriginalStatement().getCopySource().getName().getWord();
 
                     // This should eventually be based on the CobolDialect.
                     String start = bookName + " start ";
@@ -3959,30 +3998,32 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             copyUuid = null;
         }
 
-        Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
-        lines.ifPresent(value -> visitLines(value, p));
+        if (lines != null) {
+            visitLines(lines, p);
+        }
 
-        Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
-        if (continuation.isPresent()) {
-            visitContinuation(word, continuation.get(), p);
+        if (continuation != null) {
+            visitContinuation(word, continuation, p);
         } else {
-            Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
-            sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
+            if (sequenceArea != null) {
+                visitSequenceArea(sequenceArea, p);
+            }
 
-            Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, type, p));
+            if (indicatorArea != null) {
+                visitIndicatorArea(indicatorArea, indicatorSearch, p);
+            }
 
-            if (replace.isPresent() && replace.get().isReplacedWithEmpty()) {
+            if (replace != null && replace.isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
                 originalReplaceLength = 0;
             } else {
                 visitSpace(word.getPrefix(), p);
             }
+
             p.append(word.getWord());
 
-            Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-            if (commentArea.isPresent() && !commentArea.get().isAdded()) {
-                commentArea.ifPresent(it -> visitCommentArea(it, p));
+            if (commentArea != null && !commentArea.isAdded()) {
+                visitCommentArea(commentArea, p);
             }
         }
 
