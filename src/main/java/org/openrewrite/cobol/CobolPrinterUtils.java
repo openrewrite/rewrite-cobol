@@ -22,7 +22,14 @@ public class CobolPrinterUtils {
         if (count < 0) {
             throw new IllegalStateException("Negative index detected.");
         }
-        return StringUtils.repeat(" ", count);
+        return fillArea(' ', count);
+    }
+
+    public static String fillArea(Character character, int count) {
+        if (count < 0) {
+            throw new IllegalStateException("Negative index detected.");
+        }
+        return StringUtils.repeat(String.valueOf(character), count);
     }
 
     public static int getContentAreaLength(CobolDialect cobolDialect) {

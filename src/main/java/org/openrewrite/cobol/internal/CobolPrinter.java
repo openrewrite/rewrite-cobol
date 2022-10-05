@@ -26,14 +26,15 @@ import java.util.Optional;
  */
 public class CobolPrinter<P> extends CobolSourcePrinter<P> {
 
-    private final boolean printOriginalSource;
     private final boolean printColumns;
+    private final boolean printOriginalSource;
 
-    public CobolPrinter(boolean printOriginalSource,
-                        boolean printColumns) {
-        super(printColumns);
-        this.printOriginalSource = printOriginalSource;
+    public CobolPrinter(boolean printColumns,
+                        boolean printCopiedSource,
+                        boolean printOriginalSource) {
+        super(printColumns, printCopiedSource);
         this.printColumns = printColumns;
+        this.printOriginalSource = printOriginalSource;
     }
 
     @Override

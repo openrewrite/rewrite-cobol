@@ -248,4 +248,28 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
     public Space visitSpace(Space space, P p) {
         return space;
     }
+
+    public Copy visitCopy(Copy copy, P p) {
+        Copy c = copy;
+        c = c.withOriginalStatement((CobolPreprocessor.CopyStatement) visitCopyStatement(c.getOriginalStatement(), p));
+        return c;
+    }
+
+    public Replace visitReplace(Replace replace, P p) {
+        Replace r = replace;
+        r = r.withOriginalWord((CobolPreprocessor.Word) visit(r.getOriginalWord(), p));
+        return r;
+    }
+
+    public ReplaceAdditiveType visitReplaceAdditiveType(ReplaceAdditiveType replaceAdditiveType, P p) {
+        ReplaceAdditiveType r = replaceAdditiveType;
+        r = r.withAdditionalWords(ListUtils.map(r.getAdditionalWords(), it -> visitReplace(it, p)));
+        return r;
+    }
+
+    public ReplaceReductiveType visitReplaceReductiveType(ReplaceReductiveType replaceReductiveType, P p) {
+        ReplaceReductiveType r = replaceReductiveType;
+        r = r.withOriginalWords(ListUtils.map(r.getOriginalWords(), it -> visitReplace(it, p)));
+        return r;
+    }
 }

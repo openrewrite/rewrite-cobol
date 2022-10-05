@@ -18,7 +18,6 @@ package org.openrewrite.cobol.internal;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
-import org.openrewrite.cobol.CobolPrinterUtils;
 import org.openrewrite.cobol.CobolVisitor;
 import org.openrewrite.cobol.search.SearchResult;
 import org.openrewrite.cobol.tree.*;
@@ -30,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.openrewrite.cobol.CobolPrinterUtils.fillArea;
 
 /**
  * Print the original COBOL source code.
@@ -45,12 +46,15 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     private final CobolPreprocessorSourcePrinter<ExecutionContext> printer = new CobolPreprocessorSourcePrinter<>(true);
     private int originalReplaceLength;
     private final boolean printColumns;
+    private final boolean printCopiedSource;
 
     @Nullable
     private String copyUuid = null;
 
-    public CobolSourcePrinter(boolean printColumns) {
+    public CobolSourcePrinter(boolean printColumns,
+                              boolean printCopiedSource) {
         this.printColumns = printColumns;
+        this.printCopiedSource = printCopiedSource;
     }
 
     public Cobol visitAbbreviation(Cobol.Abbreviation abbreviation, PrintOutputCapture<P> p) {
@@ -3894,7 +3898,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         }
 
         Optional<Replace> replace = word.getMarkers().findFirst((Replace.class));
-        Optional<CopyStatement> copyBook = word.getMarkers().findFirst(CopyStatement.class);
+        Optional<Copy> copyBook = word.getMarkers().findFirst(Copy.class);
         if (replace.isPresent() && !copyBook.isPresent()) {
             // Print the original replace
             PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
@@ -3918,6 +3922,32 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 printer.visit(copyBook.get().getOriginalStatement(), output);
                 p.append(output.getOut());
                 copyUuid = copyBook.get().getOriginalStatement().getId().toString();
+
+                if (printCopiedSource) {
+                    if (!p.getOut().endsWith("\n")) {
+                        p.append("\n");
+                    }
+
+                    output = new PrintOutputCapture<>(new InMemoryExecutionContext());
+                    CobolPreprocessorPrinter<ExecutionContext> copyBookAstPrinter = new CobolPreprocessorPrinter<>(false, true);
+                    copyBookAstPrinter.visit(copyBook.get().getOriginalStatement().getCopyBook(), output);
+
+                    String bookName = "CopyBook " + copyBook.get().getOriginalStatement().getCopySource().getName().getWord();
+
+                    // This should eventually be based on the CobolDialect.
+                    String start = bookName + " start ";
+                    String copiedSourceStart = "\n" + start + fillArea('*', 65 - start.length()) + "\n";
+                    p.append(copiedSourceStart);
+                    p.append(output.getOut());
+
+                    if (!p.getOut().endsWith("\n")) {
+                        p.append("\n");
+                    }
+
+                    String end = bookName + " end ";
+                    String copiedSourceEnd = end + fillArea('*', 65 - end.length()) + "\n\n";
+                    p.append(copiedSourceEnd);
+                }
             }
 
             // Do not print the AST for the copied source.

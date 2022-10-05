@@ -6591,7 +6591,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         markers.add(new Continuation(randomId(), continuations));
         if (currentCopy != null) {
-            markers.add(new CopyStatement(randomId(), currentCopy));
+            markers.add(new Copy(randomId(), currentCopy));
         }
         return prefix;
     }
@@ -6728,7 +6728,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         }
 
         if (currentCopy != null) {
-            markers.add(new CopyStatement(randomId(), currentCopy));
+            markers.add(new Copy(randomId(), currentCopy));
         }
         return prefix;
     }

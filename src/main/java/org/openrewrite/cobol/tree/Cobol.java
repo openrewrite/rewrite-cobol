@@ -98,7 +98,7 @@ public interface Cobol extends Tree {
 
         @Override
         public <P> TreeVisitor<?, PrintOutputCapture<P>> printer(Cursor cursor) {
-            return new CobolPrinter<>(true, true);
+            return new CobolPrinter<>(true, false, true);
         }
     }
 

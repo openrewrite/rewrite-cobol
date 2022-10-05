@@ -17,8 +17,10 @@ package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
+import org.openrewrite.cobol.search.SearchResult;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
+import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Markers;
 
 import java.util.List;
@@ -285,13 +287,17 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     }
 
     public void visitContinuation(CobolPreprocessor.Word word, Continuation continuation, PrintOutputCapture<P> p) {
+        visitContinuation(word, continuation, null, p);
+    }
+
+    public void visitContinuation(CobolPreprocessor.Word word, Continuation continuation, @Nullable SearchResult.Type type, PrintOutputCapture<P> p) {
         if (continuation.getContinuations().containsKey(0)) {
             Markers markers = continuation.getContinuations().get(0);
             Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
             Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
+            indicatorArea.ifPresent(it -> visitIndicatorArea(it, type, p));
         }
 
         visitSpace(word.getPrefix(), p);
@@ -355,8 +361,18 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     }
 
     public void visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
+        visitIndicatorArea(indicatorArea, null, p);
+    }
+
+    public void visitIndicatorArea(IndicatorArea indicatorArea, @Nullable SearchResult.Type searchType, PrintOutputCapture<P> p) {
         if (printColumns) {
+            if (searchType == SearchResult.Type.INDICATOR_AREA) {
+                p.append("~~~>");
+            }
             p.append(indicatorArea.getIndicator());
+            if (searchType == SearchResult.Type.INDICATOR_AREA) {
+                p.append("<~~~");
+            }
         }
         p.append(indicatorArea.getContinuationPrefix());
     }

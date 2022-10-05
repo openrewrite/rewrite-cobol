@@ -16,13 +16,10 @@
 package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
+import org.openrewrite.cobol.search.SearchResult;
 import org.openrewrite.cobol.tree.*;
-import org.openrewrite.marker.Markers;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Print the original preprocessed COBOL.
@@ -66,18 +63,22 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
             return super.visitWord(word, p);
         }
 
+        Optional<SearchResult> searchResultOptional = word.getMarkers().findFirst(SearchResult.class);
+        SearchResult.Type type;
+        type = searchResultOptional.map(SearchResult::getType).orElse(null);
+
         Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
         lines.ifPresent(value -> visitLines(value, p));
 
         Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
         if (continuation.isPresent() && printColumns) {
-            visitContinuation(word, continuation.get(), p);
+            visitContinuation(word, continuation.get(), type, p);
         } else {
             Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
             Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
+            indicatorArea.ifPresent(it -> visitIndicatorArea(it, type, p));
 
             visitSpace(word.getPrefix(), p);
             p.append(word.getWord());
@@ -87,46 +88,5 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
         }
 
         return word;
-    }
-
-    public void visitContinuation(CobolPreprocessor.Word word, Continuation continuation, PrintOutputCapture<P> p) {
-        if (continuation.getContinuations().containsKey(0)) {
-            Markers markers = continuation.getContinuations().get(0);
-            Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
-            sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
-
-            Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
-        }
-
-        visitSpace(word.getPrefix(), p);
-
-        char[] charArray = word.getWord().toCharArray();
-        for (int i = 0; i < charArray.length; i++) {
-            if (i != 0 && continuation.getContinuations().containsKey(i)) {
-                Markers markers = continuation.getContinuations().get(i);
-                Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
-                commentArea.ifPresent(it -> visitCommentArea(it, p));
-
-                Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
-                sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
-
-                Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-                indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
-            }
-            char c = charArray[i];
-            p.append(c);
-        }
-
-        List<Markers> lastMarkers = continuation.getContinuations().entrySet().stream()
-                .filter(it -> it.getKey() > word.getWord().length())
-                .map(Map.Entry::getValue)
-                .collect(Collectors.toList());
-
-        if (!lastMarkers.isEmpty()) {
-            Markers markers = lastMarkers.get(0);
-            Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
-            commentArea.ifPresent(it -> visitCommentArea(it, p));
-        }
     }
 }
