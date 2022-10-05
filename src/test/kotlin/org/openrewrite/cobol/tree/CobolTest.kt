@@ -12,6 +12,11 @@ open class CobolTest : RewriteTest {
 
     companion object {
         val dialect = IbmAnsi85()
+        val nistResourcePaths: List<String> by lazy {
+            ClassGraph().acceptPaths("/gov/nist").scan()
+                .allResources
+                .paths
+        }
     }
 
     override fun defaults(spec: RecipeSpec) {
@@ -29,11 +34,7 @@ open class CobolTest : RewriteTest {
     }
 
     fun getNistSource(sourceName: String): String {
-        val source = ClassGraph().acceptPaths("/gov/nist").scan().use { scanResult ->
-            scanResult.allResources.paths.first {
-                it.endsWith(sourceName)
-            }
-        }
+        val source = nistResourcePaths.first { it.endsWith(sourceName) }
         return StringUtils.readFully(javaClass.getResourceAsStream("/$source")!!)
     }
 }
