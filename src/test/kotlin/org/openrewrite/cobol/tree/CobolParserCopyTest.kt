@@ -26,7 +26,7 @@ import org.openrewrite.cobol.internal.CobolPrinter
 class CobolParserCopyTest : CobolTest() {
 
     companion object {
-        val printer = CobolPrinter<ExecutionContext>(false, false)
+        val printer = CobolPrinter<ExecutionContext>(false, false, false)
     }
 
     @Test
