@@ -23,6 +23,6 @@ public class SearchResult implements Marker {
     String description;
 
     public enum Type {
-        INDICATOR_AREA
+        INDICATOR_AREA, COPIED_SOURCE
     }
 }

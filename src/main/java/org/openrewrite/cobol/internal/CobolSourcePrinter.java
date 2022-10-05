@@ -3924,7 +3924,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 copyUuid = copyBook.get().getOriginalStatement().getId().toString();
 
                 // Printing the copied source is currently in place for debugging purposes, but might be helpful to users.
-                if (printCopiedSource) {
+                if (printCopiedSource || type == SearchResult.Type.COPIED_SOURCE) {
                     if (!p.getOut().endsWith("\n")) {
                         p.append("\n");
                     }
@@ -3934,7 +3934,8 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                     CobolPreprocessorPrinter<ExecutionContext> copyBookAstPrinter = new CobolPreprocessorPrinter<>(false, true);
                     copyBookAstPrinter.visit(copyBook.get().getOriginalStatement().getCopyBook(), output);
 
-                    String bookName = "      CopyBook " + copyBook.get().getOriginalStatement().getCopySource().getName().getWord();
+                    String isSearchResult = type == SearchResult.Type.COPIED_SOURCE ? "   ~~~>" : "      ";
+                    String bookName = isSearchResult + "CopyBook " + copyBook.get().getOriginalStatement().getCopySource().getName().getWord();
 
                     // This should eventually be based on the CobolDialect.
                     String start = bookName + " start ";
