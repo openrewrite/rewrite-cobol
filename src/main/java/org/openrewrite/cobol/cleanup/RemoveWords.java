@@ -22,7 +22,7 @@ public class RemoveWords extends CobolIsoVisitor<ExecutionContext> {
     @Override
     public Cobol.Word visitWord(Cobol.Word word, ExecutionContext executionContext) {
         Cobol.Word w = super.visitWord(word, executionContext);
-        if (removeWords.contains(w) && !w.getWord().isEmpty()) {
+        if (removeWords.contains(w) && !w.getWord().trim().isEmpty()) {
             w = w.withWord(CobolPrinterUtils.fillArea(' ', w.getWord().length()));
         }
         return w;
