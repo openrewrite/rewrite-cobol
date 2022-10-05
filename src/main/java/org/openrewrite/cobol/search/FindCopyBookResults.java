@@ -18,7 +18,7 @@ public class FindCopyBookResults extends Recipe {
 
     @Override
     public String getDisplayName() {
-        return "Find COBOL copy by copy book name.";
+        return "Find COBOL copy by copy book name";
     }
 
     @Override
