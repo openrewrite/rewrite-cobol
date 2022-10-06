@@ -7,7 +7,7 @@ import org.openrewrite.marker.Marker;
 import java.util.UUID;
 
 /**
- * This marker preserves the {@link org.openrewrite.cobol.tree.CobolPreprocessor.ReplaceOffStatement} from the source code.
+ * A {@link org.openrewrite.cobol.tree.CobolPreprocessor.ReplaceOffStatement} from the source code.
  */
 @With
 @Value

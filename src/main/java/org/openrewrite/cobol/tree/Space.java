@@ -21,8 +21,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.EqualsAndHashCode;
 import org.openrewrite.internal.lang.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -60,10 +58,6 @@ public class Space {
         return getWhitespaceIndent(whitespace);
     }
 
-    public String getLastWhitespace() {
-        return whitespace == null ? "" : whitespace;
-    }
-
     private String getWhitespaceIndent(@Nullable String whitespace) {
         if (whitespace == null) {
             return "";
@@ -97,22 +91,8 @@ public class Space {
         return this == EMPTY;
     }
 
-    public static Space firstPrefix(@Nullable List<? extends Cobol> trees) {
-        return trees == null || trees.isEmpty() ? Space.EMPTY : trees.iterator().next().getPrefix();
-    }
-
     public static Space format(String formatting) {
         return Space.build(formatting);
-    }
-
-    public static <C extends Cobol> List<C> formatFirstPrefix(List<C> trees, Space prefix) {
-        if (!trees.isEmpty() && !trees.get(0).getPrefix().equals(prefix)) {
-            List<C> formattedTrees = new ArrayList<>(trees);
-            formattedTrees.set(0, formattedTrees.get(0).withPrefix(prefix));
-            return formattedTrees;
-        }
-
-        return trees;
     }
 
     private static final String[] spaces = {

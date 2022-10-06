@@ -1088,7 +1088,7 @@ class FindIndicatorsTest : CobolTest() {
                         000500*    PSEUDO TEXT.                                                 KP0014.2
                         000600     MOVE    "PST-TEST-001" TO PAR-NAME                           KP0014.2
                         000700     PERFORM PASS.                                                KP0014.2
-                        000800                                                           KP0014.2
+                        000800                                                                  KP0014.2
                         000900 PST-WRITE-001.                                                   KP0014.2
                         001000     PERFORM PRINT-DETAIL.                                        KP0014.2
                            ~~~>CopyBook KP001 end **********************************************

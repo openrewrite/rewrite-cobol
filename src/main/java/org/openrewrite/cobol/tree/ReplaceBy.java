@@ -7,7 +7,7 @@ import org.openrewrite.marker.Marker;
 import java.util.UUID;
 
 /**
- * ReplaceBy rule from the original source code.
+ * A {@link org.openrewrite.cobol.tree.CobolPreprocessor.ReplaceByStatement} from the original source code.
  */
 @With
 @Value

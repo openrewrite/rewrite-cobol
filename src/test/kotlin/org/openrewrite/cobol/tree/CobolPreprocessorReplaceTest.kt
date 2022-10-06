@@ -270,7 +270,7 @@ class CobolPreprocessorReplaceTest : CobolTest() {
                             MOVE    "PSEUDO-TEXT" TO FEATURE.                            
                             MOVE    "PST-TEST-001" TO PAR-NAME                           
                             PERFORM PASS.                                                
-                                                                             
+                                                                                         
                         PST-WRITE-001.                                                   
                             PERFORM PRINT-DETAIL.                                        
                     """.trimIndent())
@@ -316,8 +316,8 @@ class CobolPreprocessorReplaceTest : CobolTest() {
                             MOVE    "PST-TEST-004" TO PAR-NAME.                          
                         PST-TEST-004.                                                    
                             ADD     5 TO WRK-DS-09V00-901.                               
-                            MOVE                           
-                                     +2 TO WRK-DS-09V00-902.                        
+                            MOVE                                                         
+                                          +2 TO WRK-DS-09V00-902.                        
                             GO TO   PST-EXIT-004.                                        
                         PST-DELETE-004.                                                  
                             PERFORM DE-LETE.                                              

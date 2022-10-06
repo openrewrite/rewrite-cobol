@@ -10,7 +10,7 @@ import java.util.UUID;
 
 /**
  * This marker represents a REDUCTIVE {@link org.openrewrite.cobol.PreprocessReplaceVisitor.ReplaceVisitor.ReplacementType}.
- * A REDUCTIVE change will cause words to be set to empty, and are not printed by
+ * A REDUCTIVE change will cause words to be set to replaced by whitespace, and are not printed by
  * {@link CobolPreprocessorOutputSourcePrinter}.
  *
  * There may be multiple removed words that get associated to the next visible word, so a unique Marker is created.

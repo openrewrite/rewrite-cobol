@@ -233,11 +233,12 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                                 reductiveReplaces.add(replace);
                                 ReplaceReductiveType replaceReductiveType = new ReplaceReductiveType(randomId(), reductiveReplaces);
                                 word = word.withMarkers(word.getMarkers().addIfAbsent(replaceReductiveType));
+                                word = word.withWord(CobolPrinterUtils.fillArea(' ', word.getWord().length()));
                             } else {
                                 word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                                word = word.withWord(toWord.getWord());
                             }
 
-                            word = word.withWord(toWord.getWord());
                         }
                         fromPos++;
                         toPos++;
@@ -262,11 +263,12 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                                 reductiveReplaces.add(replace);
                                 ReplaceReductiveType replaceReductiveType = new ReplaceReductiveType(randomId(), reductiveReplaces);
                                 word = word.withMarkers(word.getMarkers().addIfAbsent(replaceReductiveType));
+                                word = word.withWord(CobolPrinterUtils.fillArea(' ', word.getWord().length()));
                             } else {
                                 word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                                word = word.withWord(toWord.getWord());
                             }
 
-                            word = word.withWord(toWord.getWord());
                         }
 
                         if (current.size() - 1 == fromPos) {

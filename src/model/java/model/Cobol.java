@@ -38,4 +38,6 @@ public interface Cobol {
     @Skip
     class PictureString {}
 
+    // We made the mistake of removing the model object code because code generation was very slow due to the number of AST elements.
+    // Requires manually re-adding the model objects.
 }

@@ -7,7 +7,7 @@ import org.openrewrite.marker.Marker;
 import java.util.UUID;
 
 /**
- * This marker preserved the {@link org.openrewrite.cobol.tree.CobolPreprocessor.ReplaceClause} from the original source code.
+ * This marker preserves the original word before the execution of a {@link org.openrewrite.cobol.tree.CobolPreprocessor.ReplaceClause}.
  */
 @With
 @Value
