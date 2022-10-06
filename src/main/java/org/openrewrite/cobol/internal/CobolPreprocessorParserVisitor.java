@@ -203,7 +203,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 Space.EMPTY,
                 Markers.EMPTY,
                 convertAllList(
-                        // Each item is listed in alphabetical order to reduce risk of types, and make it simpler to
+                        // Each item is listed in alphabetical order to reduce risk of typos, and make it simpler to
                         // find missing compiler options.
                         // `convertAllList` will sort each of the terminals across all the lists based on the symbol order.
                         singletonList(ctx.ADATA()),
@@ -868,7 +868,6 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
     /**
      * Return the prefix of the TerminalNode AND collect applicable markers.
-     * Markers consist of COBOL areas that are removed during preprocessing.
      */
     private Space processTokenText(String text, List<Marker> markers) {
 
@@ -884,10 +883,12 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         boolean isContinued = nextIndicator != null && indicatorAreas.get(nextIndicator).equals("-");
 
         Character delimiter = null;
+        // Detect a continued String literal.
         if (text.startsWith("'") || text.startsWith("\"")) {
             delimiter = text.charAt(0);
         }
 
+        // Detect a continued keyword or identifier.
         if (isContinued && delimiter == null) {
             // CommentAreas are optional text that will precede the end of line.
             Integer nextCommentArea = commentAreas.keySet().stream()
@@ -916,6 +917,9 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         return processText(text, markers);
     }
 
+    /**
+     * Parse the comments and empty lines that precede the COBOL word.
+     */
     private void parseCommentsAndEmptyLines(String text, List<Marker> markers) {
         int saveCursor = cursor;
         SequenceArea sequenceArea = sequenceArea();

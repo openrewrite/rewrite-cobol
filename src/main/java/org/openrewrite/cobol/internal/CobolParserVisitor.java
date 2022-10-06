@@ -79,12 +79,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private String copyStartComment = null;
     private String copyStopComment = null;
     private String copyUuidComment = null;
+
     // Set to true when the parser detects the CopyStartComment to add the currentCopy to each `Cobol$Word`.
     private boolean inCopiedText;
-
-    // TODO: this could use a map instead.
-    @Nullable
-    private ReplaceAdditiveType replaceAdditiveType = null;
 
     @Nullable
     private CobolPreprocessor.CopyStatement currentCopy = null;
@@ -103,6 +100,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private String replaceAdditiveTypeStartComment = null;
     private String replaceAdditiveTypeStopComment = null;
 
+    @Nullable
+    private ReplaceAdditiveType replaceAdditiveType = null;
+
     private String replaceAddWordStartComment = null;
     private String replaceAddWordStopComment = null;
 
@@ -110,7 +110,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private String replaceReductiveTypeStopComment = null;
 
     private String uuidComment = null;
-
     private Integer nextIndex = null;
 
     public CobolParserVisitor(Path path,
@@ -216,7 +215,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             this.replaceUuidComment = getCommentFromKey(templatePrinter.getReplaceUuidComment());
             this.templateKeys.add(replaceUuidComment);
 
-            this.replaceAdditiveWhitespaceComment = getCommentFromKey(templatePrinter.getReplaceTypeAdditiveComment());
+            this.replaceAdditiveWhitespaceComment = getCommentFromKey(templatePrinter.getReplaceAddedWhitespaceComment());
             this.templateKeys.add(replaceAdditiveWhitespaceComment);
 
             this.replaceByStartComment = getCommentFromKey(templatePrinter.getReplaceByStartComment());
@@ -6437,6 +6436,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return processText(text, markers, isContinued);
     }
 
+    /**
+     * Parse the comments and empty lines that precede the COBOL word.
+     */
     private void parseCommentsAndEmptyLines(String text, List<Marker> markers) {
         int saveCursor = cursor;
         SequenceArea sequenceArea = sequenceArea();

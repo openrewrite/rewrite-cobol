@@ -249,14 +249,12 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         ReplaceBy replaceBy = null;
         ReplaceOff replaceOff = null;
         Replace replace = null;
-        Copy copy = null;
 
         Lines lines = null;
         Continuation continuation = null;
 
         // Search markers.
         SearchResult.Type indicatorSearch = null;
-        SearchResult.Type copyBookSearch = null;
 
         for (Marker marker : word.getMarkers().getMarkers()) {
             if (marker instanceof SequenceArea) {
@@ -269,8 +267,6 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
                 SearchResult m = (SearchResult) marker;
                 if (m.getType() == SearchResult.Type.INDICATOR_AREA) {
                     indicatorSearch = m.getType();
-                } else if (m.getType() == SearchResult.Type.COPIED_SOURCE) {
-                    copyBookSearch = m.getType();
                 }
             } else if (marker instanceof ReplaceBy) {
                 replaceBy = (ReplaceBy) marker;
@@ -278,8 +274,6 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
                 replaceOff = (ReplaceOff) marker;
             } else if (marker instanceof Replace) {
                 replace = (Replace) marker;
-            } else if (marker instanceof Copy) {
-                copy = (Copy) marker;
             } else if (marker instanceof Lines) {
                 lines = (Lines) marker;
             } else if (marker instanceof Continuation) {

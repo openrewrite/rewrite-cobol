@@ -41,11 +41,6 @@ import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
  *      false: Print as parser input for the CobolParserVisitor.
  */
 public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSourcePrinter<P> {
-    // The keys may be replaced by UUIDs for uniqueness, but are human-readable until COBOL is understood.
-
-    // START keys mark the line where whitespace is added until the end of the content area.
-    // STOP keys mark when the exit of a template area.
-    // UUID keys link the CobolPreprocessor AST to the CobolParser.
     public static final String COPY_START_KEY = "__COPY_START__";
     public static final String COPY_STOP_KEY = "__COPY_STOP__";
     public static final String COPY_UUID_KEY = "__COPY_UUID__";
@@ -56,27 +51,21 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
 
     public static final String UUID_KEY = "__UUID__";
 
-    // The ReplaceBy template is fully parsed between the start and stop and do not require a unique UUID.
     public static final String REPLACE_BY_START_KEY = "__REPLACE_BY_START__";
     public static final String REPLACE_BY_STOP_KEY = "__REPLACE_BY_STOP__";
 
-    // The ReplaceOff template is fully parsed between the start and stop and do not require a unique UUID.
     public static final String REPLACE_OFF_START_KEY = "__REPLACE_OFF_START__";
     public static final String REPLACE_OFF_STOP_KEY = "__REPLACE_OFF_STOP__";
 
-    // The ReplaceTypeAdditive template is fully parsed between the start and stop and do not require a unique UUID.
     public static final String REPLACE_TYPE_ADDITIVE_START_KEY = "__REPLACE_TYPE_ADDITIVE_START__";
     public static final String REPLACE_TYPE_ADDITIVE_STOP_KEY = "__REPLACE_TYPE_ADDITIVE_STOP__";
-
-    // The ReplaceTypeAdditive template is fully parsed between the start and stop and do not require a unique UUID.
     public static final String REPLACE_ADD_WORD_START_KEY = "__REPLACE_ADD_WORD_START__";
     public static final String REPLACE_ADD_WORD_STOP_KEY = "__REPLACE_ADD_WORD_STOP__";
 
-    // The ReplaceTypeReductive template is fully parsed between the start and stop and do not require a unique UUID.
     public static final String REPLACE_TYPE_REDUCTIVE_START_KEY = "__REPLACE_TYPE_REDUCTIVE_START__";
     public static final String REPLACE_TYPE_REDUCTIVE_STOP_KEY = "__REPLACE_TYPE_REDUCTIVE_STOP__";
 
-    public static final String REPLACE_ADDITIVE_WHITESPACE_KEY = "__REPLACE_ADDITIVE_WHITESPACE__";
+    public static final String REPLACE_ADDED_WHITESPACE_KEY = "__REPLACE_ADDED_WHITESPACE__";
 
     private final CobolDialect cobolDialect;
     private final boolean printColumns;
@@ -85,47 +74,36 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
     private String dialectSequenceArea = null;
     private String uuidEndOfLine = null;
 
-    // CopyStatement comments.
     private String copyStartComment = null;
     private String copyStopComment = null;
     private String copyUuidComment = null;
 
-    // Words that have been replaced by replace rules.
     private String replaceStartComment = null;
     private String replaceStopComment = null;
     private String replaceUuidComment = null;
 
-    // Generic UUID comment.
     private String uuidComment = null;
 
-    // ReplaceByStatement comments.
     private String replaceByStartComment = null;
     private String replaceByStopComment = null;
 
-    // ReplaceOff comments.
     private String replaceOffStartComment = null;
     private String replaceOffStopComment = null;
 
-    // ReplaceAddWord comments.
+    private String replaceTypeAdditiveStartComment = null;
+    private String replaceTypeAdditiveStopComment = null;
     private String replaceAddWordStartComment = null;
     private String replaceAddWordStopComment = null;
 
-    // ReplaceTypeAdditive comments.
-    private String replaceTypeAdditiveStartComment = null;
-    private String replaceTypeAdditiveStopComment = null;
-
-    // ReplaceTypeReductive comments.
     private String replaceTypeReductiveStartComment = null;
     private String replaceTypeReductiveStopComment = null;
-
-    // Represents whitespace used to keep the original AST and the processed AST aligned in the column area.
-    private String replaceTypeAdditiveComment = null;
-
-    // Lines prefixed with an unknown indicator are commented out during printing until we know more about them.
-    private boolean inUnknownIndicator = false;
-
     private ReplaceReductiveType replaceReductiveType = null;
+
+    private String replaceAddedWhitespaceComment = null;
+
     private final CobolPreprocessorSourcePrinter<ExecutionContext> statementPrinter = new CobolPreprocessorSourcePrinter<>(false);
+
+    private boolean inUnknownIndicator = false;
 
     public CobolPreprocessorOutputSourcePrinter(CobolDialect cobolDialect,
                                                 boolean printColumns) {
@@ -275,7 +253,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
             if (maybeUnknown.isPresent()) {
                 String indicator = maybeUnknown.get().getIndicator();
                 if ("G".equals(indicator) || "J".equals(indicator) || "P".equals(indicator)) {
-                    // TODO: add a logger and log a warning or any form of visibility.
+                    // TODO: add a form of visibility for an unrecognized indicator.
                     inUnknownIndicator = true;
                 }
             }
@@ -430,7 +408,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
 
         if (isLongerWord && !isContinuedLiteral) {
             insertIndex = getInsertIndex(p.getOut());
-            p.out.insert(insertIndex, getReplaceTypeAdditiveComment());
+            p.out.insert(insertIndex, getReplaceAddedWhitespaceComment());
         }
 
         if (curIndex == 0) {
@@ -754,11 +732,11 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
     /**
      * Lazily load the {@link ReplaceAdditiveWhitespace} comment of a {@link Replace} template.
      */
-    public String getReplaceTypeAdditiveComment() {
-        if (replaceTypeAdditiveComment == null) {
-            replaceTypeAdditiveComment = getTemplateComment(REPLACE_ADDITIVE_WHITESPACE_KEY);
+    public String getReplaceAddedWhitespaceComment() {
+        if (replaceAddedWhitespaceComment == null) {
+            replaceAddedWhitespaceComment = getTemplateComment(REPLACE_ADDED_WHITESPACE_KEY);
         }
-        return replaceTypeAdditiveComment;
+        return replaceAddedWhitespaceComment;
     }
 
     /**

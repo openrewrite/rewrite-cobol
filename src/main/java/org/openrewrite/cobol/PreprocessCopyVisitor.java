@@ -16,7 +16,7 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
 
     public PreprocessCopyVisitor(List<CobolPreprocessor.CopyBook> copyBooks) {
         copyBooks.forEach(it -> {
-            // TODO: translate pro leap CopyBookFinders to link key and CopyStatements.
+            // Note: this implementation ASSUMES CopyBooks are resolved by FileName and will require changes.
             String fileName = it.getSourcePath().getFileName().toString();
             this.copyBooks.putIfAbsent(fileName.substring(0, fileName.indexOf(".")), it);
         });

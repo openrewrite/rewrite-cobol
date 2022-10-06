@@ -54,7 +54,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private final boolean enableCopy;
     private final boolean enableReplace;
 
-    // Lazily loaded maps of the original source objects.
+    // Lazily loaded sets of the original source objects.
     private Set<CobolPreprocessor.CopyStatement> copyStatements = null;
     private Set<CobolPreprocessor.ReplaceByStatement> replaceRules = null;
     private Set<CobolPreprocessor.ReplaceOffStatement> replaceOffs = null;
@@ -288,7 +288,6 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         }
     }
 
-    // TODO clean up.
     public Set<CobolPreprocessor.CopyStatement> getCopyStatements(@Nullable CobolPreprocessor.CompilationUnit cu) {
         if (copyStatements == null) {
             getOriginalSources(cu);

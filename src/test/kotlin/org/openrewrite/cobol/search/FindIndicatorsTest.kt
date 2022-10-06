@@ -1088,7 +1088,7 @@ class FindIndicatorsTest : CobolTest() {
                         000500*    PSEUDO TEXT.                                                 KP0014.2
                         000600     MOVE    "PST-TEST-001" TO PAR-NAME                           KP0014.2
                         000700     PERFORM PASS.                                                KP0014.2
-                        000800                                                      KP0014.2
+                        000800                                                           KP0014.2
                         000900 PST-WRITE-001.                                                   KP0014.2
                         001000     PERFORM PRINT-DETAIL.                                        KP0014.2
                            ~~~>CopyBook KP001 end **********************************************
@@ -1256,8 +1256,8 @@ class FindIndicatorsTest : CobolTest() {
                         000600     MOVE    "PST-TEST-004" TO PAR-NAME.                          KP0044.2
                         000700 PST-TEST-004.                                                    KP0044.2
                         000800     ADD     5 TO WRK-DS-09V00-901.                               KP0044.2
-                        000900     MOVE                           KP0044.2
-                        001000              +2 TO WRK-DS-09V00-902.                        KP0044.2
+                        000900     MOVE                                                         KP0044.2
+                        001000                   +2 TO WRK-DS-09V00-902.                        KP0044.2
                         001100     GO TO   PST-EXIT-004.                                        KP0044.2
                         001200 PST-DELETE-004.                                                  KP0044.2
                         001300     PERFORM DE-LETE.                                              KP0044.2
@@ -1366,7 +1366,7 @@ class FindIndicatorsTest : CobolTest() {
                            ~~~>CopyBook KP007 start ********************************************
                         000100     PERFORM PASS.                                                KP0074.2
                         000200*    THIS COMMENT SHOULD NOT AFFECT PSEUDO-TEXT MATCHING.         KP0074.2
-                        000300                                       KP0074.2
+                        000300                                                                  KP0074.2
                            ~~~>CopyBook KP007 end **********************************************
                         056900*********************** END OF COPIED TEXT ***********************SM2064.2
                         057000     IF P-OR-F IS EQUAL TO "FAIL*"  ADD 1 TO ERROR-COUNTER.       SM2064.2
@@ -1414,8 +1414,8 @@ class FindIndicatorsTest : CobolTest() {
                         061200         BY  ==PASS. ==.                                          SM2064.2
                            ~~~>CopyBook KP008 start ********************************************
                         000100     PERFORM PASS.                                                KP0084.2
-                        000200~~~>D<~~~                                                   KP0084.2
-                        000300                                       KP0084.2
+                        000200~~~>D<~~~                                                                 KP0084.2
+                        000300                                                                  KP0084.2
                            ~~~>CopyBook KP008 end **********************************************
                         061300*********************** END OF COPIED TEXT ***********************SM2064.2
                         061400     IF P-OR-F IS EQUAL TO "FAIL*"  ADD 1 TO ERROR-COUNTER.       SM2064.2
