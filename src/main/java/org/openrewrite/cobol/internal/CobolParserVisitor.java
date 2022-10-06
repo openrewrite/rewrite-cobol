@@ -6340,6 +6340,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             }
         }
 
+        // Increments passed whitespace injected by templates and sets the appropriate end position so that the next prefix is correct.
+        // |      |*| Template start.                                                      |
+        // |      | |                   The previous word|                                 |
+        // |      |*| Template comments ...                                                |
+        // |      | |~~~ The total whitespace before the current word      ~~|             |
+        // |      | |~~~ Added WS to align next word ~~~ |~~ actual prefix ~~|CurrentWord  | `nextIndex` set the position where the whitespace of the current word starts.
+        // |      |*| Template end.                                                        |
         if (!isColumnArea && nextIndex != null && nextIndex > 0) {
             int totalWhitespace = (delimIndex - cursor);
             int prefixCount = nextIndex > totalWhitespace ? nextIndex - totalWhitespace : totalWhitespace - nextIndex;
