@@ -73,17 +73,4 @@ public class RemoveWords extends CobolIsoVisitor<ExecutionContext> {
         }
         return w;
     }
-
-    private static class EraseContinuationIndicators {
-        public static Continuation change(Continuation continuation) {
-            for (Map.Entry<Integer, Markers> entry : continuation.getContinuations().entrySet()) {
-                IndicatorArea indicatorArea = entry.getValue().findFirst(IndicatorArea.class).orElse(null);
-                if (indicatorArea != null && "-".equals(indicatorArea.getIndicator())) {
-                    indicatorArea = indicatorArea.withIndicator(" ");
-                }
-            }
-
-            return continuation;
-        }
-    }
 }
