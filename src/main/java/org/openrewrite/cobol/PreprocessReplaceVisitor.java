@@ -124,7 +124,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
 
     private static class ReplaceVisitor extends CobolPreprocessorIsoVisitor<ExecutionContext> {
         // A replacement rule may match multiple sets of words, but will be changed to 1 output.
-        private final List<List<CobolPreprocessor.Word>> from;
+        private final Map<CobolPreprocessor.Word, List<CobolPreprocessor.Word>> from;
         private final List<CobolPreprocessor.Word> to;
         private final ReplacementType replacementType;
 
@@ -136,9 +136,12 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
 
         public ReplaceVisitor(List<List<CobolPreprocessor.Word>> from,
                               List<CobolPreprocessor.Word> to) {
-            this.from = from;
+            this.from = new IdentityHashMap<>(from.size());
+            from.forEach(it -> this.from.put(it.get(0), it));
+
             this.to = to;
             this.replacementType = init();
+
         }
 
         @Override
@@ -157,23 +160,19 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
 
         @Override
         public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
-            CobolPreprocessor.Word finalWord = word;
-            // Detection of the first word using `contains` may be reduced from O(n) rather than O(1) with a set.
             if (ReplacementType.SINGLE_WORD == replacementType) {
-                if (from.stream().anyMatch(it -> it.contains(finalWord))) {
+                if (from.containsKey(word)) {
                     CobolPreprocessor.Word toWord = to.get(toPos);
                     boolean isEmpty = toWord.getWord().isEmpty();
                     Replace replace = new Replace(randomId(), word, isEmpty);
                     word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-
-                    word = word.withWord(to.get(fromPos).getWord());
+                    word = word.withWord(toWord.getWord());
                 }
             } else if (ReplacementType.EQUAL == replacementType) {
                 if (!inMatch) {
-                    Optional<List<CobolPreprocessor.Word>> firstMatch = from.stream().filter(it -> it.get(0) == finalWord).findAny();
-                    if (firstMatch.isPresent()) {
+                    if (from.containsKey(word)) {
                         inMatch = true;
-                        current = firstMatch.get();
+                        current = from.get(word);
                         fromPos = 0;
                         toPos = 0;
 
@@ -183,7 +182,6 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                             boolean isEmpty = toWord.getWord().isEmpty();
                             Replace replace = new Replace(randomId(), word, isEmpty);
                             word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-
                             word = word.withWord(toWord.getWord());
                         }
                         fromPos++;
@@ -198,7 +196,6 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                             boolean isEmpty = toWord.getWord().isEmpty();
                             Replace replace = new Replace(randomId(), word, isEmpty);
                             word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
-
                             word = word.withWord(toWord.getWord());
                         }
 
@@ -217,10 +214,9 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                 }
             } else if (ReplacementType.REDUCTIVE == replacementType) {
                 if (!inMatch) {
-                    Optional<List<CobolPreprocessor.Word>> firstMatch = from.stream().filter(it -> it.get(0) == finalWord).findAny();
-                    if (firstMatch.isPresent()) {
+                    if (from.containsKey(word)) {
                         inMatch = true;
-                        current = firstMatch.get();
+                        current = from.get(word);
                         fromPos = 0;
                         toPos = 0;
 
@@ -287,10 +283,9 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                 }
             } else if (ReplacementType.ADDITIVE == replacementType) {
                 if (!inMatch) {
-                    Optional<List<CobolPreprocessor.Word>> firstMatch = from.stream().filter(it -> it.get(0) == finalWord).findAny();
-                    if (firstMatch.isPresent()) {
+                    if (from.containsKey(word)) {
                         inMatch = true;
-                        current = firstMatch.get();
+                        current = from.get(word);
                         fromPos = 0;
                         toPos = 0;
 
@@ -299,8 +294,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                             CobolPreprocessor.Word toWord = to.get(toPos);
                             boolean isEmpty = toWord.getWord().isEmpty();
                             Replace replace = new Replace(randomId(), word, isEmpty);
-                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
 
+                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                             word = word.withWord(toWord.getWord());
                         }
                         fromPos++;
@@ -317,6 +312,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                                 Replace replace = new Replace(randomId(), word, isEmpty);
                                 word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                                 if (word.getPrefix().isEmpty() && !toWord.getPrefix().isEmpty()) {
+                                    // Add the prefix of toWord so that words are separated correctly.
                                     word = word.withPrefix(toWord.getPrefix());
                                 }
                                 word = word.withWord(toWord.getWord());
@@ -358,7 +354,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         }
 
         private ReplacementType init() {
-            for (List<CobolPreprocessor.Word> words : from) {
+            for (List<CobolPreprocessor.Word> words : from.values()) {
                 if (words.size() == 1 && to.size() == 1) {
                     return ReplacementType.SINGLE_WORD;
                 } else if (!words.isEmpty() && words.size() == to.size()) {
