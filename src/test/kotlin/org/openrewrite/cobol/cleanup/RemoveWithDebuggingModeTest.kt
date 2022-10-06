@@ -1,6 +1,7 @@
 package org.openrewrite.cobol.search
 
 import org.junit.jupiter.api.Test
+import org.openrewrite.cobol.Assertions.cobol
 import org.openrewrite.cobol.Assertions.cobolCopy
 import org.openrewrite.cobol.cleanup.RemoveWithDebuggingMode
 import org.openrewrite.cobol.tree.CobolTest
@@ -15,6 +16,41 @@ class RemoveWithDebuggingModeTest : CobolTest() {
     @Test
     fun noChange() = rewriteRun(
         cobolCopy(getNistSource("CM101M.CBL"))
+    )
+
+    @Test
+    fun isContinued() = rewriteRun(
+        cobol(
+            """
+                000001 IDENTIFICATION DIVISION.                                         
+                000002 PROGRAM-ID.                                                      
+                000003     CONTINUED.                                                   
+                000004 ENVIRONMENT DIVISION.                                            
+                000005 CONFIGURATION SECTION.                                           
+                000006 SOURCE-COMPUTER.                                                 
+                000007     XXXXX082                                                     
+                000008         WITH                                                     
+                000009         DEBUGGING                                                
+                000010         M                                                        
+                000011-         O                                                       
+                000012-          D                                                      
+                000013-           E.                                                    
+            """.trimIndent(),
+            """
+                000001 IDENTIFICATION DIVISION.                                         
+                000002 PROGRAM-ID.                                                      
+                000003     CONTINUED.                                                   
+                000004 ENVIRONMENT DIVISION.                                            
+                000005 CONFIGURATION SECTION.                                           
+                000006 SOURCE-COMPUTER.                                                 
+                000007     XXXXX082                                                     
+                000008                                                                  
+                000009                                                                  
+                000010                                                                  
+                000011                                                                  
+                000012                                                                  
+                000013             .                                                    
+            """.trimIndent())
     )
 
     @Test
