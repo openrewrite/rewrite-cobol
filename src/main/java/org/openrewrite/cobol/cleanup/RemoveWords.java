@@ -8,10 +8,9 @@ import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.CobolPrinterUtils;
 import org.openrewrite.cobol.internal.CobolPrinter;
-import org.openrewrite.cobol.tree.Cobol;
-import org.openrewrite.cobol.tree.Continuation;
-import org.openrewrite.cobol.tree.IndicatorArea;
+import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
+import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
 
 import java.util.HashMap;
@@ -33,7 +32,24 @@ public class RemoveWords extends CobolIsoVisitor<ExecutionContext> {
     public Cobol.Word visitWord(Cobol.Word word, ExecutionContext executionContext) {
         Cobol.Word w = super.visitWord(word, executionContext);
         if (removeWords.contains(w) && !w.getWord().trim().isEmpty()) {
-            Continuation continuation = w.getMarkers().findFirst(Continuation.class).orElse(null);
+            Replace replace = null;
+            Copy copy = null;
+            Continuation continuation = null;
+
+            for (Marker marker : w.getMarkers().getMarkers()) {
+                if (marker instanceof Copy) {
+                    copy = (Copy) marker;
+                } else if (marker instanceof Replace) {
+                    replace = (Replace) marker;
+                } else if (marker instanceof Continuation) {
+                    continuation = (Continuation) marker;
+                }
+            }
+
+            if (copy != null || replace != null) {
+                throw new UnsupportedOperationException("RemoveWords does not support changes on copied sources or replaced words.");
+            }
+
             if (continuation != null) {
                 Map<Integer, Markers> continuations = new HashMap<>();
                 AtomicBoolean changed = new AtomicBoolean(false);
