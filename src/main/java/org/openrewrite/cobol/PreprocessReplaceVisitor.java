@@ -250,7 +250,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                             reductiveReplaces.add(replace);
                             ReplaceReductiveType replaceReductiveType = new ReplaceReductiveType(randomId(), reductiveReplaces);
                             word = word.withMarkers(word.getMarkers().addIfAbsent(replaceReductiveType));
-                            word = word.withWord("");
+                            word = word.withWord(CobolPrinterUtils.fillArea(' ', word.getWord().length()));
                         }
 
                         // Marks the changed word. Unknown: Should all the words be marked instead??

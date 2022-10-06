@@ -3,11 +3,8 @@ package org.openrewrite.cobol.cleanup;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
-import org.openrewrite.InMemoryExecutionContext;
-import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.CobolPrinterUtils;
-import org.openrewrite.cobol.internal.CobolPrinter;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.marker.Marker;
@@ -47,6 +44,7 @@ public class RemoveWords extends CobolIsoVisitor<ExecutionContext> {
             }
 
             if (copy != null || replace != null) {
+                // The NIST test does not provide examples of these types of transformation, so it hasn't been implemented yet.
                 throw new UnsupportedOperationException("RemoveWords does not support changes on copied sources or replaced words.");
             }
 

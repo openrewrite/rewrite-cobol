@@ -1231,8 +1231,8 @@ class FindCopyBookResultsTest : CobolTest() {
             061200         BY  ==PASS. ==.                                          SM2064.2
                ~~~>CopyBook KP008 start ********************************************
             000100     PERFORM PASS.                                                KP0084.2
-            000200D                                                   KP0084.2
-            000300                                       KP0084.2
+            000200D                                                                 KP0084.2
+            000300                                                                  KP0084.2
                ~~~>CopyBook KP008 end **********************************************
             061300*********************** END OF COPIED TEXT ***********************SM2064.2
             061400     IF P-OR-F IS EQUAL TO "FAIL*"  ADD 1 TO ERROR-COUNTER.       SM2064.2
