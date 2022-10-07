@@ -25,7 +25,6 @@ import org.openrewrite.marker.Markers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
 
