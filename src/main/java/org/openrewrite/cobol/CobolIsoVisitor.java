@@ -1415,6 +1415,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
+    public Cobol visitReceiveWith(Cobol.ReceiveWith receiveWith, P p) {
+        return super.visitReceiveWith(receiveWith, p);
+    }
+
+    @Override
     public Cobol.RecordContainsClause visitRecordContainsClause(Cobol.RecordContainsClause recordContainsClause, P p) {
         return (Cobol.RecordContainsClause) super.visitRecordContainsClause(recordContainsClause, p);
     }
@@ -1487,6 +1492,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     @Override
     public Cobol.RelativeKeyClause visitRelativeKeyClause(Cobol.RelativeKeyClause relativeKeyClause, P p) {
         return (Cobol.RelativeKeyClause) super.visitRelativeKeyClause(relativeKeyClause, p);
+    }
+
+    @Override
+    public Cobol visitRelease(Cobol.Release release, P p) {
+        return super.visitRelease(release, p);
     }
 
     @Override
@@ -1715,6 +1725,16 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
+    public Cobol visitReturn(Cobol.Return r, P p) {
+        return super.visitReturn(r, p);
+    }
+
+    @Override
+    public Cobol visitReturnInto(Cobol.ReturnInto returnInto, P p) {
+        return super.visitReturnInto(returnInto, p);
+    }
+
+    @Override
     public Cobol.Rewrite visitRewrite(Cobol.Rewrite rewrite, P p) {
         return (Cobol.Rewrite) super.visitRewrite(rewrite, p);
     }
@@ -1892,6 +1912,21 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     @Override
     public Cobol.ScreenSection visitScreenSection(Cobol.ScreenSection screenSection, P p) {
         return (Cobol.ScreenSection) super.visitScreenSection(screenSection, p);
+    }
+
+    @Override
+    public Cobol visitSearch(Cobol.Search search, P p) {
+        return super.visitSearch(search, p);
+    }
+
+    @Override
+    public Cobol visitSearchVarying(Cobol.SearchVarying searchVarying, P p) {
+        return super.visitSearchVarying(searchVarying, p);
+    }
+
+    @Override
+    public Cobol visitSearchWhen(Cobol.SearchWhen searchWhen, P p) {
+        return super.visitSearchWhen(searchWhen, p);
     }
 
     @Override

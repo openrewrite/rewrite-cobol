@@ -2263,7 +2263,6 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 visitNullable(ctx.END_IF())
         );
     }
-
     @Override
     public Object visitIfThen(CobolParser.IfThenContext ctx) {
         return new Cobol.IfThen(

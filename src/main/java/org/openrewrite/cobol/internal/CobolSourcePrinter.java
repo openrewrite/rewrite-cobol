@@ -4137,7 +4137,8 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         }
     }
 
-    public void visitLines(Lines lines, PrintOutputCapture<P> p) {
+    @Override
+    public <M extends Marker> M visitLines(Lines lines, PrintOutputCapture<P> p) {
         if (printColumns) {
             for (Lines.Line line : lines.getLines()) {
                 if (line.isCopiedSource()) {
@@ -4158,16 +4159,27 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 }
             }
         }
+
+        //noinspection unchecked
+        return (M) lines;
     }
 
-    public void visitSequenceArea(SequenceArea sequenceArea, PrintOutputCapture<P> p) {
+    @Override
+    public <M extends Marker> M visitSequenceArea(SequenceArea sequenceArea, PrintOutputCapture<P> p) {
         if (printColumns) {
             p.append(sequenceArea.getSequence());
         }
+
+        //noinspection unchecked
+        return (M) sequenceArea;
     }
 
-    public void visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
+    @Override
+    public <M extends Marker> M visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
         visitIndicatorArea(indicatorArea, null, p);
+
+        //noinspection unchecked
+        return (M) indicatorArea;
     }
 
     public void visitIndicatorArea(IndicatorArea indicatorArea, @Nullable SearchResult.Type searchType, PrintOutputCapture<P> p) {
@@ -4183,11 +4195,15 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         p.append(indicatorArea.getContinuationPrefix());
     }
 
-    public void visitCommentArea(CommentArea commentArea, PrintOutputCapture<P> p) {
+    @Override
+    public <M extends Marker> M visitCommentArea(CommentArea commentArea, PrintOutputCapture<P> p) {
         visitSpace(commentArea.getPrefix(), p);
         if (printColumns) {
             p.append(commentArea.getComment());
         }
         visitSpace(commentArea.getEndOfLine(), p);
+
+        //noinspection unchecked
+        return (M) commentArea;
     }
 }

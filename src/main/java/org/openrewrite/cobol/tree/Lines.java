@@ -20,6 +20,7 @@ public class Lines implements Marker {
     UUID id;
     List<Line> lines;
 
+    @With
     @Value
     public static class Line {
         UUID id;

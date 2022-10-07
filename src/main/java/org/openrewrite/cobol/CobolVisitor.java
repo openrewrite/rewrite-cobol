@@ -19,6 +19,13 @@ import org.openrewrite.TreeVisitor;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.lang.Nullable;
+import org.openrewrite.marker.Marker;
+import org.openrewrite.marker.Markers;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
 
@@ -1419,7 +1426,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         i = i.withWord((Cobol.Word) visit(i.getWord(), p));
         i = i.withCondition((Cobol.Condition) visit(i.getCondition(), p));
         i = i.withIfThen((Cobol.IfThen) visit(i.getIfThen(), p));
-        i = i.withIfThen((Cobol.IfThen) visit(i.getIfThen(), p));
+        i = i.withIfElse((Cobol.IfElse) visit(i.getIfElse(), p));
         i = i.withEndIf((Cobol.Word) visit(i.getEndIf(), p));
         return i;
     }
@@ -4354,5 +4361,82 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         w = w.withFrom((Cobol.Word) visit(w.getFrom(), p));
         w = w.withName((Name) visit(w.getName(), p));
         return w;
+    }
+
+    @Override
+    public <M extends Marker> M visitMarker(Marker marker, P p) {
+        if (marker instanceof SequenceArea) {
+            SequenceArea m = (SequenceArea) marker;
+            return visitSequenceArea(m, p);
+        } else if (marker instanceof IndicatorArea) {
+            IndicatorArea m = (IndicatorArea) marker;
+            return visitIndicatorArea(m, p);
+        } else if (marker instanceof CommentArea) {
+            CommentArea m = (CommentArea) marker;
+            //noinspection ConstantConditions
+            return visitCommentArea(m, p);
+        } else if (marker instanceof Continuation) {
+            Continuation m = (Continuation) marker;
+            return visitContinuation(m, p);
+        } else if (marker instanceof Lines) {
+            Lines m = (Lines) marker;
+            return visitLines(m, p);
+        }
+        return super.visitMarker(marker, p);
+    }
+
+    public <M extends Marker> M visitSequenceArea(SequenceArea sequenceArea, P p) {
+        //noinspection unchecked
+        return (M) sequenceArea;
+    }
+
+    public <M extends Marker> M visitIndicatorArea(IndicatorArea indicatorArea, P p) {
+        //noinspection unchecked
+        return (M) indicatorArea;
+    }
+
+    @Nullable
+    public <M extends Marker> M visitCommentArea(@Nullable CommentArea commentArea, P p) {
+        //noinspection unchecked
+        return commentArea == null ? null : (M) commentArea;
+    }
+
+    public <M extends Marker> M visitContinuation(Continuation continuation, P p) {
+        Continuation c = continuation;
+        Map<Integer, Markers> newMap = new HashMap<>();
+        AtomicBoolean isChanged = new AtomicBoolean(false);
+        c.getContinuations().forEach((key, value) -> {
+            Markers v = visitMarkers(value, p);
+            if (v != value) {
+                if (!isChanged.get()) {
+                    isChanged.set(true);
+                }
+                newMap.put(key, v);
+            } else {
+                newMap.put(key, value);
+            }
+        });
+
+        if (isChanged.get()) {
+            c = c.withContinuations(newMap);
+        }
+
+        //noinspection unchecked
+        return (M) c;
+    }
+
+    public <M extends Marker> M visitLines(Lines lines, P p) {
+        Lines l = lines;
+        l = l.withLines(ListUtils.map(l.getLines(), it -> visitLine(it, p)));
+        //noinspection unchecked
+        return (M) l;
+    }
+
+    public Lines.Line visitLine(Lines.Line line, P p) {
+        Lines.Line l = line;
+        l = l.withSequenceArea(visitSequenceArea(l.getSequenceArea(), p));
+        l = l.withIndicatorArea(visitIndicatorArea(l.getIndicatorArea(), p));
+        l = l.withCommentArea(visitCommentArea(l.getCommentArea(), p));
+        return l;
     }
 }

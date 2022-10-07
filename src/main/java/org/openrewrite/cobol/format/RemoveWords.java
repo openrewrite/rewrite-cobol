@@ -1,10 +1,12 @@
-package org.openrewrite.cobol.cleanup;
+package org.openrewrite.cobol.format;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
+import org.openrewrite.Incubating;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.CobolPrinterUtils;
+import org.openrewrite.cobol.search.FindWords;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.marker.Marker;
@@ -15,11 +17,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@Incubating(since = "0.0")
 @EqualsAndHashCode(callSuper = true)
 @Value
 public class RemoveWords extends CobolIsoVisitor<ExecutionContext> {
 
     List<Cobol.Word> removeWords;
+
+    public RemoveWords(Cobol tree) {
+        this.removeWords = FindWords.find(tree);
+    }
 
     public RemoveWords(List<Cobol.Word> removeWords) {
         this.removeWords = removeWords;
