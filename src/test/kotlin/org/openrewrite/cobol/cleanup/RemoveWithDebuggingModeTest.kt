@@ -1,6 +1,5 @@
 package org.openrewrite.cobol.search
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.cobol.Assertions.cobol
 import org.openrewrite.cobol.Assertions.cobolCopy
@@ -47,9 +46,8 @@ class RemoveWithDebuggingModeTest : CobolTest() {
             """.trimIndent())
     )
 
-    @Disabled("Add formatting for tokens that extend passed the content area.")
     @Test
-    fun specialFormattingCase() = rewriteRun(
+    fun requiresAutoFormat() = rewriteRun(
         cobol(
             """
                 000100 IDENTIFICATION DIVISION.                                         
@@ -74,7 +72,12 @@ class RemoveWithDebuggingModeTest : CobolTest() {
                 000500 CONFIGURATION SECTION.                                           
                 000600 SOURCE-COMPUTER.                                                 
                 000700                                                          XXXXX082SHIFTED
-                000800 .                                                                
+                000800                                                                  
+                000900                                                                  
+                001000                                                                  
+                001100                                                                  
+                001200                                                                  
+                001300             .                                                    
             """.trimIndent())
     )
 

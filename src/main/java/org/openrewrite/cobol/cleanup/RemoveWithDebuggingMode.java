@@ -86,20 +86,22 @@ public class RemoveWithDebuggingMode extends Recipe {
                                     .removeByType(IndicatorArea.class)
                                     .removeByType(CommentArea.class);
 
-                            commentArea = commentArea.withPrefix(commentArea.getPrefix()
-                                    .withWhitespace(commentArea.getPrefix().getWhitespace().substring(1)));
+                            commentArea = commentArea.withPrefix(
+                                    commentArea.getPrefix().withWhitespace(
+                                            commentArea.getPrefix().getWhitespace().substring(1)));
                             newMarkers = newMarkers.addIfAbsent(commentArea);
-                            s = s.withDot(s.getDot().withMarkers(newMarkers));
 
-                            s = s.withComputerName(s.getComputerName().withMarkers(s.getComputerName().getMarkers().removeByType(CommentArea.class)));
-                            s = s.withDebuggingMode(null);
+                            s = s.withDot(s.getDot().withMarkers(newMarkers));
+                            s = s.withComputerName(s.getComputerName().withMarkers(
+                                    s.getComputerName().getMarkers().removeByType(CommentArea.class)));
 
                             Cobol.Word startWord = s.getComputerName();
-
                             doAfterVisit(new ShiftSequenceAreas(originalWords, startWord));
 
                             endWord = s.getDot();
+                            s = s.withDebuggingMode(null);
                         } else {
+                            // Interim safe replace until we have auto-formatting.
                             s = new RemoveWords(s.getDebuggingMode()).visitSourceComputerDefinition(s, executionContext);
                         }
                     }
