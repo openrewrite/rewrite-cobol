@@ -848,6 +848,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.DataSynchronizedClause d = dataSynchronizedClause;
         d = d.withPrefix(visitSpace(d.getPrefix(), p));
         d = d.withMarkers(visitMarkers(d.getMarkers(), p));
+        d = d.withWords(ListUtils.map(d.getWords(), it -> (Cobol.Word) visit(it, p)));
         return d;
     }
 
@@ -1137,6 +1138,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Evaluate e = evaluate;
         e = e.withPrefix(visitSpace(e.getPrefix(), p));
         e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withEvaluate((Cobol.Word) visit(e.getEvaluate(), p));
         e = e.withSelect(visit(e.getSelect(), p));
         e = e.withAlsoSelect(ListUtils.map(e.getAlsoSelect(), t -> (Cobol.EvaluateAlso) visit(t, p)));
         e = e.withWhenPhrase(ListUtils.map(e.getWhenPhrase(), t -> (Cobol.EvaluateWhenPhrase) visit(t, p)));
@@ -2114,7 +2116,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         m = m.withPrefix(visitSpace(m.getPrefix(), p));
         m = m.withMarkers(visitMarkers(m.getMarkers(), p));
         m = m.withWord((Cobol.Word) visit(m.getWord(), p));
-        m = m.withMultiply(visit(m.getMultiply(), p));
+        m = m.withMultiplicand((Name) visit(m.getMultiplicand(), p));
         m = m.withBy((Cobol.Word) visit(m.getBy(), p));
         m = m.withMultiply(visit(m.getMultiply(), p));
         m = m.withOnSizeErrorPhrase((Cobol.StatementPhrase) visit(m.getOnSizeErrorPhrase(), p));
