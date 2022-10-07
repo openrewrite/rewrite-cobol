@@ -7,6 +7,7 @@ import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.format.RemoveWords;
 import org.openrewrite.cobol.format.ShiftSequenceAreas;
 import org.openrewrite.cobol.tree.*;
+import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Markers;
 
 import java.time.Duration;
@@ -41,6 +42,25 @@ public class RemoveWithDebuggingMode extends Recipe {
     @Override
     protected TreeVisitor<?, ExecutionContext> getVisitor() {
         return new CobolIsoVisitor<ExecutionContext>() {
+
+            @Nullable
+            private Cobol.Word endWord = null;
+
+            @Override
+            public Cobol.Word visitWord(Cobol.Word word, ExecutionContext executionContext) {
+                Cobol.Word w = super.visitWord(word, executionContext);
+                if (endWord != null) {
+                    Cursor parent = getCursor().getParent();
+                    // This covers an unlikely case, and requires the cursor to have access to the CU.
+                    // Removes whitespace from the EOF on the CU if the SourceComputerDefinition is the last COBOL.
+                    if (parent != null && parent.getValue() instanceof Cobol.CompilationUnit && ((Cobol.CompilationUnit) parent.getValue()).getEof() == word) {
+                        w = w.withPrefix(Space.EMPTY);
+                    }
+                    endWord = null;
+                }
+                return w;
+            }
+
             @Override
             public Cobol.SourceComputerDefinition visitSourceComputerDefinition(Cobol.SourceComputerDefinition sourceComputerDefinition,
                                                                                 ExecutionContext executionContext) {
@@ -78,8 +98,7 @@ public class RemoveWithDebuggingMode extends Recipe {
 
                             doAfterVisit(new ShiftSequenceAreas(originalWords, startWord));
 
-                            // TODO: format EOF comment entry.
-                            Cobol.Word endWord = s.getDot();
+                            endWord = s.getDot();
                         } else {
                             s = new RemoveWords(s.getDebuggingMode()).visitSourceComputerDefinition(s, executionContext);
                         }
