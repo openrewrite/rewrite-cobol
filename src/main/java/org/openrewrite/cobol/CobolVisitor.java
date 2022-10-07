@@ -2632,6 +2632,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         r = r.withMarkers(visitMarkers(r.getMarkers(), p));
         r = r.withWord((Cobol.Word) visit(r.getWord(), p));
         r = r.withFileName((Name) visit(r.getFileName(), p));
+        r = r.withNextRecord(ListUtils.map(r.getNextRecord(), it -> (Cobol.Word) visit(it, p)));
         r = r.withReadInto((Cobol.ReadInto) visit(r.getReadInto(), p));
         r = r.withReadWith((Cobol.ReadWith) visit(r.getReadWith(), p));
         r = r.withReadKey((Cobol.ReadKey) visit(r.getReadKey(), p));
