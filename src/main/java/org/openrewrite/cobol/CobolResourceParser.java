@@ -23,9 +23,9 @@ public class CobolResourceParser {
         this.excludedDirectories = excludedDirectories;
     }
 
-    public List<CobolPreprocessor.CopyBook> parseCopyBooks(Collection<Path> alreadyParsed, CobolDialect cobolDialect, List<String> fileExtensions) throws IOException {
+    public List<Path> getResourcesByExtension(Collection<Path> alreadyParsed, List<String> fileExtensions) throws IOException {
 
-        List<Path> copyBooks = new ArrayList<>();
+        List<Path> paths = new ArrayList<>();
         Files.walkFileTree(baseDir, Collections.emptySet(), 16, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
@@ -40,12 +40,17 @@ public class CobolResourceParser {
                 if (!attrs.isOther() && !attrs.isSymbolicLink() &&
                         !alreadyParsed.contains(file) && !isExcluded(file) &&
                         fileExtensions.stream().anyMatch(it -> file.getFileName().toString().toLowerCase().endsWith(it))) {
-                    copyBooks.add(file);
+                    paths.add(file);
                 }
                 return FileVisitResult.CONTINUE;
             }
         });
 
+        return paths;
+    }
+
+    public List<CobolPreprocessor.CopyBook> parseCopyBooks(Collection<Path> alreadyParsed, CobolDialect cobolDialect, List<String> fileExtensions) throws IOException {
+        List<Path> copyBooks = getResourcesByExtension(alreadyParsed, fileExtensions);
         return CobolPreprocessorParser.parseCopyBooks(copyBooks, null, cobolDialect);
     }
 
