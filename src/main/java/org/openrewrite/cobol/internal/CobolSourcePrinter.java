@@ -3974,7 +3974,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                     CobolPreprocessorPrinter<ExecutionContext> copyBookAstPrinter = new CobolPreprocessorPrinter<>(false, true);
                     copyBookAstPrinter.visit(copy.getOriginalStatement().getCopyBook(), output);
 
-                    String bookName = "   ~~~>CopyBook " + copy.getOriginalStatement().getCopySource().getName().getWord();
+                    String bookName = "   ~~~*>CopyBook " + copy.getOriginalStatement().getCopySource().getName().getWord();
 
                     // This should eventually be based on the CobolDialect.
                     String start = bookName + " start ";
