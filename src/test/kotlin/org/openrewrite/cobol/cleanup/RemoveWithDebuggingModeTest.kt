@@ -24,11 +24,11 @@ class RemoveWithDebuggingModeTest : CobolTest() {
             """
                 000100 IDENTIFICATION DIVISION.                                         DB1014.2
                 000200 PROGRAM-ID.                                                      DB1014.2
-                000300     CONTINUED.                                                   DB1014.2
+                000300     DB101A.                                                      DB1014.2
                 000400 ENVIRONMENT DIVISION.                                            DB1014.2
                 000500 CONFIGURATION SECTION.                                           DB1014.2
                 000600 SOURCE-COMPUTER.                                                 DB1014.2
-                000700     XXXXX082                                                     SHIFTED
+                000700     XXXXX082                                                     DB1014.2
                 000800         WITH DEBUGGING MODE.                                     DB1014.2
                 000900 OBJECT-COMPUTER.                                                 DB1014.2
                 001000     XXXXX083.                                                    DB1014.2
@@ -36,11 +36,11 @@ class RemoveWithDebuggingModeTest : CobolTest() {
             """
                 000100 IDENTIFICATION DIVISION.                                         DB1014.2
                 000200 PROGRAM-ID.                                                      DB1014.2
-                000300     CONTINUED.                                                   DB1014.2
+                000300     DB101A.                                                      DB1014.2
                 000400 ENVIRONMENT DIVISION.                                            DB1014.2
                 000500 CONFIGURATION SECTION.                                           DB1014.2
                 000600 SOURCE-COMPUTER.                                                 DB1014.2
-                000700     XXXXX082.                                                    SHIFTED
+                000700     XXXXX082.                                                    DB1014.2
                 000800 OBJECT-COMPUTER.                                                 DB1014.2
                 000900     XXXXX083.                                                    DB1014.2
             """.trimIndent())

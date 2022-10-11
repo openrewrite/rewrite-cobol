@@ -51,10 +51,6 @@ public interface CobolPreprocessor extends Tree {
 
     <P extends CobolPreprocessor> P withPrefix(Space prefix);
 
-    <P extends CobolPreprocessor> P withMarkers(Markers markers);
-
-    Markers getMarkers();
-
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With

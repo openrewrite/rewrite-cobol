@@ -50,10 +50,6 @@ public interface Cobol extends Tree {
 
     <P extends Cobol> P withPrefix(Space prefix);
 
-    <P extends Cobol> P withMarkers(Markers markers);
-
-    Markers getMarkers();
-
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
