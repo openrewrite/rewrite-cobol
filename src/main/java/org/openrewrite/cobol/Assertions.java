@@ -180,7 +180,7 @@ public class Assertions {
     }
 
     private static List<CobolPreprocessor.CopyBook> getCopyBookSources() {
-        CobolResourceParser resourceParser = new CobolResourceParser(Paths.get("").toAbsolutePath(), emptyList(), emptyList());
+        ResourceParser resourceParser = new ResourceParser(Paths.get("").toAbsolutePath(), emptyList(), emptyList());
 
         try {
             return resourceParser.parseCopyBooks(emptyList(), new IbmAnsi85(), CobolPreprocessorParser.COPYBOOK_FILE_EXTENSIONS);

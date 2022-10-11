@@ -130,7 +130,10 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 .collect(toList());
     }
 
-    public static List<CobolPreprocessor.CopyBook> parseCopyBooks(List<Path> paths, @Nullable Path relativeTo, CobolDialect cobolDialect) {
+    public static List<CobolPreprocessor.CopyBook> parseCopyBooks(List<Path> paths,
+                                                                  @Nullable Path relativeTo,
+                                                                  CobolDialect cobolDialect) {
+
         List<CobolPreprocessor.CopyBook> copyBooks = new ArrayList<>();
 
         for (Path path : paths) {

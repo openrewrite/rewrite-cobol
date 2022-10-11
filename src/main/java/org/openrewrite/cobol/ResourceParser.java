@@ -8,16 +8,19 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 
-public class CobolResourceParser {
+/**
+ * A resource scanning utility that walks from the base directory, and collects files by file extension.
+ */
+public class ResourceParser {
     private static final Set<String> DEFAULT_IGNORED_DIRECTORIES = new HashSet<>(Arrays.asList("build", "bin", "target", "out", ".gradle", ".idea", ".project", "node_modules", ".git", ".metadata", ".DS_Store"));
 
     private final Path baseDir;
     private final Collection<PathMatcher> exclusions;
     private final Collection<Path> excludedDirectories;
 
-    public CobolResourceParser(Path baseDir,
-                               Collection<PathMatcher> exclusions,
-                               Collection<Path> excludedDirectories) {
+    public ResourceParser(Path baseDir,
+                          Collection<PathMatcher> exclusions,
+                          Collection<Path> excludedDirectories) {
         this.baseDir = baseDir;
         this.exclusions = exclusions;
         this.excludedDirectories = excludedDirectories;
@@ -49,7 +52,18 @@ public class CobolResourceParser {
         return paths;
     }
 
-    public List<CobolPreprocessor.CopyBook> parseCopyBooks(Collection<Path> alreadyParsed, CobolDialect cobolDialect, List<String> fileExtensions) throws IOException {
+    /**
+     *
+     * @param alreadyParsed collection of paths that have already been parsed as resources.
+     * @param cobolDialect COBOL dialect to parse the copy books with.
+     * @param fileExtensions file extensions to search, collect, and parse as copy books.
+     * @return parsed copy books.
+     * @throws IOException an exception occurred attempting to walk the file tree.
+     */
+    public List<CobolPreprocessor.CopyBook> parseCopyBooks(Collection<Path> alreadyParsed,
+                                                           CobolDialect cobolDialect,
+                                                           List<String> fileExtensions) throws IOException {
+
         List<Path> copyBooks = getResourcesByExtension(alreadyParsed, fileExtensions);
         return CobolPreprocessorParser.parseCopyBooks(copyBooks, null, cobolDialect);
     }
