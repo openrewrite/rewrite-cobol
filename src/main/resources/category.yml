@@ -1,0 +1,5 @@
+---
+type: specs.openrewrite.org/v1beta/category
+name: Common Business Oriented Language
+packageName: org.openrewrite.cobol
+description: 'Recipes to search and transform COBOL.'
