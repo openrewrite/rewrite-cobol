@@ -70,9 +70,9 @@ class FindCopyBookResultsTest : CobolTest() {
                 004500*                                                                 SM1034.2
                 004600******************** COPIED TEXT BEGINS BELOW ********************SM1034.2
                 004700 SOURCE-COMPUTER.                                      COPY K3SCA.SM1034.2
-                   ~~~>CopyBook K3SCA start ********************************************
+                   ~~~*>CopyBook K3SCA start *******************************************
                 000100     XXXXX082.                                                    K3SCA4.2
-                   ~~~>CopyBook K3SCA end **********************************************
+                   ~~~*>CopyBook K3SCA end *********************************************
                 004800*********************** END OF COPIED TEXT ***********************SM1034.2
                 004900                                                                  SM1034.2
                 005000                                                                  SM1034.2
@@ -86,9 +86,9 @@ class FindCopyBookResultsTest : CobolTest() {
                 005800*                                                                 SM1034.2
                 005900******************** COPIED TEXT BEGINS BELOW ********************SM1034.2
                 006000 OBJECT-COMPUTER.                                      COPY K3OCA.SM1034.2
-                   ~~~>CopyBook K3OCA start ********************************************
+                   ~~~*>CopyBook K3OCA start *******************************************
                 000100     XXXXX083.                                                    K3OCA4.2
-                   ~~~>CopyBook K3OCA end **********************************************
+                   ~~~*>CopyBook K3OCA end *********************************************
                 006100*********************** END OF COPIED TEXT ***********************SM1034.2
                 006200                                                                  SM1034.2
                 006300                                                                  SM1034.2
@@ -102,9 +102,9 @@ class FindCopyBookResultsTest : CobolTest() {
                 007100*                                                                 SM1034.2
                 007200******************** COPIED TEXT BEGINS BELOW ********************SM1034.2
                 007300 SPECIAL-NAMES.                                        COPY K3SNA.SM1034.2
-                   ~~~>CopyBook K3SNA start ********************************************
+                   ~~~*>CopyBook K3SNA start *******************************************
                 000100     DECIMAL-POINT IS COMMA.                                      K3SNA4.2
-                   ~~~>CopyBook K3SNA end **********************************************
+                   ~~~*>CopyBook K3SNA end *********************************************
                 007400*********************** END OF COPIED TEXT ***********************SM1034.2
                 007500 INPUT-OUTPUT SECTION.                                            SM1034.2
                 007600                                                                  SM1034.2
@@ -119,14 +119,14 @@ class FindCopyBookResultsTest : CobolTest() {
                 008500*                                                                 SM1034.2
                 008600******************** COPIED TEXT BEGINS BELOW ********************SM1034.2
                 008700 FILE-CONTROL.                                         COPY K3FCA.SM1034.2
-                   ~~~>CopyBook K3FCA start ********************************************
+                   ~~~*>CopyBook K3FCA start *******************************************
                 000100     SELECT TEST-FILE ASSIGN TO                                   K3FCA4.2
                 000200     XXXXP001.                                                    K3FCA4.2
                 000300     SELECT TEST-FILE2 ASSIGN TO                                  K3FCA4.2
                 000400     XXXXP002.                                                    K3FCA4.2
                 000500     SELECT PRINT-FILE ASSIGN TO                                  K3FCA4.2
                 000600     XXXXX055.                                                    K3FCA4.2
-                   ~~~>CopyBook K3FCA end **********************************************
+                   ~~~*>CopyBook K3FCA end *********************************************
                 008800*********************** END OF COPIED TEXT ***********************SM1034.2
                 008900                                                                  SM1034.2
                 009000                                                                  SM1034.2
@@ -140,10 +140,10 @@ class FindCopyBookResultsTest : CobolTest() {
                 009800*                                                                 SM1034.2
                 009900******************** COPIED TEXT BEGINS BELOW ********************SM1034.2
                 010000 I-O-CONTROL.                                          COPY K3IOA.SM1034.2
-                   ~~~>CopyBook K3IOA start ********************************************
+                   ~~~*>CopyBook K3IOA start *******************************************
                 000100     SAME AREA FOR TEST-FILE                                      K3IOA4.2
                 000200                   TEST-FILE2.                                    K3IOA4.2
-                   ~~~>CopyBook K3IOA end **********************************************
+                   ~~~*>CopyBook K3IOA end *********************************************
                 010100*********************** END OF COPIED TEXT ***********************SM1034.2
                 010200 DATA DIVISION.                                                   SM1034.2
                 010300 FILE SECTION.                                                    SM1034.2
@@ -523,9 +523,9 @@ class FindCopyBookResultsTest : CobolTest() {
                 047700*********************END OF COPY TEXT***************************  SM1034.2
                 047800     IF      WRK-DU-00001 =                                       SM1034.2
                 047900     COPY    K3SML.                                               SM1034.2
-                   ~~~>CopyBook K3SML start ********************************************
+                   ~~~*>CopyBook K3SML start *******************************************
                 000100                             8                                    K3SML4.2
-                   ~~~>CopyBook K3SML end **********************************************
+                   ~~~*>CopyBook K3SML end *********************************************
                 048000             PERFORM PASS                                         SM1034.2
                 048100             PERFORM PRINT-DETAIL                                 SM1034.2
                 048200     ELSE                                                         SM1034.2
@@ -559,14 +559,14 @@ class FindCopyBookResultsTest : CobolTest() {
                 051000*********************END OF COPY TEXT***************************  SM1034.2
                 051100*                                                                 SM1034.2
                 051200     COPY    K3LGE.                                               SM1034.2
-                   ~~~>CopyBook K3LGE start ********************************************
+                   ~~~*>CopyBook K3LGE start *******************************************
                 000100     MOVE 1 TO WRK-DU-9, ADD 1 TO WRK-DU-9, ADD 1 TO WRK-DU-9, ADDK3LGE4.2
                 000200      1 TO WRK-DU-99, ADD 1 TO WRK-DU-9, ADD 1 TO WRK-DU-99, ADD 1K3LGE4.2
                 000300      TO WRK-DU-99, ADD 1 TO WRK-DU-99, ADD 1 TO WRK-DU-99, ADD 1 K3LGE4.2
                 000400     TO WRK-DU-9, ADD 1 TO WRK-DU-9, ADD 1 TO WRK-DU-99, ADD 1 TO K3LGE4.2
                 000500     WRK-DU-99, ADD 1 TO WRK-DU-99, ADD 1 TO WRK-DU-99, ADD 10 TO K3LGE4.2
                 000600     WRK-DU-99-LONGER.                                            K3LGE4.2
-                   ~~~>CopyBook K3LGE end **********************************************
+                   ~~~*>CopyBook K3LGE end *********************************************
                 051300*                                                                 SM1034.2
                 051400 COPY-TEST-4-1.                                                   SM1034.2
                 051500     MOVE   "COPY-TEST-4-1" TO PAR-NAME.                          SM1034.2
@@ -1229,11 +1229,11 @@ class FindCopyBookResultsTest : CobolTest() {
             061000         REPLACING ==FAIL. THIS IS GARBAGE. SUBTRACT 1 FROM       SM2064.2
             061100                     ERROR-COUNTER. ==                            SM2064.2
             061200         BY  ==PASS. ==.                                          SM2064.2
-               ~~~>CopyBook KP008 start ********************************************
+               ~~~*>CopyBook KP008 start *******************************************
             000100     PERFORM PASS.                                                KP0084.2
             000200D                                                                 KP0084.2
             000300                                                                  KP0084.2
-               ~~~>CopyBook KP008 end **********************************************
+               ~~~*>CopyBook KP008 end *********************************************
             061300*********************** END OF COPIED TEXT ***********************SM2064.2
             061400     IF P-OR-F IS EQUAL TO "FAIL*"  ADD 1 TO ERROR-COUNTER.       SM2064.2
             061500     GO TO PST-WRITE-009.                                         SM2064.2
