@@ -150,7 +150,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
     public static class Builder extends org.openrewrite.Parser.Builder {
 
-        private CobolDialect cobolDialect = new IbmAnsi85();
+        private CobolDialect cobolDialect = CobolDialect.ibmAnsi85();
         private List<CobolPreprocessor.CopyBook> copyBooks = emptyList();
         private boolean enableCopy = false;
         private boolean enableReplace = false;

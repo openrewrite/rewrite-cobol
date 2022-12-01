@@ -22,6 +22,14 @@ public interface CobolDialect {
     Collection<Character> getCommentIndicators();
     Columns getColumns();
 
+    static IbmAnsi85 ibmAnsi85() {
+        return IbmAnsi85.getInstance();
+    }
+
+    static HpTandem hpTandem() {
+        return HpTandem.getInstance();
+    }
+
     enum Columns {
 
         /**

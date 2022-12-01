@@ -3,6 +3,7 @@ package org.openrewrite.cobol.tree
 import io.github.classgraph.ClassGraph
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.CobolIsoVisitor
+import org.openrewrite.cobol.internal.CobolDialect
 import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.StringUtils
 import org.openrewrite.test.RecipeSpec
@@ -11,7 +12,7 @@ import org.openrewrite.test.RewriteTest
 open class CobolTest : RewriteTest {
 
     companion object {
-        val dialect = IbmAnsi85()
+        val dialect: CobolDialect = CobolDialect.ibmAnsi85()
         val nistResourcePaths: List<String> by lazy {
             ClassGraph().acceptPaths("/gov/nist").scan()
                 .allResources

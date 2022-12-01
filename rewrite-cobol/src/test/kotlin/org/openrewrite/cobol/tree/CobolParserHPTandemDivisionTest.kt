@@ -18,13 +18,14 @@ package org.openrewrite.cobol.tree
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.cobol.Assertions.cobol
+import org.openrewrite.cobol.internal.CobolDialect
 import org.openrewrite.cobol.internal.HpTandem
 
 @Disabled("Requires adding comments at the first line of each test to prevent trimming the blank indicator.")
 class CobolParserHPTandemDivisionTest : CobolTest() {
 
     companion object {
-        val dialect = HpTandem()
+        val dialect: HpTandem = CobolDialect.hpTandem()
     }
 
     @Test

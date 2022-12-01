@@ -23,7 +23,6 @@ import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Parser;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
-import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.EncodingDetectingInputStream;
@@ -34,7 +33,9 @@ import org.openrewrite.text.PlainText;
 import org.openrewrite.tree.ParsingEventListener;
 import org.openrewrite.tree.ParsingExecutionContextView;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.file.*;
 import java.util.*;
 
@@ -130,19 +131,17 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 .collect(toList());
     }
 
-    public static List<CobolPreprocessor.CopyBook> parseCopyBooks(List<Path> paths,
-                                                                  @Nullable Path relativeTo,
-                                                                  CobolDialect cobolDialect) {
-
+    public static List<CobolPreprocessor.CopyBook> parseCopyBooks(
+            List<Parser.Input> inputs,
+            CobolDialect cobolDialect,
+            ExecutionContext ctx) {
         List<CobolPreprocessor.CopyBook> copyBooks = new ArrayList<>();
-
-        for (Path path : paths) {
+        for(Parser.Input input : inputs) {
             PlainText plainText;
-            try (InputStream inputStream = Files.newInputStream(path)) {
-                EncodingDetectingInputStream is = new EncodingDetectingInputStream(inputStream);
+            try(EncodingDetectingInputStream is = input.getSource(ctx)) {
                 plainText = new PlainText(
                         randomId(),
-                        path,
+                        input.getPath(),
                         Markers.EMPTY,
                         is.getCharset().name(),
                         is.isCharsetBomMarked(),
@@ -161,7 +160,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
             //noinspection ConstantConditions
             CobolPreprocessorParserVisitor parserVisitor = new CobolPreprocessorParserVisitor(
-                    relativeTo == null ? plainText.getSourcePath() : plainText.getSourcePath().relativize(relativeTo),
+                    plainText.getSourcePath(),
                     plainText.getFileAttributes(),
                     plainText.getText(),
                     plainText.getCharset(),
@@ -176,7 +175,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                     randomId(),
                     Space.EMPTY,
                     Markers.EMPTY,
-                    path,
+                    plainText.getSourcePath(),
                     null,
                     plainText.getCharsetName(),
                     plainText.isCharsetBomMarked(),
@@ -189,6 +188,29 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         }
 
         return copyBooks;
+    }
+
+    public static List<CobolPreprocessor.CopyBook> parseCopyBooks(
+            List<Path> paths,
+            @Nullable Path relativeTo,
+            CobolDialect cobolDialect,
+            ExecutionContext ctx) {
+        List<Parser.Input> inputs = new ArrayList<>(paths.size());
+
+        for (Path path : paths) {
+            inputs.add(new Parser.Input(
+                    relativeTo == null ? path : relativeTo.relativize(path),
+                    () -> {
+                        try {
+                            return Files.newInputStream(path);
+                        } catch (IOException e) {
+                            throw new UncheckedIOException(e);
+                        }
+                    }
+            ));
+        }
+
+        return parseCopyBooks(inputs, cobolDialect, ctx);
     }
 
     @Override
@@ -229,7 +251,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
     public static class Builder extends org.openrewrite.Parser.Builder {
 
-        private CobolDialect cobolDialect = new IbmAnsi85();
+        private CobolDialect cobolDialect = CobolDialect.ibmAnsi85();
         private List<CobolPreprocessor.CopyBook> copyBooks = emptyList();
         private boolean enableCopy;
         private boolean enableReplace;

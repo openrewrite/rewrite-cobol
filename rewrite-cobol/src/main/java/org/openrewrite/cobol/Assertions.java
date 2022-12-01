@@ -15,6 +15,7 @@
  */
 package org.openrewrite.cobol;
 
+import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
@@ -183,7 +184,8 @@ public class Assertions {
         ResourceParser resourceParser = new ResourceParser(Paths.get("").toAbsolutePath(), emptyList(), emptyList());
 
         try {
-            return resourceParser.parseCopyBooks(emptyList(), new IbmAnsi85(), CobolPreprocessorParser.COPYBOOK_FILE_EXTENSIONS);
+            return resourceParser.parseCopyBooks(emptyList(), IbmAnsi85.getInstance(),
+                    CobolPreprocessorParser.COPYBOOK_FILE_EXTENSIONS, new InMemoryExecutionContext());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

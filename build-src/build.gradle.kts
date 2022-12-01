@@ -21,6 +21,7 @@ dependencies {
     implementation("com.netflix.nebula:nebula-publishing-plugin:18.4.0")
     implementation("com.netflix.nebula:nebula-project-plugin:9.6.3")
     implementation("io.github.gradle-nexus:publish-plugin:1.0.0")
+    implementation("gradle.plugin.com.google.cloud.artifactregistry:artifactregistry-gradle-plugin:2.2.0")
 }
 
 java {

@@ -18,11 +18,18 @@ package org.openrewrite.cobol.internal;
 import java.util.*;
 
 public class HpTandem implements CobolDialect {
+
+    private static final HpTandem INSTANCE = new HpTandem();
+
+    public static HpTandem getInstance() {
+        return INSTANCE;
+    }
+
     private final Set<String> separators;
     private final Set<Character> commentIndicators;
     private final Columns columns;
 
-    public HpTandem() {
+    private HpTandem() {
         // Currently unknown.
         this.separators = Collections.emptySet();
         this.commentIndicators = new HashSet<>(Collections.singletonList('*'));

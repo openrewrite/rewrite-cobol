@@ -1,5 +1,6 @@
 package org.openrewrite.cobol;
 
+import org.openrewrite.ExecutionContext;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 
@@ -60,12 +61,15 @@ public class ResourceParser {
      * @return parsed copy books.
      * @throws IOException an exception occurred attempting to walk the file tree.
      */
-    public List<CobolPreprocessor.CopyBook> parseCopyBooks(Collection<Path> alreadyParsed,
-                                                           CobolDialect cobolDialect,
-                                                           List<String> fileExtensions) throws IOException {
+    public List<CobolPreprocessor.CopyBook> parseCopyBooks(
+            Collection<Path> alreadyParsed,
+            CobolDialect cobolDialect,
+            List<String> fileExtensions,
+            ExecutionContext ctx
+    ) throws IOException {
 
         List<Path> copyBooks = getResourcesByExtension(alreadyParsed, fileExtensions);
-        return CobolPreprocessorParser.parseCopyBooks(copyBooks, null, cobolDialect);
+        return CobolPreprocessorParser.parseCopyBooks(copyBooks, null, cobolDialect, ctx);
     }
 
     private boolean isIgnoredDirectory(Path searchDir, Path path) {

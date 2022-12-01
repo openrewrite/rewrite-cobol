@@ -11,17 +11,25 @@ plugins {
     id("io.moderne.base")
     id("nebula.release")
 
-    id("nebula.maven-manifest")// version "17.3.2"
-    id("nebula.maven-nebula-publish")// version "17.3.2"
-    id("nebula.maven-resolved-dependencies")// version "17.3.2"
+    id("nebula.maven-manifest")
+    id("nebula.maven-nebula-publish")
+    id("nebula.maven-resolved-dependencies")
 
-    id("nebula.contacts")// version "5.1.0"
-    id("nebula.info")// version "9.3.0"
+    id("nebula.contacts")
+    id("nebula.info")
 
-    id("nebula.javadoc-jar")// version "17.3.2"
-    id("nebula.source-jar")// version "17.3.2"
+    id("nebula.javadoc-jar")
+    id("nebula.source-jar")
+    id("com.google.cloud.artifactregistry.gradle-plugin")
 }
 apply(plugin = "nebula.publish-verification")
+
+repositories {
+    maven {
+        name = "gcp"
+        url = uri("artifactregistry://us-west1-maven.pkg.dev/moderne-dev/moderne-releases")
+    }
+}
 
 java {
     toolchain {
