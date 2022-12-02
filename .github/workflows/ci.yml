@@ -41,6 +41,9 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      - uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.ARTIFACT_REGISTRY_KEY }}
       - name: build
         run: ./gradlew ${GRADLE_SWITCHES} build test
 
@@ -66,6 +69,10 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      - uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.ARTIFACT_REGISTRY_KEY }}
+      - uses: google-github-actions/setup-gcloud@v1.0.1
       - name: publish-snapshots
         if: github.event_name == 'push'
         timeout-minutes: 30

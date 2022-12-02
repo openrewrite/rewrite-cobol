@@ -32,6 +32,10 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      - uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.ARTIFACT_REGISTRY_KEY }}
+      - uses: google-github-actions/setup-gcloud@v1.0.1
 
       - name: publish-candidate
         if: contains(github.ref, '-rc.')
