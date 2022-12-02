@@ -67,10 +67,10 @@ public class CreateNistAstJar {
                 prettyPrint(Duration.between(start, Instant.now())));
 
         Path destination = Paths.get(args[0]);
-        System.out.println("Writing ASTs to " + destination);
+        System.out.println("Writing AST file to " + destination);
         //noinspection ResultOfMethodCallIgnored
         destination.getParent().toFile().mkdirs();
-        try (OutputStream outputStream = Files.newOutputStream(destination)) {
+        try (OutputStream outputStream = Files.newOutputStream(destination);) {
             start = Instant.now();
             new TreeSerializer().write(cus, outputStream);
             System.out.println("Wrote ASTs in " + prettyPrint(Duration.between(start, Instant.now())));

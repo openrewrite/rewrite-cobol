@@ -62,7 +62,7 @@ public class Assertions {
                         null,
                         CobolParser.builder(),
                         before,
-                        after);
+                        s -> after);
         spec.accept(cobol);
         return cobol;
     }
@@ -99,7 +99,7 @@ public class Assertions {
                         null,
                         CobolParser.builder().setEnableCopy(true).setEnableReplace(true).setCopyBooks(copyBooks),
                         before,
-                        after);
+                        s -> after);
         spec.accept(cobol);
         return cobol;
     }
@@ -132,7 +132,7 @@ public class Assertions {
                         null,
                         CobolPreprocessorParser.builder(),
                         before,
-                        after);
+                        s -> after);
         spec.accept(cobol);
         return cobol;
     }
@@ -175,7 +175,7 @@ public class Assertions {
                                 .setEnableReplace(true)
                                 .setCopyBooks(copyBooks),
                         before,
-                        after);
+                        s -> after);
         spec.accept(cobol);
         return cobol;
     }
