@@ -52,8 +52,8 @@ artifactory {
         repository {
 
             setRepoKey("moderne-public-ast")
-            setUsername(System.getenv("ARTIFACTORY_USER"))
-            setPassword(System.getenv("ARTIFACTORY_PASSWORD"))
+            setUsername(System.getenv("AST_PUBLISH_USERNAME"))
+            setPassword(System.getenv("AST_PUBLISH_PASSWORD"))
         }
         defaults {
             publications("moderne")
