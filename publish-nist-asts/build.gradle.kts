@@ -40,7 +40,7 @@ val nistJar = tasks.register<Jar>("nistJar") {
 
 publishing {
     publications {
-        named<MavenPublication>("nebula") {
+        create<MavenPublication>("moderne") {
             artifact(nistJar)
         }
     }
