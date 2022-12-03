@@ -14,6 +14,8 @@ on:
 env:
   GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
   GRADLE_SWITCHES: "-s --console=plain --info --stacktrace"
+  AST_PUBLISH_USERNAME: ${{ secrets.AST_PUBLISH_USERNAME }}
+  AST_PUBLISH_PASSWORD: ${{ secrets.AST_PUBLISH_PASSWORD }}
 
 jobs:
   build:
