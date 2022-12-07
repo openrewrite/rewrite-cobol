@@ -96,15 +96,6 @@ configure<PublishingExtension> {
     }
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "moderne"
-            url = uri("https://us-west1-maven.pkg.dev/moderne-dev/moderne-recipe")
-        }
-    }
-}
-
 configurations.all {
     exclude("com.google.errorprone", "*")
     resolutionStrategy {

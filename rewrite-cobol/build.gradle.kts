@@ -78,3 +78,12 @@ val testJar = tasks.register<Jar>("testJar") {
 artifacts {
     add(testConf.name, testJar)
 }
+
+publishing {
+    repositories {
+        maven {
+            name = "gcp"
+            url = uri("artifactregistry://us-west1-maven.pkg.dev/moderne-dev/moderne-releases")
+        }
+    }
+}
