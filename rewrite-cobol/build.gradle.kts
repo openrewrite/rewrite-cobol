@@ -85,7 +85,7 @@ artifactory {
     publish {
         setContextUrl("https://artifactory.moderne.ninja/artifactory")
         repository {
-            setRepoKey("moderne-recipe")
+            setRepoKey("moderne-private")
             setUsername(System.getenv("AST_PUBLISH_USERNAME"))
             setPassword(System.getenv("AST_PUBLISH_PASSWORD"))
         }
