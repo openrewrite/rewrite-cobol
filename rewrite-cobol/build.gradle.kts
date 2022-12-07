@@ -85,18 +85,14 @@ artifactory {
     publish {
         setContextUrl("https://artifactory.moderne.ninja/artifactory")
         repository {
-
             setRepoKey("moderne-recipe")
             setUsername(System.getenv("AST_PUBLISH_USERNAME"))
             setPassword(System.getenv("AST_PUBLISH_PASSWORD"))
         }
         defaults {
-            publications("moderne")
-            setProperties(mapOf("moderne_parsed" to "true"))
-            setPublishArtifacts(false)
-            setPublishPom(false)
+            publications("nebula")
+            setPublishArtifacts(true)
+            setPublishPom(true)
         }
     }
-    clientConfig.publisher.includePatterns = "*-ast.jar"
-    clientConfig.publisher.isFilterExcludedArtifactsFromBuild = true
 }
