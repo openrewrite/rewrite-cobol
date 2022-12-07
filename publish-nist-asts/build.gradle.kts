@@ -1,7 +1,6 @@
 plugins {
     id("io.moderne.java-project")
     id("io.moderne.rewrite")
-    id("com.jfrog.artifactory")
 }
 
 dependencies {

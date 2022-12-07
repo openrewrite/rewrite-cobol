@@ -21,6 +21,7 @@ plugins {
     id("nebula.javadoc-jar")
     id("nebula.source-jar")
     id("com.google.cloud.artifactregistry.gradle-plugin")
+    id("com.jfrog.artifactory")
 }
 apply(plugin = "nebula.publish-verification")
 

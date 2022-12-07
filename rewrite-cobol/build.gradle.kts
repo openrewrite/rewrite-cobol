@@ -1,3 +1,5 @@
+import org.tmatesoft.svn.core.internal.util.jna.SVNGnomeKeyring.setPassword
+
 plugins {
     `java-library`
     id("io.moderne.java-project")
@@ -79,11 +81,22 @@ artifacts {
     add(testConf.name, testJar)
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "gcp"
-            url = uri("artifactregistry://us-west1-maven.pkg.dev/moderne-dev/moderne-releases")
+artifactory {
+    publish {
+        setContextUrl("https://artifactory.moderne.ninja/artifactory")
+        repository {
+
+            setRepoKey("moderne-recipe")
+            setUsername(System.getenv("AST_PUBLISH_USERNAME"))
+            setPassword(System.getenv("AST_PUBLISH_PASSWORD"))
+        }
+        defaults {
+            publications("moderne")
+            setProperties(mapOf("moderne_parsed" to "true"))
+            setPublishArtifacts(false)
+            setPublishPom(false)
         }
     }
+    clientConfig.publisher.includePatterns = "*-ast.jar"
+    clientConfig.publisher.isFilterExcludedArtifactsFromBuild = true
 }
