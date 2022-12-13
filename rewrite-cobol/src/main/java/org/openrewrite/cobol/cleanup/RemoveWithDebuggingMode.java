@@ -20,6 +20,14 @@ import java.util.Set;
 @Value
 public class RemoveWithDebuggingMode extends Recipe {
 
+    @Option(displayName = "Update sequence areas",
+            description = "When set to `true` the existing sequence are updated to preserve ordering. " +
+                    "This is default to false, and is used to prevent large diffs since COBOL has a line limit of 999k.",
+            example = "true",
+            required = false)
+    @Nullable
+    Boolean updateSequenceAreas;
+
     @Override
     public String getDisplayName() {
         return "Remove with debugging mode";
@@ -97,7 +105,9 @@ public class RemoveWithDebuggingMode extends Recipe {
                                     s.getComputerName().getMarkers().removeByType(CommentArea.class)));
 
                             Cobol.Word startWord = s.getComputerName();
-                            doAfterVisit(new ShiftSequenceAreas(originalWords, startWord));
+                            if (Boolean.TRUE.equals(updateSequenceAreas)) {
+                                doAfterVisit(new ShiftSequenceAreas(originalWords, startWord));
+                            }
 
                             endWord = s.getDot();
                             s = s.withDebuggingMode(null);

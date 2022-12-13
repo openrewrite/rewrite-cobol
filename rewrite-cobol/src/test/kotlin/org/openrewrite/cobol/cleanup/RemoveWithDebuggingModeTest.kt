@@ -10,7 +10,7 @@ import org.openrewrite.test.RecipeSpec
 class RemoveWithDebuggingModeTest : CobolTest() {
 
     override fun defaults(spec: RecipeSpec) {
-        spec.recipe(RemoveWithDebuggingMode())
+        spec.recipe(RemoveWithDebuggingMode(true))
     }
 
     @Test
@@ -167,6 +167,40 @@ class RemoveWithDebuggingModeTest : CobolTest() {
                 000700     XXXXX082.                                                    SHIFTED
                 000800 OBJECT-COMPUTER.                                                 
                 000900     XXXXX083.                                                    
+            """.trimIndent())
+    )
+
+    @Test
+    fun doNotUpdateSequenceAreas() = rewriteRun(
+        { spec -> spec.recipe(RemoveWithDebuggingMode(false))},
+        cobol(
+            """
+                000100 IDENTIFICATION DIVISION.                                         
+                000200 PROGRAM-ID.                                                      
+                000300     CONTINUED.                                                   
+                000400 ENVIRONMENT DIVISION.                                            
+                000500 CONFIGURATION SECTION.                                           
+                000600 SOURCE-COMPUTER.                                                 
+                000700     XXXXX082                                                     SHIFTED
+                000800         WITH                                                     
+                000900         DEBUGGING                                                
+                001000         M                                                        
+                001100-         O                                                       
+                001200-          D                                                      
+                001300-           E.                                                    
+                001400 OBJECT-COMPUTER.                                                 
+                001500     XXXXX083.                                                    
+            """.trimIndent(),
+            """
+                000100 IDENTIFICATION DIVISION.                                         
+                000200 PROGRAM-ID.                                                      
+                000300     CONTINUED.                                                   
+                000400 ENVIRONMENT DIVISION.                                            
+                000500 CONFIGURATION SECTION.                                           
+                000600 SOURCE-COMPUTER.                                                 
+                000700     XXXXX082.                                                    SHIFTED
+                001400 OBJECT-COMPUTER.                                                 
+                001500     XXXXX083.                                                    
             """.trimIndent())
     )
 }

@@ -54,6 +54,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CompilationUnit implements Cobol, SourceFile {
+
         @EqualsAndHashCode.Include
         UUID id;
 
