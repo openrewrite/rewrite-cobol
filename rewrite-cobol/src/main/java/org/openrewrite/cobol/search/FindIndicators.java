@@ -9,8 +9,6 @@ import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 
-import java.util.*;
-
 import static org.openrewrite.Tree.randomId;
 
 @EqualsAndHashCode(callSuper = true)
@@ -20,7 +18,7 @@ public class FindIndicators extends Recipe {
     @Option(displayName = "Indicator character",
             description = "A list of indicators to search for.",
             example = "D")
-    List<String> indicators;
+    String indicator;
 
     @Override
     public String getDisplayName() {
@@ -34,17 +32,17 @@ public class FindIndicators extends Recipe {
 
     @Override
     protected TreeVisitor<?, ExecutionContext> getVisitor() {
-        return new AddSearchResult(indicators);
+        return new AddSearchResult(indicator);
     }
 
     private static class AddSearchResult extends CobolIsoVisitor<ExecutionContext> {
         private final SearchResult searchResult = new SearchResult(randomId(), SearchResult.Type.INDICATOR_AREA, null);
         private final PreprocessorSearchVisitor preprocessorSearchVisitor;
-        private final List<String> indicators;
+        private final String indicator;
 
-        public AddSearchResult(List<String> indicators) {
-            this.indicators = indicators;
-            this.preprocessorSearchVisitor = new PreprocessorSearchVisitor(indicators, searchResult);
+        public AddSearchResult(String indicator) {
+            this.indicator = indicator;
+            this.preprocessorSearchVisitor = new PreprocessorSearchVisitor(indicator, searchResult);
         }
 
         @Override
@@ -52,7 +50,7 @@ public class FindIndicators extends Recipe {
             Cobol.Word w = super.visitWord(word, executionContext);
 
             IndicatorArea indicatorArea = w.getMarkers().findFirst(IndicatorArea.class).orElse(null);
-            if (indicatorArea != null && indicators.contains(indicatorArea.getIndicator())) {
+            if (indicatorArea != null && indicator.equals(indicatorArea.getIndicator())) {
                 SearchResult result = w.getMarkers().findFirst(SearchResult.class).orElse(null);
                 if (result == null) {
                     w = w.withMarkers(w.getMarkers().addIfAbsent(searchResult));
@@ -81,12 +79,12 @@ public class FindIndicators extends Recipe {
     }
 
     private static class PreprocessorSearchVisitor extends CobolPreprocessorIsoVisitor<ExecutionContext> {
-        private final List<String> indicators;
+        private final String indicator;
         private final SearchResult searchResult;
 
-        public PreprocessorSearchVisitor(List<String> indicators,
+        public PreprocessorSearchVisitor(String indicator,
                                          SearchResult searchResult) {
-            this.indicators = indicators;
+            this.indicator = indicator;
             this.searchResult = searchResult;
         }
 
@@ -95,7 +93,7 @@ public class FindIndicators extends Recipe {
             CobolPreprocessor.Word w = super.visitWord(word, executionContext);
 
             IndicatorArea indicatorArea = w.getMarkers().findFirst(IndicatorArea.class).orElse(null);
-            if (indicatorArea != null && indicators.contains(indicatorArea.getIndicator())) {
+            if (indicatorArea != null && indicator.equals(indicatorArea.getIndicator())) {
                 SearchResult result = w.getMarkers().findFirst(SearchResult.class).orElse(null);
                 if (result == null) {
                     w = w.withMarkers(w.getMarkers().addIfAbsent(searchResult));
