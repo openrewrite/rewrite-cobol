@@ -64,6 +64,7 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
+
         @Nullable // for backwards compatibility
         @With(AccessLevel.PRIVATE)
         String charsetName;
@@ -102,6 +103,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Abbreviation implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -144,11 +146,13 @@ public interface Cobol extends Tree {
         Word accept;
         Identifier identifier;
         Cobol operation;
+
         @Nullable
         StatementPhrase onExceptionClause;
 
         @Nullable
         StatementPhrase notOnExceptionClause;
+
         @Nullable
         Word endAccept;
 
@@ -162,6 +166,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class AcceptFromDateStatement implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -219,6 +224,7 @@ public interface Cobol extends Tree {
 
         @EqualsAndHashCode.Include
         UUID id;
+
         Space prefix;
         Markers markers;
         List<Word> words;
@@ -432,6 +438,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class AlteredGoTo implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -450,6 +457,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class AlternateRecordKeyClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -831,6 +839,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ClassClauseThrough implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
         Space prefix;
@@ -853,6 +862,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ClassCondition implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -895,6 +905,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CloseFile implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -934,6 +945,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ClosePortFileIOUsingAssociatedData implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -952,6 +964,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ClosePortFileIOUsingAssociatedDataLength implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -970,6 +983,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ClosePortFileIOUsingCloseDisposition implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -987,6 +1001,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CloseReelUnitStatement implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1004,6 +1019,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CloseRelativeStatement implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1021,6 +1037,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Word implements Literal, Identifier {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1038,6 +1055,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CodeSetClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1056,6 +1074,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CollatingSequenceAlphabet implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1100,6 +1119,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CombinableCondition implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1121,6 +1141,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CommentEntry implements Cobol, Comment {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1138,6 +1159,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CommitmentControlClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1317,6 +1339,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ConditionNameSubscriptReference implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1356,6 +1379,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Continue implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1398,6 +1422,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataAlignedClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1435,6 +1460,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataBaseSectionEntry implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1455,6 +1481,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataBlankWhenZeroClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1472,6 +1499,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataCommonOwnLocalClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1538,6 +1566,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataExternalClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1556,6 +1585,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataGlobalClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1573,6 +1603,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataIntegerStringClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1590,6 +1621,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataJustifiedClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1607,6 +1639,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataOccursClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1623,6 +1656,7 @@ public interface Cobol extends Tree {
 
         @Nullable
         DataOccursDepending dataOccursDepending;
+
         @Nullable
         List<Cobol> sortIndexed;
 
@@ -1636,6 +1670,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataOccursDepending implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1692,6 +1727,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataOccursTo implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1729,6 +1765,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataReceivedByClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1746,6 +1783,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataRecordAreaClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1782,6 +1820,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataRedefinesClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1800,6 +1839,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataRenamesClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1825,6 +1865,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataSignClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1842,6 +1883,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataSynchronizedClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1859,6 +1901,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataThreadLocalClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1876,6 +1919,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataTypeClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1896,6 +1940,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataTypeDefClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1913,6 +1958,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataUsageClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1930,6 +1976,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataUsingClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1948,6 +1995,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataValueClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1966,6 +2014,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataValueInterval implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -1986,6 +2035,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataValueIntervalTo implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2004,6 +2054,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DataWithLowerBoundsClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2021,6 +2072,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DecimalPointClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2038,6 +2090,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DefaultComputationalSignClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2055,6 +2108,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DefaultDisplaySignClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2103,6 +2157,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DestinationCountClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2142,6 +2197,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Disable implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2167,6 +2223,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Display implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2203,6 +2260,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DisplayAt implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2221,6 +2279,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DisplayUpon implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2271,6 +2330,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DivideGiving implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2330,6 +2390,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DivideRemainder implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2348,6 +2409,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Enable implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2373,6 +2435,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class EndKeyClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2391,6 +2454,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class EndProgram implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2484,6 +2548,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class EvaluateAlso implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2503,6 +2568,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class EnvironmentSwitchNameClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2531,6 +2597,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class EnvironmentSwitchNameSpecialNamesStatusPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2548,6 +2615,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ErrorKeyClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2566,6 +2634,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class EvaluateAlsoCondition implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2585,6 +2654,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class EvaluateCondition implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2610,6 +2680,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class EvaluateThrough implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2628,6 +2699,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class EvaluateValueThrough implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2767,6 +2839,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Exit implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2784,6 +2857,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ExternalClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2801,6 +2875,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class FigurativeConstant implements Literal {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2953,6 +3028,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Generate implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2971,6 +3047,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class GlobalClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -2988,6 +3065,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class GoBack implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3005,6 +3083,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class GoTo implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3175,6 +3254,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class InData implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3193,6 +3273,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class InFile implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3233,6 +3314,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class InitializeReplacingBy implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3289,6 +3371,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class InLibrary implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3307,6 +3390,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class InMnemonic implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3346,6 +3430,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class InSection implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3364,6 +3449,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Inspect implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3423,6 +3509,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class InspectBeforeAfter implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3441,6 +3528,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class InspectBy implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3644,6 +3732,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class InspectTo implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3662,6 +3751,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class InTable implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3693,6 +3783,7 @@ public interface Cobol extends Tree {
 
         @Nullable
         Word fileNameDot;
+
         @Nullable
         List<Cobol> clauses;
 
@@ -3729,6 +3820,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LibraryAttributeClauseFormat1 implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3746,6 +3838,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LibraryAttributeClauseFormat2 implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3774,6 +3867,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LibraryAttributeFunction implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3792,6 +3886,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LibraryAttributeParameter implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3810,6 +3905,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LibraryAttributeTitle implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3828,6 +3924,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LibraryDescriptionEntryFormat1 implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3884,6 +3981,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LibraryEntryProcedureClauseFormat1 implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3905,6 +4003,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LibraryEntryProcedureClauseFormat2 implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3935,6 +4034,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LibraryEntryProcedureForClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -3953,6 +4053,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LibraryEntryProcedureGivingClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4009,6 +4110,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LibraryIsCommonClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4026,6 +4128,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LibraryIsGlobalClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4068,6 +4171,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LinageFootingAt implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4086,6 +4190,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LinageLinesAtBottom implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4104,6 +4209,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class LinageLinesAtTop implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4204,6 +4310,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Mergeable implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4247,6 +4354,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class MergeGiving implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4305,6 +4413,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class MergeOutputProcedurePhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4326,6 +4435,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class MergeOutputThrough implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4363,6 +4473,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class MessageCountClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4381,6 +4492,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class MessageDateClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4399,6 +4511,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class MessageTimeClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4438,6 +4551,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class MoveStatement implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4456,6 +4570,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class MoveToStatement implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4475,6 +4590,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class MultDiv implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4533,6 +4649,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class MultipleFilePosition implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4624,6 +4741,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class NextSentence implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4682,6 +4800,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class OdtClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4719,6 +4838,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Openable implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4777,6 +4897,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class OrganizationClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4794,6 +4915,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class PaddingCharacterClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4858,6 +4980,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Parenthesized implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
         Space prefix;
@@ -4876,6 +4999,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class PasswordClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4894,6 +5018,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Perform implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4912,6 +5037,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Performable implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4954,6 +5080,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class PerformProcedureStatement implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4980,6 +5107,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class PerformTestClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -4997,6 +5125,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class PerformTimes implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5038,6 +5167,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class PerformVarying implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5075,6 +5205,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class PerformVaryingPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5134,6 +5265,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class PlusMinus implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5152,6 +5284,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Power implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5291,6 +5424,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ProcedureDivisionByReference implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5312,6 +5446,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ProcedureDivisionByReferencePhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5333,6 +5468,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ProcedureDivisionByValuePhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5351,6 +5487,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ProcedureDivisionGivingClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5369,6 +5506,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ProcedureDivisionUsingClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5387,6 +5525,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ProcedureName implements Cobol, Name {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5430,6 +5569,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ProcedureSectionHeader implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5548,6 +5688,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class QualifiedDataName implements Cobol, Identifier {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5589,6 +5730,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class QualifiedDataNameFormat2 implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5607,6 +5749,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class QualifiedDataNameFormat3 implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5625,6 +5768,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class QualifiedDataNameFormat4 implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5643,6 +5787,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class QualifiedInData implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5661,6 +5806,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Read implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5703,6 +5849,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReadInto implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5721,6 +5868,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReadKey implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5739,6 +5887,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReadWith implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5756,6 +5905,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Receivable implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5774,6 +5924,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReceiveWith implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5791,6 +5942,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Receive implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5817,6 +5969,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReceiveFrom implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5837,6 +5990,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReceiveFromStatement implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5857,6 +6011,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReceiveIntoStatement implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5882,6 +6037,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RecordContainsClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5900,6 +6056,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RecordContainsClauseFormat1 implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5924,6 +6081,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RecordContainsClauseFormat2 implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5943,6 +6101,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RecordContainsClauseFormat3 implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5968,6 +6127,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RecordContainsTo implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -5986,6 +6146,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RecordDelimiterClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6006,6 +6167,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RecordingModeClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6024,6 +6186,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RecordKeyClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6047,6 +6210,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReferenceModifier implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6071,6 +6235,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RelationalOperator implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6088,6 +6253,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RelationArithmeticComparison implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6107,6 +6273,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RelationCombinedComparison implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6126,6 +6293,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RelationCombinedCondition implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6143,6 +6311,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RelationSignCondition implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6161,6 +6330,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RelativeKeyClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6179,6 +6349,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Release implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6280,6 +6451,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportDescriptionFirstDetailClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6298,6 +6470,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportDescriptionFootingClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6316,6 +6489,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportDescriptionGlobalClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6333,6 +6507,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportDescriptionHeadingClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6351,6 +6526,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportDescriptionLastDetailClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6369,6 +6545,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportDescriptionPageLimitClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6390,6 +6567,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupBlankWhenZeroClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6407,6 +6585,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupColumnNumberClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6485,6 +6664,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupDescriptionEntryFormat3 implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6510,6 +6690,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupIndicateClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6527,6 +6708,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupJustifiedClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6544,6 +6726,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupLineNumberClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6562,6 +6745,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupLineNumberNextPage implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6580,6 +6764,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupLineNumberPlus implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6598,6 +6783,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupNextGroupClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6616,6 +6802,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupNextGroupNextPage implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6633,6 +6820,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupNextGroupPlus implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6651,6 +6839,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupPictureClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6669,6 +6858,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupResetClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6689,6 +6879,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupSignClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6706,6 +6897,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupSourceClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6724,6 +6916,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupSumClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6740,6 +6933,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupTypeClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6758,6 +6952,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupTypeControlFooting implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6778,6 +6973,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupTypeControlHeading implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6798,6 +6994,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupTypeDetail implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6815,6 +7012,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupTypePageFooting implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6832,6 +7030,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupTypePageHeading implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6849,6 +7048,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupTypeReportFooting implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6866,6 +7066,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupTypeReportHeading implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6883,6 +7084,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupUsageClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6900,6 +7102,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportGroupValueClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6918,6 +7121,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReportName implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6954,6 +7158,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RerunClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -6981,6 +7186,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RerunEveryClock implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7001,6 +7207,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RerunEveryOf implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7019,6 +7226,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RerunEveryRecords implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7037,6 +7245,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReserveClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7054,6 +7263,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReserveNetworkClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7071,6 +7281,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Return implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7103,6 +7314,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReturnInto implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7153,6 +7365,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class RewriteFrom implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7211,6 +7424,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionAutoClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7228,6 +7442,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionBackgroundColorClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7248,6 +7463,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionBellClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7265,6 +7481,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionBlankClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7283,6 +7500,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionBlankWhenZeroClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7300,6 +7518,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionBlinkClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7317,6 +7536,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionColumnClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7335,6 +7555,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionControlClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7377,6 +7598,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionEraseClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7394,6 +7616,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionForegroundColorClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7412,6 +7635,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionFromClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7433,6 +7657,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionFullClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7450,6 +7675,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionGridClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7467,6 +7693,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionJustifiedClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7484,6 +7711,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionLightClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7501,6 +7729,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionLineClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7519,6 +7748,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionPictureClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7537,6 +7767,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionPromptClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7558,6 +7789,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionPromptOccursClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7579,6 +7811,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionRequiredClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7596,6 +7829,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionReverseVideoClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7613,6 +7847,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionSecureClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7630,6 +7865,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionSignClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7647,6 +7883,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionSizeClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7665,6 +7902,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionToClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7683,6 +7921,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionUnderlineClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7700,6 +7939,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionUsageClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7717,6 +7957,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionUsingClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7735,6 +7976,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionValueClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7753,6 +7995,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ScreenDescriptionZeroFillClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7820,6 +8063,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class SearchVarying implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7859,6 +8103,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class SelectClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7877,6 +8122,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Send implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7901,6 +8147,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class SendAdvancingLines implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7921,6 +8168,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class SendPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -7941,6 +8189,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class SendStatementSync implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8310,6 +8559,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class StatusKeyClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8328,6 +8578,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Stop implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8346,6 +8597,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class StringDelimitedByPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8364,6 +8616,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class StopStatementGiving implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8382,6 +8635,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class StringForPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8400,6 +8654,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class StringIntoPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8418,6 +8673,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class StringSendingPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8468,6 +8724,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class StringWithPointerPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8486,6 +8743,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Subscript implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8536,6 +8794,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class SubtractCorrespondingStatement implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8598,6 +8857,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class SubtractMinuendCorresponding implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8666,6 +8926,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class SymbolicDestinationClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8684,6 +8945,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class SymbolicQueueClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8702,6 +8964,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class SymbolicSourceClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8720,6 +8983,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class SymbolicSubQueueClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8738,6 +9002,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class SymbolicTerminalClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8778,6 +9043,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class Terminate implements Statement {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8796,6 +9062,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class TextLengthClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8849,6 +9116,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class UnstringCountIn implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8867,6 +9135,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class UnstringDelimitedByPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8885,6 +9154,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class UnstringDelimiterIn implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8903,6 +9173,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class UnstringInto implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8945,6 +9216,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class UnstringOrAllPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -8987,6 +9259,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class UnstringTallyingPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -9005,6 +9278,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class UnstringWithPointerPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -9023,6 +9297,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class UseAfterClause implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -9083,6 +9358,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class UseDebugOn implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -9105,6 +9381,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class UseStatement implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -9174,6 +9451,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ValuePair implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -9256,6 +9534,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class WriteAdvancingLines implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -9274,6 +9553,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class WriteAdvancingMnemonic implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -9291,6 +9571,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class WriteAdvancingPage implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -9308,6 +9589,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class WriteAdvancingPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -9326,6 +9608,7 @@ public interface Cobol extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class WriteFromPhrase implements Cobol {
+
         @EqualsAndHashCode.Include
         UUID id;
 
