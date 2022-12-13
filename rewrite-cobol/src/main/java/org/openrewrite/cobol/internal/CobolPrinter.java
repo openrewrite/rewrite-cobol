@@ -16,7 +16,6 @@
 package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
-import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.search.SearchResult;
 import org.openrewrite.cobol.tree.*;
 

@@ -19,7 +19,6 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolVisitor;
-import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.search.SearchResult;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;

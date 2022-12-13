@@ -21,7 +21,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.openrewrite.FileAttributes;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorBaseVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser;
-import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;

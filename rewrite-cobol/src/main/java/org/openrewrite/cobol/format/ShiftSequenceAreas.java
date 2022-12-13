@@ -7,7 +7,7 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.Incubating;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.tree.Cobol;
-import org.openrewrite.cobol.markers.SequenceArea;
+import org.openrewrite.cobol.tree.SequenceArea;
 import org.openrewrite.marker.Marker;
 
 import java.util.*;

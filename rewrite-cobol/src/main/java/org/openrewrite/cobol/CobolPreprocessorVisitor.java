@@ -16,10 +16,6 @@
 package org.openrewrite.cobol;
 
 import org.openrewrite.TreeVisitor;
-import org.openrewrite.cobol.markers.Copy;
-import org.openrewrite.cobol.markers.Replace;
-import org.openrewrite.cobol.markers.ReplaceAdditiveType;
-import org.openrewrite.cobol.markers.ReplaceReductiveType;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 

@@ -24,9 +24,6 @@ import org.openrewrite.Parser;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
-import org.openrewrite.cobol.markers.Replace;
-import org.openrewrite.cobol.markers.ReplaceAdditiveType;
-import org.openrewrite.cobol.markers.ReplaceReductiveType;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.MetricsHelper;
@@ -37,6 +34,7 @@ import org.openrewrite.tree.ParsingEventListener;
 import org.openrewrite.tree.ParsingExecutionContextView;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.*;
 import java.util.*;
@@ -50,7 +48,7 @@ import static org.openrewrite.Tree.randomId;
  */
 public class CobolPreprocessorParser implements Parser<CobolPreprocessor.CompilationUnit> {
     public static final List<String> COPYBOOK_FILE_EXTENSIONS = Collections.singletonList(".cpy");
-    public static final List<String> COBOL_FILE_EXTENSIONS = Collections.singletonList(".cbl");
+    private static final List<String> COBOL_FILE_EXTENSIONS = Collections.singletonList(".cbl");
 
     private final CobolDialect cobolDialect;
     private final List<CobolPreprocessor.CopyBook> copyBooks;

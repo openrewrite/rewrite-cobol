@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openrewrite.cobol.markers;
+package org.openrewrite.cobol.tree;
 
 import lombok.Value;
 import lombok.With;

@@ -66,8 +66,8 @@ public class CobolLineReader {
             }
 
             if (isValidText) {
+                String trimmedContentArea = trimLeadingWhitespace(contentArea);
                 if ("-".equals(indicator)) {
-                    String trimmedContentArea = trimLeadingWhitespace(contentArea);
                     if (trimmedContentArea.startsWith("\"") || trimmedContentArea.startsWith("'")) {
                         // Remove the previous newline character to concatenate the literal.
                         processedSource.delete(processedSource.length() - previousNewLineLength, processedSource.length());

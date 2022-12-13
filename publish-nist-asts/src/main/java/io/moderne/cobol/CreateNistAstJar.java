@@ -5,6 +5,7 @@ import io.moderne.serialization.TreeSerializer;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Parser;
+import org.openrewrite.Tree;
 import org.openrewrite.cobol.CobolParser;
 import org.openrewrite.cobol.CobolPreprocessorParser;
 import org.openrewrite.cobol.internal.CobolDialect;
