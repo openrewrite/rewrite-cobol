@@ -5,7 +5,6 @@ import io.moderne.serialization.TreeSerializer;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Parser;
-import org.openrewrite.Tree;
 import org.openrewrite.cobol.CobolParser;
 import org.openrewrite.cobol.CobolPreprocessorParser;
 import org.openrewrite.cobol.internal.CobolDialect;
@@ -42,8 +41,10 @@ public class CreateNistAstJar {
                     resources.forEach(resource -> rawCopybooks.add(asInput(resource)));
                 }
             }
-            try(ResourceList resources = scanResult.getResourcesWithExtension(".cbl")) {
-                resources.forEach(resource -> sources.add(asInput(resource)));
+            for(String cblExt : CobolPreprocessorParser.COBOL_FILE_EXTENSIONS) {
+                try(ResourceList resources = scanResult.getResourcesWithExtension(cblExt)) {
+                    resources.forEach(resource -> sources.add(asInput(resource)));
+                }
             }
         }
         System.out.println("Found " + rawCopybooks.size() + " copybooks and " + sources.size() + " cobol sources in " + prettyPrint(Duration.between(start, Instant.now())));

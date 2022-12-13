@@ -6,6 +6,7 @@ import org.openrewrite.*;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.format.RemoveWords;
 import org.openrewrite.cobol.format.ShiftSequenceAreas;
+import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Markers;
