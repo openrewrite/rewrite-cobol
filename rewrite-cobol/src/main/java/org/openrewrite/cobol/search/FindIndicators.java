@@ -51,7 +51,9 @@ public class FindIndicators extends Recipe {
 
             IndicatorArea indicatorArea = w.getMarkers().findFirst(IndicatorArea.class).orElse(null);
             if (indicatorArea != null && indicator.equals(indicatorArea.getIndicator())) {
-                SearchResult result = w.getMarkers().findFirst(SearchResult.class).orElse(null);
+                SearchResult result = w.getMarkers().findAll(SearchResult.class).stream()
+                        .filter(it -> it.getType() == SearchResult.Type.INDICATOR_AREA)
+                        .findFirst().orElse(null);
                 if (result == null) {
                     w = w.withMarkers(w.getMarkers().addIfAbsent(searchResult));
                 }
@@ -94,10 +96,7 @@ public class FindIndicators extends Recipe {
 
             IndicatorArea indicatorArea = w.getMarkers().findFirst(IndicatorArea.class).orElse(null);
             if (indicatorArea != null && indicator.equals(indicatorArea.getIndicator())) {
-                SearchResult result = w.getMarkers().findFirst(SearchResult.class).orElse(null);
-                if (result == null) {
-                    w = w.withMarkers(w.getMarkers().addIfAbsent(searchResult));
-                }
+                w = w.withMarkers(w.getMarkers().addIfAbsent(searchResult));
             }
             return w;
         }

@@ -78,7 +78,10 @@ public class Assertions {
         SourceSpec<Cobol.CompilationUnit> cobol =
                 new SourceSpec<>(Cobol.CompilationUnit.class,
                         null,
-                        CobolParser.builder().setEnableCopy(true).setEnableReplace(true).setCopyBooks(copyBooks),
+                        CobolParser.builder()
+                                .setEnableCopy(true)
+                                .setEnableReplace(true)
+                                .setCopyBooks(copyBooks),
                         before,
                         null);
         spec.accept(cobol);
@@ -97,7 +100,10 @@ public class Assertions {
         SourceSpec<Cobol.CompilationUnit> cobol =
                 new SourceSpec<>(Cobol.CompilationUnit.class,
                         null,
-                        CobolParser.builder().setEnableCopy(true).setEnableReplace(true).setCopyBooks(copyBooks),
+                        CobolParser.builder()
+                                .setEnableCopy(true)
+                                .setEnableReplace(true)
+                                .setCopyBooks(copyBooks),
                         before,
                         s -> after);
         spec.accept(cobol);
