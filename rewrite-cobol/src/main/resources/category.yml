@@ -1,5 +1,7 @@
 ---
 type: specs.openrewrite.org/v1beta/category
-name: Common Business Oriented Language
-packageName: org.openrewrite.cobol
+name: COBOL
+packageName: io.moderne.cobol
 description: 'Recipes to search and transform COBOL.'
+root: true
+priority: 1
