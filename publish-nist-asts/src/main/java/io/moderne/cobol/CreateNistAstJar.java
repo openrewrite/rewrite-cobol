@@ -2,10 +2,7 @@ package io.moderne.cobol;
 
 import io.github.classgraph.*;
 import io.moderne.serialization.TreeSerializer;
-import org.openrewrite.ExecutionContext;
-import org.openrewrite.InMemoryExecutionContext;
-import org.openrewrite.Parser;
-import org.openrewrite.Tree;
+import org.openrewrite.*;
 import org.openrewrite.cobol.CobolParser;
 import org.openrewrite.cobol.CobolPreprocessorParser;
 import org.openrewrite.cobol.internal.CobolDialect;
@@ -70,9 +67,12 @@ public class CreateNistAstJar {
         System.out.println("Writing AST file to " + destination);
         //noinspection ResultOfMethodCallIgnored
         destination.getParent().toFile().mkdirs();
-        try (OutputStream outputStream = Files.newOutputStream(destination);) {
+        List<SourceFile> sourceFiles = new ArrayList<>(cus.size() + copybooks.size());
+        sourceFiles.addAll(cus);
+        sourceFiles.addAll(copybooks);
+        try (OutputStream outputStream = Files.newOutputStream(destination)) {
             start = Instant.now();
-            new TreeSerializer().write(cus, outputStream);
+            new TreeSerializer().write(sourceFiles, outputStream);
             System.out.println("Wrote ASTs in " + prettyPrint(Duration.between(start, Instant.now())));
         } catch (IOException e) {
             throw new RuntimeException(e);
