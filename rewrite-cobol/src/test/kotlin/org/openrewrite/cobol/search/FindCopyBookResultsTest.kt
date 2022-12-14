@@ -1,10 +1,12 @@
 package org.openrewrite.cobol.search
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.cobol.Assertions.cobolCopy
 import org.openrewrite.cobol.tree.CobolTest
 import org.openrewrite.test.RecipeSpec
 
+@Disabled
 class FindCopyBookResultsTest : CobolTest() {
 
     override fun defaults(spec: RecipeSpec) {
