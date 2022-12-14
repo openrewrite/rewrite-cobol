@@ -3,5 +3,3 @@ type: specs.openrewrite.org/v1beta/category
 name: COBOL
 packageName: org.openrewrite.cobol
 description: 'Recipes to search and transform COBOL.'
-root: true
-priority: 1
