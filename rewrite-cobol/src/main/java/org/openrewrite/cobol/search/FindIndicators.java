@@ -15,7 +15,7 @@ import static org.openrewrite.Tree.randomId;
 public class FindIndicators extends Recipe {
 
     @Option(displayName = "Indicator character",
-            description = "A list of indicators to search for.",
+            description = "Indicator to search for.",
             example = "D")
     String indicator;
 
