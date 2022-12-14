@@ -1,7 +1,6 @@
 package org.openrewrite.cobol.search
 
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.InMemoryExecutionContext
@@ -11,7 +10,6 @@ import org.openrewrite.cobol.internal.CobolPrinter
 import org.openrewrite.cobol.tree.CobolTest
 import org.openrewrite.test.RecipeSpec
 
-@Disabled
 class FindIndicatorsTest : CobolTest() {
 
     override fun defaults(spec: RecipeSpec) {

@@ -8,7 +8,6 @@ import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.cobol.tree.Copy;
 import org.openrewrite.internal.lang.Nullable;
-import org.openrewrite.marker.SearchResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ public class UsesCopyBook extends CobolIsoVisitor<ExecutionContext> {
     public Cobol.CompilationUnit visitCompilationUnit(Cobol.CompilationUnit compilationUnit, ExecutionContext executionContext) {
         Cobol.CompilationUnit cu = compilationUnit;
         if (FindCopyBook.find(cu, copyBookName) != null) {
-            SearchResult.found(cu);
+            cu = cu.withMarkers(cu.getMarkers().searchResult());
         }
         return cu;
     }

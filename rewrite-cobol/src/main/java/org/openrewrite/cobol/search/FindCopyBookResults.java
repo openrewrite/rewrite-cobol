@@ -7,7 +7,6 @@ import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.Copy;
 import org.openrewrite.internal.lang.Nullable;
-import org.openrewrite.marker.SearchResult;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
@@ -56,7 +55,7 @@ public class FindCopyBookResults extends Recipe {
                         .anyMatch(it -> it instanceof CobolSearchResult && ((CobolSearchResult) it).getType() == CobolSearchResult.Type.COPIED_SOURCE);
 
                 if (!isMarked) {
-                    SearchResult.found(w);
+                    w = w.withMarkers(w.getMarkers().addIfAbsent(new CobolSearchResult(Tree.randomId(), CobolSearchResult.Type.COPIED_SOURCE, null)));
                 }
             }
             return w;

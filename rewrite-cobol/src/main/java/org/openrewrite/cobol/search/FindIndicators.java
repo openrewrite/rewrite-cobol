@@ -7,7 +7,6 @@ import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.CobolPreprocessorIsoVisitor;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
-import org.openrewrite.marker.SearchResult;
 
 import static org.openrewrite.Tree.randomId;
 
@@ -36,7 +35,7 @@ public class FindIndicators extends Recipe {
     }
 
     private static class AddSearchResult extends CobolIsoVisitor<ExecutionContext> {
-        private final CobolSearchResult searchResult = new CobolSearchResult(randomId(), CobolSearchResult.Type.INDICATOR_AREA, "Found indicator area.");
+        private final CobolSearchResult searchResult = new CobolSearchResult(randomId(), CobolSearchResult.Type.INDICATOR_AREA, null);
         private final PreprocessorSearchVisitor preprocessorSearchVisitor;
         private final String indicator;
 
@@ -55,7 +54,7 @@ public class FindIndicators extends Recipe {
                         .filter(it -> it.getType() == CobolSearchResult.Type.INDICATOR_AREA)
                         .findFirst().orElse(null);
                 if (result == null) {
-                    SearchResult.found(w);
+                    w = w.withMarkers(w.getMarkers().addIfAbsent(searchResult));
                 }
             }
 
@@ -96,7 +95,7 @@ public class FindIndicators extends Recipe {
 
             IndicatorArea indicatorArea = w.getMarkers().findFirst(IndicatorArea.class).orElse(null);
             if (indicatorArea != null && indicator.equals(indicatorArea.getIndicator())) {
-                SearchResult.found(w);
+                w = w.withMarkers(w.getMarkers().addIfAbsent(searchResult));
             }
             return w;
         }
