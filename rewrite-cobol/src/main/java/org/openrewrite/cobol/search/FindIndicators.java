@@ -16,7 +16,7 @@ public class FindIndicators extends Recipe {
 
     @Option(displayName = "Indicator character",
             description = "Indicator to search for.",
-            example = "D")
+            example = "Y")
     String indicator;
 
     @Override
