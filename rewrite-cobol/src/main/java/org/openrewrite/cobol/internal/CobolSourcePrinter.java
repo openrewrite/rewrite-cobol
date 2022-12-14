@@ -19,12 +19,13 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolVisitor;
-import org.openrewrite.cobol.search.CobolSearchResult;
+import org.openrewrite.cobol.search.SearchResultKey;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
+import org.openrewrite.marker.SearchResult;
 
 import java.util.List;
 import java.util.Map;
@@ -3893,8 +3894,8 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         Continuation continuation = null;
 
         // Search markers.
-        CobolSearchResult.Type indicatorSearch = null;
-        CobolSearchResult.Type copyBookSearch = null;
+        SearchResult indicatorSearch = null;
+        SearchResult  copyBookSearch = null;
 
         for (Marker marker : word.getMarkers().getMarkers()) {
             if (marker instanceof SequenceArea) {
@@ -3903,12 +3904,12 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 indicatorArea = (IndicatorArea) marker;
             } else if (marker instanceof CommentArea) {
                 commentArea = (CommentArea) marker;
-            } else if (marker instanceof CobolSearchResult) {
-                CobolSearchResult m = (CobolSearchResult) marker;
-                if (m.getType() == CobolSearchResult.Type.INDICATOR_AREA) {
-                    indicatorSearch = m.getType();
-                } else if (m.getType() == CobolSearchResult.Type.COPIED_SOURCE) {
-                    copyBookSearch = m.getType();
+            } else if (marker instanceof SearchResult) {
+                SearchResult m = (SearchResult) marker;
+                if (SearchResultKey.INDICATOR_AREA.equals(m.getDescription())) {
+                    indicatorSearch = m;
+                } else if (SearchResultKey.COPIED_SOURCE.equals(m.getDescription())) {
+                    copyBookSearch = m;
                 }
             } else if (marker instanceof ReplaceBy) {
                 replaceBy = (ReplaceBy) marker;
@@ -4096,14 +4097,14 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visitContinuation(word, continuation, null, p);
     }
 
-    public void visitContinuation(Cobol.Word word, Continuation continuation, @Nullable CobolSearchResult.Type type, PrintOutputCapture<P> p) {
+    public void visitContinuation(Cobol.Word word, Continuation continuation, @Nullable SearchResult searchResult, PrintOutputCapture<P> p) {
         if (continuation.getContinuations().containsKey(0)) {
             Markers markers = continuation.getContinuations().get(0);
             Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
             Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, type, p));
+            indicatorArea.ifPresent(it -> visitIndicatorArea(it, searchResult, p));
         }
 
         visitSpace(word.getPrefix(), p);
@@ -4182,26 +4183,29 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return (M) indicatorArea;
     }
 
-    public void visitIndicatorArea(IndicatorArea indicatorArea, @Nullable CobolSearchResult.Type searchType, PrintOutputCapture<P> p) {
+    public void visitIndicatorArea(IndicatorArea indicatorArea, @Nullable SearchResult searchResult, PrintOutputCapture<P> p) {
         if (printColumns) {
-            if (searchType == CobolSearchResult.Type.INDICATOR_AREA) {
+            if (searchResult != null && SearchResultKey.INDICATOR_AREA.equals(searchResult.getDescription())) {
                 p.append("~~~>");
             }
             p.append(indicatorArea.getIndicator());
-            if (searchType == CobolSearchResult.Type.INDICATOR_AREA) {
+            if (searchResult != null && SearchResultKey.INDICATOR_AREA.equals(searchResult.getDescription())) {
                 p.append("<~~~");
             }
         }
         p.append(indicatorArea.getContinuationPrefix());
     }
 
+    @Nullable
     @Override
-    public <M extends Marker> M visitCommentArea(CommentArea commentArea, PrintOutputCapture<P> p) {
-        visitSpace(commentArea.getPrefix(), p);
-        if (printColumns) {
-            p.append(commentArea.getComment());
+    public <M extends Marker> M visitCommentArea(@Nullable CommentArea commentArea, PrintOutputCapture<P> p) {
+        if (commentArea != null) {
+            visitSpace(commentArea.getPrefix(), p);
+            if (printColumns) {
+                p.append(commentArea.getComment());
+            }
+            visitSpace(commentArea.getEndOfLine(), p);
         }
-        visitSpace(commentArea.getEndOfLine(), p);
 
         //noinspection unchecked
         return (M) commentArea;

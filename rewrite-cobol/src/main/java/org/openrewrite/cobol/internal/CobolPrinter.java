@@ -16,8 +16,8 @@
 package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
-import org.openrewrite.cobol.search.CobolSearchResult;
 import org.openrewrite.cobol.tree.*;
+import org.openrewrite.marker.SearchResult;
 
 import java.util.Optional;
 
@@ -43,22 +43,23 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
             return super.visitWord(word, p);
         }
 
-        Optional<CobolSearchResult> searchResultOptional = word.getMarkers().findFirst(CobolSearchResult.class);
-        CobolSearchResult.Type type;
-        type = searchResultOptional.map(CobolSearchResult::getType).orElse(null);
+        Optional<SearchResult> searchResultOptional = word.getMarkers().getMarkers().stream()
+                .filter(m -> m instanceof SearchResult)
+                .map(m -> (SearchResult) m).findFirst();
+        SearchResult searchResult = searchResultOptional.orElse(null);
 
         Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
         lines.ifPresent(value -> visitLines(value, p));
 
         Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
         if (continuation.isPresent() && printColumns) {
-            visitContinuation(word, continuation.get(), type, p);
+            visitContinuation(word, continuation.get(), searchResult, p);
         } else {
             Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
             Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, type, p));
+            indicatorArea.ifPresent(it -> visitIndicatorArea(it, searchResult, p));
 
             visitSpace(word.getPrefix(), p);
             p.append(word.getWord());
