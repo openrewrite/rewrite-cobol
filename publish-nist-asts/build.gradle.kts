@@ -20,6 +20,17 @@ tasks.named<JavaCompile>("compileJava") {
 tasks.named("moderneAst").configure {
     enabled = false;
 }
+val workaround = tasks.register("createEmptyAstStatsWorkaround") {
+    doLast {
+        file("build/rewrite/ast-stats.properties").apply{
+            parentFile.mkdirs()
+            writeText("")
+        }
+    }
+}
+tasks.named("moderneMergeProperties").configure {
+    dependsOn(workaround)
+}
 
 val nistAsts = tasks.register<JavaExec>("nistAsts") {
     val astFile = file("build/rewrite/nist-suite.ast")
