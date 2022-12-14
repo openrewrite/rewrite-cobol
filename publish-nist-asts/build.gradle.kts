@@ -16,6 +16,11 @@ tasks.named<JavaCompile>("compileJava") {
     targetCompatibility = "17"
 }
 
+// Don't actually care about producing an AST jar for the Java in this project, the point is the COBOL ASTs
+tasks.named("moderneAst").configure {
+    enabled = false;
+}
+
 val nistAsts = tasks.register<JavaExec>("nistAsts") {
     val astFile = file("build/rewrite/nist-suite.ast")
     val runtimeClasspath = sourceSets.main.get().runtimeClasspath
