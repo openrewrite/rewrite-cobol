@@ -23,7 +23,7 @@ dependencies {
     implementation("com.netflix.nebula:nebula-project-plugin:9.6.3")
     implementation("io.github.gradle-nexus:publish-plugin:1.0.0")
     implementation("gradle.plugin.com.google.cloud.artifactregistry:artifactregistry-gradle-plugin:2.2.0")
-    implementation("io.moderne:moderne-gradle-plugin:latest.integration")
+    implementation("io.moderne:moderne-gradle-plugin:latest.release")
     implementation("org.jfrog.buildinfo:build-info-extractor-gradle:latest.release")
 }
 
