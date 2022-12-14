@@ -17,7 +17,7 @@ package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
-import org.openrewrite.cobol.search.SearchResult;
+import org.openrewrite.cobol.search.CobolSearchResult;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
@@ -254,7 +254,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         Continuation continuation = null;
 
         // Search markers.
-        SearchResult.Type indicatorSearch = null;
+        CobolSearchResult.Type indicatorSearch = null;
 
         for (Marker marker : word.getMarkers().getMarkers()) {
             if (marker instanceof SequenceArea) {
@@ -263,9 +263,9 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
                 indicatorArea = (IndicatorArea) marker;
             } else if (marker instanceof CommentArea) {
                 commentArea = (CommentArea) marker;
-            } else if (marker instanceof SearchResult) {
-                SearchResult m = (SearchResult) marker;
-                if (m.getType() == SearchResult.Type.INDICATOR_AREA) {
+            } else if (marker instanceof CobolSearchResult) {
+                CobolSearchResult m = (CobolSearchResult) marker;
+                if (m.getType() == CobolSearchResult.Type.INDICATOR_AREA) {
                     indicatorSearch = m.getType();
                 }
             } else if (marker instanceof ReplaceBy) {
@@ -336,7 +336,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         visitContinuation(word, continuation, null, p);
     }
 
-    public void visitContinuation(CobolPreprocessor.Word word, Continuation continuation, @Nullable SearchResult.Type type, PrintOutputCapture<P> p) {
+    public void visitContinuation(CobolPreprocessor.Word word, Continuation continuation, @Nullable CobolSearchResult.Type type, PrintOutputCapture<P> p) {
         if (continuation.getContinuations().containsKey(0)) {
             Markers markers = continuation.getContinuations().get(0);
             Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
@@ -410,13 +410,13 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         visitIndicatorArea(indicatorArea, null, p);
     }
 
-    public void visitIndicatorArea(IndicatorArea indicatorArea, @Nullable SearchResult.Type searchType, PrintOutputCapture<P> p) {
+    public void visitIndicatorArea(IndicatorArea indicatorArea, @Nullable CobolSearchResult.Type searchType, PrintOutputCapture<P> p) {
         if (printColumns) {
-            if (searchType == SearchResult.Type.INDICATOR_AREA) {
+            if (searchType == CobolSearchResult.Type.INDICATOR_AREA) {
                 p.append("~~~>");
             }
             p.append(indicatorArea.getIndicator());
-            if (searchType == SearchResult.Type.INDICATOR_AREA) {
+            if (searchType == CobolSearchResult.Type.INDICATOR_AREA) {
                 p.append("<~~~");
             }
         }

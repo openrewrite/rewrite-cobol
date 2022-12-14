@@ -35,7 +35,7 @@ public class FindIndicators extends Recipe {
     }
 
     private static class AddSearchResult extends CobolIsoVisitor<ExecutionContext> {
-        private final SearchResult searchResult = new SearchResult(randomId(), SearchResult.Type.INDICATOR_AREA, null);
+        private final CobolSearchResult searchResult = new CobolSearchResult(randomId(), CobolSearchResult.Type.INDICATOR_AREA, null);
         private final PreprocessorSearchVisitor preprocessorSearchVisitor;
         private final String indicator;
 
@@ -50,8 +50,8 @@ public class FindIndicators extends Recipe {
 
             IndicatorArea indicatorArea = w.getMarkers().findFirst(IndicatorArea.class).orElse(null);
             if (indicatorArea != null && indicator.equals(indicatorArea.getIndicator())) {
-                SearchResult result = w.getMarkers().findAll(SearchResult.class).stream()
-                        .filter(it -> it.getType() == SearchResult.Type.INDICATOR_AREA)
+                CobolSearchResult result = w.getMarkers().findAll(CobolSearchResult.class).stream()
+                        .filter(it -> it.getType() == CobolSearchResult.Type.INDICATOR_AREA)
                         .findFirst().orElse(null);
                 if (result == null) {
                     w = w.withMarkers(w.getMarkers().addIfAbsent(searchResult));
@@ -81,10 +81,10 @@ public class FindIndicators extends Recipe {
 
     private static class PreprocessorSearchVisitor extends CobolPreprocessorIsoVisitor<ExecutionContext> {
         private final String indicator;
-        private final SearchResult searchResult;
+        private final CobolSearchResult searchResult;
 
         public PreprocessorSearchVisitor(String indicator,
-                                         SearchResult searchResult) {
+                                         CobolSearchResult searchResult) {
             this.indicator = indicator;
             this.searchResult = searchResult;
         }

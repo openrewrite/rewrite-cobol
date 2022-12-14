@@ -1,26 +1,22 @@
 package org.openrewrite.cobol.search;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.With;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.openrewrite.internal.lang.Nullable;
-import org.openrewrite.marker.Marker;
+import org.openrewrite.marker.SearchResult;
 
 import java.util.UUID;
 
-@RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Getter
-@With
-public class SearchResult implements Marker {
-    UUID id;
+public class CobolSearchResult extends SearchResult {
 
     Type type;
 
-    @Nullable
-    String description;
+    public CobolSearchResult(UUID id, Type type, @Nullable String description) {
+        super(id, description);
+        this.type = type;
+    }
 
     public enum Type {
         INDICATOR_AREA, COPIED_SOURCE

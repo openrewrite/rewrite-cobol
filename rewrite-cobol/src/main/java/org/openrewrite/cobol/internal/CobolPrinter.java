@@ -16,7 +16,7 @@
 package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
-import org.openrewrite.cobol.search.SearchResult;
+import org.openrewrite.cobol.search.CobolSearchResult;
 import org.openrewrite.cobol.tree.*;
 
 import java.util.Optional;
@@ -43,9 +43,9 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
             return super.visitWord(word, p);
         }
 
-        Optional<SearchResult> searchResultOptional = word.getMarkers().findFirst(SearchResult.class);
-        SearchResult.Type type;
-        type = searchResultOptional.map(SearchResult::getType).orElse(null);
+        Optional<CobolSearchResult> searchResultOptional = word.getMarkers().findFirst(CobolSearchResult.class);
+        CobolSearchResult.Type type;
+        type = searchResultOptional.map(CobolSearchResult::getType).orElse(null);
 
         Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
         lines.ifPresent(value -> visitLines(value, p));
