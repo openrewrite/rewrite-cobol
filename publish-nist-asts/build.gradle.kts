@@ -4,6 +4,10 @@ plugins {
 }
 
 dependencies {
+    implementation("org.openrewrite:rewrite-xml")
+    implementation("org.openrewrite:rewrite-maven")
+    implementation("org.openrewrite:rewrite-groovy")
+
     implementation(project(":rewrite-cobol"))
     implementation(project(":rewrite-cobol", "test"))
     implementation("io.github.classgraph:classgraph:latest.release")

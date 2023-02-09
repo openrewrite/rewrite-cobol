@@ -23,7 +23,7 @@ import java.util.List;
 
 public class CreateNistAstJar {
     public static void main(String[] args) {
-        if(args.length == 0) {
+        if (args.length == 0) {
             throw new IllegalArgumentException("Must supply the path to write the ASTs to as the first program argument");
         }
         List<Parser.Input> rawCopybooks = new ArrayList<>();
@@ -31,15 +31,15 @@ public class CreateNistAstJar {
 
         System.out.println("Reading cobol files from runtime classpath resources");
         Instant start = Instant.now();
-        try(ScanResult scanResult = new ClassGraph()
+        try (ScanResult scanResult = new ClassGraph()
                 .acceptPaths("gov/nist")
                 .scan()) {
-            for(String copybookExt : CobolPreprocessorParser.COPYBOOK_FILE_EXTENSIONS) {
-                try(ResourceList resources = scanResult.getResourcesWithExtension(copybookExt)) {
+            for (String copybookExt : CobolPreprocessorParser.COPYBOOK_FILE_EXTENSIONS) {
+                try (ResourceList resources = scanResult.getResourcesWithExtension(copybookExt)) {
                     resources.forEach(resource -> rawCopybooks.add(asInput(resource)));
                 }
             }
-            try(ResourceList resources = scanResult.getResourcesWithExtension(".cbl")) {
+            try (ResourceList resources = scanResult.getResourcesWithExtension(".cbl")) {
                 resources.forEach(resource -> sources.add(asInput(resource)));
             }
         }
@@ -81,7 +81,7 @@ public class CreateNistAstJar {
 
     private static Parser.Input asInput(Resource resource) {
         byte[] bytes;
-        try(CloseableByteBuffer buf = resource.readCloseable()) {
+        try (CloseableByteBuffer buf = resource.readCloseable()) {
             bytes = buf.getByteBuffer().array();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -92,10 +92,10 @@ public class CreateNistAstJar {
 
     private static String prettyPrint(Duration duration) {
         StringBuilder result = new StringBuilder();
-        if(duration.toHours() > 0) {
+        if (duration.toHours() > 0) {
             result.append(duration.toHours()).append("h ");
         }
-        if(duration.toMinutesPart() > 0) {
+        if (duration.toMinutesPart() > 0) {
             result.append(duration.toMinutesPart()).append("m ");
         }
         result.append(duration.toSecondsPart()).append("s");
