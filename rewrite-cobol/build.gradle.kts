@@ -25,14 +25,15 @@ sourceSets {
         runtimeClasspath += sourceSets.main.get().output
     }
 }
+
 val modelImplementation: Configuration by configurations.getting {
     extendsFrom(configurations.implementation.get())
 }
+
 val modelAnnotationProcessor: Configuration by configurations.getting
 val modelCompileOnly: Configuration by configurations.getting
 
 configurations["modelRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
-
 
 val latest = if (project.hasProperty("releasing")) {
     "latest.release"
@@ -47,8 +48,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:latest.release")
     implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${latest}"))
     implementation("org.openrewrite:rewrite-core")
-    implementation("org.antlr:antlr4:4.9.+")
-    implementation("io.micrometer:micrometer-core:1.+")
+    implementation("org.antlr:antlr4:4.11.1")
+    implementation("io.micrometer:micrometer-core:1.9.+")
 
     modelImplementation("org.openrewrite:rewrite-java-17")
     modelAnnotationProcessor("org.projectlombok:lombok:latest.release")

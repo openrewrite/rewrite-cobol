@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    implementation(platform(kotlin("bom")))
+    implementation(platform(kotlin("bom", "1.6.21")))
     implementation(kotlin("reflect"))
     implementation(kotlin("script-runtime"))
     implementation(kotlin("gradle-plugin"))

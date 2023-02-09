@@ -4,7 +4,6 @@ import io.github.classgraph.ClassGraph
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.CobolIsoVisitor
 import org.openrewrite.cobol.internal.CobolDialect
-import org.openrewrite.cobol.internal.IbmAnsi85
 import org.openrewrite.internal.StringUtils
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest
@@ -21,7 +20,7 @@ open class CobolTest : RewriteTest {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.recipe(RewriteTest.toRecipe {
+        spec.recipe(RewriteTest.toRecipe { _ ->
             object : CobolIsoVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
                     val whitespace = space.whitespace.trim()

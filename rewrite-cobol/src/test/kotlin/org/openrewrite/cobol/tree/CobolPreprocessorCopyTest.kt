@@ -38,7 +38,7 @@ class CobolPreprocessorCopyTest : CobolTest() {
     }
 
     override fun defaults(spec: RecipeSpec) {
-        spec.recipe(toRecipe {
+        spec.recipe(toRecipe { _ ->
             object : CobolPreprocessorVisitor<ExecutionContext>() {
                 override fun visitSpace(space: Space, p: ExecutionContext): Space {
                     val whitespace = space.whitespace.trim()
