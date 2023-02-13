@@ -1748,7 +1748,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
     @Override
     public Object visitDisplayWith(CobolParser.DisplayWithContext ctx) {
-        return wordsList(ctx.WITH(), ctx.NO(), ctx.ADVANCING());
+        return Objects.requireNonNull(wordsList(ctx.WITH(), ctx.NO(), ctx.ADVANCING()));
     }
 
     @Override
@@ -6984,7 +6984,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
      *                        A continued String literal will be prefixed by the delimiter (' or "),
      *                        which needs to exist in the indicator marker.
      *                        I.E. 000001-|<whitespace including the delimiter " or '>|some continued string literal.
-     *
+     * <p>
      *                        A continued Keyword/Identifier should not include the delimiter.
      *                        I.E. 000001-|<whitespace added to indicator>|TOKEN-NAME.
      */
@@ -7005,7 +7005,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 }
             }
 
-            return new IndicatorArea(randomId(), indicatorArea, continuationText);
+            return new IndicatorArea(randomId(), Markers.EMPTY, indicatorArea, continuationText);
         }
         return null;
     }

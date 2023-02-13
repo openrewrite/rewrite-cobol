@@ -4397,8 +4397,10 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
     }
 
     public <M extends Marker> M visitIndicatorArea(IndicatorArea indicatorArea, P p) {
+        IndicatorArea i = indicatorArea;
+        i = i.withMarkers(visitMarkers(i.getMarkers(), p));
         //noinspection unchecked
-        return (M) indicatorArea;
+        return (M) i;
     }
 
     @Nullable

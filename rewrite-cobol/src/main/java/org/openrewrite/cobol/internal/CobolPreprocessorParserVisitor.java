@@ -1206,7 +1206,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 }
             }
 
-            return new IndicatorArea(randomId(), indicatorArea, continuationText);
+            return new IndicatorArea(randomId(), Markers.EMPTY, indicatorArea, continuationText);
         }
         return null;
     }

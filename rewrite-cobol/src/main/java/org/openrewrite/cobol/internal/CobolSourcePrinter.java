@@ -3906,9 +3906,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 commentArea = (CommentArea) marker;
             } else if (marker instanceof SearchResult) {
                 SearchResult m = (SearchResult) marker;
-                if (SearchResultKey.INDICATOR_AREA.equals(m.getDescription())) {
-                    indicatorSearch = m;
-                } else if (SearchResultKey.COPIED_SOURCE.equals(m.getDescription())) {
+                if (SearchResultKey.COPIED_SOURCE.equals(m.getDescription())) {
                     copyBookSearch = m;
                 }
             } else if (marker instanceof ReplaceBy) {
@@ -4011,7 +4009,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             }
 
             if (indicatorArea != null) {
-                visitIndicatorArea(indicatorArea, indicatorSearch, p);
+                visitIndicatorArea(indicatorArea, p);
             }
 
             if (replace != null && replace.isReplacedWithEmpty()) {
@@ -4104,7 +4102,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
             Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, searchResult, p));
+            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
         }
 
         visitSpace(word.getPrefix(), p);
@@ -4177,23 +4175,14 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
     @Override
     public <M extends Marker> M visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
-        visitIndicatorArea(indicatorArea, null, p);
+        visitMarkers(indicatorArea.getMarkers(), p);
+        if (printColumns) {
+            p.append(indicatorArea.getIndicator());
+        }
 
+        p.append(indicatorArea.getContinuationPrefix());
         //noinspection unchecked
         return (M) indicatorArea;
-    }
-
-    public void visitIndicatorArea(IndicatorArea indicatorArea, @Nullable SearchResult searchResult, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            if (searchResult != null && SearchResultKey.INDICATOR_AREA.equals(searchResult.getDescription())) {
-                p.append("~~~>");
-            }
-            p.append(indicatorArea.getIndicator());
-            if (searchResult != null && SearchResultKey.INDICATOR_AREA.equals(searchResult.getDescription())) {
-                p.append("<~~~");
-            }
-        }
-        p.append(indicatorArea.getContinuationPrefix());
     }
 
     @Nullable

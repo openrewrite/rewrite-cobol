@@ -314,7 +314,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
             }
 
             if (indicatorArea != null) {
-                visitIndicatorArea(indicatorArea, indicatorSearch, p);
+                visitIndicatorArea(indicatorArea, p);
             }
 
             if (replace != null && replace.isReplacedWithEmpty()) {
@@ -344,7 +344,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
             Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, searchResult, p));
+            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
         }
 
         visitSpace(word.getPrefix(), p);
@@ -408,19 +408,11 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     }
 
     public void visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
-        visitIndicatorArea(indicatorArea, null, p);
-    }
-
-    public void visitIndicatorArea(IndicatorArea indicatorArea, @Nullable SearchResult searchResult, PrintOutputCapture<P> p) {
+        visitMarkers(indicatorArea.getMarkers(), p);
         if (printColumns) {
-            if (searchResult != null && SearchResultKey.INDICATOR_AREA.equals(searchResult.getDescription())) {
-                p.append("~~~>");
-            }
             p.append(indicatorArea.getIndicator());
-            if (searchResult != null && SearchResultKey.INDICATOR_AREA.equals(searchResult.getDescription())) {
-                p.append("<~~~");
-            }
         }
+
         p.append(indicatorArea.getContinuationPrefix());
     }
 

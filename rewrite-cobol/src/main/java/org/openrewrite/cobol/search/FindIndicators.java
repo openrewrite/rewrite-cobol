@@ -9,6 +9,10 @@ import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.marker.SearchResult;
 
+import java.util.UUID;
+
+import static org.openrewrite.Tree.randomId;
+
 @EqualsAndHashCode(callSuper = true)
 @Value
 public class FindIndicators extends Recipe {
@@ -48,12 +52,15 @@ public class FindIndicators extends Recipe {
 
             IndicatorArea indicatorArea = w.getMarkers().findFirst(IndicatorArea.class).orElse(null);
             if (indicatorArea != null && indicator.equals(indicatorArea.getIndicator())) {
-                SearchResult result = w.getMarkers().findAll(SearchResult.class).stream()
+                SearchResult result = indicatorArea.getMarkers().findAll(SearchResult.class).stream()
                         .filter(it -> SearchResultKey.INDICATOR_AREA.equals(it.getDescription()))
                         .findFirst()
                         .orElse(null);
                 if (result == null) {
-                    w = SearchResult.found(w, SearchResultKey.INDICATOR_AREA);
+                    indicatorArea = indicatorArea.withMarkers(indicatorArea.getMarkers().addIfAbsent(
+                            new SearchResult(randomId(), SearchResultKey.INDICATOR_AREA)
+                    ));
+                    w = w.withMarkers(w.getMarkers().addIfAbsent(indicatorArea));
                 }
             }
 
@@ -91,7 +98,16 @@ public class FindIndicators extends Recipe {
 
             IndicatorArea indicatorArea = w.getMarkers().findFirst(IndicatorArea.class).orElse(null);
             if (indicatorArea != null && indicator.equals(indicatorArea.getIndicator())) {
-                w = SearchResult.found(w, SearchResultKey.INDICATOR_AREA);
+                SearchResult result = indicatorArea.getMarkers().findAll(SearchResult.class).stream()
+                        .filter(it -> SearchResultKey.INDICATOR_AREA.equals(it.getDescription()))
+                        .findFirst()
+                        .orElse(null);
+                if (result == null) {
+                    indicatorArea = indicatorArea.withMarkers(indicatorArea.getMarkers().addIfAbsent(
+                            new SearchResult(randomId(), SearchResultKey.INDICATOR_AREA)
+                    ));
+                    w = w.withMarkers(w.getMarkers().addIfAbsent(indicatorArea));
+                }
             }
             return w;
         }

@@ -80,7 +80,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
             Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, searchResult, p));
+            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
 
             visitSpace(word.getPrefix(), p);
             p.append(word.getWord());
