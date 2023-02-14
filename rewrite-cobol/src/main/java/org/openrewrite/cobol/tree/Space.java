@@ -129,11 +129,35 @@ public class Space {
     }
 
     public enum Location {
-        // Column Areas
+        // Column areas
         COMMENT_AREA_PREFIX,
         COMMENT_AREA_EOL,
         CONTINUATION_PREFIX,
-        // Prefixes
+        COMPILER_OPTION_PREFIX,
+        COMPILER_OPTIONS_PREFIX,
+        COMPILER_XOPTS_PREFIX,
+        COPY_BOOK_PREFIX,
+        COPY_SOURCE_PREFIX,
+        COPY_STATEMENT_PREFIX,
+        DIRECTORY_PHRASE_PREFIX,
+        EJECT_STATEMENT_PREFIX,
+        EXEC_STATEMENT_PREFIX,
+        FAMILY_PHRASE_PREFIX,
+        PSEUDO_TEXT_PREFIX,
+        REPLACE_AREA_PREFIX,
+        REPLACE_BY_STATEMENT_PREFIX,
+        REPLACE_CLAUSE_PREFIX,
+        REPLACE_OFF_STATEMENT_PREFIX,
+        REPLACING_PHRASE_PREFIX,
+        SKIP_STATEMENT_PREFIX,
+        TITLE_STATEMENT_PREFIX,
+        PREPROCESSOR_COMPILATION_UNIT_PREFIX,
+        PREPROCESSOR_WORD_PREFIX,
+        // Cobol preprocessor prefixes
+        CHAR_DATA_PREFIX,
+        CHAR_DATA_LINE_PREFIX,
+        CHAR_DATA_SQL_PREFIX,
+        // Cobol prefixes
         ABBREVIATION_PREFIX,
         ACCEPT_PREFIX,
         ACCEPT_FROM_DATE_STATEMENT_PREFIX,

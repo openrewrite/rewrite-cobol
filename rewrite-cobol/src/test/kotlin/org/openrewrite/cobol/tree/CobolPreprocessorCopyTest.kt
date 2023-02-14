@@ -40,7 +40,7 @@ class CobolPreprocessorCopyTest : CobolTest() {
     override fun defaults(spec: RecipeSpec) {
         spec.recipe(toRecipe { _ ->
             object : CobolPreprocessorVisitor<ExecutionContext>() {
-                override fun visitSpace(space: Space, p: ExecutionContext): Space {
+                override fun visitSpace(space: Space, location: Space.Location, p: ExecutionContext): Space {
                     val whitespace = space.whitespace.trim()
                     if (!(dialect.separators.contains("$whitespace ") || whitespace.isEmpty())) {
                         return space.withWhitespace("(~~>${space.whitespace}<~~)")
