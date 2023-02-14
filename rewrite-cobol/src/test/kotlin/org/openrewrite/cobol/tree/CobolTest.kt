@@ -22,7 +22,7 @@ open class CobolTest : RewriteTest {
     override fun defaults(spec: RecipeSpec) {
         spec.recipe(RewriteTest.toRecipe { _ ->
             object : CobolIsoVisitor<ExecutionContext>() {
-                override fun visitSpace(space: Space, p: ExecutionContext): Space {
+                override fun visitSpace(space: Space, location: Space.Location, p: ExecutionContext): Space {
                     val whitespace = space.whitespace.trim()
                     if (!(dialect.separators.contains("$whitespace ") || whitespace.isEmpty())) {
                         return space.withWhitespace("(~~>${space.whitespace}<~~)")

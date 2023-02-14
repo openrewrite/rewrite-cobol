@@ -23,7 +23,7 @@ public class CobolTest implements RewriteTest {
     public void defaults(RecipeSpec spec) {
         spec.recipe(toRecipe(() -> new CobolIsoVisitor<>() {
             @Override
-            public Space visitSpace(Space space, ExecutionContext ctx) {
+            public Space visitSpace(Space space, Space.Location location, ExecutionContext ctx) {
                 String whitespace = space.getWhitespace().trim();
                 if (!(whitespace.isEmpty() || DIALECT.getSeparators().contains(whitespace + " "))) {
                     return space.withWhitespace("(~~>${space.whitespace}<~~)");

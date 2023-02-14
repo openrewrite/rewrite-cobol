@@ -61,7 +61,7 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
             Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
             indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
 
-            visitSpace(word.getPrefix(), p);
+            visitSpace(word.getPrefix(), Space.Location.WORD_PREFIX, p);
             p.append(word.getWord());
 
             Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
