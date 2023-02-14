@@ -39,7 +39,9 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
 
     @Override
     public CobolPreprocessor visitCopyBook(CobolPreprocessor.CopyBook copyBook, PrintOutputCapture<P> p) {
+        beforeSyntax(copyBook, Space.Location.COPY_BOOK_PREFIX, p);
         visit(copyBook.getAst(), p);
+        afterSyntax(copyBook, p);
         return copyBook;
     }
 
@@ -49,10 +51,12 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
             return super.visitCopyStatement(copyStatement, p);
         }
         if (copyStatement.getCopyBook() != null) {
+            beforeSyntax(copyStatement, Space.Location.COPY_STATEMENT_PREFIX, p);
             visit(copyStatement.getCopyBook(), p);
             if (!p.getOut().endsWith("\n")) {
                 p.append("\n");
             }
+            afterSyntax(copyStatement, p);
         }
         return copyStatement;
     }
@@ -63,6 +67,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
             return super.visitWord(word, p);
         }
 
+        beforeSyntax(word, Space.Location.WORD_PREFIX, p);
         Optional<SearchResult> searchResultOptional = word.getMarkers().getMarkers().stream()
                 .filter(m -> m instanceof SearchResult)
                 .map(m -> (SearchResult) m)
@@ -89,6 +94,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
             commentArea.ifPresent(it -> visitCommentArea(it, p));
         }
 
+        afterSyntax(word, p);
         return word;
     }
 }
