@@ -11,7 +11,7 @@ import org.openrewrite.cobol.internal.CobolPrinter
 import org.openrewrite.cobol.tree.CobolTest
 import org.openrewrite.test.RecipeSpec
 
-@Disabled
+@Disabled("Update how copied sources are marked and visited.")
 class FindIndicatorsTest : CobolTest() {
 
     override fun defaults(spec: RecipeSpec) {
@@ -250,8 +250,8 @@ class FindIndicatorsTest : CobolTest() {
                 022300 CLOSE-FILES.                                                     SM2064.2
                 022400     PERFORM END-ROUTINE THRU END-ROUTINE-13. CLOSE PRINT-FILE.   SM2064.2
                 022500 TERMINATE-CCVS.                                                  SM2064.2
-                022600~~~>S<~~~    EXIT PROGRAM.                                                SM2064.2
-                022700~~~>S<~~~TERMINATE-CALL.                                                  SM2064.2
+                022600~~(INDICATOR_AREA)~~>S    EXIT PROGRAM.                                                SM2064.2
+                022700~~(INDICATOR_AREA)~~>STERMINATE-CALL.                                                  SM2064.2
                 022800     STOP     RUN.                                                SM2064.2
                 022900 INSPT. MOVE "INSPT" TO P-OR-F. ADD 1 TO INSPECT-COUNTER.         SM2064.2
                 023000 PASS.  MOVE "PASS " TO P-OR-F.  ADD 1 TO PASS-COUNTER.           SM2064.2
@@ -314,15 +314,15 @@ class FindIndicatorsTest : CobolTest() {
                 028700     MOVE CCVS-E-3 TO DUMMY-RECORD. PERFORM WRITE-LINE.           SM2064.2
                 028800 WRITE-LINE.                                                      SM2064.2
                 028900     ADD 1 TO RECORD-COUNT.                                       SM2064.2
-                029000~~~>Y<~~~    IF RECORD-COUNT GREATER 50                                   SM2064.2
-                029100~~~>Y<~~~        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM2064.2
-                029200~~~>Y<~~~        MOVE SPACE TO DUMMY-RECORD                               SM2064.2
-                029300~~~>Y<~~~        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM2064.2
-                029400~~~>Y<~~~        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM2064.2
-                029500~~~>Y<~~~        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM2064.2
-                029600~~~>Y<~~~        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM2064.2
-                029700~~~>Y<~~~        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM2064.2
-                029800~~~>Y<~~~        MOVE ZERO TO RECORD-COUNT.                               SM2064.2
+                029000~~(INDICATOR_AREA)~~>Y    IF RECORD-COUNT GREATER 50                                   SM2064.2
+                029100~~(INDICATOR_AREA)~~>Y        MOVE DUMMY-RECORD TO DUMMY-HOLD                          SM2064.2
+                029200~~(INDICATOR_AREA)~~>Y        MOVE SPACE TO DUMMY-RECORD                               SM2064.2
+                029300~~(INDICATOR_AREA)~~>Y        WRITE DUMMY-RECORD AFTER ADVANCING PAGE                  SM2064.2
+                029400~~(INDICATOR_AREA)~~>Y        MOVE CCVS-C-1 TO DUMMY-RECORD PERFORM WRT-LN             SM2064.2
+                029500~~(INDICATOR_AREA)~~>Y        MOVE CCVS-C-2 TO DUMMY-RECORD PERFORM WRT-LN 2 TIMES     SM2064.2
+                029600~~(INDICATOR_AREA)~~>Y        MOVE HYPHEN-LINE TO DUMMY-RECORD PERFORM WRT-LN          SM2064.2
+                029700~~(INDICATOR_AREA)~~>Y        MOVE DUMMY-HOLD TO DUMMY-RECORD                          SM2064.2
+                029800~~(INDICATOR_AREA)~~>Y        MOVE ZERO TO RECORD-COUNT.                               SM2064.2
                 029900     PERFORM WRT-LN.                                              SM2064.2
                 030000 WRT-LN.                                                          SM2064.2
                 030100     WRITE    DUMMY-RECORD AFTER ADVANCING 1 LINES.               SM2064.2
