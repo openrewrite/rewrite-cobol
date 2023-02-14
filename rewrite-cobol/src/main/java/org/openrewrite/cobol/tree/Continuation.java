@@ -26,11 +26,11 @@ import java.util.UUID;
 /**
  * Continuations contain the Column area markers that need to be printed at specific indexes in a continued String
  * literal, COBOL keyword or COBOL words.
- *
+ * <p>
  * I.E. String literal:
  *   |000000| | Some COBOL "string literal ...             |
  *   |000001|-|    "is continued with prefixed whitespace."|
- *
+ * <p>
  * I.E. COBOL keyword:
  *   |000000| | C                                          |
  *   |000001|-|  O                                         |

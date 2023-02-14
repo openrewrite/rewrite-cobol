@@ -11,7 +11,7 @@ import java.util.UUID;
 /**
  * There may be one or more comments and/or empty lines between any token via whitespace.
  * The Lines Marker preserves the column areas for each of the lines that come before a COBOL word.
- *
+ * <p>
  * Line comments are indicated with a `*` (depends on dialect) in the indicator areas.
  */
 @With

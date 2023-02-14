@@ -4200,8 +4200,8 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         if (printColumns) {
             p.append(indicatorArea.getIndicator());
         }
-
         p.append(indicatorArea.getContinuationPrefix());
+
         //noinspection unchecked
         return (M) indicatorArea;
     }

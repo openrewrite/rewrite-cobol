@@ -4372,25 +4372,27 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
     }
 
     @Override
-    public <M extends Marker> M visitMarker(Marker marker, P p) {
-        if (marker instanceof SequenceArea) {
-            SequenceArea m = (SequenceArea) marker;
-            return visitSequenceArea(m, p);
-        } else if (marker instanceof IndicatorArea) {
-            IndicatorArea m = (IndicatorArea) marker;
-            return visitIndicatorArea(m, p);
-        } else if (marker instanceof CommentArea) {
-            CommentArea m = (CommentArea) marker;
-            //noinspection ConstantConditions
-            return visitCommentArea(m, p);
-        } else if (marker instanceof Continuation) {
-            Continuation m = (Continuation) marker;
-            return visitContinuation(m, p);
-        } else if (marker instanceof Lines) {
-            Lines m = (Lines) marker;
-            return visitLines(m, p);
-        }
-        return super.visitMarker(marker, p);
+    public Markers visitMarkers(Markers markers, P p) {
+        return markers.withMarkers(ListUtils.map(markers.getMarkers(), marker -> {
+            if (marker instanceof SequenceArea) {
+                SequenceArea m = (SequenceArea) marker;
+                return visitSequenceArea(m, p);
+            } else if (marker instanceof IndicatorArea) {
+                IndicatorArea m = (IndicatorArea) marker;
+                return visitIndicatorArea(m, p);
+            } else if (marker instanceof CommentArea) {
+                CommentArea m = (CommentArea) marker;
+                //noinspection ConstantConditions
+                return visitCommentArea(m, p);
+            } else if (marker instanceof Continuation) {
+                Continuation m = (Continuation) marker;
+                return visitContinuation(m, p);
+            } else if (marker instanceof Lines) {
+                Lines m = (Lines) marker;
+                return visitLines(m, p);
+            }
+            return super.visitMarker(marker, p);
+        }));
     }
 
     public <M extends Marker> M visitSequenceArea(SequenceArea sequenceArea, P p) {
