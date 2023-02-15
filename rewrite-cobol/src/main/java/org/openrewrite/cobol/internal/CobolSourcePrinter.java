@@ -63,8 +63,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public Cobol visitAbbreviation(Cobol.Abbreviation abbreviation, PrintOutputCapture<P> p) {
-        visitSpace(abbreviation.getPrefix(), Space.Location.ABBREVIATION_PREFIX, p);
-        visitMarkers(abbreviation.getMarkers(), p);
+        beforeSyntax(abbreviation, Space.Location.ABBREVIATION_PREFIX, p);
         visit(abbreviation.getNot(), p);
         visit(abbreviation.getRelationalOperator(), p);
         if (abbreviation.getLeftParen() != null) {
@@ -75,222 +74,222 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         if (abbreviation.getRightParen() != null) {
             visit(abbreviation.getRightParen(), p);
         }
+        afterSyntax(abbreviation, p);
         return abbreviation;
     }
 
     public Cobol visitAccept(Cobol.Accept accept, PrintOutputCapture<P> p) {
-        visitSpace(accept.getPrefix(), Space.Location.ACCEPT_PREFIX, p);
-        visitMarkers(accept.getMarkers(), p);
+        beforeSyntax(accept, Space.Location.ACCEPT_PREFIX, p);
         visit(accept.getAccept(), p);
         visit(accept.getIdentifier(), p);
         visit(accept.getOperation(), p);
         visit(accept.getOnExceptionClause(), p);
         visit(accept.getNotOnExceptionClause(), p);
         visit(accept.getEndAccept(), p);
+        afterSyntax(accept, p);
         return accept;
     }
 
     public Cobol visitAcceptFromDateStatement(Cobol.AcceptFromDateStatement acceptFromDateStatement, PrintOutputCapture<P> p) {
-        visitSpace(acceptFromDateStatement.getPrefix(), Space.Location.ACCEPT_FROM_DATE_STATEMENT_PREFIX, p);
-        visitMarkers(acceptFromDateStatement.getMarkers(), p);
+        beforeSyntax(acceptFromDateStatement, Space.Location.ACCEPT_FROM_DATE_STATEMENT_PREFIX, p);
         visit(acceptFromDateStatement.getWords(), p);
+        afterSyntax(acceptFromDateStatement, p);
         return acceptFromDateStatement;
     }
 
     public Cobol visitAcceptFromEscapeKeyStatement(Cobol.AcceptFromEscapeKeyStatement acceptFromEscapeKeyStatement, PrintOutputCapture<P> p) {
-        visitSpace(acceptFromEscapeKeyStatement.getPrefix(), Space.Location.ACCEPT_FROM_ESCAPE_KEY_STATEMENT_PREFIX, p);
-        visitMarkers(acceptFromEscapeKeyStatement.getMarkers(), p);
+        beforeSyntax(acceptFromEscapeKeyStatement, Space.Location.ACCEPT_FROM_ESCAPE_KEY_STATEMENT_PREFIX, p);
         visit(acceptFromEscapeKeyStatement.getWords(), p);
+        afterSyntax(acceptFromEscapeKeyStatement, p);
         return acceptFromEscapeKeyStatement;
     }
 
     public Cobol visitAcceptFromMnemonicStatement(Cobol.AcceptFromMnemonicStatement acceptFromMnemonicStatement, PrintOutputCapture<P> p) {
-        visitSpace(acceptFromMnemonicStatement.getPrefix(), Space.Location.ACCEPT_FROM_MNEMONIC_STATEMENT_PREFIX, p);
-        visitMarkers(acceptFromMnemonicStatement.getMarkers(), p);
+        beforeSyntax(acceptFromMnemonicStatement, Space.Location.ACCEPT_FROM_MNEMONIC_STATEMENT_PREFIX, p);
         visit(acceptFromMnemonicStatement.getFrom(), p);
         visit(acceptFromMnemonicStatement.getMnemonicName(), p);
+        afterSyntax(acceptFromMnemonicStatement, p);
         return acceptFromMnemonicStatement;
     }
 
     public Cobol visitAcceptMessageCountStatement(Cobol.AcceptMessageCountStatement acceptMessageCountStatement, PrintOutputCapture<P> p) {
-        visitSpace(acceptMessageCountStatement.getPrefix(), Space.Location.ACCEPT_MESSAGE_COUNT_STATEMENT_PREFIX, p);
-        visitMarkers(acceptMessageCountStatement.getMarkers(), p);
+        beforeSyntax(acceptMessageCountStatement, Space.Location.ACCEPT_MESSAGE_COUNT_STATEMENT_PREFIX, p);
         visit(acceptMessageCountStatement.getWords(), p);
+        afterSyntax(acceptMessageCountStatement, p);
         return acceptMessageCountStatement;
     }
 
     public Cobol visitAccessModeClause(Cobol.AccessModeClause accessModeClause, PrintOutputCapture<P> p) {
-        visitSpace(accessModeClause.getPrefix(), Space.Location.ACCESS_MODE_CLAUSE_PREFIX, p);
-        visitMarkers(accessModeClause.getMarkers(), p);
+        beforeSyntax(accessModeClause, Space.Location.ACCESS_MODE_CLAUSE_PREFIX, p);
         visit(accessModeClause.getWords(), p);
         visit(accessModeClause.getType(), p);
+        afterSyntax(accessModeClause, p);
         return accessModeClause;
     }
 
     public Cobol visitAdd(Cobol.Add add, PrintOutputCapture<P> p) {
-        visitSpace(add.getPrefix(), Space.Location.ADD_PREFIX, p);
-        visitMarkers(add.getMarkers(), p);
+        beforeSyntax(add, Space.Location.ADD_PREFIX, p);
         visit(add.getAdd(), p);
         visit(add.getOperation(), p);
         visit(add.getOnSizeError(), p);
         visit(add.getNotOnSizeError(), p);
         visit(add.getEndAdd(), p);
+        afterSyntax(add, p);
         return add;
     }
 
     public Cobol visitAddCorresponding(Cobol.AddCorresponding addCorresponding, PrintOutputCapture<P> p) {
-        visitSpace(addCorresponding.getPrefix(), Space.Location.ADD_CORRESPONDING_PREFIX, p);
-        visitMarkers(addCorresponding.getMarkers(), p);
+        beforeSyntax(addCorresponding, Space.Location.ADD_CORRESPONDING_PREFIX, p);
         visit(addCorresponding.getCorresponding(), p);
         visit(addCorresponding.getIdentifier(), p);
         visit(addCorresponding.getTo(), p);
         visit(addCorresponding.getRoundable(), p);
+        afterSyntax(addCorresponding, p);
         return addCorresponding;
     }
 
     public Cobol visitAddTo(Cobol.AddTo addTo, PrintOutputCapture<P> p) {
-        visitSpace(addTo.getPrefix(), Space.Location.ADD_TO_PREFIX, p);
-        visitMarkers(addTo.getMarkers(), p);
+        beforeSyntax(addTo, Space.Location.ADD_TO_PREFIX, p);
         visit(addTo.getFrom(), p);
         visit(addTo.getTo(), p);
         visit(addTo.getRoundables(), p);
+        afterSyntax(addTo, p);
         return addTo;
     }
 
     public Cobol visitAddToGiving(Cobol.AddToGiving addToGiving, PrintOutputCapture<P> p) {
-        visitSpace(addToGiving.getPrefix(), Space.Location.ADD_TO_GIVING_PREFIX, p);
-        visitMarkers(addToGiving.getMarkers(), p);
+        beforeSyntax(addToGiving, Space.Location.ADD_TO_GIVING_PREFIX, p);
         visit(addToGiving.getFrom(), p);
         visit(addToGiving.getTo(), p);
         visit(addToGiving.getNames(), p);
         visit(addToGiving.getGiving(), p);
         visit(addToGiving.getRoundables(), p);
+        afterSyntax(addToGiving, p);
         return addToGiving;
     }
 
     public Cobol visitAlphabetAlso(Cobol.AlphabetAlso alphabetAlso, PrintOutputCapture<P> p) {
-        visitSpace(alphabetAlso.getPrefix(), Space.Location.ALPHABET_ALSO_PREFIX, p);
-        visitMarkers(alphabetAlso.getMarkers(), p);
+        beforeSyntax(alphabetAlso, Space.Location.ALPHABET_ALSO_PREFIX, p);
         visit(alphabetAlso.getWord(), p);
         visit(alphabetAlso.getLiterals(), p);
+        afterSyntax(alphabetAlso, p);
         return alphabetAlso;
     }
 
     public Cobol visitAlphabetClause(Cobol.AlphabetClause alphabetClause, PrintOutputCapture<P> p) {
-        visitSpace(alphabetClause.getPrefix(), Space.Location.ALPHABET_CLAUSE_PREFIX, p);
-        visitMarkers(alphabetClause.getMarkers(), p);
+        beforeSyntax(alphabetClause, Space.Location.ALPHABET_CLAUSE_PREFIX, p);
         visit(alphabetClause.getAlphabet(), p);
         visit(alphabetClause.getName(), p);
         visit(alphabetClause.getWords(), p);
+        afterSyntax(alphabetClause, p);
         return alphabetClause;
     }
 
     public Cobol visitAlphabetLiteral(Cobol.AlphabetLiteral alphabetLiteral, PrintOutputCapture<P> p) {
-        visitSpace(alphabetLiteral.getPrefix(), Space.Location.ALPHABET_LITERAL_PREFIX, p);
-        visitMarkers(alphabetLiteral.getMarkers(), p);
+        beforeSyntax(alphabetLiteral, Space.Location.ALPHABET_LITERAL_PREFIX, p);
         visit(alphabetLiteral.getLiteral(), p);
         visit(alphabetLiteral.getAlphabetThrough(), p);
         visit(alphabetLiteral.getAlphabetAlso(), p);
+        afterSyntax(alphabetLiteral, p);
         return alphabetLiteral;
     }
 
     public Cobol visitAlphabetThrough(Cobol.AlphabetThrough alphabetThrough, PrintOutputCapture<P> p) {
-        visitSpace(alphabetThrough.getPrefix(), Space.Location.ALPHABET_THROUGH_PREFIX, p);
-        visitMarkers(alphabetThrough.getMarkers(), p);
+        beforeSyntax(alphabetThrough, Space.Location.ALPHABET_THROUGH_PREFIX, p);
         visit(alphabetThrough.getWord(), p);
         visit(alphabetThrough.getLiteral(), p);
+        afterSyntax(alphabetThrough, p);
         return alphabetThrough;
     }
 
     public Cobol visitAlterProceedTo(Cobol.AlterProceedTo alterProceedTo, PrintOutputCapture<P> p) {
-        visitSpace(alterProceedTo.getPrefix(), Space.Location.ALTER_PROCEED_TO_PREFIX, p);
-        visitMarkers(alterProceedTo.getMarkers(), p);
+        beforeSyntax(alterProceedTo, Space.Location.ALTER_PROCEED_TO_PREFIX, p);
         visit(alterProceedTo.getFrom(), p);
         visit(alterProceedTo.getWords(), p);
         visit(alterProceedTo.getTo(), p);
+        afterSyntax(alterProceedTo, p);
         return alterProceedTo;
     }
 
     public Cobol visitAlterStatement(Cobol.AlterStatement alterStatement, PrintOutputCapture<P> p) {
-        visitSpace(alterStatement.getPrefix(), Space.Location.ALTER_STATEMENT_PREFIX, p);
-        visitMarkers(alterStatement.getMarkers(), p);
+        beforeSyntax(alterStatement, Space.Location.ALTER_STATEMENT_PREFIX, p);
         visit(alterStatement.getWord(), p);
         visit(alterStatement.getAlterProceedTo(), p);
+        afterSyntax(alterStatement, p);
         return alterStatement;
     }
 
     public Cobol visitAlteredGoTo(Cobol.AlteredGoTo alteredGoTo, PrintOutputCapture<P> p) {
-        visitSpace(alteredGoTo.getPrefix(), Space.Location.ALTERED_GO_TO_PREFIX, p);
-        visitMarkers(alteredGoTo.getMarkers(), p);
+        beforeSyntax(alteredGoTo, Space.Location.ALTERED_GO_TO_PREFIX, p);
         visit(alteredGoTo.getWords(), p);
         visit(alteredGoTo.getDot(), p);
+        afterSyntax(alteredGoTo, p);
         return alteredGoTo;
     }
 
     public Cobol visitAlternateRecordKeyClause(Cobol.AlternateRecordKeyClause alternateRecordKeyClause, PrintOutputCapture<P> p) {
-        visitSpace(alternateRecordKeyClause.getPrefix(), Space.Location.ALTERNATE_RECORD_KEY_CLAUSE_PREFIX, p);
-        visitMarkers(alternateRecordKeyClause.getMarkers(), p);
+        beforeSyntax(alternateRecordKeyClause, Space.Location.ALTERNATE_RECORD_KEY_CLAUSE_PREFIX, p);
         visit(alternateRecordKeyClause.getAlternateWords(), p);
         visit(alternateRecordKeyClause.getQualifiedDataName(), p);
         visit(alternateRecordKeyClause.getPasswordClause(), p);
         visit(alternateRecordKeyClause.getDuplicates(), p);
+        afterSyntax(alternateRecordKeyClause, p);
         return alternateRecordKeyClause;
     }
 
     public Cobol visitAndOrCondition(Cobol.AndOrCondition andOrCondition, PrintOutputCapture<P> p) {
-        visitSpace(andOrCondition.getPrefix(), Space.Location.AND_OR_CONDITION_PREFIX, p);
-        visitMarkers(andOrCondition.getMarkers(), p);
+        beforeSyntax(andOrCondition, Space.Location.AND_OR_CONDITION_PREFIX, p);
         visit(andOrCondition.getLogicalOperator(), p);
         visit(andOrCondition.getCombinableCondition(), p);
         visit(andOrCondition.getAbbreviations(), p);
+        afterSyntax(andOrCondition, p);
         return andOrCondition;
     }
 
     public Cobol visitArgument(Cobol.Argument argument, PrintOutputCapture<P> p) {
-        visitSpace(argument.getPrefix(), Space.Location.ARGUMENT_PREFIX, p);
-        visitMarkers(argument.getMarkers(), p);
+        beforeSyntax(argument, Space.Location.ARGUMENT_PREFIX, p);
         visit(argument.getFirst(), p);
         visit(argument.getIntegerLiteral(), p);
+        afterSyntax(argument, p);
         return argument;
     }
 
     public Cobol visitArithmeticExpression(Cobol.ArithmeticExpression arithmeticExpression, PrintOutputCapture<P> p) {
-        visitSpace(arithmeticExpression.getPrefix(), Space.Location.ARITHMETIC_EXPRESSION_PREFIX, p);
-        visitMarkers(arithmeticExpression.getMarkers(), p);
+        beforeSyntax(arithmeticExpression, Space.Location.ARITHMETIC_EXPRESSION_PREFIX, p);
         visit(arithmeticExpression.getMultDivs(), p);
         visit(arithmeticExpression.getPlusMinuses(), p);
+        afterSyntax(arithmeticExpression, p);
         return arithmeticExpression;
     }
 
     public Cobol visitAssignClause(Cobol.AssignClause assignClause, PrintOutputCapture<P> p) {
-        visitSpace(assignClause.getPrefix(), Space.Location.ASSIGN_CLAUSE_PREFIX, p);
-        visitMarkers(assignClause.getMarkers(), p);
+        beforeSyntax(assignClause, Space.Location.ASSIGN_CLAUSE_PREFIX, p);
         visit(assignClause.getWords(), p);
         visit(assignClause.getName(), p);
+        afterSyntax(assignClause, p);
         return assignClause;
     }
 
     public Cobol visitBlockContainsClause(Cobol.BlockContainsClause blockContainsClause, PrintOutputCapture<P> p) {
-        visitSpace(blockContainsClause.getPrefix(), Space.Location.BLOCK_CONTAINS_PREFIX, p);
-        visitMarkers(blockContainsClause.getMarkers(), p);
+        beforeSyntax(blockContainsClause, Space.Location.BLOCK_CONTAINS_PREFIX, p);
         visit(blockContainsClause.getFirstWords(), p);
         visit(blockContainsClause.getIntegerLiteral(), p);
         visit(blockContainsClause.getBlockContainsTo(), p);
         visit(blockContainsClause.getLastWord(), p);
+        afterSyntax(blockContainsClause, p);
         return blockContainsClause;
     }
 
     public Cobol visitBlockContainsTo(Cobol.BlockContainsTo blockContainsTo, PrintOutputCapture<P> p) {
-        visitSpace(blockContainsTo.getPrefix(), Space.Location.BLOCK_CONTAINS_TO_PREFIX, p);
-        visitMarkers(blockContainsTo.getMarkers(), p);
+        beforeSyntax(blockContainsTo, Space.Location.BLOCK_CONTAINS_TO_PREFIX, p);
         visit(blockContainsTo.getTo(), p);
         visit(blockContainsTo.getIntegerLiteral(), p);
+        afterSyntax(blockContainsTo, p);
         return blockContainsTo;
     }
 
     public Cobol visitCall(Cobol.Call call, PrintOutputCapture<P> p) {
-        visitSpace(call.getPrefix(), Space.Location.CALL_PREFIX, p);
-        visitMarkers(call.getMarkers(), p);
+        beforeSyntax(call, Space.Location.CALL_PREFIX, p);
         visit(call.getCall(), p);
         visit(call.getIdentifier(), p);
         visit(call.getCallUsingPhrase(), p);
@@ -299,254 +298,254 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(call.getOnExceptionClause(), p);
         visit(call.getNotOnExceptionClause(), p);
         visit(call.getEndCall(), p);
+        afterSyntax(call, p);
         return call;
     }
 
     public Cobol visitCallBy(Cobol.CallBy callBy, PrintOutputCapture<P> p) {
-        visitSpace(callBy.getPrefix(), Space.Location.CALL_BY_PREFIX, p);
-        visitMarkers(callBy.getMarkers(), p);
+        beforeSyntax(callBy, Space.Location.CALL_BY_PREFIX, p);
         visit(callBy.getWords(), p);
         visit(callBy.getIdentifier(), p);
+        afterSyntax(callBy, p);
         return callBy;
     }
 
     public Cobol visitCallGivingPhrase(Cobol.CallGivingPhrase callGivingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(callGivingPhrase.getPrefix(), Space.Location.CALL_GIVING_PHRASE_PREFIX, p);
-        visitMarkers(callGivingPhrase.getMarkers(), p);
+        beforeSyntax(callGivingPhrase, Space.Location.CALL_GIVING_PHRASE_PREFIX, p);
         visit(callGivingPhrase.getWord(), p);
         visit(callGivingPhrase.getIdentifier(), p);
+        afterSyntax(callGivingPhrase, p);
         return callGivingPhrase;
     }
 
     public Cobol visitCallPhrase(Cobol.CallPhrase callPhrase, PrintOutputCapture<P> p) {
-        visitSpace(callPhrase.getPrefix(), Space.Location.CALL_PHRASE_PREFIX, p);
-        visitMarkers(callPhrase.getMarkers(), p);
+        beforeSyntax(callPhrase, Space.Location.CALL_PHRASE_PREFIX, p);
         visit(callPhrase.getWords(), p);
         visit(callPhrase.getParameters(), p);
+        afterSyntax(callPhrase, p);
         return callPhrase;
     }
 
     public Cobol visitCancel(Cobol.Cancel cancel, PrintOutputCapture<P> p) {
-        visitSpace(cancel.getPrefix(), Space.Location.CANCEL_PREFIX, p);
-        visitMarkers(cancel.getMarkers(), p);
+        beforeSyntax(cancel, Space.Location.CANCEL_PREFIX, p);
         visit(cancel.getCancel(), p);
         visit(cancel.getCancelCalls(), p);
+        afterSyntax(cancel, p);
         return cancel;
     }
 
     public Cobol visitCancelCall(Cobol.CancelCall cancelCall, PrintOutputCapture<P> p) {
-        visitSpace(cancelCall.getPrefix(), Space.Location.CANCEL_CALL_PREFIX, p);
-        visitMarkers(cancelCall.getMarkers(), p);
+        beforeSyntax(cancelCall, Space.Location.CANCEL_CALL_PREFIX, p);
         visit(cancelCall.getLibraryName(), p);
         visit(cancelCall.getBy(), p);
         visit(cancelCall.getIdentifier(), p);
         visit(cancelCall.getLiteral(), p);
+        afterSyntax(cancelCall, p);
         return cancelCall;
     }
 
     public Cobol visitChannelClause(Cobol.ChannelClause channelClause, PrintOutputCapture<P> p) {
-        visitSpace(channelClause.getPrefix(), Space.Location.CHANNEL_CLAUSE_PREFIX, p);
-        visitMarkers(channelClause.getMarkers(), p);
+        beforeSyntax(channelClause, Space.Location.CHANNEL_CLAUSE_PREFIX, p);
         visit(channelClause.getWord(), p);
         visit(channelClause.getLiteral(), p);
         visit(channelClause.getIs(), p);
         visit(channelClause.getMnemonicName(), p);
+        afterSyntax(channelClause, p);
         return channelClause;
     }
 
     public Cobol visitClassClause(Cobol.ClassClause classClause, PrintOutputCapture<P> p) {
-        visitSpace(classClause.getPrefix(), Space.Location.CLASS_CLAUSE_PREFIX, p);
-        visitMarkers(classClause.getMarkers(), p);
+        beforeSyntax(classClause, Space.Location.CLASS_CLAUSE_PREFIX, p);
         visit(classClause.getClazz(), p);
         visit(classClause.getClassName(), p);
         visit(classClause.getWords(), p);
         visit(classClause.getThroughs(), p);
+        afterSyntax(classClause, p);
         return classClause;
     }
 
     public Cobol visitClassClauseThrough(Cobol.ClassClauseThrough classClauseThrough, PrintOutputCapture<P> p) {
-        visitSpace(classClauseThrough.getPrefix(), Space.Location.CLASS_CLAUSE_THROUGH_PREFIX, p);
-        visitMarkers(classClauseThrough.getMarkers(), p);
+        beforeSyntax(classClauseThrough, Space.Location.CLASS_CLAUSE_THROUGH_PREFIX, p);
         visit(classClauseThrough.getFrom(), p);
         visit(classClauseThrough.getThrough(), p);
         visit(classClauseThrough.getTo(), p);
+        afterSyntax(classClauseThrough, p);
         return classClauseThrough;
     }
 
     public Cobol visitClassCondition(Cobol.ClassCondition classCondition, PrintOutputCapture<P> p) {
-        visitSpace(classCondition.getPrefix(), Space.Location.CLASS_CONDITION_PREFIX, p);
-        visitMarkers(classCondition.getMarkers(), p);
+        beforeSyntax(classCondition, Space.Location.CLASS_CONDITION_PREFIX, p);
         visit(classCondition.getName(), p);
         visit(classCondition.getWords(), p);
         visit(classCondition.getType(), p);
+        afterSyntax(classCondition, p);
         return classCondition;
     }
 
     public Cobol visitClose(Cobol.Close close, PrintOutputCapture<P> p) {
-        visitSpace(close.getPrefix(), Space.Location.CLOSE_PREFIX, p);
-        visitMarkers(close.getMarkers(), p);
+        beforeSyntax(close, Space.Location.CLOSE_PREFIX, p);
         visit(close.getClose(), p);
         visit(close.getCloseFiles(), p);
+        afterSyntax(close, p);
         return close;
     }
 
     public Cobol visitCloseFile(Cobol.CloseFile closeFile, PrintOutputCapture<P> p) {
-        visitSpace(closeFile.getPrefix(), Space.Location.CLOSE_FILE_PREFIX, p);
-        visitMarkers(closeFile.getMarkers(), p);
+        beforeSyntax(closeFile, Space.Location.CLOSE_FILE_PREFIX, p);
         visit(closeFile.getFileName(), p);
         visit(closeFile.getCloseStatement(), p);
+        afterSyntax(closeFile, p);
         return closeFile;
     }
 
     public Cobol visitClosePortFileIOStatement(Cobol.ClosePortFileIOStatement closePortFileIOStatement, PrintOutputCapture<P> p) {
-        visitSpace(closePortFileIOStatement.getPrefix(), Space.Location.CLOSE_PORT_FILE_IO_STATEMENT_PREFIX, p);
-        visitMarkers(closePortFileIOStatement.getMarkers(), p);
+        beforeSyntax(closePortFileIOStatement, Space.Location.CLOSE_PORT_FILE_IO_STATEMENT_PREFIX, p);
         visit(closePortFileIOStatement.getWords(), p);
         visit(closePortFileIOStatement.getClosePortFileIOUsing(), p);
+        afterSyntax(closePortFileIOStatement, p);
         return closePortFileIOStatement;
     }
 
     public Cobol visitClosePortFileIOUsingAssociatedData(Cobol.ClosePortFileIOUsingAssociatedData closePortFileIOUsingAssociatedData, PrintOutputCapture<P> p) {
-        visitSpace(closePortFileIOUsingAssociatedData.getPrefix(), Space.Location.CLOSE_PORT_FILE_IO_USING_ASSOCIATED_DATA_PREFIX, p);
-        visitMarkers(closePortFileIOUsingAssociatedData.getMarkers(), p);
+        beforeSyntax(closePortFileIOUsingAssociatedData, Space.Location.CLOSE_PORT_FILE_IO_USING_ASSOCIATED_DATA_PREFIX, p);
         visit(closePortFileIOUsingAssociatedData.getAssociatedData(), p);
         visit(closePortFileIOUsingAssociatedData.getIdentifier(), p);
+        afterSyntax(closePortFileIOUsingAssociatedData, p);
         return closePortFileIOUsingAssociatedData;
     }
 
     public Cobol visitClosePortFileIOUsingAssociatedDataLength(Cobol.ClosePortFileIOUsingAssociatedDataLength closePortFileIOUsingAssociatedDataLength, PrintOutputCapture<P> p) {
-        visitSpace(closePortFileIOUsingAssociatedDataLength.getPrefix(), Space.Location.CLOSE_PORT_FILE_IO_USING_ASSOCIATED_DATA_LENGTH_PREFIX, p);
-        visitMarkers(closePortFileIOUsingAssociatedDataLength.getMarkers(), p);
+        beforeSyntax(closePortFileIOUsingAssociatedDataLength, Space.Location.CLOSE_PORT_FILE_IO_USING_ASSOCIATED_DATA_LENGTH_PREFIX, p);
         visit(closePortFileIOUsingAssociatedDataLength.getWords(), p);
         visit(closePortFileIOUsingAssociatedDataLength.getIdentifier(), p);
+        afterSyntax(closePortFileIOUsingAssociatedDataLength, p);
         return closePortFileIOUsingAssociatedDataLength;
     }
 
     public Cobol visitClosePortFileIOUsingCloseDisposition(Cobol.ClosePortFileIOUsingCloseDisposition closePortFileIOUsingCloseDisposition, PrintOutputCapture<P> p) {
-        visitSpace(closePortFileIOUsingCloseDisposition.getPrefix(), Space.Location.CLOSE_PORT_FILE_IO_USING_CLOSE_DISPOSITION_PREFIX, p);
-        visitMarkers(closePortFileIOUsingCloseDisposition.getMarkers(), p);
+        beforeSyntax(closePortFileIOUsingCloseDisposition, Space.Location.CLOSE_PORT_FILE_IO_USING_CLOSE_DISPOSITION_PREFIX, p);
         visit(closePortFileIOUsingCloseDisposition.getWords(), p);
+        afterSyntax(closePortFileIOUsingCloseDisposition, p);
         return closePortFileIOUsingCloseDisposition;
     }
 
     public Cobol visitCloseReelUnitStatement(Cobol.CloseReelUnitStatement closeReelUnitStatement, PrintOutputCapture<P> p) {
-        visitSpace(closeReelUnitStatement.getPrefix(), Space.Location.CLOSE_REEL_UNIT_STATEMENT_PREFIX, p);
-        visitMarkers(closeReelUnitStatement.getMarkers(), p);
+        beforeSyntax(closeReelUnitStatement, Space.Location.CLOSE_REEL_UNIT_STATEMENT_PREFIX, p);
         visit(closeReelUnitStatement.getWords(), p);
+        afterSyntax(closeReelUnitStatement, p);
         return closeReelUnitStatement;
     }
 
     public Cobol visitCloseRelativeStatement(Cobol.CloseRelativeStatement closeRelativeStatement, PrintOutputCapture<P> p) {
-        visitSpace(closeRelativeStatement.getPrefix(), Space.Location.CLOSE_RELATIVE_STATEMENT_PREFIX, p);
-        visitMarkers(closeRelativeStatement.getMarkers(), p);
+        beforeSyntax(closeRelativeStatement, Space.Location.CLOSE_RELATIVE_STATEMENT_PREFIX, p);
         visit(closeRelativeStatement.getWords(), p);
+        afterSyntax(closeRelativeStatement, p);
         return closeRelativeStatement;
     }
 
     public Cobol visitCodeSetClause(Cobol.CodeSetClause codeSetClause, PrintOutputCapture<P> p) {
-        visitSpace(codeSetClause.getPrefix(), Space.Location.CLOSE_SET_CLAUSE_PREFIX, p);
-        visitMarkers(codeSetClause.getMarkers(), p);
+        beforeSyntax(codeSetClause, Space.Location.CLOSE_SET_CLAUSE_PREFIX, p);
         visit(codeSetClause.getWords(), p);
         visit(codeSetClause.getAlphabetName(), p);
+        afterSyntax(codeSetClause, p);
         return codeSetClause;
     }
 
     public Cobol visitCollatingSequenceAlphabet(Cobol.CollatingSequenceAlphabet collatingSequenceAlphabet, PrintOutputCapture<P> p) {
-        visitSpace(collatingSequenceAlphabet.getPrefix(), Space.Location.COLLATING_SEQUENCE_ALPHABET_PREFIX, p);
-        visitMarkers(collatingSequenceAlphabet.getMarkers(), p);
+        beforeSyntax(collatingSequenceAlphabet, Space.Location.COLLATING_SEQUENCE_ALPHABET_PREFIX, p);
         visit(collatingSequenceAlphabet.getWords(), p);
         visit(collatingSequenceAlphabet.getAlphabetName(), p);
+        afterSyntax(collatingSequenceAlphabet, p);
         return collatingSequenceAlphabet;
     }
 
     public Cobol visitCollatingSequenceClause(Cobol.CollatingSequenceClause collatingSequenceClause, PrintOutputCapture<P> p) {
-        visitSpace(collatingSequenceClause.getPrefix(), Space.Location.COLLATING_SEQUENCE_CLAUSE_PREFIX, p);
-        visitMarkers(collatingSequenceClause.getMarkers(), p);
+        beforeSyntax(collatingSequenceClause, Space.Location.COLLATING_SEQUENCE_CLAUSE_PREFIX, p);
         visit(collatingSequenceClause.getWords(), p);
         visit(collatingSequenceClause.getIs(), p);
         visit(collatingSequenceClause.getAlphabetName(), p);
         visit(collatingSequenceClause.getAlphanumeric(), p);
         visit(collatingSequenceClause.getNational(), p);
+        afterSyntax(collatingSequenceClause, p);
         return collatingSequenceClause;
     }
 
     public Cobol visitCombinableCondition(Cobol.CombinableCondition combinableCondition, PrintOutputCapture<P> p) {
-        visitSpace(combinableCondition.getPrefix(), Space.Location.COMBINABLE_CONDITION_PREFIX, p);
-        visitMarkers(combinableCondition.getMarkers(), p);
+        beforeSyntax(combinableCondition, Space.Location.COMBINABLE_CONDITION_PREFIX, p);
         visit(combinableCondition.getNot(), p);
         visit(combinableCondition.getSimpleCondition(), p);
+        afterSyntax(combinableCondition, p);
         return combinableCondition;
     }
 
     public Cobol visitCommentEntry(Cobol.CommentEntry commentEntry, PrintOutputCapture<P> p) {
-        visitSpace(commentEntry.getPrefix(), Space.Location.COMMENT_ENTRY_PREFIX, p);
-        visitMarkers(commentEntry.getMarkers(), p);
+        beforeSyntax(commentEntry, Space.Location.COMMENT_ENTRY_PREFIX, p);
         visit(commentEntry.getComments(), p);
+        afterSyntax(commentEntry, p);
         return commentEntry;
     }
 
     public Cobol visitCommitmentControlClause(Cobol.CommitmentControlClause commitmentControlClause, PrintOutputCapture<P> p) {
-        visitSpace(commitmentControlClause.getPrefix(), Space.Location.COMMITMENT_CONTROL_PREFIX, p);
-        visitMarkers(commitmentControlClause.getMarkers(), p);
+        beforeSyntax(commitmentControlClause, Space.Location.COMMITMENT_CONTROL_PREFIX, p);
         visit(commitmentControlClause.getWords(), p);
         visit(commitmentControlClause.getFileName(), p);
+        afterSyntax(commitmentControlClause, p);
         return commitmentControlClause;
     }
 
     public Cobol visitCommunicationDescriptionEntryFormat1(Cobol.CommunicationDescriptionEntryFormat1 communicationDescriptionEntryFormat1, PrintOutputCapture<P> p) {
-        visitSpace(communicationDescriptionEntryFormat1.getPrefix(), Space.Location.COMMUNICATION_DESCRIPTION_ENTRY_FORMAT_1_PREFIX, p);
-        visitMarkers(communicationDescriptionEntryFormat1.getMarkers(), p);
+        beforeSyntax(communicationDescriptionEntryFormat1, Space.Location.COMMUNICATION_DESCRIPTION_ENTRY_FORMAT_1_PREFIX, p);
         visit(communicationDescriptionEntryFormat1.getCd(), p);
         visit(communicationDescriptionEntryFormat1.getName(), p);
         visit(communicationDescriptionEntryFormat1.getWords(), p);
         visit(communicationDescriptionEntryFormat1.getInputs(), p);
         visit(communicationDescriptionEntryFormat1.getDot(), p);
+        afterSyntax(communicationDescriptionEntryFormat1, p);
         return communicationDescriptionEntryFormat1;
     }
 
     public Cobol visitCommunicationDescriptionEntryFormat2(Cobol.CommunicationDescriptionEntryFormat2 communicationDescriptionEntryFormat2, PrintOutputCapture<P> p) {
-        visitSpace(communicationDescriptionEntryFormat2.getPrefix(), Space.Location.COMMUNICATION_DESCRIPTION_ENTRY_FORMAT_2_PREFIX, p);
-        visitMarkers(communicationDescriptionEntryFormat2.getMarkers(), p);
+        beforeSyntax(communicationDescriptionEntryFormat2, Space.Location.COMMUNICATION_DESCRIPTION_ENTRY_FORMAT_2_PREFIX, p);
         visit(communicationDescriptionEntryFormat2.getCd(), p);
         visit(communicationDescriptionEntryFormat2.getName(), p);
         visit(communicationDescriptionEntryFormat2.getWords(), p);
         visit(communicationDescriptionEntryFormat2.getOutputs(), p);
         visit(communicationDescriptionEntryFormat2.getDot(), p);
+        afterSyntax(communicationDescriptionEntryFormat2, p);
         return communicationDescriptionEntryFormat2;
     }
 
     public Cobol visitCommunicationDescriptionEntryFormat3(Cobol.CommunicationDescriptionEntryFormat3 communicationDescriptionEntryFormat3, PrintOutputCapture<P> p) {
-        visitSpace(communicationDescriptionEntryFormat3.getPrefix(), Space.Location.COMMUNICATION_DESCRIPTION_ENTRY_FORMAT_3_PREFIX, p);
-        visitMarkers(communicationDescriptionEntryFormat3.getMarkers(), p);
+        beforeSyntax(communicationDescriptionEntryFormat3, Space.Location.COMMUNICATION_DESCRIPTION_ENTRY_FORMAT_3_PREFIX, p);
         visit(communicationDescriptionEntryFormat3.getCd(), p);
         visit(communicationDescriptionEntryFormat3.getName(), p);
         visit(communicationDescriptionEntryFormat3.getWords(), p);
         visit(communicationDescriptionEntryFormat3.getInitialIOs(), p);
         visit(communicationDescriptionEntryFormat3.getDot(), p);
+        afterSyntax(communicationDescriptionEntryFormat3, p);
         return communicationDescriptionEntryFormat3;
     }
 
     public Cobol visitCommunicationSection(Cobol.CommunicationSection communicationSection, PrintOutputCapture<P> p) {
-        visitSpace(communicationSection.getPrefix(), Space.Location.COMMUNICATION_SECTION_PREFIX, p);
-        visitMarkers(communicationSection.getMarkers(), p);
+        beforeSyntax(communicationSection, Space.Location.COMMUNICATION_SECTION_PREFIX, p);
         visit(communicationSection.getWords(), p);
         visit(communicationSection.getDot(), p);
         visit(communicationSection.getEntries(), p);
+        afterSyntax(communicationSection, p);
         return communicationSection;
     }
 
     @Override
     public Cobol visitCompilationUnit(Cobol.CompilationUnit compilationUnit, PrintOutputCapture<P> p) {
-        visitSpace(compilationUnit.getPrefix(), Space.Location.COMPILATION_UNIT_PREFIX, p);
-        visitMarkers(compilationUnit.getMarkers(), p);
+        beforeSyntax(compilationUnit, Space.Location.COMPILATION_UNIT_PREFIX, p);
         visit(compilationUnit.getProgramUnits(), p);
         visit(compilationUnit.getEof(), p);
+        afterSyntax(compilationUnit, p);
         return compilationUnit;
     }
 
     public Cobol visitCompute(Cobol.Compute compute, PrintOutputCapture<P> p) {
-        visitSpace(compute.getPrefix(), Space.Location.COMPUTE_PREFIX, p);
-        visitMarkers(compute.getMarkers(), p);
+        beforeSyntax(compute, Space.Location.COMPUTE_PREFIX, p);
         visit(compute.getCompute(), p);
         visit(compute.getRoundables(), p);
         visit(compute.getEqualWord(), p);
@@ -554,390 +553,390 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(compute.getOnSizeErrorPhrase(), p);
         visit(compute.getNotOnSizeErrorPhrase(), p);
         visit(compute.getEndCompute(), p);
+        afterSyntax(compute, p);
         return compute;
     }
 
     @Override
     public Cobol visitCondition(Cobol.Condition condition, PrintOutputCapture<P> p) {
-        visitSpace(condition.getPrefix(), Space.Location.CONDITION_PREFIX, p);
-        visitMarkers(condition.getMarkers(), p);
+        beforeSyntax(condition, Space.Location.CONDITION_PREFIX, p);
         visit(condition.getCombinableCondition(), p);
         visit(condition.getAndOrConditions(), p);
+        afterSyntax(condition, p);
         return condition;
     }
 
     public Cobol visitConditionNameReference(Cobol.ConditionNameReference conditionNameReference, PrintOutputCapture<P> p) {
-        visitSpace(conditionNameReference.getPrefix(), Space.Location.CONDITION_NAME_REFERENCE_PREFIX, p);
-        visitMarkers(conditionNameReference.getMarkers(), p);
+        beforeSyntax(conditionNameReference, Space.Location.CONDITION_NAME_REFERENCE_PREFIX, p);
         visit(conditionNameReference.getName(), p);
         visit(conditionNameReference.getInDatas(), p);
         visit(conditionNameReference.getInFile(), p);
         visit(conditionNameReference.getReferences(), p);
         visit(conditionNameReference.getInMnemonics(), p);
+        afterSyntax(conditionNameReference, p);
         return conditionNameReference;
     }
 
     public Cobol visitConditionNameSubscriptReference(Cobol.ConditionNameSubscriptReference conditionNameSubscriptReference, PrintOutputCapture<P> p) {
-        visitSpace(conditionNameSubscriptReference.getPrefix(), Space.Location.CONDITION_NAME_SUBSCRIPT_REFERENCE_PREFIX, p);
-        visitMarkers(conditionNameSubscriptReference.getMarkers(), p);
+        beforeSyntax(conditionNameSubscriptReference, Space.Location.CONDITION_NAME_SUBSCRIPT_REFERENCE_PREFIX, p);
         visit(conditionNameSubscriptReference.getLeftParen(), p);
         visit(conditionNameSubscriptReference.getSubscripts(), p);
         visit(conditionNameSubscriptReference.getRightParen(), p);
+        afterSyntax(conditionNameSubscriptReference, p);
         return conditionNameSubscriptReference;
     }
 
     public Cobol visitConfigurationSection(Cobol.ConfigurationSection configurationSection, PrintOutputCapture<P> p) {
-        visitSpace(configurationSection.getPrefix(), Space.Location.CONFIGURATION_SECTION_PREFIX, p);
-        visitMarkers(configurationSection.getMarkers(), p);
+        beforeSyntax(configurationSection, Space.Location.CONFIGURATION_SECTION_PREFIX, p);
         visit(configurationSection.getWords(), p);
         visit(configurationSection.getDot(), p);
         visit(configurationSection.getParagraphs(), p);
+        afterSyntax(configurationSection, p);
         return configurationSection;
     }
 
     public Cobol visitContinue(Cobol.Continue continuez, PrintOutputCapture<P> p) {
-        visitSpace(continuez.getPrefix(), Space.Location.CONTINUE_PREFIX, p);
-        visitMarkers(continuez.getMarkers(), p);
+        beforeSyntax(continuez, Space.Location.CONTINUE_PREFIX, p);
         visit(continuez.getWord(), p);
+        afterSyntax(continuez, p);
         return continuez;
     }
 
     public Cobol visitCurrencyClause(Cobol.CurrencyClause currencyClause, PrintOutputCapture<P> p) {
-        visitSpace(currencyClause.getPrefix(), Space.Location.CURRENCY_CLAUSE_PREFIX, p);
-        visitMarkers(currencyClause.getMarkers(), p);
+        beforeSyntax(currencyClause, Space.Location.CURRENCY_CLAUSE_PREFIX, p);
         visit(currencyClause.getWords(), p);
         visit(currencyClause.getLiteral(), p);
         visit(currencyClause.getPictureSymbols(), p);
         visit(currencyClause.getPictureSymbolLiteral(), p);
+        afterSyntax(currencyClause, p);
         return currencyClause;
     }
 
     public Cobol visitDataAlignedClause(Cobol.DataAlignedClause dataAlignedClause, PrintOutputCapture<P> p) {
-        visitSpace(dataAlignedClause.getPrefix(), Space.Location.DATA_ALIGNED_CLAUSE_PREFIX, p);
-        visitMarkers(dataAlignedClause.getMarkers(), p);
+        beforeSyntax(dataAlignedClause, Space.Location.DATA_ALIGNED_CLAUSE_PREFIX, p);
         visit(dataAlignedClause.getAligned(), p);
+        afterSyntax(dataAlignedClause, p);
         return dataAlignedClause;
     }
 
     public Cobol visitDataBaseSection(Cobol.DataBaseSection dataBaseSection, PrintOutputCapture<P> p) {
-        visitSpace(dataBaseSection.getPrefix(), Space.Location.DATA_BASE_SECTION_PREFIX, p);
-        visitMarkers(dataBaseSection.getMarkers(), p);
+        beforeSyntax(dataBaseSection, Space.Location.DATA_BASE_SECTION_PREFIX, p);
         visit(dataBaseSection.getWords(), p);
         visit(dataBaseSection.getDot(), p);
         visit(dataBaseSection.getEntries(), p);
+        afterSyntax(dataBaseSection, p);
         return dataBaseSection;
     }
 
     public Cobol visitDataBaseSectionEntry(Cobol.DataBaseSectionEntry dataBaseSectionEntry, PrintOutputCapture<P> p) {
-        visitSpace(dataBaseSectionEntry.getPrefix(), Space.Location.DATA_BASE_SECTION_ENTRY_PREFIX, p);
-        visitMarkers(dataBaseSectionEntry.getMarkers(), p);
+        beforeSyntax(dataBaseSectionEntry, Space.Location.DATA_BASE_SECTION_ENTRY_PREFIX, p);
         visit(dataBaseSectionEntry.getDb(), p);
         visit(dataBaseSectionEntry.getFrom(), p);
         visit(dataBaseSectionEntry.getInvoke(), p);
         visit(dataBaseSectionEntry.getTo(), p);
+        afterSyntax(dataBaseSectionEntry, p);
         return dataBaseSectionEntry;
     }
 
     public Cobol visitDataBlankWhenZeroClause(Cobol.DataBlankWhenZeroClause dataBlankWhenZeroClause, PrintOutputCapture<P> p) {
-        visitSpace(dataBlankWhenZeroClause.getPrefix(), Space.Location.DATA_BLANK_WHEN_ZERO_CLAUSE_PREFIX, p);
-        visitMarkers(dataBlankWhenZeroClause.getMarkers(), p);
+        beforeSyntax(dataBlankWhenZeroClause, Space.Location.DATA_BLANK_WHEN_ZERO_CLAUSE_PREFIX, p);
         visit(dataBlankWhenZeroClause.getWords(), p);
+        afterSyntax(dataBlankWhenZeroClause, p);
         return dataBlankWhenZeroClause;
     }
 
     public Cobol visitDataCommonOwnLocalClause(Cobol.DataCommonOwnLocalClause dataCommonOwnLocalClause, PrintOutputCapture<P> p) {
-        visitSpace(dataCommonOwnLocalClause.getPrefix(), Space.Location.DATA_COMMON_OWN_LOCAL_CLAUSE_PREFIX, p);
-        visitMarkers(dataCommonOwnLocalClause.getMarkers(), p);
+        beforeSyntax(dataCommonOwnLocalClause, Space.Location.DATA_COMMON_OWN_LOCAL_CLAUSE_PREFIX, p);
         visit(dataCommonOwnLocalClause.getWord(), p);
+        afterSyntax(dataCommonOwnLocalClause, p);
         return dataCommonOwnLocalClause;
     }
 
     public Cobol visitDataDescriptionEntry(Cobol.DataDescriptionEntry dataDescriptionEntry, PrintOutputCapture<P> p) {
-        visitSpace(dataDescriptionEntry.getPrefix(), Space.Location.DATA_DESCRIPTION_ENTRY_PREFIX, p);
-        visitMarkers(dataDescriptionEntry.getMarkers(), p);
+        beforeSyntax(dataDescriptionEntry, Space.Location.DATA_DESCRIPTION_ENTRY_PREFIX, p);
         visit(dataDescriptionEntry.getWords(), p);
         visit(dataDescriptionEntry.getName(), p);
         visit(dataDescriptionEntry.getClauses(), p);
         visit(dataDescriptionEntry.getDot(), p);
+        afterSyntax(dataDescriptionEntry, p);
         return dataDescriptionEntry;
     }
 
     public Cobol visitDataDivision(Cobol.DataDivision dataDivision, PrintOutputCapture<P> p) {
-        visitSpace(dataDivision.getPrefix(), Space.Location.DATA_DIVISION_PREFIX, p);
-        visitMarkers(dataDivision.getMarkers(), p);
+        beforeSyntax(dataDivision, Space.Location.DATA_DIVISION_PREFIX, p);
         visit(dataDivision.getWords(), p);
         visit(dataDivision.getDot(), p);
         visit(dataDivision.getSections(), p);
+        afterSyntax(dataDivision, p);
         return dataDivision;
     }
 
     public Cobol visitDataExternalClause(Cobol.DataExternalClause dataExternalClause, PrintOutputCapture<P> p) {
-        visitSpace(dataExternalClause.getPrefix(), Space.Location.DATA_EXTERNAL_CLAUSE_PREFIX, p);
-        visitMarkers(dataExternalClause.getMarkers(), p);
+        beforeSyntax(dataExternalClause, Space.Location.DATA_EXTERNAL_CLAUSE_PREFIX, p);
         visit(dataExternalClause.getRedefines(), p);
+        afterSyntax(dataExternalClause, p);
         return dataExternalClause;
     }
 
     public Cobol visitDataGlobalClause(Cobol.DataGlobalClause dataGlobalClause, PrintOutputCapture<P> p) {
-        visitSpace(dataGlobalClause.getPrefix(), Space.Location.DATA_GLOBAL_CLAUSE_PREFIX, p);
-        visitMarkers(dataGlobalClause.getMarkers(), p);
+        beforeSyntax(dataGlobalClause, Space.Location.DATA_GLOBAL_CLAUSE_PREFIX, p);
         visit(dataGlobalClause.getWords(), p);
+        afterSyntax(dataGlobalClause, p);
         return dataGlobalClause;
     }
 
     public Cobol visitDataIntegerStringClause(Cobol.DataIntegerStringClause dataIntegerStringClause, PrintOutputCapture<P> p) {
-        visitSpace(dataIntegerStringClause.getPrefix(), Space.Location.DATA_INTEGER_STRING_CLAUSE_PREFIX, p);
-        visitMarkers(dataIntegerStringClause.getMarkers(), p);
+        beforeSyntax(dataIntegerStringClause, Space.Location.DATA_INTEGER_STRING_CLAUSE_PREFIX, p);
         visit(dataIntegerStringClause.getWord(), p);
+        afterSyntax(dataIntegerStringClause, p);
         return dataIntegerStringClause;
     }
 
     public Cobol visitDataJustifiedClause(Cobol.DataJustifiedClause dataJustifiedClause, PrintOutputCapture<P> p) {
-        visitSpace(dataJustifiedClause.getPrefix(), Space.Location.DATA_JUSTIFIED_CLAUSE_PREFIX, p);
-        visitMarkers(dataJustifiedClause.getMarkers(), p);
+        beforeSyntax(dataJustifiedClause, Space.Location.DATA_JUSTIFIED_CLAUSE_PREFIX, p);
         visit(dataJustifiedClause.getWords(), p);
+        afterSyntax(dataJustifiedClause, p);
         return dataJustifiedClause;
     }
 
     public Cobol visitDataOccursClause(Cobol.DataOccursClause dataOccursClause, PrintOutputCapture<P> p) {
-        visitSpace(dataOccursClause.getPrefix(), Space.Location.DATA_OCCURS_CLAUSE_PREFIX, p);
-        visitMarkers(dataOccursClause.getMarkers(), p);
+        beforeSyntax(dataOccursClause, Space.Location.DATA_OCCURS_CLAUSE_PREFIX, p);
         visit(dataOccursClause.getOccurs(), p);
         visit(dataOccursClause.getName(), p);
         visit(dataOccursClause.getDataOccursTo(), p);
         visit(dataOccursClause.getTimes(), p);
         visit(dataOccursClause.getDataOccursDepending(), p);
         visit(dataOccursClause.getSortIndexed(), p);
+        afterSyntax(dataOccursClause, p);
         return dataOccursClause;
     }
 
     public Cobol visitDataOccursDepending(Cobol.DataOccursDepending dataOccursDepending, PrintOutputCapture<P> p) {
-        visitSpace(dataOccursDepending.getPrefix(), Space.Location.DATA_OCCURS_DEPENDING_PREFIX, p);
-        visitMarkers(dataOccursDepending.getMarkers(), p);
+        beforeSyntax(dataOccursDepending, Space.Location.DATA_OCCURS_DEPENDING_PREFIX, p);
         visit(dataOccursDepending.getWords(), p);
         visit(dataOccursDepending.getQualifiedDataName(), p);
+        afterSyntax(dataOccursDepending, p);
         return dataOccursDepending;
     }
 
     public Cobol visitDataOccursIndexed(Cobol.DataOccursIndexed dataOccursIndexed, PrintOutputCapture<P> p) {
-        visitSpace(dataOccursIndexed.getPrefix(), Space.Location.DATA_OCCURS_INDEXED_PREFIX, p);
-        visitMarkers(dataOccursIndexed.getMarkers(), p);
+        beforeSyntax(dataOccursIndexed, Space.Location.DATA_OCCURS_INDEXED_PREFIX, p);
         visit(dataOccursIndexed.getWords(), p);
         visit(dataOccursIndexed.getIndexNames(), p);
+        afterSyntax(dataOccursIndexed, p);
         return dataOccursIndexed;
     }
 
     public Cobol visitDataOccursSort(Cobol.DataOccursSort dataOccursSort, PrintOutputCapture<P> p) {
-        visitSpace(dataOccursSort.getPrefix(), Space.Location.DATA_OCCURS_SORT_PREFIX, p);
-        visitMarkers(dataOccursSort.getMarkers(), p);
+        beforeSyntax(dataOccursSort, Space.Location.DATA_OCCURS_SORT_PREFIX, p);
         visit(dataOccursSort.getWords(), p);
         visit(dataOccursSort.getQualifiedDataNames(), p);
+        afterSyntax(dataOccursSort, p);
         return dataOccursSort;
     }
 
     public Cobol visitDataOccursTo(Cobol.DataOccursTo dataOccursTo, PrintOutputCapture<P> p) {
-        visitSpace(dataOccursTo.getPrefix(), Space.Location.DATA_OCCURS_TO_PREFIX, p);
-        visitMarkers(dataOccursTo.getMarkers(), p);
+        beforeSyntax(dataOccursTo, Space.Location.DATA_OCCURS_TO_PREFIX, p);
         visit(dataOccursTo.getTo(), p);
         visit(dataOccursTo.getIntegerLiteral(), p);
+        afterSyntax(dataOccursTo, p);
         return dataOccursTo;
     }
 
     public Cobol visitDataPictureClause(Cobol.DataPictureClause dataPictureClause, PrintOutputCapture<P> p) {
-        visitSpace(dataPictureClause.getPrefix(), Space.Location.DATA_PICTURE_CLAUSE_PREFIX, p);
-        visitMarkers(dataPictureClause.getMarkers(), p);
+        beforeSyntax(dataPictureClause, Space.Location.DATA_PICTURE_CLAUSE_PREFIX, p);
         visit(dataPictureClause.getWords(), p);
         visit(dataPictureClause.getPictures(), p);
+        afterSyntax(dataPictureClause, p);
         return dataPictureClause;
     }
 
     public Cobol visitDataReceivedByClause(Cobol.DataReceivedByClause dataReceivedByClause, PrintOutputCapture<P> p) {
-        visitSpace(dataReceivedByClause.getPrefix(), Space.Location.DATA_RECEIVED_BY_CLAUSE_PREFIX, p);
-        visitMarkers(dataReceivedByClause.getMarkers(), p);
+        beforeSyntax(dataReceivedByClause, Space.Location.DATA_RECEIVED_BY_CLAUSE_PREFIX, p);
         visit(dataReceivedByClause.getWords(), p);
+        afterSyntax(dataReceivedByClause, p);
         return dataReceivedByClause;
     }
 
     public Cobol visitDataRecordAreaClause(Cobol.DataRecordAreaClause dataRecordAreaClause, PrintOutputCapture<P> p) {
-        visitSpace(dataRecordAreaClause.getPrefix(), Space.Location.DATA_RECORD_AREA_CLAUSE_PREFIX, p);
-        visitMarkers(dataRecordAreaClause.getMarkers(), p);
+        beforeSyntax(dataRecordAreaClause, Space.Location.DATA_RECORD_AREA_CLAUSE_PREFIX, p);
         visit(dataRecordAreaClause.getWords(), p);
+        afterSyntax(dataRecordAreaClause, p);
         return dataRecordAreaClause;
     }
 
     public Cobol visitDataRecordsClause(Cobol.DataRecordsClause dataRecordsClause, PrintOutputCapture<P> p) {
-        visitSpace(dataRecordsClause.getPrefix(), Space.Location.DATA_RECORDS_CLAUSE_PREFIX, p);
-        visitMarkers(dataRecordsClause.getMarkers(), p);
+        beforeSyntax(dataRecordsClause, Space.Location.DATA_RECORDS_CLAUSE_PREFIX, p);
         visit(dataRecordsClause.getWords(), p);
         visit(dataRecordsClause.getDataName(), p);
+        afterSyntax(dataRecordsClause, p);
         return dataRecordsClause;
     }
 
     public Cobol visitDataRedefinesClause(Cobol.DataRedefinesClause dataRedefinesClause, PrintOutputCapture<P> p) {
-        visitSpace(dataRedefinesClause.getPrefix(), Space.Location.DATA_REDEFINES_CLAUSE_PREFIX, p);
-        visitMarkers(dataRedefinesClause.getMarkers(), p);
+        beforeSyntax(dataRedefinesClause, Space.Location.DATA_REDEFINES_CLAUSE_PREFIX, p);
         visit(dataRedefinesClause.getRedefines(), p);
         visit(dataRedefinesClause.getDataName(), p);
+        afterSyntax(dataRedefinesClause, p);
         return dataRedefinesClause;
     }
 
     public Cobol visitDataRenamesClause(Cobol.DataRenamesClause dataRenamesClause, PrintOutputCapture<P> p) {
-        visitSpace(dataRenamesClause.getPrefix(), Space.Location.DATA_RENAMES_CLAUSE_PREFIX, p);
-        visitMarkers(dataRenamesClause.getMarkers(), p);
+        beforeSyntax(dataRenamesClause, Space.Location.DATA_RENAMES_CLAUSE_PREFIX, p);
         visit(dataRenamesClause.getRenames(), p);
         visit(dataRenamesClause.getFromName(), p);
         visit(dataRenamesClause.getThrough(), p);
         visit(dataRenamesClause.getToName(), p);
+        afterSyntax(dataRenamesClause, p);
         return dataRenamesClause;
     }
 
     public Cobol visitDataSignClause(Cobol.DataSignClause dataSignClause, PrintOutputCapture<P> p) {
-        visitSpace(dataSignClause.getPrefix(), Space.Location.DATA_SIGN_CLAUSE_PREFIX, p);
-        visitMarkers(dataSignClause.getMarkers(), p);
+        beforeSyntax(dataSignClause, Space.Location.DATA_SIGN_CLAUSE_PREFIX, p);
         visit(dataSignClause.getWords(), p);
+        afterSyntax(dataSignClause, p);
         return dataSignClause;
     }
 
     public Cobol visitDataSynchronizedClause(Cobol.DataSynchronizedClause dataSynchronizedClause, PrintOutputCapture<P> p) {
-        visitSpace(dataSynchronizedClause.getPrefix(), Space.Location.DATA_SYNCHRONIZED_CLAUSE_PREFIX, p);
-        visitMarkers(dataSynchronizedClause.getMarkers(), p);
+        beforeSyntax(dataSynchronizedClause, Space.Location.DATA_SYNCHRONIZED_CLAUSE_PREFIX, p);
         visit(dataSynchronizedClause.getWords(), p);
+        afterSyntax(dataSynchronizedClause, p);
         return dataSynchronizedClause;
     }
 
     public Cobol visitDataThreadLocalClause(Cobol.DataThreadLocalClause dataThreadLocalClause, PrintOutputCapture<P> p) {
-        visitSpace(dataThreadLocalClause.getPrefix(), Space.Location.DATA_THREAD_LOCAL_CLAUSE_PREFIX, p);
-        visitMarkers(dataThreadLocalClause.getMarkers(), p);
+        beforeSyntax(dataThreadLocalClause, Space.Location.DATA_THREAD_LOCAL_CLAUSE_PREFIX, p);
         visit(dataThreadLocalClause.getWords(), p);
+        afterSyntax(dataThreadLocalClause, p);
         return dataThreadLocalClause;
     }
 
     public Cobol visitDataTypeClause(Cobol.DataTypeClause dataTypeClause, PrintOutputCapture<P> p) {
-        visitSpace(dataTypeClause.getPrefix(), Space.Location.DATA_TYPE_CLAUSE_PREFIX, p);
-        visitMarkers(dataTypeClause.getMarkers(), p);
+        beforeSyntax(dataTypeClause, Space.Location.DATA_TYPE_CLAUSE_PREFIX, p);
         visit(dataTypeClause.getWords(), p);
         visit(dataTypeClause.getParenthesized(), p);
+        afterSyntax(dataTypeClause, p);
         return dataTypeClause;
     }
 
     public Cobol visitDataTypeDefClause(Cobol.DataTypeDefClause dataTypeDefClause, PrintOutputCapture<P> p) {
-        visitSpace(dataTypeDefClause.getPrefix(), Space.Location.DATA_TYPE_DEF_CLAUSE_PREFIX, p);
-        visitMarkers(dataTypeDefClause.getMarkers(), p);
+        beforeSyntax(dataTypeDefClause, Space.Location.DATA_TYPE_DEF_CLAUSE_PREFIX, p);
         visit(dataTypeDefClause.getWords(), p);
+        afterSyntax(dataTypeDefClause, p);
         return dataTypeDefClause;
     }
 
     public Cobol visitDataUsageClause(Cobol.DataUsageClause dataUsageClause, PrintOutputCapture<P> p) {
-        visitSpace(dataUsageClause.getPrefix(), Space.Location.DATA_USAGE_CLAUSE_PREFIX, p);
-        visitMarkers(dataUsageClause.getMarkers(), p);
+        beforeSyntax(dataUsageClause, Space.Location.DATA_USAGE_CLAUSE_PREFIX, p);
         visit(dataUsageClause.getWords(), p);
+        afterSyntax(dataUsageClause, p);
         return dataUsageClause;
     }
 
     public Cobol visitDataUsingClause(Cobol.DataUsingClause dataUsingClause, PrintOutputCapture<P> p) {
-        visitSpace(dataUsingClause.getPrefix(), Space.Location.DATA_USING_CLAUSE_PREFIX, p);
-        visitMarkers(dataUsingClause.getMarkers(), p);
+        beforeSyntax(dataUsingClause, Space.Location.DATA_USING_CLAUSE_PREFIX, p);
         visit(dataUsingClause.getWords(), p);
+        afterSyntax(dataUsingClause, p);
         return dataUsingClause;
     }
 
     public Cobol visitDataValueClause(Cobol.DataValueClause dataValueClause, PrintOutputCapture<P> p) {
-        visitSpace(dataValueClause.getPrefix(), Space.Location.DATA_VALUE_CLAUSE_PREFIX, p);
-        visitMarkers(dataValueClause.getMarkers(), p);
+        beforeSyntax(dataValueClause, Space.Location.DATA_VALUE_CLAUSE_PREFIX, p);
         visit(dataValueClause.getWords(), p);
         visit(dataValueClause.getCobols(), p);
+        afterSyntax(dataValueClause, p);
         return dataValueClause;
     }
 
     public Cobol visitDataValueInterval(Cobol.DataValueInterval dataValueInterval, PrintOutputCapture<P> p) {
-        visitSpace(dataValueInterval.getPrefix(), Space.Location.DATA_VALUE_INTERVAL_PREFIX, p);
-        visitMarkers(dataValueInterval.getMarkers(), p);
+        beforeSyntax(dataValueInterval, Space.Location.DATA_VALUE_INTERVAL_PREFIX, p);
         visit(dataValueInterval.getFrom(), p);
         visit(dataValueInterval.getTo(), p);
+        afterSyntax(dataValueInterval, p);
         return dataValueInterval;
     }
 
     public Cobol visitDataValueIntervalTo(Cobol.DataValueIntervalTo dataValueIntervalTo, PrintOutputCapture<P> p) {
-        visitSpace(dataValueIntervalTo.getPrefix(), Space.Location.DATA_VALUE_INTERVAL_TO_PREFIX, p);
-        visitMarkers(dataValueIntervalTo.getMarkers(), p);
+        beforeSyntax(dataValueIntervalTo, Space.Location.DATA_VALUE_INTERVAL_TO_PREFIX, p);
         visit(dataValueIntervalTo.getThrough(), p);
         visit(dataValueIntervalTo.getLiteral(), p);
+        afterSyntax(dataValueIntervalTo, p);
         return dataValueIntervalTo;
     }
 
     public Cobol visitDataWithLowerBoundsClause(Cobol.DataWithLowerBoundsClause dataWithLowerBoundsClause, PrintOutputCapture<P> p) {
-        visitSpace(dataWithLowerBoundsClause.getPrefix(), Space.Location.DATA_WITH_LOWER_BOUNDS_CLAUSE_PREFIX, p);
-        visitMarkers(dataWithLowerBoundsClause.getMarkers(), p);
+        beforeSyntax(dataWithLowerBoundsClause, Space.Location.DATA_WITH_LOWER_BOUNDS_CLAUSE_PREFIX, p);
         visit(dataWithLowerBoundsClause.getWords(), p);
+        afterSyntax(dataWithLowerBoundsClause, p);
         return dataWithLowerBoundsClause;
     }
 
     public Cobol visitDecimalPointClause(Cobol.DecimalPointClause decimalPointClause, PrintOutputCapture<P> p) {
-        visitSpace(decimalPointClause.getPrefix(), Space.Location.DECIMAL_POINT_CLAUSE_PREFIX, p);
-        visitMarkers(decimalPointClause.getMarkers(), p);
+        beforeSyntax(decimalPointClause, Space.Location.DECIMAL_POINT_CLAUSE_PREFIX, p);
         visit(decimalPointClause.getWords(), p);
+        afterSyntax(decimalPointClause, p);
         return decimalPointClause;
     }
 
     public Cobol visitDefaultComputationalSignClause(Cobol.DefaultComputationalSignClause defaultComputationalSignClause, PrintOutputCapture<P> p) {
-        visitSpace(defaultComputationalSignClause.getPrefix(), Space.Location.DEFAULT_COMPUTATIONAL_SIGN_CLAUSE_PREFIX, p);
-        visitMarkers(defaultComputationalSignClause.getMarkers(), p);
+        beforeSyntax(defaultComputationalSignClause, Space.Location.DEFAULT_COMPUTATIONAL_SIGN_CLAUSE_PREFIX, p);
         visit(defaultComputationalSignClause.getWords(), p);
+        afterSyntax(defaultComputationalSignClause, p);
         return defaultComputationalSignClause;
     }
 
     public Cobol visitDefaultDisplaySignClause(Cobol.DefaultDisplaySignClause defaultDisplaySignClause, PrintOutputCapture<P> p) {
-        visitSpace(defaultDisplaySignClause.getPrefix(), Space.Location.DEFAULT_DISPLAY_SIGN_CLAUSE_PREFIX, p);
-        visitMarkers(defaultDisplaySignClause.getMarkers(), p);
+        beforeSyntax(defaultDisplaySignClause, Space.Location.DEFAULT_DISPLAY_SIGN_CLAUSE_PREFIX, p);
         visit(defaultDisplaySignClause.getWords(), p);
+        afterSyntax(defaultDisplaySignClause, p);
         return defaultDisplaySignClause;
     }
 
     public Cobol visitDelete(Cobol.Delete delete, PrintOutputCapture<P> p) {
-        visitSpace(delete.getPrefix(), Space.Location.DELETE_PREFIX, p);
-        visitMarkers(delete.getMarkers(), p);
+        beforeSyntax(delete, Space.Location.DELETE_PREFIX, p);
         visit(delete.getDelete(), p);
         visit(delete.getFileName(), p);
         visit(delete.getRecord(), p);
         visit(delete.getInvalidKey(), p);
         visit(delete.getNotInvalidKey(), p);
         visit(delete.getEndDelete(), p);
+        afterSyntax(delete, p);
         return delete;
     }
 
     public Cobol visitDestinationCountClause(Cobol.DestinationCountClause destinationCountClause, PrintOutputCapture<P> p) {
-        visitSpace(destinationCountClause.getPrefix(), Space.Location.DESTINATION_COUNT_CLAUSE_PREFIX, p);
-        visitMarkers(destinationCountClause.getMarkers(), p);
+        beforeSyntax(destinationCountClause, Space.Location.DESTINATION_COUNT_CLAUSE_PREFIX, p);
         visit(destinationCountClause.getWords(), p);
         visit(destinationCountClause.getDataDescName(), p);
+        afterSyntax(destinationCountClause, p);
         return destinationCountClause;
     }
 
     public Cobol visitDestinationTableClause(Cobol.DestinationTableClause destinationTableClause, PrintOutputCapture<P> p) {
-        visitSpace(destinationTableClause.getPrefix(), Space.Location.DESTINATION_TABLE_CLAUSE_PREFIX, p);
-        visitMarkers(destinationTableClause.getMarkers(), p);
+        beforeSyntax(destinationTableClause, Space.Location.DESTINATION_TABLE_CLAUSE_PREFIX, p);
         visit(destinationTableClause.getFirstWords(), p);
         visit(destinationTableClause.getIntegerLiteral(), p);
         visit(destinationTableClause.getSecondWords(), p);
         visit(destinationTableClause.getIndexNames(), p);
+        afterSyntax(destinationTableClause, p);
         return destinationTableClause;
     }
 
     public Cobol visitDisable(Cobol.Disable disable, PrintOutputCapture<P> p) {
-        visitSpace(disable.getPrefix(), Space.Location.DISABLE_PREFIX, p);
-        visitMarkers(disable.getMarkers(), p);
+        beforeSyntax(disable, Space.Location.DISABLE_PREFIX, p);
         visit(disable.getDisable(), p);
         visit(disable.getTypes(), p);
         visit(disable.getCdName(), p);
         visit(disable.getWith(), p);
         visit(disable.getKey(), p);
         visit(disable.getKeyName(), p);
+        afterSyntax(disable, p);
         return disable;
     }
 
     public Cobol visitDisplay(Cobol.Display display, PrintOutputCapture<P> p) {
-        visitSpace(display.getPrefix(), Space.Location.DISPLAY_PREFIX, p);
-        visitMarkers(display.getMarkers(), p);
+        beforeSyntax(display, Space.Location.DISPLAY_PREFIX, p);
         visit(display.getDisplay(), p);
         visit(display.getOperands(), p);
         visit(display.getDisplayAt(), p);
@@ -946,28 +945,28 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(display.getOnExceptionClause(), p);
         visit(display.getNotOnExceptionClause(), p);
         visit(display.getEndDisplay(), p);
+        afterSyntax(display, p);
         return display;
     }
 
     public Cobol visitDisplayAt(Cobol.DisplayAt displayAt, PrintOutputCapture<P> p) {
-        visitSpace(displayAt.getPrefix(), Space.Location.DISPLAY_AT_PREFIX, p);
-        visitMarkers(displayAt.getMarkers(), p);
+        beforeSyntax(displayAt, Space.Location.DISPLAY_AT_PREFIX, p);
         visit(displayAt.getAt(), p);
         visit(displayAt.getName(), p);
+        afterSyntax(displayAt, p);
         return displayAt;
     }
 
     public Cobol visitDisplayUpon(Cobol.DisplayUpon displayUpon, PrintOutputCapture<P> p) {
-        visitSpace(displayUpon.getPrefix(), Space.Location.DISPLAY_UPON_PREFIX, p);
-        visitMarkers(displayUpon.getMarkers(), p);
+        beforeSyntax(displayUpon, Space.Location.DISPLAY_UPON_PREFIX, p);
         visit(displayUpon.getUpon(), p);
         visit(displayUpon.getName(), p);
+        afterSyntax(displayUpon, p);
         return displayUpon;
     }
 
     public Cobol visitDivide(Cobol.Divide divide, PrintOutputCapture<P> p) {
-        visitSpace(divide.getPrefix(), Space.Location.DIVIDE_PREFIX, p);
-        visitMarkers(divide.getMarkers(), p);
+        beforeSyntax(divide, Space.Location.DIVIDE_PREFIX, p);
         visit(divide.getDivide(), p);
         visit(divide.getName(), p);
         visit(divide.getAction(), p);
@@ -975,803 +974,803 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(divide.getOnSizeErrorPhrase(), p);
         visit(divide.getNotOnSizeErrorPhrase(), p);
         visit(divide.getEndDivide(), p);
+        afterSyntax(divide, p);
         return divide;
     }
 
     public Cobol visitDivideGiving(Cobol.DivideGiving divideGiving, PrintOutputCapture<P> p) {
-        visitSpace(divideGiving.getPrefix(), Space.Location.DIVIDE_GIVING_PREFIX, p);
-        visitMarkers(divideGiving.getMarkers(), p);
+        beforeSyntax(divideGiving, Space.Location.DIVIDE_GIVING_PREFIX, p);
         visit(divideGiving.getWord(), p);
         visit(divideGiving.getName(), p);
         visit(divideGiving.getDivideGivingPhrase(), p);
+        afterSyntax(divideGiving, p);
         return divideGiving;
     }
 
     public Cobol visitDivideGivingPhrase(Cobol.DivideGivingPhrase divideGivingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(divideGivingPhrase.getPrefix(), Space.Location.DIVIDE_GIVING_PHRASE_PREFIX, p);
-        visitMarkers(divideGivingPhrase.getMarkers(), p);
+        beforeSyntax(divideGivingPhrase, Space.Location.DIVIDE_GIVING_PHRASE_PREFIX, p);
         visit(divideGivingPhrase.getGiving(), p);
         visit(divideGivingPhrase.getRoundables(), p);
+        afterSyntax(divideGivingPhrase, p);
         return divideGivingPhrase;
     }
 
     public Cobol visitDivideInto(Cobol.DivideInto divideInto, PrintOutputCapture<P> p) {
-        visitSpace(divideInto.getPrefix(), Space.Location.DIVIDE_INTO_PREFIX, p);
-        visitMarkers(divideInto.getMarkers(), p);
+        beforeSyntax(divideInto, Space.Location.DIVIDE_INTO_PREFIX, p);
         visit(divideInto.getInto(), p);
         visit(divideInto.getRoundables(), p);
+        afterSyntax(divideInto, p);
         return divideInto;
     }
 
     public Cobol visitDivideRemainder(Cobol.DivideRemainder divideRemainder, PrintOutputCapture<P> p) {
-        visitSpace(divideRemainder.getPrefix(), Space.Location.DIVIDE_REMAINDER_PREFIX, p);
-        visitMarkers(divideRemainder.getMarkers(), p);
+        beforeSyntax(divideRemainder, Space.Location.DIVIDE_REMAINDER_PREFIX, p);
         visit(divideRemainder.getRemainder(), p);
         visit(divideRemainder.getName(), p);
+        afterSyntax(divideRemainder, p);
         return divideRemainder;
     }
 
     public Cobol visitEnable(Cobol.Enable enable, PrintOutputCapture<P> p) {
-        visitSpace(enable.getPrefix(), Space.Location.ENABLE_PREFIX, p);
-        visitMarkers(enable.getMarkers(), p);
+        beforeSyntax(enable, Space.Location.ENABLE_PREFIX, p);
         visit(enable.getEnable(), p);
         visit(enable.getTypes(), p);
         visit(enable.getCdName(), p);
         visit(enable.getWith(), p);
         visit(enable.getKey(), p);
         visit(enable.getKeyName(), p);
+        afterSyntax(enable, p);
         return enable;
     }
 
     public Cobol visitEndKeyClause(Cobol.EndKeyClause endKeyClause, PrintOutputCapture<P> p) {
-        visitSpace(endKeyClause.getPrefix(), Space.Location.END_KEY_CLAUSE_PREFIX, p);
-        visitMarkers(endKeyClause.getMarkers(), p);
+        beforeSyntax(endKeyClause, Space.Location.END_KEY_CLAUSE_PREFIX, p);
         visit(endKeyClause.getWords(), p);
         visit(endKeyClause.getName(), p);
+        afterSyntax(endKeyClause, p);
         return endKeyClause;
     }
 
     public Cobol visitEndProgram(Cobol.EndProgram endProgram, PrintOutputCapture<P> p) {
-        visitSpace(endProgram.getPrefix(), Space.Location.END_PROGRAM_PREFIX, p);
-        visitMarkers(endProgram.getMarkers(), p);
+        beforeSyntax(endProgram, Space.Location.END_PROGRAM_PREFIX, p);
         visit(endProgram.getWords(), p);
         visit(endProgram.getProgramName(), p);
         visit(endProgram.getDot(), p);
+        afterSyntax(endProgram, p);
         return endProgram;
     }
 
     @Override
     public Cobol.Entry visitEntry(Cobol.Entry entry, PrintOutputCapture<P> p) {
-        visitSpace(entry.getPrefix(), Space.Location.ENTRY_PREFIX, p);
-        visitMarkers(entry.getMarkers(), p);
+        beforeSyntax(entry, Space.Location.ENTRY_PREFIX, p);
         visit(entry.getEntry(), p);
         visit(entry.getLiteral(), p);
         visit(entry.getUsing(), p);
         visit(entry.getIdentifiers(), p);
+        afterSyntax(entry, p);
         return entry;
     }
 
     public Cobol visitEnvironmentDivision(Cobol.EnvironmentDivision environmentDivision, PrintOutputCapture<P> p) {
-        visitSpace(environmentDivision.getPrefix(), Space.Location.ENVIRONMENT_DIVISION_PREFIX, p);
-        visitMarkers(environmentDivision.getMarkers(), p);
+        beforeSyntax(environmentDivision, Space.Location.ENVIRONMENT_DIVISION_PREFIX, p);
         visit(environmentDivision.getWords(), p);
         visit(environmentDivision.getDot(), p);
         visit(environmentDivision.getBody(), p);
+        afterSyntax(environmentDivision, p);
         return environmentDivision;
     }
 
     public Cobol visitEvaluate(Cobol.Evaluate evaluate, PrintOutputCapture<P> p) {
-        visitSpace(evaluate.getPrefix(), Space.Location.EVALUATE_PREFIX, p);
-        visitMarkers(evaluate.getMarkers(), p);
+        beforeSyntax(evaluate, Space.Location.EVALUATE_PREFIX, p);
         visit(evaluate.getEvaluate(), p);
         visit(evaluate.getSelect(), p);
         visit(evaluate.getAlsoSelect(), p);
         visit(evaluate.getWhenPhrase(), p);
         visit(evaluate.getWhenOther(), p);
         visit(evaluate.getEndPhrase(), p);
+        afterSyntax(evaluate, p);
         return evaluate;
     }
 
     public Cobol visitEvaluateAlso(Cobol.EvaluateAlso evaluateAlso, PrintOutputCapture<P> p) {
-        visitSpace(evaluateAlso.getPrefix(), Space.Location.EVALUATE_ALSO_PREFIX, p);
-        visitMarkers(evaluateAlso.getMarkers(), p);
+        beforeSyntax(evaluateAlso, Space.Location.EVALUATE_ALSO_PREFIX, p);
         visit(evaluateAlso.getAlso(), p);
         visit(evaluateAlso.getSelect(), p);
+        afterSyntax(evaluateAlso, p);
         return evaluateAlso;
     }
 
     public Cobol visitEnvironmentSwitchNameClause(Cobol.EnvironmentSwitchNameClause environmentSwitchNameClause, PrintOutputCapture<P> p) {
-        visitSpace(environmentSwitchNameClause.getPrefix(), Space.Location.ENVIRONMENT_SWITCH_NAME_CLAUSE_PREFIX, p);
-        visitMarkers(environmentSwitchNameClause.getMarkers(), p);
+        beforeSyntax(environmentSwitchNameClause, Space.Location.ENVIRONMENT_SWITCH_NAME_CLAUSE_PREFIX, p);
         visit(environmentSwitchNameClause.getEnvironmentName(), p);
         visit(environmentSwitchNameClause.getIs(), p);
         visit(environmentSwitchNameClause.getMnemonicName(), p);
         visit(environmentSwitchNameClause.getEnvironmentSwitchNameSpecialNamesStatusPhrase(), p);
+        afterSyntax(environmentSwitchNameClause, p);
         return environmentSwitchNameClause;
     }
 
     public Cobol visitEnvironmentSwitchNameSpecialNamesStatusPhrase(Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase environmentSwitchNameSpecialNamesStatusPhrase, PrintOutputCapture<P> p) {
-        visitSpace(environmentSwitchNameSpecialNamesStatusPhrase.getPrefix(), Space.Location.ENVIRONMENT_SWITCH_NAME_SPECIAL_NAMES_STATUS_PHRASE_PREFIX, p);
-        visitMarkers(environmentSwitchNameSpecialNamesStatusPhrase.getMarkers(), p);
+        beforeSyntax(environmentSwitchNameSpecialNamesStatusPhrase, Space.Location.ENVIRONMENT_SWITCH_NAME_SPECIAL_NAMES_STATUS_PHRASE_PREFIX, p);
         visit(environmentSwitchNameSpecialNamesStatusPhrase.getCobols(), p);
+        afterSyntax(environmentSwitchNameSpecialNamesStatusPhrase, p);
         return environmentSwitchNameSpecialNamesStatusPhrase;
     }
 
     public Cobol visitErrorKeyClause(Cobol.ErrorKeyClause errorKeyClause, PrintOutputCapture<P> p) {
-        visitSpace(errorKeyClause.getPrefix(), Space.Location.ERROR_KEY_CLAUSE_PREFIX, p);
-        visitMarkers(errorKeyClause.getMarkers(), p);
+        beforeSyntax(errorKeyClause, Space.Location.ERROR_KEY_CLAUSE_PREFIX, p);
         visit(errorKeyClause.getWords(), p);
         visit(errorKeyClause.getName(), p);
+        afterSyntax(errorKeyClause, p);
         return errorKeyClause;
     }
 
     public Cobol visitEvaluateAlsoCondition(Cobol.EvaluateAlsoCondition evaluateAlsoCondition, PrintOutputCapture<P> p) {
-        visitSpace(evaluateAlsoCondition.getPrefix(), Space.Location.EVALUATE_ALSO_CONDITION_PREFIX, p);
-        visitMarkers(evaluateAlsoCondition.getMarkers(), p);
+        beforeSyntax(evaluateAlsoCondition, Space.Location.EVALUATE_ALSO_CONDITION_PREFIX, p);
         visit(evaluateAlsoCondition.getAlso(), p);
         visit(evaluateAlsoCondition.getCondition(), p);
+        afterSyntax(evaluateAlsoCondition, p);
         return evaluateAlsoCondition;
     }
 
     public Cobol visitEvaluateCondition(Cobol.EvaluateCondition evaluateCondition, PrintOutputCapture<P> p) {
-        visitSpace(evaluateCondition.getPrefix(), Space.Location.EVALUATE_CONDITION_PREFIX, p);
-        visitMarkers(evaluateCondition.getMarkers(), p);
+        beforeSyntax(evaluateCondition, Space.Location.EVALUATE_CONDITION_PREFIX, p);
         visit(evaluateCondition.getWords(), p);
         visit(evaluateCondition.getCondition(), p);
         visit(evaluateCondition.getEvaluateThrough(), p);
+        afterSyntax(evaluateCondition, p);
         return evaluateCondition;
     }
 
     public Cobol visitEvaluateThrough(Cobol.EvaluateThrough evaluateThrough, PrintOutputCapture<P> p) {
-        visitSpace(evaluateThrough.getPrefix(), Space.Location.EVALUATE_THROUGH_PREFIX, p);
-        visitMarkers(evaluateThrough.getMarkers(), p);
+        beforeSyntax(evaluateThrough, Space.Location.EVALUATE_THROUGH_PREFIX, p);
         visit(evaluateThrough.getThrough(), p);
         visit(evaluateThrough.getValue(), p);
+        afterSyntax(evaluateThrough, p);
         return evaluateThrough;
     }
 
     public Cobol visitEvaluateValueThrough(Cobol.EvaluateValueThrough evaluateValueThrough, PrintOutputCapture<P> p) {
-        visitSpace(evaluateValueThrough.getPrefix(), Space.Location.EVALUATE_VALUE_THROUGH_PREFIX, p);
-        visitMarkers(evaluateValueThrough.getMarkers(), p);
+        beforeSyntax(evaluateValueThrough, Space.Location.EVALUATE_VALUE_THROUGH_PREFIX, p);
         visit(evaluateValueThrough.getNot(), p);
         visit(evaluateValueThrough.getValue(), p);
         visit(evaluateValueThrough.getEvaluateThrough(), p);
+        afterSyntax(evaluateValueThrough, p);
         return evaluateValueThrough;
     }
 
     public Cobol visitEvaluateWhen(Cobol.EvaluateWhen evaluateWhen, PrintOutputCapture<P> p) {
-        visitSpace(evaluateWhen.getPrefix(), Space.Location.EVALUATE_WHEN_PREFIX, p);
-        visitMarkers(evaluateWhen.getMarkers(), p);
+        beforeSyntax(evaluateWhen, Space.Location.EVALUATE_WHEN_PREFIX, p);
         visit(evaluateWhen.getWhen(), p);
         visit(evaluateWhen.getCondition(), p);
         visit(evaluateWhen.getAlsoCondition(), p);
+        afterSyntax(evaluateWhen, p);
         return evaluateWhen;
     }
 
     public Cobol visitEvaluateWhenPhrase(Cobol.EvaluateWhenPhrase evaluateWhenPhrase, PrintOutputCapture<P> p) {
-        visitSpace(evaluateWhenPhrase.getPrefix(), Space.Location.EVALUATE_WHEN_PHRASE_PREFIX, p);
-        visitMarkers(evaluateWhenPhrase.getMarkers(), p);
+        beforeSyntax(evaluateWhenPhrase, Space.Location.EVALUATE_WHEN_PHRASE_PREFIX, p);
         visit(evaluateWhenPhrase.getWhens(), p);
         visit(evaluateWhenPhrase.getStatements(), p);
+        afterSyntax(evaluateWhenPhrase, p);
         return evaluateWhenPhrase;
     }
 
     public Cobol visitExecCicsStatement(Cobol.ExecCicsStatement execCicsStatement, PrintOutputCapture<P> p) {
-        visitSpace(execCicsStatement.getPrefix(), Space.Location.EXEC_CICS_STATEMENT_PREFIX, p);
-        visitMarkers(execCicsStatement.getMarkers(), p);
+        beforeSyntax(execCicsStatement, Space.Location.EXEC_CICS_STATEMENT_PREFIX, p);
         visit(execCicsStatement.getExecCicsLines(), p);
+        afterSyntax(execCicsStatement, p);
         return execCicsStatement;
     }
 
     public Cobol visitExecSqlImsStatement(Cobol.ExecSqlImsStatement execSqlImsStatement, PrintOutputCapture<P> p) {
-        visitSpace(execSqlImsStatement.getPrefix(), Space.Location.EXEC_SQL_IMS_STATEMENT_PREFIX, p);
-        visitMarkers(execSqlImsStatement.getMarkers(), p);
+        beforeSyntax(execSqlImsStatement, Space.Location.EXEC_SQL_IMS_STATEMENT_PREFIX, p);
         visit(execSqlImsStatement.getExecSqlLmsLines(), p);
+        afterSyntax(execSqlImsStatement, p);
         return execSqlImsStatement;
     }
 
     public Cobol visitExecSqlStatement(Cobol.ExecSqlStatement execSqlStatement, PrintOutputCapture<P> p) {
-        visitSpace(execSqlStatement.getPrefix(), Space.Location.EXEC_SQL_STATEMENT_PREFIX, p);
-        visitMarkers(execSqlStatement.getMarkers(), p);
+        beforeSyntax(execSqlStatement, Space.Location.EXEC_SQL_STATEMENT_PREFIX, p);
         visit(execSqlStatement.getExecSqlLines(), p);
+        afterSyntax(execSqlStatement, p);
         return execSqlStatement;
     }
 
     public Cobol visitExhibit(Cobol.Exhibit exhibit, PrintOutputCapture<P> p) {
-        visitSpace(exhibit.getPrefix(), Space.Location.EXHIBIT_PREFIX, p);
-        visitMarkers(exhibit.getMarkers(), p);
+        beforeSyntax(exhibit, Space.Location.EXHIBIT_PREFIX, p);
         visit(exhibit.getWords(), p);
         visit(exhibit.getOperands(), p);
+        afterSyntax(exhibit, p);
         return exhibit;
     }
 
     public Cobol visitExit(Cobol.Exit exit, PrintOutputCapture<P> p) {
-        visitSpace(exit.getPrefix(), Space.Location.EXIT_PREFIX, p);
-        visitMarkers(exit.getMarkers(), p);
+        beforeSyntax(exit, Space.Location.EXIT_PREFIX, p);
         visit(exit.getWords(), p);
+        afterSyntax(exit, p);
         return exit;
     }
 
     public Cobol visitExternalClause(Cobol.ExternalClause externalClause, PrintOutputCapture<P> p) {
-        visitSpace(externalClause.getPrefix(), Space.Location.EXTERNAL_CLAUSE_PREFIX, p);
-        visitMarkers(externalClause.getMarkers(), p);
+        beforeSyntax(externalClause, Space.Location.EXTERNAL_CLAUSE_PREFIX, p);
         visit(externalClause.getWords(), p);
+        afterSyntax(externalClause, p);
         return externalClause;
     }
 
     public Cobol visitFigurativeConstant(Cobol.FigurativeConstant figurativeConstant, PrintOutputCapture<P> p) {
-        visitSpace(figurativeConstant.getPrefix(), Space.Location.FIGURATIVE_CONSTANT_PREFIX, p);
-        visitMarkers(figurativeConstant.getMarkers(), p);
+        beforeSyntax(figurativeConstant, Space.Location.FIGURATIVE_CONSTANT_PREFIX, p);
         visit(figurativeConstant.getWord(), p);
         visit(figurativeConstant.getLiteral(), p);
+        afterSyntax(figurativeConstant, p);
         return figurativeConstant;
     }
 
     public Cobol visitFileControlEntry(Cobol.FileControlEntry fileControlEntry, PrintOutputCapture<P> p) {
-        visitSpace(fileControlEntry.getPrefix(), Space.Location.FILE_CONTROL_ENTRY_PREFIX, p);
-        visitMarkers(fileControlEntry.getMarkers(), p);
+        beforeSyntax(fileControlEntry, Space.Location.FILE_CONTROL_ENTRY_PREFIX, p);
         visit(fileControlEntry.getSelectClause(), p);
         visit(fileControlEntry.getControlClauses(), p);
+        afterSyntax(fileControlEntry, p);
         return fileControlEntry;
     }
 
     public Cobol visitFileControlParagraph(Cobol.FileControlParagraph fileControlParagraph, PrintOutputCapture<P> p) {
-        visitSpace(fileControlParagraph.getPrefix(), Space.Location.FILE_CONTROL_PARAGRAPH_PREFIX, p);
-        visitMarkers(fileControlParagraph.getMarkers(), p);
+        beforeSyntax(fileControlParagraph, Space.Location.FILE_CONTROL_PARAGRAPH_PREFIX, p);
         visit(fileControlParagraph.getFileControl(), p);
         visit(fileControlParagraph.getControlEntries(), p);
+        afterSyntax(fileControlParagraph, p);
         return fileControlParagraph;
     }
 
     public Cobol visitFileDescriptionEntry(Cobol.FileDescriptionEntry fileDescriptionEntry, PrintOutputCapture<P> p) {
-        visitSpace(fileDescriptionEntry.getPrefix(), Space.Location.FILE_DESCRIPTION_ENTRY_PREFIX, p);
-        visitMarkers(fileDescriptionEntry.getMarkers(), p);
+        beforeSyntax(fileDescriptionEntry, Space.Location.FILE_DESCRIPTION_ENTRY_PREFIX, p);
         visit(fileDescriptionEntry.getWord(), p);
         visit(fileDescriptionEntry.getName(), p);
         visit(fileDescriptionEntry.getClauses(), p);
         visit(fileDescriptionEntry.getDataDescriptions(), p);
+        afterSyntax(fileDescriptionEntry, p);
         return fileDescriptionEntry;
     }
 
     public Cobol visitFileSection(Cobol.FileSection fileSection, PrintOutputCapture<P> p) {
-        visitSpace(fileSection.getPrefix(), Space.Location.FILE_SECTION_PREFIX, p);
-        visitMarkers(fileSection.getMarkers(), p);
+        beforeSyntax(fileSection, Space.Location.FILE_SECTION_PREFIX, p);
         visit(fileSection.getWords(), p);
         visit(fileSection.getDot(), p);
         visit(fileSection.getFileDescriptionEntry(), p);
+        afterSyntax(fileSection, p);
         return fileSection;
     }
 
     public Cobol visitFileStatusClause(Cobol.FileStatusClause fileStatusClause, PrintOutputCapture<P> p) {
-        visitSpace(fileStatusClause.getPrefix(), Space.Location.FILE_STATUS_CLAUSE_PREFIX, p);
-        visitMarkers(fileStatusClause.getMarkers(), p);
+        beforeSyntax(fileStatusClause, Space.Location.FILE_STATUS_CLAUSE_PREFIX, p);
         visit(fileStatusClause.getWords(), p);
         visit(fileStatusClause.getQualifiedDataNames(), p);
+        afterSyntax(fileStatusClause, p);
         return fileStatusClause;
     }
 
     public Cobol visitFunctionCall(Cobol.FunctionCall functionCall, PrintOutputCapture<P> p) {
-        visitSpace(functionCall.getPrefix(), Space.Location.FUNCTION_CALL_PREFIX, p);
-        visitMarkers(functionCall.getMarkers(), p);
+        beforeSyntax(functionCall, Space.Location.FUNCTION_CALL_PREFIX, p);
         visit(functionCall.getFunction(), p);
         visit(functionCall.getFunctionName(), p);
         visit(functionCall.getArguments(), p);
         visit(functionCall.getReferenceModifier(), p);
+        afterSyntax(functionCall, p);
         return functionCall;
     }
 
     public Cobol visitGenerate(Cobol.Generate generate, PrintOutputCapture<P> p) {
-        visitSpace(generate.getPrefix(), Space.Location.GENERATE_PREFIX, p);
-        visitMarkers(generate.getMarkers(), p);
+        beforeSyntax(generate, Space.Location.GENERATE_PREFIX, p);
         visit(generate.getGenerate(), p);
         visit(generate.getReportName(), p);
+        afterSyntax(generate, p);
         return generate;
     }
 
     public Cobol visitGlobalClause(Cobol.GlobalClause globalClause, PrintOutputCapture<P> p) {
-        visitSpace(globalClause.getPrefix(), Space.Location.GLOBAL_CLAUSE_PREFIX, p);
-        visitMarkers(globalClause.getMarkers(), p);
+        beforeSyntax(globalClause, Space.Location.GLOBAL_CLAUSE_PREFIX, p);
         visit(globalClause.getWords(), p);
+        afterSyntax(globalClause, p);
         return globalClause;
     }
 
     public Cobol visitGoBack(Cobol.GoBack goBack, PrintOutputCapture<P> p) {
-        visitSpace(goBack.getPrefix(), Space.Location.GO_BACK_PREFIX, p);
-        visitMarkers(goBack.getMarkers(), p);
+        beforeSyntax(goBack, Space.Location.GO_BACK_PREFIX, p);
         visit(goBack.getGoBack(), p);
+        afterSyntax(goBack, p);
         return goBack;
     }
 
     public Cobol visitGoTo(Cobol.GoTo _goTo, PrintOutputCapture<P> p) {
-        visitSpace(_goTo.getPrefix(), Space.Location.GO_TO_PREFIX, p);
-        visitMarkers(_goTo.getMarkers(), p);
+        beforeSyntax(_goTo, Space.Location.GO_TO_PREFIX, p);
         visit(_goTo.getWords(), p);
         visit(_goTo.getStatement(), p);
+        afterSyntax(_goTo, p);
         return _goTo;
     }
 
     public Cobol visitGoToDependingOnStatement(Cobol.GoToDependingOnStatement goToDependingOnStatement, PrintOutputCapture<P> p) {
-        visitSpace(goToDependingOnStatement.getPrefix(), Space.Location.GO_TO_DEPENDING_ON_STATEMENT_PREFIX, p);
-        visitMarkers(goToDependingOnStatement.getMarkers(), p);
+        beforeSyntax(goToDependingOnStatement, Space.Location.GO_TO_DEPENDING_ON_STATEMENT_PREFIX, p);
         visit(goToDependingOnStatement.getProcedureNames(), p);
         visit(goToDependingOnStatement.getWords(), p);
         visit(goToDependingOnStatement.getIdentifier(), p);
+        afterSyntax(goToDependingOnStatement, p);
         return goToDependingOnStatement;
     }
 
     public Cobol visitIdentificationDivision(Cobol.IdentificationDivision identificationDivision, PrintOutputCapture<P> p) {
-        visitSpace(identificationDivision.getPrefix(), Space.Location.IDENTIFICATION_DIVISION_PREFIX, p);
-        visitMarkers(identificationDivision.getMarkers(), p);
+        beforeSyntax(identificationDivision, Space.Location.IDENTIFICATION_DIVISION_PREFIX, p);
         visit(identificationDivision.getWords(), p);
         visit(identificationDivision.getProgramIdParagraph(), p);
         visit(identificationDivision.getParagraphs(), p);
+        afterSyntax(identificationDivision, p);
         return identificationDivision;
     }
 
     public Cobol visitIdentificationDivisionParagraph(Cobol.IdentificationDivisionParagraph identificationDivisionParagraph, PrintOutputCapture<P> p) {
-        visitSpace(identificationDivisionParagraph.getPrefix(), Space.Location.IDENTIFICATION_DIVISION_PARAGRAPH_PREFIX, p);
-        visitMarkers(identificationDivisionParagraph.getMarkers(), p);
+        beforeSyntax(identificationDivisionParagraph, Space.Location.IDENTIFICATION_DIVISION_PARAGRAPH_PREFIX, p);
         visit(identificationDivisionParagraph.getWord(), p);
         visit(identificationDivisionParagraph.getDot(), p);
         visit(identificationDivisionParagraph.getCommentEntry(), p);
         visit(identificationDivisionParagraph.getWords(), p);
         visit(identificationDivisionParagraph.getDot2(), p);
+        afterSyntax(identificationDivisionParagraph, p);
         return identificationDivisionParagraph;
     }
 
     public Cobol visitIf(Cobol.If _if, PrintOutputCapture<P> p) {
-        visitSpace(_if.getPrefix(), Space.Location.IF_PREFIX, p);
-        visitMarkers(_if.getMarkers(), p);
+        beforeSyntax(_if, Space.Location.IF_PREFIX, p);
         visit(_if.getWord(), p);
         visit(_if.getCondition(), p);
         visit(_if.getIfThen(), p);
         visit(_if.getIfElse(), p);
         visit(_if.getEndIf(), p);
+        afterSyntax(_if, p);
         return _if;
     }
 
     public Cobol visitIfElse(Cobol.IfElse ifElse, PrintOutputCapture<P> p) {
-        visitSpace(ifElse.getPrefix(), Space.Location.IF_ELSE_PREFIX, p);
-        visitMarkers(ifElse.getMarkers(), p);
+        beforeSyntax(ifElse, Space.Location.IF_ELSE_PREFIX, p);
         visit(ifElse.getWord(), p);
         visit(ifElse.getNextSentences(), p);
         visit(ifElse.getStatements(), p);
+        afterSyntax(ifElse, p);
         return ifElse;
     }
 
     public Cobol visitIfThen(Cobol.IfThen ifThen, PrintOutputCapture<P> p) {
-        visitSpace(ifThen.getPrefix(), Space.Location.IF_THEN_PREFIX, p);
-        visitMarkers(ifThen.getMarkers(), p);
+        beforeSyntax(ifThen, Space.Location.IF_THEN_PREFIX, p);
         visit(ifThen.getWord(), p);
         visit(ifThen.getNextSentences(), p);
         visit(ifThen.getStatements(), p);
+        afterSyntax(ifThen, p);
         return ifThen;
     }
 
     public Cobol visitInData(Cobol.InData inData, PrintOutputCapture<P> p) {
-        visitSpace(inData.getPrefix(), Space.Location.IN_DATA_PREFIX, p);
-        visitMarkers(inData.getMarkers(), p);
+        beforeSyntax(inData, Space.Location.IN_DATA_PREFIX, p);
         visit(inData.getWord(), p);
         visit(inData.getName(), p);
+        afterSyntax(inData, p);
         return inData;
     }
 
     public Cobol visitInFile(Cobol.InFile inFile, PrintOutputCapture<P> p) {
-        visitSpace(inFile.getPrefix(), Space.Location.IN_FILE_PREFIX, p);
-        visitMarkers(inFile.getMarkers(), p);
+        beforeSyntax(inFile, Space.Location.IN_FILE_PREFIX, p);
         visit(inFile.getWord(), p);
         visit(inFile.getName(), p);
+        afterSyntax(inFile, p);
         return inFile;
     }
 
     public Cobol visitInLibrary(Cobol.InLibrary inLibrary, PrintOutputCapture<P> p) {
-        visitSpace(inLibrary.getPrefix(), Space.Location.IN_LIBRARY_PREFIX, p);
-        visitMarkers(inLibrary.getMarkers(), p);
+        beforeSyntax(inLibrary, Space.Location.IN_LIBRARY_PREFIX, p);
         visit(inLibrary.getWord(), p);
         visit(inLibrary.getName(), p);
+        afterSyntax(inLibrary, p);
         return inLibrary;
     }
 
     public Cobol visitInMnemonic(Cobol.InMnemonic inMnemonic, PrintOutputCapture<P> p) {
-        visitSpace(inMnemonic.getPrefix(), Space.Location.IN_MNEMONIC_PREFIX, p);
-        visitMarkers(inMnemonic.getMarkers(), p);
+        beforeSyntax(inMnemonic, Space.Location.IN_MNEMONIC_PREFIX, p);
         visit(inMnemonic.getWord(), p);
         visit(inMnemonic.getName(), p);
+        afterSyntax(inMnemonic, p);
         return inMnemonic;
     }
 
     public Cobol visitInSection(Cobol.InSection inSection, PrintOutputCapture<P> p) {
-        visitSpace(inSection.getPrefix(), Space.Location.IN_SECTION_PREFIX, p);
-        visitMarkers(inSection.getMarkers(), p);
+        beforeSyntax(inSection, Space.Location.IN_SECTION_PREFIX, p);
         visit(inSection.getWord(), p);
         visit(inSection.getName(), p);
+        afterSyntax(inSection, p);
         return inSection;
     }
 
     public Cobol visitInTable(Cobol.InTable inTable, PrintOutputCapture<P> p) {
-        visitSpace(inTable.getPrefix(), Space.Location.IN_TABLE_PREFIX, p);
-        visitMarkers(inTable.getMarkers(), p);
+        beforeSyntax(inTable, Space.Location.IN_TABLE_PREFIX, p);
         visit(inTable.getWord(), p);
+        afterSyntax(inTable, p);
         return inTable;
     }
 
     public Cobol visitInitialize(Cobol.Initialize initialize, PrintOutputCapture<P> p) {
-        visitSpace(initialize.getPrefix(), Space.Location.INITIALIZE_PREFIX, p);
-        visitMarkers(initialize.getMarkers(), p);
+        beforeSyntax(initialize, Space.Location.INITIALIZE_PREFIX, p);
         visit(initialize.getInitialize(), p);
         visit(initialize.getIdentifiers(), p);
         visit(initialize.getInitializeReplacingPhrase(), p);
+        afterSyntax(initialize, p);
         return initialize;
     }
 
     public Cobol visitInitializeReplacingBy(Cobol.InitializeReplacingBy initializeReplacingBy, PrintOutputCapture<P> p) {
-        visitSpace(initializeReplacingBy.getPrefix(), Space.Location.INITIALIZE_REPLACING_BY_PREFIX, p);
-        visitMarkers(initializeReplacingBy.getMarkers(), p);
+        beforeSyntax(initializeReplacingBy, Space.Location.INITIALIZE_REPLACING_BY_PREFIX, p);
         visit(initializeReplacingBy.getWords(), p);
         visit(initializeReplacingBy.getIdentifier(), p);
+        afterSyntax(initializeReplacingBy, p);
         return initializeReplacingBy;
     }
 
     public Cobol visitInitializeReplacingPhrase(Cobol.InitializeReplacingPhrase initializeReplacingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(initializeReplacingPhrase.getPrefix(), Space.Location.INITIALIZE_REPLACING_PHRASE_PREFIX, p);
-        visitMarkers(initializeReplacingPhrase.getMarkers(), p);
+        beforeSyntax(initializeReplacingPhrase, Space.Location.INITIALIZE_REPLACING_PHRASE_PREFIX, p);
         visit(initializeReplacingPhrase.getReplacing(), p);
         visit(initializeReplacingPhrase.getInitializeReplacingBy(), p);
+        afterSyntax(initializeReplacingPhrase, p);
         return initializeReplacingPhrase;
     }
 
     public Cobol visitInitiate(Cobol.Initiate initiate, PrintOutputCapture<P> p) {
-        visitSpace(initiate.getPrefix(), Space.Location.INITIATE_PREFIX, p);
-        visitMarkers(initiate.getMarkers(), p);
+        beforeSyntax(initiate, Space.Location.INITIATE_PREFIX, p);
         visit(initiate.getInitiate(), p);
         visit(initiate.getReportNames(), p);
+        afterSyntax(initiate, p);
         return initiate;
     }
 
     public Cobol visitInputOutputSection(Cobol.InputOutputSection inputOutputSection, PrintOutputCapture<P> p) {
-        visitSpace(inputOutputSection.getPrefix(), Space.Location.INPUT_OUTPUT_SECTION_PREFIX, p);
-        visitMarkers(inputOutputSection.getMarkers(), p);
+        beforeSyntax(inputOutputSection, Space.Location.INPUT_OUTPUT_SECTION_PREFIX, p);
         visit(inputOutputSection.getWords(), p);
         visit(inputOutputSection.getParagraphs(), p);
+        afterSyntax(inputOutputSection, p);
         return inputOutputSection;
     }
 
     public Cobol visitInspect(Cobol.Inspect inspect, PrintOutputCapture<P> p) {
-        visitSpace(inspect.getPrefix(), Space.Location.INSPECT_PREFIX, p);
-        visitMarkers(inspect.getMarkers(), p);
+        beforeSyntax(inspect, Space.Location.INSPECT_PREFIX, p);
         visit(inspect.getInspect(), p);
         visit(inspect.getIdentifier(), p);
         visit(inspect.getPhrase(), p);
+        afterSyntax(inspect, p);
         return inspect;
     }
 
     public Cobol visitInspectAllLeading(Cobol.InspectAllLeading inspectAllLeading, PrintOutputCapture<P> p) {
-        visitSpace(inspectAllLeading.getPrefix(), Space.Location.INSPECT_ALL_LEADING_PREFIX, p);
-        visitMarkers(inspectAllLeading.getMarkers(), p);
+        beforeSyntax(inspectAllLeading, Space.Location.INSPECT_ALL_LEADING_PREFIX, p);
         visit(inspectAllLeading.getName(), p);
         visit(inspectAllLeading.getInspections(), p);
+        afterSyntax(inspectAllLeading, p);
         return inspectAllLeading;
     }
 
     public Cobol visitInspectAllLeadings(Cobol.InspectAllLeadings inspectAllLeadings, PrintOutputCapture<P> p) {
-        visitSpace(inspectAllLeadings.getPrefix(), Space.Location.INSPECT_ALL_LEADINGS_PREFIX, p);
-        visitMarkers(inspectAllLeadings.getMarkers(), p);
+        beforeSyntax(inspectAllLeadings, Space.Location.INSPECT_ALL_LEADINGS_PREFIX, p);
         visit(inspectAllLeadings.getWord(), p);
         visit(inspectAllLeadings.getLeadings(), p);
+        afterSyntax(inspectAllLeadings, p);
         return inspectAllLeadings;
     }
 
     public Cobol visitInspectBeforeAfter(Cobol.InspectBeforeAfter inspectBeforeAfter, PrintOutputCapture<P> p) {
-        visitSpace(inspectBeforeAfter.getPrefix(), Space.Location.INSPECT_BEFORE_AFTER_PREFIX, p);
-        visitMarkers(inspectBeforeAfter.getMarkers(), p);
+        beforeSyntax(inspectBeforeAfter, Space.Location.INSPECT_BEFORE_AFTER_PREFIX, p);
         visit(inspectBeforeAfter.getWords(), p);
         visit(inspectBeforeAfter.getIdentifier(), p);
+        afterSyntax(inspectBeforeAfter, p);
         return inspectBeforeAfter;
     }
 
     public Cobol visitInspectBy(Cobol.InspectBy inspectBy, PrintOutputCapture<P> p) {
-        visitSpace(inspectBy.getPrefix(), Space.Location.INSPECT_BY_PREFIX, p);
-        visitMarkers(inspectBy.getMarkers(), p);
+        beforeSyntax(inspectBy, Space.Location.INSPECT_BY_PREFIX, p);
         visit(inspectBy.getBy(), p);
         visit(inspectBy.getIdentifier(), p);
+        afterSyntax(inspectBy, p);
         return inspectBy;
     }
 
     public Cobol visitInspectCharacters(Cobol.InspectCharacters inspectCharacters, PrintOutputCapture<P> p) {
-        visitSpace(inspectCharacters.getPrefix(), Space.Location.INSPECT_CHARACTERS_PREFIX, p);
-        visitMarkers(inspectCharacters.getMarkers(), p);
+        beforeSyntax(inspectCharacters, Space.Location.DATA_WITH_LOWER_BOUNDS_CLAUSE_PREFIX, p);
         visit(inspectCharacters.getCharacter(), p);
         visit(inspectCharacters.getInspections(), p);
+        afterSyntax(inspectCharacters, p);
         return inspectCharacters;
     }
 
     public Cobol visitInspectConvertingPhrase(Cobol.InspectConvertingPhrase inspectConvertingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(inspectConvertingPhrase.getPrefix(), Space.Location.INSPECT_CONVERTING_PHRASE_PREFIX, p);
-        visitMarkers(inspectConvertingPhrase.getMarkers(), p);
+        beforeSyntax(inspectConvertingPhrase, Space.Location.INSPECT_CONVERTING_PHRASE_PREFIX, p);
         visit(inspectConvertingPhrase.getConverting(), p);
         visit(inspectConvertingPhrase.getIdentifier(), p);
         visit(inspectConvertingPhrase.getInspectTo(), p);
         visit(inspectConvertingPhrase.getInspections(), p);
+        afterSyntax(inspectConvertingPhrase, p);
         return inspectConvertingPhrase;
     }
 
     public Cobol visitInspectFor(Cobol.InspectFor inspectFor, PrintOutputCapture<P> p) {
-        visitSpace(inspectFor.getPrefix(), Space.Location.INSPECT_FOR_PREFIX, p);
-        visitMarkers(inspectFor.getMarkers(), p);
+        beforeSyntax(inspectFor, Space.Location.INSPECT_FOR_PREFIX, p);
         visit(inspectFor.getIdentifier(), p);
         visit(inspectFor.getWord(), p);
         visit(inspectFor.getInspects(), p);
+        afterSyntax(inspectFor, p);
         return inspectFor;
     }
 
     public Cobol visitInspectReplacingAllLeading(Cobol.InspectReplacingAllLeading inspectReplacingAllLeading, PrintOutputCapture<P> p) {
-        visitSpace(inspectReplacingAllLeading.getPrefix(), Space.Location.INSPECT_REPLACING_ALL_LEADING_PREFIX, p);
-        visitMarkers(inspectReplacingAllLeading.getMarkers(), p);
+        beforeSyntax(inspectReplacingAllLeading, Space.Location.INSPECT_REPLACING_ALL_LEADING_PREFIX, p);
         visit(inspectReplacingAllLeading.getIdentifier(), p);
         visit(inspectReplacingAllLeading.getInspectBy(), p);
         visit(inspectReplacingAllLeading.getInspections(), p);
+        afterSyntax(inspectReplacingAllLeading, p);
         return inspectReplacingAllLeading;
     }
 
     public Cobol visitInspectReplacingAllLeadings(Cobol.InspectReplacingAllLeadings inspectReplacingAllLeadings, PrintOutputCapture<P> p) {
-        visitSpace(inspectReplacingAllLeadings.getPrefix(), Space.Location.INSPECT_REPLACING_ALL_LEADINGS_PREFIX, p);
-        visitMarkers(inspectReplacingAllLeadings.getMarkers(), p);
+        beforeSyntax(inspectReplacingAllLeadings, Space.Location.INSPECT_REPLACING_ALL_LEADINGS_PREFIX, p);
         visit(inspectReplacingAllLeadings.getWord(), p);
         visit(inspectReplacingAllLeadings.getInspections(), p);
+        afterSyntax(inspectReplacingAllLeadings, p);
         return inspectReplacingAllLeadings;
     }
 
     public Cobol visitInspectReplacingCharacters(Cobol.InspectReplacingCharacters inspectReplacingCharacters, PrintOutputCapture<P> p) {
-        visitSpace(inspectReplacingCharacters.getPrefix(), Space.Location.INSPECT_REPLACING_CHARACTERS_PREFIX, p);
-        visitMarkers(inspectReplacingCharacters.getMarkers(), p);
+        beforeSyntax(inspectReplacingCharacters, Space.Location.INSPECT_REPLACING_CHARACTERS_PREFIX, p);
         visit(inspectReplacingCharacters.getWord(), p);
         visit(inspectReplacingCharacters.getInspectBy(), p);
         visit(inspectReplacingCharacters.getInspections(), p);
+        afterSyntax(inspectReplacingCharacters, p);
         return inspectReplacingCharacters;
     }
 
     public Cobol visitInspectReplacingPhrase(Cobol.InspectReplacingPhrase inspectReplacingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(inspectReplacingPhrase.getPrefix(), Space.Location.INSPECT_REPLACING_PHRASE_PREFIX, p);
-        visitMarkers(inspectReplacingPhrase.getMarkers(), p);
+        beforeSyntax(inspectReplacingPhrase, Space.Location.INSPECT_REPLACING_PHRASE_PREFIX, p);
         visit(inspectReplacingPhrase.getWord(), p);
         visit(inspectReplacingPhrase.getInspections(), p);
+        afterSyntax(inspectReplacingPhrase, p);
         return inspectReplacingPhrase;
     }
 
     public Cobol visitInspectTallyingPhrase(Cobol.InspectTallyingPhrase inspectTallyingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(inspectTallyingPhrase.getPrefix(), Space.Location.INSPECT_TALLYING_PHRASE_PREFIX, p);
-        visitMarkers(inspectTallyingPhrase.getMarkers(), p);
+        beforeSyntax(inspectTallyingPhrase, Space.Location.INSPECT_TALLYING_PHRASE_PREFIX, p);
         visit(inspectTallyingPhrase.getTallying(), p);
         visit(inspectTallyingPhrase.getInspectFors(), p);
+        afterSyntax(inspectTallyingPhrase, p);
         return inspectTallyingPhrase;
     }
 
     public Cobol visitInspectTallyingReplacingPhrase(Cobol.InspectTallyingReplacingPhrase inspectTallyingReplacingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(inspectTallyingReplacingPhrase.getPrefix(), Space.Location.INSPECT_TALLYING_REPLACING_PHRASE_PREFIX, p);
-        visitMarkers(inspectTallyingReplacingPhrase.getMarkers(), p);
+        beforeSyntax(inspectTallyingReplacingPhrase, Space.Location.INSPECT_TALLYING_REPLACING_PHRASE_PREFIX, p);
         visit(inspectTallyingReplacingPhrase.getTallying(), p);
         visit(inspectTallyingReplacingPhrase.getInspectFors(), p);
         visit(inspectTallyingReplacingPhrase.getReplacingPhrases(), p);
+        afterSyntax(inspectTallyingReplacingPhrase, p);
         return inspectTallyingReplacingPhrase;
     }
 
     public Cobol visitInspectTo(Cobol.InspectTo inspectTo, PrintOutputCapture<P> p) {
-        visitSpace(inspectTo.getPrefix(), Space.Location.INSPECT_TO_PREFIX, p);
-        visitMarkers(inspectTo.getMarkers(), p);
+        beforeSyntax(inspectTo, Space.Location.INSPECT_TO_PREFIX, p);
         visit(inspectTo.getTo(), p);
         visit(inspectTo.getIdentifier(), p);
+        afterSyntax(inspectTo, p);
         return inspectTo;
     }
 
     public Cobol visitIoControlParagraph(Cobol.IoControlParagraph ioControlParagraph, PrintOutputCapture<P> p) {
-        visitSpace(ioControlParagraph.getPrefix(), Space.Location.IO_CONTROL_PARAGRAPH_PREFIX, p);
-        visitMarkers(ioControlParagraph.getMarkers(), p);
+        beforeSyntax(ioControlParagraph, Space.Location.IO_CONTROL_PARAGRAPH_PREFIX, p);
         visit(ioControlParagraph.getIOControl(), p);
         visit(ioControlParagraph.getDot(), p);
         visit(ioControlParagraph.getFileName(), p);
         visit(ioControlParagraph.getFileNameDot(), p);
         visit(ioControlParagraph.getClauses(), p);
         visit(ioControlParagraph.getDot2(), p);
+        afterSyntax(ioControlParagraph, p);
         return ioControlParagraph;
     }
 
     public Cobol visitLabelRecordsClause(Cobol.LabelRecordsClause labelRecordsClause, PrintOutputCapture<P> p) {
-        visitSpace(labelRecordsClause.getPrefix(), Space.Location.LABEL_RECORDS_CLAUSE_PREFIX, p);
-        visitMarkers(labelRecordsClause.getMarkers(), p);
+        beforeSyntax(labelRecordsClause, Space.Location.LABEL_RECORDS_CLAUSE_PREFIX, p);
         visit(labelRecordsClause.getWords(), p);
         visit(labelRecordsClause.getDataNames(), p);
+        afterSyntax(labelRecordsClause, p);
         return labelRecordsClause;
     }
 
     public Cobol visitLibraryAttributeClauseFormat1(Cobol.LibraryAttributeClauseFormat1 libraryAttributeClauseFormat1, PrintOutputCapture<P> p) {
-        visitSpace(libraryAttributeClauseFormat1.getPrefix(), Space.Location.LIBRARY_ATTRIBUTE_CLAUSE_1_PREFIX, p);
-        visitMarkers(libraryAttributeClauseFormat1.getMarkers(), p);
+        beforeSyntax(libraryAttributeClauseFormat1, Space.Location.LIBRARY_ATTRIBUTE_CLAUSE_1_PREFIX, p);
         visit(libraryAttributeClauseFormat1.getWords(), p);
+        afterSyntax(libraryAttributeClauseFormat1, p);
         return libraryAttributeClauseFormat1;
     }
 
     public Cobol visitLibraryAttributeClauseFormat2(Cobol.LibraryAttributeClauseFormat2 libraryAttributeClauseFormat2, PrintOutputCapture<P> p) {
-        visitSpace(libraryAttributeClauseFormat2.getPrefix(), Space.Location.LIBRARY_ATTRIBUTE_CLAUSE_2_PREFIX, p);
-        visitMarkers(libraryAttributeClauseFormat2.getMarkers(), p);
+        beforeSyntax(libraryAttributeClauseFormat2, Space.Location.LIBRARY_ATTRIBUTE_CLAUSE_2_PREFIX, p);
         visit(libraryAttributeClauseFormat2.getAttribute(), p);
         visit(libraryAttributeClauseFormat2.getLibraryAttributeFunction(), p);
         visit(libraryAttributeClauseFormat2.getWords(), p);
         visit(libraryAttributeClauseFormat2.getLibraryAttributeParameter(), p);
         visit(libraryAttributeClauseFormat2.getLibraryAttributeTitle(), p);
+        afterSyntax(libraryAttributeClauseFormat2, p);
         return libraryAttributeClauseFormat2;
     }
 
     public Cobol visitLibraryAttributeFunction(Cobol.LibraryAttributeFunction libraryAttributeFunction, PrintOutputCapture<P> p) {
-        visitSpace(libraryAttributeFunction.getPrefix(), Space.Location.LIBRARY_ATTRIBUTE_FUNCTION_PREFIX, p);
-        visitMarkers(libraryAttributeFunction.getMarkers(), p);
+        beforeSyntax(libraryAttributeFunction, Space.Location.LIBRARY_ATTRIBUTE_FUNCTION_PREFIX, p);
         visit(libraryAttributeFunction.getWords(), p);
         visit(libraryAttributeFunction.getLiteral(), p);
+        afterSyntax(libraryAttributeFunction, p);
         return libraryAttributeFunction;
     }
 
     public Cobol visitLibraryAttributeParameter(Cobol.LibraryAttributeParameter libraryAttributeParameter, PrintOutputCapture<P> p) {
-        visitSpace(libraryAttributeParameter.getPrefix(), Space.Location.LIBRARY_ATTRIBUTE_PARAMETER_PREFIX, p);
-        visitMarkers(libraryAttributeParameter.getMarkers(), p);
+        beforeSyntax(libraryAttributeParameter, Space.Location.LIBRARY_ATTRIBUTE_PARAMETER_PREFIX, p);
         visit(libraryAttributeParameter.getWords(), p);
         visit(libraryAttributeParameter.getLiteral(), p);
+        afterSyntax(libraryAttributeParameter, p);
         return libraryAttributeParameter;
     }
 
     public Cobol visitLibraryAttributeTitle(Cobol.LibraryAttributeTitle libraryAttributeTitle, PrintOutputCapture<P> p) {
-        visitSpace(libraryAttributeTitle.getPrefix(), Space.Location.LIBRARY_ATTRIBUTE_TITLE_PREFIX, p);
-        visitMarkers(libraryAttributeTitle.getMarkers(), p);
+        beforeSyntax(libraryAttributeTitle, Space.Location.LIBRARY_ATTRIBUTE_TITLE_PREFIX, p);
         visit(libraryAttributeTitle.getWords(), p);
         visit(libraryAttributeTitle.getLiteral(), p);
+        afterSyntax(libraryAttributeTitle, p);
         return libraryAttributeTitle;
     }
 
     public Cobol visitLibraryDescriptionEntryFormat1(Cobol.LibraryDescriptionEntryFormat1 libraryDescriptionEntryFormat1, PrintOutputCapture<P> p) {
-        visitSpace(libraryDescriptionEntryFormat1.getPrefix(), Space.Location.LIBRARY_DESCRIPTION_ENTRY_FORMAT_1_PREFIX, p);
-        visitMarkers(libraryDescriptionEntryFormat1.getMarkers(), p);
+        beforeSyntax(libraryDescriptionEntryFormat1, Space.Location.LIBRARY_DESCRIPTION_ENTRY_FORMAT_1_PREFIX, p);
         visit(libraryDescriptionEntryFormat1.getLd(), p);
         visit(libraryDescriptionEntryFormat1.getLibraryName(), p);
         visit(libraryDescriptionEntryFormat1.getExport(), p);
         visit(libraryDescriptionEntryFormat1.getLibraryAttributeClauseFormat1(), p);
         visit(libraryDescriptionEntryFormat1.getLibraryEntryProcedureClauseFormat1(), p);
+        afterSyntax(libraryDescriptionEntryFormat1, p);
         return libraryDescriptionEntryFormat1;
     }
 
     public Cobol visitLibraryDescriptionEntryFormat2(Cobol.LibraryDescriptionEntryFormat2 libraryDescriptionEntryFormat2, PrintOutputCapture<P> p) {
-        visitSpace(libraryDescriptionEntryFormat2.getPrefix(), Space.Location.LIBRARY_DESCRIPTION_ENTRY_FORMAT_2_PREFIX, p);
-        visitMarkers(libraryDescriptionEntryFormat2.getMarkers(), p);
+        beforeSyntax(libraryDescriptionEntryFormat2, Space.Location.LIBRARY_DESCRIPTION_ENTRY_FORMAT_2_PREFIX, p);
         visit(libraryDescriptionEntryFormat2.getLb(), p);
         visit(libraryDescriptionEntryFormat2.getLibraryName(), p);
         visit(libraryDescriptionEntryFormat2.getExport(), p);
         visit(libraryDescriptionEntryFormat2.getLibraryIsGlobalClause(), p);
         visit(libraryDescriptionEntryFormat2.getLibraryIsCommonClause(), p);
         visit(libraryDescriptionEntryFormat2.getClauseFormats(), p);
+        afterSyntax(libraryDescriptionEntryFormat2, p);
         return libraryDescriptionEntryFormat2;
     }
 
     public Cobol visitLibraryEntryProcedureClauseFormat1(Cobol.LibraryEntryProcedureClauseFormat1 libraryEntryProcedureClauseFormat1, PrintOutputCapture<P> p) {
-        visitSpace(libraryEntryProcedureClauseFormat1.getPrefix(), Space.Location.LIBRARY_ENTRY_PROCEDURE_CLAUSE_FORMAT_1_PREFIX, p);
-        visitMarkers(libraryEntryProcedureClauseFormat1.getMarkers(), p);
+        beforeSyntax(libraryEntryProcedureClauseFormat1, Space.Location.LIBRARY_ENTRY_PROCEDURE_CLAUSE_FORMAT_1_PREFIX, p);
         visit(libraryEntryProcedureClauseFormat1.getEntryProcedure(), p);
         visit(libraryEntryProcedureClauseFormat1.getProgramName(), p);
         visit(libraryEntryProcedureClauseFormat1.getLibraryEntryProcedureForClause(), p);
+        afterSyntax(libraryEntryProcedureClauseFormat1, p);
         return libraryEntryProcedureClauseFormat1;
     }
 
     public Cobol visitLibraryEntryProcedureClauseFormat2(Cobol.LibraryEntryProcedureClauseFormat2 libraryEntryProcedureClauseFormat2, PrintOutputCapture<P> p) {
-        visitSpace(libraryEntryProcedureClauseFormat2.getPrefix(), Space.Location.LIBRARY_ENTRY_PROCEDURE_CLAUSE_FORMAT_2_PREFIX, p);
-        visitMarkers(libraryEntryProcedureClauseFormat2.getMarkers(), p);
+        beforeSyntax(libraryEntryProcedureClauseFormat2, Space.Location.LIBRARY_ENTRY_PROCEDURE_CLAUSE_FORMAT_2_PREFIX, p);
         visit(libraryEntryProcedureClauseFormat2.getEntryProcedure(), p);
         visit(libraryEntryProcedureClauseFormat2.getProgramName(), p);
         visit(libraryEntryProcedureClauseFormat2.getLibraryEntryProcedureForClause(), p);
         visit(libraryEntryProcedureClauseFormat2.getLibraryEntryProcedureWithClause(), p);
         visit(libraryEntryProcedureClauseFormat2.getLibraryEntryProcedureUsingClause(), p);
         visit(libraryEntryProcedureClauseFormat2.getLibraryEntryProcedureGivingClause(), p);
+        afterSyntax(libraryEntryProcedureClauseFormat2, p);
         return libraryEntryProcedureClauseFormat2;
     }
 
     public Cobol visitLibraryEntryProcedureForClause(Cobol.LibraryEntryProcedureForClause libraryEntryProcedureForClause, PrintOutputCapture<P> p) {
-        visitSpace(libraryEntryProcedureForClause.getPrefix(), Space.Location.LIBRARY_ENTRY_PROCEDURE_FOR_CLAUSE_PREFIX, p);
-        visitMarkers(libraryEntryProcedureForClause.getMarkers(), p);
+        beforeSyntax(libraryEntryProcedureForClause, Space.Location.LIBRARY_ENTRY_PROCEDURE_FOR_CLAUSE_PREFIX, p);
         visit(libraryEntryProcedureForClause.getWord(), p);
         visit(libraryEntryProcedureForClause.getLiteral(), p);
+        afterSyntax(libraryEntryProcedureForClause, p);
         return libraryEntryProcedureForClause;
     }
 
     public Cobol visitLibraryEntryProcedureGivingClause(Cobol.LibraryEntryProcedureGivingClause libraryEntryProcedureGivingClause, PrintOutputCapture<P> p) {
-        visitSpace(libraryEntryProcedureGivingClause.getPrefix(), Space.Location.LIBRARY_ENTRY_PROCEDURE_GIVING_CLAUSE_PREFIX, p);
-        visitMarkers(libraryEntryProcedureGivingClause.getMarkers(), p);
+        beforeSyntax(libraryEntryProcedureGivingClause, Space.Location.LIBRARY_ENTRY_PROCEDURE_GIVING_CLAUSE_PREFIX, p);
         visit(libraryEntryProcedureGivingClause.getGiving(), p);
         visit(libraryEntryProcedureGivingClause.getDataName(), p);
+        afterSyntax(libraryEntryProcedureGivingClause, p);
         return libraryEntryProcedureGivingClause;
     }
 
     public Cobol visitLibraryEntryProcedureUsingClause(Cobol.LibraryEntryProcedureUsingClause libraryEntryProcedureUsingClause, PrintOutputCapture<P> p) {
-        visitSpace(libraryEntryProcedureUsingClause.getPrefix(), Space.Location.LIBRARY_ENTRY_PROCEDURE_USING_CLAUSE_PREFIX, p);
-        visitMarkers(libraryEntryProcedureUsingClause.getMarkers(), p);
+        beforeSyntax(libraryEntryProcedureUsingClause, Space.Location.LIBRARY_ENTRY_PROCEDURE_USING_CLAUSE_PREFIX, p);
         visit(libraryEntryProcedureUsingClause.getUsing(), p);
         visit(libraryEntryProcedureUsingClause.getNames(), p);
+        afterSyntax(libraryEntryProcedureUsingClause, p);
         return libraryEntryProcedureUsingClause;
     }
 
     public Cobol visitLibraryEntryProcedureWithClause(Cobol.LibraryEntryProcedureWithClause libraryEntryProcedureWithClause, PrintOutputCapture<P> p) {
-        visitSpace(libraryEntryProcedureWithClause.getPrefix(), Space.Location.LIBRARY_ENTRY_PROCEDURE_WITH_CLAUSE_PREFIX, p);
-        visitMarkers(libraryEntryProcedureWithClause.getMarkers(), p);
+        beforeSyntax(libraryEntryProcedureWithClause, Space.Location.LIBRARY_ENTRY_PROCEDURE_WITH_CLAUSE_PREFIX, p);
         visit(libraryEntryProcedureWithClause.getWith(), p);
         visit(libraryEntryProcedureWithClause.getNames(), p);
+        afterSyntax(libraryEntryProcedureWithClause, p);
         return libraryEntryProcedureWithClause;
     }
 
     public Cobol visitLibraryIsCommonClause(Cobol.LibraryIsCommonClause libraryIsCommonClause, PrintOutputCapture<P> p) {
-        visitSpace(libraryIsCommonClause.getPrefix(), Space.Location.LIBRARY_IS_COMMON_CLAUSE_PREFIX, p);
-        visitMarkers(libraryIsCommonClause.getMarkers(), p);
+        beforeSyntax(libraryIsCommonClause, Space.Location.LIBRARY_IS_COMMON_CLAUSE_PREFIX, p);
         visit(libraryIsCommonClause.getWords(), p);
+        afterSyntax(libraryIsCommonClause, p);
         return libraryIsCommonClause;
     }
 
     public Cobol visitLibraryIsGlobalClause(Cobol.LibraryIsGlobalClause libraryIsGlobalClause, PrintOutputCapture<P> p) {
-        visitSpace(libraryIsGlobalClause.getPrefix(), Space.Location.LIBRARY_IS_GLOBAL_CLAUSE_PREFIX, p);
-        visitMarkers(libraryIsGlobalClause.getMarkers(), p);
+        beforeSyntax(libraryIsGlobalClause, Space.Location.LIBRARY_IS_GLOBAL_CLAUSE_PREFIX, p);
         visit(libraryIsGlobalClause.getWords(), p);
+        afterSyntax(libraryIsGlobalClause, p);
         return libraryIsGlobalClause;
     }
 
     public Cobol visitLinageClause(Cobol.LinageClause linageClause, PrintOutputCapture<P> p) {
-        visitSpace(linageClause.getPrefix(), Space.Location.LINAGE_CLAUSE_PREFIX, p);
-        visitMarkers(linageClause.getMarkers(), p);
+        beforeSyntax(linageClause, Space.Location.LINAGE_CLAUSE_PREFIX, p);
         visit(linageClause.getWords(), p);
         visit(linageClause.getName(), p);
         visit(linageClause.getLine(), p);
         visit(linageClause.getLinageAt(), p);
+        afterSyntax(linageClause, p);
         return linageClause;
     }
 
     public Cobol visitLinageFootingAt(Cobol.LinageFootingAt linageFootingAt, PrintOutputCapture<P> p) {
-        visitSpace(linageFootingAt.getPrefix(), Space.Location.LINAGE_FOOTING_AT_PREFIX, p);
-        visitMarkers(linageFootingAt.getMarkers(), p);
+        beforeSyntax(linageFootingAt, Space.Location.LINAGE_FOOTING_AT_PREFIX, p);
         visit(linageFootingAt.getWords(), p);
         visit(linageFootingAt.getName(), p);
+        afterSyntax(linageFootingAt, p);
         return linageFootingAt;
     }
 
     public Cobol visitLinageLinesAtBottom(Cobol.LinageLinesAtBottom linageLinesAtBottom, PrintOutputCapture<P> p) {
-        visitSpace(linageLinesAtBottom.getPrefix(), Space.Location.LINAGE_LINES_AT_BOTTOM_PREFIX, p);
-        visitMarkers(linageLinesAtBottom.getMarkers(), p);
+        beforeSyntax(linageLinesAtBottom, Space.Location.LINAGE_LINES_AT_BOTTOM_PREFIX, p);
         visit(linageLinesAtBottom.getWords(), p);
         visit(linageLinesAtBottom.getName(), p);
+        afterSyntax(linageLinesAtBottom, p);
         return linageLinesAtBottom;
     }
 
     public Cobol visitLinageLinesAtTop(Cobol.LinageLinesAtTop linageLinesAtTop, PrintOutputCapture<P> p) {
-        visitSpace(linageLinesAtTop.getPrefix(), Space.Location.LINAGE_LINES_AT_TOP_PREFIX, p);
-        visitMarkers(linageLinesAtTop.getMarkers(), p);
+        beforeSyntax(linageLinesAtTop, Space.Location.LINAGE_LINES_AT_TOP_PREFIX, p);
         visit(linageLinesAtTop.getWords(), p);
         visit(linageLinesAtTop.getName(), p);
+        afterSyntax(linageLinesAtTop, p);
         return linageLinesAtTop;
     }
 
     public Cobol visitLinkageSection(Cobol.LinkageSection linkageSection, PrintOutputCapture<P> p) {
-        visitSpace(linkageSection.getPrefix(), Space.Location.LINKAGE_SECTION_PREFIX, p);
-        visitMarkers(linkageSection.getMarkers(), p);
+        beforeSyntax(linkageSection, Space.Location.LINKAGE_SECTION_PREFIX, p);
         visit(linkageSection.getWords(), p);
         visit(linkageSection.getDot(), p);
         visit(linkageSection.getDataDescriptions(), p);
+        afterSyntax(linkageSection, p);
         return linkageSection;
     }
 
     public Cobol visitLocalStorageSection(Cobol.LocalStorageSection localStorageSection, PrintOutputCapture<P> p) {
-        visitSpace(localStorageSection.getPrefix(), Space.Location.LOCAL_STORAGE_SECTION_PREFIX, p);
-        visitMarkers(localStorageSection.getMarkers(), p);
+        beforeSyntax(localStorageSection, Space.Location.LOCAL_STORAGE_SECTION_PREFIX, p);
         visit(localStorageSection.getWords(), p);
         visit(localStorageSection.getDot(), p);
         visit(localStorageSection.getLocalName(), p);
         visit(localStorageSection.getLocalData(), p);
         visit(localStorageSection.getDataDescriptions(), p);
+        afterSyntax(localStorageSection, p);
         return localStorageSection;
     }
 
     public Cobol visitMerge(Cobol.Merge merge, PrintOutputCapture<P> p) {
-        visitSpace(merge.getPrefix(), Space.Location.MERGE_PREFIX, p);
-        visitMarkers(merge.getMarkers(), p);
+        beforeSyntax(merge, Space.Location.MERGE_PREFIX, p);
         visit(merge.getWord(), p);
         visit(merge.getFileName(), p);
         visit(merge.getMergeOnKeyClause(), p);
@@ -1779,164 +1778,164 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(merge.getMergeUsing(), p);
         visit(merge.getMergeOutputProcedurePhrase(), p);
         visit(merge.getMergeGivingPhrase(), p);
+        afterSyntax(merge, p);
         return merge;
     }
 
     public Cobol visitMergeCollatingSequencePhrase(Cobol.MergeCollatingSequencePhrase mergeCollatingSequencePhrase, PrintOutputCapture<P> p) {
-        visitSpace(mergeCollatingSequencePhrase.getPrefix(), Space.Location.MERGE_COLLATING_SEQUENCE_PHRASE_PREFIX, p);
-        visitMarkers(mergeCollatingSequencePhrase.getMarkers(), p);
+        beforeSyntax(mergeCollatingSequencePhrase, Space.Location.MERGE_COLLATING_SEQUENCE_PHRASE_PREFIX, p);
         visit(mergeCollatingSequencePhrase.getWords(), p);
         visit(mergeCollatingSequencePhrase.getName(), p);
         visit(mergeCollatingSequencePhrase.getMergeCollatingAlphanumeric(), p);
         visit(mergeCollatingSequencePhrase.getMergeCollatingNational(), p);
+        afterSyntax(mergeCollatingSequencePhrase, p);
         return mergeCollatingSequencePhrase;
     }
 
     public Cobol visitMergeGiving(Cobol.MergeGiving mergeGiving, PrintOutputCapture<P> p) {
-        visitSpace(mergeGiving.getPrefix(), Space.Location.MERGE_GIVING_PREFIX, p);
-        visitMarkers(mergeGiving.getMarkers(), p);
+        beforeSyntax(mergeGiving, Space.Location.MERGE_GIVING_PREFIX, p);
         visit(mergeGiving.getName(), p);
         visit(mergeGiving.getWords(), p);
+        afterSyntax(mergeGiving, p);
         return mergeGiving;
     }
 
     public Cobol visitMergeGivingPhrase(Cobol.MergeGivingPhrase mergeGivingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(mergeGivingPhrase.getPrefix(), Space.Location.MERGE_GIVING_PHRASE_PREFIX, p);
-        visitMarkers(mergeGivingPhrase.getMarkers(), p);
+        beforeSyntax(mergeGivingPhrase, Space.Location.MERGE_GIVING_PHRASE_PREFIX, p);
         visit(mergeGivingPhrase.getWord(), p);
         visit(mergeGivingPhrase.getMergeGiving(), p);
+        afterSyntax(mergeGivingPhrase, p);
         return mergeGivingPhrase;
     }
 
     public Cobol visitMergeOnKeyClause(Cobol.MergeOnKeyClause mergeOnKeyClause, PrintOutputCapture<P> p) {
-        visitSpace(mergeOnKeyClause.getPrefix(), Space.Location.MERGE_ON_KEY_CLAUSE_PREFIX, p);
-        visitMarkers(mergeOnKeyClause.getMarkers(), p);
+        beforeSyntax(mergeOnKeyClause, Space.Location.MERGE_ON_KEY_CLAUSE_PREFIX, p);
         visit(mergeOnKeyClause.getWords(), p);
         visit(mergeOnKeyClause.getQualifiedDataName(), p);
+        afterSyntax(mergeOnKeyClause, p);
         return mergeOnKeyClause;
     }
 
     public Cobol visitMergeOutputProcedurePhrase(Cobol.MergeOutputProcedurePhrase mergeOutputProcedurePhrase, PrintOutputCapture<P> p) {
-        visitSpace(mergeOutputProcedurePhrase.getPrefix(), Space.Location.MERGE_OUTPUT_PROCEDURE_PHRASE_PREFIX, p);
-        visitMarkers(mergeOutputProcedurePhrase.getMarkers(), p);
+        beforeSyntax(mergeOutputProcedurePhrase, Space.Location.MERGE_OUTPUT_PROCEDURE_PHRASE_PREFIX, p);
         visit(mergeOutputProcedurePhrase.getWords(), p);
         visit(mergeOutputProcedurePhrase.getProcedureName(), p);
         visit(mergeOutputProcedurePhrase.getMergeOutputThrough(), p);
+        afterSyntax(mergeOutputProcedurePhrase, p);
         return mergeOutputProcedurePhrase;
     }
 
     @Override
     public @Nullable Cobol visitMergeOutputThrough(Cobol.MergeOutputThrough mergeOutputThrough, PrintOutputCapture<P> p) {
-        visitSpace(mergeOutputThrough.getPrefix(), Space.Location.MERGE_OUTPUT_THROUGH_PREFIX, p);
-        visitMarkers(mergeOutputThrough.getMarkers(), p);
+        beforeSyntax(mergeOutputThrough, Space.Location.MERGE_OUTPUT_THROUGH_PREFIX, p);
         visit(mergeOutputThrough.getWord(), p);
+        afterSyntax(mergeOutputThrough, p);
         return mergeOutputThrough;
     }
 
     @Override
     public Cobol visitMergeUsing(Cobol.MergeUsing mergeUsing, PrintOutputCapture<P> p) {
-        visitSpace(mergeUsing.getPrefix(), Space.Location.MERGE_USING_PREFIX, p);
-        visitMarkers(mergeUsing.getMarkers(), p);
+        beforeSyntax(mergeUsing, Space.Location.MERGE_USING_PREFIX, p);
         visit(mergeUsing.getWord(), p);
         visit(mergeUsing.getFileNames(), p);
+        afterSyntax(mergeUsing, p);
         return mergeUsing;
     }
 
     public Cobol visitMergeable(Cobol.Mergeable mergeable, PrintOutputCapture<P> p) {
-        visitSpace(mergeable.getPrefix(), Space.Location.MERGEABLE_PREFIX, p);
-        visitMarkers(mergeable.getMarkers(), p);
+        beforeSyntax(mergeable, Space.Location.MERGEABLE_PREFIX, p);
         visit(mergeable.getWords(), p);
         visit(mergeable.getName(), p);
+        afterSyntax(mergeable, p);
         return mergeable;
     }
 
     public Cobol visitMessageCountClause(Cobol.MessageCountClause messageCountClause, PrintOutputCapture<P> p) {
-        visitSpace(messageCountClause.getPrefix(), Space.Location.MESSAGE_COUNT_CLAUSE_PREFIX, p);
-        visitMarkers(messageCountClause.getMarkers(), p);
+        beforeSyntax(messageCountClause, Space.Location.MESSAGE_COUNT_CLAUSE_PREFIX, p);
         visit(messageCountClause.getWords(), p);
         visit(messageCountClause.getDataDescName(), p);
+        afterSyntax(messageCountClause, p);
         return messageCountClause;
     }
 
     public Cobol visitMessageDateClause(Cobol.MessageDateClause messageDateClause, PrintOutputCapture<P> p) {
-        visitSpace(messageDateClause.getPrefix(), Space.Location.MESSAGE_DATA_CLAUSE_PREFIX, p);
-        visitMarkers(messageDateClause.getMarkers(), p);
+        beforeSyntax(messageDateClause, Space.Location.MESSAGE_DATA_CLAUSE_PREFIX, p);
         visit(messageDateClause.getWords(), p);
         visit(messageDateClause.getDataDescName(), p);
+        afterSyntax(messageDateClause, p);
         return messageDateClause;
     }
 
     public Cobol visitMessageTimeClause(Cobol.MessageTimeClause messageTimeClause, PrintOutputCapture<P> p) {
-        visitSpace(messageTimeClause.getPrefix(), Space.Location.MESSAGE_TIME_CLAUSE_PREFIX, p);
-        visitMarkers(messageTimeClause.getMarkers(), p);
+        beforeSyntax(messageTimeClause, Space.Location.MESSAGE_TIME_CLAUSE_PREFIX, p);
         visit(messageTimeClause.getWords(), p);
         visit(messageTimeClause.getDataDescName(), p);
+        afterSyntax(messageTimeClause, p);
         return messageTimeClause;
     }
 
     public Cobol visitMoveCorrespondingToStatement(Cobol.MoveCorrespondingToStatement moveCorrespondingToStatement, PrintOutputCapture<P> p) {
-        visitSpace(moveCorrespondingToStatement.getPrefix(), Space.Location.MOVE_CORRESPONDING_TO_STATEMENT_PREFIX, p);
-        visitMarkers(moveCorrespondingToStatement.getMarkers(), p);
+        beforeSyntax(moveCorrespondingToStatement, Space.Location.MOVE_CORRESPONDING_TO_STATEMENT_PREFIX, p);
         visit(moveCorrespondingToStatement.getWord(), p);
         visit(moveCorrespondingToStatement.getMoveCorrespondingToSendingArea(), p);
         visit(moveCorrespondingToStatement.getTo(), p);
         visit(moveCorrespondingToStatement.getIdentifiers(), p);
+        afterSyntax(moveCorrespondingToStatement, p);
         return moveCorrespondingToStatement;
     }
 
     public Cobol visitMoveStatement(Cobol.MoveStatement moveStatement, PrintOutputCapture<P> p) {
-        visitSpace(moveStatement.getPrefix(), Space.Location.MOVE_STATEMENT_PREFIX, p);
-        visitMarkers(moveStatement.getMarkers(), p);
+        beforeSyntax(moveStatement, Space.Location.MOVE_STATEMENT_PREFIX, p);
         visit(moveStatement.getWords(), p);
         visit(moveStatement.getMoveToStatement(), p);
+        afterSyntax(moveStatement, p);
         return moveStatement;
     }
 
     public Cobol visitMoveToStatement(Cobol.MoveToStatement moveToStatement, PrintOutputCapture<P> p) {
-        visitSpace(moveToStatement.getPrefix(), Space.Location.MOVE_TO_STATEMENT_PREFIX, p);
-        visitMarkers(moveToStatement.getMarkers(), p);
+        beforeSyntax(moveToStatement, Space.Location.MOVE_TO_STATEMENT_PREFIX, p);
         visit(moveToStatement.getFrom(), p);
         visit(moveToStatement.getTo(), p);
         visit(moveToStatement.getNames(), p);
+        afterSyntax(moveToStatement, p);
         return moveToStatement;
     }
 
     public Cobol visitMultDiv(Cobol.MultDiv multDiv, PrintOutputCapture<P> p) {
-        visitSpace(multDiv.getPrefix(), Space.Location.MULT_DIV_PREFIX, p);
-        visitMarkers(multDiv.getMarkers(), p);
+        beforeSyntax(multDiv, Space.Location.MULT_DIV_PREFIX, p);
         visit(multDiv.getWord(), p);
         visit(multDiv.getPowers(), p);
+        afterSyntax(multDiv, p);
         return multDiv;
     }
 
     public Cobol visitMultDivs(Cobol.MultDivs multDivs, PrintOutputCapture<P> p) {
-        visitSpace(multDivs.getPrefix(), Space.Location.MULT_DIVS_PREFIX, p);
-        visitMarkers(multDivs.getMarkers(), p);
+        beforeSyntax(multDivs, Space.Location.MULT_DIVS_PREFIX, p);
         visit(multDivs.getPowers(), p);
         visit(multDivs.getMultDivs(), p);
+        afterSyntax(multDivs, p);
         return multDivs;
     }
 
     public Cobol visitMultipleFileClause(Cobol.MultipleFileClause multipleFileClause, PrintOutputCapture<P> p) {
-        visitSpace(multipleFileClause.getPrefix(), Space.Location.MULTIPLE_FILE_CLAUSE_PREFIX, p);
-        visitMarkers(multipleFileClause.getMarkers(), p);
+        beforeSyntax(multipleFileClause, Space.Location.MULTIPLE_FILE_CLAUSE_PREFIX, p);
         visit(multipleFileClause.getWords(), p);
         visit(multipleFileClause.getFilePositions(), p);
+        afterSyntax(multipleFileClause, p);
         return multipleFileClause;
     }
 
     public Cobol visitMultipleFilePosition(Cobol.MultipleFilePosition multipleFilePosition, PrintOutputCapture<P> p) {
-        visitSpace(multipleFilePosition.getPrefix(), Space.Location.MULTIPLE_FILE_POSITION_PREFIX, p);
-        visitMarkers(multipleFilePosition.getMarkers(), p);
+        beforeSyntax(multipleFilePosition, Space.Location.MULTIPLE_FILE_POSITION_PREFIX, p);
         visit(multipleFilePosition.getFileName(), p);
         visit(multipleFilePosition.getPosition(), p);
         visit(multipleFilePosition.getIntegerLiteral(), p);
+        afterSyntax(multipleFilePosition, p);
         return multipleFilePosition;
     }
 
     public Cobol visitMultiply(Cobol.Multiply multiply, PrintOutputCapture<P> p) {
-        visitSpace(multiply.getPrefix(), Space.Location.MULTIPLY_PREFIX, p);
-        visitMarkers(multiply.getMarkers(), p);
+        beforeSyntax(multiply, Space.Location.MULTIPLY_PREFIX, p);
         visit(multiply.getWord(), p);
         visit(multiply.getMultiplicand(), p);
         visit(multiply.getBy(), p);
@@ -1944,335 +1943,336 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(multiply.getOnSizeErrorPhrase(), p);
         visit(multiply.getNotOnSizeErrorPhrase(), p);
         visit(multiply.getEndMultiply(), p);
+        afterSyntax(multiply, p);
         return multiply;
     }
 
     public Cobol visitMultiplyGiving(Cobol.MultiplyGiving multiplyGiving, PrintOutputCapture<P> p) {
-        visitSpace(multiplyGiving.getPrefix(), Space.Location.MULTIPLY_GIVING_PREFIX, p);
-        visitMarkers(multiplyGiving.getMarkers(), p);
+        beforeSyntax(multiplyGiving, Space.Location.MULTIPLY_GIVING_PREFIX, p);
         visit(multiplyGiving.getOperand(), p);
         visit(multiplyGiving.getGiving(), p);
         visit(multiplyGiving.getResult(), p);
+        afterSyntax(multiplyGiving, p);
         return multiplyGiving;
     }
 
     public Cobol visitMultiplyRegular(Cobol.MultiplyRegular multiplyRegular, PrintOutputCapture<P> p) {
-        visitSpace(multiplyRegular.getPrefix(), Space.Location.MULTIPLY_REGULAR_PREFIX, p);
-        visitMarkers(multiplyRegular.getMarkers(), p);
+        beforeSyntax(multiplyRegular, Space.Location.MULTIPLY_REGULAR_PREFIX, p);
         visit(multiplyRegular.getOperand(), p);
+        afterSyntax(multiplyRegular, p);
         return multiplyRegular;
     }
 
     public Cobol visitNextSentence(Cobol.NextSentence nextSentence, PrintOutputCapture<P> p) {
-        visitSpace(nextSentence.getPrefix(), Space.Location.NEXT_SENTENCE_PREFIX, p);
-        visitMarkers(nextSentence.getMarkers(), p);
+        beforeSyntax(nextSentence, Space.Location.NEXT_SENTENCE_PREFIX, p);
         visit(nextSentence.getWords(), p);
+        afterSyntax(nextSentence, p);
         return nextSentence;
     }
 
     public Cobol visitObjectComputer(Cobol.ObjectComputer objectComputer, PrintOutputCapture<P> p) {
-        visitSpace(objectComputer.getPrefix(), Space.Location.OBJECT_COMPUTER_PREFIX, p);
-        visitMarkers(objectComputer.getMarkers(), p);
+        beforeSyntax(objectComputer, Space.Location.OBJECT_COMPUTER_PREFIX, p);
         visit(objectComputer.getWords(), p);
         visit(objectComputer.getComputer(), p);
+        afterSyntax(objectComputer, p);
         return objectComputer;
     }
 
     public Cobol visitObjectComputerDefinition(Cobol.ObjectComputerDefinition objectComputerDefinition, PrintOutputCapture<P> p) {
-        visitSpace(objectComputerDefinition.getPrefix(), Space.Location.OBJECT_COMPUTER_DEFINITION_PREFIX, p);
-        visitMarkers(objectComputerDefinition.getMarkers(), p);
+        beforeSyntax(objectComputerDefinition, Space.Location.OBJECT_COMPUTER_DEFINITION_PREFIX, p);
         visit(objectComputerDefinition.getComputerName(), p);
         visit(objectComputerDefinition.getSpecifications(), p);
         visit(objectComputerDefinition.getDot(), p);
+        afterSyntax(objectComputerDefinition, p);
         return objectComputerDefinition;
     }
 
     public Cobol visitOdtClause(Cobol.OdtClause odtClause, PrintOutputCapture<P> p) {
-        visitSpace(odtClause.getPrefix(), Space.Location.ODT_CLAUSE_PREFIX, p);
-        visitMarkers(odtClause.getMarkers(), p);
+        beforeSyntax(odtClause, Space.Location.ODT_CLAUSE_PREFIX, p);
         visit(odtClause.getWords(), p);
         visit(odtClause.getMnemonicName(), p);
+        afterSyntax(odtClause, p);
         return odtClause;
     }
 
     public Cobol visitOpen(Cobol.Open open, PrintOutputCapture<P> p) {
-        visitSpace(open.getPrefix(), Space.Location.OPEN_PREFIX, p);
-        visitMarkers(open.getMarkers(), p);
+        beforeSyntax(open, Space.Location.OPEN_PREFIX, p);
         visit(open.getWord(), p);
         visit(open.getOpen(), p);
+        afterSyntax(open, p);
         return open;
     }
 
     public Cobol visitOpenIOExtendStatement(Cobol.OpenIOExtendStatement openIOExtendStatement, PrintOutputCapture<P> p) {
-        visitSpace(openIOExtendStatement.getPrefix(), Space.Location.OPEN_IO_EXTEND_STATEMENT_PREFIX, p);
-        visitMarkers(openIOExtendStatement.getMarkers(), p);
+        beforeSyntax(openIOExtendStatement, Space.Location.OPEN_IO_EXTEND_STATEMENT_PREFIX, p);
         visit(openIOExtendStatement.getWord(), p);
         visit(openIOExtendStatement.getFileNames(), p);
+        afterSyntax(openIOExtendStatement, p);
         return openIOExtendStatement;
     }
 
     public Cobol visitOpenInputOutputStatement(Cobol.OpenInputOutputStatement openInputOutputStatement, PrintOutputCapture<P> p) {
-        visitSpace(openInputOutputStatement.getPrefix(), Space.Location.OPEN_INPUT_OUTPUT_STATEMENT_PREFIX, p);
-        visitMarkers(openInputOutputStatement.getMarkers(), p);
+        beforeSyntax(openInputOutputStatement, Space.Location.OPEN_INPUT_OUTPUT_STATEMENT_PREFIX, p);
         visit(openInputOutputStatement.getWord(), p);
         visit(openInputOutputStatement.getOpenInput(), p);
+        afterSyntax(openInputOutputStatement, p);
         return openInputOutputStatement;
     }
 
     public Cobol visitOpenable(Cobol.Openable openable, PrintOutputCapture<P> p) {
-        visitSpace(openable.getPrefix(), Space.Location.OPENABLE_PREFIX, p);
-        visitMarkers(openable.getMarkers(), p);
+        beforeSyntax(openable, Space.Location.OPENABLE_PREFIX, p);
         visit(openable.getFileName(), p);
         visit(openable.getWords(), p);
+        afterSyntax(openable, p);
         return openable;
     }
 
     public Cobol visitOrganizationClause(Cobol.OrganizationClause organizationClause, PrintOutputCapture<P> p) {
-        visitSpace(organizationClause.getPrefix(), Space.Location.ORGANIZATION_CLAUSE_PREFIX, p);
-        visitMarkers(organizationClause.getMarkers(), p);
+        beforeSyntax(organizationClause, Space.Location.ORGANIZATION_CLAUSE_PREFIX, p);
         visit(organizationClause.getWords(), p);
+        afterSyntax(organizationClause, p);
         return organizationClause;
     }
 
     public Cobol visitPaddingCharacterClause(Cobol.PaddingCharacterClause paddingCharacterClause, PrintOutputCapture<P> p) {
-        visitSpace(paddingCharacterClause.getPrefix(), Space.Location.PADDING_CHARACTER_CLAUSE_PREFIX, p);
-        visitMarkers(paddingCharacterClause.getMarkers(), p);
+        beforeSyntax(paddingCharacterClause, Space.Location.PADDING_CHARACTER_CLAUSE_PREFIX, p);
         visit(paddingCharacterClause.getWords(), p);
         visit(paddingCharacterClause.getName(), p);
+        afterSyntax(paddingCharacterClause, p);
         return paddingCharacterClause;
     }
 
     public Cobol visitParagraph(Cobol.Paragraph paragraph, PrintOutputCapture<P> p) {
-        visitSpace(paragraph.getPrefix(), Space.Location.PARAGRAPH_PREFIX, p);
-        visitMarkers(paragraph.getMarkers(), p);
+        beforeSyntax(paragraph, Space.Location.PARAGRAPH_PREFIX, p);
         visit(paragraph.getParagraphName(), p);
         visit(paragraph.getDot(), p);
         visit(paragraph.getAlteredGoTo(), p);
         visit(paragraph.getSentences(), p);
+        afterSyntax(paragraph, p);
         return paragraph;
     }
 
     public Cobol visitParagraphs(Cobol.Paragraphs paragraphs, PrintOutputCapture<P> p) {
-        visitSpace(paragraphs.getPrefix(), Space.Location.PARAGRAPHS_PREFIX, p);
-        visitMarkers(paragraphs.getMarkers(), p);
+        beforeSyntax(paragraphs, Space.Location.PARAGRAPHS_PREFIX, p);
         visit(paragraphs.getSentences(), p);
         visit(paragraphs.getParagraphs(), p);
+        afterSyntax(paragraphs, p);
         return paragraphs;
     }
 
     public Cobol visitParenthesized(Cobol.Parenthesized parenthesized, PrintOutputCapture<P> p) {
-        visitSpace(parenthesized.getPrefix(), Space.Location.PARENTHESIZED_PREFIX, p);
-        visitMarkers(parenthesized.getMarkers(), p);
+        beforeSyntax(parenthesized, Space.Location.PARENTHESIZED_PREFIX, p);
         visit(parenthesized.getLeftParen(), p);
         visit(parenthesized.getContents(), p);
         visit(parenthesized.getRightParen(), p);
+        afterSyntax(parenthesized, p);
         return parenthesized;
     }
 
     public Cobol visitPasswordClause(Cobol.PasswordClause passwordClause, PrintOutputCapture<P> p) {
-        visitSpace(passwordClause.getPrefix(), Space.Location.PASSWORD_CLAUSE_PREFIX, p);
-        visitMarkers(passwordClause.getMarkers(), p);
+        beforeSyntax(passwordClause, Space.Location.PASSWORD_CLAUSE_PREFIX, p);
         visit(passwordClause.getWords(), p);
         visit(passwordClause.getDataName(), p);
+        afterSyntax(passwordClause, p);
         return passwordClause;
     }
 
     public Cobol visitPerform(Cobol.Perform perform, PrintOutputCapture<P> p) {
-        visitSpace(perform.getPrefix(), Space.Location.PERFORM_PREFIX, p);
-        visitMarkers(perform.getMarkers(), p);
+        beforeSyntax(perform, Space.Location.PERFORM_PREFIX, p);
         visit(perform.getWord(), p);
         visit(perform.getStatement(), p);
+        afterSyntax(perform, p);
         return perform;
     }
 
     public Cobol visitPerformInlineStatement(Cobol.PerformInlineStatement performInlineStatement, PrintOutputCapture<P> p) {
-        visitSpace(performInlineStatement.getPrefix(), Space.Location.PERFORM_IN_LINE_STATEMENT_PREFIX, p);
-        visitMarkers(performInlineStatement.getMarkers(), p);
+        beforeSyntax(performInlineStatement, Space.Location.PERFORM_IN_LINE_STATEMENT_PREFIX, p);
         visit(performInlineStatement.getPerformType(), p);
         visit(performInlineStatement.getStatements(), p);
         visit(performInlineStatement.getWord(), p);
+        afterSyntax(performInlineStatement, p);
         return performInlineStatement;
     }
 
     public Cobol visitPerformProcedureStatement(Cobol.PerformProcedureStatement performProcedureStatement, PrintOutputCapture<P> p) {
-        visitSpace(performProcedureStatement.getPrefix(), Space.Location.PERFORM_PROCEDURE_STATEMENT_PREFIX, p);
-        visitMarkers(performProcedureStatement.getMarkers(), p);
+        beforeSyntax(performProcedureStatement, Space.Location.PERFORM_PROCEDURE_STATEMENT_PREFIX, p);
         visit(performProcedureStatement.getProcedureName(), p);
         visit(performProcedureStatement.getWord(), p);
         visit(performProcedureStatement.getThroughProcedure(), p);
         visit(performProcedureStatement.getPerformType(), p);
+        afterSyntax(performProcedureStatement, p);
         return performProcedureStatement;
     }
 
     public Cobol visitPerformTestClause(Cobol.PerformTestClause performTestClause, PrintOutputCapture<P> p) {
-        visitSpace(performTestClause.getPrefix(), Space.Location.PERFORM_TEST_CLAUSE_PREFIX, p);
-        visitMarkers(performTestClause.getMarkers(), p);
+        beforeSyntax(performTestClause, Space.Location.PERFORM_TEST_CLAUSE_PREFIX, p);
         visit(performTestClause.getWords(), p);
+        afterSyntax(performTestClause, p);
         return performTestClause;
     }
 
     public Cobol visitPerformTimes(Cobol.PerformTimes performTimes, PrintOutputCapture<P> p) {
-        visitSpace(performTimes.getPrefix(), Space.Location.PERFORM_TIMES_PREFIX, p);
-        visitMarkers(performTimes.getMarkers(), p);
+        beforeSyntax(performTimes, Space.Location.PERFORM_TIMES_PREFIX, p);
         visit(performTimes.getValue(), p);
         visit(performTimes.getWord(), p);
+        afterSyntax(performTimes, p);
         return performTimes;
     }
 
     public Cobol visitPerformUntil(Cobol.PerformUntil performUntil, PrintOutputCapture<P> p) {
-        visitSpace(performUntil.getPrefix(), Space.Location.PERFORM_UNTIL_PREFIX, p);
-        visitMarkers(performUntil.getMarkers(), p);
+        beforeSyntax(performUntil, Space.Location.PERFORM_UNTIL_PREFIX, p);
         visit(performUntil.getPerformTestClause(), p);
         visit(performUntil.getWord(), p);
         visit(performUntil.getCondition(), p);
+        afterSyntax(performUntil, p);
         return performUntil;
     }
 
     public Cobol visitPerformVarying(Cobol.PerformVarying performVarying, PrintOutputCapture<P> p) {
-        visitSpace(performVarying.getPrefix(), Space.Location.PERFORM_VARYING_PREFIX, p);
-        visitMarkers(performVarying.getMarkers(), p);
+        beforeSyntax(performVarying, Space.Location.PERFORM_VARYING_PREFIX, p);
         visit(performVarying.getCobols(), p);
+        afterSyntax(performVarying, p);
         return performVarying;
     }
 
     public Cobol visitPerformVaryingClause(Cobol.PerformVaryingClause performVaryingClause, PrintOutputCapture<P> p) {
-        visitSpace(performVaryingClause.getPrefix(), Space.Location.PERFORM_VARYING_CLAUSE_PREFIX, p);
-        visitMarkers(performVaryingClause.getMarkers(), p);
+        beforeSyntax(performVaryingClause, Space.Location.PERFORM_VARYING_CLAUSE_PREFIX, p);
         visit(performVaryingClause.getWord(), p);
         visit(performVaryingClause.getPerformVaryingPhrase(), p);
         visit(performVaryingClause.getPerformAfter(), p);
+        afterSyntax(performVaryingClause, p);
         return performVaryingClause;
     }
 
     public Cobol visitPerformVaryingPhrase(Cobol.PerformVaryingPhrase performVaryingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(performVaryingPhrase.getPrefix(), Space.Location.PERFORM_VARYING_PHRASE_PREFIX, p);
-        visitMarkers(performVaryingPhrase.getMarkers(), p);
+        beforeSyntax(performVaryingPhrase, Space.Location.PERFORM_VARYING_PHRASE_PREFIX, p);
         visit(performVaryingPhrase.getName(), p);
         visit(performVaryingPhrase.getFrom(), p);
         visit(performVaryingPhrase.getBy(), p);
         visit(performVaryingPhrase.getUntil(), p);
+        afterSyntax(performVaryingPhrase, p);
         return performVaryingPhrase;
     }
 
     public Cobol visitPerformable(Cobol.Performable performable, PrintOutputCapture<P> p) {
-        visitSpace(performable.getPrefix(), Space.Location.PERFORMABLE_PREFIX, p);
-        visitMarkers(performable.getMarkers(), p);
+        beforeSyntax(performable, Space.Location.PERFORMABLE_PREFIX, p);
         visit(performable.getWord(), p);
         visit(performable.getExpression(), p);
+        afterSyntax(performable, p);
         return performable;
     }
 
     public Cobol visitPicture(Cobol.Picture picture, PrintOutputCapture<P> p) {
-        visitSpace(picture.getPrefix(), Space.Location.PICTURE_PREFIX, p);
-        visitMarkers(picture.getMarkers(), p);
+        beforeSyntax(picture, Space.Location.PICTURE_PREFIX, p);
         visit(picture.getWords(), p);
         visit(picture.getParenthesized(), p);
+        afterSyntax(picture, p);
         return picture;
     }
 
     public Cobol visitPictureString(Cobol.PictureString pictureString, PrintOutputCapture<P> p) {
-        visitSpace(pictureString.getPrefix(), Space.Location.PICTURE_STRING_PREFIX, p);
-        visitMarkers(pictureString.getMarkers(), p);
+        beforeSyntax(pictureString, Space.Location.PICTURE_STRING_PREFIX, p);
         visit(pictureString.getPictures(), p);
+        afterSyntax(pictureString, p);
         return pictureString;
     }
 
     public Cobol visitPlusMinus(Cobol.PlusMinus plusMinus, PrintOutputCapture<P> p) {
-        visitSpace(plusMinus.getPrefix(), Space.Location.PLUS_MINUS_PREFIX, p);
-        visitMarkers(plusMinus.getMarkers(), p);
+        beforeSyntax(plusMinus, Space.Location.PLUS_MINUS_PREFIX, p);
         visit(plusMinus.getWord(), p);
         visit(plusMinus.getMultDivs(), p);
+        afterSyntax(plusMinus, p);
         return plusMinus;
     }
 
     public Cobol visitPower(Cobol.Power power, PrintOutputCapture<P> p) {
-        visitSpace(power.getPrefix(), Space.Location.POWER_PREFIX, p);
-        visitMarkers(power.getMarkers(), p);
+        beforeSyntax(power, Space.Location.POWER_PREFIX, p);
         visit(power.getPower(), p);
         visit(power.getExpression(), p);
+        afterSyntax(power, p);
         return power;
     }
 
     public Cobol visitPowers(Cobol.Powers powers, PrintOutputCapture<P> p) {
-        visitSpace(powers.getPrefix(), Space.Location.POWERS_PREFIX, p);
-        visitMarkers(powers.getMarkers(), p);
+        beforeSyntax(powers, Space.Location.POWERS_PREFIX, p);
         visit(powers.getPlusMinusChar(), p);
         visit(powers.getExpression(), p);
         visit(powers.getPowers(), p);
+        afterSyntax(powers, p);
         return powers;
     }
 
     public Cobol visitProcedureDeclarative(Cobol.ProcedureDeclarative procedureDeclarative, PrintOutputCapture<P> p) {
-        visitSpace(procedureDeclarative.getPrefix(), Space.Location.PROCEDURE_DECLARATIVE_PREFIX, p);
-        visitMarkers(procedureDeclarative.getMarkers(), p);
+        beforeSyntax(procedureDeclarative, Space.Location.PROCEDURE_DECLARATIVE_PREFIX, p);
         visit(procedureDeclarative.getProcedureSectionHeader(), p);
         visit(procedureDeclarative.getDot(), p);
         visit(procedureDeclarative.getUseStatement(), p);
         visit(procedureDeclarative.getDot2(), p);
         visit(procedureDeclarative.getParagraphs(), p);
+        afterSyntax(procedureDeclarative, p);
         return procedureDeclarative;
     }
 
     public Cobol visitProcedureDeclaratives(Cobol.ProcedureDeclaratives procedureDeclaratives, PrintOutputCapture<P> p) {
-        visitSpace(procedureDeclaratives.getPrefix(), Space.Location.PROCEDURE_DECLARATIVES_PREFIX, p);
-        visitMarkers(procedureDeclaratives.getMarkers(), p);
+        beforeSyntax(procedureDeclaratives, Space.Location.PROCEDURE_DECLARATIVES_PREFIX, p);
         visit(procedureDeclaratives.getDeclaratives(), p);
         visit(procedureDeclaratives.getDot(), p);
         visit(procedureDeclaratives.getProcedureDeclarative(), p);
         visit(procedureDeclaratives.getEndDeclaratives(), p);
         visit(procedureDeclaratives.getDot2(), p);
+        afterSyntax(procedureDeclaratives, p);
         return procedureDeclaratives;
     }
 
     public Cobol visitProcedureDivision(Cobol.ProcedureDivision procedureDivision, PrintOutputCapture<P> p) {
-        visitSpace(procedureDivision.getPrefix(), Space.Location.PROCEDURE_DIVISION_PREFIX, p);
-        visitMarkers(procedureDivision.getMarkers(), p);
+        beforeSyntax(procedureDivision, Space.Location.PROCEDURE_DIVISION_PREFIX, p);
         visit(procedureDivision.getWords(), p);
         visit(procedureDivision.getProcedureDivisionUsingClause(), p);
         visit(procedureDivision.getProcedureDivisionGivingClause(), p);
         visit(procedureDivision.getDot(), p);
         visit(procedureDivision.getProcedureDeclaratives(), p);
         visit(procedureDivision.getBody(), p);
+        afterSyntax(procedureDivision, p);
         return procedureDivision;
     }
 
     public Cobol visitProcedureDivisionBody(Cobol.ProcedureDivisionBody procedureDivisionBody, PrintOutputCapture<P> p) {
-        visitSpace(procedureDivisionBody.getPrefix(), Space.Location.PROCEDURE_DIVISION_BODY_PREFIX, p);
-        visitMarkers(procedureDivisionBody.getMarkers(), p);
+        beforeSyntax(procedureDivisionBody, Space.Location.PROCEDURE_DIVISION_BODY_PREFIX, p);
         visit(procedureDivisionBody.getParagraphs(), p);
         visit(procedureDivisionBody.getProcedureSection(), p);
+        afterSyntax(procedureDivisionBody, p);
         return procedureDivisionBody;
     }
 
     public Cobol visitProcedureDivisionByReference(Cobol.ProcedureDivisionByReference procedureDivisionByReference, PrintOutputCapture<P> p) {
-        visitSpace(procedureDivisionByReference.getPrefix(), Space.Location.PROCEDURE_DIVISION_BY_REFERENCE_PREFIX, p);
-        visitMarkers(procedureDivisionByReference.getMarkers(), p);
+        beforeSyntax(procedureDivisionByReference, Space.Location.PROCEDURE_DIVISION_BY_REFERENCE_PREFIX, p);
         visit(procedureDivisionByReference.getWord(), p);
         visit(procedureDivisionByReference.getReference(), p);
+        afterSyntax(procedureDivisionByReference, p);
         return procedureDivisionByReference;
     }
 
     public Cobol visitProcedureDivisionByReferencePhrase(Cobol.ProcedureDivisionByReferencePhrase procedureDivisionByReferencePhrase, PrintOutputCapture<P> p) {
-        visitSpace(procedureDivisionByReferencePhrase.getPrefix(), Space.Location.PROCEDURE_DIVISION_BY_REFERENCE_PHRASE_PREFIX, p);
-        visitMarkers(procedureDivisionByReferencePhrase.getMarkers(), p);
+        beforeSyntax(procedureDivisionByReferencePhrase, Space.Location.PROCEDURE_DIVISION_BY_REFERENCE_PHRASE_PREFIX, p);
         visit(procedureDivisionByReferencePhrase.getWords(), p);
         visit(procedureDivisionByReferencePhrase.getProcedureDivisionByReference(), p);
+        afterSyntax(procedureDivisionByReferencePhrase, p);
         return procedureDivisionByReferencePhrase;
     }
 
     public Cobol visitProcedureDivisionByValuePhrase(Cobol.ProcedureDivisionByValuePhrase procedureDivisionByValuePhrase, PrintOutputCapture<P> p) {
-        visitSpace(procedureDivisionByValuePhrase.getPrefix(), Space.Location.PROCEDURE_DIVISION_BY_VALUE_PHRASE_PREFIX, p);
-        visitMarkers(procedureDivisionByValuePhrase.getMarkers(), p);
+        beforeSyntax(procedureDivisionByValuePhrase, Space.Location.PROCEDURE_DIVISION_BY_VALUE_PHRASE_PREFIX, p);
         visit(procedureDivisionByValuePhrase.getWords(), p);
         visit(procedureDivisionByValuePhrase.getPhrases(), p);
+        afterSyntax(procedureDivisionByValuePhrase, p);
         return procedureDivisionByValuePhrase;
     }
 
     public Cobol visitProcedureDivisionGivingClause(Cobol.ProcedureDivisionGivingClause procedureDivisionGivingClause, PrintOutputCapture<P> p) {
-        visitSpace(procedureDivisionGivingClause.getPrefix(), Space.Location.PROCEDURE_DIVISION_GIVING_CLAUSE_PREFIX, p);
-        visitMarkers(procedureDivisionGivingClause.getMarkers(), p);
+        beforeSyntax(procedureDivisionGivingClause, Space.Location.PROCEDURE_DIVISION_GIVING_CLAUSE_PREFIX, p);
         visit(procedureDivisionGivingClause.getWord(), p);
         visit(procedureDivisionGivingClause.getDataName(), p);
+        afterSyntax(procedureDivisionGivingClause, p);
         return procedureDivisionGivingClause;
     }
 
@@ -2282,129 +2282,128 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         if (procedureDivisionUsingClause == null) {
             return null;
         }
-        visitSpace(procedureDivisionUsingClause.getPrefix(), Space.Location.PROCEDURE_DIVISION_USING_CLAUSE_PREFIX, p);
-        visitMarkers(procedureDivisionUsingClause.getMarkers(), p);
+        beforeSyntax(procedureDivisionUsingClause, Space.Location.PROCEDURE_DIVISION_USING_CLAUSE_PREFIX, p);
         visit(procedureDivisionUsingClause.getWord(), p);
         visit(procedureDivisionUsingClause.getProcedureDivisionUsingParameter(), p);
+        afterSyntax(procedureDivisionUsingClause, p);
         return procedureDivisionUsingClause;
     }
 
     public Cobol visitProcedureName(Cobol.ProcedureName procedureName, PrintOutputCapture<P> p) {
-        visitSpace(procedureName.getPrefix(), Space.Location.PROCEDURE_NAME_PREFIX, p);
-        visitMarkers(procedureName.getMarkers(), p);
+        beforeSyntax(procedureName, Space.Location.PROCEDURE_NAME_PREFIX, p);
         visit(procedureName.getParagraphName(), p);
         visit(procedureName.getInSection(), p);
         visit(procedureName.getSectionName(), p);
+        afterSyntax(procedureName, p);
         return procedureName;
     }
 
     public Cobol visitProcedureSection(Cobol.ProcedureSection procedureSection, PrintOutputCapture<P> p) {
-        visitSpace(procedureSection.getPrefix(), Space.Location.PROCEDURE_SECTION_PREFIX, p);
-        visitMarkers(procedureSection.getMarkers(), p);
+        beforeSyntax(procedureSection, Space.Location.PROCEDURE_SECTION_PREFIX, p);
         visit(procedureSection.getProcedureSectionHeader(), p);
         visit(procedureSection.getDot(), p);
         visit(procedureSection.getParagraphs(), p);
+        afterSyntax(procedureSection, p);
         return procedureSection;
     }
 
     public Cobol visitProcedureSectionHeader(Cobol.ProcedureSectionHeader procedureSectionHeader, PrintOutputCapture<P> p) {
-        visitSpace(procedureSectionHeader.getPrefix(), Space.Location.PROCEDURE_SECTION_HEADER_PREFIX, p);
-        visitMarkers(procedureSectionHeader.getMarkers(), p);
+        beforeSyntax(procedureSectionHeader, Space.Location.PROCEDURE_SECTION_HEADER_PREFIX, p);
         visit(procedureSectionHeader.getSectionName(), p);
         visit(procedureSectionHeader.getSection(), p);
         visit(procedureSectionHeader.getIdentifier(), p);
+        afterSyntax(procedureSectionHeader, p);
         return procedureSectionHeader;
     }
 
     public Cobol visitProgramIdParagraph(Cobol.ProgramIdParagraph programIdParagraph, PrintOutputCapture<P> p) {
-        visitSpace(programIdParagraph.getPrefix(), Space.Location.PROGRAM_ID_PARAGRAPH_PREFIX, p);
-        visitMarkers(programIdParagraph.getMarkers(), p);
+        beforeSyntax(programIdParagraph, Space.Location.PROGRAM_ID_PARAGRAPH_PREFIX, p);
         visit(programIdParagraph.getProgramId(), p);
         visit(programIdParagraph.getDot(), p);
         visit(programIdParagraph.getProgramName(), p);
         visit(programIdParagraph.getProgramAttributes(), p);
         visit(programIdParagraph.getDot2(), p);
+        afterSyntax(programIdParagraph, p);
         return programIdParagraph;
     }
 
     public Cobol visitProgramLibrarySection(Cobol.ProgramLibrarySection programLibrarySection, PrintOutputCapture<P> p) {
-        visitSpace(programLibrarySection.getPrefix(), Space.Location.PROGRAM_LIBRARY_SECTION_PREFIX, p);
-        visitMarkers(programLibrarySection.getMarkers(), p);
+        beforeSyntax(programLibrarySection, Space.Location.PROGRAM_LIBRARY_SECTION_PREFIX, p);
         visit(programLibrarySection.getWords(), p);
         visit(programLibrarySection.getLibraryDescriptionEntries(), p);
+        afterSyntax(programLibrarySection, p);
         return programLibrarySection;
     }
 
     public Cobol visitProgramUnit(Cobol.ProgramUnit programUnit, PrintOutputCapture<P> p) {
-        visitSpace(programUnit.getPrefix(), Space.Location.PROGRAM_UNIT_PREFIX, p);
-        visitMarkers(programUnit.getMarkers(), p);
+        beforeSyntax(programUnit, Space.Location.PROGRAM_UNIT_PREFIX, p);
         visit(programUnit.getIdentificationDivision(), p);
         visit(programUnit.getEnvironmentDivision(), p);
         visit(programUnit.getDataDivision(), p);
         visit(programUnit.getProcedureDivision(), p);
         visit(programUnit.getProgramUnits(), p);
         visit(programUnit.getEndProgram(), p);
+        afterSyntax(programUnit, p);
         return programUnit;
     }
 
     public Cobol visitPurge(Cobol.Purge purge, PrintOutputCapture<P> p) {
-        visitSpace(purge.getPrefix(), Space.Location.PURGE_PREFIX, p);
-        visitMarkers(purge.getMarkers(), p);
+        beforeSyntax(purge, Space.Location.PURGE_PREFIX, p);
         visit(purge.getPurge(), p);
         visit(purge.getNames(), p);
+        afterSyntax(purge, p);
         return purge;
     }
 
     public Cobol visitQualifiedDataName(Cobol.QualifiedDataName qualifiedDataName, PrintOutputCapture<P> p) {
-        visitSpace(qualifiedDataName.getPrefix(), Space.Location.QUALIFIED_DATA_NAME_PREFIX, p);
-        visitMarkers(qualifiedDataName.getMarkers(), p);
+        beforeSyntax(qualifiedDataName, Space.Location.QUALIFIED_DATA_NAME_PREFIX, p);
         visit(qualifiedDataName.getDataName(), p);
+        afterSyntax(qualifiedDataName, p);
         return qualifiedDataName;
     }
 
     public Cobol visitQualifiedDataNameFormat1(Cobol.QualifiedDataNameFormat1 qualifiedDataNameFormat1, PrintOutputCapture<P> p) {
-        visitSpace(qualifiedDataNameFormat1.getPrefix(), Space.Location.QUALIFIED_DATA_NAME_FORMAT_1_PREFIX, p);
-        visitMarkers(qualifiedDataNameFormat1.getMarkers(), p);
+        beforeSyntax(qualifiedDataNameFormat1, Space.Location.QUALIFIED_DATA_NAME_FORMAT_1_PREFIX, p);
         visit(qualifiedDataNameFormat1.getName(), p);
         visit(qualifiedDataNameFormat1.getQualifiedInData(), p);
         visit(qualifiedDataNameFormat1.getInFile(), p);
+        afterSyntax(qualifiedDataNameFormat1, p);
         return qualifiedDataNameFormat1;
     }
 
     public Cobol visitQualifiedDataNameFormat2(Cobol.QualifiedDataNameFormat2 qualifiedDataNameFormat2, PrintOutputCapture<P> p) {
-        visitSpace(qualifiedDataNameFormat2.getPrefix(), Space.Location.QUALIFIED_DATA_NAME_FORMAT_2_PREFIX, p);
-        visitMarkers(qualifiedDataNameFormat2.getMarkers(), p);
+        beforeSyntax(qualifiedDataNameFormat2, Space.Location.QUALIFIED_DATA_NAME_FORMAT_2_PREFIX, p);
         visit(qualifiedDataNameFormat2.getParagraphName(), p);
         visit(qualifiedDataNameFormat2.getInSection(), p);
+        afterSyntax(qualifiedDataNameFormat2, p);
         return qualifiedDataNameFormat2;
     }
 
     public Cobol visitQualifiedDataNameFormat3(Cobol.QualifiedDataNameFormat3 qualifiedDataNameFormat3, PrintOutputCapture<P> p) {
-        visitSpace(qualifiedDataNameFormat3.getPrefix(), Space.Location.QUALIFIED_DATA_NAME_FORMAT_3_PREFIX, p);
-        visitMarkers(qualifiedDataNameFormat3.getMarkers(), p);
+        beforeSyntax(qualifiedDataNameFormat3, Space.Location.QUALIFIED_DATA_NAME_FORMAT_3_PREFIX, p);
         visit(qualifiedDataNameFormat3.getTextName(), p);
         visit(qualifiedDataNameFormat3.getInLibrary(), p);
+        afterSyntax(qualifiedDataNameFormat3, p);
         return qualifiedDataNameFormat3;
     }
 
     public Cobol visitQualifiedDataNameFormat4(Cobol.QualifiedDataNameFormat4 qualifiedDataNameFormat4, PrintOutputCapture<P> p) {
-        visitSpace(qualifiedDataNameFormat4.getPrefix(), Space.Location.QUALIFIED_DATA_NAME_FORMAT_4_PREFIX, p);
-        visitMarkers(qualifiedDataNameFormat4.getMarkers(), p);
+        beforeSyntax(qualifiedDataNameFormat4, Space.Location.QUALIFIED_DATA_NAME_FORMAT_4_PREFIX, p);
         visit(qualifiedDataNameFormat4.getLinageCounter(), p);
         visit(qualifiedDataNameFormat4.getInFile(), p);
+        afterSyntax(qualifiedDataNameFormat4, p);
         return qualifiedDataNameFormat4;
     }
 
     public Cobol visitQualifiedInData(Cobol.QualifiedInData qualifiedInData, PrintOutputCapture<P> p) {
-        visitSpace(qualifiedInData.getPrefix(), Space.Location.QUALIFIED_IN_DATA_PREFIX, p);
-        visitMarkers(qualifiedInData.getMarkers(), p);
+        beforeSyntax(qualifiedInData, Space.Location.QUALIFIED_IN_DATA_PREFIX, p);
         visit(qualifiedInData.getIn(), p);
+        afterSyntax(qualifiedInData, p);
         return qualifiedInData;
     }
 
     public Cobol visitRead(Cobol.Read read, PrintOutputCapture<P> p) {
-        visitSpace(read.getPrefix(), Space.Location.READ_PREFIX, p);
-        visitMarkers(read.getMarkers(), p);
+        beforeSyntax(read, Space.Location.READ_PREFIX, p);
         visit(read.getWord(), p);
         visit(read.getFileName(), p);
         visit(read.getNextRecord(), p);
@@ -2416,245 +2415,245 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(read.getAtEndPhrase(), p);
         visit(read.getNotAtEndPhrase(), p);
         visit(read.getEndRead(), p);
+        afterSyntax(read, p);
         return read;
     }
 
     public Cobol visitReadInto(Cobol.ReadInto readInto, PrintOutputCapture<P> p) {
-        visitSpace(readInto.getPrefix(), Space.Location.READ_INTO_PREFIX, p);
-        visitMarkers(readInto.getMarkers(), p);
+        beforeSyntax(readInto, Space.Location.READ_INTO_PREFIX, p);
         visit(readInto.getWord(), p);
         visit(readInto.getIdentifier(), p);
+        afterSyntax(readInto, p);
         return readInto;
     }
 
     public Cobol visitReadKey(Cobol.ReadKey readKey, PrintOutputCapture<P> p) {
-        visitSpace(readKey.getPrefix(), Space.Location.READ_KEY_PREFIX, p);
-        visitMarkers(readKey.getMarkers(), p);
+        beforeSyntax(readKey, Space.Location.READ_KEY_PREFIX, p);
         visit(readKey.getWords(), p);
         visit(readKey.getQualifiedDataName(), p);
+        afterSyntax(readKey, p);
         return readKey;
     }
 
     public Cobol visitReadWith(Cobol.ReadWith readWith, PrintOutputCapture<P> p) {
-        visitSpace(readWith.getPrefix(), Space.Location.READ_WITH_PREFIX, p);
-        visitMarkers(readWith.getMarkers(), p);
+        beforeSyntax(readWith, Space.Location.READ_WITH_PREFIX, p);
         visit(readWith.getWords(), p);
+        afterSyntax(readWith, p);
         return readWith;
     }
 
     public Cobol visitReceivable(Cobol.Receivable receivable, PrintOutputCapture<P> p) {
-        visitSpace(receivable.getPrefix(), Space.Location.RECEIVABLE_PREFIX, p);
-        visitMarkers(receivable.getMarkers(), p);
+        beforeSyntax(receivable, Space.Location.RECEIVABLE_PREFIX, p);
         visit(receivable.getWords(), p);
         visit(receivable.getValue(), p);
+        afterSyntax(receivable, p);
         return receivable;
     }
 
     public Cobol visitReceiveWith(Cobol.ReceiveWith receiveWith, PrintOutputCapture<P> p) {
-        visitSpace(receiveWith.getPrefix(), Space.Location.RECEIVE_WITH_PREFIX, p);
-        visitMarkers(receiveWith.getMarkers(), p);
+        beforeSyntax(receiveWith, Space.Location.RECEIVE_WITH_PREFIX, p);
         visit(receiveWith.getWords(), p);
+        afterSyntax(receiveWith, p);
         return receiveWith;
     }
 
     public Cobol visitReceive(Cobol.Receive receive, PrintOutputCapture<P> p) {
-        visitSpace(receive.getPrefix(), Space.Location.RECEIVE_PREFIX, p);
-        visitMarkers(receive.getMarkers(), p);
+        beforeSyntax(receive, Space.Location.RECEIVE_PREFIX, p);
         visit(receive.getReceive(), p);
         visit(receive.getFromOrInto(), p);
         visit(receive.getOnExceptionClause(), p);
         visit(receive.getNotOnExceptionClause(), p);
         visit(receive.getEndReceive(), p);
+        afterSyntax(receive, p);
         return receive;
     }
 
     public Cobol visitReceiveFrom(Cobol.ReceiveFrom receiveFrom, PrintOutputCapture<P> p) {
-        visitSpace(receiveFrom.getPrefix(), Space.Location.RECEIVE_FROM_PREFIX, p);
-        visitMarkers(receiveFrom.getMarkers(), p);
+        beforeSyntax(receiveFrom, Space.Location.RECEIVE_FROM_PREFIX, p);
         visit(receiveFrom.getWords(), p);
         visit(receiveFrom.getDataName(), p);
+        afterSyntax(receiveFrom, p);
         return receiveFrom;
     }
 
     public Cobol visitReceiveFromStatement(Cobol.ReceiveFromStatement receiveFromStatement, PrintOutputCapture<P> p) {
-        visitSpace(receiveFromStatement.getPrefix(), Space.Location.RECEIVE_FROM_STATEMENT_PREFIX, p);
-        visitMarkers(receiveFromStatement.getMarkers(), p);
+        beforeSyntax(receiveFromStatement, Space.Location.RECEIVE_FROM_STATEMENT_PREFIX, p);
         visit(receiveFromStatement.getDataName(), p);
         visit(receiveFromStatement.getFrom(), p);
         visit(receiveFromStatement.getReceiveFrom(), p);
         visit(receiveFromStatement.getBeforeWithThreadSizeStatus(), p);
+        afterSyntax(receiveFromStatement, p);
         return receiveFromStatement;
     }
 
     public Cobol visitReceiveIntoStatement(Cobol.ReceiveIntoStatement receiveIntoStatement, PrintOutputCapture<P> p) {
-        visitSpace(receiveIntoStatement.getPrefix(), Space.Location.RECEIVE_INTO_STATEMENT_PREFIX, p);
-        visitMarkers(receiveIntoStatement.getMarkers(), p);
+        beforeSyntax(receiveIntoStatement, Space.Location.RECEIVE_INTO_STATEMENT_PREFIX, p);
         visit(receiveIntoStatement.getCdName(), p);
         visit(receiveIntoStatement.getWords(), p);
         visit(receiveIntoStatement.getIdentifier(), p);
         visit(receiveIntoStatement.getReceiveNoData(), p);
         visit(receiveIntoStatement.getReceiveWithData(), p);
+        afterSyntax(receiveIntoStatement, p);
         return receiveIntoStatement;
     }
 
     public Cobol visitRecordContainsClause(Cobol.RecordContainsClause recordContainsClause, PrintOutputCapture<P> p) {
-        visitSpace(recordContainsClause.getPrefix(), Space.Location.RECORD_CONTAINS_CLAUSE_PREFIX, p);
-        visitMarkers(recordContainsClause.getMarkers(), p);
+        beforeSyntax(recordContainsClause, Space.Location.RECORD_CONTAINS_CLAUSE_PREFIX, p);
         visit(recordContainsClause.getRecord(), p);
         visit(recordContainsClause.getClause(), p);
+        afterSyntax(recordContainsClause, p);
         return recordContainsClause;
     }
 
     public Cobol visitRecordContainsClauseFormat1(Cobol.RecordContainsClauseFormat1 recordContainsClauseFormat1, PrintOutputCapture<P> p) {
-        visitSpace(recordContainsClauseFormat1.getPrefix(), Space.Location.RECORD_CONTAINS_CLAUSE_FORMAT_1_PREFIX, p);
-        visitMarkers(recordContainsClauseFormat1.getMarkers(), p);
+        beforeSyntax(recordContainsClauseFormat1, Space.Location.RECORD_CONTAINS_CLAUSE_FORMAT_1_PREFIX, p);
         visit(recordContainsClauseFormat1.getContains(), p);
         visit(recordContainsClauseFormat1.getIntegerLiteral(), p);
         visit(recordContainsClauseFormat1.getCharacters(), p);
+        afterSyntax(recordContainsClauseFormat1, p);
         return recordContainsClauseFormat1;
     }
 
     public Cobol visitRecordContainsClauseFormat2(Cobol.RecordContainsClauseFormat2 recordContainsClauseFormat2, PrintOutputCapture<P> p) {
-        visitSpace(recordContainsClauseFormat2.getPrefix(), Space.Location.RECORD_CONTAINS_CLAUSE_FORMAT_2_PREFIX, p);
-        visitMarkers(recordContainsClauseFormat2.getMarkers(), p);
+        beforeSyntax(recordContainsClauseFormat2, Space.Location.RECORD_CONTAINS_CLAUSE_FORMAT_2_PREFIX, p);
         visit(recordContainsClauseFormat2.getWords(), p);
         visit(recordContainsClauseFormat2.getFromClause(), p);
         visit(recordContainsClauseFormat2.getQualifiedDataName(), p);
+        afterSyntax(recordContainsClauseFormat2, p);
         return recordContainsClauseFormat2;
     }
 
     public Cobol visitRecordContainsClauseFormat3(Cobol.RecordContainsClauseFormat3 recordContainsClauseFormat3, PrintOutputCapture<P> p) {
-        visitSpace(recordContainsClauseFormat3.getPrefix(), Space.Location.RECORD_CONTAINS_CLAUSE_FORMAT_3_PREFIX, p);
-        visitMarkers(recordContainsClauseFormat3.getMarkers(), p);
+        beforeSyntax(recordContainsClauseFormat3, Space.Location.RECORD_CONTAINS_CLAUSE_FORMAT_3_PREFIX, p);
         visit(recordContainsClauseFormat3.getContains(), p);
         visit(recordContainsClauseFormat3.getIntegerLiteral(), p);
         visit(recordContainsClauseFormat3.getRecordContainsTo(), p);
         visit(recordContainsClauseFormat3.getCharacters(), p);
+        afterSyntax(recordContainsClauseFormat3, p);
         return recordContainsClauseFormat3;
     }
 
     public Cobol visitRecordContainsTo(Cobol.RecordContainsTo recordContainsTo, PrintOutputCapture<P> p) {
-        visitSpace(recordContainsTo.getPrefix(), Space.Location.RECORD_CONTAINS_TO_PREFIX, p);
-        visitMarkers(recordContainsTo.getMarkers(), p);
+        beforeSyntax(recordContainsTo, Space.Location.RECORD_CONTAINS_TO_PREFIX, p);
         visit(recordContainsTo.getTo(), p);
         visit(recordContainsTo.getIntegerLiteral(), p);
+        afterSyntax(recordContainsTo, p);
         return recordContainsTo;
     }
 
     public Cobol visitRecordDelimiterClause(Cobol.RecordDelimiterClause recordDelimiterClause, PrintOutputCapture<P> p) {
-        visitSpace(recordDelimiterClause.getPrefix(), Space.Location.RECORD_DELIMITER_CLAUSE_PREFIX, p);
-        visitMarkers(recordDelimiterClause.getMarkers(), p);
+        beforeSyntax(recordDelimiterClause, Space.Location.RECORD_DELIMITER_CLAUSE_PREFIX, p);
         visit(recordDelimiterClause.getWords(), p);
         visit(recordDelimiterClause.getName(), p);
+        afterSyntax(recordDelimiterClause, p);
         return recordDelimiterClause;
     }
 
     public Cobol visitRecordKeyClause(Cobol.RecordKeyClause recordKeyClause, PrintOutputCapture<P> p) {
-        visitSpace(recordKeyClause.getPrefix(), Space.Location.RECORD_KEY_CLAUSE_PREFIX, p);
-        visitMarkers(recordKeyClause.getMarkers(), p);
+        beforeSyntax(recordKeyClause, Space.Location.RECORD_KEY_CLAUSE_PREFIX, p);
         visit(recordKeyClause.getRecordWords(), p);
         visit(recordKeyClause.getQualifiedDataName(), p);
         visit(recordKeyClause.getPasswordClause(), p);
         visit(recordKeyClause.getDuplicates(), p);
+        afterSyntax(recordKeyClause, p);
         return recordKeyClause;
     }
 
     public Cobol visitRecordingModeClause(Cobol.RecordingModeClause recordingModeClause, PrintOutputCapture<P> p) {
-        visitSpace(recordingModeClause.getPrefix(), Space.Location.RECORDING_MODE_CLAUSE_PREFIX, p);
-        visitMarkers(recordingModeClause.getMarkers(), p);
+        beforeSyntax(recordingModeClause, Space.Location.RECORDING_MODE_CLAUSE_PREFIX, p);
         visit(recordingModeClause.getWords(), p);
         visit(recordingModeClause.getMode(), p);
+        afterSyntax(recordingModeClause, p);
         return recordingModeClause;
     }
 
     public Cobol visitReferenceModifier(Cobol.ReferenceModifier referenceModifier, PrintOutputCapture<P> p) {
-        visitSpace(referenceModifier.getPrefix(), Space.Location.REFERENCE_MODIFIER_PREFIX, p);
-        visitMarkers(referenceModifier.getMarkers(), p);
+        beforeSyntax(referenceModifier, Space.Location.REFERENCE_MODIFIER_PREFIX, p);
         visit(referenceModifier.getLeftParen(), p);
         visit(referenceModifier.getCharacterPosition(), p);
         visit(referenceModifier.getColon(), p);
         visit(referenceModifier.getLength(), p);
         visit(referenceModifier.getRightParen(), p);
+        afterSyntax(referenceModifier, p);
         return referenceModifier;
     }
 
     public Cobol visitRelationArithmeticComparison(Cobol.RelationArithmeticComparison relationArithmeticComparison, PrintOutputCapture<P> p) {
-        visitSpace(relationArithmeticComparison.getPrefix(), Space.Location.RELATION_ARITHMETIC_COMPARISON_PREFIX, p);
-        visitMarkers(relationArithmeticComparison.getMarkers(), p);
+        beforeSyntax(relationArithmeticComparison, Space.Location.RELATION_ARITHMETIC_COMPARISON_PREFIX, p);
         visit(relationArithmeticComparison.getArithmeticExpressionA(), p);
         visit(relationArithmeticComparison.getRelationalOperator(), p);
         visit(relationArithmeticComparison.getArithmeticExpressionB(), p);
+        afterSyntax(relationArithmeticComparison, p);
         return relationArithmeticComparison;
     }
 
     public Cobol visitRelationCombinedComparison(Cobol.RelationCombinedComparison relationCombinedComparison, PrintOutputCapture<P> p) {
-        visitSpace(relationCombinedComparison.getPrefix(), Space.Location.RELATION_COMBINED_COMPARISON_PREFIX, p);
-        visitMarkers(relationCombinedComparison.getMarkers(), p);
+        beforeSyntax(relationCombinedComparison, Space.Location.RELATION_COMBINED_COMPARISON_PREFIX, p);
         visit(relationCombinedComparison.getArithmeticExpression(), p);
         visit(relationCombinedComparison.getRelationalOperator(), p);
         visit(relationCombinedComparison.getCombinedCondition(), p);
+        afterSyntax(relationCombinedComparison, p);
         return relationCombinedComparison;
     }
 
     public Cobol visitRelationCombinedCondition(Cobol.RelationCombinedCondition relationCombinedCondition, PrintOutputCapture<P> p) {
-        visitSpace(relationCombinedCondition.getPrefix(), Space.Location.RELATION_COMBINED_CONDITION_PREFIX, p);
-        visitMarkers(relationCombinedCondition.getMarkers(), p);
+        beforeSyntax(relationCombinedCondition, Space.Location.RELATION_COMBINED_CONDITION_PREFIX, p);
         visit(relationCombinedCondition.getRelationalArithmeticExpressions(), p);
+        afterSyntax(relationCombinedCondition, p);
         return relationCombinedCondition;
     }
 
     public Cobol visitRelationSignCondition(Cobol.RelationSignCondition relationSignCondition, PrintOutputCapture<P> p) {
-        visitSpace(relationSignCondition.getPrefix(), Space.Location.RELATION_SIGN_CONDITION_PREFIX, p);
-        visitMarkers(relationSignCondition.getMarkers(), p);
+        beforeSyntax(relationSignCondition, Space.Location.RELATION_SIGN_CONDITION_PREFIX, p);
         visit(relationSignCondition.getArithmeticExpression(), p);
         visit(relationSignCondition.getWords(), p);
+        afterSyntax(relationSignCondition, p);
         return relationSignCondition;
     }
 
     public Cobol visitRelationalOperator(Cobol.RelationalOperator relationalOperator, PrintOutputCapture<P> p) {
-        visitSpace(relationalOperator.getPrefix(), Space.Location.RELATIONAL_OPERATOR_PREFIX, p);
-        visitMarkers(relationalOperator.getMarkers(), p);
+        beforeSyntax(relationalOperator, Space.Location.RELATIONAL_OPERATOR_PREFIX, p);
         visit(relationalOperator.getWords(), p);
+        afterSyntax(relationalOperator, p);
         return relationalOperator;
     }
 
     public Cobol visitRelativeKeyClause(Cobol.RelativeKeyClause relativeKeyClause, PrintOutputCapture<P> p) {
-        visitSpace(relativeKeyClause.getPrefix(), Space.Location.RELATIVE_KEY_CLAUSE_PREFIX, p);
-        visitMarkers(relativeKeyClause.getMarkers(), p);
+        beforeSyntax(relativeKeyClause, Space.Location.RELATIVE_KEY_CLAUSE_PREFIX, p);
         visit(relativeKeyClause.getWords(), p);
         visit(relativeKeyClause.getQualifiedDataName(), p);
+        afterSyntax(relativeKeyClause, p);
         return relativeKeyClause;
     }
 
     public Cobol visitRelease(Cobol.Release release, PrintOutputCapture<P> p) {
-        visitSpace(release.getPrefix(), Space.Location.RELEASE_PREFIX, p);
-        visitMarkers(release.getMarkers(), p);
+        beforeSyntax(release, Space.Location.RELEASE_PREFIX, p);
         visit(release.getRelease(), p);
         visit(release.getRecordName(), p);
         visit(release.getFrom(), p);
         visit(release.getQualifiedDataName(), p);
+        afterSyntax(release, p);
         return release;
     }
 
     public Cobol visitReportClause(Cobol.ReportClause reportClause, PrintOutputCapture<P> p) {
-        visitSpace(reportClause.getPrefix(), Space.Location.REPORT_CLAUSE_PREFIX, p);
-        visitMarkers(reportClause.getMarkers(), p);
+        beforeSyntax(reportClause, Space.Location.REPORT_CLAUSE_PREFIX, p);
         visit(reportClause.getWords(), p);
         visit(reportClause.getReportName(), p);
+        afterSyntax(reportClause, p);
         return reportClause;
     }
 
     public Cobol visitReportDescription(Cobol.ReportDescription reportDescription, PrintOutputCapture<P> p) {
-        visitSpace(reportDescription.getPrefix(), Space.Location.REPORT_DESCRIPTION_PREFIX, p);
-        visitMarkers(reportDescription.getMarkers(), p);
+        beforeSyntax(reportDescription, Space.Location.REPORT_DESCRIPTION_PREFIX, p);
         visit(reportDescription.getReportDescriptionEntry(), p);
         visit(reportDescription.getGroupDescriptionEntries(), p);
+        afterSyntax(reportDescription, p);
         return reportDescription;
     }
 
     public Cobol visitReportDescriptionEntry(Cobol.ReportDescriptionEntry reportDescriptionEntry, PrintOutputCapture<P> p) {
-        visitSpace(reportDescriptionEntry.getPrefix(), Space.Location.REPORT_DESCRIPTION_ENTRY_PREFIX, p);
-        visitMarkers(reportDescriptionEntry.getMarkers(), p);
+        beforeSyntax(reportDescriptionEntry, Space.Location.REPORT_DESCRIPTION_ENTRY_PREFIX, p);
         visit(reportDescriptionEntry.getRd(), p);
         visit(reportDescriptionEntry.getQualifiedDataName(), p);
         visit(reportDescriptionEntry.getReportDescriptionGlobalClause(), p);
@@ -2664,75 +2663,75 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(reportDescriptionEntry.getReportDescriptionLastDetailClause(), p);
         visit(reportDescriptionEntry.getReportDescriptionFootingClause(), p);
         visit(reportDescriptionEntry.getDot(), p);
+        afterSyntax(reportDescriptionEntry, p);
         return reportDescriptionEntry;
     }
 
     public Cobol visitReportDescriptionFirstDetailClause(Cobol.ReportDescriptionFirstDetailClause reportDescriptionFirstDetailClause, PrintOutputCapture<P> p) {
-        visitSpace(reportDescriptionFirstDetailClause.getPrefix(), Space.Location.REPORT_DESCRIPTION_FIRST_DETAIL_CLAUSE_PREFIX, p);
-        visitMarkers(reportDescriptionFirstDetailClause.getMarkers(), p);
+        beforeSyntax(reportDescriptionFirstDetailClause, Space.Location.REPORT_DESCRIPTION_FIRST_DETAIL_CLAUSE_PREFIX, p);
         visit(reportDescriptionFirstDetailClause.getWords(), p);
         visit(reportDescriptionFirstDetailClause.getDataName(), p);
+        afterSyntax(reportDescriptionFirstDetailClause, p);
         return reportDescriptionFirstDetailClause;
     }
 
     public Cobol visitReportDescriptionFootingClause(Cobol.ReportDescriptionFootingClause reportDescriptionFootingClause, PrintOutputCapture<P> p) {
-        visitSpace(reportDescriptionFootingClause.getPrefix(), Space.Location.REPORT_DESCRIPTION_FOOTING_CLAUSE_PREFIX, p);
-        visitMarkers(reportDescriptionFootingClause.getMarkers(), p);
+        beforeSyntax(reportDescriptionFootingClause, Space.Location.REPORT_DESCRIPTION_FOOTING_CLAUSE_PREFIX, p);
         visit(reportDescriptionFootingClause.getWord(), p);
         visit(reportDescriptionFootingClause.getDataName(), p);
+        afterSyntax(reportDescriptionFootingClause, p);
         return reportDescriptionFootingClause;
     }
 
     public Cobol visitReportDescriptionGlobalClause(Cobol.ReportDescriptionGlobalClause reportDescriptionGlobalClause, PrintOutputCapture<P> p) {
-        visitSpace(reportDescriptionGlobalClause.getPrefix(), Space.Location.REPORT_DESCRIPTION_GLOBAL_CLAUSE_PREFIX, p);
-        visitMarkers(reportDescriptionGlobalClause.getMarkers(), p);
+        beforeSyntax(reportDescriptionGlobalClause, Space.Location.REPORT_DESCRIPTION_GLOBAL_CLAUSE_PREFIX, p);
         visit(reportDescriptionGlobalClause.getWords(), p);
+        afterSyntax(reportDescriptionGlobalClause, p);
         return reportDescriptionGlobalClause;
     }
 
     public Cobol visitReportDescriptionHeadingClause(Cobol.ReportDescriptionHeadingClause reportDescriptionHeadingClause, PrintOutputCapture<P> p) {
-        visitSpace(reportDescriptionHeadingClause.getPrefix(), Space.Location.REPORT_DESCRIPTION_HEADING_CLAUSE_PREFIX, p);
-        visitMarkers(reportDescriptionHeadingClause.getMarkers(), p);
+        beforeSyntax(reportDescriptionHeadingClause, Space.Location.REPORT_DESCRIPTION_HEADING_CLAUSE_PREFIX, p);
         visit(reportDescriptionHeadingClause.getWord(), p);
         visit(reportDescriptionHeadingClause.getDataName(), p);
+        afterSyntax(reportDescriptionHeadingClause, p);
         return reportDescriptionHeadingClause;
     }
 
     public Cobol visitReportDescriptionLastDetailClause(Cobol.ReportDescriptionLastDetailClause reportDescriptionLastDetailClause, PrintOutputCapture<P> p) {
-        visitSpace(reportDescriptionLastDetailClause.getPrefix(), Space.Location.REPORT_DESCRIPTION_LAST_DETAIL_CLAUSE_PREFIX, p);
-        visitMarkers(reportDescriptionLastDetailClause.getMarkers(), p);
+        beforeSyntax(reportDescriptionLastDetailClause, Space.Location.REPORT_DESCRIPTION_LAST_DETAIL_CLAUSE_PREFIX, p);
         visit(reportDescriptionLastDetailClause.getWords(), p);
         visit(reportDescriptionLastDetailClause.getDataName(), p);
+        afterSyntax(reportDescriptionLastDetailClause, p);
         return reportDescriptionLastDetailClause;
     }
 
     public Cobol visitReportDescriptionPageLimitClause(Cobol.ReportDescriptionPageLimitClause reportDescriptionPageLimitClause, PrintOutputCapture<P> p) {
-        visitSpace(reportDescriptionPageLimitClause.getPrefix(), Space.Location.REPORT_DESCRIPTION_PAGE_LIMIT_CLAUSE_PREFIX, p);
-        visitMarkers(reportDescriptionPageLimitClause.getMarkers(), p);
+        beforeSyntax(reportDescriptionPageLimitClause, Space.Location.REPORT_DESCRIPTION_PAGE_LIMIT_CLAUSE_PREFIX, p);
         visit(reportDescriptionPageLimitClause.getFirstWords(), p);
         visit(reportDescriptionPageLimitClause.getIntegerLiteral(), p);
         visit(reportDescriptionPageLimitClause.getSecondWords(), p);
+        afterSyntax(reportDescriptionPageLimitClause, p);
         return reportDescriptionPageLimitClause;
     }
 
     public Cobol visitReportGroupBlankWhenZeroClause(Cobol.ReportGroupBlankWhenZeroClause reportGroupBlankWhenZeroClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupBlankWhenZeroClause.getPrefix(), Space.Location.REPORT_GROUP_BLANK_WHEN_ZERO_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupBlankWhenZeroClause.getMarkers(), p);
+        beforeSyntax(reportGroupBlankWhenZeroClause, Space.Location.REPORT_GROUP_BLANK_WHEN_ZERO_CLAUSE_PREFIX, p);
         visit(reportGroupBlankWhenZeroClause.getWords(), p);
+        afterSyntax(reportGroupBlankWhenZeroClause, p);
         return reportGroupBlankWhenZeroClause;
     }
 
     public Cobol visitReportGroupColumnNumberClause(Cobol.ReportGroupColumnNumberClause reportGroupColumnNumberClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupColumnNumberClause.getPrefix(), Space.Location.REPORT_GROUP_COLUMN_NUMBER_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupColumnNumberClause.getMarkers(), p);
+        beforeSyntax(reportGroupColumnNumberClause, Space.Location.REPORT_GROUP_COLUMN_NUMBER_CLAUSE_PREFIX, p);
         visit(reportGroupColumnNumberClause.getWords(), p);
         visit(reportGroupColumnNumberClause.getDataName(), p);
+        afterSyntax(reportGroupColumnNumberClause, p);
         return reportGroupColumnNumberClause;
     }
 
     public Cobol visitReportGroupDescriptionEntryFormat1(Cobol.ReportGroupDescriptionEntryFormat1 reportGroupDescriptionEntryFormat1, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupDescriptionEntryFormat1.getPrefix(), Space.Location.REPORT_GROUP_DESCRIPTION_ENTRY_FORMAT_1_PREFIX, p);
-        visitMarkers(reportGroupDescriptionEntryFormat1.getMarkers(), p);
+        beforeSyntax(reportGroupDescriptionEntryFormat1, Space.Location.REPORT_GROUP_DESCRIPTION_ENTRY_FORMAT_1_PREFIX, p);
         visit(reportGroupDescriptionEntryFormat1.getIntegerLiteral(), p);
         visit(reportGroupDescriptionEntryFormat1.getDataName(), p);
         visit(reportGroupDescriptionEntryFormat1.getGroupLineNumberClause(), p);
@@ -2740,268 +2739,268 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(reportGroupDescriptionEntryFormat1.getGroupTypeClause(), p);
         visit(reportGroupDescriptionEntryFormat1.getGroupUsageClause(), p);
         visit(reportGroupDescriptionEntryFormat1.getDot(), p);
+        afterSyntax(reportGroupDescriptionEntryFormat1, p);
         return reportGroupDescriptionEntryFormat1;
     }
 
     public Cobol visitReportGroupDescriptionEntryFormat2(Cobol.ReportGroupDescriptionEntryFormat2 reportGroupDescriptionEntryFormat2, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupDescriptionEntryFormat2.getPrefix(), Space.Location.REPORT_GROUP_DESCRIPTION_ENTRY_FORMAT_2_PREFIX, p);
-        visitMarkers(reportGroupDescriptionEntryFormat2.getMarkers(), p);
+        beforeSyntax(reportGroupDescriptionEntryFormat2, Space.Location.REPORT_GROUP_DESCRIPTION_ENTRY_FORMAT_2_PREFIX, p);
         visit(reportGroupDescriptionEntryFormat2.getIntegerLiteral(), p);
         visit(reportGroupDescriptionEntryFormat2.getDataName(), p);
         visit(reportGroupDescriptionEntryFormat2.getReportGroupLineNumberClause(), p);
         visit(reportGroupDescriptionEntryFormat2.getGroupUsageClause(), p);
         visit(reportGroupDescriptionEntryFormat2.getDot(), p);
+        afterSyntax(reportGroupDescriptionEntryFormat2, p);
         return reportGroupDescriptionEntryFormat2;
     }
 
     public Cobol visitReportGroupDescriptionEntryFormat3(Cobol.ReportGroupDescriptionEntryFormat3 reportGroupDescriptionEntryFormat3, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupDescriptionEntryFormat3.getPrefix(), Space.Location.REPORT_GROUP_DESCRIPTION_ENTRY_FORMAT_3_PREFIX, p);
-        visitMarkers(reportGroupDescriptionEntryFormat3.getMarkers(), p);
+        beforeSyntax(reportGroupDescriptionEntryFormat3, Space.Location.REPORT_GROUP_DESCRIPTION_ENTRY_FORMAT_3_PREFIX, p);
         visit(reportGroupDescriptionEntryFormat3.getIntegerLiteral(), p);
         visit(reportGroupDescriptionEntryFormat3.getDataName(), p);
         visit(reportGroupDescriptionEntryFormat3.getClauses(), p);
         visit(reportGroupDescriptionEntryFormat3.getDot(), p);
+        afterSyntax(reportGroupDescriptionEntryFormat3, p);
         return reportGroupDescriptionEntryFormat3;
     }
 
     public Cobol visitReportGroupIndicateClause(Cobol.ReportGroupIndicateClause reportGroupIndicateClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupIndicateClause.getPrefix(), Space.Location.REPORT_GROUP_INDICATOR_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupIndicateClause.getMarkers(), p);
+        beforeSyntax(reportGroupIndicateClause, Space.Location.REPORT_GROUP_INDICATOR_CLAUSE_PREFIX, p);
         visit(reportGroupIndicateClause.getWords(), p);
+        afterSyntax(reportGroupIndicateClause, p);
         return reportGroupIndicateClause;
     }
 
     public Cobol visitReportGroupJustifiedClause(Cobol.ReportGroupJustifiedClause reportGroupJustifiedClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupJustifiedClause.getPrefix(), Space.Location.REPORT_GROUP_JUSTIFIED_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupJustifiedClause.getMarkers(), p);
+        beforeSyntax(reportGroupJustifiedClause, Space.Location.REPORT_GROUP_JUSTIFIED_CLAUSE_PREFIX, p);
         visit(reportGroupJustifiedClause.getWords(), p);
+        afterSyntax(reportGroupJustifiedClause, p);
         return reportGroupJustifiedClause;
     }
 
     public Cobol visitReportGroupLineNumberClause(Cobol.ReportGroupLineNumberClause reportGroupLineNumberClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupLineNumberClause.getPrefix(), Space.Location.REPORT_GROUP_LINE_NUMBER_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupLineNumberClause.getMarkers(), p);
+        beforeSyntax(reportGroupLineNumberClause, Space.Location.REPORT_GROUP_LINE_NUMBER_CLAUSE_PREFIX, p);
         visit(reportGroupLineNumberClause.getWords(), p);
         visit(reportGroupLineNumberClause.getClause(), p);
+        afterSyntax(reportGroupLineNumberClause, p);
         return reportGroupLineNumberClause;
     }
 
     public Cobol visitReportGroupLineNumberNextPage(Cobol.ReportGroupLineNumberNextPage reportGroupLineNumberNextPage, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupLineNumberNextPage.getPrefix(), Space.Location.REPORT_GROUP_LINE_NUMBER_NEXT_PAGE_PREFIX, p);
-        visitMarkers(reportGroupLineNumberNextPage.getMarkers(), p);
+        beforeSyntax(reportGroupLineNumberNextPage, Space.Location.REPORT_GROUP_LINE_NUMBER_NEXT_PAGE_PREFIX, p);
         visit(reportGroupLineNumberNextPage.getIntegerLiteral(), p);
         visit(reportGroupLineNumberNextPage.getWords(), p);
+        afterSyntax(reportGroupLineNumberNextPage, p);
         return reportGroupLineNumberNextPage;
     }
 
     public Cobol visitReportGroupLineNumberPlus(Cobol.ReportGroupLineNumberPlus reportGroupLineNumberPlus, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupLineNumberPlus.getPrefix(), Space.Location.REPORT_GROUP_LINE_NUMBER_PLUS_PREFIX, p);
-        visitMarkers(reportGroupLineNumberPlus.getMarkers(), p);
+        beforeSyntax(reportGroupLineNumberPlus, Space.Location.REPORT_GROUP_LINE_NUMBER_PLUS_PREFIX, p);
         visit(reportGroupLineNumberPlus.getPlus(), p);
         visit(reportGroupLineNumberPlus.getIntegerLiteral(), p);
+        afterSyntax(reportGroupLineNumberPlus, p);
         return reportGroupLineNumberPlus;
     }
 
     public Cobol visitReportGroupNextGroupClause(Cobol.ReportGroupNextGroupClause reportGroupNextGroupClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupNextGroupClause.getPrefix(), Space.Location.REPORT_GROUP_NEXT_GROUP_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupNextGroupClause.getMarkers(), p);
+        beforeSyntax(reportGroupNextGroupClause, Space.Location.REPORT_GROUP_NEXT_GROUP_CLAUSE_PREFIX, p);
         visit(reportGroupNextGroupClause.getWords(), p);
         visit(reportGroupNextGroupClause.getClause(), p);
+        afterSyntax(reportGroupNextGroupClause, p);
         return reportGroupNextGroupClause;
     }
 
     public Cobol visitReportGroupNextGroupNextPage(Cobol.ReportGroupNextGroupNextPage reportGroupNextGroupNextPage, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupNextGroupNextPage.getPrefix(), Space.Location.REPORT_GROUP_NEXT_GROUP_NEXT_PAGE_PREFIX, p);
-        visitMarkers(reportGroupNextGroupNextPage.getMarkers(), p);
+        beforeSyntax(reportGroupNextGroupNextPage, Space.Location.REPORT_GROUP_NEXT_GROUP_NEXT_PAGE_PREFIX, p);
         visit(reportGroupNextGroupNextPage.getNextPage(), p);
+        afterSyntax(reportGroupNextGroupNextPage, p);
         return reportGroupNextGroupNextPage;
     }
 
     public Cobol visitReportGroupNextGroupPlus(Cobol.ReportGroupNextGroupPlus reportGroupNextGroupPlus, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupNextGroupPlus.getPrefix(), Space.Location.REPORT_GROUP_NEXT_GROUP_PLUS_PREFIX, p);
-        visitMarkers(reportGroupNextGroupPlus.getMarkers(), p);
+        beforeSyntax(reportGroupNextGroupPlus, Space.Location.REPORT_GROUP_NEXT_GROUP_PLUS_PREFIX, p);
         visit(reportGroupNextGroupPlus.getPlus(), p);
         visit(reportGroupNextGroupPlus.getIntegerLiteral(), p);
+        afterSyntax(reportGroupNextGroupPlus, p);
         return reportGroupNextGroupPlus;
     }
 
     public Cobol visitReportGroupPictureClause(Cobol.ReportGroupPictureClause reportGroupPictureClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupPictureClause.getPrefix(), Space.Location.REPORT_GROUP_PICTURE_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupPictureClause.getMarkers(), p);
+        beforeSyntax(reportGroupPictureClause, Space.Location.REPORT_GROUP_PICTURE_CLAUSE_PREFIX, p);
         visit(reportGroupPictureClause.getWords(), p);
         visit(reportGroupPictureClause.getPictureString(), p);
+        afterSyntax(reportGroupPictureClause, p);
         return reportGroupPictureClause;
     }
 
     public Cobol visitReportGroupResetClause(Cobol.ReportGroupResetClause reportGroupResetClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupResetClause.getPrefix(), Space.Location.REPORT_GROUP_RESET_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupResetClause.getMarkers(), p);
+        beforeSyntax(reportGroupResetClause, Space.Location.REPORT_GROUP_RESET_CLAUSE_PREFIX, p);
         visit(reportGroupResetClause.getWords(), p);
+        afterSyntax(reportGroupResetClause, p);
         return reportGroupResetClause;
     }
 
     public Cobol visitReportGroupSignClause(Cobol.ReportGroupSignClause reportGroupSignClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupSignClause.getPrefix(), Space.Location.REPORT_GROUP_SIGN_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupSignClause.getMarkers(), p);
+        beforeSyntax(reportGroupSignClause, Space.Location.REPORT_GROUP_SIGN_CLAUSE_PREFIX, p);
         visit(reportGroupSignClause.getWords(), p);
+        afterSyntax(reportGroupSignClause, p);
         return reportGroupSignClause;
     }
 
     public Cobol visitReportGroupSourceClause(Cobol.ReportGroupSourceClause reportGroupSourceClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupSourceClause.getPrefix(), Space.Location.REPORT_GROUP_SOURCE_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupSourceClause.getMarkers(), p);
+        beforeSyntax(reportGroupSourceClause, Space.Location.REPORT_GROUP_SOURCE_CLAUSE_PREFIX, p);
         visit(reportGroupSourceClause.getWords(), p);
         visit(reportGroupSourceClause.getIdentifier(), p);
+        afterSyntax(reportGroupSourceClause, p);
         return reportGroupSourceClause;
     }
 
     public Cobol visitReportGroupSumClause(Cobol.ReportGroupSumClause reportGroupSumClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupSumClause.getPrefix(), Space.Location.REPORT_GROUP_SUM_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupSumClause.getMarkers(), p);
+        beforeSyntax(reportGroupSumClause, Space.Location.REPORT_GROUP_SUM_CLAUSE_PREFIX, p);
         visit(reportGroupSumClause.getCobols(), p);
+        afterSyntax(reportGroupSumClause, p);
         return reportGroupSumClause;
     }
 
     public Cobol visitReportGroupTypeClause(Cobol.ReportGroupTypeClause reportGroupTypeClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupTypeClause.getPrefix(), Space.Location.REPORT_GROUP_TYPE_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupTypeClause.getMarkers(), p);
+        beforeSyntax(reportGroupTypeClause, Space.Location.REPORT_GROUP_TYPE_CLAUSE_PREFIX, p);
         visit(reportGroupTypeClause.getWords(), p);
         visit(reportGroupTypeClause.getType(), p);
+        afterSyntax(reportGroupTypeClause, p);
         return reportGroupTypeClause;
     }
 
     public Cobol visitReportGroupTypeControlFooting(Cobol.ReportGroupTypeControlFooting reportGroupTypeControlFooting, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupTypeControlFooting.getPrefix(), Space.Location.REPORT_GROUP_TYPE_CONTROL_FOOTING_PREFIX, p);
-        visitMarkers(reportGroupTypeControlFooting.getMarkers(), p);
+        beforeSyntax(reportGroupTypeControlFooting, Space.Location.REPORT_GROUP_TYPE_CONTROL_FOOTING_PREFIX, p);
         visit(reportGroupTypeControlFooting.getWords(), p);
+        afterSyntax(reportGroupTypeControlFooting, p);
         return reportGroupTypeControlFooting;
     }
 
     public Cobol visitReportGroupTypeControlHeading(Cobol.ReportGroupTypeControlHeading reportGroupTypeControlHeading, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupTypeControlHeading.getPrefix(), Space.Location.REPORT_GROUP_TYPE_CONTROL_HEADING_PREFIX, p);
-        visitMarkers(reportGroupTypeControlHeading.getMarkers(), p);
+        beforeSyntax(reportGroupTypeControlHeading, Space.Location.REPORT_GROUP_TYPE_CONTROL_HEADING_PREFIX, p);
         visit(reportGroupTypeControlHeading.getWords(), p);
+        afterSyntax(reportGroupTypeControlHeading, p);
         return reportGroupTypeControlHeading;
     }
 
     public Cobol visitReportGroupTypeDetail(Cobol.ReportGroupTypeDetail reportGroupTypeDetail, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupTypeDetail.getPrefix(), Space.Location.REPORT_GROUP_TYPE_DETAIL_PREFIX, p);
-        visitMarkers(reportGroupTypeDetail.getMarkers(), p);
+        beforeSyntax(reportGroupTypeDetail, Space.Location.REPORT_GROUP_TYPE_DETAIL_PREFIX, p);
         visit(reportGroupTypeDetail.getWords(), p);
+        afterSyntax(reportGroupTypeDetail, p);
         return reportGroupTypeDetail;
     }
 
     public Cobol visitReportGroupTypePageFooting(Cobol.ReportGroupTypePageFooting reportGroupTypePageFooting, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupTypePageFooting.getPrefix(), Space.Location.REPORT_GROUP_TYPE_PAGE_FOOTING_PREFIX, p);
-        visitMarkers(reportGroupTypePageFooting.getMarkers(), p);
+        beforeSyntax(reportGroupTypePageFooting, Space.Location.REPORT_GROUP_TYPE_PAGE_FOOTING_PREFIX, p);
         visit(reportGroupTypePageFooting.getWords(), p);
+        afterSyntax(reportGroupTypePageFooting, p);
         return reportGroupTypePageFooting;
     }
 
     public Cobol visitReportGroupTypePageHeading(Cobol.ReportGroupTypePageHeading reportGroupTypePageHeading, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupTypePageHeading.getPrefix(), Space.Location.REPORT_GROUP_TYPE_REPORT_FOOTING_PREFIX, p);
-        visitMarkers(reportGroupTypePageHeading.getMarkers(), p);
+        beforeSyntax(reportGroupTypePageHeading, Space.Location.REPORT_GROUP_TYPE_REPORT_FOOTING_PREFIX, p);
         visit(reportGroupTypePageHeading.getWords(), p);
+        afterSyntax(reportGroupTypePageHeading, p);
         return reportGroupTypePageHeading;
     }
 
     public Cobol visitReportGroupTypeReportFooting(Cobol.ReportGroupTypeReportFooting reportGroupTypeReportFooting, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupTypeReportFooting.getPrefix(), Space.Location.REPORT_GROUP_TYPE_PAGE_HEADING_PREFIX, p);
-        visitMarkers(reportGroupTypeReportFooting.getMarkers(), p);
+        beforeSyntax(reportGroupTypeReportFooting, Space.Location.REPORT_GROUP_TYPE_PAGE_HEADING_PREFIX, p);
         visit(reportGroupTypeReportFooting.getWords(), p);
+        afterSyntax(reportGroupTypeReportFooting, p);
         return reportGroupTypeReportFooting;
     }
 
     public Cobol visitReportGroupTypeReportHeading(Cobol.ReportGroupTypeReportHeading reportGroupTypeReportHeading, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupTypeReportHeading.getPrefix(), Space.Location.REPORT_GROUP_TYPE_REPORT_HEADING_PREFIX, p);
-        visitMarkers(reportGroupTypeReportHeading.getMarkers(), p);
+        beforeSyntax(reportGroupTypeReportHeading, Space.Location.REPORT_GROUP_TYPE_REPORT_HEADING_PREFIX, p);
         visit(reportGroupTypeReportHeading.getWords(), p);
+        afterSyntax(reportGroupTypeReportHeading, p);
         return reportGroupTypeReportHeading;
     }
 
     public Cobol visitReportGroupUsageClause(Cobol.ReportGroupUsageClause reportGroupUsageClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupUsageClause.getPrefix(), Space.Location.REPORT_GROUP_USAGE_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupUsageClause.getMarkers(), p);
+        beforeSyntax(reportGroupUsageClause, Space.Location.REPORT_GROUP_USAGE_CLAUSE_PREFIX, p);
         visit(reportGroupUsageClause.getWords(), p);
+        afterSyntax(reportGroupUsageClause, p);
         return reportGroupUsageClause;
     }
 
     public Cobol visitReportGroupValueClause(Cobol.ReportGroupValueClause reportGroupValueClause, PrintOutputCapture<P> p) {
-        visitSpace(reportGroupValueClause.getPrefix(), Space.Location.REPORT_GROUP_VALUE_CLAUSE_PREFIX, p);
-        visitMarkers(reportGroupValueClause.getMarkers(), p);
+        beforeSyntax(reportGroupValueClause, Space.Location.REPORT_GROUP_VALUE_CLAUSE_PREFIX, p);
         visit(reportGroupValueClause.getWords(), p);
         visit(reportGroupValueClause.getLiteral(), p);
+        afterSyntax(reportGroupValueClause, p);
         return reportGroupValueClause;
     }
 
     public Cobol visitReportName(Cobol.ReportName reportName, PrintOutputCapture<P> p) {
-        visitSpace(reportName.getPrefix(), Space.Location.REPORT_NAME_PREFIX, p);
-        visitMarkers(reportName.getMarkers(), p);
+        beforeSyntax(reportName, Space.Location.REPORT_NAME_PREFIX, p);
         visit(reportName.getQualifiedDataName(), p);
+        afterSyntax(reportName, p);
         return reportName;
     }
 
     public Cobol visitReportSection(Cobol.ReportSection reportSection, PrintOutputCapture<P> p) {
-        visitSpace(reportSection.getPrefix(), Space.Location.REPORT_SECTION_PREFIX, p);
-        visitMarkers(reportSection.getMarkers(), p);
+        beforeSyntax(reportSection, Space.Location.REPORT_SECTION_PREFIX, p);
         visit(reportSection.getWords(), p);
         visit(reportSection.getDescriptions(), p);
+        afterSyntax(reportSection, p);
         return reportSection;
     }
 
     public Cobol visitRerunClause(Cobol.RerunClause rerunClause, PrintOutputCapture<P> p) {
-        visitSpace(rerunClause.getPrefix(), Space.Location.RERUN_CLAUSE_PREFIX, p);
-        visitMarkers(rerunClause.getMarkers(), p);
+        beforeSyntax(rerunClause, Space.Location.RERUN_CLAUSE_PREFIX, p);
         visit(rerunClause.getRerun(), p);
         visit(rerunClause.getOn(), p);
         visit(rerunClause.getName(), p);
         visit(rerunClause.getEvery(), p);
         visit(rerunClause.getAction(), p);
+        afterSyntax(rerunClause, p);
         return rerunClause;
     }
 
     public Cobol visitRerunEveryClock(Cobol.RerunEveryClock rerunEveryClock, PrintOutputCapture<P> p) {
-        visitSpace(rerunEveryClock.getPrefix(), Space.Location.RERUN_EVERY_CLOCK_PREFIX, p);
-        visitMarkers(rerunEveryClock.getMarkers(), p);
+        beforeSyntax(rerunEveryClock, Space.Location.RERUN_EVERY_CLOCK_PREFIX, p);
         visit(rerunEveryClock.getIntegerLiteral(), p);
         visit(rerunEveryClock.getClockUnits(), p);
+        afterSyntax(rerunEveryClock, p);
         return rerunEveryClock;
     }
 
     public Cobol visitRerunEveryOf(Cobol.RerunEveryOf rerunEveryOf, PrintOutputCapture<P> p) {
-        visitSpace(rerunEveryOf.getPrefix(), Space.Location.RERUN_EVERY_OF_PREFIX, p);
-        visitMarkers(rerunEveryOf.getMarkers(), p);
+        beforeSyntax(rerunEveryOf, Space.Location.RERUN_EVERY_OF_PREFIX, p);
         visit(rerunEveryOf.getRecords(), p);
         visit(rerunEveryOf.getFileName(), p);
+        afterSyntax(rerunEveryOf, p);
         return rerunEveryOf;
     }
 
     public Cobol visitRerunEveryRecords(Cobol.RerunEveryRecords rerunEveryRecords, PrintOutputCapture<P> p) {
-        visitSpace(rerunEveryRecords.getPrefix(), Space.Location.RERUN_EVERY_RECORDS_PREFIX, p);
-        visitMarkers(rerunEveryRecords.getMarkers(), p);
+        beforeSyntax(rerunEveryRecords, Space.Location.RERUN_EVERY_RECORDS_PREFIX, p);
         visit(rerunEveryRecords.getIntegerLiteral(), p);
         visit(rerunEveryRecords.getRecords(), p);
+        afterSyntax(rerunEveryRecords, p);
         return rerunEveryRecords;
     }
 
     public Cobol visitReserveClause(Cobol.ReserveClause reserveClause, PrintOutputCapture<P> p) {
-        visitSpace(reserveClause.getPrefix(), Space.Location.RERUN_RESERVE_CLAUSE_PREFIX, p);
-        visitMarkers(reserveClause.getMarkers(), p);
+        beforeSyntax(reserveClause, Space.Location.RERUN_RESERVE_CLAUSE_PREFIX, p);
         visit(reserveClause.getWords(), p);
+        afterSyntax(reserveClause, p);
         return reserveClause;
     }
 
     public Cobol visitReserveNetworkClause(Cobol.ReserveNetworkClause reserveNetworkClause, PrintOutputCapture<P> p) {
-        visitSpace(reserveNetworkClause.getPrefix(), Space.Location.RESERVE_NETWORK_CLAUSE_PREFIX, p);
-        visitMarkers(reserveNetworkClause.getMarkers(), p);
+        beforeSyntax(reserveNetworkClause, Space.Location.RESERVE_NETWORK_CLAUSE_PREFIX, p);
         visit(reserveNetworkClause.getWords(), p);
+        afterSyntax(reserveNetworkClause, p);
         return reserveNetworkClause;
     }
 
     @Override
     public Cobol visitReturn(Cobol.Return r, PrintOutputCapture<P> p) {
-        visitSpace(r.getPrefix(), Space.Location.RETURN_PREFIX, p);
-        visitMarkers(r.getMarkers(), p);
+        beforeSyntax(r, Space.Location.RETURN_PREFIX, p);
         visit(r.getWord(), p);
         visit(r.getFileName(), p);
         visit(r.getRecord(), p);
@@ -3009,419 +3008,419 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(r.getAtEndPhrase(), p);
         visit(r.getNotAtEndPhrase(), p);
         visit(r.getEndReturn(), p);
+        afterSyntax(r, p);
         return r;
     }
 
     @Override
     public Cobol visitReturnInto(Cobol.ReturnInto r, PrintOutputCapture<P> p) {
-        visitSpace(r.getPrefix(), Space.Location.RETURN_INTO_PREFIX, p);
-        visitMarkers(r.getMarkers(), p);
+        beforeSyntax(r, Space.Location.RETURN_INTO_PREFIX, p);
         visit(r.getInto(), p);
         visit(r.getQualifiedDataName(), p);
+        afterSyntax(r, p);
         return r;
     }
 
     public Cobol visitRewrite(Cobol.Rewrite rewrite, PrintOutputCapture<P> p) {
-        visitSpace(rewrite.getPrefix(), Space.Location.REWRITE_PREFIX, p);
-        visitMarkers(rewrite.getMarkers(), p);
+        beforeSyntax(rewrite, Space.Location.REWRITE_PREFIX, p);
         visit(rewrite.getRewrite(), p);
         visit(rewrite.getRecordName(), p);
         visit(rewrite.getRewriteFrom(), p);
         visit(rewrite.getInvalidKeyPhrase(), p);
         visit(rewrite.getNotInvalidKeyPhrase(), p);
         visit(rewrite.getEndRewrite(), p);
+        afterSyntax(rewrite, p);
         return rewrite;
     }
 
     public Cobol visitRewriteFrom(Cobol.RewriteFrom rewriteFrom, PrintOutputCapture<P> p) {
-        visitSpace(rewriteFrom.getPrefix(), Space.Location.REWRITE_FROM_PREFIX, p);
-        visitMarkers(rewriteFrom.getMarkers(), p);
+        beforeSyntax(rewriteFrom, Space.Location.REWRITE_FROM_PREFIX, p);
         visit(rewriteFrom.getFrom(), p);
         visit(rewriteFrom.getIdentifier(), p);
+        afterSyntax(rewriteFrom, p);
         return rewriteFrom;
     }
 
     public Cobol visitRoundable(Cobol.Roundable roundable, PrintOutputCapture<P> p) {
-        visitSpace(roundable.getPrefix(), Space.Location.ROUNDABLE_PREFIX, p);
-        visitMarkers(roundable.getMarkers(), p);
+        beforeSyntax(roundable, Space.Location.ROUNDABLE_PREFIX, p);
         visit(roundable.getIdentifier(), p);
         visit(roundable.getRounded(), p);
+        afterSyntax(roundable, p);
         return roundable;
     }
 
     public Cobol visitSameClause(Cobol.SameClause sameClause, PrintOutputCapture<P> p) {
-        visitSpace(sameClause.getPrefix(), Space.Location.SAME_CLAUSE_PREFIX, p);
-        visitMarkers(sameClause.getMarkers(), p);
+        beforeSyntax(sameClause, Space.Location.SAME_CLAUSE_PREFIX, p);
         visit(sameClause.getWords(), p);
         visit(sameClause.getFileNames(), p);
+        afterSyntax(sameClause, p);
         return sameClause;
     }
 
     public Cobol visitScreenDescriptionAutoClause(Cobol.ScreenDescriptionAutoClause screenDescriptionAutoClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionAutoClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_AUTO_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionAutoClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionAutoClause, Space.Location.SCREEN_DESCRIPTION_AUTO_CLAUSE_PREFIX, p);
         visit(screenDescriptionAutoClause.getAuto(), p);
+        afterSyntax(screenDescriptionAutoClause, p);
         return screenDescriptionAutoClause;
     }
 
     public Cobol visitScreenDescriptionBackgroundColorClause(Cobol.ScreenDescriptionBackgroundColorClause screenDescriptionBackgroundColorClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionBackgroundColorClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_BACKGROUND_COLOR_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionBackgroundColorClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionBackgroundColorClause, Space.Location.SCREEN_DESCRIPTION_BACKGROUND_COLOR_CLAUSE_PREFIX, p);
         visit(screenDescriptionBackgroundColorClause.getBackground(), p);
         visit(screenDescriptionBackgroundColorClause.getIs(), p);
         visit(screenDescriptionBackgroundColorClause.getValue(), p);
+        afterSyntax(screenDescriptionBackgroundColorClause, p);
         return screenDescriptionBackgroundColorClause;
     }
 
     public Cobol visitScreenDescriptionBellClause(Cobol.ScreenDescriptionBellClause screenDescriptionBellClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionBellClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_BELL_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionBellClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionBellClause, Space.Location.SCREEN_DESCRIPTION_BELL_CLAUSE_PREFIX, p);
         visit(screenDescriptionBellClause.getBell(), p);
+        afterSyntax(screenDescriptionBellClause, p);
         return screenDescriptionBellClause;
     }
 
     public Cobol visitScreenDescriptionBlankClause(Cobol.ScreenDescriptionBlankClause screenDescriptionBlankClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionBlankClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_BLANK_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionBlankClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionBlankClause, Space.Location.SCREEN_DESCRIPTION_BLANK_CLAUSE_PREFIX, p);
         visit(screenDescriptionBlankClause.getWords(), p);
+        afterSyntax(screenDescriptionBlankClause, p);
         return screenDescriptionBlankClause;
     }
 
     public Cobol visitScreenDescriptionBlankWhenZeroClause(Cobol.ScreenDescriptionBlankWhenZeroClause screenDescriptionBlankWhenZeroClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionBlankWhenZeroClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_BLANK_WHEN_ZERO_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionBlankWhenZeroClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionBlankWhenZeroClause, Space.Location.SCREEN_DESCRIPTION_BLANK_WHEN_ZERO_CLAUSE_PREFIX, p);
         visit(screenDescriptionBlankWhenZeroClause.getWords(), p);
+        afterSyntax(screenDescriptionBlankWhenZeroClause, p);
         return screenDescriptionBlankWhenZeroClause;
     }
 
     public Cobol visitScreenDescriptionBlinkClause(Cobol.ScreenDescriptionBlinkClause screenDescriptionBlinkClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionBlinkClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_BLINK_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionBlinkClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionBlinkClause, Space.Location.SCREEN_DESCRIPTION_BLINK_CLAUSE_PREFIX, p);
         visit(screenDescriptionBlinkClause.getBlink(), p);
+        afterSyntax(screenDescriptionBlinkClause, p);
         return screenDescriptionBlinkClause;
     }
 
     public Cobol visitScreenDescriptionColumnClause(Cobol.ScreenDescriptionColumnClause screenDescriptionColumnClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionColumnClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_COLUMN_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionColumnClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionColumnClause, Space.Location.SCREEN_DESCRIPTION_COLUMN_CLAUSE_PREFIX, p);
         visit(screenDescriptionColumnClause.getWords(), p);
         visit(screenDescriptionColumnClause.getValue(), p);
+        afterSyntax(screenDescriptionColumnClause, p);
         return screenDescriptionColumnClause;
     }
 
     public Cobol visitScreenDescriptionControlClause(Cobol.ScreenDescriptionControlClause screenDescriptionControlClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionControlClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_CONTROL_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionControlClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionControlClause, Space.Location.SCREEN_DESCRIPTION_CONTROL_CLAUSE_PREFIX, p);
         visit(screenDescriptionControlClause.getWords(), p);
         visit(screenDescriptionControlClause.getValue(), p);
+        afterSyntax(screenDescriptionControlClause, p);
         return screenDescriptionControlClause;
     }
 
     public Cobol visitScreenDescriptionEntry(Cobol.ScreenDescriptionEntry screenDescriptionEntry, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionEntry.getPrefix(), Space.Location.SCREEN_DESCRIPTION_ENTRY_PREFIX, p);
-        visitMarkers(screenDescriptionEntry.getMarkers(), p);
+        beforeSyntax(screenDescriptionEntry, Space.Location.SCREEN_DESCRIPTION_ENTRY_PREFIX, p);
         visit(screenDescriptionEntry.getWord(), p);
         visit(screenDescriptionEntry.getName(), p);
         visit(screenDescriptionEntry.getClauses(), p);
         visit(screenDescriptionEntry.getDot(), p);
+        afterSyntax(screenDescriptionEntry, p);
         return screenDescriptionEntry;
     }
 
     public Cobol visitScreenDescriptionEraseClause(Cobol.ScreenDescriptionEraseClause screenDescriptionEraseClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionEraseClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_ERASE_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionEraseClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionEraseClause, Space.Location.SCREEN_DESCRIPTION_ERASE_CLAUSE_PREFIX, p);
         visit(screenDescriptionEraseClause.getWords(), p);
+        afterSyntax(screenDescriptionEraseClause, p);
         return screenDescriptionEraseClause;
     }
 
     public Cobol visitScreenDescriptionForegroundColorClause(Cobol.ScreenDescriptionForegroundColorClause screenDescriptionForegroundColorClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionForegroundColorClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_FOREGROUND_COLOR_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionForegroundColorClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionForegroundColorClause, Space.Location.SCREEN_DESCRIPTION_FOREGROUND_COLOR_CLAUSE_PREFIX, p);
         visit(screenDescriptionForegroundColorClause.getWords(), p);
         visit(screenDescriptionForegroundColorClause.getValue(), p);
+        afterSyntax(screenDescriptionForegroundColorClause, p);
         return screenDescriptionForegroundColorClause;
     }
 
     public Cobol visitScreenDescriptionFromClause(Cobol.ScreenDescriptionFromClause screenDescriptionFromClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionFromClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_FROM_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionFromClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionFromClause, Space.Location.SCREEN_DESCRIPTION_FROM_CLAUSE_PREFIX, p);
         visit(screenDescriptionFromClause.getFrom(), p);
         visit(screenDescriptionFromClause.getValue(), p);
         visit(screenDescriptionFromClause.getScreenDescriptionToClause(), p);
+        afterSyntax(screenDescriptionFromClause, p);
         return screenDescriptionFromClause;
     }
 
     public Cobol visitScreenDescriptionFullClause(Cobol.ScreenDescriptionFullClause screenDescriptionFullClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionFullClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_FULL_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionFullClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionFullClause, Space.Location.SCREEN_DESCRIPTION_FULL_CLAUSE_PREFIX, p);
         visit(screenDescriptionFullClause.getWord(), p);
+        afterSyntax(screenDescriptionFullClause, p);
         return screenDescriptionFullClause;
     }
 
     public Cobol visitScreenDescriptionGridClause(Cobol.ScreenDescriptionGridClause screenDescriptionGridClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionGridClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_GRID_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionGridClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionGridClause, Space.Location.SCREEN_DESCRIPTION_GRID_CLAUSE_PREFIX, p);
         visit(screenDescriptionGridClause.getWord(), p);
+        afterSyntax(screenDescriptionGridClause, p);
         return screenDescriptionGridClause;
     }
 
     public Cobol visitScreenDescriptionJustifiedClause(Cobol.ScreenDescriptionJustifiedClause screenDescriptionJustifiedClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionJustifiedClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_JUSTIFIED_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionJustifiedClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionJustifiedClause, Space.Location.SCREEN_DESCRIPTION_JUSTIFIED_CLAUSE_PREFIX, p);
         visit(screenDescriptionJustifiedClause.getWords(), p);
+        afterSyntax(screenDescriptionJustifiedClause, p);
         return screenDescriptionJustifiedClause;
     }
 
     public Cobol visitScreenDescriptionLightClause(Cobol.ScreenDescriptionLightClause screenDescriptionLightClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionLightClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_LIGHT_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionLightClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionLightClause, Space.Location.SCREEN_DESCRIPTION_LIGHT_CLAUSE_PREFIX, p);
         visit(screenDescriptionLightClause.getLight(), p);
+        afterSyntax(screenDescriptionLightClause, p);
         return screenDescriptionLightClause;
     }
 
     public Cobol visitScreenDescriptionLineClause(Cobol.ScreenDescriptionLineClause screenDescriptionLineClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionLineClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_LINE_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionLineClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionLineClause, Space.Location.SCREEN_DESCRIPTION_LINE_CLAUSE_PREFIX, p);
         visit(screenDescriptionLineClause.getWords(), p);
         visit(screenDescriptionLineClause.getValue(), p);
+        afterSyntax(screenDescriptionLineClause, p);
         return screenDescriptionLineClause;
     }
 
     public Cobol visitScreenDescriptionPictureClause(Cobol.ScreenDescriptionPictureClause screenDescriptionPictureClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionPictureClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_PICTURE_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionPictureClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionPictureClause, Space.Location.SCREEN_DESCRIPTION_PICTURE_CLAUSE_PREFIX, p);
         visit(screenDescriptionPictureClause.getWords(), p);
         visit(screenDescriptionPictureClause.getPictureString(), p);
+        afterSyntax(screenDescriptionPictureClause, p);
         return screenDescriptionPictureClause;
     }
 
     public Cobol visitScreenDescriptionPromptClause(Cobol.ScreenDescriptionPromptClause screenDescriptionPromptClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionPromptClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_PROMPT_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionPromptClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionPromptClause, Space.Location.SCREEN_DESCRIPTION_PROMPT_CLAUSE_PREFIX, p);
         visit(screenDescriptionPromptClause.getWords(), p);
         visit(screenDescriptionPromptClause.getName(), p);
         visit(screenDescriptionPromptClause.getScreenDescriptionPromptOccursClause(), p);
+        afterSyntax(screenDescriptionPromptClause, p);
         return screenDescriptionPromptClause;
     }
 
     public Cobol visitScreenDescriptionPromptOccursClause(Cobol.ScreenDescriptionPromptOccursClause screenDescriptionPromptOccursClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionPromptOccursClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_PROMPT_OCCURS_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionPromptOccursClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionPromptOccursClause, Space.Location.SCREEN_DESCRIPTION_PROMPT_OCCURS_CLAUSE_PREFIX, p);
         visit(screenDescriptionPromptOccursClause.getOccurs(), p);
         visit(screenDescriptionPromptOccursClause.getInteger(), p);
         visit(screenDescriptionPromptOccursClause.getTimes(), p);
+        afterSyntax(screenDescriptionPromptOccursClause, p);
         return screenDescriptionPromptOccursClause;
     }
 
     public Cobol visitScreenDescriptionRequiredClause(Cobol.ScreenDescriptionRequiredClause screenDescriptionRequiredClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionRequiredClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_REQUIRED_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionRequiredClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionRequiredClause, Space.Location.SCREEN_DESCRIPTION_REQUIRED_CLAUSE_PREFIX, p);
         visit(screenDescriptionRequiredClause.getRequired(), p);
+        afterSyntax(screenDescriptionRequiredClause, p);
         return screenDescriptionRequiredClause;
     }
 
     public Cobol visitScreenDescriptionReverseVideoClause(Cobol.ScreenDescriptionReverseVideoClause screenDescriptionReverseVideoClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionReverseVideoClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_REVERSE_VIDEO_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionReverseVideoClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionReverseVideoClause, Space.Location.SCREEN_DESCRIPTION_REVERSE_VIDEO_CLAUSE_PREFIX, p);
         visit(screenDescriptionReverseVideoClause.getWord(), p);
+        afterSyntax(screenDescriptionReverseVideoClause, p);
         return screenDescriptionReverseVideoClause;
     }
 
     public Cobol visitScreenDescriptionSecureClause(Cobol.ScreenDescriptionSecureClause screenDescriptionSecureClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionSecureClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_SECURE_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionSecureClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionSecureClause, Space.Location.SCREEN_DESCRIPTION_SECURE_CLAUSE_PREFIX, p);
         visit(screenDescriptionSecureClause.getWord(), p);
+        afterSyntax(screenDescriptionSecureClause, p);
         return screenDescriptionSecureClause;
     }
 
     public Cobol visitScreenDescriptionSignClause(Cobol.ScreenDescriptionSignClause screenDescriptionSignClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionSignClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_SIGN_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionSignClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionSignClause, Space.Location.SCREEN_DESCRIPTION_SIGN_CLAUSE_PREFIX, p);
         visit(screenDescriptionSignClause.getWords(), p);
+        afterSyntax(screenDescriptionSignClause, p);
         return screenDescriptionSignClause;
     }
 
     public Cobol visitScreenDescriptionSizeClause(Cobol.ScreenDescriptionSizeClause screenDescriptionSizeClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionSizeClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_SIZE_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionSizeClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionSizeClause, Space.Location.SCREEN_DESCRIPTION_SIZE_CLAUSE_PREFIX, p);
         visit(screenDescriptionSizeClause.getWords(), p);
         visit(screenDescriptionSizeClause.getValue(), p);
+        afterSyntax(screenDescriptionSizeClause, p);
         return screenDescriptionSizeClause;
     }
 
     public Cobol visitScreenDescriptionToClause(Cobol.ScreenDescriptionToClause screenDescriptionToClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionToClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_TO_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionToClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionToClause, Space.Location.SCREEN_DESCRIPTION_TO_CLAUSE_PREFIX, p);
         visit(screenDescriptionToClause.getTo(), p);
         visit(screenDescriptionToClause.getIdentifier(), p);
+        afterSyntax(screenDescriptionToClause, p);
         return screenDescriptionToClause;
     }
 
     public Cobol visitScreenDescriptionUnderlineClause(Cobol.ScreenDescriptionUnderlineClause screenDescriptionUnderlineClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionUnderlineClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_UNDERLINE_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionUnderlineClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionUnderlineClause, Space.Location.SCREEN_DESCRIPTION_UNDERLINE_CLAUSE_PREFIX, p);
         visit(screenDescriptionUnderlineClause.getUnderline(), p);
+        afterSyntax(screenDescriptionUnderlineClause, p);
         return screenDescriptionUnderlineClause;
     }
 
     public Cobol visitScreenDescriptionUsageClause(Cobol.ScreenDescriptionUsageClause screenDescriptionUsageClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionUsageClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_USAGE_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionUsageClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionUsageClause, Space.Location.SCREEN_DESCRIPTION_USAGE_CLAUSE_PREFIX, p);
         visit(screenDescriptionUsageClause.getWords(), p);
+        afterSyntax(screenDescriptionUsageClause, p);
         return screenDescriptionUsageClause;
     }
 
     public Cobol visitScreenDescriptionUsingClause(Cobol.ScreenDescriptionUsingClause screenDescriptionUsingClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionUsingClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_USING_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionUsingClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionUsingClause, Space.Location.SCREEN_DESCRIPTION_USING_CLAUSE_PREFIX, p);
         visit(screenDescriptionUsingClause.getUsing(), p);
         visit(screenDescriptionUsingClause.getIdentifier(), p);
+        afterSyntax(screenDescriptionUsingClause, p);
         return screenDescriptionUsingClause;
     }
 
     public Cobol visitScreenDescriptionValueClause(Cobol.ScreenDescriptionValueClause screenDescriptionValueClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionValueClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_VALUE_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionValueClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionValueClause, Space.Location.SCREEN_DESCRIPTION_VALUE_CLAUSE_PREFIX, p);
         visit(screenDescriptionValueClause.getWords(), p);
         visit(screenDescriptionValueClause.getValue(), p);
+        afterSyntax(screenDescriptionValueClause, p);
         return screenDescriptionValueClause;
     }
 
     public Cobol visitScreenDescriptionZeroFillClause(Cobol.ScreenDescriptionZeroFillClause screenDescriptionZeroFillClause, PrintOutputCapture<P> p) {
-        visitSpace(screenDescriptionZeroFillClause.getPrefix(), Space.Location.SCREEN_DESCRIPTION_ZERO_FILL_CLAUSE_PREFIX, p);
-        visitMarkers(screenDescriptionZeroFillClause.getMarkers(), p);
+        beforeSyntax(screenDescriptionZeroFillClause, Space.Location.SCREEN_DESCRIPTION_ZERO_FILL_CLAUSE_PREFIX, p);
         visit(screenDescriptionZeroFillClause.getWord(), p);
+        afterSyntax(screenDescriptionZeroFillClause, p);
         return screenDescriptionZeroFillClause;
     }
 
     public Cobol visitScreenSection(Cobol.ScreenSection screenSection, PrintOutputCapture<P> p) {
-        visitSpace(screenSection.getPrefix(), Space.Location.SCREEN_SECTION_PREFIX, p);
-        visitMarkers(screenSection.getMarkers(), p);
+        beforeSyntax(screenSection, Space.Location.SCREEN_SECTION_PREFIX, p);
         visit(screenSection.getWords(), p);
         visit(screenSection.getDot(), p);
         visit(screenSection.getDescriptions(), p);
+        afterSyntax(screenSection, p);
         return screenSection;
     }
 
     @Override
     public Cobol visitSearch(Cobol.Search s, PrintOutputCapture<P> p) {
-        visitSpace(s.getPrefix(), Space.Location.SEARCH_PREFIX, p);
-        visitMarkers(s.getMarkers(), p);
+        beforeSyntax(s, Space.Location.SEARCH_PREFIX, p);
         visit(s.getWords(), p);
         visit(s.getQualifiedDataName(), p);
         visit(s.getSearchVarying(), p);
         visit(s.getAtEndPhrase(), p);
         visit(s.getSearchWhen(), p);
         visit(s.getEndSearch(), p);
+        afterSyntax(s, p);
         return s;
     }
 
     @Override
     public Cobol visitSearchVarying(Cobol.SearchVarying s, PrintOutputCapture<P> p) {
-        visitSpace(s.getPrefix(), Space.Location.SEARCH_VARYING_PREFIX, p);
-        visitMarkers(s.getMarkers(), p);
+        beforeSyntax(s, Space.Location.SEARCH_VARYING_PREFIX, p);
         visit(s.getVarying(), p);
         visit(s.getQualifiedDataName(), p);
+        afterSyntax(s, p);
         return s;
     }
 
     @Override
     public Cobol visitSearchWhen(Cobol.SearchWhen s, PrintOutputCapture<P> p) {
-        visitSpace(s.getPrefix(), Space.Location.SEARCH_WHEN_PREFIX, p);
-        visitMarkers(s.getMarkers(), p);
+        beforeSyntax(s, Space.Location.SEARCH_WHEN_PREFIX, p);
         visit(s.getWhen(), p);
         visit(s.getCondition(), p);
         visit(s.getNextSentence(), p);
         visit(s.getStatements(), p);
+        afterSyntax(s, p);
         return s;
     }
 
     public Cobol visitSelectClause(Cobol.SelectClause selectClause, PrintOutputCapture<P> p) {
-        visitSpace(selectClause.getPrefix(), Space.Location.SEARCH_CLAUSE_PREFIX, p);
-        visitMarkers(selectClause.getMarkers(), p);
+        beforeSyntax(selectClause, Space.Location.SEARCH_CLAUSE_PREFIX, p);
         visit(selectClause.getWords(), p);
         visit(selectClause.getFileName(), p);
+        afterSyntax(selectClause, p);
         return selectClause;
     }
 
     @Override
     public Cobol visitSend(Cobol.Send s, PrintOutputCapture<P> p) {
-        visitSpace(s.getPrefix(), Space.Location.SEND_PREFIX, p);
-        visitMarkers(s.getMarkers(), p);
+        beforeSyntax(s, Space.Location.SEND_PREFIX, p);
         visit(s.getSend(), p);
         visit(s.getStatement(), p);
         visit(s.getOnExceptionClause(), p);
         visit(s.getNotOnExceptionClause(), p);
+        afterSyntax(s, p);
         return s;
     }
 
     public Cobol visitSendAdvancingLines(Cobol.SendAdvancingLines s, PrintOutputCapture<P> p) {
-        visitSpace(s.getPrefix(), Space.Location.SEND_ADVANCING_LINES_PREFIX, p);
-        visitMarkers(s.getMarkers(), p);
+        beforeSyntax(s, Space.Location.SEND_ADVANCING_LINES_PREFIX, p);
         visit(s.getName(), p);
         visit(s.getLines(), p);
+        afterSyntax(s, p);
         return s;
     }
 
     @Override
     public Cobol visitSendPhrase(Cobol.SendPhrase s, PrintOutputCapture<P> p) {
-        visitSpace(s.getPrefix(), Space.Location.SEND_PHRASE_PREFIX, p);
-        visitMarkers(s.getMarkers(), p);
+        beforeSyntax(s, Space.Location.SEND_PHRASE_PREFIX, p);
         visit(s.getWords(), p);
         visit(s.getTarget(), p);
+        afterSyntax(s, p);
         return s;
     }
 
     @Override
     public Cobol visitSendStatementSync(Cobol.SendStatementSync s, PrintOutputCapture<P> p) {
-        visitSpace(s.getPrefix(), Space.Location.SEND_STATEMENT_SYNC_PREFIX, p);
-        visitMarkers(s.getMarkers(), p);
+        beforeSyntax(s, Space.Location.SEND_STATEMENT_SYNC_PREFIX, p);
         visit(s.getName(), p);
         visit(s.getSendFromPhrase(), p);
         visit(s.getSendWithPhrase(), p);
         visit(s.getSendReplacingPhrase(), p);
         visit(s.getSendAdvancingPhrase(), p);
+        afterSyntax(s, p);
         return s;
     }
 
     public Cobol visitSentence(Cobol.Sentence sentence, PrintOutputCapture<P> p) {
-        visitSpace(sentence.getPrefix(), Space.Location.SENTENCE_PREFIX, p);
-        visitMarkers(sentence.getMarkers(), p);
+        beforeSyntax(sentence, Space.Location.SENTENCE_PREFIX, p);
         visit(sentence.getStatements(), p);
         visit(sentence.getDot(), p);
+        afterSyntax(sentence, p);
         return sentence;
     }
 
     public Cobol visitSet(Cobol.Set set, PrintOutputCapture<P> p) {
-        visitSpace(set.getPrefix(), Space.Location.SET_PREFIX, p);
-        visitMarkers(set.getMarkers(), p);
+        beforeSyntax(set, Space.Location.SET_PREFIX, p);
         visit(set.getSet(), p);
         visit(set.getTo(), p);
         visit(set.getUpDown(), p);
+        afterSyntax(set, p);
         return set;
     }
 
     public Cobol visitSetTo(Cobol.SetTo setTo, PrintOutputCapture<P> p) {
-        visitSpace(setTo.getPrefix(), Space.Location.SET_TO_PREFIX, p);
-        visitMarkers(setTo.getMarkers(), p);
+        beforeSyntax(setTo, Space.Location.SET_TO_PREFIX, p);
         visit(setTo.getIdentifiers(), p);
         visit(setTo.getTo(), p);
         visit(setTo.getValues(), p);
+        afterSyntax(setTo, p);
         return setTo;
     }
 
     public Cobol visitSetUpDown(Cobol.SetUpDown setUpDown, PrintOutputCapture<P> p) {
-        visitSpace(setUpDown.getPrefix(), Space.Location.SET_UP_DOWN_PREFIX, p);
-        visitMarkers(setUpDown.getMarkers(), p);
+        beforeSyntax(setUpDown, Space.Location.SET_UP_DOWN_PREFIX, p);
         visit(setUpDown.getTo(), p);
         visit(setUpDown.getOperation(), p);
         visit(setUpDown.getValue(), p);
+        afterSyntax(setUpDown, p);
         return setUpDown;
     }
 
     public Cobol visitSort(Cobol.Sort sort, PrintOutputCapture<P> p) {
-        visitSpace(sort.getPrefix(), Space.Location.SORT_PREFIX, p);
-        visitMarkers(sort.getMarkers(), p);
+        beforeSyntax(sort, Space.Location.SORT_PREFIX, p);
         visit(sort.getSort(), p);
         visit(sort.getFileName(), p);
         visit(sort.getSortOnKeyClause(), p);
@@ -3431,58 +3430,59 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(sort.getSortUsing(), p);
         visit(sort.getSortOutputProcedurePhrase(), p);
         visit(sort.getSortGiving(), p);
+        afterSyntax(sort, p);
         return sort;
     }
 
     public Cobol visitSortCollatingSequencePhrase(Cobol.SortCollatingSequencePhrase sortCollatingSequencePhrase, PrintOutputCapture<P> p) {
-        visitSpace(sortCollatingSequencePhrase.getPrefix(), Space.Location.SORT_COLLATING_SEQUENCE_PHRASE_PREFIX, p);
-        visitMarkers(sortCollatingSequencePhrase.getMarkers(), p);
+        beforeSyntax(sortCollatingSequencePhrase, Space.Location.SORT_COLLATING_SEQUENCE_PHRASE_PREFIX, p);
         visit(sortCollatingSequencePhrase.getWords(), p);
         visit(sortCollatingSequencePhrase.getAlphabetNames(), p);
         visit(sortCollatingSequencePhrase.getSortCollatingAlphanumeric(), p);
         visit(sortCollatingSequencePhrase.getSortCollatingNational(), p);
+        afterSyntax(sortCollatingSequencePhrase, p);
         return sortCollatingSequencePhrase;
     }
 
     public Cobol visitSortGiving(Cobol.SortGiving sortGiving, PrintOutputCapture<P> p) {
-        visitSpace(sortGiving.getPrefix(), Space.Location.SORT_GIVING_PREFIX, p);
-        visitMarkers(sortGiving.getMarkers(), p);
+        beforeSyntax(sortGiving, Space.Location.SORT_GIVING_PREFIX, p);
         visit(sortGiving.getFileName(), p);
         visit(sortGiving.getWords(), p);
+        afterSyntax(sortGiving, p);
         return sortGiving;
     }
 
     public Cobol visitSortProcedurePhrase(Cobol.SortProcedurePhrase sortProcedurePhrase, PrintOutputCapture<P> p) {
-        visitSpace(sortProcedurePhrase.getPrefix(), Space.Location.SORT_PROCEDURE_PHRASE_PREFIX, p);
-        visitMarkers(sortProcedurePhrase.getMarkers(), p);
+        beforeSyntax(sortProcedurePhrase, Space.Location.SORT_PROCEDURE_PHRASE_PREFIX, p);
         visit(sortProcedurePhrase.getWords(), p);
         visit(sortProcedurePhrase.getProcedureName(), p);
         visit(sortProcedurePhrase.getSortInputThrough(), p);
+        afterSyntax(sortProcedurePhrase, p);
         return sortProcedurePhrase;
     }
 
     public Cobol visitSortable(Cobol.Sortable sortable, PrintOutputCapture<P> p) {
-        visitSpace(sortable.getPrefix(), Space.Location.SORTABLE_PREFIX, p);
-        visitMarkers(sortable.getMarkers(), p);
+        beforeSyntax(sortable, Space.Location.SORTABLE_PREFIX, p);
         visit(sortable.getWords(), p);
         visit(sortable.getNames(), p);
+        afterSyntax(sortable, p);
         return sortable;
     }
 
     public Cobol visitSourceComputer(Cobol.SourceComputer sourceComputer, PrintOutputCapture<P> p) {
-        visitSpace(sourceComputer.getPrefix(), Space.Location.SOURCE_COMPUTER_PREFIX, p);
-        visitMarkers(sourceComputer.getMarkers(), p);
+        beforeSyntax(sourceComputer, Space.Location.SOURCE_COMPUTER_PREFIX, p);
         visit(sourceComputer.getWords(), p);
         visit(sourceComputer.getComputer(), p);
+        afterSyntax(sourceComputer, p);
         return sourceComputer;
     }
 
     public Cobol visitSourceComputerDefinition(Cobol.SourceComputerDefinition sourceComputerDefinition, PrintOutputCapture<P> p) {
-        visitSpace(sourceComputerDefinition.getPrefix(), Space.Location.SOURCE_COMPUTER_DEFINITION_PREFIX, p);
-        visitMarkers(sourceComputerDefinition.getMarkers(), p);
+        beforeSyntax(sourceComputerDefinition, Space.Location.SOURCE_COMPUTER_DEFINITION_PREFIX, p);
         visit(sourceComputerDefinition.getComputerName(), p);
         visit(sourceComputerDefinition.getDebuggingMode(), p);
         visit(sourceComputerDefinition.getDot(), p);
+        afterSyntax(sourceComputerDefinition, p);
         return sourceComputerDefinition;
     }
 
@@ -3493,102 +3493,101 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public Cobol visitSpecialNames(Cobol.SpecialNames specialNames, PrintOutputCapture<P> p) {
-        visitSpace(specialNames.getPrefix(), Space.Location.SPECIAL_NAMES_PREFIX, p);
-        visitMarkers(specialNames.getMarkers(), p);
+        beforeSyntax(specialNames, Space.Location.SPECIAL_NAMES_PREFIX, p);
         visit(specialNames.getWord(), p);
         visit(specialNames.getDot(), p);
         visit(specialNames.getClauses(), p);
         visit(specialNames.getDot2(), p);
+        afterSyntax(specialNames, p);
         return specialNames;
     }
 
     public Cobol visitStart(Cobol.Start start, PrintOutputCapture<P> p) {
-        visitSpace(start.getPrefix(), Space.Location.START_PREFIX, p);
-        visitMarkers(start.getMarkers(), p);
+        beforeSyntax(start, Space.Location.START_PREFIX, p);
         visit(start.getStart(), p);
         visit(start.getFileName(), p);
         visit(start.getStartKey(), p);
         visit(start.getInvalidKeyPhrase(), p);
         visit(start.getNotInvalidKeyPhrase(), p);
         visit(start.getEndStart(), p);
+        afterSyntax(start, p);
         return start;
     }
 
     public Cobol visitStartKey(Cobol.StartKey startKey, PrintOutputCapture<P> p) {
-        visitSpace(startKey.getPrefix(), Space.Location.START_KEY_PREFIX, p);
-        visitMarkers(startKey.getMarkers(), p);
+        beforeSyntax(startKey, Space.Location.START_KEY_PREFIX, p);
         visit(startKey.getWords(), p);
         visit(startKey.getQualifiedDataName(), p);
+        afterSyntax(startKey, p);
         return startKey;
     }
 
     public Cobol visitStatementPhrase(Cobol.StatementPhrase statementPhrase, PrintOutputCapture<P> p) {
-        visitSpace(statementPhrase.getPrefix(), Space.Location.STATEMENT_PHRASE_PREFIX, p);
-        visitMarkers(statementPhrase.getMarkers(), p);
+        beforeSyntax(statementPhrase, Space.Location.STATEMENT_PHRASE_PREFIX, p);
         visit(statementPhrase.getPhrases(), p);
         visit(statementPhrase.getStatements(), p);
+        afterSyntax(statementPhrase, p);
         return statementPhrase;
     }
 
     public Cobol visitStatusKeyClause(Cobol.StatusKeyClause statusKeyClause, PrintOutputCapture<P> p) {
-        visitSpace(statusKeyClause.getPrefix(), Space.Location.STATUS_KEY_CLAUSE_PREFIX, p);
-        visitMarkers(statusKeyClause.getMarkers(), p);
+        beforeSyntax(statusKeyClause, Space.Location.STATUS_KEY_CLAUSE_PREFIX, p);
         visit(statusKeyClause.getWords(), p);
         visit(statusKeyClause.getName(), p);
+        afterSyntax(statusKeyClause, p);
         return statusKeyClause;
     }
 
     public Cobol visitStop(Cobol.Stop stop, PrintOutputCapture<P> p) {
-        visitSpace(stop.getPrefix(), Space.Location.STOP_PREFIX, p);
-        visitMarkers(stop.getMarkers(), p);
+        beforeSyntax(stop, Space.Location.STOP_PREFIX, p);
         visit(stop.getWords(), p);
         visit(stop.getStatement(), p);
+        afterSyntax(stop, p);
         return stop;
     }
 
     public Cobol visitStopStatementGiving(Cobol.StopStatementGiving stopStatementGiving, PrintOutputCapture<P> p) {
-        visitSpace(stopStatementGiving.getPrefix(), Space.Location.STOP_STATEMENT_GIVING_PREFIX, p);
-        visitMarkers(stopStatementGiving.getMarkers(), p);
+        beforeSyntax(stopStatementGiving, Space.Location.STOP_STATEMENT_GIVING_PREFIX, p);
         visit(stopStatementGiving.getWords(), p);
         visit(stopStatementGiving.getName(), p);
+        afterSyntax(stopStatementGiving, p);
         return stopStatementGiving;
     }
 
     public Cobol visitStringDelimitedByPhrase(Cobol.StringDelimitedByPhrase stringDelimitedByPhrase, PrintOutputCapture<P> p) {
-        visitSpace(stringDelimitedByPhrase.getPrefix(), Space.Location.STRING_DELIMITED_BY_PHRASE_PREFIX, p);
-        visitMarkers(stringDelimitedByPhrase.getMarkers(), p);
+        beforeSyntax(stringDelimitedByPhrase, Space.Location.STRING_DELIMITED_BY_PHRASE_PREFIX, p);
         visit(stringDelimitedByPhrase.getWords(), p);
         visit(stringDelimitedByPhrase.getIdentifier(), p);
+        afterSyntax(stringDelimitedByPhrase, p);
         return stringDelimitedByPhrase;
     }
 
     public Cobol visitStringForPhrase(Cobol.StringForPhrase stringForPhrase, PrintOutputCapture<P> p) {
-        visitSpace(stringForPhrase.getPrefix(), Space.Location.STRING_FOR_PHRASE_PREFIX, p);
-        visitMarkers(stringForPhrase.getMarkers(), p);
+        beforeSyntax(stringForPhrase, Space.Location.STRING_FOR_PHRASE_PREFIX, p);
         visit(stringForPhrase.getWord(), p);
         visit(stringForPhrase.getIdentifier(), p);
+        afterSyntax(stringForPhrase, p);
         return stringForPhrase;
     }
 
     public Cobol visitStringIntoPhrase(Cobol.StringIntoPhrase stringIntoPhrase, PrintOutputCapture<P> p) {
-        visitSpace(stringIntoPhrase.getPrefix(), Space.Location.STRING_INTO_PHRASE_PREFIX, p);
-        visitMarkers(stringIntoPhrase.getMarkers(), p);
+        beforeSyntax(stringIntoPhrase, Space.Location.STRING_INTO_PHRASE_PREFIX, p);
         visit(stringIntoPhrase.getInto(), p);
         visit(stringIntoPhrase.getIdentifier(), p);
+        afterSyntax(stringIntoPhrase, p);
         return stringIntoPhrase;
     }
 
     public Cobol visitStringSendingPhrase(Cobol.StringSendingPhrase stringSendingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(stringSendingPhrase.getPrefix(), Space.Location.STRING_SENDING_PHRASE_PREFIX, p);
-        visitMarkers(stringSendingPhrase.getMarkers(), p);
+        beforeSyntax(stringSendingPhrase, Space.Location.STRING_SENDING_PHRASE_PREFIX, p);
         visit(stringSendingPhrase.getSendings(), p);
         visit(stringSendingPhrase.getPhrase(), p);
+        afterSyntax(stringSendingPhrase, p);
         return stringSendingPhrase;
     }
 
     public Cobol visitStringStatement(Cobol.StringStatement stringStatement, PrintOutputCapture<P> p) {
-        visitSpace(stringStatement.getPrefix(), Space.Location.STRING_STATEMENT_PREFIX, p);
-        visitMarkers(stringStatement.getMarkers(), p);
+        beforeSyntax(stringStatement, Space.Location.STRING_STATEMENT_PREFIX, p);
         visit(stringStatement.getString(), p);
         visit(stringStatement.getStringSendingPhrases(), p);
         visit(stringStatement.getStringIntoPhrase(), p);
@@ -3596,161 +3595,161 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(stringStatement.getOnOverflowPhrase(), p);
         visit(stringStatement.getNotOnOverflowPhrase(), p);
         visit(stringStatement.getEndString(), p);
+        afterSyntax(stringStatement, p);
         return stringStatement;
     }
 
     public Cobol visitStringWithPointerPhrase(Cobol.StringWithPointerPhrase stringWithPointerPhrase, PrintOutputCapture<P> p) {
-        visitSpace(stringWithPointerPhrase.getPrefix(), Space.Location.STRING_WITH_POINTER_PHRASE_PREFIX, p);
-        visitMarkers(stringWithPointerPhrase.getMarkers(), p);
+        beforeSyntax(stringWithPointerPhrase, Space.Location.STRING_WITH_POINTER_PHRASE_PREFIX, p);
         visit(stringWithPointerPhrase.getWords(), p);
         visit(stringWithPointerPhrase.getQualifiedDataName(), p);
+        afterSyntax(stringWithPointerPhrase, p);
         return stringWithPointerPhrase;
     }
 
     public Cobol visitSubscript(Cobol.Subscript subscript, PrintOutputCapture<P> p) {
-        visitSpace(subscript.getPrefix(), Space.Location.SUBSCRIPT_PREFIX, p);
-        visitMarkers(subscript.getMarkers(), p);
+        beforeSyntax(subscript, Space.Location.SUBSCRIPT_PREFIX, p);
         visit(subscript.getFirst(), p);
         visit(subscript.getSecond(), p);
+        afterSyntax(subscript, p);
         return subscript;
     }
 
     public Cobol visitSubtract(Cobol.Subtract subtract, PrintOutputCapture<P> p) {
-        visitSpace(subtract.getPrefix(), Space.Location.SUBTRACT_PREFIX, p);
-        visitMarkers(subtract.getMarkers(), p);
-        visit(subtract.getSubstract(), p);
+        beforeSyntax(subtract, Space.Location.SUBTRACT_PREFIX, p);
+        visit (subtract.getSubstract(), p);
         visit(subtract.getOperation(), p);
         visit(subtract.getOnSizeErrorPhrase(), p);
         visit(subtract.getNotOnSizeErrorPhrase(), p);
         visit(subtract.getEndSubtract(), p);
+        afterSyntax(subtract, p);
         return subtract;
     }
 
     public Cobol visitSubtractCorrespondingStatement(Cobol.SubtractCorrespondingStatement subtractCorrespondingStatement, PrintOutputCapture<P> p) {
-        visitSpace(subtractCorrespondingStatement.getPrefix(), Space.Location.SUBTRACT_CORRESPONDING_STATEMENT_PREFIX, p);
-        visitMarkers(subtractCorrespondingStatement.getMarkers(), p);
+        beforeSyntax(subtractCorrespondingStatement, Space.Location.SUBTRACT_CORRESPONDING_STATEMENT_PREFIX, p);
         visit(subtractCorrespondingStatement.getCorresponding(), p);
         visit(subtractCorrespondingStatement.getQualifiedDataName(), p);
         visit(subtractCorrespondingStatement.getGiving(), p);
         visit(subtractCorrespondingStatement.getSubtractMinuendCorresponding(), p);
+        afterSyntax(subtractCorrespondingStatement, p);
         return subtractCorrespondingStatement;
     }
 
     public Cobol visitSubtractFromGivingStatement(Cobol.SubtractFromGivingStatement subtractFromGivingStatement, PrintOutputCapture<P> p) {
-        visitSpace(subtractFromGivingStatement.getPrefix(), Space.Location.SUBTRACT_FROM_GIVING_STATEMENT_PREFIX, p);
-        visitMarkers(subtractFromGivingStatement.getMarkers(), p);
+        beforeSyntax(subtractFromGivingStatement, Space.Location.SUBTRACT_FROM_GIVING_STATEMENT_PREFIX, p);
         visit(subtractFromGivingStatement.getSubtractSubtrahend(), p);
         visit(subtractFromGivingStatement.getFrom(), p);
         visit(subtractFromGivingStatement.getSubtractMinuendGiving(), p);
         visit(subtractFromGivingStatement.getGiving(), p);
         visit(subtractFromGivingStatement.getSubtractGiving(), p);
+        afterSyntax(subtractFromGivingStatement, p);
         return subtractFromGivingStatement;
     }
 
     public Cobol visitSubtractFromStatement(Cobol.SubtractFromStatement subtractFromStatement, PrintOutputCapture<P> p) {
-        visitSpace(subtractFromStatement.getPrefix(), Space.Location.SUBTRACT_FROM_STATEMENT_PREFIX, p);
-        visitMarkers(subtractFromStatement.getMarkers(), p);
+        beforeSyntax(subtractFromStatement, Space.Location.SUBTRACT_FROM_STATEMENT_PREFIX, p);
         visit(subtractFromStatement.getSubtractSubtrahend(), p);
         visit(subtractFromStatement.getFrom(), p);
         visit(subtractFromStatement.getSubtractMinuend(), p);
+        afterSyntax(subtractFromStatement, p);
         return subtractFromStatement;
     }
 
     public Cobol visitSubtractMinuendCorresponding(Cobol.SubtractMinuendCorresponding subtractMinuendCorresponding, PrintOutputCapture<P> p) {
-        visitSpace(subtractMinuendCorresponding.getPrefix(), Space.Location.SUBTRACT_MINUEND_CORRESPONDING_PREFIX, p);
-        visitMarkers(subtractMinuendCorresponding.getMarkers(), p);
+        beforeSyntax(subtractMinuendCorresponding, Space.Location.SUBTRACT_MINUEND_CORRESPONDING_PREFIX, p);
         visit(subtractMinuendCorresponding.getQualifiedDataName(), p);
         visit(subtractMinuendCorresponding.getRounded(), p);
+        afterSyntax(subtractMinuendCorresponding, p);
         return subtractMinuendCorresponding;
     }
 
     public Cobol visitSymbolicCharacter(Cobol.SymbolicCharacter symbolicCharacter, PrintOutputCapture<P> p) {
-        visitSpace(symbolicCharacter.getPrefix(), Space.Location.SYMBOLIC_CHARACTER_PREFIX, p);
-        visitMarkers(symbolicCharacter.getMarkers(), p);
+        beforeSyntax(symbolicCharacter, Space.Location.SYMBOLIC_CHARACTER_PREFIX, p);
         visit(symbolicCharacter.getSymbols(), p);
         visit(symbolicCharacter.getWord(), p);
         visit(symbolicCharacter.getLiterals(), p);
+        afterSyntax(symbolicCharacter, p);
         return symbolicCharacter;
     }
 
     public Cobol visitSymbolicCharactersClause(Cobol.SymbolicCharactersClause symbolicCharactersClause, PrintOutputCapture<P> p) {
-        visitSpace(symbolicCharactersClause.getPrefix(), Space.Location.SYMBOLIC_CHARACTERS_CLAUSE_PREFIX, p);
-        visitMarkers(symbolicCharactersClause.getMarkers(), p);
+        beforeSyntax(symbolicCharactersClause, Space.Location.SYMBOLIC_CHARACTERS_CLAUSE_PREFIX, p);
         visit(symbolicCharactersClause.getWords(), p);
         visit(symbolicCharactersClause.getSymbols(), p);
         visit(symbolicCharactersClause.getInAlphabet(), p);
         visit(symbolicCharactersClause.getAlphabetName(), p);
+        afterSyntax(symbolicCharactersClause, p);
         return symbolicCharactersClause;
     }
 
     public Cobol visitSymbolicDestinationClause(Cobol.SymbolicDestinationClause symbolicDestinationClause, PrintOutputCapture<P> p) {
-        visitSpace(symbolicDestinationClause.getPrefix(), Space.Location.SYMBOLIC_DESTINATION_CLAUSE_PREFIX, p);
-        visitMarkers(symbolicDestinationClause.getMarkers(), p);
+        beforeSyntax(symbolicDestinationClause, Space.Location.SYMBOLIC_DESTINATION_CLAUSE_PREFIX, p);
         visit(symbolicDestinationClause.getWords(), p);
         visit(symbolicDestinationClause.getDataDescName(), p);
+        afterSyntax(symbolicDestinationClause, p);
         return symbolicDestinationClause;
     }
 
     public Cobol visitSymbolicQueueClause(Cobol.SymbolicQueueClause symbolicQueueClause, PrintOutputCapture<P> p) {
-        visitSpace(symbolicQueueClause.getPrefix(), Space.Location.SYMBOLIC_QUEUE_CLAUSE_PREFIX, p);
-        visitMarkers(symbolicQueueClause.getMarkers(), p);
+        beforeSyntax(symbolicQueueClause, Space.Location.SYMBOLIC_QUEUE_CLAUSE_PREFIX, p);
         visit(symbolicQueueClause.getWords(), p);
         visit(symbolicQueueClause.getDataDescName(), p);
+        afterSyntax(symbolicQueueClause, p);
         return symbolicQueueClause;
     }
 
     public Cobol visitSymbolicSourceClause(Cobol.SymbolicSourceClause symbolicSourceClause, PrintOutputCapture<P> p) {
-        visitSpace(symbolicSourceClause.getPrefix(), Space.Location.SYMBOLIC_SOURCE_CLAUSE_PREFIX, p);
-        visitMarkers(symbolicSourceClause.getMarkers(), p);
+        beforeSyntax(symbolicSourceClause, Space.Location.SYMBOLIC_SOURCE_CLAUSE_PREFIX, p);
         visit(symbolicSourceClause.getWords(), p);
         visit(symbolicSourceClause.getDataDescName(), p);
+        afterSyntax(symbolicSourceClause, p);
         return symbolicSourceClause;
     }
 
     public Cobol visitSymbolicSubQueueClause(Cobol.SymbolicSubQueueClause symbolicSubQueueClause, PrintOutputCapture<P> p) {
-        visitSpace(symbolicSubQueueClause.getPrefix(), Space.Location.SYMBOLIC_SUB_QUEUE_CLAUSE_PREFIX, p);
-        visitMarkers(symbolicSubQueueClause.getMarkers(), p);
+        beforeSyntax(symbolicSubQueueClause, Space.Location.SYMBOLIC_SUB_QUEUE_CLAUSE_PREFIX, p);
         visit(symbolicSubQueueClause.getWords(), p);
         visit(symbolicSubQueueClause.getDataDescName(), p);
+        afterSyntax(symbolicSubQueueClause, p);
         return symbolicSubQueueClause;
     }
 
     public Cobol visitSymbolicTerminalClause(Cobol.SymbolicTerminalClause symbolicTerminalClause, PrintOutputCapture<P> p) {
-        visitSpace(symbolicTerminalClause.getPrefix(), Space.Location.SYMBOLIC_TERMINAL_CLAUSE_PREFIX, p);
-        visitMarkers(symbolicTerminalClause.getMarkers(), p);
+        beforeSyntax(symbolicTerminalClause, Space.Location.SYMBOLIC_TERMINAL_CLAUSE_PREFIX, p);
         visit(symbolicTerminalClause.getWords(), p);
         visit(symbolicTerminalClause.getDataDescName(), p);
+        afterSyntax(symbolicTerminalClause, p);
         return symbolicTerminalClause;
     }
 
     public Cobol visitTableCall(Cobol.TableCall tableCall, PrintOutputCapture<P> p) {
-        visitSpace(tableCall.getPrefix(), Space.Location.TABLE_CLAUSE_PREFIX, p);
-        visitMarkers(tableCall.getMarkers(), p);
+        beforeSyntax(tableCall, Space.Location.TABLE_CLAUSE_PREFIX, p);
         visit(tableCall.getQualifiedDataName(), p);
         visit(tableCall.getSubscripts(), p);
         visit(tableCall.getReferenceModifier(), p);
+        afterSyntax(tableCall, p);
         return tableCall;
     }
 
     public Cobol visitTerminate(Cobol.Terminate terminate, PrintOutputCapture<P> p) {
-        visitSpace(terminate.getPrefix(), Space.Location.TERMINATE_PREFIX, p);
-        visitMarkers(terminate.getMarkers(), p);
+        beforeSyntax(terminate, Space.Location.TERMINATE_PREFIX, p);
         visit(terminate.getTerminate(), p);
         visit(terminate.getReportName(), p);
+        afterSyntax(terminate, p);
         return terminate;
     }
 
     public Cobol visitTextLengthClause(Cobol.TextLengthClause textLengthClause, PrintOutputCapture<P> p) {
-        visitSpace(textLengthClause.getPrefix(), Space.Location.TEXT_LENGTH_CLAUSE_PREFIX, p);
-        visitMarkers(textLengthClause.getMarkers(), p);
+        beforeSyntax(textLengthClause, Space.Location.TEXT_LENGTH_CLAUSE_PREFIX, p);
         visit(textLengthClause.getWords(), p);
         visit(textLengthClause.getDataDescName(), p);
+        afterSyntax(textLengthClause, p);
         return textLengthClause;
     }
 
     public Cobol visitUnString(Cobol.UnString unString, PrintOutputCapture<P> p) {
-        visitSpace(unString.getPrefix(), Space.Location.UNSTRING_PREFIX, p);
-        visitMarkers(unString.getMarkers(), p);
+        beforeSyntax(unString, Space.Location.UNSTRING_PREFIX, p);
         visit(unString.getUnstring(), p);
         visit(unString.getUnstringSendingPhrase(), p);
         visit(unString.getUnstringIntoPhrase(), p);
@@ -3759,146 +3758,147 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(unString.getOnOverflowPhrase(), p);
         visit(unString.getNotOnOverflowPhrase(), p);
         visit(unString.getEndUnstring(), p);
+        afterSyntax(unString, p);
         return unString;
     }
 
     public Cobol visitUnstringCountIn(Cobol.UnstringCountIn unstringCountIn, PrintOutputCapture<P> p) {
-        visitSpace(unstringCountIn.getPrefix(), Space.Location.UNSTRING_COUNT_IN_PREFIX, p);
-        visitMarkers(unstringCountIn.getMarkers(), p);
+        beforeSyntax(unstringCountIn, Space.Location.UNSTRING_COUNT_IN_PREFIX, p);
         visit(unstringCountIn.getWords(), p);
         visit(unstringCountIn.getIdentifier(), p);
+        afterSyntax(unstringCountIn, p);
         return unstringCountIn;
     }
 
     public Cobol visitUnstringDelimitedByPhrase(Cobol.UnstringDelimitedByPhrase unstringDelimitedByPhrase, PrintOutputCapture<P> p) {
-        visitSpace(unstringDelimitedByPhrase.getPrefix(), Space.Location.UNSTRING_DELIMITED_BY_PHRASE_PREFIX, p);
-        visitMarkers(unstringDelimitedByPhrase.getMarkers(), p);
+        beforeSyntax(unstringDelimitedByPhrase, Space.Location.UNSTRING_DELIMITED_BY_PHRASE_PREFIX, p);
         visit(unstringDelimitedByPhrase.getWords(), p);
         visit(unstringDelimitedByPhrase.getName(), p);
+        afterSyntax(unstringDelimitedByPhrase, p);
         return unstringDelimitedByPhrase;
     }
 
     public Cobol visitUnstringDelimiterIn(Cobol.UnstringDelimiterIn unstringDelimiterIn, PrintOutputCapture<P> p) {
-        visitSpace(unstringDelimiterIn.getPrefix(), Space.Location.UNSTRING_DELIMITED_IN_PREFIX, p);
-        visitMarkers(unstringDelimiterIn.getMarkers(), p);
+        beforeSyntax(unstringDelimiterIn, Space.Location.UNSTRING_DELIMITED_IN_PREFIX, p);
         visit(unstringDelimiterIn.getWords(), p);
         visit(unstringDelimiterIn.getIdentifier(), p);
+        afterSyntax(unstringDelimiterIn, p);
         return unstringDelimiterIn;
     }
 
     public Cobol visitUnstringInto(Cobol.UnstringInto unstringInto, PrintOutputCapture<P> p) {
-        visitSpace(unstringInto.getPrefix(), Space.Location.UNSTRING_INTO_PREFIX, p);
-        visitMarkers(unstringInto.getMarkers(), p);
+        beforeSyntax(unstringInto, Space.Location.UNSTRING_INTO_PREFIX, p);
         visit(unstringInto.getIdentifier(), p);
         visit(unstringInto.getUnstringDelimiterIn(), p);
         visit(unstringInto.getUnstringCountIn(), p);
+        afterSyntax(unstringInto, p);
         return unstringInto;
     }
 
     public Cobol visitUnstringIntoPhrase(Cobol.UnstringIntoPhrase unstringIntoPhrase, PrintOutputCapture<P> p) {
-        visitSpace(unstringIntoPhrase.getPrefix(), Space.Location.UNSTRING_INTO_PHRASE_PREFIX, p);
-        visitMarkers(unstringIntoPhrase.getMarkers(), p);
+        beforeSyntax(unstringIntoPhrase, Space.Location.UNSTRING_INTO_PHRASE_PREFIX, p);
         visit(unstringIntoPhrase.getInto(), p);
         visit(unstringIntoPhrase.getUnstringIntos(), p);
+        afterSyntax(unstringIntoPhrase, p);
         return unstringIntoPhrase;
     }
 
     public Cobol visitUnstringOrAllPhrase(Cobol.UnstringOrAllPhrase unstringOrAllPhrase, PrintOutputCapture<P> p) {
-        visitSpace(unstringOrAllPhrase.getPrefix(), Space.Location.UNSTRING_OR_ALL_PHRASE_PREFIX, p);
-        visitMarkers(unstringOrAllPhrase.getMarkers(), p);
+        beforeSyntax(unstringOrAllPhrase, Space.Location.UNSTRING_OR_ALL_PHRASE_PREFIX, p);
         visit(unstringOrAllPhrase.getWords(), p);
         visit(unstringOrAllPhrase.getName(), p);
+        afterSyntax(unstringOrAllPhrase, p);
         return unstringOrAllPhrase;
     }
 
     public Cobol visitUnstringSendingPhrase(Cobol.UnstringSendingPhrase unstringSendingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(unstringSendingPhrase.getPrefix(), Space.Location.UNSTRING_SENDING_PHRASE_PREFIX, p);
-        visitMarkers(unstringSendingPhrase.getMarkers(), p);
+        beforeSyntax(unstringSendingPhrase, Space.Location.UNSTRING_SENDING_PHRASE_PREFIX, p);
         visit(unstringSendingPhrase.getIdentifier(), p);
         visit(unstringSendingPhrase.getUnstringDelimitedByPhrase(), p);
         visit(unstringSendingPhrase.getUnstringOrAllPhrases(), p);
+        afterSyntax(unstringSendingPhrase, p);
         return unstringSendingPhrase;
     }
 
     public Cobol visitUnstringTallyingPhrase(Cobol.UnstringTallyingPhrase unstringTallyingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(unstringTallyingPhrase.getPrefix(), Space.Location.UNSTRING_TALLYING_PHRASE_PREFIX, p);
-        visitMarkers(unstringTallyingPhrase.getMarkers(), p);
+        beforeSyntax(unstringTallyingPhrase, Space.Location.UNSTRING_TALLYING_PHRASE_PREFIX, p);
         visit(unstringTallyingPhrase.getWords(), p);
         visit(unstringTallyingPhrase.getQualifiedDataName(), p);
+        afterSyntax(unstringTallyingPhrase, p);
         return unstringTallyingPhrase;
     }
 
     public Cobol visitUnstringWithPointerPhrase(Cobol.UnstringWithPointerPhrase unstringWithPointerPhrase, PrintOutputCapture<P> p) {
-        visitSpace(unstringWithPointerPhrase.getPrefix(), Space.Location.UNSTRING_WITH_POINTER_PHRASE_PREFIX, p);
-        visitMarkers(unstringWithPointerPhrase.getMarkers(), p);
+        beforeSyntax(unstringWithPointerPhrase, Space.Location.UNSTRING_WITH_POINTER_PHRASE_PREFIX, p);
         visit(unstringWithPointerPhrase.getWords(), p);
         visit(unstringWithPointerPhrase.getQualifiedDataName(), p);
+        afterSyntax(unstringWithPointerPhrase, p);
         return unstringWithPointerPhrase;
     }
 
     public Cobol visitUseAfterClause(Cobol.UseAfterClause useAfterClause, PrintOutputCapture<P> p) {
-        visitSpace(useAfterClause.getPrefix(), Space.Location.USE_AFTER_CLAUSE_PREFIX, p);
-        visitMarkers(useAfterClause.getMarkers(), p);
+        beforeSyntax(useAfterClause, Space.Location.USE_AFTER_CLAUSE_PREFIX, p);
         visit(useAfterClause.getWords(), p);
         visit(useAfterClause.getUseAfterOn(), p);
+        afterSyntax(useAfterClause, p);
         return useAfterClause;
     }
 
     public Cobol visitUseAfterOn(Cobol.UseAfterOn useAfterOn, PrintOutputCapture<P> p) {
-        visitSpace(useAfterOn.getPrefix(), Space.Location.USE_AFTER_ON_PREFIX, p);
-        visitMarkers(useAfterOn.getMarkers(), p);
+        beforeSyntax(useAfterOn, Space.Location.USE_AFTER_ON_PREFIX, p);
         visit(useAfterOn.getAfterOn(), p);
         visit(useAfterOn.getFileNames(), p);
+        afterSyntax(useAfterOn, p);
         return useAfterOn;
     }
 
     public Cobol visitUseDebugClause(Cobol.UseDebugClause useDebugClause, PrintOutputCapture<P> p) {
-        visitSpace(useDebugClause.getPrefix(), Space.Location.USE_DEBUG_CLAUSE_PREFIX, p);
-        visitMarkers(useDebugClause.getMarkers(), p);
+        beforeSyntax(useDebugClause, Space.Location.USE_DEBUG_CLAUSE_PREFIX, p);
         visit(useDebugClause.getWords(), p);
         visit(useDebugClause.getUseDebugs(), p);
+        afterSyntax(useDebugClause, p);
         return useDebugClause;
     }
 
     public Cobol visitUseDebugOn(Cobol.UseDebugOn useDebugOn, PrintOutputCapture<P> p) {
-        visitSpace(useDebugOn.getPrefix(), Space.Location.USE_DEBUG_ON_PREFIX, p);
-        visitMarkers(useDebugOn.getMarkers(), p);
+        beforeSyntax(useDebugOn, Space.Location.USE_DEBUG_ON_PREFIX, p);
         visit(useDebugOn.getWords(), p);
         visit(useDebugOn.getName(), p);
+        afterSyntax(useDebugOn, p);
         return useDebugOn;
     }
 
     public Cobol visitUseStatement(Cobol.UseStatement useStatement, PrintOutputCapture<P> p) {
-        visitSpace(useStatement.getPrefix(), Space.Location.USE_STATEMENT_PREFIX, p);
-        visitMarkers(useStatement.getMarkers(), p);
+        beforeSyntax(useStatement, Space.Location.USE_STATEMENT_PREFIX, p);
         visit(useStatement.getUse(), p);
         visit(useStatement.getClause(), p);
+        afterSyntax(useStatement, p);
         return useStatement;
     }
 
     public Cobol visitValueOfClause(Cobol.ValueOfClause valueOfClause, PrintOutputCapture<P> p) {
-        visitSpace(valueOfClause.getPrefix(), Space.Location.VALUE_OF_CLAUSE_PREFIX, p);
-        visitMarkers(valueOfClause.getMarkers(), p);
+        beforeSyntax(valueOfClause, Space.Location.VALUE_OF_CLAUSE_PREFIX, p);
         visit(valueOfClause.getValueOf(), p);
         visit(valueOfClause.getValuePairs(), p);
+        afterSyntax(valueOfClause, p);
         return valueOfClause;
     }
 
     public Cobol visitValuePair(Cobol.ValuePair valuePair, PrintOutputCapture<P> p) {
-        visitSpace(valuePair.getPrefix(), Space.Location.VALUE_PAIR_PREFIX, p);
-        visitMarkers(valuePair.getMarkers(), p);
+        beforeSyntax(valuePair, Space.Location.VALUE_PAIR_PREFIX, p);
         visit(valuePair.getSystemName(), p);
         visit(valuePair.getIs(), p);
         visit(valuePair.getName(), p);
+        afterSyntax(valuePair, p);
         return valuePair;
     }
 
     public Cobol visitValuedObjectComputerClause(Cobol.ValuedObjectComputerClause valuedObjectComputerClause, PrintOutputCapture<P> p) {
-        visitSpace(valuedObjectComputerClause.getPrefix(), Space.Location.VALUE_OBJECT_COMPUTER_CLAUSE_PREFIX, p);
-        visitMarkers(valuedObjectComputerClause.getMarkers(), p);
+        beforeSyntax(valuedObjectComputerClause, Space.Location.VALUE_OBJECT_COMPUTER_CLAUSE_PREFIX, p);
         visit(valuedObjectComputerClause.getWords(), p);
         visit(valuedObjectComputerClause.getValue(), p);
         visit(valuedObjectComputerClause.getUnits(), p);
+        afterSyntax(valuedObjectComputerClause, p);
         return valuedObjectComputerClause;
     }
 
@@ -4054,17 +4054,16 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     public Cobol visitWorkingStorageSection(Cobol.WorkingStorageSection workingStorageSection, PrintOutputCapture<P> p) {
-        visitSpace(workingStorageSection.getPrefix(), Space.Location.WORKING_STORAGE_SECTION_PREFIX, p);
-        visitMarkers(workingStorageSection.getMarkers(), p);
+        beforeSyntax(workingStorageSection, Space.Location.WORKING_STORAGE_SECTION_PREFIX, p);
         visit(workingStorageSection.getWords(), p);
         visit(workingStorageSection.getDot(), p);
         visit(workingStorageSection.getDataDescriptions(), p);
+        afterSyntax(workingStorageSection, p);
         return workingStorageSection;
     }
 
     public Cobol visitWrite(Cobol.Write write, PrintOutputCapture<P> p) {
-        visitSpace(write.getPrefix(), Space.Location.WRITE_PREFIX, p);
-        visitMarkers(write.getMarkers(), p);
+        beforeSyntax(write, Space.Location.WRITE_PREFIX, p);
         visit(write.getWrite(), p);
         visit(write.getRecordName(), p);
         visit(write.getWriteFromPhrase(), p);
@@ -4074,44 +4073,45 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(write.getInvalidKeyPhrase(), p);
         visit(write.getNotInvalidKeyPhrase(), p);
         visit(write.getEndWrite(), p);
+        afterSyntax(write, p);
         return write;
     }
 
     public Cobol visitWriteAdvancingLines(Cobol.WriteAdvancingLines writeAdvancingLines, PrintOutputCapture<P> p) {
-        visitSpace(writeAdvancingLines.getPrefix(), Space.Location.WRITE_ADVANCING_LINES_PREFIX, p);
-        visitMarkers(writeAdvancingLines.getMarkers(), p);
+        beforeSyntax(writeAdvancingLines, Space.Location.WRITE_ADVANCING_LINES_PREFIX, p);
         visit(writeAdvancingLines.getName(), p);
         visit(writeAdvancingLines.getWord(), p);
+        afterSyntax(writeAdvancingLines, p);
         return writeAdvancingLines;
     }
 
     public Cobol visitWriteAdvancingMnemonic(Cobol.WriteAdvancingMnemonic writeAdvancingMnemonic, PrintOutputCapture<P> p) {
-        visitSpace(writeAdvancingMnemonic.getPrefix(), Space.Location.WRITE_ADVANCING_MNEMONIC_PREFIX, p);
-        visitMarkers(writeAdvancingMnemonic.getMarkers(), p);
+        beforeSyntax(writeAdvancingMnemonic, Space.Location.WRITE_ADVANCING_MNEMONIC_PREFIX, p);
         visit(writeAdvancingMnemonic.getName(), p);
+        afterSyntax(writeAdvancingMnemonic, p);
         return writeAdvancingMnemonic;
     }
 
     public Cobol visitWriteAdvancingPage(Cobol.WriteAdvancingPage writeAdvancingPage, PrintOutputCapture<P> p) {
-        visitSpace(writeAdvancingPage.getPrefix(), Space.Location.WRITE_ADVANCING_PAGE_PREFIX, p);
-        visitMarkers(writeAdvancingPage.getMarkers(), p);
+        beforeSyntax(writeAdvancingPage, Space.Location.WRITE_ADVANCING_PAGE_PREFIX, p);
         visit(writeAdvancingPage.getPage(), p);
+        afterSyntax(writeAdvancingPage, p);
         return writeAdvancingPage;
     }
 
     public Cobol visitWriteAdvancingPhrase(Cobol.WriteAdvancingPhrase writeAdvancingPhrase, PrintOutputCapture<P> p) {
-        visitSpace(writeAdvancingPhrase.getPrefix(), Space.Location.WRITE_ADVANCING_PHRASE_PREFIX, p);
-        visitMarkers(writeAdvancingPhrase.getMarkers(), p);
+        beforeSyntax(writeAdvancingPhrase, Space.Location.WRITE_ADVANCING_PHRASE_PREFIX, p);
         visit(writeAdvancingPhrase.getWords(), p);
         visit(writeAdvancingPhrase.getWriteBy(), p);
+        afterSyntax(writeAdvancingPhrase, p);
         return writeAdvancingPhrase;
     }
 
     public Cobol visitWriteFromPhrase(Cobol.WriteFromPhrase writeFromPhrase, PrintOutputCapture<P> p) {
-        visitSpace(writeFromPhrase.getPrefix(), Space.Location.WRITE_FROM_PHRASE_PREFIX, p);
-        visitMarkers(writeFromPhrase.getMarkers(), p);
+        beforeSyntax(writeFromPhrase, Space.Location.WRITE_FROM_PHRASE_PREFIX, p);
         visit(writeFromPhrase.getFrom(), p);
         visit(writeFromPhrase.getName(), p);
+        afterSyntax(writeFromPhrase, p);
         return writeFromPhrase;
     }
 
