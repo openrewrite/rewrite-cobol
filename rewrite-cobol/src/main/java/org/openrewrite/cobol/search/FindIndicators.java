@@ -60,6 +60,7 @@ public class FindIndicators extends Recipe {
                     indicatorArea = indicatorArea.withMarkers(indicatorArea.getMarkers().addIfAbsent(
                             new SearchResult(randomId(), SearchResultKey.INDICATOR_AREA)
                     ));
+                    w = w.withMarkers(w.getMarkers().removeByType(IndicatorArea.class));
                     w = w.withMarkers(w.getMarkers().addIfAbsent(indicatorArea));
                 }
             }
@@ -106,6 +107,7 @@ public class FindIndicators extends Recipe {
                     indicatorArea = indicatorArea.withMarkers(indicatorArea.getMarkers().addIfAbsent(
                             new SearchResult(randomId(), SearchResultKey.INDICATOR_AREA)
                     ));
+                    w = w.withMarkers(w.getMarkers().removeByType(IndicatorArea.class));
                     w = w.withMarkers(w.getMarkers().addIfAbsent(indicatorArea));
                 }
             }
