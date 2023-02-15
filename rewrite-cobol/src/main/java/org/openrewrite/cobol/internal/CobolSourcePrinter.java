@@ -4223,11 +4223,11 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             for (Marker marker : indicatorArea.getMarkers().getMarkers()) {
                 p.out.append(p.getMarkerPrinter().beforePrefix(marker, new Cursor(getCursor(), marker), COBOL_MARKER_WRAPPER));
             }
+            visitMarkers(indicatorArea.getMarkers(), p);
             for (Marker marker : indicatorArea.getMarkers().getMarkers()) {
                 p.out.append(p.getMarkerPrinter().beforeSyntax(marker, new Cursor(getCursor(), marker), COBOL_MARKER_WRAPPER));
             }
             p.append(indicatorArea.getIndicator());
-            visitMarkers(indicatorArea.getMarkers(), p);
             afterSyntax(indicatorArea.getMarkers(), p);
         }
         p.append(indicatorArea.getContinuationPrefix());
