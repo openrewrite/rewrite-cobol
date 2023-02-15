@@ -406,7 +406,15 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     public void visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
         visitMarkers(indicatorArea.getMarkers(), p);
         if (printColumns) {
+            for (Marker marker : indicatorArea.getMarkers().getMarkers()) {
+                p.out.append(p.getMarkerPrinter().beforePrefix(marker, new Cursor(getCursor(), marker), COBOL_MARKER_WRAPPER));
+            }
+            for (Marker marker : indicatorArea.getMarkers().getMarkers()) {
+                p.out.append(p.getMarkerPrinter().beforeSyntax(marker, new Cursor(getCursor(), marker), COBOL_MARKER_WRAPPER));
+            }
             p.append(indicatorArea.getIndicator());
+            visitMarkers(indicatorArea.getMarkers(), p);
+            afterSyntax(indicatorArea.getMarkers(), p);
         }
 
         p.append(indicatorArea.getContinuationPrefix());

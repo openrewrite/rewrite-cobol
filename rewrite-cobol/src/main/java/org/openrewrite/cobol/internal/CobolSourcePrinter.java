@@ -4221,6 +4221,9 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public <M extends Marker> M visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
         if (printColumns) {
             for (Marker marker : indicatorArea.getMarkers().getMarkers()) {
+                p.out.append(p.getMarkerPrinter().beforePrefix(marker, new Cursor(getCursor(), marker), COBOL_MARKER_WRAPPER));
+            }
+            for (Marker marker : indicatorArea.getMarkers().getMarkers()) {
                 p.out.append(p.getMarkerPrinter().beforeSyntax(marker, new Cursor(getCursor(), marker), COBOL_MARKER_WRAPPER));
             }
             p.append(indicatorArea.getIndicator());
