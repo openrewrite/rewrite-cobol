@@ -84,14 +84,13 @@ public class RemoveWithDebuggingMode extends Recipe {
                                             m instanceof ReplaceReductiveType)
                     );
 
-                    if (isSafe && !s.getDebuggingMode().isEmpty()) {
+                    if (isSafe) {
                         CommentArea commentArea = s.getComputerName().getMarkers().findFirst(CommentArea.class).orElse(null);
                         if (commentArea != null && commentArea.getPrefix().getWhitespace().length() > 0) {
                             List<Cobol.Word> originalWords = s.getDebuggingMode();
 
                             Markers newMarkers = s.getDot().getMarkers()
                                     .removeByType(SequenceArea.class)
-                                    .removeByType(IndicatorArea.class)
                                     .removeByType(CommentArea.class);
 
                             commentArea = commentArea.withPrefix(

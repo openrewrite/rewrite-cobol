@@ -22,7 +22,6 @@ import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolVisitor;
 import org.openrewrite.cobol.search.SearchResultKey;
 import org.openrewrite.cobol.tree.*;
-import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
