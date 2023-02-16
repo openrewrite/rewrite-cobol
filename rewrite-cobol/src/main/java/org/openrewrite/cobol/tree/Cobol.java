@@ -33,7 +33,7 @@ public interface Cobol extends Tree {
     @SuppressWarnings("unchecked")
     @Override
     default <R extends Tree, P> R accept(TreeVisitor<R, P> v, P p) {
-        return v instanceof CobolVisitor ? (R) acceptCobol((CobolVisitor<P>) v, p) : v.defaultValue(this, p);
+        return (R) acceptCobol(v.adapt(CobolVisitor.class), p);
     }
 
     @Nullable
@@ -43,7 +43,7 @@ public interface Cobol extends Tree {
 
     @Override
     default <P> boolean isAcceptable(TreeVisitor<?, P> v, P p) {
-        return v instanceof CobolVisitor;
+        return v.isAdaptableTo(CobolVisitor.class);
     }
 
     Space getPrefix();
@@ -97,6 +97,31 @@ public interface Cobol extends Tree {
         @Override
         public <P> TreeVisitor<?, PrintOutputCapture<P>> printer(Cursor cursor) {
             return new CobolPrinter<>(true, false, true);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class IndicatorArea implements Cobol {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        String indicator;
+
+        @Nullable
+        String continuationPrefix;
+
+        public String getContinuationPrefix() {
+            return continuationPrefix == null ? "" : continuationPrefix;
+        }
+
+        @Override
+        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+            return v.visitIndicatorArea(this, p);
         }
     }
 
@@ -1044,6 +1069,10 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
+
+        @Nullable
+        IndicatorArea indicatorArea;
+
         String word;
 
         @Override

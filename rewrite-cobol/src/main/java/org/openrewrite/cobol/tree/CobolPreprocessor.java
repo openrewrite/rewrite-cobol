@@ -19,7 +19,6 @@ import lombok.*;
 import org.openrewrite.*;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
 import org.openrewrite.cobol.internal.CobolPreprocessorPrinter;
-import org.openrewrite.cobol.internal.CobolPreprocessorSourcePrinter;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Markers;
 
@@ -50,6 +49,31 @@ public interface CobolPreprocessor extends Tree {
     Space getPrefix();
 
     <P extends CobolPreprocessor> P withPrefix(Space prefix);
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class IndicatorArea implements CobolPreprocessor {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        String indicator;
+
+        @Nullable
+        String continuationPrefix;
+
+        public String getContinuationPrefix() {
+            return continuationPrefix == null ? "" : continuationPrefix;
+        }
+
+        @Override
+        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
+            return v.visitIndicatorArea(this, p);
+        }
+    }
 
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
@@ -603,19 +627,18 @@ public interface CobolPreprocessor extends Tree {
 
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
     class Word implements CobolPreprocessor {
 
-        @With
         @EqualsAndHashCode.Include
         UUID id;
 
-        @With
         Space prefix;
-
-        @With
         Markers markers;
 
-        @With
+        @Nullable
+        CobolPreprocessor.IndicatorArea indicatorArea;
+
         String word;
 
         @Override

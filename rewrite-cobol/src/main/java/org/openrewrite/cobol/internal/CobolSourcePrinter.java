@@ -22,7 +22,6 @@ import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolVisitor;
 import org.openrewrite.cobol.search.SearchResultKey;
 import org.openrewrite.cobol.tree.*;
-import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
@@ -1346,6 +1345,16 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(ifThen.getStatements(), p);
         afterSyntax(ifThen, p);
         return ifThen;
+    }
+
+    public Cobol visitIndicatorArea(Cobol.IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
+        if (printColumns) {
+            beforeSyntax(indicatorArea, Space.Location.INDICATOR_AREA_PREFIX, p);
+            p.out.append(indicatorArea.getIndicator());
+            afterSyntax(indicatorArea, p);
+        }
+        p.out.append(indicatorArea.getContinuationPrefix());
+        return indicatorArea;
     }
 
     public Cobol visitInData(Cobol.InData inData, PrintOutputCapture<P> p) {
@@ -3905,7 +3914,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
         // Column area markers.
         SequenceArea sequenceArea = null;
-        IndicatorArea indicatorArea = null;
         CommentArea commentArea = null;
 
         // CobolPreprocessor markers.
@@ -3923,8 +3931,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         for (Marker marker : word.getMarkers().getMarkers()) {
             if (marker instanceof SequenceArea) {
                 sequenceArea = (SequenceArea) marker;
-            } else if (marker instanceof IndicatorArea) {
-                indicatorArea = (IndicatorArea) marker;
             } else if (marker instanceof CommentArea) {
                 commentArea = (CommentArea) marker;
             } else if (marker instanceof SearchResult) {
@@ -4031,9 +4037,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 visitSequenceArea(sequenceArea, p);
             }
 
-            if (indicatorArea != null) {
-                visitIndicatorArea(indicatorArea, p);
-            }
+            visit(word.getIndicatorArea(), p);
 
             if (replace != null && replace.isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
@@ -4113,26 +4117,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(writeFromPhrase.getName(), p);
         afterSyntax(writeFromPhrase, p);
         return writeFromPhrase;
-    }
-
-    @Override
-    public Markers visitMarkers(Markers markers, PrintOutputCapture<P> p) {
-        return markers.withMarkers(ListUtils.map(markers.getMarkers(), marker -> {
-            // Do not visit markers that are required for printing the LST.
-            if (marker instanceof SequenceArea ||
-                    marker instanceof IndicatorArea ||
-                    marker instanceof CommentArea ||
-                    marker instanceof Continuation ||
-                    marker instanceof Lines ||
-                    marker instanceof Copy ||
-                    marker instanceof Replace ||
-                    marker instanceof ReplaceBy ||
-                    marker instanceof ReplaceOff ||
-                    (marker instanceof SearchResult && SearchResultKey.COPIED_SOURCE.equals(((SearchResult) marker).getDescription()))) {
-                return marker;
-            }
-            return super.visitMarker(marker, p);
-        }));
     }
 
     public void visitContinuation(Cobol.Word word, Continuation continuation, PrintOutputCapture<P> p) {
@@ -4220,15 +4204,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     @Override
     public <M extends Marker> M visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
         if (printColumns) {
-            for (Marker marker : indicatorArea.getMarkers().getMarkers()) {
-                p.out.append(p.getMarkerPrinter().beforePrefix(marker, new Cursor(getCursor(), marker), COBOL_MARKER_WRAPPER));
-            }
-            visitMarkers(indicatorArea.getMarkers(), p);
-            for (Marker marker : indicatorArea.getMarkers().getMarkers()) {
-                p.out.append(p.getMarkerPrinter().beforeSyntax(marker, new Cursor(getCursor(), marker), COBOL_MARKER_WRAPPER));
-            }
             p.append(indicatorArea.getIndicator());
-            afterSyntax(indicatorArea.getMarkers(), p);
         }
         p.append(indicatorArea.getContinuationPrefix());
 

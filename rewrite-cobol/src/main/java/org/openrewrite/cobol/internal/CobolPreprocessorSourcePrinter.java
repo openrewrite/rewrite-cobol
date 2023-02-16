@@ -18,7 +18,6 @@ package org.openrewrite.cobol.internal;
 import org.openrewrite.Cursor;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
-import org.openrewrite.cobol.search.SearchResultKey;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
@@ -165,6 +164,16 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return familyPhrase;
     }
 
+    public CobolPreprocessor visitIndicatorArea(CobolPreprocessor.IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
+        if (printColumns) {
+            beforeSyntax(indicatorArea, Space.Location.INDICATOR_AREA_PREFIX, p);
+            p.out.append(indicatorArea.getIndicator());
+            afterSyntax(indicatorArea, p);
+        }
+        p.out.append(indicatorArea.getContinuationPrefix());
+        return indicatorArea;
+    }
+
     public CobolPreprocessor visitPseudoText(CobolPreprocessor.PseudoText pseudoText, PrintOutputCapture<P> p) {
         beforeSyntax(pseudoText, Space.Location.PSEUDO_TEXT_PREFIX, p);
         visit(pseudoText.getDoubleEqualOpen(), p);
@@ -228,7 +237,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return skipStatement;
     }
 
-    public Space visitSpace(Space space, PrintOutputCapture<P> p) {
+    public Space visitSpace(Space space, Space.Location location, PrintOutputCapture<P> p) {
         p.append(space.getWhitespace());
         return space;
     }
@@ -243,10 +252,8 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     }
 
     public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
-        beforeSyntax(word, Space.Location.WORD_PREFIX, p);
         // Column area markers.
         SequenceArea sequenceArea = null;
-        IndicatorArea indicatorArea = null;
         CommentArea commentArea = null;
 
         // CobolPreprocessor markers.
@@ -260,8 +267,6 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         for (Marker marker : word.getMarkers().getMarkers()) {
             if (marker instanceof SequenceArea) {
                 sequenceArea = (SequenceArea) marker;
-            } else if (marker instanceof IndicatorArea) {
-                indicatorArea = (IndicatorArea) marker;
             } else if (marker instanceof CommentArea) {
                 commentArea = (CommentArea) marker;
             } else if (marker instanceof ReplaceBy) {
@@ -308,15 +313,13 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
                 visitSequenceArea(sequenceArea, p);
             }
 
-            if (indicatorArea != null) {
-                visitIndicatorArea(indicatorArea, p);
-            }
+            visit(word.getIndicatorArea(), p);
 
             if (replace != null && replace.isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
                 originalReplaceLength = 0;
             } else {
-                visitSpace(word.getPrefix(), p);
+                beforeSyntax(word, Space.Location.WORD_PREFIX, p);
             }
             p.append(word.getWord());
 
@@ -343,7 +346,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
             indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
         }
 
-        visitSpace(word.getPrefix(), p);
+        visitSpace(word.getPrefix(), Space.Location.CONTINUATION_PREFIX, p);
 
         char[] charArray = word.getWord().toCharArray();
         for (int i = 0; i < charArray.length; i++) {
@@ -404,28 +407,19 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     }
 
     public void visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
-        visitMarkers(indicatorArea.getMarkers(), p);
         if (printColumns) {
-            for (Marker marker : indicatorArea.getMarkers().getMarkers()) {
-                p.out.append(p.getMarkerPrinter().beforePrefix(marker, new Cursor(getCursor(), marker), COBOL_MARKER_WRAPPER));
-            }
-            visitMarkers(indicatorArea.getMarkers(), p);
-            for (Marker marker : indicatorArea.getMarkers().getMarkers()) {
-                p.out.append(p.getMarkerPrinter().beforeSyntax(marker, new Cursor(getCursor(), marker), COBOL_MARKER_WRAPPER));
-            }
             p.append(indicatorArea.getIndicator());
-            afterSyntax(indicatorArea.getMarkers(), p);
         }
 
         p.append(indicatorArea.getContinuationPrefix());
     }
 
     public void visitCommentArea(CommentArea commentArea, PrintOutputCapture<P> p) {
-        visitSpace(commentArea.getPrefix(), p);
+        visitSpace(commentArea.getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p);
         if (printColumns) {
             p.append(commentArea.getComment());
         }
-        visitSpace(commentArea.getEndOfLine(), p);
+        visitSpace(commentArea.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p);
     }
 
     private static final UnaryOperator<String> COBOL_MARKER_WRAPPER =

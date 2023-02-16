@@ -771,10 +771,23 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         Space prefix = processTokenText(node.getText(), markers);
         String text = END_OF_FILE.equals(node.getText()) ? "" :
                 node.getText().startsWith(COMMENT_ENTRY) ? node.getText().substring(COMMENT_ENTRY.length()) : node.getText();
+        CobolPreprocessor.IndicatorArea indicatorArea = null;
+        Optional<IndicatorArea> indicatorAreaOptional = markers.stream().filter(it -> it instanceof IndicatorArea).map(it -> (IndicatorArea) it).findFirst();
+        if (indicatorAreaOptional.isPresent()) {
+            indicatorArea = new CobolPreprocessor.IndicatorArea(
+                    randomId(),
+                    Space.EMPTY,
+                    Markers.EMPTY,
+                    indicatorAreaOptional.get().getIndicator(),
+                    indicatorAreaOptional.get().getContinuationPrefix()
+            );
+            markers.remove(indicatorAreaOptional.get());
+        }
         return new CobolPreprocessor.Word(
                 randomId(),
                 prefix,
                 markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
+                indicatorArea,
                 text
         );
     }
@@ -1185,7 +1198,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
      *                        A continued String literal will be prefixed by the delimiter (' or "),
      *                        which needs to exist in the indicator marker.
      *                        I.E. 000001-|<whitespace including the delimiter " or '>|some continued string literal.
-     *
+     * <p>
      *                        A continued Keyword/Identifier should not include the delimiter.
      *                        I.E. 000001-|<whitespace added to indicator>|TOKEN-NAME.
      */
@@ -1206,7 +1219,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 }
             }
 
-            return new IndicatorArea(randomId(), Markers.EMPTY, indicatorArea, continuationText);
+            return new IndicatorArea(randomId(), indicatorArea, continuationText);
         }
         return null;
     }

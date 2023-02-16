@@ -5981,10 +5981,24 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         Space prefix = processTokenText(node.getText(), markers);
         String text = END_OF_FILE.equals(node.getText()) ? "" :
                 node.getText().startsWith(COMMENT_ENTRY) ? node.getText().substring(COMMENT_ENTRY.length()) : node.getText();
+        Cobol.IndicatorArea indicatorArea = null;
+        Optional<IndicatorArea> indicatorAreaOptional = markers.stream().filter(it -> it instanceof IndicatorArea).map(it -> (IndicatorArea) it).findFirst();
+        if (indicatorAreaOptional.isPresent()) {
+            indicatorArea = new Cobol.IndicatorArea(
+                    randomId(),
+                    Space.EMPTY,
+                    Markers.EMPTY,
+                    indicatorAreaOptional.get().getIndicator(),
+                    indicatorAreaOptional.get().getContinuationPrefix()
+            );
+            markers.remove(indicatorAreaOptional.get());
+        }
+
         return new Cobol.Word(
                 randomId(),
                 prefix,
                 markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
+                indicatorArea,
                 text
         );
     }
@@ -7005,7 +7019,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 }
             }
 
-            return new IndicatorArea(randomId(), Markers.EMPTY, indicatorArea, continuationText);
+            return new IndicatorArea(randomId(), indicatorArea, continuationText);
         }
         return null;
     }

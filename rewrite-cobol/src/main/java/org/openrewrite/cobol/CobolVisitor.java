@@ -1467,6 +1467,13 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return i;
     }
 
+    public Cobol visitIndicatorArea(Cobol.IndicatorArea indicatorArea, P p) {
+        Cobol.IndicatorArea i = indicatorArea;
+        i = i.withPrefix(visitSpace(i.getPrefix(), Space.Location.INDICATOR_AREA_PREFIX, p));
+        i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        return i;
+    }
+
     public Cobol visitInFile(Cobol.InFile inFile, P p) {
         Cobol.InFile i = inFile;
         i = i.withPrefix(visitSpace(i.getPrefix(), Space.Location.IN_FILE_PREFIX, p));
@@ -4299,6 +4306,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Word w = word;
         w = w.withPrefix(visitSpace(w.getPrefix(), Space.Location.WORD_PREFIX, p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
+        w = w.withIndicatorArea(visitAndCast(w.getIndicatorArea(), p));
         return w;
     }
 
@@ -4371,30 +4379,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return w;
     }
 
-    @Override
-    public Markers visitMarkers(Markers markers, P p) {
-        return markers.withMarkers(ListUtils.map(markers.getMarkers(), marker -> {
-            if (marker instanceof SequenceArea) {
-                SequenceArea m = (SequenceArea) marker;
-                return visitSequenceArea(m, p);
-            } else if (marker instanceof IndicatorArea) {
-                IndicatorArea m = (IndicatorArea) marker;
-                return visitIndicatorArea(m, p);
-            } else if (marker instanceof CommentArea) {
-                CommentArea m = (CommentArea) marker;
-                //noinspection ConstantConditions
-                return visitCommentArea(m, p);
-            } else if (marker instanceof Continuation) {
-                Continuation m = (Continuation) marker;
-                return visitContinuation(m, p);
-            } else if (marker instanceof Lines) {
-                Lines m = (Lines) marker;
-                return visitLines(m, p);
-            }
-            return super.visitMarker(marker, p);
-        }));
-    }
-
     public <M extends Marker> M visitSequenceArea(SequenceArea sequenceArea, P p) {
         //noinspection unchecked
         return (M) sequenceArea;
@@ -4402,7 +4386,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
 
     public <M extends Marker> M visitIndicatorArea(IndicatorArea indicatorArea, P p) {
         IndicatorArea i = indicatorArea;
-        i = i.withMarkers(visitMarkers(i.getMarkers(), p));
         //noinspection unchecked
         return (M) i;
     }

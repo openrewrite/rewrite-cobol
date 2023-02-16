@@ -158,6 +158,13 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         return f;
     }
 
+    public CobolPreprocessor visitIndicatorArea(CobolPreprocessor.IndicatorArea indicatorArea, P p) {
+        CobolPreprocessor.IndicatorArea i = indicatorArea;
+        i = i.withPrefix(visitSpace(i.getPrefix(), Space.Location.INDICATOR_AREA_PREFIX, p));
+        i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        return i;
+    }
+
     public CobolPreprocessor visitPseudoText(CobolPreprocessor.PseudoText pseudoText, P p) {
         CobolPreprocessor.PseudoText pp = pseudoText;
         pp = pp.withPrefix(visitSpace(pp.getPrefix(), Space.Location.PSEUDO_TEXT_PREFIX, p));
@@ -242,6 +249,7 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.Word w = word;
         w = w.withPrefix(visitSpace(w.getPrefix(), Space.Location.PREPROCESSOR_WORD_PREFIX, p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
+        w = w.withIndicatorArea((CobolPreprocessor.IndicatorArea) visit(w.getIndicatorArea(), p));
         return w;
     }
 

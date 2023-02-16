@@ -130,6 +130,7 @@ public class Space {
 
     public enum Location {
         // Column areas
+        INDICATOR_AREA_PREFIX,
         COMMENT_AREA_PREFIX,
         COMMENT_AREA_EOL,
         CONTINUATION_PREFIX,

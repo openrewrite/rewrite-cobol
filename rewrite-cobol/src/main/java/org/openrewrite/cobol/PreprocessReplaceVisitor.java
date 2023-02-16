@@ -141,7 +141,6 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
 
             this.to = to;
             this.replacementType = init();
-
         }
 
         @Override
@@ -264,7 +263,6 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                                 word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
                                 word = word.withWord(toWord.getWord());
                             }
-
                         }
 
                         if (current.size() - 1 == fromPos) {
@@ -333,6 +331,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                                     randomId(),
                                     toWord.getPrefix(),
                                     Markers.EMPTY,
+                                    null,
                                     toWord.getWord()
                             );
 
@@ -447,6 +446,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         randomId(),
                         Space.EMPTY,
                         Markers.EMPTY,
+                        null,
                         ""
                 ));
             }
