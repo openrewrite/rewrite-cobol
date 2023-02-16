@@ -751,7 +751,7 @@ class FindIndicatorsTest : CobolTest() {
             spec.afterRecipe { cu ->
                 val searchResults = mutableListOf<SearchResult>()
                 visitor.visit(cu, searchResults)
-                Assertions.assertThat(searchResults).hasSize(1)
+                Assertions.assertThat(searchResults).hasSize(11)
 
                 // Print the POST processed AST to assert that COPIED source is marked.
                 val outputCapture = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())

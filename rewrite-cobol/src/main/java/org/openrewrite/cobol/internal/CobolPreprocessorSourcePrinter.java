@@ -18,7 +18,6 @@ package org.openrewrite.cobol.internal;
 import org.openrewrite.Cursor;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
-import org.openrewrite.cobol.search.SearchResultKey;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
@@ -238,7 +237,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return skipStatement;
     }
 
-    public Space visitSpace(Space space, PrintOutputCapture<P> p) {
+    public Space visitSpace(Space space, Space.Location location, PrintOutputCapture<P> p) {
         p.append(space.getWhitespace());
         return space;
     }
@@ -253,7 +252,6 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     }
 
     public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
-        beforeSyntax(word, Space.Location.WORD_PREFIX, p);
         // Column area markers.
         SequenceArea sequenceArea = null;
         CommentArea commentArea = null;
@@ -321,7 +319,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
                 originalReplaceLength = 0;
             } else {
-                visitSpace(word.getPrefix(), p);
+                beforeSyntax(word, Space.Location.WORD_PREFIX, p);
             }
             p.append(word.getWord());
 
@@ -348,7 +346,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
             indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
         }
 
-        visitSpace(word.getPrefix(), p);
+        visitSpace(word.getPrefix(), Space.Location.CONTINUATION_PREFIX, p);
 
         char[] charArray = word.getWord().toCharArray();
         for (int i = 0; i < charArray.length; i++) {
@@ -417,11 +415,11 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     }
 
     public void visitCommentArea(CommentArea commentArea, PrintOutputCapture<P> p) {
-        visitSpace(commentArea.getPrefix(), p);
+        visitSpace(commentArea.getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p);
         if (printColumns) {
             p.append(commentArea.getComment());
         }
-        visitSpace(commentArea.getEndOfLine(), p);
+        visitSpace(commentArea.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p);
     }
 
     private static final UnaryOperator<String> COBOL_MARKER_WRAPPER =

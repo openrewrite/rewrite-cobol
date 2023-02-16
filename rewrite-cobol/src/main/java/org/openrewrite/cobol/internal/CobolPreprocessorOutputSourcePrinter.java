@@ -118,7 +118,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
         if (printColumns) {
             super.visitCommentEntry(commentEntry, p);
         } else {
-            visitSpace(commentEntry.getPrefix(), p);
+            visitSpace(commentEntry.getPrefix(), Space.Location.COMMENT_ENTRY_PREFIX, p);
             visitMarkers(commentEntry.getMarkers(), p);
             for (CobolPreprocessor.Word comment : commentEntry.getComments()) {
                 p.append(COMMENT_ENTRY);
@@ -131,7 +131,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
 
     @Override
     public CobolPreprocessor visitCopyBook(CobolPreprocessor.CopyBook copyBook, PrintOutputCapture<P> p) {
-        visitSpace(copyBook.getPrefix(), p);
+        visitSpace(copyBook.getPrefix(), Space.Location.COPY_BOOK_PREFIX, p);
         visitMarkers(copyBook.getMarkers(), p);
         visit(copyBook.getAst(), p);
         visit(copyBook.getEof(), p);
@@ -140,7 +140,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
 
     @Override
     public CobolPreprocessor visitCopyStatement(CobolPreprocessor.CopyStatement copyStatement, PrintOutputCapture<P> p) {
-        visitSpace(copyStatement.getPrefix(), p);
+        visitSpace(copyStatement.getPrefix(), Space.Location.COPY_STATEMENT_PREFIX, p);
         visitMarkers(copyStatement.getMarkers(), p);
 
         if (printColumns) {
@@ -266,13 +266,13 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
                     }
                 }
 
-                visitSpace(word.getPrefix(), p);
+                visitSpace(word.getPrefix(), Space.Location.WORD_PREFIX, p);
                 visitMarkers(word.getMarkers(), p);
                 p.append(word.getWord());
 
                 Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-                commentArea.ifPresent(area -> visitSpace(area.getPrefix(), p));
-                commentArea.ifPresent(area -> visitSpace(area.getEndOfLine(), p));
+                commentArea.ifPresent(area -> visitSpace(area.getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p));
+                commentArea.ifPresent(area -> visitSpace(area.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p));
             }
 
             if (inUnknownIndicator && word.getMarkers().findFirst(CommentArea.class).isPresent()) {
@@ -347,7 +347,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
 
             visit(originalWord.getIndicatorArea(), p);
 
-            visitSpace(originalWord.getPrefix(), p);
+            visitSpace(originalWord.getPrefix(), Space.Location.WORD_PREFIX, p);
 
             String replaceWithWhitespace = generateWhitespace(originalWord.getWord().length());
             p.append(replaceWithWhitespace);
@@ -548,7 +548,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
             } else {
                 String additionalPrefix = StringUtils.repeat(" ", difference);
                 p.append(additionalPrefix);
-                visitSpace(word.getPrefix(), p);
+                visitSpace(word.getPrefix(), Space.Location.WORD_PREFIX, p);
                 p.append(word.getWord());
             }
         }
