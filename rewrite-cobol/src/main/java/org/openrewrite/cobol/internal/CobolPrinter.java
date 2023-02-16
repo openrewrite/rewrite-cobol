@@ -58,8 +58,7 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
             Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
-            Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
+            visit(word.getIndicatorArea(), p);
 
             beforeSyntax(word, Space.Location.WORD_PREFIX, p);
             p.append(word.getWord());

@@ -165,6 +165,16 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return familyPhrase;
     }
 
+    public CobolPreprocessor visitIndicatorArea(CobolPreprocessor.IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
+        if (printColumns) {
+            beforeSyntax(indicatorArea, Space.Location.INDICATOR_AREA_PREFIX, p);
+            p.out.append(indicatorArea.getIndicator());
+            afterSyntax(indicatorArea, p);
+        }
+        p.out.append(indicatorArea.getContinuationPrefix());
+        return indicatorArea;
+    }
+
     public CobolPreprocessor visitPseudoText(CobolPreprocessor.PseudoText pseudoText, PrintOutputCapture<P> p) {
         beforeSyntax(pseudoText, Space.Location.PSEUDO_TEXT_PREFIX, p);
         visit(pseudoText.getDoubleEqualOpen(), p);
@@ -246,7 +256,6 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         beforeSyntax(word, Space.Location.WORD_PREFIX, p);
         // Column area markers.
         SequenceArea sequenceArea = null;
-        IndicatorArea indicatorArea = null;
         CommentArea commentArea = null;
 
         // CobolPreprocessor markers.
@@ -260,8 +269,6 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         for (Marker marker : word.getMarkers().getMarkers()) {
             if (marker instanceof SequenceArea) {
                 sequenceArea = (SequenceArea) marker;
-            } else if (marker instanceof IndicatorArea) {
-                indicatorArea = (IndicatorArea) marker;
             } else if (marker instanceof CommentArea) {
                 commentArea = (CommentArea) marker;
             } else if (marker instanceof ReplaceBy) {
@@ -308,9 +315,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
                 visitSequenceArea(sequenceArea, p);
             }
 
-            if (indicatorArea != null) {
-                visitIndicatorArea(indicatorArea, p);
-            }
+            visit(word.getIndicatorArea(), p);
 
             if (replace != null && replace.isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
@@ -404,17 +409,8 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     }
 
     public void visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
-        visitMarkers(indicatorArea.getMarkers(), p);
         if (printColumns) {
-            for (Marker marker : indicatorArea.getMarkers().getMarkers()) {
-                p.out.append(p.getMarkerPrinter().beforePrefix(marker, new Cursor(getCursor(), marker), COBOL_MARKER_WRAPPER));
-            }
-            visitMarkers(indicatorArea.getMarkers(), p);
-            for (Marker marker : indicatorArea.getMarkers().getMarkers()) {
-                p.out.append(p.getMarkerPrinter().beforeSyntax(marker, new Cursor(getCursor(), marker), COBOL_MARKER_WRAPPER));
-            }
             p.append(indicatorArea.getIndicator());
-            afterSyntax(indicatorArea.getMarkers(), p);
         }
 
         p.append(indicatorArea.getContinuationPrefix());

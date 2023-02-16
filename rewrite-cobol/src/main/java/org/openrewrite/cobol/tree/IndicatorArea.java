@@ -23,7 +23,6 @@ import java.util.UUID;
 @Value
 public class IndicatorArea implements Marker {
     UUID id;
-    Markers markers;
     String indicator;
 
     @Nullable

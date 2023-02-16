@@ -67,7 +67,6 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
             return super.visitWord(word, p);
         }
 
-        beforeSyntax(word, Space.Location.WORD_PREFIX, p);
         Optional<SearchResult> searchResultOptional = word.getMarkers().getMarkers().stream()
                 .filter(m -> m instanceof SearchResult)
                 .map(m -> (SearchResult) m)
@@ -84,10 +83,9 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
             Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
-            Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
+            visit(word.getIndicatorArea(), p);
 
-            visitSpace(word.getPrefix(), p);
+            beforeSyntax(word, Space.Location.WORD_PREFIX, p);
             p.append(word.getWord());
 
             Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);

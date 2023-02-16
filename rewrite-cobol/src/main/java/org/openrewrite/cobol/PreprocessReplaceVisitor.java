@@ -333,6 +333,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                                     randomId(),
                                     toWord.getPrefix(),
                                     Markers.EMPTY,
+                                    null,
                                     toWord.getWord()
                             );
 
@@ -447,6 +448,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         randomId(),
                         Space.EMPTY,
                         Markers.EMPTY,
+                        null,
                         ""
                 ));
             }
