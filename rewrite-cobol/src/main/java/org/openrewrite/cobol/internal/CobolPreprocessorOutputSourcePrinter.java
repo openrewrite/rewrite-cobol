@@ -249,9 +249,8 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
         if (!printColumns) {
             // Do not print words on lines with an unknown indicator until we know how to handle them.
             // Note: Unknown indicators are treated as comments via source code in CobolParserVisitor#isCommentIndicator.
-            Optional<IndicatorArea> maybeUnknown = word.getMarkers().findFirst(IndicatorArea.class);
-            if (maybeUnknown.isPresent()) {
-                String indicator = maybeUnknown.get().getIndicator();
+            if (word.getIndicatorArea() != null) {
+                String indicator = word.getIndicatorArea().getIndicator();
                 if ("G".equals(indicator) || "J".equals(indicator) || "P".equals(indicator)) {
                     // TODO: add a form of visibility for an unrecognized indicator.
                     inUnknownIndicator = true;
@@ -346,8 +345,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
             Optional<SequenceArea> sequenceArea = originalWord.getMarkers().findFirst(SequenceArea.class);
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
-            Optional<IndicatorArea> indicatorArea = originalWord.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
+            visit(originalWord.getIndicatorArea(), p);
 
             visitSpace(originalWord.getPrefix(), p);
 
@@ -415,8 +413,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
             Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
             sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
 
-            Optional<IndicatorArea> indicatorArea = word.getMarkers().findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
+            visit(word.getIndicatorArea(), p);
         }
 
         // Fill in the rest of the content area with whitespace.
