@@ -40,8 +40,6 @@ jobs:
         with:
           credentials_json: ${{ secrets.ARTIFACT_REGISTRY_KEY }}
       - uses: google-github-actions/setup-gcloud@v1.0.1
-        with:
-          credentials_json: ${{ secrets.ARTIFACT_REGISTRY_KEY }}
       - name: publish-release
         if: (!contains(github.ref, '-rc.'))
         timeout-minutes: 30
