@@ -62,7 +62,8 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
     @Override
     public List<Cobol.CompilationUnit> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
-        ParsingEventListener parsingListener = ParsingExecutionContextView.view(ctx).getParsingListener();
+        ParsingExecutionContextView pctx = ParsingExecutionContextView.view(ctx);
+        ParsingEventListener parsingListener = pctx.getParsingListener();
         return acceptedInputs(sourceFiles).stream()
                 .map(sourceFile -> {
                     Timer.Builder timer = Timer.builder("rewrite.parse")
@@ -115,7 +116,8 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                         return compilationUnit;
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
-                        ctx.getOnError().accept(new IllegalStateException(sourceFile.getPath() + " " + t.getMessage(), t));
+                        pctx.parseFailure(sourceFile, relativeTo, this, t);
+                        ctx.getOnError().accept(t);
                         return null;
                     }
                 })
