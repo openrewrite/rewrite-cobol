@@ -336,7 +336,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                                     Markers.EMPTY,
                                     null,
                                     null,
-                                    toWord.getWord()
+                                    toWord.getWord(),
+                                    null
                             );
 
                             Replace replace = new Replace(randomId(), addedWord, false);
@@ -452,7 +453,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         Markers.EMPTY,
                         null,
                         null,
-                        ""
+                        "",
+                        null
                 ));
             }
         } else if (cobolPreprocessor instanceof CobolPreprocessor.CharDataLine) {

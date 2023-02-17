@@ -15,6 +15,7 @@
  */
 package org.openrewrite.cobol;
 
+import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 
 public class CobolPreprocessorIsoVisitor<P> extends CobolPreprocessorVisitor<P> {
@@ -35,8 +36,13 @@ public class CobolPreprocessorIsoVisitor<P> extends CobolPreprocessorVisitor<P> 
     }
 
     @Override
-    public CobolPreprocessor visitCommentEntry(CobolPreprocessor.CommentEntry commentEntry, P p) {
-        return super.visitCommentEntry(commentEntry, p);
+    public CobolPreprocessor.CommentArea visitCommentArea(CobolPreprocessor.CommentArea commentArea, P p) {
+        return (CobolPreprocessor.CommentArea) super.visitCommentArea(commentArea, p);
+    }
+
+    @Override
+    public CobolPreprocessor.CommentEntry visitCommentEntry(CobolPreprocessor.CommentEntry commentEntry, P p) {
+        return (CobolPreprocessor.CommentEntry) super.visitCommentEntry(commentEntry, p);
     }
 
     @Override
@@ -95,8 +101,8 @@ public class CobolPreprocessorIsoVisitor<P> extends CobolPreprocessorVisitor<P> 
     }
 
     @Override
-    public CobolPreprocessor visitIndicatorArea(CobolPreprocessor.IndicatorArea indicatorArea, P p) {
-        return super.visitIndicatorArea(indicatorArea, p);
+    public CobolPreprocessor.IndicatorArea visitIndicatorArea(CobolPreprocessor.IndicatorArea indicatorArea, P p) {
+        return (CobolPreprocessor.IndicatorArea) super.visitIndicatorArea(indicatorArea, p);
     }
 
     @Override
@@ -130,8 +136,8 @@ public class CobolPreprocessorIsoVisitor<P> extends CobolPreprocessorVisitor<P> 
     }
 
     @Override
-    public CobolPreprocessor visitSequenceArea(CobolPreprocessor.SequenceArea sequenceArea, P p) {
-        return super.visitSequenceArea(sequenceArea, p);
+    public CobolPreprocessor.SequenceArea visitSequenceArea(CobolPreprocessor.SequenceArea sequenceArea, P p) {
+        return (CobolPreprocessor.SequenceArea) super.visitSequenceArea(sequenceArea, p);
     }
 
     @Override

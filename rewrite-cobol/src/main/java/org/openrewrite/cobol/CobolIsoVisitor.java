@@ -255,8 +255,13 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol visitCommentEntry(Cobol.CommentEntry commentEntry, P p) {
-        return super.visitCommentEntry(commentEntry, p);
+    public Cobol.CommentArea visitCommentArea(Cobol.CommentArea commentArea, P p) {
+        return (Cobol.CommentArea) super.visitCommentArea(commentArea, p);
+    }
+
+    @Override
+    public Cobol.CommentEntry visitCommentEntry(Cobol.CommentEntry commentEntry, P p) {
+        return (Cobol.CommentEntry) super.visitCommentEntry(commentEntry, p);
     }
 
     @Override
@@ -475,13 +480,13 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol visitDataValueInterval(Cobol.DataValueInterval dataValueInterval, P p) {
-        return super.visitDataValueInterval(dataValueInterval, p);
+    public Cobol.DataValueInterval visitDataValueInterval(Cobol.DataValueInterval dataValueInterval, P p) {
+        return (Cobol.DataValueInterval) super.visitDataValueInterval(dataValueInterval, p);
     }
 
     @Override
-    public Cobol visitDataValueIntervalTo(Cobol.DataValueIntervalTo dataValueIntervalTo, P p) {
-        return super.visitDataValueIntervalTo(dataValueIntervalTo, p);
+    public Cobol.DataValueIntervalTo visitDataValueIntervalTo(Cobol.DataValueIntervalTo dataValueIntervalTo, P p) {
+        return (Cobol.DataValueIntervalTo) super.visitDataValueIntervalTo(dataValueIntervalTo, p);
     }
 
     @Override
@@ -600,18 +605,18 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol visitEnvironmentSwitchNameClause(Cobol.EnvironmentSwitchNameClause environmentSwitchNameClause, P p) {
-        return super.visitEnvironmentSwitchNameClause(environmentSwitchNameClause, p);
+    public Cobol.EnvironmentSwitchNameClause visitEnvironmentSwitchNameClause(Cobol.EnvironmentSwitchNameClause environmentSwitchNameClause, P p) {
+        return (Cobol.EnvironmentSwitchNameClause) super.visitEnvironmentSwitchNameClause(environmentSwitchNameClause, p);
     }
 
     @Override
-    public Cobol visitEnvironmentSwitchNameSpecialNamesStatusPhrase(Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase environmentSwitchNameSpecialNamesStatusPhrase, P p) {
-        return super.visitEnvironmentSwitchNameSpecialNamesStatusPhrase(environmentSwitchNameSpecialNamesStatusPhrase, p);
+    public Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase visitEnvironmentSwitchNameSpecialNamesStatusPhrase(Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase environmentSwitchNameSpecialNamesStatusPhrase, P p) {
+        return (Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase) super.visitEnvironmentSwitchNameSpecialNamesStatusPhrase(environmentSwitchNameSpecialNamesStatusPhrase, p);
     }
 
     @Override
-    public Cobol visitErrorKeyClause(Cobol.ErrorKeyClause errorKeyClause, P p) {
-        return super.visitErrorKeyClause(errorKeyClause, p);
+    public Cobol.ErrorKeyClause visitErrorKeyClause(Cobol.ErrorKeyClause errorKeyClause, P p) {
+        return (Cobol.ErrorKeyClause) super.visitErrorKeyClause(errorKeyClause, p);
     }
 
     @Override
@@ -675,8 +680,8 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol visitFigurativeConstant(Cobol.FigurativeConstant figurativeConstant, P p) {
-        return super.visitFigurativeConstant(figurativeConstant, p);
+    public Cobol.FigurativeConstant visitFigurativeConstant(Cobol.FigurativeConstant figurativeConstant, P p) {
+        return (Cobol.FigurativeConstant) super.visitFigurativeConstant(figurativeConstant, p);
     }
 
     @Override
@@ -740,8 +745,8 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol visitIdentificationDivisionParagraph(Cobol.IdentificationDivisionParagraph identificationDivisionParagraph, P p) {
-        return super.visitIdentificationDivisionParagraph(identificationDivisionParagraph, p);
+    public Cobol.IdentificationDivisionParagraph visitIdentificationDivisionParagraph(Cobol.IdentificationDivisionParagraph identificationDivisionParagraph, P p) {
+        return (Cobol.IdentificationDivisionParagraph) super.visitIdentificationDivisionParagraph(identificationDivisionParagraph, p);
     }
 
     @Override
@@ -765,8 +770,8 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol visitIndicatorArea(Cobol.IndicatorArea indicatorArea, P p) {
-        return super.visitIndicatorArea(indicatorArea, p);
+    public Cobol.IndicatorArea visitIndicatorArea(Cobol.IndicatorArea indicatorArea, P p) {
+        return (Cobol.IndicatorArea) super.visitIndicatorArea(indicatorArea, p);
     }
 
     @Override
@@ -1040,12 +1045,12 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public @Nullable Cobol.MergeOutputThrough visitMergeOutputThrough(Cobol.MergeOutputThrough mergeOutputThrough, P p) {
+    public Cobol.MergeOutputThrough visitMergeOutputThrough(Cobol.MergeOutputThrough mergeOutputThrough, P p) {
         return (Cobol.MergeOutputThrough) super.visitMergeOutputThrough(mergeOutputThrough, p);
     }
 
     @Override
-    public @Nullable Cobol.MergeUsing visitMergeUsing(Cobol.MergeUsing mergeUsing, P p) {
+    public Cobol.MergeUsing visitMergeUsing(Cobol.MergeUsing mergeUsing, P p) {
         return (Cobol.MergeUsing) super.visitMergeUsing(mergeUsing, p);
     }
 
@@ -1420,8 +1425,8 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol visitReceiveWith(Cobol.ReceiveWith receiveWith, P p) {
-        return super.visitReceiveWith(receiveWith, p);
+    public Cobol.ReceiveWith visitReceiveWith(Cobol.ReceiveWith receiveWith, P p) {
+        return (Cobol.ReceiveWith) super.visitReceiveWith(receiveWith, p);
     }
 
     @Override
@@ -1500,8 +1505,8 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol visitRelease(Cobol.Release release, P p) {
-        return super.visitRelease(release, p);
+    public Cobol.Release visitRelease(Cobol.Release release, P p) {
+        return (Cobol.Release) super.visitRelease(release, p);
     }
 
     @Override
@@ -1730,13 +1735,13 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol visitReturn(Cobol.Return r, P p) {
-        return super.visitReturn(r, p);
+    public Cobol.Return visitReturn(Cobol.Return r, P p) {
+        return (Cobol.Return) super.visitReturn(r, p);
     }
 
     @Override
-    public Cobol visitReturnInto(Cobol.ReturnInto returnInto, P p) {
-        return super.visitReturnInto(returnInto, p);
+    public Cobol.ReturnInto visitReturnInto(Cobol.ReturnInto returnInto, P p) {
+        return (Cobol.ReturnInto) super.visitReturnInto(returnInto, p);
     }
 
     @Override
@@ -1920,18 +1925,18 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol visitSearch(Cobol.Search search, P p) {
-        return super.visitSearch(search, p);
+    public Cobol.Search visitSearch(Cobol.Search search, P p) {
+        return (Cobol.Search) super.visitSearch(search, p);
     }
 
     @Override
-    public Cobol visitSearchVarying(Cobol.SearchVarying searchVarying, P p) {
-        return super.visitSearchVarying(searchVarying, p);
+    public Cobol.SearchVarying visitSearchVarying(Cobol.SearchVarying searchVarying, P p) {
+        return (Cobol.SearchVarying) super.visitSearchVarying(searchVarying, p);
     }
 
     @Override
-    public Cobol visitSearchWhen(Cobol.SearchWhen searchWhen, P p) {
-        return super.visitSearchWhen(searchWhen, p);
+    public Cobol.SearchWhen visitSearchWhen(Cobol.SearchWhen searchWhen, P p) {
+        return (Cobol.SearchWhen) super.visitSearchWhen(searchWhen, p);
     }
 
     @Override
@@ -1940,23 +1945,23 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol visitSend(Cobol.Send send, P p) {
-        return super.visitSend(send, p);
+    public Cobol.Send visitSend(Cobol.Send send, P p) {
+        return (Cobol.Send) super.visitSend(send, p);
     }
 
     @Override
-    public Cobol visitSendAdvancingLines(Cobol.SendAdvancingLines sendAdvancingLines, P p) {
-        return super.visitSendAdvancingLines(sendAdvancingLines, p);
+    public Cobol.SendAdvancingLines visitSendAdvancingLines(Cobol.SendAdvancingLines sendAdvancingLines, P p) {
+        return (Cobol.SendAdvancingLines) super.visitSendAdvancingLines(sendAdvancingLines, p);
     }
 
     @Override
-    public Cobol visitSendPhrase(Cobol.SendPhrase sendPhrase, P p) {
-        return super.visitSendPhrase(sendPhrase, p);
+    public Cobol.SendPhrase visitSendPhrase(Cobol.SendPhrase sendPhrase, P p) {
+        return (Cobol.SendPhrase) super.visitSendPhrase(sendPhrase, p);
     }
 
     @Override
-    public Cobol visitSendStatementSync(Cobol.SendStatementSync sendStatementSync, P p) {
-        return super.visitSendStatementSync(sendStatementSync, p);
+    public Cobol.SendStatementSync visitSendStatementSync(Cobol.SendStatementSync sendStatementSync, P p) {
+        return (Cobol.SendStatementSync) super.visitSendStatementSync(sendStatementSync, p);
     }
 
     @Override
@@ -1965,8 +1970,8 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol visitSequenceArea(Cobol.SequenceArea sequenceArea, P p) {
-        return super.visitSequenceArea(sequenceArea, p);
+    public Cobol.SequenceArea visitSequenceArea(Cobol.SequenceArea sequenceArea, P p) {
+        return (Cobol.SequenceArea) super.visitSequenceArea(sequenceArea, p);
     }
 
     @Override

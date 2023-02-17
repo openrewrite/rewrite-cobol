@@ -271,12 +271,13 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
                 visitMarkers(word.getMarkers(), p);
                 p.append(word.getWord());
 
-                Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-                commentArea.ifPresent(area -> visitSpace(area.getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p));
-                commentArea.ifPresent(area -> visitSpace(area.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p));
+                if (word.getCommentArea() != null) {
+                    visitSpace(word.getCommentArea().getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p);
+                    visitSpace(word.getCommentArea().getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p);
+                }
             }
 
-            if (inUnknownIndicator && word.getMarkers().findFirst(CommentArea.class).isPresent()) {
+            if (inUnknownIndicator && word.getCommentArea() != null) {
                 inUnknownIndicator = false;
             }
             return word;
@@ -351,8 +352,9 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
             String replaceWithWhitespace = generateWhitespace(originalWord.getWord().length());
             p.append(replaceWithWhitespace);
 
-            Optional<CommentArea> commentArea = originalWord.getMarkers().findFirst(CommentArea.class);
-            commentArea.ifPresent(it -> visitCommentArea(it, p));
+            if (originalWord.getCommentArea() != null) {
+                visitCommentArea(originalWord.getCommentArea(), p);
+            }
         }
 
         // Save the current index to ensure the text that follows the REPLACE will be aligned correctly.
@@ -550,8 +552,9 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
             }
         }
 
-        Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-        commentArea.ifPresent(it -> visitCommentArea(it, p));
+        if (word.getCommentArea() != null) {
+            visitCommentArea(word.getCommentArea(), p);
+        }
     }
 
     /**

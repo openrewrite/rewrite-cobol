@@ -36,7 +36,7 @@ public class ShiftSequenceAreas extends CobolIsoVisitor<ExecutionContext> {
     }
 
     @Override
-    public Cobol visitSequenceArea(Cobol.SequenceArea sequenceArea, ExecutionContext executionContext) {
+    public Cobol.SequenceArea visitSequenceArea(Cobol.SequenceArea sequenceArea, ExecutionContext executionContext) {
         if (startShift) {
             originalSequenceAreas.add(sequenceArea);
             return originalSequenceAreas.removeFirst();

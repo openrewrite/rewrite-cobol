@@ -45,6 +45,14 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         return c;
     }
 
+    public CobolPreprocessor visitCommentArea(CobolPreprocessor.CommentArea commentArea, P p) {
+        CobolPreprocessor.CommentArea c = commentArea;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withEndOfLine(visitSpace(c.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p));
+        return c;
+    }
+
     public CobolPreprocessor visitCommentEntry(CobolPreprocessor.CommentEntry commentEntry, P p) {
         CobolPreprocessor.CommentEntry c = commentEntry;
         c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMMENT_ENTRY_PREFIX, p));
@@ -257,6 +265,7 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
         w = w.withSequenceArea((CobolPreprocessor.SequenceArea) visit(w.getSequenceArea(), p));
         w = w.withIndicatorArea((CobolPreprocessor.IndicatorArea) visit(w.getIndicatorArea(), p));
+        w = w.withCommentArea((CobolPreprocessor.CommentArea) visit(w.getCommentArea(), p));
         return w;
     }
 

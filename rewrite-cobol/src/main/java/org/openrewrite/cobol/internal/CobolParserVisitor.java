@@ -5985,11 +5985,14 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
         SequenceArea sequenceAreaMarker = null;
         IndicatorArea indicatorAreaMarker = null;
+        CommentArea commentAreaMarker = null;
         for (Marker marker : markers) {
             if (marker instanceof SequenceArea) {
                 sequenceAreaMarker = (SequenceArea) marker;
             } else if (marker instanceof IndicatorArea) {
                 indicatorAreaMarker = (IndicatorArea) marker;
+            } else if (marker instanceof CommentArea) {
+                commentAreaMarker = (CommentArea) marker;
             }
         }
 
@@ -6016,13 +6019,27 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.remove(indicatorAreaMarker);
         }
 
+        Cobol.CommentArea commentArea = null;
+        if (commentAreaMarker != null) {
+            commentArea = new Cobol.CommentArea(
+                    randomId(),
+                    commentAreaMarker.getPrefix(),
+                    Markers.EMPTY,
+                    commentAreaMarker.getComment(),
+                    commentAreaMarker.getEndOfLine(),
+                    commentAreaMarker.isAdded()
+            );
+            markers.remove(commentAreaMarker);
+        }
+
         return new Cobol.Word(
                 randomId(),
                 prefix,
                 markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
                 sequenceArea,
                 indicatorArea,
-                text
+                text,
+                commentArea
         );
     }
 

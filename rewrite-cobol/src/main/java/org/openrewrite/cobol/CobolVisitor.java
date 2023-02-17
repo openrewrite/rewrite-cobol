@@ -21,6 +21,11 @@ import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
+import org.openrewrite.marker.Markers;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
 
@@ -480,6 +485,14 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
         c = c.withNot((Cobol.Word) visit(c.getNot(), p));
         c = c.withSimpleCondition(visit(c.getSimpleCondition(), p));
+        return c;
+    }
+
+    public Cobol visitCommentArea(Cobol.CommentArea commentArea, P p) {
+        Cobol.CommentArea c = commentArea;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withEndOfLine(visitSpace(c.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p));
         return c;
     }
 
@@ -1994,7 +2007,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return m;
     }
 
-    public @Nullable Cobol visitMergeOutputThrough(Cobol.MergeOutputThrough mergeOutputThrough, P p) {
+    public Cobol visitMergeOutputThrough(Cobol.MergeOutputThrough mergeOutputThrough, P p) {
         Cobol.MergeOutputThrough m = mergeOutputThrough;
         m = m.withPrefix(visitSpace(m.getPrefix(), Space.Location.MERGE_OUTPUT_THROUGH_PREFIX, p));
         m = m.withMarkers(visitMarkers(m.getMarkers(), p));
@@ -2003,7 +2016,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return m;
     }
 
-    public @Nullable Cobol visitMergeUsing(Cobol.MergeUsing mergeUsing, P p) {
+    public Cobol visitMergeUsing(Cobol.MergeUsing mergeUsing, P p) {
         Cobol.MergeUsing m = mergeUsing;
         m = m.withPrefix(visitSpace(m.getPrefix(), Space.Location.MERGE_USING_PREFIX, p));
         m = m.withMarkers(visitMarkers(m.getMarkers(), p));
@@ -4311,6 +4324,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
         w = w.withSequenceArea((Cobol.SequenceArea) visit(w.getSequenceArea(), p));
         w = w.withIndicatorArea((Cobol.IndicatorArea) visit(w.getIndicatorArea(), p));
+        w = w.withCommentArea((Cobol.CommentArea) visit(w.getCommentArea(), p));
         return w;
     }
 

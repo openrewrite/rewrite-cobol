@@ -39,7 +39,7 @@ public class FindIndicators extends Recipe {
         }
 
         @Override
-        public Cobol visitIndicatorArea(Cobol.IndicatorArea indicatorArea, ExecutionContext executionContext) {
+        public Cobol.IndicatorArea visitIndicatorArea(Cobol.IndicatorArea indicatorArea, ExecutionContext executionContext) {
             if (indicator.equals(indicatorArea.getIndicator())) {
                 return SearchResult.found(indicatorArea);
             }

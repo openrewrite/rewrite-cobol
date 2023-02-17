@@ -16,7 +16,6 @@
 package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
-import org.openrewrite.cobol.markers.CommentArea;
 import org.openrewrite.cobol.markers.Continuation;
 import org.openrewrite.cobol.markers.Lines;
 import org.openrewrite.cobol.tree.*;
@@ -89,8 +88,9 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
             beforeSyntax(word, Space.Location.WORD_PREFIX, p);
             p.append(word.getWord());
 
-            Optional<CommentArea> commentArea = word.getMarkers().findFirst(CommentArea.class);
-            commentArea.ifPresent(it -> visitCommentArea(it, p));
+            if (word.getCommentArea() != null && !word.getCommentArea().isAdded()) {
+                visit(word.getCommentArea(), p);
+            }
         }
 
         afterSyntax(word, p);
