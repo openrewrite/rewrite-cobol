@@ -21,6 +21,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.openrewrite.FileAttributes;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorBaseVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser;
+import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
@@ -771,22 +772,45 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         Space prefix = processTokenText(node.getText(), markers);
         String text = END_OF_FILE.equals(node.getText()) ? "" :
                 node.getText().startsWith(COMMENT_ENTRY) ? node.getText().substring(COMMENT_ENTRY.length()) : node.getText();
+
+        SequenceArea sequenceAreaMarker = null;
+        IndicatorArea indicatorAreaMarker = null;
+        for (Marker marker : markers) {
+            if (marker instanceof SequenceArea) {
+                sequenceAreaMarker = (SequenceArea) marker;
+            } else if (marker instanceof IndicatorArea) {
+                indicatorAreaMarker = (IndicatorArea) marker;
+            }
+        }
+
+        CobolPreprocessor.SequenceArea sequenceArea = null;
+        if (sequenceAreaMarker != null) {
+            sequenceArea = new CobolPreprocessor.SequenceArea(
+                    randomId(),
+                    Space.EMPTY,
+                    Markers.EMPTY,
+                    sequenceAreaMarker.getSequence()
+            );
+            markers.remove(sequenceAreaMarker);
+        }
+
         CobolPreprocessor.IndicatorArea indicatorArea = null;
-        Optional<IndicatorArea> indicatorAreaOptional = markers.stream().filter(it -> it instanceof IndicatorArea).map(it -> (IndicatorArea) it).findFirst();
-        if (indicatorAreaOptional.isPresent()) {
+        if (indicatorAreaMarker != null) {
             indicatorArea = new CobolPreprocessor.IndicatorArea(
                     randomId(),
                     Space.EMPTY,
                     Markers.EMPTY,
-                    indicatorAreaOptional.get().getIndicator(),
-                    indicatorAreaOptional.get().getContinuationPrefix()
+                    indicatorAreaMarker.getIndicator(),
+                    indicatorAreaMarker.getContinuationPrefix()
             );
-            markers.remove(indicatorAreaOptional.get());
+            markers.remove(indicatorAreaMarker);
         }
+
         return new CobolPreprocessor.Word(
                 randomId(),
                 prefix,
                 markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
+                sequenceArea,
                 indicatorArea,
                 text
         );

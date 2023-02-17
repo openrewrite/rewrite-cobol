@@ -585,6 +585,24 @@ public interface CobolPreprocessor extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
+    class SequenceArea implements CobolPreprocessor {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        String sequence;
+
+        @Override
+        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
+            return v.visitSequenceArea(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
     class SkipStatement implements CobolPreprocessor {
         @EqualsAndHashCode.Include
         UUID id;
@@ -635,6 +653,9 @@ public interface CobolPreprocessor extends Tree {
 
         Space prefix;
         Markers markers;
+
+        @Nullable
+        CobolPreprocessor.SequenceArea sequenceArea;
 
         @Nullable
         CobolPreprocessor.IndicatorArea indicatorArea;

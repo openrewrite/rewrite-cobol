@@ -20,6 +20,7 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolVisitor;
+import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.search.SearchResultKey;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
@@ -3345,6 +3346,15 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return s;
     }
 
+    public Cobol visitSequenceArea(Cobol.SequenceArea sequenceArea, PrintOutputCapture<P> p) {
+        if (printColumns) {
+            beforeSyntax(sequenceArea, Space.Location.SEQUENCE_AREA_PREFIX, p);
+            p.out.append(sequenceArea.getSequence());
+            afterSyntax(sequenceArea, p);
+        }
+        return sequenceArea;
+    }
+
     public Cobol visitSelectClause(Cobol.SelectClause selectClause, PrintOutputCapture<P> p) {
         beforeSyntax(selectClause, Space.Location.SEARCH_CLAUSE_PREFIX, p);
         visit(selectClause.getWords(), p);
@@ -3913,7 +3923,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
         // Column area markers.
-        SequenceArea sequenceArea = null;
         CommentArea commentArea = null;
 
         // CobolPreprocessor markers.
@@ -3929,9 +3938,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         SearchResult  copyBookSearch = null;
 
         for (Marker marker : word.getMarkers().getMarkers()) {
-            if (marker instanceof SequenceArea) {
-                sequenceArea = (SequenceArea) marker;
-            } else if (marker instanceof CommentArea) {
+            if (marker instanceof CommentArea) {
                 commentArea = (CommentArea) marker;
             } else if (marker instanceof SearchResult) {
                 SearchResult m = (SearchResult) marker;
@@ -4033,10 +4040,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         if (continuation != null) {
             visitContinuation(word, continuation, p);
         } else {
-            if (sequenceArea != null) {
-                visitSequenceArea(sequenceArea, p);
-            }
-
+            visit(word.getSequenceArea(), p);
             visit(word.getIndicatorArea(), p);
 
             if (replace != null && replace.isReplacedWithEmpty()) {

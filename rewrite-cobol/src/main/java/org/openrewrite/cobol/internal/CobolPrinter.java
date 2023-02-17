@@ -16,6 +16,9 @@
 package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
+import org.openrewrite.cobol.markers.CommentArea;
+import org.openrewrite.cobol.markers.Continuation;
+import org.openrewrite.cobol.markers.Lines;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.marker.SearchResult;
 
@@ -55,9 +58,7 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
         if (continuation.isPresent() && printColumns) {
             visitContinuation(word, continuation.get(), searchResult, p);
         } else {
-            Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
-            sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
-
+            visit(word.getSequenceArea(), p);
             visit(word.getIndicatorArea(), p);
 
             beforeSyntax(word, Space.Location.WORD_PREFIX, p);

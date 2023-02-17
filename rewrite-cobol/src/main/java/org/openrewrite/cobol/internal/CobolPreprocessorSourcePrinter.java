@@ -18,6 +18,7 @@ package org.openrewrite.cobol.internal;
 import org.openrewrite.Cursor;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
+import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
@@ -229,6 +230,16 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return replacingPhrase;
     }
 
+    @Override
+    public CobolPreprocessor visitSequenceArea(CobolPreprocessor.SequenceArea sequenceArea, PrintOutputCapture<P> p) {
+        if (printColumns) {
+            beforeSyntax(sequenceArea, Space.Location.SEQUENCE_AREA_PREFIX, p);
+            p.out.append(sequenceArea.getSequence());
+            afterSyntax(sequenceArea, p);
+        }
+        return sequenceArea;
+    }
+
     public CobolPreprocessor visitSkipStatement(CobolPreprocessor.SkipStatement skipStatement, PrintOutputCapture<P> p) {
         beforeSyntax(skipStatement, Space.Location.SKIP_STATEMENT_PREFIX, p);
         visit(skipStatement.getWord(), p);
@@ -253,7 +264,6 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
 
     public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
         // Column area markers.
-        SequenceArea sequenceArea = null;
         CommentArea commentArea = null;
 
         // CobolPreprocessor markers.
@@ -265,9 +275,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         Continuation continuation = null;
 
         for (Marker marker : word.getMarkers().getMarkers()) {
-            if (marker instanceof SequenceArea) {
-                sequenceArea = (SequenceArea) marker;
-            } else if (marker instanceof CommentArea) {
+            if (marker instanceof CommentArea) {
                 commentArea = (CommentArea) marker;
             } else if (marker instanceof ReplaceBy) {
                 replaceBy = (ReplaceBy) marker;
@@ -309,10 +317,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         if (continuation != null) {
             visitContinuation(word, continuation, p);
         } else {
-            if (sequenceArea != null) {
-                visitSequenceArea(sequenceArea, p);
-            }
-
+            visit(word.getSequenceArea(), p);
             visit(word.getIndicatorArea(), p);
 
             if (replace != null && replace.isReplacedWithEmpty()) {

@@ -18,6 +18,7 @@ package org.openrewrite.cobol.internal;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
+import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
@@ -342,9 +343,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
                 throw new UnsupportedOperationException("Implement continuation lines for a reductive replacement.");
             }
 
-            Optional<SequenceArea> sequenceArea = originalWord.getMarkers().findFirst(SequenceArea.class);
-            sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
-
+            visit(originalWord.getSequenceArea(), p);
             visit(originalWord.getIndicatorArea(), p);
 
             visitSpace(originalWord.getPrefix(), Space.Location.WORD_PREFIX, p);
@@ -410,9 +409,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
         }
 
         if (curIndex == 0) {
-            Optional<SequenceArea> sequenceArea = word.getMarkers().findFirst(SequenceArea.class);
-            sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
-
+            visit(word.getSequenceArea(), p);
             visit(word.getIndicatorArea(), p);
         }
 

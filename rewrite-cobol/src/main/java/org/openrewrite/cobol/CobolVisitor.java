@@ -16,15 +16,11 @@
 package org.openrewrite.cobol;
 
 import org.openrewrite.TreeVisitor;
+import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
-import org.openrewrite.marker.Markers;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
 
@@ -3737,6 +3733,13 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return s;
     }
 
+    public Cobol visitSequenceArea(Cobol.SequenceArea sequenceArea, P p ) {
+        Cobol.SequenceArea s = sequenceArea;
+        s = s.withPrefix(visitSpace(s.getPrefix(), Space.Location.SEQUENCE_AREA_PREFIX, p));
+        s = s.withMarkers(visitMarkers(s.getMarkers(), p));
+        return s;
+    }
+
     public Cobol visitSet(Cobol.Set set, P p) {
         Cobol.Set s = set;
         s = s.withPrefix(visitSpace(s.getPrefix(), Space.Location.SET_PREFIX, p));
@@ -4306,7 +4309,8 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Word w = word;
         w = w.withPrefix(visitSpace(w.getPrefix(), Space.Location.WORD_PREFIX, p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
-        w = w.withIndicatorArea(visitAndCast(w.getIndicatorArea(), p));
+        w = w.withSequenceArea((Cobol.SequenceArea) visit(w.getSequenceArea(), p));
+        w = w.withIndicatorArea((Cobol.IndicatorArea) visit(w.getIndicatorArea(), p));
         return w;
     }
 

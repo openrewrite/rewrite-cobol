@@ -765,6 +765,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
+    public Cobol visitIndicatorArea(Cobol.IndicatorArea indicatorArea, P p) {
+        return super.visitIndicatorArea(indicatorArea, p);
+    }
+
+    @Override
     public Cobol.InFile visitInFile(Cobol.InFile inFile, P p) {
         return (Cobol.InFile) super.visitInFile(inFile, p);
     }
@@ -1957,6 +1962,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     @Override
     public Cobol.Sentence visitSentence(Cobol.Sentence sentence, P p) {
         return (Cobol.Sentence) super.visitSentence(sentence, p);
+    }
+
+    @Override
+    public Cobol visitSequenceArea(Cobol.SequenceArea sequenceArea, P p) {
+        return super.visitSequenceArea(sequenceArea, p);
     }
 
     @Override

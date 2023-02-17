@@ -4,6 +4,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.cobol.markers.Replace;
+import org.openrewrite.cobol.markers.ReplaceAdditiveType;
+import org.openrewrite.cobol.markers.ReplaceReductiveType;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.marker.Markers;
@@ -332,6 +335,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                                     toWord.getPrefix(),
                                     Markers.EMPTY,
                                     null,
+                                    null,
                                     toWord.getWord()
                             );
 
@@ -446,6 +450,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         randomId(),
                         Space.EMPTY,
                         Markers.EMPTY,
+                        null,
                         null,
                         ""
                 ));

@@ -95,6 +95,11 @@ public class CobolPreprocessorIsoVisitor<P> extends CobolPreprocessorVisitor<P> 
     }
 
     @Override
+    public CobolPreprocessor visitIndicatorArea(CobolPreprocessor.IndicatorArea indicatorArea, P p) {
+        return super.visitIndicatorArea(indicatorArea, p);
+    }
+
+    @Override
     public CobolPreprocessor.PseudoText visitPseudoText(CobolPreprocessor.PseudoText pseudoText, P p) {
         return (CobolPreprocessor.PseudoText) super.visitPseudoText(pseudoText, p);
     }
@@ -122,6 +127,11 @@ public class CobolPreprocessorIsoVisitor<P> extends CobolPreprocessorVisitor<P> 
     @Override
     public CobolPreprocessor.ReplacingPhrase visitReplacingPhrase(CobolPreprocessor.ReplacingPhrase replacingPhrase, P p) {
         return (CobolPreprocessor.ReplacingPhrase) super.visitReplacingPhrase(replacingPhrase, p);
+    }
+
+    @Override
+    public CobolPreprocessor visitSequenceArea(CobolPreprocessor.SequenceArea sequenceArea, P p) {
+        return super.visitSequenceArea(sequenceArea, p);
     }
 
     @Override

@@ -1,7 +1,8 @@
-package org.openrewrite.cobol.tree;
+package org.openrewrite.cobol.markers;
 
 import lombok.Value;
 import lombok.With;
+import org.openrewrite.cobol.tree.Space;
 import org.openrewrite.marker.Marker;
 
 import java.util.UUID;
