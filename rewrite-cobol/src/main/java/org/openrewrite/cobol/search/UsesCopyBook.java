@@ -6,7 +6,7 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
-import org.openrewrite.cobol.tree.Copy;
+import org.openrewrite.cobol.markers.Copy;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.SearchResult;
 

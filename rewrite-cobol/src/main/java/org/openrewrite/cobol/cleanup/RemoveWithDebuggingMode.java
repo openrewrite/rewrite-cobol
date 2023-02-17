@@ -6,9 +6,9 @@ import org.openrewrite.*;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.format.RemoveWords;
 import org.openrewrite.cobol.format.ShiftSequenceAreas;
+import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.lang.Nullable;
-import org.openrewrite.marker.Markers;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -85,22 +85,14 @@ public class RemoveWithDebuggingMode extends Recipe {
                     );
 
                     if (isSafe) {
-                        CommentArea commentArea = s.getComputerName().getMarkers().findFirst(CommentArea.class).orElse(null);
-                        if (commentArea != null && commentArea.getPrefix().getWhitespace().length() > 0) {
+                        if (s.getComputerName().getCommentArea() != null && !s.getComputerName().getCommentArea().getPrefix().getWhitespace().isEmpty()) {
                             List<Cobol.Word> originalWords = s.getDebuggingMode();
-
-                            Markers newMarkers = s.getDot().getMarkers()
-                                    .removeByType(SequenceArea.class)
-                                    .removeByType(CommentArea.class);
-
+                            Cobol.CommentArea commentArea = s.getComputerName().getCommentArea();
                             commentArea = commentArea.withPrefix(
                                     commentArea.getPrefix().withWhitespace(
                                             commentArea.getPrefix().getWhitespace().substring(1)));
-                            newMarkers = newMarkers.addIfAbsent(commentArea);
-
-                            s = s.withDot(s.getDot().withMarkers(newMarkers));
-                            s = s.withComputerName(s.getComputerName().withMarkers(
-                                    s.getComputerName().getMarkers().removeByType(CommentArea.class)));
+                            s = s.withDot(s.getDot().withCommentArea(commentArea));
+                            s = s.withComputerName(s.getComputerName().withCommentArea(null));
 
                             Cobol.Word startWord = s.getComputerName();
                             if (Boolean.TRUE.equals(updateSequenceAreas)) {

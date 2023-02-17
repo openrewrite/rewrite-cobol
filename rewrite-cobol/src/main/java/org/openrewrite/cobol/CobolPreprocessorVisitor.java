@@ -45,6 +45,14 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         return c;
     }
 
+    public CobolPreprocessor visitCommentArea(CobolPreprocessor.CommentArea commentArea, P p) {
+        CobolPreprocessor.CommentArea c = commentArea;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withEndOfLine(visitSpace(c.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p));
+        return c;
+    }
+
     public CobolPreprocessor visitCommentEntry(CobolPreprocessor.CommentEntry commentEntry, P p) {
         CobolPreprocessor.CommentEntry c = commentEntry;
         c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMMENT_ENTRY_PREFIX, p));
@@ -226,6 +234,12 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         return r;
     }
 
+    public CobolPreprocessor visitSequenceArea(CobolPreprocessor.SequenceArea sequenceArea, P p) {
+        CobolPreprocessor.SequenceArea s = sequenceArea;
+        s = s.withPrefix(visitSpace(s.getPrefix(), Space.Location.SEQUENCE_AREA_PREFIX, p));
+        s = s.withMarkers(visitMarkers(s.getMarkers(), p));
+        return s;
+    }
     public CobolPreprocessor visitSkipStatement(CobolPreprocessor.SkipStatement skipStatement, P p) {
         CobolPreprocessor.SkipStatement s = skipStatement;
         s = s.withPrefix(visitSpace(s.getPrefix(), Space.Location.SKIP_STATEMENT_PREFIX, p));
@@ -249,35 +263,13 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.Word w = word;
         w = w.withPrefix(visitSpace(w.getPrefix(), Space.Location.PREPROCESSOR_WORD_PREFIX, p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
+        w = w.withSequenceArea((CobolPreprocessor.SequenceArea) visit(w.getSequenceArea(), p));
         w = w.withIndicatorArea((CobolPreprocessor.IndicatorArea) visit(w.getIndicatorArea(), p));
+        w = w.withCommentArea((CobolPreprocessor.CommentArea) visit(w.getCommentArea(), p));
         return w;
     }
 
     public Space visitSpace(Space space, Space.Location location, P p) {
         return space;
-    }
-
-    public Copy visitCopy(Copy copy, P p) {
-        Copy c = copy;
-        c = c.withOriginalStatement((CobolPreprocessor.CopyStatement) visitCopyStatement(c.getOriginalStatement(), p));
-        return c;
-    }
-
-    public Replace visitReplace(Replace replace, P p) {
-        Replace r = replace;
-        r = r.withOriginalWord((CobolPreprocessor.Word) visit(r.getOriginalWord(), p));
-        return r;
-    }
-
-    public ReplaceAdditiveType visitReplaceAdditiveType(ReplaceAdditiveType replaceAdditiveType, P p) {
-        ReplaceAdditiveType r = replaceAdditiveType;
-        r = r.withAdditionalWords(ListUtils.map(r.getAdditionalWords(), it -> visitReplace(it, p)));
-        return r;
-    }
-
-    public ReplaceReductiveType visitReplaceReductiveType(ReplaceReductiveType replaceReductiveType, P p) {
-        ReplaceReductiveType r = replaceReductiveType;
-        r = r.withOriginalWords(ListUtils.map(r.getOriginalWords(), it -> visitReplace(it, p)));
-        return r;
     }
 }

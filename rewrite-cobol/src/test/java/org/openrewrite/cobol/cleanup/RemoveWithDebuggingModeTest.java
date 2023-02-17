@@ -1,6 +1,5 @@
 package org.openrewrite.cobol.cleanup;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.cobol.CobolTest;
 import org.openrewrite.test.RecipeSpec;
@@ -22,7 +21,6 @@ public class RemoveWithDebuggingModeTest extends CobolTest {
         );
     }
 
-    @Disabled("Replace SequenceArea marker with tree model objects.")
     @Test
     void removeWithDebuggingMode() {
         rewriteRun(
@@ -54,7 +52,6 @@ public class RemoveWithDebuggingModeTest extends CobolTest {
         );
     }
 
-    @Disabled("Replace SequenceArea marker with tree model objects.")
     @Test
     void removeDebuggingMode() {
         rewriteRun(
@@ -154,7 +151,6 @@ public class RemoveWithDebuggingModeTest extends CobolTest {
         );
     }
 
-    @Disabled("Replace SequenceArea marker with tree model objects.")
     @Test
     void isContinued() {
         rewriteRun(

@@ -7,8 +7,6 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.Incubating;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.tree.Cobol;
-import org.openrewrite.cobol.tree.SequenceArea;
-import org.openrewrite.marker.Marker;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,7 +16,7 @@ import java.util.stream.Collectors;
 @Value
 public class ShiftSequenceAreas extends CobolIsoVisitor<ExecutionContext> {
 
-    LinkedList<SequenceArea> originalSequenceAreas;
+    LinkedList<Cobol.SequenceArea> originalSequenceAreas;
     Cobol.Word startAfter;
 
     @NonFinal
@@ -31,22 +29,19 @@ public class ShiftSequenceAreas extends CobolIsoVisitor<ExecutionContext> {
                               Cobol.Word startAfter) {
 
         this.originalSequenceAreas = originalWords.stream()
-                .flatMap(it ->
-                        it.getMarkers().getMarkers().stream()
-                                .filter(m -> m instanceof SequenceArea)
-                                .map(m -> (SequenceArea) m))
+                .map(Cobol.Word::getSequenceArea)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toCollection(LinkedList::new));
         this.startAfter = startAfter;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <M extends Marker> M visitSequenceArea(SequenceArea sequenceArea, ExecutionContext executionContext) {
+    public Cobol.SequenceArea visitSequenceArea(Cobol.SequenceArea sequenceArea, ExecutionContext executionContext) {
         if (startShift) {
             originalSequenceAreas.add(sequenceArea);
-            return (M) originalSequenceAreas.removeFirst();
+            return originalSequenceAreas.removeFirst();
         }
-        return (M) sequenceArea;
+        return sequenceArea;
     }
 
     @Override

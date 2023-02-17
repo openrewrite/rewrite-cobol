@@ -16,6 +16,7 @@
 package org.openrewrite.cobol;
 
 import org.openrewrite.TreeVisitor;
+import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.lang.Nullable;
@@ -484,6 +485,14 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
         c = c.withNot((Cobol.Word) visit(c.getNot(), p));
         c = c.withSimpleCondition(visit(c.getSimpleCondition(), p));
+        return c;
+    }
+
+    public Cobol visitCommentArea(Cobol.CommentArea commentArea, P p) {
+        Cobol.CommentArea c = commentArea;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withEndOfLine(visitSpace(c.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p));
         return c;
     }
 
@@ -1998,7 +2007,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return m;
     }
 
-    public @Nullable Cobol visitMergeOutputThrough(Cobol.MergeOutputThrough mergeOutputThrough, P p) {
+    public Cobol visitMergeOutputThrough(Cobol.MergeOutputThrough mergeOutputThrough, P p) {
         Cobol.MergeOutputThrough m = mergeOutputThrough;
         m = m.withPrefix(visitSpace(m.getPrefix(), Space.Location.MERGE_OUTPUT_THROUGH_PREFIX, p));
         m = m.withMarkers(visitMarkers(m.getMarkers(), p));
@@ -2007,7 +2016,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return m;
     }
 
-    public @Nullable Cobol visitMergeUsing(Cobol.MergeUsing mergeUsing, P p) {
+    public Cobol visitMergeUsing(Cobol.MergeUsing mergeUsing, P p) {
         Cobol.MergeUsing m = mergeUsing;
         m = m.withPrefix(visitSpace(m.getPrefix(), Space.Location.MERGE_USING_PREFIX, p));
         m = m.withMarkers(visitMarkers(m.getMarkers(), p));
@@ -3737,6 +3746,13 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return s;
     }
 
+    public Cobol visitSequenceArea(Cobol.SequenceArea sequenceArea, P p ) {
+        Cobol.SequenceArea s = sequenceArea;
+        s = s.withPrefix(visitSpace(s.getPrefix(), Space.Location.SEQUENCE_AREA_PREFIX, p));
+        s = s.withMarkers(visitMarkers(s.getMarkers(), p));
+        return s;
+    }
+
     public Cobol visitSet(Cobol.Set set, P p) {
         Cobol.Set s = set;
         s = s.withPrefix(visitSpace(s.getPrefix(), Space.Location.SET_PREFIX, p));
@@ -4306,7 +4322,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Word w = word;
         w = w.withPrefix(visitSpace(w.getPrefix(), Space.Location.WORD_PREFIX, p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
-        w = w.withIndicatorArea(visitAndCast(w.getIndicatorArea(), p));
+        w = w.withSequenceArea((Cobol.SequenceArea) visit(w.getSequenceArea(), p));
+        w = w.withIndicatorArea((Cobol.IndicatorArea) visit(w.getIndicatorArea(), p));
+        w = w.withCommentArea((Cobol.CommentArea) visit(w.getCommentArea(), p));
         return w;
     }
 

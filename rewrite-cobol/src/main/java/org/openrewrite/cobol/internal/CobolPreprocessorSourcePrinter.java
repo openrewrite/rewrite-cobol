@@ -18,6 +18,7 @@ package org.openrewrite.cobol.internal;
 import org.openrewrite.Cursor;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
+import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
@@ -44,6 +45,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         this.printColumns = printColumns;
     }
 
+    @Override
     public CobolPreprocessor visitCharData(CobolPreprocessor.CharData charData, PrintOutputCapture<P> p) {
         beforeSyntax(charData, Space.Location.CHAR_DATA_PREFIX, p);
         visit(charData.getCobols(), p);
@@ -51,6 +53,18 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return charData;
     }
 
+    @Override
+    public CobolPreprocessor visitCommentArea(CobolPreprocessor.CommentArea commentArea, PrintOutputCapture<P> p) {
+        beforeSyntax(commentArea, Space.Location.COMMENT_AREA_PREFIX, p);
+        if (printColumns) {
+            p.append(commentArea.getComment());
+        }
+        visitSpace(commentArea.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p);
+        afterSyntax(commentArea, p);
+        return commentArea;
+    }
+
+    @Override
     public CobolPreprocessor visitCharDataLine(CobolPreprocessor.CharDataLine charDataLine, PrintOutputCapture<P> p) {
         beforeSyntax(charDataLine, Space.Location.CHAR_DATA_LINE_PREFIX, p);
         visit(charDataLine.getWords(), p);
@@ -58,6 +72,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return charDataLine;
     }
 
+    @Override
     public CobolPreprocessor visitCharDataSql(CobolPreprocessor.CharDataSql charDataSql, PrintOutputCapture<P> p) {
         beforeSyntax(charDataSql, Space.Location.CHAR_DATA_SQL_PREFIX, p);
         visit(charDataSql.getCobols(), p);
@@ -73,6 +88,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return commentEntry;
     }
 
+    @Override
     public CobolPreprocessor visitCompilationUnit(CobolPreprocessor.CompilationUnit compilationUnit, PrintOutputCapture<P> p) {
         beforeSyntax(compilationUnit, Space.Location.PREPROCESSOR_COMPILATION_UNIT_PREFIX, p);
         visit(compilationUnit.getCobols(), p);
@@ -81,6 +97,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return compilationUnit;
     }
 
+    @Override
     public CobolPreprocessor visitCompilerOption(CobolPreprocessor.CompilerOption compilerOption, PrintOutputCapture<P> p) {
         beforeSyntax(compilerOption, Space.Location.COMPILER_OPTION_PREFIX, p);
         visit(compilerOption.getCobols(), p);
@@ -88,6 +105,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return compilerOption;
     }
 
+    @Override
     public CobolPreprocessor visitCompilerOptions(CobolPreprocessor.CompilerOptions compilerOptions, PrintOutputCapture<P> p) {
         beforeSyntax(compilerOptions, Space.Location.COMPILER_OPTIONS_PREFIX, p);
         visit(compilerOptions.getWord(), p);
@@ -96,6 +114,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return compilerOptions;
     }
 
+    @Override
     public CobolPreprocessor visitCompilerXOpts(CobolPreprocessor.CompilerXOpts compilerXOpts, PrintOutputCapture<P> p) {
         beforeSyntax(compilerXOpts, Space.Location.COMPILER_XOPTS_PREFIX, p);
         visit(compilerXOpts.getWord(), p);
@@ -106,11 +125,13 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return compilerXOpts;
     }
 
+    @Override
     public CobolPreprocessor visitCopyBook(CobolPreprocessor.CopyBook copyBook, PrintOutputCapture<P> p) {
         // The CopyBook is not printed as a part of the original source.
         return copyBook;
     }
 
+    @Override
     public CobolPreprocessor visitCopySource(CobolPreprocessor.CopySource copySource, PrintOutputCapture<P> p) {
         beforeSyntax(copySource, Space.Location.COPY_SOURCE_PREFIX, p);
         visit(copySource.getName(), p);
@@ -120,6 +141,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return copySource;
     }
 
+    @Override
     public CobolPreprocessor visitCopyStatement(CobolPreprocessor.CopyStatement copyStatement, PrintOutputCapture<P> p) {
         beforeSyntax(copyStatement, Space.Location.COPY_STATEMENT_PREFIX, p);
         visit(copyStatement.getWord(), p);
@@ -130,6 +152,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return copyStatement;
     }
 
+    @Override
     public CobolPreprocessor visitDirectoryPhrase(CobolPreprocessor.DirectoryPhrase directoryPhrase, PrintOutputCapture<P> p) {
         beforeSyntax(directoryPhrase, Space.Location.DIRECTORY_PHRASE_PREFIX, p);
         visit(directoryPhrase.getWord(), p);
@@ -138,6 +161,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return directoryPhrase;
     }
 
+    @Override
     public CobolPreprocessor visitEjectStatement(CobolPreprocessor.EjectStatement ejectStatement, PrintOutputCapture<P> p) {
         beforeSyntax(ejectStatement, Space.Location.EJECT_STATEMENT_PREFIX, p);
         visit(ejectStatement.getWord(), p);
@@ -146,6 +170,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return ejectStatement;
     }
 
+    @Override
     public CobolPreprocessor visitExecStatement(CobolPreprocessor.ExecStatement execStatement, PrintOutputCapture<P> p) {
         beforeSyntax(execStatement, Space.Location.EXEC_STATEMENT_PREFIX, p);
         visit(execStatement.getWords(), p);
@@ -156,6 +181,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return execStatement;
     }
 
+    @Override
     public CobolPreprocessor visitFamilyPhrase(CobolPreprocessor.FamilyPhrase familyPhrase, PrintOutputCapture<P> p) {
         beforeSyntax(familyPhrase, Space.Location.FAMILY_PHRASE_PREFIX, p);
         visit(familyPhrase.getWord(), p);
@@ -164,6 +190,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return familyPhrase;
     }
 
+    @Override
     public CobolPreprocessor visitIndicatorArea(CobolPreprocessor.IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
         if (printColumns) {
             beforeSyntax(indicatorArea, Space.Location.INDICATOR_AREA_PREFIX, p);
@@ -174,6 +201,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return indicatorArea;
     }
 
+    @Override
     public CobolPreprocessor visitPseudoText(CobolPreprocessor.PseudoText pseudoText, PrintOutputCapture<P> p) {
         beforeSyntax(pseudoText, Space.Location.PSEUDO_TEXT_PREFIX, p);
         visit(pseudoText.getDoubleEqualOpen(), p);
@@ -183,6 +211,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return pseudoText;
     }
 
+    @Override
     public CobolPreprocessor visitReplaceArea(CobolPreprocessor.ReplaceArea replaceArea, PrintOutputCapture<P> p) {
         beforeSyntax(replaceArea, Space.Location.REPLACE_AREA_PREFIX, p);
         visit(replaceArea.getReplaceByStatement(), p);
@@ -192,6 +221,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return replaceArea;
     }
 
+    @Override
     public CobolPreprocessor visitReplaceByStatement(CobolPreprocessor.ReplaceByStatement replaceByStatement, PrintOutputCapture<P> p) {
         beforeSyntax(replaceByStatement, Space.Location.REPLACE_BY_STATEMENT_PREFIX, p);
         visit(replaceByStatement.getWord(), p);
@@ -201,6 +231,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return replaceByStatement;
     }
 
+    @Override
     public CobolPreprocessor visitReplaceClause(CobolPreprocessor.ReplaceClause replaceClause, PrintOutputCapture<P> p) {
         beforeSyntax(replaceClause, Space.Location.REPLACE_CLAUSE_PREFIX, p);
         visit(replaceClause.getReplaceable(), p);
@@ -213,6 +244,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return replaceClause;
     }
 
+    @Override
     public CobolPreprocessor visitReplaceOffStatement(CobolPreprocessor.ReplaceOffStatement replaceOffStatement, PrintOutputCapture<P> p) {
         beforeSyntax(replaceOffStatement, Space.Location.REPLACE_OFF_STATEMENT_PREFIX, p);
         visit(replaceOffStatement.getWords(), p);
@@ -221,6 +253,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return replaceOffStatement;
     }
 
+    @Override
     public CobolPreprocessor visitReplacingPhrase(CobolPreprocessor.ReplacingPhrase replacingPhrase, PrintOutputCapture<P> p) {
         beforeSyntax(replacingPhrase, Space.Location.REPLACING_PHRASE_PREFIX, p);
         visit(replacingPhrase.getWord(), p);
@@ -229,6 +262,17 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return replacingPhrase;
     }
 
+    @Override
+    public CobolPreprocessor visitSequenceArea(CobolPreprocessor.SequenceArea sequenceArea, PrintOutputCapture<P> p) {
+        if (printColumns) {
+            beforeSyntax(sequenceArea, Space.Location.SEQUENCE_AREA_PREFIX, p);
+            p.out.append(sequenceArea.getSequence());
+            afterSyntax(sequenceArea, p);
+        }
+        return sequenceArea;
+    }
+
+    @Override
     public CobolPreprocessor visitSkipStatement(CobolPreprocessor.SkipStatement skipStatement, PrintOutputCapture<P> p) {
         beforeSyntax(skipStatement, Space.Location.SKIP_STATEMENT_PREFIX, p);
         visit(skipStatement.getWord(), p);
@@ -237,11 +281,13 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return skipStatement;
     }
 
+    @Override
     public Space visitSpace(Space space, Space.Location location, PrintOutputCapture<P> p) {
         p.append(space.getWhitespace());
         return space;
     }
 
+    @Override
     public CobolPreprocessor visitTitleStatement(CobolPreprocessor.TitleStatement titleStatement, PrintOutputCapture<P> p) {
         beforeSyntax(titleStatement, Space.Location.TITLE_STATEMENT_PREFIX, p);
         visit(titleStatement.getFirst(), p);
@@ -251,11 +297,8 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         return titleStatement;
     }
 
+    @Override
     public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
-        // Column area markers.
-        SequenceArea sequenceArea = null;
-        CommentArea commentArea = null;
-
         // CobolPreprocessor markers.
         ReplaceBy replaceBy = null;
         ReplaceOff replaceOff = null;
@@ -265,11 +308,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         Continuation continuation = null;
 
         for (Marker marker : word.getMarkers().getMarkers()) {
-            if (marker instanceof SequenceArea) {
-                sequenceArea = (SequenceArea) marker;
-            } else if (marker instanceof CommentArea) {
-                commentArea = (CommentArea) marker;
-            } else if (marker instanceof ReplaceBy) {
+            if (marker instanceof ReplaceBy) {
                 replaceBy = (ReplaceBy) marker;
             } else if (marker instanceof ReplaceOff) {
                 replaceOff = (ReplaceOff) marker;
@@ -309,10 +348,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         if (continuation != null) {
             visitContinuation(word, continuation, p);
         } else {
-            if (sequenceArea != null) {
-                visitSequenceArea(sequenceArea, p);
-            }
-
+            visit(word.getSequenceArea(), p);
             visit(word.getIndicatorArea(), p);
 
             if (replace != null && replace.isReplacedWithEmpty()) {
@@ -323,9 +359,7 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
             }
             p.append(word.getWord());
 
-            if (commentArea != null) {
-                visitCommentArea(commentArea, p);
-            }
+            visit(word.getCommentArea(), p);
         }
 
         afterSyntax(word, p);
