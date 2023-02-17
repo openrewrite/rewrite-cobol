@@ -1,5 +1,5 @@
 ---
-name: publish
+name: release
 
 on:
   push:
@@ -16,8 +16,10 @@ env:
 jobs:
   release:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'moderneinc'
     steps:
-      - uses: actions/checkout@v3
+      - name: git-checkout
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: set-up-jdk
@@ -38,12 +40,8 @@ jobs:
         with:
           credentials_json: ${{ secrets.ARTIFACT_REGISTRY_KEY }}
       - uses: google-github-actions/setup-gcloud@v1.0.1
-
-      - name: publish-candidate
-        if: contains(github.ref, '-rc.')
-        timeout-minutes: 30
-        run: ./gradlew ${GRADLE_SWITCHES} -Preleasing -Prelease.disableGitChecks=true -Prelease.useLastTag=true candidate publish
-
+        with:
+          credentials_json: ${{ secrets.ARTIFACT_REGISTRY_KEY }}
       - name: publish-release
         if: (!contains(github.ref, '-rc.'))
         timeout-minutes: 30
