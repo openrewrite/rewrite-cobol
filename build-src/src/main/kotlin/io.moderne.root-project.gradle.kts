@@ -4,11 +4,12 @@ plugins {
     id("io.github.gradle-nexus.publish-plugin")
 }
 
-nexusPublishing {
-    repositories {
-        sonatype()
-    }
-}
+// An interaction with the GCP artifact registry plugin causes a problem with this during release
+//nexusPublishing {
+//    repositories {
+//        sonatype()
+//    }
+//}
 
 configure<nebula.plugin.release.git.base.ReleasePluginExtension> {
     defaultVersionStrategy = nebula.plugin.release.NetflixOssStrategies.SNAPSHOT(project)
