@@ -16,10 +16,12 @@
 package org.openrewrite.cobol;
 
 import org.openrewrite.cobol.tree.Cobol;
+import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.internal.lang.Nullable;
 
 public class CobolIsoVisitor<P> extends CobolVisitor<P> {
 
+    /* Cobol visits */
     @Override
     public Cobol.Abbreviation visitAbbreviation(Cobol.Abbreviation abbreviation, P p) {
         return (Cobol.Abbreviation) super.visitAbbreviation(abbreviation, p);
@@ -2297,5 +2299,111 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     @Override
     public Cobol.WriteFromPhrase visitWriteFromPhrase(Cobol.WriteFromPhrase writeFromPhrase, P p) {
         return (Cobol.WriteFromPhrase) super.visitWriteFromPhrase(writeFromPhrase, p);
+    }
+
+    /* Cobol$Preprocessor visits */
+    @Override
+    public Cobol.Preprocessor.CharData visitCharData(Cobol.Preprocessor.CharData charData, P p) {
+        return (Cobol.Preprocessor.CharData) super.visitCharData(charData, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.CharDataLine visitCharDataLine(Cobol.Preprocessor.CharDataLine charDataLine, P p) {
+        return (Cobol.Preprocessor.CharDataLine) super.visitCharDataLine(charDataLine, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.CharDataSql visitCharDataSql(Cobol.Preprocessor.CharDataSql charDataSql, P p) {
+        return (Cobol.Preprocessor.CharDataSql) super.visitCharDataSql(charDataSql, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.CommentEntry visitCommentEntry(Cobol.Preprocessor.CommentEntry commentEntry, P p) {
+        return (Cobol.Preprocessor.CommentEntry) super.visitCommentEntry(commentEntry, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.CompilerOption visitCompilerOption(Cobol.Preprocessor.CompilerOption compilerOption, P p) {
+        return (Cobol.Preprocessor.CompilerOption) super.visitCompilerOption(compilerOption, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.CompilerOptions visitCompilerOptions(Cobol.Preprocessor.CompilerOptions compilerOptions, P p) {
+        return (Cobol.Preprocessor.CompilerOptions) super.visitCompilerOptions(compilerOptions, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.CompilerXOpts visitCompilerXOpts(Cobol.Preprocessor.CompilerXOpts compilerXOpts, P p) {
+        return (Cobol.Preprocessor.CompilerXOpts) super.visitCompilerXOpts(compilerXOpts, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.CopySource visitCopySource(Cobol.Preprocessor.CopySource copySource, P p) {
+        return (Cobol.Preprocessor.CopySource) super.visitCopySource(copySource, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.CopyStatement visitCopyStatement(Cobol.Preprocessor.CopyStatement copyStatement, P p) {
+        return (Cobol.Preprocessor.CopyStatement) super.visitCopyStatement(copyStatement, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.DirectoryPhrase visitDirectoryPhrase(Cobol.Preprocessor.DirectoryPhrase directoryPhrase, P p) {
+        return (Cobol.Preprocessor.DirectoryPhrase) super.visitDirectoryPhrase(directoryPhrase, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.EjectStatement visitEjectStatement(Cobol.Preprocessor.EjectStatement ejectStatement, P p) {
+        return (Cobol.Preprocessor.EjectStatement) super.visitEjectStatement(ejectStatement, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.ExecStatement visitExecStatement(Cobol.Preprocessor.ExecStatement execStatement, P p) {
+        return (Cobol.Preprocessor.ExecStatement) super.visitExecStatement(execStatement, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.FamilyPhrase visitFamilyPhrase(Cobol.Preprocessor.FamilyPhrase familyPhrase, P p) {
+        return (Cobol.Preprocessor.FamilyPhrase) super.visitFamilyPhrase(familyPhrase, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.PseudoText visitPseudoText(Cobol.Preprocessor.PseudoText pseudoText, P p) {
+        return (Cobol.Preprocessor.PseudoText) super.visitPseudoText(pseudoText, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.ReplaceArea visitReplaceArea(Cobol.Preprocessor.ReplaceArea replaceArea, P p) {
+        return (Cobol.Preprocessor.ReplaceArea) super.visitReplaceArea(replaceArea, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.ReplaceByStatement visitReplaceByStatement(Cobol.Preprocessor.ReplaceByStatement replaceByStatement, P p) {
+        return (Cobol.Preprocessor.ReplaceByStatement) super.visitReplaceByStatement(replaceByStatement, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.ReplaceClause visitReplaceClause(Cobol.Preprocessor.ReplaceClause replaceClause, P p) {
+        return (Cobol.Preprocessor.ReplaceClause) super.visitReplaceClause(replaceClause, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.ReplaceOffStatement visitReplaceOffStatement(Cobol.Preprocessor.ReplaceOffStatement replaceOffStatement, P p) {
+        return (Cobol.Preprocessor.ReplaceOffStatement) super.visitReplaceOffStatement(replaceOffStatement, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.ReplacingPhrase visitReplacingPhrase(Cobol.Preprocessor.ReplacingPhrase replacingPhrase, P p) {
+        return (Cobol.Preprocessor.ReplacingPhrase) super.visitReplacingPhrase(replacingPhrase, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.SkipStatement visitSkipStatement(Cobol.Preprocessor.SkipStatement skipStatement, P p) {
+        return (Cobol.Preprocessor.SkipStatement) super.visitSkipStatement(skipStatement, p);
+    }
+
+    @Override
+    public Cobol.Preprocessor.TitleStatement visitTitleStatement(Cobol.Preprocessor.TitleStatement titleStatement, P p) {
+        return (Cobol.Preprocessor.TitleStatement) super.visitTitleStatement(titleStatement, p);
     }
 }

@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
 
+    /* Cobol visits */
     public Cobol visitAbbreviation(Cobol.Abbreviation abbreviation, P p) {
         Cobol.Abbreviation a = abbreviation;
         a = a.withPrefix(visitSpace(a.getPrefix(), Space.Location.ABBREVIATION_PREFIX, p));
@@ -4327,6 +4328,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         w = w.withSequenceArea((Cobol.SequenceArea) visit(w.getSequenceArea(), p));
         w = w.withIndicatorArea((Cobol.IndicatorArea) visit(w.getIndicatorArea(), p));
         w = w.withCommentArea((Cobol.CommentArea) visit(w.getCommentArea(), p));
+        w = w.withCopyStatement((Cobol.Preprocessor.CopyStatement) visit(w.getCopyStatement(), p));
         return w;
     }
 
@@ -4399,6 +4401,207 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return w;
     }
 
+    /* Cobol$Preprocessor visits */
+    public Cobol visitCharData(Cobol.Preprocessor.CharData charData, P p) {
+        Cobol.Preprocessor.CharData c = charData;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.CHAR_DATA_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
+        return c;
+    }
+
+    public Cobol visitCharDataLine(Cobol.Preprocessor.CharDataLine charDataLine, P p) {
+        Cobol.Preprocessor.CharDataLine c = charDataLine;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.CHAR_DATA_LINE_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withWords(ListUtils.map(c.getWords(), it -> visit(it, p)));
+        return c;
+    }
+
+    public Cobol visitCharDataSql(Cobol.Preprocessor.CharDataSql charDataSql, P p) {
+        Cobol.Preprocessor.CharDataSql c = charDataSql;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.CHAR_DATA_SQL_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
+        return c;
+    }
+
+
+    public Cobol visitCommentEntry(Cobol.Preprocessor.CommentEntry commentEntry, P p) {
+        Cobol.Preprocessor.CommentEntry c = commentEntry;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMMENT_ENTRY_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withComments(ListUtils.map(c.getComments(), it -> (Cobol.Word) visit(it, p)));
+        return c;
+    }
+
+    public Cobol visitCompilerOption(Cobol.Preprocessor.CompilerOption compilerOption, P p) {
+        Cobol.Preprocessor.CompilerOption c = compilerOption;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMPILER_OPTION_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
+        return c;
+    }
+
+    public Cobol visitCompilerOptions(Cobol.Preprocessor.CompilerOptions compilerOptions, P p) {
+        Cobol.Preprocessor.CompilerOptions c = compilerOptions;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMPILER_OPTIONS_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
+        return c;
+    }
+
+    public Cobol visitCompilerXOpts(Cobol.Preprocessor.CompilerXOpts compilerXOpts, P p) {
+        Cobol.Preprocessor.CompilerXOpts c = compilerXOpts;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMPILER_XOPTS_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withWord((Cobol.Word) visit(c.getWord(), p));
+        c = c.withLeftParen((Cobol.Word) visit(c.getLeftParen(), p));
+        c = c.withCompilerOptions(ListUtils.map(c.getCompilerOptions(), it -> visit(it, p)));
+        c = c.withRightParen((Cobol.Word) visit(c.getRightParen(), p));
+        return c;
+    }
+
+    public Cobol visitCopySource(Cobol.Preprocessor.CopySource copySource, P p) {
+        Cobol.Preprocessor.CopySource c = copySource;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COPY_SOURCE_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withName((Cobol.Word) visit(c.getName(), p));
+        c = c.withWord((Cobol.Word) visit(c.getWord(), p));
+        c = c.withCopyLibrary((Cobol.Word) visit(c.getCopyLibrary(), p));
+        return c;
+    }
+
+    public Cobol visitCopyStatement(Cobol.Preprocessor.CopyStatement copyStatement, P p) {
+        Cobol.Preprocessor.CopyStatement c = copyStatement;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COPY_STATEMENT_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withWord((Cobol.Word) visit(c.getWord(), p));
+        c = c.withCopySource((Cobol.Preprocessor.CopySource) visit(c.getCopySource(), p));
+        c = c.withCobols(ListUtils.map(c.getCobols(), it -> visit(it, p)));
+        c = c.withDot((Cobol.Word) visit(c.getDot(), p));
+        return c;
+    }
+
+    public Cobol visitDirectoryPhrase(Cobol.Preprocessor.DirectoryPhrase directoryPhrase, P p) {
+        Cobol.Preprocessor.DirectoryPhrase d = directoryPhrase;
+        d = d.withPrefix(visitSpace(d.getPrefix(), Space.Location.DIRECTORY_PHRASE_PREFIX, p));
+        d = d.withMarkers(visitMarkers(d.getMarkers(), p));
+        d = d.withWord((Cobol.Word) visit(d.getWord(), p));
+        d = d.withName((Cobol.Word) visit(d.getName(), p));
+        return d;
+    }
+
+    public Cobol visitEjectStatement(Cobol.Preprocessor.EjectStatement ejectStatement, P p) {
+        Cobol.Preprocessor.EjectStatement e = ejectStatement;
+        e = e.withPrefix(visitSpace(e.getPrefix(), Space.Location.EJECT_STATEMENT_PREFIX, p));
+        e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withWord((Cobol.Word) visit(e.getWord(), p));
+        e = e.withDot((Cobol.Word) visit(e.getDot(), p));
+        return e;
+    }
+
+    public Cobol visitExecStatement(Cobol.Preprocessor.ExecStatement execStatement, P p) {
+        Cobol.Preprocessor.ExecStatement e = execStatement;
+        e = e.withPrefix(visitSpace(e.getPrefix(), Space.Location.EXEC_STATEMENT_PREFIX, p));
+        e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withWords(ListUtils.map(e.getWords(), it -> (Cobol.Word) visit(it, p)));
+        e = e.withCobol(visit(e.getCobol(), p));
+        e = e.withEndExec((Cobol.Word) visit(e.getEndExec(), p));
+        e = e.withDot((Cobol.Word) visit(e.getDot(), p));
+        return e;
+    }
+
+    public Cobol visitFamilyPhrase(Cobol.Preprocessor.FamilyPhrase familyPhrase, P p) {
+        Cobol.Preprocessor.FamilyPhrase f = familyPhrase;
+        f = f.withPrefix(visitSpace(f.getPrefix(), Space.Location.FAMILY_PHRASE_PREFIX, p));
+        f = f.withMarkers(visitMarkers(f.getMarkers(), p));
+        f = f.withWord((Cobol.Word) visit(f.getWord(), p));
+        f = f.withName((Cobol.Word) visit(f.getName(), p));
+        return f;
+    }
+
+    public Cobol visitPseudoText(Cobol.Preprocessor.PseudoText pseudoText, P p) {
+        Cobol.Preprocessor.PseudoText pp = pseudoText;
+        pp = pp.withPrefix(visitSpace(pp.getPrefix(), Space.Location.PSEUDO_TEXT_PREFIX, p));
+        pp = pp.withMarkers(visitMarkers(pp.getMarkers(), p));
+        pp = pp.withDoubleEqualOpen((Cobol.Word) visit(pp.getDoubleEqualOpen(), p));
+        pp = pp.withCharData((Cobol.Preprocessor.CharData) visit(pp.getCharData(), p));
+        pp = pp.withDoubleEqualClose((Cobol.Word) visit(pp.getDoubleEqualClose(), p));
+        return pp;
+    }
+
+    public Cobol visitReplaceArea(Cobol.Preprocessor.ReplaceArea replaceArea, P p) {
+        Cobol.Preprocessor.ReplaceArea r = replaceArea;
+        r = r.withPrefix(visitSpace(r.getPrefix(), Space.Location.REPLACE_AREA_PREFIX, p));
+        r = r.withMarkers(visitMarkers(r.getMarkers(), p));
+        r = r.withReplaceByStatement((Cobol.Preprocessor.ReplaceByStatement) visit(r.getReplaceByStatement(), p));
+        r = r.withCobols(ListUtils.map(r.getCobols(), it -> visit(it, p)));
+        r = r.withReplaceOffStatement((Cobol.Preprocessor.ReplaceOffStatement) visit(r.getReplaceOffStatement(), p));
+        return r;
+    }
+
+    public Cobol visitReplaceByStatement(Cobol.Preprocessor.ReplaceByStatement replaceByStatement, P p) {
+        Cobol.Preprocessor.ReplaceByStatement r = replaceByStatement;
+        r = r.withPrefix(visitSpace(r.getPrefix(), Space.Location.REPLACE_BY_STATEMENT_PREFIX, p));
+        r = r.withMarkers(visitMarkers(r.getMarkers(), p));
+        r = r.withWord((Cobol.Word) visit(r.getWord(), p));
+        r = r.withClauses(ListUtils.map(r.getClauses(), it -> (Cobol.Preprocessor.ReplaceClause) visit(it, p)));
+        r = r.withDot((Cobol.Word) visit(r.getDot(), p));
+        return r;
+    }
+
+    public Cobol visitReplaceClause(Cobol.Preprocessor.ReplaceClause replaceClause, P p) {
+        Cobol.Preprocessor.ReplaceClause r = replaceClause;
+        r = r.withPrefix(visitSpace(r.getPrefix(), Space.Location.REPLACE_CLAUSE_PREFIX, p));
+        r = r.withMarkers(visitMarkers(r.getMarkers(), p));
+        r = r.withReplaceable(visit(r.getReplaceable(), p));
+        r = r.withBy((Cobol.Word) visit(r.getBy(), p));
+        r = r.withReplacement(visit(r.getReplacement(), p));
+        r = r.withSubscript(ListUtils.map(r.getSubscript(), it -> visit(it, p)));
+        r = r.withDirectoryPhrases(ListUtils.map(r.getDirectoryPhrases(), it -> (Cobol.Preprocessor.DirectoryPhrase) visit(it, p)));
+        r = r.withFamilyPhrase((Cobol.Preprocessor.FamilyPhrase) visit(r.getFamilyPhrase(), p));
+        return r;
+    }
+
+    public Cobol visitReplaceOffStatement(Cobol.Preprocessor.ReplaceOffStatement replaceOffStatement, P p) {
+        Cobol.Preprocessor.ReplaceOffStatement r = replaceOffStatement;
+        r = r.withPrefix(visitSpace(r.getPrefix(), Space.Location.REPLACE_OFF_STATEMENT_PREFIX, p));
+        r = r.withMarkers(visitMarkers(r.getMarkers(), p));
+        r = r.withWords(ListUtils.map(r.getWords(), it -> (Cobol.Word) visit(it, p)));
+        r = r.withDot((Cobol.Word) visit(r.getDot(), p));
+        return r;
+    }
+
+    public Cobol visitReplacingPhrase(Cobol.Preprocessor.ReplacingPhrase replacingPhrase, P p) {
+        Cobol.Preprocessor.ReplacingPhrase r = replacingPhrase;
+        r = r.withPrefix(visitSpace(r.getPrefix(), Space.Location.REPLACING_PHRASE_PREFIX, p));
+        r = r.withMarkers(visitMarkers(r.getMarkers(), p));
+        r = r.withWord((Cobol.Word) visit(r.getWord(), p));
+        r = r.withClauses(ListUtils.map(r.getClauses(), it -> (Cobol.Preprocessor.ReplaceClause) visit(it, p)));
+        return r;
+    }
+
+    public Cobol visitSkipStatement(Cobol.Preprocessor.SkipStatement skipStatement, P p) {
+        Cobol.Preprocessor.SkipStatement s = skipStatement;
+        s = s.withPrefix(visitSpace(s.getPrefix(), Space.Location.SKIP_STATEMENT_PREFIX, p));
+        s = s.withMarkers(visitMarkers(s.getMarkers(), p));
+        s = s.withWord((Cobol.Word) visit(s.getWord(), p));
+        s = s.withDot((Cobol.Word) visit(s.getDot(), p));
+        return s;
+    }
+
+    public Cobol visitTitleStatement(Cobol.Preprocessor.TitleStatement titleStatement, P p) {
+        Cobol.Preprocessor.TitleStatement t = titleStatement;
+        t = t.withPrefix(visitSpace(t.getPrefix(), Space.Location.TITLE_STATEMENT_PREFIX, p));
+        t = t.withMarkers(visitMarkers(t.getMarkers(), p));
+        t = t.withFirst((Cobol.Word) visit(t.getFirst(), p));
+        t = t.withSecond((Cobol.Word) visit(t.getSecond(), p));
+        t = t.withDot((Cobol.Word) visit(t.getDot(), p));
+        return t;
+    }
+
+    /* Misc visits */
     public <M extends Marker> M visitSequenceArea(SequenceArea sequenceArea, P p) {
         //noinspection unchecked
         return (M) sequenceArea;
