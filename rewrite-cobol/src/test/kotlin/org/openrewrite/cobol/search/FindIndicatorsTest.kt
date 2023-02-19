@@ -21,7 +21,7 @@ class FindIndicatorsTest : CobolTest() {
                 if (marker is SearchResult) {
                     p.add(marker)
                 }
-                //noinspection unchecked
+                @Suppress("UNCHECKED_CAST")
                 return marker as (M & Any)
             }
         }

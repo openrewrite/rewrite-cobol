@@ -62,7 +62,7 @@ class CobolPreprocessorCopyTest : CobolTest() {
                         )
                     printer.visit(copyBook, output)
 
-                    val source = getSource(copyBook!!.sourcePath)
+                    val source = getSource(copyBook.sourcePath)
                     assertThat(source).isEqualTo(output.getOut())
                     return super.visitCopyStatement(copyStatement, p)
                 }

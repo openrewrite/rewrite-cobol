@@ -33,7 +33,7 @@ public interface CobolPreprocessor extends Tree {
     @SuppressWarnings("unchecked")
     @Override
     default <R extends Tree, P> R accept(TreeVisitor<R, P> v, P p) {
-        return v instanceof CobolPreprocessorVisitor ? (R) acceptCobolPreprocessor((CobolPreprocessorVisitor<P>) v, p) : v.defaultValue(this, p);
+        return (R) acceptCobolPreprocessor(v.adapt(CobolPreprocessorVisitor.class), p);
     }
 
     @Nullable
@@ -43,7 +43,7 @@ public interface CobolPreprocessor extends Tree {
 
     @Override
     default <P> boolean isAcceptable(TreeVisitor<?, P> v, P p) {
-        return v instanceof CobolPreprocessorVisitor;
+        return v.isAdaptableTo(CobolPreprocessorVisitor.class);
     }
 
     Space getPrefix();
