@@ -33,7 +33,7 @@ public interface Cobol extends Tree {
     @SuppressWarnings("unchecked")
     @Override
     default <R extends Tree, P> R accept(TreeVisitor<R, P> v, P p) {
-        return (R) acceptCobol(v.adapt(CobolVisitor.class), p);
+        return v instanceof CobolVisitor ? (R) acceptCobol((CobolVisitor<P>) v, p) : v.defaultValue(this, p);
     }
 
     @Nullable
@@ -43,7 +43,7 @@ public interface Cobol extends Tree {
 
     @Override
     default <P> boolean isAcceptable(TreeVisitor<?, P> v, P p) {
-        return v.isAdaptableTo(CobolVisitor.class);
+        return v instanceof CobolVisitor;
     }
 
     Space getPrefix();
