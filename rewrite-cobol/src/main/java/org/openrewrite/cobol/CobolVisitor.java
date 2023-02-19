@@ -17,11 +17,13 @@ package org.openrewrite.cobol;
 
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.cobol.markers.*;
+import org.openrewrite.cobol.search.SearchResultKey;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
+import org.openrewrite.marker.SearchResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -4412,6 +4414,18 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
     public <M extends Marker> M visitCommentArea(@Nullable CommentArea commentArea, P p) {
         //noinspection unchecked
         return commentArea == null ? null : (M) commentArea;
+    }
+
+    @Override
+    public <M extends Marker> M visitMarker(Marker marker, P p) {
+        if (marker instanceof Continuation) {
+            Continuation m = (Continuation) marker;
+            return visitContinuation(m, p);
+        } else if (marker instanceof Lines) {
+            Lines m = (Lines) marker;
+            return visitLines(m, p);
+        }
+        return super.visitMarker(marker, p);
     }
 
     public <M extends Marker> M visitContinuation(Continuation continuation, P p) {

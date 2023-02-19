@@ -23,6 +23,7 @@ import org.openrewrite.cobol.CobolVisitor;
 import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.search.SearchResultKey;
 import org.openrewrite.cobol.tree.*;
+import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
@@ -4567,6 +4568,15 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(writeFromPhrase.getName(), p);
         afterSyntax(writeFromPhrase, p);
         return writeFromPhrase;
+    }
+
+    @Override
+    public <M extends Marker> M visitMarker(Marker marker, PrintOutputCapture<P> p) {
+        if (marker instanceof Continuation || marker instanceof Lines) {
+            //noinspection unchecked
+            return (M) marker;
+        }
+        return super.visitMarker(marker, p);
     }
 
     public void visitContinuation(Cobol.Word word, Continuation continuation, PrintOutputCapture<P> p) {
