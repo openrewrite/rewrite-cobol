@@ -318,6 +318,11 @@ public interface CobolPreprocessor extends Tree {
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
             return v.visitCopyBook(this, p);
         }
+
+        @Override
+        public <P> TreeVisitor<?, PrintOutputCapture<P>> printer(Cursor cursor) {
+            return new CobolPreprocessorPrinter<>(true, true);
+        }
     }
 
     @Value
