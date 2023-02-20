@@ -19,7 +19,6 @@ import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.markers.Continuation;
 import org.openrewrite.cobol.markers.Lines;
 import org.openrewrite.cobol.tree.*;
-import org.openrewrite.marker.SearchResult;
 
 import java.util.Optional;
 
@@ -44,17 +43,12 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
             return super.visitWord(word, p);
         }
 
-        Optional<SearchResult> searchResultOptional = word.getMarkers().getMarkers().stream()
-                .filter(m -> m instanceof SearchResult)
-                .map(m -> (SearchResult) m).findFirst();
-        SearchResult searchResult = searchResultOptional.orElse(null);
-
         Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
         lines.ifPresent(value -> visitLines(value, p));
 
         Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
         if (continuation.isPresent() && printColumns) {
-            visitContinuation(word, continuation.get(), searchResult, p);
+            visitContinuation(word, continuation.get(), p);
         } else {
             visit(word.getSequenceArea(), p);
             visit(word.getIndicatorArea(), p);

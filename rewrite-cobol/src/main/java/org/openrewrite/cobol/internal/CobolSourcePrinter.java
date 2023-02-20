@@ -4723,10 +4723,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     /* Misc */
 
     public void visitContinuation(Cobol.Word word, Continuation continuation, PrintOutputCapture<P> p) {
-        visitContinuation(word, continuation, null, p);
-    }
-
-    public void visitContinuation(Cobol.Word word, Continuation continuation, @Nullable SearchResult searchResult, PrintOutputCapture<P> p) {
         if (continuation.getContinuations().containsKey(0)) {
             Markers markers = continuation.getContinuations().get(0);
             Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);

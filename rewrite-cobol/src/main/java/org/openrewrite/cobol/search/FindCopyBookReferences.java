@@ -46,7 +46,7 @@ public class FindCopyBookReferences extends Recipe {
 
     private static class MarkCopyBook extends CobolIsoVisitor<ExecutionContext> {
         private final String bookName;
-        private Map<UUID, UUID> copyIds = new HashMap<>();
+        private final Map<UUID, UUID> copyIds = new HashMap<>();
 
         public MarkCopyBook(@Nullable String bookName) {
             this.bookName = bookName;
