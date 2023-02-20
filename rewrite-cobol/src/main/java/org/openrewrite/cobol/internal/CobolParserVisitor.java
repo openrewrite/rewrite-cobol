@@ -6039,6 +6039,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         Cobol.Preprocessor.CopyStatement copyStatement = null;
         if (copyMarker != null) {
             copyStatement = CobolPreprocessorConverter.convertCopyStatement(copyMarker.getOriginalStatement());
+            markers.remove(copyMarker);
         }
 
         return new Cobol.Word(
