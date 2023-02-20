@@ -1081,6 +1081,9 @@ public interface Cobol extends Tree {
         @Nullable
         CommentArea commentArea;
 
+        @Nullable
+        Preprocessor.CopyStatement copyStatement;
+
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitWord(this, p);
@@ -9694,6 +9697,470 @@ public interface Cobol extends Tree {
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitWriteFromPhrase(this, p);
+        }
+    }
+
+    @SuppressWarnings("InnerClassMayBeStatic")
+    class Preprocessor {
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class CharData implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            List<Cobol> cobols;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitCharData(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class CharDataLine implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            List<Cobol> words;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitCharDataLine(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class CharDataSql implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            List<Cobol> cobols;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitCharDataSql(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class CommentEntry implements Cobol, Comment {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+            List<Word> comments;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitCommentEntry(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class CompilerOption implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            List<Cobol> cobols;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitCompilerOption(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class CompilerOptions implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word word;
+
+            List<Cobol> cobols;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitCompilerOptions(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class CompilerXOpts implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word word;
+            Word leftParen;
+            List<Cobol> compilerOptions;
+            Word rightParen;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitCompilerXOpts(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class CopySource implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word name;
+
+            @Nullable
+            Word word;
+
+            @Nullable
+            Word copyLibrary;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitCopySource(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class CopyStatement implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word word;
+            CopySource copySource;
+
+            List<Cobol> cobols;
+
+            Word dot;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitCopyStatement(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class DirectoryPhrase implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word word;
+            Word name;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitDirectoryPhrase(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class EjectStatement implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word word;
+
+            @Nullable
+            Word dot;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitEjectStatement(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class ExecStatement implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            List<Word> words;
+
+            Cobol cobol;
+
+            Word endExec;
+
+            @Nullable
+            Word dot;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitExecStatement(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class FamilyPhrase implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word word;
+            Word name;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitFamilyPhrase(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class PseudoText implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word doubleEqualOpen;
+
+            @Nullable
+            CharData charData;
+
+            Word doubleEqualClose;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitPseudoText(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class ReplaceArea implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            ReplaceByStatement replaceByStatement;
+
+            @Nullable
+            List<Cobol> cobols;
+
+            @Nullable
+            ReplaceOffStatement replaceOffStatement;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitReplaceArea(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class ReplaceByStatement implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word word;
+            List<ReplaceClause> clauses;
+            Word dot;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitReplaceByStatement(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class ReplaceClause implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Cobol replaceable;
+            Word by;
+            Cobol replacement;
+
+            @Nullable
+            List<Cobol> subscript;
+
+            @Nullable
+            List<DirectoryPhrase> directoryPhrases;
+
+            @Nullable
+            FamilyPhrase familyPhrase;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitReplaceClause(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class ReplaceOffStatement implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            List<Word> words;
+
+            Word dot;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitReplaceOffStatement(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class ReplacingPhrase implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word word;
+            List<ReplaceClause> clauses;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitReplacingPhrase(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class SkipStatement implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word word;
+
+            @Nullable
+            Word dot;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitSkipStatement(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class TitleStatement implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word first;
+            Word second;
+
+            @Nullable
+            Word dot;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitTitleStatement(this, p);
+            }
         }
     }
 }

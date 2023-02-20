@@ -4371,28 +4371,17 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         ReplaceBy replaceBy = null;
         ReplaceOff replaceOff = null;
         Replace replace = null;
-        Copy copy = null;
 
         Lines lines = null;
         Continuation continuation = null;
 
-        // Search markers.
-        SearchResult  copyBookSearch = null;
-
         for (Marker marker : word.getMarkers().getMarkers()) {
-            if (marker instanceof SearchResult) {
-                SearchResult m = (SearchResult) marker;
-                if (SearchResultKey.COPIED_SOURCE.equals(m.getDescription())) {
-                    copyBookSearch = m;
-                }
-            } else if (marker instanceof ReplaceBy) {
+            if (marker instanceof ReplaceBy) {
                 replaceBy = (ReplaceBy) marker;
             } else if (marker instanceof ReplaceOff) {
                 replaceOff = (ReplaceOff) marker;
             } else if (marker instanceof Replace) {
                 replace = (Replace) marker;
-            } else if (marker instanceof Copy) {
-                copy = (Copy) marker;
             } else if (marker instanceof Lines) {
                 lines = (Lines) marker;
             } else if (marker instanceof Continuation) {
@@ -4414,7 +4403,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             p.append(output.getOut());
         }
 
-        if (replace != null && copy == null) {
+        if (replace != null && word.getCopyStatement() == null) {
             // Print the original replace
             PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
             printer.visit(replace.getOriginalWord(), output);
@@ -4429,42 +4418,12 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         }
 
         // The COBOL word is a product of a copy statement.
-        if (copy != null) {
+        if (word.getCopyStatement() != null) {
             // Print the original Copy Statement in place of the first word from the copied source.
-            if (copyUuid == null || !copyUuid.equals(copy.getOriginalStatement().getId().toString())) {
-                // Print the original copy
-                PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                printer.visit(copy.getOriginalStatement(), output);
-                p.append(output.getOut());
-                copyUuid = copy.getOriginalStatement().getId().toString();
-
-                // `printCopiedSource` is for debugging purposed and may be removed after visiting preprocessing markers is more stable.
-                if (printCopiedSource || copyBookSearch != null) {
-                    if (!p.getOut().endsWith("\n")) {
-                        p.append("\n");
-                    }
-
-                    output = new PrintOutputCapture<>(new InMemoryExecutionContext());
-                    // Printing the CopyBook AST requires a post process printer.
-                    CobolPreprocessorPrinter<ExecutionContext> copyBookAstPrinter = new CobolPreprocessorPrinter<>(false, true);
-                    copyBookAstPrinter.visit(copy.getOriginalStatement().getCopyBook(), output);
-
-                    String bookName = "   ~~~*>CopyBook " + copy.getOriginalStatement().getCopySource().getName().getWord();
-
-                    // This should eventually be based on the CobolDialect.
-                    String start = bookName + " start ";
-                    String copiedSourceStart = start + fillArea('*', 72 - start.length()) + "\n";
-                    p.append(copiedSourceStart);
-                    p.append(output.getOut());
-
-                    if (!p.getOut().endsWith("\n")) {
-                        p.append("\n");
-                    }
-
-                    String end = bookName + " end ";
-                    String copiedSourceEnd = end + fillArea('*', 72 - end.length()) + "\n";
-                    p.append(copiedSourceEnd);
-                }
+            if (copyUuid == null || !copyUuid.equals(word.getCopyStatement().getId().toString())) {
+                copyUuid = word.getCopyStatement().getId().toString();
+                CobolSourcePrinter<P> printer = new CobolSourcePrinter<>(printColumns, printCopiedSource);
+                printer.visitCopyStatement(word.getCopyStatement(), p);
             }
 
             // Do not print the AST for the copied source.
@@ -4578,6 +4537,202 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         }
         return super.visitMarker(marker, p);
     }
+
+    /* Cobol preprocessor visits */
+
+    @Override
+    public Cobol visitCharData( Cobol.Preprocessor.CharData charData, PrintOutputCapture<P> p) {
+        beforeSyntax(charData, Space.Location.CHAR_DATA_PREFIX, p);
+        visit(charData.getCobols(), p);
+        afterSyntax(charData, p);
+        return charData;
+    }
+
+    @Override
+    public Cobol visitCharDataLine( Cobol.Preprocessor.CharDataLine charDataLine, PrintOutputCapture<P> p) {
+        beforeSyntax(charDataLine, Space.Location.CHAR_DATA_LINE_PREFIX, p);
+        visit(charDataLine.getWords(), p);
+        afterSyntax(charDataLine, p);
+        return charDataLine;
+    }
+
+    @Override
+    public Cobol visitCharDataSql( Cobol.Preprocessor.CharDataSql charDataSql, PrintOutputCapture<P> p) {
+        beforeSyntax(charDataSql, Space.Location.CHAR_DATA_SQL_PREFIX, p);
+        visit(charDataSql.getCobols(), p);
+        afterSyntax(charDataSql, p);
+        return charDataSql;
+    }
+
+    @Override
+    public Cobol visitCompilerOption( Cobol.Preprocessor.CompilerOption compilerOption, PrintOutputCapture<P> p) {
+        beforeSyntax(compilerOption, Space.Location.COMPILER_OPTION_PREFIX, p);
+        visit(compilerOption.getCobols(), p);
+        afterSyntax(compilerOption, p);
+        return compilerOption;
+    }
+
+    @Override
+    public Cobol visitCompilerOptions( Cobol.Preprocessor.CompilerOptions compilerOptions, PrintOutputCapture<P> p) {
+        beforeSyntax(compilerOptions, Space.Location.COMPILER_OPTIONS_PREFIX, p);
+        visit(compilerOptions.getWord(), p);
+        visit(compilerOptions.getCobols(), p);
+        afterSyntax(compilerOptions, p);
+        return compilerOptions;
+    }
+
+    @Override
+    public Cobol visitCompilerXOpts( Cobol.Preprocessor.CompilerXOpts compilerXOpts, PrintOutputCapture<P> p) {
+        beforeSyntax(compilerXOpts, Space.Location.COMPILER_XOPTS_PREFIX, p);
+        visit(compilerXOpts.getWord(), p);
+        visit(compilerXOpts.getLeftParen(), p);
+        visit(compilerXOpts.getCompilerOptions(), p);
+        visit(compilerXOpts.getRightParen(), p);
+        afterSyntax(compilerXOpts, p);
+        return compilerXOpts;
+    }
+
+    @Override
+    public Cobol visitCopySource( Cobol.Preprocessor.CopySource copySource, PrintOutputCapture<P> p) {
+        beforeSyntax(copySource, Space.Location.COPY_SOURCE_PREFIX, p);
+        visit(copySource.getName(), p);
+        visit(copySource.getWord(), p);
+        visit(copySource.getCopyLibrary(), p);
+        afterSyntax(copySource, p);
+        return copySource;
+    }
+
+    @Override
+    public Cobol visitCopyStatement( Cobol.Preprocessor.CopyStatement copyStatement, PrintOutputCapture<P> p) {
+        beforeSyntax(copyStatement, Space.Location.COPY_STATEMENT_PREFIX, p);
+        visit(copyStatement.getWord(), p);
+        visit(copyStatement.getCopySource(), p);
+        visit(copyStatement.getCobols(), p);
+        visit(copyStatement.getDot(), p);
+        afterSyntax(copyStatement, p);
+        return copyStatement;
+    }
+
+    @Override
+    public Cobol visitDirectoryPhrase( Cobol.Preprocessor.DirectoryPhrase directoryPhrase, PrintOutputCapture<P> p) {
+        beforeSyntax(directoryPhrase, Space.Location.DIRECTORY_PHRASE_PREFIX, p);
+        visit(directoryPhrase.getWord(), p);
+        visit(directoryPhrase.getName(), p);
+        afterSyntax(directoryPhrase, p);
+        return directoryPhrase;
+    }
+
+    @Override
+    public Cobol visitEjectStatement( Cobol.Preprocessor.EjectStatement ejectStatement, PrintOutputCapture<P> p) {
+        beforeSyntax(ejectStatement, Space.Location.EJECT_STATEMENT_PREFIX, p);
+        visit(ejectStatement.getWord(), p);
+        visit(ejectStatement.getDot(), p);
+        afterSyntax(ejectStatement, p);
+        return ejectStatement;
+    }
+
+    @Override
+    public Cobol visitExecStatement( Cobol.Preprocessor.ExecStatement execStatement, PrintOutputCapture<P> p) {
+        beforeSyntax(execStatement, Space.Location.EXEC_STATEMENT_PREFIX, p);
+        visit(execStatement.getWords(), p);
+        visit(execStatement.getCobol(), p);
+        visit(execStatement.getEndExec(), p);
+        visit(execStatement.getDot(), p);
+        afterSyntax(execStatement, p);
+        return execStatement;
+    }
+
+    @Override
+    public Cobol visitFamilyPhrase( Cobol.Preprocessor.FamilyPhrase familyPhrase, PrintOutputCapture<P> p) {
+        beforeSyntax(familyPhrase, Space.Location.FAMILY_PHRASE_PREFIX, p);
+        visit(familyPhrase.getWord(), p);
+        visit(familyPhrase.getName(), p);
+        afterSyntax(familyPhrase, p);
+        return familyPhrase;
+    }
+
+
+    @Override
+    public Cobol visitPseudoText( Cobol.Preprocessor.PseudoText pseudoText, PrintOutputCapture<P> p) {
+        beforeSyntax(pseudoText, Space.Location.PSEUDO_TEXT_PREFIX, p);
+        visit(pseudoText.getDoubleEqualOpen(), p);
+        visit(pseudoText.getCharData(), p);
+        visit(pseudoText.getDoubleEqualClose(), p);
+        afterSyntax(pseudoText, p);
+        return pseudoText;
+    }
+
+    @Override
+    public Cobol visitReplaceArea( Cobol.Preprocessor.ReplaceArea replaceArea, PrintOutputCapture<P> p) {
+        beforeSyntax(replaceArea, Space.Location.REPLACE_AREA_PREFIX, p);
+        visit(replaceArea.getReplaceByStatement(), p);
+        visit(replaceArea.getCobols(), p);
+        visit(replaceArea.getReplaceOffStatement(), p);
+        afterSyntax(replaceArea, p);
+        return replaceArea;
+    }
+
+    @Override
+    public Cobol visitReplaceByStatement( Cobol.Preprocessor.ReplaceByStatement replaceByStatement, PrintOutputCapture<P> p) {
+        beforeSyntax(replaceByStatement, Space.Location.REPLACE_BY_STATEMENT_PREFIX, p);
+        visit(replaceByStatement.getWord(), p);
+        visit(replaceByStatement.getClauses(), p);
+        visit(replaceByStatement.getDot(), p);
+        afterSyntax(replaceByStatement, p);
+        return replaceByStatement;
+    }
+
+    @Override
+    public Cobol visitReplaceClause( Cobol.Preprocessor.ReplaceClause replaceClause, PrintOutputCapture<P> p) {
+        beforeSyntax(replaceClause, Space.Location.REPLACE_CLAUSE_PREFIX, p);
+        visit(replaceClause.getReplaceable(), p);
+        visit(replaceClause.getBy(), p);
+        visit(replaceClause.getReplacement(), p);
+        visit(replaceClause.getSubscript(), p);
+        visit(replaceClause.getDirectoryPhrases(), p);
+        visit(replaceClause.getFamilyPhrase(), p);
+        afterSyntax(replaceClause, p);
+        return replaceClause;
+    }
+
+    @Override
+    public Cobol visitReplaceOffStatement( Cobol.Preprocessor.ReplaceOffStatement replaceOffStatement, PrintOutputCapture<P> p) {
+        beforeSyntax(replaceOffStatement, Space.Location.REPLACE_OFF_STATEMENT_PREFIX, p);
+        visit(replaceOffStatement.getWords(), p);
+        visit(replaceOffStatement.getDot(), p);
+        afterSyntax(replaceOffStatement, p);
+        return replaceOffStatement;
+    }
+
+    @Override
+    public Cobol visitReplacingPhrase( Cobol.Preprocessor.ReplacingPhrase replacingPhrase, PrintOutputCapture<P> p) {
+        beforeSyntax(replacingPhrase, Space.Location.REPLACING_PHRASE_PREFIX, p);
+        visit(replacingPhrase.getWord(), p);
+        visit(replacingPhrase.getClauses(), p);
+        afterSyntax(replacingPhrase, p);
+        return replacingPhrase;
+    }
+
+    @Override
+    public Cobol visitSkipStatement( Cobol.Preprocessor.SkipStatement skipStatement, PrintOutputCapture<P> p) {
+        beforeSyntax(skipStatement, Space.Location.SKIP_STATEMENT_PREFIX, p);
+        visit(skipStatement.getWord(), p);
+        visit(skipStatement.getDot(), p);
+        afterSyntax(skipStatement, p);
+        return skipStatement;
+    }
+
+    @Override
+    public Cobol visitTitleStatement( Cobol.Preprocessor.TitleStatement titleStatement, PrintOutputCapture<P> p) {
+        beforeSyntax(titleStatement, Space.Location.TITLE_STATEMENT_PREFIX, p);
+        visit(titleStatement.getFirst(), p);
+        visit(titleStatement.getSecond(), p);
+        visit(titleStatement.getDot(), p);
+        afterSyntax(titleStatement, p);
+        return titleStatement;
+    }
+
+    /* Misc */
 
     public void visitContinuation(Cobol.Word word, Continuation continuation, PrintOutputCapture<P> p) {
         visitContinuation(word, continuation, null, p);

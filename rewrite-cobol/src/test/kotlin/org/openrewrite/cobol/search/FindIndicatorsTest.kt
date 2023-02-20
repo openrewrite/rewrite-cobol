@@ -745,7 +745,7 @@ class FindIndicatorsTest : CobolTest() {
                 070900 CCVS-EXIT SECTION.                                               SM2064.2
                 071000 CCVS-999999.                                                     SM2064.2
                 071100     GO TO CLOSE-FILES.                                           SM2064.2
-            """.trimIndent()
+            """
         ) { spec ->
             spec.afterRecipe { cu ->
                 val searchResults = mutableListOf<SearchResult>()

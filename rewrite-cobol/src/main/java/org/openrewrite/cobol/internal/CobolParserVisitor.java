@@ -35,6 +35,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.*;
+import static java.util.stream.Collectors.toList;
 import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.END_OF_FILE;
@@ -5986,6 +5987,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         SequenceArea sequenceAreaMarker = null;
         IndicatorArea indicatorAreaMarker = null;
         CommentArea commentAreaMarker = null;
+        Copy copyMarker = null;
         for (Marker marker : markers) {
             if (marker instanceof SequenceArea) {
                 sequenceAreaMarker = (SequenceArea) marker;
@@ -5993,6 +5995,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 indicatorAreaMarker = (IndicatorArea) marker;
             } else if (marker instanceof CommentArea) {
                 commentAreaMarker = (CommentArea) marker;
+            } else if (marker instanceof Copy) {
+                copyMarker = (Copy) marker;
             }
         }
 
@@ -6032,6 +6036,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.remove(commentAreaMarker);
         }
 
+        Cobol.Preprocessor.CopyStatement copyStatement = null;
+        if (copyMarker != null) {
+            copyStatement = CobolPreprocessorConverter.convertCopyStatement(copyMarker.getOriginalStatement());
+        }
+
         return new Cobol.Word(
                 randomId(),
                 prefix,
@@ -6039,7 +6048,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 sequenceArea,
                 indicatorArea,
                 text,
-                commentArea
+                commentArea,
+                copyStatement
         );
     }
 
@@ -6443,7 +6453,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
                 .sorted(Comparator.comparingInt(it -> it.start.getStartIndex()))
-                .collect(Collectors.toList()));
+                .collect(toList()));
     }
 
     private <C extends Cobol, T extends ParseTree> List<C> convertAll(List<T> trees) {
@@ -6459,7 +6469,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 .sorted(Comparator.comparingInt(it -> it instanceof TerminalNode ? ((TerminalNode) it).getSymbol().getStartIndex() :
                         ((ParserRuleContext) it).getStart().getStartIndex()))
                 .map(it -> (Cobol) visit(it))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     /**
@@ -7090,5 +7100,309 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             cursor = saveCursor;
         }
         return null;
+    }
+
+    private static class CobolPreprocessorConverter {
+        @Nullable
+        private static Cobol.Preprocessor.CharData convertCharData(@Nullable CobolPreprocessor.CharData charData) {
+            return charData == null ? null : new Cobol.Preprocessor.CharData(
+                    charData.getId(),
+                    charData.getPrefix(),
+                    charData.getMarkers(),
+                    convertAll(charData.getCobols()));
+        }
+
+        private static Cobol.Preprocessor.CharDataLine convertCharDataLine(CobolPreprocessor.CharDataLine charDataLine) {
+            return new Cobol.Preprocessor.CharDataLine(
+                    charDataLine.getId(),
+                    charDataLine.getPrefix(),
+                    charDataLine.getMarkers(),
+                    convertAll(charDataLine.getWords()));
+        }
+
+        private static Cobol.Preprocessor.CharDataSql convertCharDataSql(CobolPreprocessor.CharDataSql charDataSql) {
+            return new Cobol.Preprocessor.CharDataSql(
+                    charDataSql.getId(),
+                    charDataSql.getPrefix(),
+                    charDataSql.getMarkers(),
+                    convertAll(charDataSql.getCobols()));
+        }
+
+        private static Cobol.Preprocessor.CommentEntry convertCommentEntry(CobolPreprocessor.CommentEntry commentEntry) {
+            return new Cobol.Preprocessor.CommentEntry(
+                    commentEntry.getId(),
+                    commentEntry.getPrefix(),
+                    commentEntry.getMarkers(),
+                    convertAll(commentEntry.getComments()));
+        }
+
+        private static Cobol.Preprocessor.CompilerOption convertCompilerOption(CobolPreprocessor.CompilerOption compilerOption) {
+            return new Cobol.Preprocessor.CompilerOption(
+                    compilerOption.getId(),
+                    compilerOption.getPrefix(),
+                    compilerOption.getMarkers(),
+                    convertAll(compilerOption.getCobols()));
+        }
+
+        private static Cobol.Preprocessor.CompilerOptions convertCompilerOptions(CobolPreprocessor.CompilerOptions compilerOptions) {
+            return new Cobol.Preprocessor.CompilerOptions(
+                    compilerOptions.getId(),
+                    compilerOptions.getPrefix(),
+                    compilerOptions.getMarkers(),
+                    convertWord(compilerOptions.getWord()),
+                    convertAll(compilerOptions.getCobols()));
+        }
+
+        private static Cobol.Preprocessor.CompilerXOpts convertCompilerXOpts(CobolPreprocessor.CompilerXOpts compilerXOpts) {
+            return new Cobol.Preprocessor.CompilerXOpts(
+                    compilerXOpts.getId(),
+                    compilerXOpts.getPrefix(),
+                    compilerXOpts.getMarkers(),
+                    convertWord(compilerXOpts.getWord()),
+                    convertWord(compilerXOpts.getLeftParen()),
+                    convertAll(compilerXOpts.getCompilerOptions()),
+                    convertWord(compilerXOpts.getRightParen()));
+        }
+
+        private static Cobol.Preprocessor.CopySource convertCopySource(CobolPreprocessor.CopySource copySource) {
+            return new Cobol.Preprocessor.CopySource(
+                    copySource.getId(),
+                    copySource.getPrefix(),
+                    copySource.getMarkers(),
+                    convertWord(copySource.getName()),
+                    convertWord(copySource.getWord()),
+                    convertWord(copySource.getCopyLibrary()));
+        }
+
+        private static Cobol.Preprocessor.CopyStatement convertCopyStatement(CobolPreprocessor.CopyStatement copyStatement) {
+            return new Cobol.Preprocessor.CopyStatement(
+                    copyStatement.getId(),
+                    copyStatement.getPrefix(),
+                    copyStatement.getMarkers(),
+                    convertWord(copyStatement.getWord()),
+                    convertCopySource(copyStatement.getCopySource()),
+                    convertAll(copyStatement.getCobols()),
+                    convertWord(copyStatement.getDot()));
+        }
+
+        private static Cobol.Preprocessor.DirectoryPhrase convertDirectoryPhrase(CobolPreprocessor.DirectoryPhrase directoryPhrase) {
+            return new Cobol.Preprocessor.DirectoryPhrase(
+                    directoryPhrase.getId(),
+                    directoryPhrase.getPrefix(),
+                    directoryPhrase.getMarkers(),
+                    convertWord(directoryPhrase.getWord()),
+                    convertWord(directoryPhrase.getName()));
+        }
+
+        private static Cobol.Preprocessor.EjectStatement convertEjectStatement(CobolPreprocessor.EjectStatement ejectStatement) {
+            return new Cobol.Preprocessor.EjectStatement(
+                    ejectStatement.getId(),
+                    ejectStatement.getPrefix(),
+                    ejectStatement.getMarkers(),
+                    convertWord(ejectStatement.getWord()),
+                    convertWord(ejectStatement.getDot()));
+        }
+
+        private static Cobol.Preprocessor.ExecStatement convertExecStatement(CobolPreprocessor.ExecStatement execStatement) {
+            return new Cobol.Preprocessor.ExecStatement(
+                    execStatement.getId(),
+                    execStatement.getPrefix(),
+                    execStatement.getMarkers(),
+                    convertAll(execStatement.getWords()),
+                    convert(execStatement.getCobol()),
+                    convertWord(execStatement.getEndExec()),
+                    convertWord(execStatement.getDot()));
+        }
+
+        private static Cobol.Preprocessor.FamilyPhrase convertFamilyPhrase(CobolPreprocessor.FamilyPhrase familyPhrase) {
+            return new Cobol.Preprocessor.FamilyPhrase(
+                    familyPhrase.getId(),
+                    familyPhrase.getPrefix(),
+                    familyPhrase.getMarkers(),
+                    convertWord(familyPhrase.getWord()),
+                    convertWord(familyPhrase.getName()));
+        }
+
+        private static Cobol.Preprocessor.PseudoText convertPseudoText(CobolPreprocessor.PseudoText pseudoText) {
+            return new Cobol.Preprocessor.PseudoText(
+                    pseudoText.getId(),
+                    pseudoText.getPrefix(),
+                    pseudoText.getMarkers(),
+                    convertWord(pseudoText.getDoubleEqualOpen()),
+                    convertCharData(pseudoText.getCharData()),
+                    convertWord(pseudoText.getDoubleEqualClose()));
+        }
+
+        private static Cobol.Preprocessor.ReplaceArea convertReplaceArea(CobolPreprocessor.ReplaceArea replaceArea) {
+            return new Cobol.Preprocessor.ReplaceArea(
+                    replaceArea.getId(),
+                    replaceArea.getPrefix(),
+                    replaceArea.getMarkers(),
+                    (Cobol.Preprocessor.ReplaceByStatement) convert(replaceArea.getReplaceByStatement()),
+                    convertAll(replaceArea.getCobols()),
+                    (Cobol.Preprocessor.ReplaceOffStatement) convert(replaceArea.getReplaceOffStatement()));
+        }
+
+        private static Cobol.Preprocessor.ReplaceByStatement convertReplaceByStatement(CobolPreprocessor.ReplaceByStatement replaceByStatement) {
+            return new Cobol.Preprocessor.ReplaceByStatement(
+                    replaceByStatement.getId(),
+                    replaceByStatement.getPrefix(),
+                    replaceByStatement.getMarkers(),
+                    convertWord(replaceByStatement.getWord()),
+                    convertAll(replaceByStatement.getClauses()),
+                    convertWord(replaceByStatement.getDot()));
+        }
+
+        private static Cobol.Preprocessor.ReplaceClause convertReplaceClause(CobolPreprocessor.ReplaceClause replaceClause) {
+            return new Cobol.Preprocessor.ReplaceClause(
+                    replaceClause.getId(),
+                    replaceClause.getPrefix(),
+                    replaceClause.getMarkers(),
+                    convert(replaceClause.getReplaceable()),
+                    convertWord(replaceClause.getBy()),
+                    convert(replaceClause.getReplacement()),
+                    convertAll(replaceClause.getSubscript()),
+                    convertAll(replaceClause.getDirectoryPhrases()),
+                    (Cobol.Preprocessor.FamilyPhrase) convert(replaceClause.getFamilyPhrase()));
+        }
+
+        private static Cobol.Preprocessor.ReplaceOffStatement convertReplaceOffStatement(CobolPreprocessor.ReplaceOffStatement replaceOffStatement) {
+            return new Cobol.Preprocessor.ReplaceOffStatement(
+                    replaceOffStatement.getId(),
+                    replaceOffStatement.getPrefix(),
+                    replaceOffStatement.getMarkers(),
+                    convertAll(replaceOffStatement.getWords()),
+                    convertWord(replaceOffStatement.getDot()));
+        }
+
+        private static Cobol.Preprocessor.ReplacingPhrase convertReplacingPhrase(CobolPreprocessor.ReplacingPhrase replacingPhrase) {
+            return new Cobol.Preprocessor.ReplacingPhrase(
+                    replacingPhrase.getId(),
+                    replacingPhrase.getPrefix(),
+                    replacingPhrase.getMarkers(),
+                    convertWord(replacingPhrase.getWord()),
+                    convertAll(replacingPhrase.getClauses()));
+        }
+
+        private static Cobol.Preprocessor.SkipStatement convertSkipStatement(CobolPreprocessor.SkipStatement skipStatement) {
+            return new Cobol.Preprocessor.SkipStatement(
+                    skipStatement.getId(),
+                    skipStatement.getPrefix(),
+                    skipStatement.getMarkers(),
+                    convertWord(skipStatement.getWord()),
+                    convertWord(skipStatement.getDot()));
+        }
+
+        private static Cobol.Preprocessor.TitleStatement convertTitleStatement(CobolPreprocessor.TitleStatement titleStatement) {
+            return new Cobol.Preprocessor.TitleStatement(
+                    titleStatement.getId(),
+                    titleStatement.getPrefix(),
+                    titleStatement.getMarkers(),
+                    convertWord(titleStatement.getFirst()),
+                    convertWord(titleStatement.getSecond()),
+                    convertWord(titleStatement.getDot()));
+        }
+        @Nullable
+        private static Cobol.Word convertWord(@Nullable CobolPreprocessor.Word word) {
+            return word == null ? null : new Cobol.Word(
+                    word.getId(),
+                    word.getPrefix(),
+                    word.getMarkers(),
+                    word.getSequenceArea() == null ? null :
+                            new Cobol.SequenceArea(
+                                    word.getSequenceArea().getId(),
+                                    word.getSequenceArea().getPrefix(),
+                                    word.getSequenceArea().getMarkers(),
+                                    word.getSequenceArea().getSequence()),
+                    word.getIndicatorArea() == null ? null :
+                            new Cobol.IndicatorArea(
+                                    word.getIndicatorArea().getId(),
+                                    word.getIndicatorArea().getPrefix(),
+                                    word.getIndicatorArea().getMarkers(),
+                                    word.getIndicatorArea().getIndicator(),
+                                    word.getIndicatorArea().getContinuationPrefix()),
+                    word.getWord(),
+                    word.getCommentArea() == null ? null :
+                            new Cobol.CommentArea(
+                                    word.getCommentArea().getId(),
+                                    word.getCommentArea().getPrefix(),
+                                    word.getCommentArea().getMarkers(),
+                                    word.getCommentArea().getComment(),
+                                    word.getCommentArea().getEndOfLine(),
+                                    word.getCommentArea().isAdded()),
+                    null);
+        }
+
+        @Nullable
+        private static <T extends CobolPreprocessor> Cobol convert(@Nullable T preprocessor) {
+            if (preprocessor == null) {
+                return null;
+            }
+
+            Cobol cobol;
+            if (preprocessor instanceof CobolPreprocessor.CharData) {
+                cobol = convertCharData((CobolPreprocessor.CharData) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.CharDataLine) {
+                cobol = convertCharDataLine((CobolPreprocessor.CharDataLine) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.CharDataSql) {
+                cobol = convertCharDataSql((CobolPreprocessor.CharDataSql) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.CommentEntry) {
+                cobol = convertCommentEntry((CobolPreprocessor.CommentEntry) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.CompilerOption) {
+                cobol = convertCompilerOption((CobolPreprocessor.CompilerOption) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.CompilerOptions) {
+                cobol = convertCompilerOptions((CobolPreprocessor.CompilerOptions) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.CompilerXOpts) {
+                cobol = convertCompilerXOpts((CobolPreprocessor.CompilerXOpts) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.CopySource) {
+                cobol = convertCopySource((CobolPreprocessor.CopySource) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.CopyStatement) {
+                cobol = convertCopyStatement((CobolPreprocessor.CopyStatement) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.DirectoryPhrase) {
+                cobol = convertDirectoryPhrase((CobolPreprocessor.DirectoryPhrase) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.EjectStatement) {
+                cobol = convertEjectStatement((CobolPreprocessor.EjectStatement) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.ExecStatement) {
+                cobol = convertExecStatement((CobolPreprocessor.ExecStatement) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.FamilyPhrase) {
+                cobol = convertFamilyPhrase((CobolPreprocessor.FamilyPhrase) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.PseudoText) {
+                cobol = convertPseudoText((CobolPreprocessor.PseudoText) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.ReplaceArea) {
+                cobol = convertReplaceArea((CobolPreprocessor.ReplaceArea) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.ReplaceByStatement) {
+                cobol = convertReplaceByStatement((CobolPreprocessor.ReplaceByStatement) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.ReplaceClause) {
+                cobol = convertReplaceClause((CobolPreprocessor.ReplaceClause) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.ReplaceOffStatement) {
+                cobol = convertReplaceOffStatement((CobolPreprocessor.ReplaceOffStatement) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.ReplacingPhrase) {
+                cobol = convertReplacingPhrase((CobolPreprocessor.ReplacingPhrase) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.SkipStatement) {
+                cobol = convertSkipStatement((CobolPreprocessor.SkipStatement) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.TitleStatement) {
+                cobol = convertTitleStatement((CobolPreprocessor.TitleStatement) preprocessor);
+            } else if (preprocessor instanceof CobolPreprocessor.Word) {
+                cobol = convertWord((CobolPreprocessor.Word) preprocessor);
+            } else {
+                throw new IllegalArgumentException("Unknown CobolPreprocessor: " + preprocessor.getClass().getName());
+            }
+
+            return cobol;
+        }
+
+        @Nullable
+        private static <C extends Cobol, T extends CobolPreprocessor> List<C> convertAll(@Nullable List<T> trees) {
+            //noinspection unchecked
+            return trees == null ? null : convertAll(trees, t -> (C) convert(t));
+        }
+
+        private static <C, T extends CobolPreprocessor> List<C> convertAll(List<T> trees, Function<T, C> convert) {
+            List<C> converted = new ArrayList<>(trees.size());
+            for (T tree : trees) {
+                converted.add(convert.apply(tree));
+            }
+            return converted;
+        }
     }
 }
