@@ -36,7 +36,7 @@ public class FindCopyBookReferences extends Recipe {
 
     @Override
     protected TreeVisitor<?, ExecutionContext> getSingleSourceApplicableTest() {
-        return copyBookName == null ? null : new UsesCopyBook(copyBookName);
+        return new UsesCopyBook(copyBookName);
     }
 
     @Override
@@ -54,16 +54,17 @@ public class FindCopyBookReferences extends Recipe {
 
         @Override
         public Cobol.Preprocessor.CopyStatement visitCopyStatement(Cobol.Preprocessor.CopyStatement copyStatement, ExecutionContext executionContext) {
-            Cobol.Preprocessor.CopyStatement c = super.visitCopyStatement(copyStatement, executionContext);
             if (!copyIds.containsKey(copyStatement.getId())) {
-                if (bookName == null || bookName.equals(c.getCopySource().getName().getWord())) {
-                    c = c.withCopySource(c.getCopySource().withName(SearchResult.found(c.getCopySource().getName(), null)));
-                    copyIds.put(copyStatement.getId(), c.getId());
+                if (bookName == null || bookName.equals(copyStatement.getCopySource().getName().getWord())) {
+                    Cobol.Preprocessor.CopyStatement updated = copyStatement.withCopySource(
+                            copyStatement.getCopySource().withName(
+                                    SearchResult.found(copyStatement.getCopySource().getName(), null)));
+                    copyIds.put(copyStatement.getId(), updated.getId());
                 }
             } else {
-                return c.withId(copyIds.get(copyStatement.getId()));
+                return copyStatement.withId(copyIds.get(copyStatement.getId()));
             }
-            return c;
+            return super.visitCopyStatement(copyStatement, executionContext);
         }
     }
 }

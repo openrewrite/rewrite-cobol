@@ -15,9 +15,10 @@ import java.util.List;
 @Value
 public class UsesCopyBook extends CobolIsoVisitor<ExecutionContext> {
 
+    @Nullable
     String copyBookName;
 
-    public UsesCopyBook(String copyBookName) {
+    public UsesCopyBook(@Nullable String copyBookName) {
         this.copyBookName = copyBookName;
     }
 
@@ -33,13 +34,13 @@ public class UsesCopyBook extends CobolIsoVisitor<ExecutionContext> {
     private static class FindCopySource extends CobolIsoVisitor<ExecutionContext> {
 
         @Nullable
-        public static Cobol.Preprocessor.CopySource find(Cobol cobol, String bookName) {
+        public static Cobol.Preprocessor.CopySource find(Cobol cobol, @Nullable String bookName) {
             CobolIsoVisitor<List<Cobol.Preprocessor.CopySource>> visitor = new CobolIsoVisitor<List<Cobol.Preprocessor.CopySource>>() {
                 @Override
                 public Cobol.Word visitWord(Cobol.Word word, List<Cobol.Preprocessor.CopySource> copySources) {
                     Cobol.Word w = super.visitWord(word, copySources);
                     if (copySources.isEmpty()) {
-                        if (w.getCopyStatement() != null && bookName.equals(w.getCopyStatement().getCopySource().getName().getWord())) {
+                        if (w.getCopyStatement() != null && (bookName == null || bookName.equals(w.getCopyStatement().getCopySource().getName().getWord()))) {
                             copySources.add(w.getCopyStatement().getCopySource());
                         }
                     }
