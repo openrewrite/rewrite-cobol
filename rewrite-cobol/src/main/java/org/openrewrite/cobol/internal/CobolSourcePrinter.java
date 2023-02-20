@@ -21,22 +21,16 @@ import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolVisitor;
 import org.openrewrite.cobol.markers.*;
-import org.openrewrite.cobol.search.SearchResultKey;
 import org.openrewrite.cobol.tree.*;
-import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
 import org.openrewrite.marker.SearchResult;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
-
-import static org.openrewrite.cobol.CobolPrinterUtils.fillArea;
 
 /**
  * Print the original COBOL source code.
@@ -54,13 +48,14 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     private final boolean printColumns;
     private final boolean printCopiedSource;
 
-    @Nullable
-    private String copyUuid = null;
+    private final Collection<String> printedCopyStatements;
+
 
     public CobolSourcePrinter(boolean printColumns,
                               boolean printCopiedSource) {
         this.printColumns = printColumns;
         this.printCopiedSource = printCopiedSource;
+        this.printedCopyStatements = new HashSet<>();
     }
 
     @Override
@@ -4420,16 +4415,12 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         // The COBOL word is a product of a copy statement.
         if (word.getCopyStatement() != null) {
             // Print the original Copy Statement in place of the first word from the copied source.
-            if (copyUuid == null || !copyUuid.equals(word.getCopyStatement().getId().toString())) {
-                copyUuid = word.getCopyStatement().getId().toString();
-                CobolSourcePrinter<P> printer = new CobolSourcePrinter<>(printColumns, printCopiedSource);
-                printer.visit(word.getCopyStatement(), p, getCursor());
+            if (printedCopyStatements.add(word.getCopyStatement().getId().toString())) {
+                visit(word.getCopyStatement(), p);
             }
 
             // Do not print the AST for the copied source.
             return word;
-        } else if (copyUuid != null) {
-            copyUuid = null;
         }
 
         if (lines != null) {
