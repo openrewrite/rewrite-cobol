@@ -4423,7 +4423,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             if (copyUuid == null || !copyUuid.equals(word.getCopyStatement().getId().toString())) {
                 copyUuid = word.getCopyStatement().getId().toString();
                 CobolSourcePrinter<P> printer = new CobolSourcePrinter<>(printColumns, printCopiedSource);
-                printer.visitCopyStatement(word.getCopyStatement(), p);
+                printer.visit(word.getCopyStatement(), p, getCursor());
             }
 
             // Do not print the AST for the copied source.

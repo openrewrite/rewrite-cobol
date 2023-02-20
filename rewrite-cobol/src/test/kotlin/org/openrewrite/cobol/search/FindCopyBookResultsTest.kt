@@ -22,7 +22,7 @@ class FindCopyBookReferencesTest : CobolTest() {
                 if (marker is SearchResult) {
                     p.add(marker)
                 }
-                //noinspection unchecked
+                @Suppress("UNCHECKED_CAST")
                 return marker as (M & Any)
             }
         }
@@ -598,7 +598,7 @@ class FindCopyBookReferencesTest : CobolTest() {
             """) { spec ->
             spec.afterRecipe { cu ->
                 val searchResults = mutableListOf<SearchResult>()
-                FindIndicatorsTest.visitor.visit(cu, searchResults)
+                visitor.visit(cu, searchResults)
                 Assertions.assertThat(searchResults).hasSize(7)
             }
         }
@@ -1322,7 +1322,7 @@ class FindCopyBookReferencesTest : CobolTest() {
         """) { spec ->
             spec.afterRecipe { cu ->
                 val searchResults = mutableListOf<SearchResult>()
-                FindIndicatorsTest.visitor.visit(cu, searchResults)
+                visitor.visit(cu, searchResults)
                 Assertions.assertThat(searchResults).hasSize(1)
             }
         }
