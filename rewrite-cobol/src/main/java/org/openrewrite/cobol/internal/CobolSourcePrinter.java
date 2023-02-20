@@ -46,15 +46,12 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     private final CobolPreprocessorSourcePrinter<ExecutionContext> printer = new CobolPreprocessorSourcePrinter<>(true);
     private int originalReplaceLength;
     private final boolean printColumns;
-    private final boolean printCopiedSource;
 
     private final Collection<String> printedCopyStatements;
 
 
-    public CobolSourcePrinter(boolean printColumns,
-                              boolean printCopiedSource) {
+    public CobolSourcePrinter(boolean printColumns) {
         this.printColumns = printColumns;
-        this.printCopiedSource = printCopiedSource;
         this.printedCopyStatements = new HashSet<>();
     }
 

@@ -32,9 +32,8 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
     private final boolean printOriginalSource;
 
     public CobolPrinter(boolean printColumns,
-                        boolean printCopiedSource,
                         boolean printOriginalSource) {
-        super(printColumns, printCopiedSource);
+        super(printColumns);
         this.printColumns = printColumns;
         this.printOriginalSource = printOriginalSource;
     }
