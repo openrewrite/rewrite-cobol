@@ -60,6 +60,7 @@ public class FindCopyBookReferences extends Recipe {
                             copyStatement.getCopySource().withName(
                                     SearchResult.found(copyStatement.getCopySource().getName(), null)));
                     copyIds.put(copyStatement.getId(), updated.getId());
+                    return updated;
                 }
             } else {
                 return copyStatement.withId(copyIds.get(copyStatement.getId()));

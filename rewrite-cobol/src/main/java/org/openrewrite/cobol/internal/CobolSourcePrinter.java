@@ -4517,15 +4517,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return writeFromPhrase;
     }
 
-    @Override
-    public <M extends Marker> M visitMarker(Marker marker, PrintOutputCapture<P> p) {
-        if (marker instanceof Continuation || marker instanceof Lines) {
-            //noinspection unchecked
-            return (M) marker;
-        }
-        return super.visitMarker(marker, p);
-    }
-
     /* Cobol preprocessor visits */
 
     @Override
@@ -4721,6 +4712,15 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     /* Misc */
+
+    @Override
+    public <M extends Marker> M visitMarker(Marker marker, PrintOutputCapture<P> p) {
+        if (marker instanceof Continuation || marker instanceof Lines) {
+            //noinspection unchecked
+            return (M) marker;
+        }
+        return super.visitMarker(marker, p);
+    }
 
     public void visitContinuation(Cobol.Word word, Continuation continuation, PrintOutputCapture<P> p) {
         if (continuation.getContinuations().containsKey(0)) {

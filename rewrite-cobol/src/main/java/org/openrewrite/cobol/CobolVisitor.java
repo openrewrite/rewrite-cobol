@@ -17,13 +17,11 @@ package org.openrewrite.cobol;
 
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.cobol.markers.*;
-import org.openrewrite.cobol.search.SearchResultKey;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
-import org.openrewrite.marker.SearchResult;
 
 import java.util.HashMap;
 import java.util.Map;
