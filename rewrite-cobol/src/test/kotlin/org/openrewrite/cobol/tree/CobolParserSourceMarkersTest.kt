@@ -16,7 +16,7 @@
 package org.openrewrite.cobol.tree
 
 import org.junit.jupiter.api.Test
-import org.openrewrite.cobol.Assertions.cobol
+import org.openrewrite.cobol.tree.ParserAssertions.cobol
 
 class CobolParserSourceMarkersTest : CobolTest() {
 

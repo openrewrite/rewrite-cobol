@@ -56,7 +56,6 @@ public class CreateNistAstJar {
 
         CobolParser cp = CobolParser.builder()
                 .setCopyBooks(copybooks)
-                .setEnableReplace(false)
                 .build();
         System.out.println("Parsing " + sources.size() + " COBOL sources");
         start = Instant.now();

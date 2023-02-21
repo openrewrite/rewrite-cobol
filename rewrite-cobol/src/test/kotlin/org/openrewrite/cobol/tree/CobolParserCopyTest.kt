@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.InMemoryExecutionContext
 import org.openrewrite.PrintOutputCapture
-import org.openrewrite.cobol.Assertions.cobolCopy
+import org.openrewrite.cobol.tree.ParserAssertions.cobolCopy
 import org.openrewrite.cobol.internal.CobolPrinter
 
 class CobolParserCopyTest : CobolTest() {

@@ -17,7 +17,7 @@ package org.openrewrite.cobol.tree
 
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.openrewrite.cobol.Assertions.cobolPreprocess
+import org.openrewrite.cobol.tree.ParserAssertions.cobolPreprocess
 
 class CobolPreprocessorAnsi85DivisionTest : CobolTest() {
 

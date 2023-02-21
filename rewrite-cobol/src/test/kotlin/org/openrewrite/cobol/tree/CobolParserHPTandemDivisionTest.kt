@@ -17,7 +17,7 @@ package org.openrewrite.cobol.tree
 
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.openrewrite.cobol.Assertions.cobol
+import org.openrewrite.cobol.tree.ParserAssertions.cobol
 import org.openrewrite.cobol.internal.CobolDialect
 import org.openrewrite.cobol.internal.HpTandem
 
