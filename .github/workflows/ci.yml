@@ -49,34 +49,33 @@ jobs:
       - name: build
         run: ./gradlew ${GRADLE_SWITCHES} build test
 
-# Do not publish snapshots until they are supported.
-#  publish-snapshots:
-#    needs: [build]
-#    runs-on: ubuntu-latest
-#    if: github.event_name == 'push'
-#    steps:
-#      - uses: actions/checkout@v3
-#        with:
-#          fetch-depth: 0
-#      - name: set-up-jdk
-#        uses: actions/setup-java@v3
-#        with:
-#          distribution: "adopt"
-#          java-version: "17"
-#      - name: setup-cache
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-
-#      - uses: google-github-actions/auth@v1
-#        with:
-#          credentials_json: ${{ secrets.ARTIFACT_REGISTRY_KEY }}
-#      - uses: google-github-actions/setup-gcloud@v1.0.1
-#      - name: publish-snapshots
-#        if: github.event_name == 'push'
-#        timeout-minutes: 30
-#        run: ./gradlew ${GRADLE_SWITCHES} snapshot
+  publish-snapshots:
+    needs: [build]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: set-up-jdk
+        uses: actions/setup-java@v3
+        with:
+          distribution: "adopt"
+          java-version: "17"
+      - name: setup-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.ARTIFACT_REGISTRY_KEY }}
+      - uses: google-github-actions/setup-gcloud@v1.0.1
+      - name: publish-snapshots
+        if: github.event_name == 'push'
+        timeout-minutes: 30
+        run: ./gradlew ${GRADLE_SWITCHES} snapshot
