@@ -27,8 +27,8 @@ public class FindAnyCopyStatement extends Recipe {
     protected TreeVisitor<?, ExecutionContext> getVisitor() {
         return new CobolIsoVisitor<ExecutionContext>() {
             @Override
-            public Cobol.Preprocessor.CopyStatement visitCopyStatement(Cobol.Preprocessor.CopyStatement copyStatement, ExecutionContext executionContext) {
-                return SearchResult.found(copyStatement, null);
+            public Cobol.Preprocessor.CopySource visitCopySource(Cobol.Preprocessor.CopySource copySource, ExecutionContext executionContext) {
+                return copySource.withName(copySource.getName().withWord("forceDiff"));
             }
         };
     }
