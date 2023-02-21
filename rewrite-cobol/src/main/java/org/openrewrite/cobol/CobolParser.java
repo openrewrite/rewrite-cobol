@@ -153,8 +153,8 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
         private CobolDialect cobolDialect = CobolDialect.ibmAnsi85();
         private List<CobolPreprocessor.CopyBook> copyBooks = emptyList();
-        private boolean enableCopy = false;
-        private boolean enableReplace = false;
+        private boolean enableCopy = true;
+        private boolean enableReplace = true;
 
         public Builder() {
             super(Cobol.CompilationUnit.class);

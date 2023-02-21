@@ -35,7 +35,7 @@ class CobolPreprocessorReplaceTest : CobolTest() {
     fun sm201A() = rewriteRun(
         cobolPreprocessorCopy(getNistSource("SM201A.CBL")) { spec ->
             spec.afterRecipe { cu ->
-                val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
+                val statements = cu.cobols.filterIsInstance<CobolPreprocessor.CopyStatement>()
                 assertThat(statements.size).isEqualTo(8)
 
                 val k1fda = statements[0]
@@ -126,7 +126,7 @@ class CobolPreprocessorReplaceTest : CobolTest() {
     fun sm202A() = rewriteRun(
         cobolPreprocessorCopy(getNistSource("SM202A.CBL")) { spec ->
             spec.afterRecipe { cu ->
-                val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
+                val statements = cu.cobols.filterIsInstance<CobolPreprocessor.CopyStatement>()
                 assertThat(statements.size).isEqualTo(3)
 
                 val k2sea = statements[0]
@@ -184,7 +184,7 @@ class CobolPreprocessorReplaceTest : CobolTest() {
     fun sm203A() = rewriteRun(
         cobolPreprocessorCopy(getNistSource("SM203A.CBL")) { spec ->
             spec.afterRecipe { cu ->
-                val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
+                val statements = cu.cobols.filterIsInstance<CobolPreprocessor.CopyStatement>()
                 assertThat(statements.size).isEqualTo(3)
 
                 val k3snb = statements[0]
@@ -224,7 +224,7 @@ class CobolPreprocessorReplaceTest : CobolTest() {
     fun sm205A() = rewriteRun(
         cobolPreprocessorCopy(getNistSource("SM205A.CBL")) { spec ->
             spec.afterRecipe { cu ->
-                val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
+                val statements = cu.cobols.filterIsInstance<CobolPreprocessor.CopyStatement>()
                 assertThat(statements.size).isEqualTo(2)
 
                 val k5sdb = statements[0]
@@ -257,7 +257,7 @@ class CobolPreprocessorReplaceTest : CobolTest() {
         cobolPreprocessorCopy(
             getNistSource("SM206A.CBL")) { spec ->
                 spec.afterRecipe { cu ->
-                    val statements = cu.cobols.filter { it is CobolPreprocessor.CopyStatement }
+                    val statements = cu.cobols.filterIsInstance<CobolPreprocessor.CopyStatement>()
                     assertThat(statements.size).isEqualTo(9)
 
                     val kp001 = statements[0]

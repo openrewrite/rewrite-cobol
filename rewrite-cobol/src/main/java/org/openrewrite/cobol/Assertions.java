@@ -43,7 +43,9 @@ public class Assertions {
         SourceSpec<Cobol.CompilationUnit> cobol =
                 new SourceSpec<>(Cobol.CompilationUnit.class,
                         null,
-                        CobolParser.builder(),
+                        CobolParser.builder()
+                                .setEnableCopy(false)
+                                .setEnableReplace(false),
                         before,
                         null);
         spec.accept(cobol);
@@ -60,7 +62,9 @@ public class Assertions {
         SourceSpec<Cobol.CompilationUnit> cobol =
                 new SourceSpec<>(Cobol.CompilationUnit.class,
                         null,
-                        CobolParser.builder(),
+                        CobolParser.builder()
+                                .setEnableCopy(false)
+                                .setEnableReplace(false),
                         before,
                         s -> after);
         spec.accept(cobol);
@@ -79,8 +83,6 @@ public class Assertions {
                 new SourceSpec<>(Cobol.CompilationUnit.class,
                         null,
                         CobolParser.builder()
-                                .setEnableCopy(true)
-                                .setEnableReplace(true)
                                 .setCopyBooks(copyBooks),
                         before,
                         null);
@@ -101,8 +103,6 @@ public class Assertions {
                 new SourceSpec<>(Cobol.CompilationUnit.class,
                         null,
                         CobolParser.builder()
-                                .setEnableCopy(true)
-                                .setEnableReplace(true)
                                 .setCopyBooks(copyBooks),
                         before,
                         s -> after);
@@ -119,7 +119,9 @@ public class Assertions {
         SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
                 new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
                         null,
-                        CobolPreprocessorParser.builder(),
+                        CobolPreprocessorParser.builder()
+                                .setEnableCopy(false)
+                                .setEnableReplace(false),
                         before,
                         null);
         spec.accept(cobol);
@@ -136,7 +138,9 @@ public class Assertions {
         SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
                 new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
                         null,
-                        CobolPreprocessorParser.builder(),
+                        CobolPreprocessorParser.builder()
+                                .setEnableCopy(false)
+                                .setEnableReplace(false),
                         before,
                         s -> after);
         spec.accept(cobol);
@@ -155,8 +159,6 @@ public class Assertions {
                 new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
                         null,
                         CobolPreprocessorParser.builder()
-                                .setEnableCopy(true)
-                                .setEnableReplace(true)
                                 .setCopyBooks(copyBooks),
                         before,
                         null);
@@ -177,8 +179,6 @@ public class Assertions {
                 new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
                         null,
                         CobolPreprocessorParser.builder()
-                                .setEnableCopy(true)
-                                .setEnableReplace(true)
                                 .setCopyBooks(copyBooks),
                         before,
                         s -> after);

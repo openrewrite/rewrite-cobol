@@ -255,8 +255,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
         private CobolDialect cobolDialect = CobolDialect.ibmAnsi85();
         private List<CobolPreprocessor.CopyBook> copyBooks = emptyList();
-        private boolean enableCopy;
-        private boolean enableReplace;
+        private boolean enableCopy = true;
+        private boolean enableReplace = true;
 
         public Builder() {
             super(Cobol.CompilationUnit.class);
