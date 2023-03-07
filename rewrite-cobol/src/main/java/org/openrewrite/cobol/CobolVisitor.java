@@ -4400,6 +4400,15 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
     }
 
     /* Cobol$Preprocessor visits */
+    public Cobol visitCopyBook(Cobol.Preprocessor.CopyBook copyBook, P p) {
+        Cobol.Preprocessor.CopyBook c = copyBook;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COPY_BOOK_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withAst(visit(c.getAst(), p));
+        c = c.withEof((Cobol.Word) visit(c.getEof(), p));
+        return c;
+    }
+
     public Cobol visitCharData(Cobol.Preprocessor.CharData charData, P p) {
         Cobol.Preprocessor.CharData c = charData;
         c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.CHAR_DATA_PREFIX, p));

@@ -7103,7 +7103,25 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return null;
     }
 
-    private static class CobolPreprocessorConverter {
+    public static class CobolPreprocessorConverter {
+        public static List<Cobol.Preprocessor.CopyBook> convertAllCopybooks(List<CobolPreprocessor.CopyBook> copyBooks) {
+            return copyBooks.stream().map(CobolPreprocessorConverter::convertCopyBook).collect(Collectors.toList());
+        }
+
+        private static Cobol.Preprocessor.CopyBook convertCopyBook(CobolPreprocessor.CopyBook copyBook) {
+            return new Cobol.Preprocessor.CopyBook(
+                    copyBook.getId(),
+                    copyBook.getSourcePath(),
+                    copyBook.getFileAttributes(),
+                    copyBook.getPrefix(),
+                    copyBook.getMarkers(),
+                    copyBook.getCharsetName(),
+                    copyBook.isCharsetBomMarked(),
+                    copyBook.getChecksum(),
+                    convert(copyBook.getAst()),
+                    convertWord(copyBook.getEof()));
+        }
+
         @Nullable
         private static Cobol.Preprocessor.CharData convertCharData(@Nullable CobolPreprocessor.CharData charData) {
             return charData == null ? null : new Cobol.Preprocessor.CharData(

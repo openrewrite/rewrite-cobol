@@ -53,31 +53,6 @@ public interface CobolPreprocessor extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class IndicatorArea implements CobolPreprocessor {
-
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-        String indicator;
-
-        @Nullable
-        String continuationPrefix;
-
-        public String getContinuationPrefix() {
-            return continuationPrefix == null ? "" : continuationPrefix;
-        }
-
-        @Override
-        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
-            return v.visitIndicatorArea(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
     class CharData implements CobolPreprocessor {
         @EqualsAndHashCode.Include
         UUID id;
@@ -275,7 +250,6 @@ public interface CobolPreprocessor extends Tree {
         }
     }
 
-    // TODO: CopyBook requires input from Jon/Sam on how to model as / or incorporate a SourceFile.
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
@@ -457,6 +431,31 @@ public interface CobolPreprocessor extends Tree {
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
             return v.visitFamilyPhrase(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class IndicatorArea implements CobolPreprocessor {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        String indicator;
+
+        @Nullable
+        String continuationPrefix;
+
+        public String getContinuationPrefix() {
+            return continuationPrefix == null ? "" : continuationPrefix;
+        }
+
+        @Override
+        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
+            return v.visitIndicatorArea(this, p);
         }
     }
 

@@ -103,31 +103,6 @@ public interface Cobol extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class IndicatorArea implements Cobol {
-
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-        String indicator;
-
-        @Nullable
-        String continuationPrefix;
-
-        public String getContinuationPrefix() {
-            return continuationPrefix == null ? "" : continuationPrefix;
-        }
-
-        @Override
-        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
-            return v.visitIndicatorArea(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
     class Abbreviation implements Cobol {
 
         @EqualsAndHashCode.Include
@@ -3325,6 +3300,31 @@ public interface Cobol extends Tree {
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitInData(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class IndicatorArea implements Cobol {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        String indicator;
+
+        @Nullable
+        String continuationPrefix;
+
+        public String getContinuationPrefix() {
+            return continuationPrefix == null ? "" : continuationPrefix;
+        }
+
+        @Override
+        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+            return v.visitIndicatorArea(this, p);
         }
     }
 
@@ -9700,8 +9700,57 @@ public interface Cobol extends Tree {
         }
     }
 
-    @SuppressWarnings("InnerClassMayBeStatic")
     class Preprocessor {
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class CopyBook implements Cobol, SourceFile {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Path sourcePath;
+
+            @Nullable
+            FileAttributes fileAttributes;
+
+            Space prefix;
+            Markers markers;
+
+            @Nullable // for backwards compatibility
+            @With(AccessLevel.PRIVATE)
+            String charsetName;
+
+            boolean charsetBomMarked;
+
+            @Nullable
+            Checksum checksum;
+
+            @Override
+            public Charset getCharset() {
+                return charsetName == null ? StandardCharsets.UTF_8 : Charset.forName(charsetName);
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public SourceFile withCharset(Charset charset) {
+                return withCharsetName(charset.name());
+            }
+
+            Cobol ast;
+            Cobol.Word eof;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitCopyBook(this, p);
+            }
+
+            @Override
+            public <P> TreeVisitor<?, PrintOutputCapture<P>> printer(Cursor cursor) {
+                return new CobolPrinter<>(true, true);
+            }
+        }
 
         @Value
         @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)

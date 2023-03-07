@@ -70,7 +70,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                             .tag("file.type", "COBOL");
                     Timer.Sample sample = Timer.start();
                     try {
-                        EncodingDetectingInputStream is = sourceFile.getSource();
+                        EncodingDetectingInputStream is = sourceFile.getSource(ctx);
 
                         CobolPreprocessorParser cobolPreprocessorParser = CobolPreprocessorParser.builder()
                                 .setCobolDialect(cobolDialect)
