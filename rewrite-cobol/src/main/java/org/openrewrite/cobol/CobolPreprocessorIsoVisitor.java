@@ -15,7 +15,6 @@
  */
 package org.openrewrite.cobol;
 
-import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 
 public class CobolPreprocessorIsoVisitor<P> extends CobolPreprocessorVisitor<P> {

@@ -2303,6 +2303,11 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
 
     /* Cobol$Preprocessor visits */
     @Override
+    public Cobol.Preprocessor.CopyBook visitCopyBook(Cobol.Preprocessor.CopyBook copyBook, P p) {
+        return (Cobol.Preprocessor.CopyBook) super.visitCopyBook(copyBook, p);
+    }
+
+    @Override
     public Cobol.Preprocessor.CharData visitCharData(Cobol.Preprocessor.CharData charData, P p) {
         return (Cobol.Preprocessor.CharData) super.visitCharData(charData, p);
     }

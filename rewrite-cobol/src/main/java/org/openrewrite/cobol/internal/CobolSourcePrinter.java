@@ -4520,6 +4520,15 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     /* Cobol preprocessor visits */
 
     @Override
+    public Cobol visitCopyBook(Cobol.Preprocessor.CopyBook copyBook, PrintOutputCapture<P> p) {
+        beforeSyntax(copyBook, Space.Location.COPY_BOOK_PREFIX, p);
+        visit(copyBook.getAst(), p);
+        visit(copyBook.getEof(), p);
+        afterSyntax(copyBook, p);
+        return copyBook;
+    }
+
+    @Override
     public Cobol visitCharData( Cobol.Preprocessor.CharData charData, PrintOutputCapture<P> p) {
         beforeSyntax(charData, Space.Location.CHAR_DATA_PREFIX, p);
         visit(charData.getCobols(), p);

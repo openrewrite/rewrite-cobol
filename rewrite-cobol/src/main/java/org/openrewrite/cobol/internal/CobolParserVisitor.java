@@ -7103,7 +7103,27 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return null;
     }
 
-    private static class CobolPreprocessorConverter {
+    public static class CobolPreprocessorConverter {
+        public static List<Cobol.Preprocessor.CopyBook> convertAllCopybooks(List<CobolPreprocessor.CopyBook> copyBooks) {
+            return copyBooks.stream().map(CobolPreprocessorConverter::convertCopyBook).collect(Collectors.toList());
+        }
+
+        @Nullable
+        private static Cobol.Preprocessor.CopyBook convertCopyBook(@Nullable CobolPreprocessor.CopyBook copyBook) {
+            return copyBook == null ? null : new Cobol.Preprocessor.CopyBook(
+                    copyBook.getId(),
+                    copyBook.getSourcePath(),
+                    copyBook.getFileAttributes(),
+                    copyBook.getPrefix(),
+                    copyBook.getMarkers(),
+                    copyBook.getCharsetName(),
+                    copyBook.isCharsetBomMarked(),
+                    copyBook.getChecksum(),
+                    // The product of the CopyBook already exists in the CobolTree, and is not needed in the CopyBook CobolSourceFile.
+                    null,
+                    null);
+        }
+
         @Nullable
         private static Cobol.Preprocessor.CharData convertCharData(@Nullable CobolPreprocessor.CharData charData) {
             return charData == null ? null : new Cobol.Preprocessor.CharData(
@@ -7183,7 +7203,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     convertWord(copyStatement.getWord()),
                     convertCopySource(copyStatement.getCopySource()),
                     convertAll(copyStatement.getCobols()),
-                    convertWord(copyStatement.getDot()));
+                    convertWord(copyStatement.getDot()),
+                    convertCopyBook(copyStatement.getCopyBook()
+                            // The CopyBook is only used as meta data like type attribution to link the copy statement to the CopyBook source.
+                            .withAst(null)
+                            .withEof(null)));
         }
 
         private static Cobol.Preprocessor.DirectoryPhrase convertDirectoryPhrase(CobolPreprocessor.DirectoryPhrase directoryPhrase) {
