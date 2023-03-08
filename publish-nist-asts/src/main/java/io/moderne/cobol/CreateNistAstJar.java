@@ -4,9 +4,6 @@ import io.github.classgraph.*;
 import io.moderne.serialization.TreeSerializer;
 import org.openrewrite.*;
 import org.openrewrite.cobol.CobolParser;
-import org.openrewrite.cobol.CobolPreprocessorParser;
-import org.openrewrite.cobol.internal.CobolDialect;
-import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.cobol.tree.CobolSourceFile;
 
 import java.io.ByteArrayInputStream;
@@ -34,13 +31,15 @@ public class CreateNistAstJar {
         try (ScanResult scanResult = new ClassGraph()
                 .acceptPaths("gov/nist")
                 .scan()) {
-            for (String copybookExt : CobolPreprocessorParser.COPYBOOK_FILE_EXTENSIONS) {
+            for (String copybookExt : CobolParser.COPYBOOK_FILE_EXTENSIONS) {
                 try (ResourceList resources = scanResult.getResourcesWithExtension(copybookExt)) {
                     resources.forEach(resource -> rawCopybooks.add(asInput(resource)));
                 }
             }
-            try (ResourceList resources = scanResult.getResourcesWithExtension(".cbl")) {
-                resources.forEach(resource -> sources.add(asInput(resource)));
+            for (String cobolExt : CobolParser.COBOL_FILE_EXTENSIONS) {
+                try (ResourceList resources = scanResult.getResourcesWithExtension(cobolExt)) {
+                    resources.forEach(resource -> sources.add(asInput(resource)));
+                }
             }
         }
         System.out.println("Found " + rawCopybooks.size() + " copybooks and " + sources.size() + " cobol sources in " + prettyPrint(Duration.between(start, Instant.now())));
@@ -48,15 +47,10 @@ public class CreateNistAstJar {
             // There is exactly one cobol file in the NIST suite which fails to parse
 //            throw new RuntimeException(t);
         });
-        start = Instant.now();
-        System.out.println("Preprocessing " + rawCopybooks.size() + " copybooks");
-        List<CobolPreprocessor.CopyBook> copybooks = CobolPreprocessorParser.parseCopyBooks(rawCopybooks, CobolDialect.ibmAnsi85(), ctx);
-        System.out.println("Preprocessed copybooks in " + prettyPrint(Duration.between(start, Instant.now())));
-
 
         CobolParser cp = CobolParser.builder()
-                .setCopyBooks(copybooks)
                 .build();
+        sources.addAll(rawCopybooks);
         System.out.println("Parsing " + sources.size() + " COBOL sources");
         start = Instant.now();
         List<CobolSourceFile> cus =  cp.parseInputs(sources, null, ctx);
@@ -67,9 +61,8 @@ public class CreateNistAstJar {
         System.out.println("Writing AST file to " + destination);
         //noinspection ResultOfMethodCallIgnored
         destination.getParent().toFile().mkdirs();
-        List<SourceFile> sourceFiles = new ArrayList<>(cus.size() + copybooks.size());
+        List<SourceFile> sourceFiles = new ArrayList<>(cus.size());
         sourceFiles.addAll(cus);
-        sourceFiles.addAll(copybooks);
         try (OutputStream outputStream = Files.newOutputStream(destination)) {
             start = Instant.now();
             new TreeSerializer().write(sourceFiles, outputStream);
