@@ -4524,6 +4524,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         beforeSyntax(copyBook, Space.Location.COPY_BOOK_PREFIX, p);
         visit(copyBook.getAst(), p);
         visit(copyBook.getEof(), p);
+        afterSyntax(copyBook, p);
         return copyBook;
     }
 
