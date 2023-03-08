@@ -7119,8 +7119,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     copyBook.getCharsetName(),
                     copyBook.isCharsetBomMarked(),
                     copyBook.getChecksum(),
-                    convert(copyBook.getAst()),
-                    convertWord(copyBook.getEof()));
+                    // The product of the CopyBook already exists in the CobolTree, and is not needed in the CopyBook CobolSourceFile.
+                    null,
+                    null);
         }
 
         @Nullable
@@ -7203,7 +7204,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     convertCopySource(copyStatement.getCopySource()),
                     convertAll(copyStatement.getCobols()),
                     convertWord(copyStatement.getDot()),
-                    convertCopyBook(copyStatement.getCopyBook()));
+                    convertCopyBook(copyStatement.getCopyBook()
+                            // The CopyBook is only used as meta data like type attribution to link the copy statement to the CopyBook source.
+                            .withAst(null)
+                            .withEof(null)));
         }
 
         private static Cobol.Preprocessor.DirectoryPhrase convertDirectoryPhrase(CobolPreprocessor.DirectoryPhrase directoryPhrase) {
