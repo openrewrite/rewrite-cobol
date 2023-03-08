@@ -229,16 +229,15 @@ public class ParserAssertions {
 
     public static Consumer<SourceSpec<Cobol.CompilationUnit>> isSerializable() {
         return spec -> spec.afterRecipe(cu -> {
-            // TODO: fix ... serialization issue due to dependencies.
-//            try {
-//                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//                TreeSerializer serializer = new TreeSerializer();
-//                serializer.write(singletonList(cu), bos);
-//                InputStream is = new ByteArrayInputStream(bos.toByteArray());
-//                serializer.read(is);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
+            try {
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                TreeSerializer serializer = new TreeSerializer();
+                serializer.write(singletonList(cu), bos);
+                InputStream is = new ByteArrayInputStream(bos.toByteArray());
+                serializer.read(is);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 }

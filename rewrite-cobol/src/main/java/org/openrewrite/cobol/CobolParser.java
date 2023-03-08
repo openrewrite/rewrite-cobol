@@ -28,6 +28,7 @@ import org.openrewrite.cobol.internal.CobolPreprocessorOutputSourcePrinter;
 import org.openrewrite.cobol.internal.grammar.CobolLexer;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
+import org.openrewrite.cobol.tree.CobolSourceFile;
 import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.MetricsHelper;
 import org.openrewrite.internal.lang.Nullable;
@@ -41,8 +42,9 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
-public class CobolParser implements Parser<Cobol.CompilationUnit> {
-    private static final List<String> COBOL_FILE_EXTENSIONS = singletonList(".cbl");
+public class CobolParser implements Parser<CobolSourceFile> {
+    public static final List<String> COPYBOOK_FILE_EXTENSIONS = Collections.singletonList(".cpy");
+    public static final List<String> COBOL_FILE_EXTENSIONS = singletonList(".cbl");
 
     private final CobolDialect cobolDialect;
     private final List<CobolPreprocessor.CopyBook> copyBooks;
@@ -60,10 +62,31 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
     }
 
     @Override
-    public List<Cobol.CompilationUnit> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
+    public List<CobolSourceFile> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
         ParsingExecutionContextView pctx = ParsingExecutionContextView.view(ctx);
         ParsingEventListener parsingListener = pctx.getParsingListener();
-        return acceptedInputs(sourceFiles).stream()
+        List<Input> accepted = acceptedInputs(sourceFiles);
+        List<Input> copyBookInputs = new ArrayList<>();
+        List<Input> cobolInputs = new ArrayList<>();
+
+        for (Input input : accepted) {
+            for (String cobolFileExtension : COBOL_FILE_EXTENSIONS) {
+                if (input.getPath().getFileName().toString().toLowerCase().endsWith(cobolFileExtension)) {
+                    cobolInputs.add(input);
+                }
+            }
+
+            for (String copyBookFileExtension : COPYBOOK_FILE_EXTENSIONS) {
+                if (input.getPath().getFileName().toString().toLowerCase().endsWith(copyBookFileExtension)) {
+                    copyBookInputs.add(input);
+                }
+            }
+        }
+
+        List<CobolPreprocessor.CopyBook> copyBooks = CobolPreprocessorParser.parseCopyBooks(copyBookInputs, cobolDialect, ctx);
+
+        List<CobolSourceFile> sources;
+        sources = cobolInputs.stream()
                 .map(sourceFile -> {
                     Timer.Builder timer = Timer.builder("rewrite.parse")
                             .description("The time spent parsing a COBOL file")
@@ -74,7 +97,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         CobolPreprocessorParser cobolPreprocessorParser = CobolPreprocessorParser.builder()
                                 .setCobolDialect(cobolDialect)
-                                .setCopyBooks(copyBooks)
+                                .setCopyBooks(!this.copyBooks.isEmpty() ? this.copyBooks : copyBooks)
                                 .setEnableCopy(enableCopy)
                                 .setEnableReplace(enableReplace)
                                 .build();
@@ -112,7 +135,7 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
 
                         sample.stop(MetricsHelper.successTags(timer).register(Metrics.globalRegistry));
                         parsingListener.parsed(sourceFile, compilationUnit);
-                        return compilationUnit;
+                        return (CobolSourceFile) compilationUnit;
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
                         pctx.parseFailure(sourceFile, relativeTo, this, t);
@@ -122,10 +145,13 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
                 })
                 .filter(Objects::nonNull)
                 .collect(toList());
+
+        sources.addAll(CobolParserVisitor.CobolPreprocessorConverter.convertAllCopybooks(copyBooks));
+        return sources;
     }
 
     @Override
-    public List<Cobol.CompilationUnit> parse(String... sources) {
+    public List<CobolSourceFile> parse(String... sources) {
         return parse(new InMemoryExecutionContext(), sources);
     }
 
@@ -134,6 +160,11 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
         String s = path.toString().toLowerCase();
         for (String COBOL_FILE_EXTENSION : COBOL_FILE_EXTENSIONS) {
             if (s.endsWith(COBOL_FILE_EXTENSION)) {
+                return true;
+            }
+        }
+        for (String COPYBOOK_FILE_EXTENSION : COPYBOOK_FILE_EXTENSIONS) {
+            if (s.endsWith(COPYBOOK_FILE_EXTENSION)) {
                 return true;
             }
         }
@@ -192,23 +223,6 @@ public class CobolParser implements Parser<Cobol.CompilationUnit> {
         @Override
         public String getDslName() {
             return "cobol";
-        }
-    }
-
-    private static class ForwardingErrorListener extends BaseErrorListener {
-        private final Path sourcePath;
-        private final ExecutionContext ctx;
-
-        private ForwardingErrorListener(Path sourcePath, ExecutionContext ctx) {
-            this.sourcePath = sourcePath;
-            this.ctx = ctx;
-        }
-
-        @Override
-        public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol,
-                                int line, int charPositionInLine, String msg, RecognitionException e) {
-            ctx.getOnError().accept(new CobolParsingException(sourcePath,
-                    String.format("Syntax error in %s at line %d:%d %s.", sourcePath, line, charPositionInLine, msg), e));
         }
     }
 }

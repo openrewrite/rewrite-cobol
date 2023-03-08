@@ -53,7 +53,7 @@ public interface Cobol extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class CompilationUnit implements Cobol, SourceFile {
+    class CompilationUnit implements Cobol, CobolSourceFile {
 
         @EqualsAndHashCode.Include
         UUID id;
@@ -1050,6 +1050,10 @@ public interface Cobol extends Tree {
 
         @Nullable
         IndicatorArea indicatorArea;
+
+        // Replacements
+        // Lines
+        // Comments
 
         String word;
 
@@ -9705,7 +9709,7 @@ public interface Cobol extends Tree {
         @Value
         @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
         @With
-        public static class CopyBook implements Cobol, SourceFile {
+        public static class CopyBook implements Cobol, CobolSourceFile {
 
             @EqualsAndHashCode.Include
             UUID id;
@@ -9931,6 +9935,9 @@ public interface Cobol extends Tree {
             List<Cobol> cobols;
 
             Word dot;
+
+            @Nullable
+            Cobol.Preprocessor.CopyBook copyBook;
 
             @Override
             public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {

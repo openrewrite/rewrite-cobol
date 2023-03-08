@@ -85,7 +85,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                             .tag("file.type", "COBOL");
                     Timer.Sample sample = Timer.start();
                     try {
-                        EncodingDetectingInputStream is = sourceFile.getSource();
+                        EncodingDetectingInputStream is = sourceFile.getSource(ctx);
                         String sourceStr = is.readFully();
 
                         String prepareSource = new CobolLineReader().readLines(sourceStr, cobolDialect);
@@ -295,23 +295,6 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         @Override
         public String getDslName() {
             return "preprocessCobol";
-        }
-    }
-
-    private static class ForwardingErrorListener extends BaseErrorListener {
-        private final Path sourcePath;
-        private final ExecutionContext ctx;
-
-        private ForwardingErrorListener(Path sourcePath, ExecutionContext ctx) {
-            this.sourcePath = sourcePath;
-            this.ctx = ctx;
-        }
-
-        @Override
-        public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol,
-                                int line, int charPositionInLine, String msg, RecognitionException e) {
-            ctx.getOnError().accept(new CobolParsingException(sourcePath,
-                    String.format("Syntax error in %s at line %d:%d %s.", sourcePath, line, charPositionInLine, msg), e));
         }
     }
 

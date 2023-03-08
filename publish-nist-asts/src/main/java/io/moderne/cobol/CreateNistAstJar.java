@@ -6,8 +6,8 @@ import org.openrewrite.*;
 import org.openrewrite.cobol.CobolParser;
 import org.openrewrite.cobol.CobolPreprocessorParser;
 import org.openrewrite.cobol.internal.CobolDialect;
-import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
+import org.openrewrite.cobol.tree.CobolSourceFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class CreateNistAstJar {
                 .build();
         System.out.println("Parsing " + sources.size() + " COBOL sources");
         start = Instant.now();
-        List<Cobol.CompilationUnit> cus =  cp.parseInputs(sources, null, ctx);
+        List<CobolSourceFile> cus =  cp.parseInputs(sources, null, ctx);
         System.out.println("Parsed sources into " + cus.size() + " Compilation Units in " +
                 prettyPrint(Duration.between(start, Instant.now())));
 

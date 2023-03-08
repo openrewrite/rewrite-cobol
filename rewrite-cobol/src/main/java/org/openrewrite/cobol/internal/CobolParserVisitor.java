@@ -7108,8 +7108,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             return copyBooks.stream().map(CobolPreprocessorConverter::convertCopyBook).collect(Collectors.toList());
         }
 
-        private static Cobol.Preprocessor.CopyBook convertCopyBook(CobolPreprocessor.CopyBook copyBook) {
-            return new Cobol.Preprocessor.CopyBook(
+        @Nullable
+        private static Cobol.Preprocessor.CopyBook convertCopyBook(@Nullable CobolPreprocessor.CopyBook copyBook) {
+            return copyBook == null ? null : new Cobol.Preprocessor.CopyBook(
                     copyBook.getId(),
                     copyBook.getSourcePath(),
                     copyBook.getFileAttributes(),
@@ -7201,7 +7202,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     convertWord(copyStatement.getWord()),
                     convertCopySource(copyStatement.getCopySource()),
                     convertAll(copyStatement.getCobols()),
-                    convertWord(copyStatement.getDot()));
+                    convertWord(copyStatement.getDot()),
+                    convertCopyBook(copyStatement.getCopyBook()));
         }
 
         private static Cobol.Preprocessor.DirectoryPhrase convertDirectoryPhrase(CobolPreprocessor.DirectoryPhrase directoryPhrase) {
