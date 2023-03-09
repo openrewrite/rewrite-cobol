@@ -489,14 +489,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return c;
     }
 
-    public Cobol visitCommentArea(Cobol.CommentArea commentArea, P p) {
-        Cobol.CommentArea c = commentArea;
-        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p));
-        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
-        c = c.withEndOfLine(visitSpace(c.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p));
-        return c;
-    }
-
     public Cobol visitCommentEntry(Cobol.CommentEntry commentEntry, P p) {
         Cobol.CommentEntry c = commentEntry;
         c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMMENT_ENTRY_PREFIX, p));
@@ -1474,13 +1466,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
         i = i.withWord((Cobol.Word) visit(i.getWord(), p));
         i = i.withName((Name) visit(i.getName(), p));
-        return i;
-    }
-
-    public Cobol visitIndicatorArea(Cobol.IndicatorArea indicatorArea, P p) {
-        Cobol.IndicatorArea i = indicatorArea;
-        i = i.withPrefix(visitSpace(i.getPrefix(), Space.Location.INDICATOR_AREA_PREFIX, p));
-        i = i.withMarkers(visitMarkers(i.getMarkers(), p));
         return i;
     }
 
@@ -3747,13 +3732,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return s;
     }
 
-    public Cobol visitSequenceArea(Cobol.SequenceArea sequenceArea, P p ) {
-        Cobol.SequenceArea s = sequenceArea;
-        s = s.withPrefix(visitSpace(s.getPrefix(), Space.Location.SEQUENCE_AREA_PREFIX, p));
-        s = s.withMarkers(visitMarkers(s.getMarkers(), p));
-        return s;
-    }
-
     public Cobol visitSet(Cobol.Set set, P p) {
         Cobol.Set s = set;
         s = s.withPrefix(visitSpace(s.getPrefix(), Space.Location.SET_PREFIX, p));
@@ -4323,9 +4301,9 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Word w = word;
         w = w.withPrefix(visitSpace(w.getPrefix(), Space.Location.WORD_PREFIX, p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
-        w = w.withSequenceArea((Cobol.SequenceArea) visit(w.getSequenceArea(), p));
-        w = w.withIndicatorArea((Cobol.IndicatorArea) visit(w.getIndicatorArea(), p));
-        w = w.withCommentArea((Cobol.CommentArea) visit(w.getCommentArea(), p));
+        w = w.withSequenceArea((Cobol.ColumnArea.SequenceArea) visit(w.getSequenceArea(), p));
+        w = w.withIndicatorArea((Cobol.ColumnArea.IndicatorArea) visit(w.getIndicatorArea(), p));
+        w = w.withCommentArea((Cobol.ColumnArea.CommentArea) visit(w.getCommentArea(), p));
         w = w.withCopyStatement((Cobol.Preprocessor.CopyStatement) visit(w.getCopyStatement(), p));
         return w;
     }
@@ -4397,6 +4375,29 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         w = w.withFrom((Cobol.Word) visit(w.getFrom(), p));
         w = w.withName((Name) visit(w.getName(), p));
         return w;
+    }
+
+    /* Cobol$ColumnArea visits */
+    public Cobol visitCommentArea(Cobol.ColumnArea.CommentArea commentArea, P p) {
+        Cobol.ColumnArea.CommentArea c = commentArea;
+        c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p));
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withEndOfLine(visitSpace(c.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p));
+        return c;
+    }
+
+    public Cobol visitIndicatorArea(Cobol.ColumnArea.IndicatorArea indicatorArea, P p) {
+        Cobol.ColumnArea.IndicatorArea i = indicatorArea;
+        i = i.withPrefix(visitSpace(i.getPrefix(), Space.Location.INDICATOR_AREA_PREFIX, p));
+        i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        return i;
+    }
+
+    public Cobol visitSequenceArea(Cobol.ColumnArea.SequenceArea sequenceArea, P p ) {
+        Cobol.ColumnArea.SequenceArea s = sequenceArea;
+        s = s.withPrefix(visitSpace(s.getPrefix(), Space.Location.SEQUENCE_AREA_PREFIX, p));
+        s = s.withMarkers(visitMarkers(s.getMarkers(), p));
+        return s;
     }
 
     /* Cobol$Preprocessor visits */

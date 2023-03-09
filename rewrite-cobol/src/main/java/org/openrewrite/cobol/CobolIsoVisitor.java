@@ -257,11 +257,6 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol.CommentArea visitCommentArea(Cobol.CommentArea commentArea, P p) {
-        return (Cobol.CommentArea) super.visitCommentArea(commentArea, p);
-    }
-
-    @Override
     public Cobol.CommentEntry visitCommentEntry(Cobol.CommentEntry commentEntry, P p) {
         return (Cobol.CommentEntry) super.visitCommentEntry(commentEntry, p);
     }
@@ -769,11 +764,6 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     @Override
     public Cobol.InData visitInData(Cobol.InData inData, P p) {
         return (Cobol.InData) super.visitInData(inData, p);
-    }
-
-    @Override
-    public Cobol.IndicatorArea visitIndicatorArea(Cobol.IndicatorArea indicatorArea, P p) {
-        return (Cobol.IndicatorArea) super.visitIndicatorArea(indicatorArea, p);
     }
 
     @Override
@@ -1972,11 +1962,6 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol.SequenceArea visitSequenceArea(Cobol.SequenceArea sequenceArea, P p) {
-        return (Cobol.SequenceArea) super.visitSequenceArea(sequenceArea, p);
-    }
-
-    @Override
     public Cobol.Set visitSet(Cobol.Set set, P p) {
         return (Cobol.Set) super.visitSet(set, p);
     }
@@ -2299,6 +2284,22 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     @Override
     public Cobol.WriteFromPhrase visitWriteFromPhrase(Cobol.WriteFromPhrase writeFromPhrase, P p) {
         return (Cobol.WriteFromPhrase) super.visitWriteFromPhrase(writeFromPhrase, p);
+    }
+
+    /* Cobol$ColumnArea visits */
+    @Override
+    public Cobol.ColumnArea.CommentArea visitCommentArea(Cobol.ColumnArea.CommentArea commentArea, P p) {
+        return (Cobol.ColumnArea.CommentArea) super.visitCommentArea(commentArea, p);
+    }
+
+    @Override
+    public Cobol.ColumnArea.IndicatorArea visitIndicatorArea(Cobol.ColumnArea.IndicatorArea indicatorArea, P p) {
+        return (Cobol.ColumnArea.IndicatorArea) super.visitIndicatorArea(indicatorArea, p);
+    }
+
+    @Override
+    public Cobol.ColumnArea.SequenceArea visitSequenceArea(Cobol.ColumnArea.SequenceArea sequenceArea, P p) {
+        return (Cobol.ColumnArea.SequenceArea) super.visitSequenceArea(sequenceArea, p);
     }
 
     /* Cobol$Preprocessor visits */
