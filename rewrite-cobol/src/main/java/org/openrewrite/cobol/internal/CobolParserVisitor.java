@@ -39,7 +39,6 @@ import static java.util.stream.Collectors.toList;
 import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.END_OF_FILE;
-import static org.openrewrite.cobol.tree.Space.format;
 
 public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
@@ -70,7 +69,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     private final Map<Integer, String> commentAreas = new LinkedHashMap<>();
 
     private final Set<String> separators = new HashSet<>();
-    private final Set<Character> commentIndicators = new HashSet<>();
+    private static final Set<Character> commentIndicators = new HashSet<>();
     private int cursor = 0;
 
     // Trigger condition to remove whitespace added by the template.
@@ -5988,6 +5987,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         IndicatorArea indicatorAreaMarker = null;
         CommentArea commentAreaMarker = null;
         Copy copyMarker = null;
+        Lines lines = null;
         for (Marker marker : markers) {
             if (marker instanceof SequenceArea) {
                 sequenceAreaMarker = (SequenceArea) marker;
@@ -5997,6 +5997,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 commentAreaMarker = (CommentArea) marker;
             } else if (marker instanceof Copy) {
                 copyMarker = (Copy) marker;
+            } else if (marker instanceof Lines) {
+                lines = (Lines) marker;
             }
         }
 
@@ -6040,6 +6042,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         if (copyMarker != null) {
             copyStatement = CobolPreprocessorConverter.convertCopyStatement(copyMarker.getOriginalStatement());
             markers.remove(copyMarker);
+        }
+
+        if (lines != null) {
+            List<CobolLine> cobolLines = convertLines(lines);
+            prefix = prefix.withCobolLines(cobolLines);
+            markers.remove(lines);
         }
 
         return new Cobol.Word(
@@ -6382,7 +6390,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         int endIndex = indexOfNextNonWhitespace(cursor, source);
         String prefix = source.substring(cursor, endIndex);
         cursor += prefix.length();
-        return format(prefix);
+        return Space.build(prefix, emptyList());
     }
 
     private int indexOfNextNonWhitespace(int cursor, String source) {
@@ -7020,7 +7028,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         return uuid;
     }
 
-    private boolean isCommentIndicator(@Nullable IndicatorArea area) {
+    private static boolean isCommentIndicator(@Nullable IndicatorArea area) {
         boolean isUnknownIndicator = area != null && ("G".equals(area.getIndicator()) || "J".equals(area.getIndicator()) || "P".equals(area.getIndicator()));
         return area != null && (isUnknownIndicator || commentIndicators.contains(area.getIndicator().charAt(0)));
     }
@@ -7101,6 +7109,61 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             cursor = saveCursor;
         }
         return null;
+    }
+
+    @Nullable
+    private static Cobol.ColumnArea.SequenceArea convertSequenceArea(@Nullable SequenceArea sequenceArea) {
+        return sequenceArea == null ? null : new Cobol.ColumnArea.SequenceArea(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                sequenceArea.getSequence()
+        );
+    }
+
+    private static Cobol.ColumnArea.IndicatorArea convertIndicatorArea(IndicatorArea indicatorArea) {
+        return new Cobol.ColumnArea.IndicatorArea(
+                randomId(),
+                Space.EMPTY,
+                Markers.EMPTY,
+                indicatorArea.getIndicator(),
+                indicatorArea.getContinuationPrefix()
+        );
+    }
+
+    @Nullable
+    private static Cobol.ColumnArea.CommentArea convertCommentArea(@Nullable CommentArea commentArea) {
+        return commentArea == null ? null : new Cobol.ColumnArea.CommentArea(
+                randomId(),
+                commentArea.getPrefix(),
+                Markers.EMPTY,
+                commentArea.getComment(),
+                commentArea.getEndOfLine(),
+                commentArea.isAdded()
+        );
+    }
+
+    private static List<CobolLine> convertLines(Lines lines) {
+        List<CobolLine> cobolLines = new ArrayList<>(lines.getLines().size());
+        for (Lines.Line line : lines.getLines()) {
+            CobolLine cobolLine = isCommentIndicator(line.getIndicatorArea()) ?
+                    new CommentLine(
+                            Markers.EMPTY,
+                            convertSequenceArea(line.getSequenceArea()),
+                            convertIndicatorArea(line.getIndicatorArea()),
+                            line.getContent(),
+                            convertCommentArea(line.getCommentArea()),
+                            line.isCopiedSource()) :
+                    new BlankLine(
+                            Markers.EMPTY,
+                            convertSequenceArea(line.getSequenceArea()),
+                            convertIndicatorArea(line.getIndicatorArea()),
+                            line.getContent(),
+                            convertCommentArea(line.getCommentArea()),
+                            line.isCopiedSource());
+            cobolLines.add(cobolLine);
+        }
+        return cobolLines;
     }
 
     public static class CobolPreprocessorConverter {
@@ -7205,7 +7268,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     convertAll(copyStatement.getCobols()),
                     convertWord(copyStatement.getDot()),
                     convertCopyBook(copyStatement.getCopyBook()
-                            // The CopyBook is only used as meta data like type attribution to link the copy statement to the CopyBook source.
+                            // The CopyBook is only used as metadata like type attribution to link the copy statement to the CopyBook source.
                             .withAst(null)
                             .withEof(null)));
         }
@@ -7329,9 +7392,20 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         }
         @Nullable
         private static Cobol.Word convertWord(@Nullable CobolPreprocessor.Word word) {
-            return word == null ? null : new Cobol.Word(
+            if (word == null) {
+                return null;
+            }
+
+            Space prefix = word.getPrefix();
+            Lines lines = word.getMarkers().findFirst(Lines.class).orElse(null);
+            if (lines != null) {
+                List<CobolLine> cobolLines = convertLines(lines);
+                prefix = prefix.withCobolLines(cobolLines);
+            }
+
+            return new Cobol.Word(
                     word.getId(),
-                    word.getPrefix(),
+                    prefix,
                     word.getMarkers(),
                     word.getSequenceArea() == null ? null :
                             new Cobol.ColumnArea.SequenceArea(

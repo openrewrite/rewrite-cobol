@@ -16,21 +16,26 @@
 package org.openrewrite.cobol.tree;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.EqualsAndHashCode;
 import org.openrewrite.internal.lang.Nullable;
 
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+
+import static java.util.Collections.emptyList;
 
 /**
  * COBOL white space.
  */
 @EqualsAndHashCode
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@ref")
 public class Space {
-    public static final Space EMPTY = new Space("");
+    public static final Space EMPTY = new Space("", emptyList());
+
+    // This may need to move to Cobol$Word ... it's not clear how to handle comments and blanklines in COBOL.
+    // Comments and blanklines will be processed before the sequence and indicator areas, but the Space#whitespace exists after
+    // the indicator area.
+    private final List<CobolLine> cobolLines;
 
     @Nullable
     private final String whitespace;
@@ -42,16 +47,20 @@ public class Space {
      */
     private static final Map<String, Space> flyweights = new WeakHashMap<>();
 
-    private Space(@Nullable String whitespace) {
+    private Space(@Nullable String whitespace, List<CobolLine> cobolLines) {
         this.whitespace = whitespace == null || whitespace.isEmpty() ? null : whitespace;
+        this.cobolLines = cobolLines;
     }
 
     @JsonCreator
-    public static Space build(@Nullable String whitespace) {
-        if (whitespace == null || whitespace.isEmpty()) {
-            return Space.EMPTY;
+    public static Space build(@Nullable String whitespace, List<CobolLine> cobolLines) {
+        if (cobolLines.isEmpty()) {
+            if (whitespace == null || whitespace.isEmpty()) {
+                return Space.EMPTY;
+            }
+            return flyweights.computeIfAbsent(whitespace, k -> new Space(whitespace, cobolLines));
         }
-        return flyweights.computeIfAbsent(whitespace, k -> new Space(whitespace));
+        return new Space(whitespace, cobolLines);
     }
 
     public String getIndent() {
@@ -84,15 +93,25 @@ public class Space {
         if (this.whitespace == null || whitespace.equals(this.whitespace)) {
             return this;
         }
-        return build(whitespace);
+        return build(whitespace, cobolLines);
+    }
+
+    public List<CobolLine> getCobolLines() {
+        return cobolLines;
+    }
+
+    public Space withCobolLines(List<CobolLine> cobolLines) {
+        if (cobolLines == this.cobolLines) {
+            return this;
+        }
+        if (cobolLines.isEmpty() && (whitespace == null || whitespace.isEmpty())) {
+            return Space.EMPTY;
+        }
+        return build(whitespace, cobolLines);
     }
 
     public boolean isEmpty() {
         return this == EMPTY;
-    }
-
-    public static Space format(String formatting) {
-        return Space.build(formatting);
     }
 
     private static final String[] spaces = {

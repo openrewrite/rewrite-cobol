@@ -4332,7 +4332,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         ReplaceOff replaceOff = null;
         Replace replace = null;
 
-        Lines lines = null;
         Continuation continuation = null;
 
         for (Marker marker : word.getMarkers().getMarkers()) {
@@ -4342,8 +4341,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 replaceOff = (ReplaceOff) marker;
             } else if (marker instanceof Replace) {
                 replace = (Replace) marker;
-            } else if (marker instanceof Lines) {
-                lines = (Lines) marker;
             } else if (marker instanceof Continuation) {
                 continuation = (Continuation) marker;
             }
@@ -4388,8 +4385,12 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             return word;
         }
 
-        if (lines != null) {
-            visitLines(lines, p);
+
+        if (printColumns) {
+            for (CobolLine cobolLine : word.getPrefix().getCobolLines()) {
+                visitMarkers(cobolLine.getMarkers(), p);
+                cobolLine.printCobolLine(this, getCursor(), p);
+            }
         }
 
         if (continuation != null) {

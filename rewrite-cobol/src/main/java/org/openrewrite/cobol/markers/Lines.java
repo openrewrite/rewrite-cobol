@@ -24,7 +24,10 @@ public class Lines implements Marker {
     @Value
     public static class Line {
         UUID id;
+
+        @Nullable
         SequenceArea sequenceArea;
+
         IndicatorArea indicatorArea;
         String content;
 

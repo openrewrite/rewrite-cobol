@@ -1051,9 +1051,9 @@ public interface Cobol extends Tree {
         @Nullable
         ColumnArea.IndicatorArea indicatorArea;
 
+        // Add:
         // Replacements
-        // Lines
-        // Comments
+        // Continuations
 
         String word;
 

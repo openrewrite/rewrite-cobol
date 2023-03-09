@@ -33,11 +33,11 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.END_OF_FILE;
-import static org.openrewrite.cobol.tree.Space.format;
 
 public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor<Object> {
 
@@ -848,7 +848,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     private Space whitespace() {
         String prefix = source.substring(cursor, indexOfNextNonWhitespace(cursor, source));
         cursor += prefix.length();
-        return format(prefix);
+        return Space.build(prefix, emptyList());
     }
 
     private int indexOfNextNonWhitespace(int cursor, String source) {
