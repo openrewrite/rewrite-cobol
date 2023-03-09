@@ -9745,7 +9745,10 @@ public interface Cobol extends Tree {
                 return withCharsetName(charset.name());
             }
 
+            @Nullable
             Cobol ast;
+
+            @Nullable
             Cobol.Word eof;
 
             @Override
