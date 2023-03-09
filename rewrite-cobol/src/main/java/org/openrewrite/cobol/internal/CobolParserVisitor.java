@@ -6000,9 +6000,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             }
         }
 
-        Cobol.SequenceArea sequenceArea = null;
+        Cobol.ColumnArea.SequenceArea sequenceArea = null;
         if (sequenceAreaMarker != null) {
-            sequenceArea = new Cobol.SequenceArea(
+            sequenceArea = new Cobol.ColumnArea.SequenceArea(
                     randomId(),
                     Space.EMPTY,
                     Markers.EMPTY,
@@ -6011,9 +6011,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.remove(sequenceAreaMarker);
         }
 
-        Cobol.IndicatorArea indicatorArea = null;
+        Cobol.ColumnArea.IndicatorArea indicatorArea = null;
         if (indicatorAreaMarker != null) {
-            indicatorArea = new Cobol.IndicatorArea(
+            indicatorArea = new Cobol.ColumnArea.IndicatorArea(
                     randomId(),
                     Space.EMPTY,
                     Markers.EMPTY,
@@ -6023,9 +6023,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.remove(indicatorAreaMarker);
         }
 
-        Cobol.CommentArea commentArea = null;
+        Cobol.ColumnArea.CommentArea commentArea = null;
         if (commentAreaMarker != null) {
-            commentArea = new Cobol.CommentArea(
+            commentArea = new Cobol.ColumnArea.CommentArea(
                     randomId(),
                     commentAreaMarker.getPrefix(),
                     Markers.EMPTY,
@@ -7334,13 +7334,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     word.getPrefix(),
                     word.getMarkers(),
                     word.getSequenceArea() == null ? null :
-                            new Cobol.SequenceArea(
+                            new Cobol.ColumnArea.SequenceArea(
                                     word.getSequenceArea().getId(),
                                     word.getSequenceArea().getPrefix(),
                                     word.getSequenceArea().getMarkers(),
                                     word.getSequenceArea().getSequence()),
                     word.getIndicatorArea() == null ? null :
-                            new Cobol.IndicatorArea(
+                            new Cobol.ColumnArea.IndicatorArea(
                                     word.getIndicatorArea().getId(),
                                     word.getIndicatorArea().getPrefix(),
                                     word.getIndicatorArea().getMarkers(),
@@ -7348,7 +7348,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                                     word.getIndicatorArea().getContinuationPrefix()),
                     word.getWord(),
                     word.getCommentArea() == null ? null :
-                            new Cobol.CommentArea(
+                            new Cobol.ColumnArea.CommentArea(
                                     word.getCommentArea().getId(),
                                     word.getCommentArea().getPrefix(),
                                     word.getCommentArea().getMarkers(),

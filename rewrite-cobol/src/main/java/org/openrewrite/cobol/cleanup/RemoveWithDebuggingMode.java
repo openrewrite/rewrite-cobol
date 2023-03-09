@@ -87,7 +87,7 @@ public class RemoveWithDebuggingMode extends Recipe {
                     if (isSafe) {
                         if (s.getComputerName().getCommentArea() != null && !s.getComputerName().getCommentArea().getPrefix().getWhitespace().isEmpty()) {
                             List<Cobol.Word> originalWords = s.getDebuggingMode();
-                            Cobol.CommentArea commentArea = s.getComputerName().getCommentArea();
+                            Cobol.ColumnArea.CommentArea commentArea = s.getComputerName().getCommentArea();
                             commentArea = commentArea.withPrefix(
                                     commentArea.getPrefix().withWhitespace(
                                             commentArea.getPrefix().getWhitespace().substring(1)));

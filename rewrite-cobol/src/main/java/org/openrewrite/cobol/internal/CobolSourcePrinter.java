@@ -519,17 +519,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     @Override
-    public Cobol visitCommentArea(Cobol.CommentArea commentArea, PrintOutputCapture<P> p) {
-        beforeSyntax(commentArea, Space.Location.COMMENT_AREA_PREFIX, p);
-        if (printColumns) {
-            p.append(commentArea.getComment());
-        }
-        visitSpace(commentArea.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p);
-        afterSyntax(commentArea, p);
-        return commentArea;
-    }
-
-    @Override
     public Cobol visitCommentEntry(Cobol.CommentEntry commentEntry, PrintOutputCapture<P> p) {
         beforeSyntax(commentEntry, Space.Location.COMMENT_ENTRY_PREFIX, p);
         visit(commentEntry.getComments(), p);
@@ -1494,17 +1483,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(ifThen.getStatements(), p);
         afterSyntax(ifThen, p);
         return ifThen;
-    }
-
-    @Override
-    public Cobol visitIndicatorArea(Cobol.IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            beforeSyntax(indicatorArea, Space.Location.INDICATOR_AREA_PREFIX, p);
-            p.out.append(indicatorArea.getIndicator());
-            afterSyntax(indicatorArea, p);
-        }
-        p.out.append(indicatorArea.getContinuationPrefix());
-        return indicatorArea;
     }
 
     @Override
@@ -3722,16 +3700,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     @Override
-    public Cobol visitSequenceArea(Cobol.SequenceArea sequenceArea, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            beforeSyntax(sequenceArea, Space.Location.SEQUENCE_AREA_PREFIX, p);
-            p.out.append(sequenceArea.getSequence());
-            afterSyntax(sequenceArea, p);
-        }
-        return sequenceArea;
-    }
-
-    @Override
     public Cobol visitSelectClause(Cobol.SelectClause selectClause, PrintOutputCapture<P> p) {
         beforeSyntax(selectClause, Space.Location.SEARCH_CLAUSE_PREFIX, p);
         visit(selectClause.getWords(), p);
@@ -4517,8 +4485,40 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return writeFromPhrase;
     }
 
-    /* Cobol preprocessor visits */
+    /* Cobol$ColumnArea visits */
+    @Override
+    public Cobol visitCommentArea(Cobol.ColumnArea.CommentArea commentArea, PrintOutputCapture<P> p) {
+        beforeSyntax(commentArea, Space.Location.COMMENT_AREA_PREFIX, p);
+        if (printColumns) {
+            p.append(commentArea.getComment());
+        }
+        visitSpace(commentArea.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p);
+        afterSyntax(commentArea, p);
+        return commentArea;
+    }
 
+    @Override
+    public Cobol visitIndicatorArea(Cobol.ColumnArea.IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
+        if (printColumns) {
+            beforeSyntax(indicatorArea, Space.Location.INDICATOR_AREA_PREFIX, p);
+            p.out.append(indicatorArea.getIndicator());
+            afterSyntax(indicatorArea, p);
+        }
+        p.out.append(indicatorArea.getContinuationPrefix());
+        return indicatorArea;
+    }
+
+    @Override
+    public Cobol visitSequenceArea(Cobol.ColumnArea.SequenceArea sequenceArea, PrintOutputCapture<P> p) {
+        if (printColumns) {
+            beforeSyntax(sequenceArea, Space.Location.SEQUENCE_AREA_PREFIX, p);
+            p.out.append(sequenceArea.getSequence());
+            afterSyntax(sequenceArea, p);
+        }
+        return sequenceArea;
+    }
+
+    /* Cobol$Preprocessor visits */
     @Override
     public Cobol visitCopyBook(Cobol.Preprocessor.CopyBook copyBook, PrintOutputCapture<P> p) {
         beforeSyntax(copyBook, Space.Location.COPY_BOOK_PREFIX, p);

@@ -1046,10 +1046,10 @@ public interface Cobol extends Tree {
         Markers markers;
 
         @Nullable
-        SequenceArea sequenceArea;
+        ColumnArea.SequenceArea sequenceArea;
 
         @Nullable
-        IndicatorArea indicatorArea;
+        ColumnArea.IndicatorArea indicatorArea;
 
         // Replacements
         // Lines
@@ -1058,7 +1058,7 @@ public interface Cobol extends Tree {
         String word;
 
         @Nullable
-        CommentArea commentArea;
+        ColumnArea.CommentArea commentArea;
 
         @Nullable
         Preprocessor.CopyStatement copyStatement;
@@ -1152,26 +1152,6 @@ public interface Cobol extends Tree {
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitCombinableCondition(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
-    class CommentArea implements Cobol {
-
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-        String comment;
-        Space endOfLine;
-        boolean isAdded;
-
-        @Override
-        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
-            return v.visitCommentArea(this, p);
         }
     }
 
@@ -3304,31 +3284,6 @@ public interface Cobol extends Tree {
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitInData(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
-    class IndicatorArea implements Cobol {
-
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-        String indicator;
-
-        @Nullable
-        String continuationPrefix;
-
-        public String getContinuationPrefix() {
-            return continuationPrefix == null ? "" : continuationPrefix;
-        }
-
-        @Override
-        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
-            return v.visitIndicatorArea(this, p);
         }
     }
 
@@ -8300,24 +8255,6 @@ public interface Cobol extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class SequenceArea implements Cobol {
-
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-        String sequence;
-
-        @Override
-        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
-            return v.visitSequenceArea(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
     class Set implements Statement {
 
         @EqualsAndHashCode.Include
@@ -9701,6 +9638,72 @@ public interface Cobol extends Tree {
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitWriteFromPhrase(this, p);
+        }
+    }
+
+    class ColumnArea {
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class CommentArea implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+            String comment;
+            Space endOfLine;
+            boolean isAdded;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitCommentArea(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class IndicatorArea implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+            String indicator;
+
+            @Nullable
+            String continuationPrefix;
+
+            public String getContinuationPrefix() {
+                return continuationPrefix == null ? "" : continuationPrefix;
+            }
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitIndicatorArea(this, p);
+            }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class SequenceArea implements Cobol {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+            String sequence;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitSequenceArea(this, p);
+            }
         }
     }
 

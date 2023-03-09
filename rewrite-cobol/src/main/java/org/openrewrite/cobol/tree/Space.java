@@ -133,6 +133,7 @@ public class Space {
         INDICATOR_AREA_PREFIX,
         COMMENT_AREA_PREFIX,
         COMMENT_AREA_EOL,
+        // Cobol preprocessor prefixes
         CONTINUATION_PREFIX,
         COMPILER_OPTION_PREFIX,
         COMPILER_OPTIONS_PREFIX,
@@ -154,7 +155,6 @@ public class Space {
         TITLE_STATEMENT_PREFIX,
         PREPROCESSOR_COMPILATION_UNIT_PREFIX,
         PREPROCESSOR_WORD_PREFIX,
-        // Cobol preprocessor prefixes
         CHAR_DATA_PREFIX,
         CHAR_DATA_LINE_PREFIX,
         CHAR_DATA_SQL_PREFIX,

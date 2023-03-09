@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Value
 public class ShiftSequenceAreas extends CobolIsoVisitor<ExecutionContext> {
 
-    LinkedList<Cobol.SequenceArea> originalSequenceAreas;
+    LinkedList<Cobol.ColumnArea.SequenceArea> originalSequenceAreas;
     Cobol.Word startAfter;
 
     @NonFinal
@@ -36,7 +36,7 @@ public class ShiftSequenceAreas extends CobolIsoVisitor<ExecutionContext> {
     }
 
     @Override
-    public Cobol.SequenceArea visitSequenceArea(Cobol.SequenceArea sequenceArea, ExecutionContext executionContext) {
+    public Cobol.ColumnArea.SequenceArea visitSequenceArea(Cobol.ColumnArea.SequenceArea sequenceArea, ExecutionContext executionContext) {
         if (startShift) {
             originalSequenceAreas.add(sequenceArea);
             return originalSequenceAreas.removeFirst();
