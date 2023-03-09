@@ -7182,9 +7182,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     copyBook.getCharsetName(),
                     copyBook.isCharsetBomMarked(),
                     copyBook.getChecksum(),
-                    // The product of the CopyBook already exists in the CobolTree, and is not needed in the CopyBook CobolSourceFile.
-                    null,
-                    null);
+                    convert(copyBook.getAst()),
+                    convertWord(copyBook.getEof()));
         }
 
         @Nullable
