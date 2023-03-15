@@ -7266,7 +7266,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     convertCopySource(copyStatement.getCopySource()),
                     convertAll(copyStatement.getCobols()),
                     convertWord(copyStatement.getDot()),
-                    convertCopyBook(copyStatement.getCopyBook()
+                    convertCopyBook(copyStatement.getCopyBook() == null ? null : copyStatement.getCopyBook()
                             // The CopyBook is only used as metadata like type attribution to link the copy statement to the CopyBook source.
                             .withAst(null)
                             .withEof(null)));

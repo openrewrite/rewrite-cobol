@@ -83,7 +83,14 @@ public class CobolParser implements Parser<CobolSourceFile> {
             }
         }
 
-        List<CobolPreprocessor.CopyBook> copyBooks = CobolPreprocessorParser.parseCopyBooks(copyBookInputs, cobolDialect, ctx);
+        CobolPreprocessorParser cobolPreprocessorParser = CobolPreprocessorParser.builder()
+                .setCobolDialect(cobolDialect)
+                .setEnableCopy(enableCopy)
+                .setEnableReplace(enableReplace)
+                .build();
+
+        List<CobolPreprocessor.CopyBook> copyBooks = cobolPreprocessorParser.parseCopyBooks(copyBookInputs, relativeTo, cobolDialect, ctx);
+        cobolPreprocessorParser.setCopyBooks(this.copyBooks.isEmpty() ? copyBooks : this.copyBooks);
 
         List<CobolSourceFile> sources;
         sources = cobolInputs.stream()
@@ -94,13 +101,6 @@ public class CobolParser implements Parser<CobolSourceFile> {
                     Timer.Sample sample = Timer.start();
                     try {
                         EncodingDetectingInputStream is = sourceFile.getSource(ctx);
-
-                        CobolPreprocessorParser cobolPreprocessorParser = CobolPreprocessorParser.builder()
-                                .setCobolDialect(cobolDialect)
-                                .setCopyBooks(!this.copyBooks.isEmpty() ? this.copyBooks : copyBooks)
-                                .setEnableCopy(enableCopy)
-                                .setEnableReplace(enableReplace)
-                                .build();
 
                         CobolPreprocessor.CompilationUnit preprocessedCU = cobolPreprocessorParser.parseInputs(singletonList(sourceFile), relativeTo, ctx).get(0);
 
@@ -139,7 +139,7 @@ public class CobolParser implements Parser<CobolSourceFile> {
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
                         pctx.parseFailure(sourceFile, relativeTo, this, t);
-                        ctx.getOnError().accept(t);
+                        pctx.getOnError().accept(t);
                         return null;
                     }
                 })

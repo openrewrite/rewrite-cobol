@@ -69,7 +69,10 @@ public class ResourceParser {
     ) throws IOException {
 
         List<Path> copyBooks = getResourcesByExtension(alreadyParsed, fileExtensions);
-        return CobolPreprocessorParser.parseCopyBooks(copyBooks, null, cobolDialect, ctx);
+        CobolPreprocessorParser parser = CobolPreprocessorParser.builder()
+                .setCobolDialect(cobolDialect)
+                .build();
+        return parser.parseCopyBooks(copyBooks, cobolDialect, ctx);
     }
 
     private boolean isIgnoredDirectory(Path searchDir, Path path) {

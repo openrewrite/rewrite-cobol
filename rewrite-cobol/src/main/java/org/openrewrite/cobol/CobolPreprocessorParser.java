@@ -53,9 +53,10 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private static final List<String> COBOL_FILE_EXTENSIONS = Collections.singletonList(".cbl");
 
     private final CobolDialect cobolDialect;
-    private final List<CobolPreprocessor.CopyBook> copyBooks;
     private final boolean enableCopy;
     private final boolean enableReplace;
+
+    private List<CobolPreprocessor.CopyBook> copyBooks;
 
     // Lazily loaded sets of the original source objects.
     private Set<CobolPreprocessor.CopyStatement> copyStatements = null;
@@ -77,7 +78,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
     @Override
     public List<CobolPreprocessor.CompilationUnit> parseInputs(Iterable<org.openrewrite.Parser.Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
-        ParsingEventListener parsingListener = ParsingExecutionContextView.view(ctx).getParsingListener();
+        ParsingExecutionContextView pctx = ParsingExecutionContextView.view(ctx);
+        ParsingEventListener parsingListener = pctx.getParsingListener();
         return acceptedInputs(sourceFiles).stream()
                 .map(sourceFile -> {
                     Timer.Builder timer = Timer.builder("rewrite.parse")
@@ -125,7 +127,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         return preprocessedCU;
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
-                        ctx.getOnError().accept(new IllegalStateException(sourceFile.getPath() + " " + t.getMessage(), t));
+                        pctx.parseFailure(sourceFile, relativeTo, this, t);
+                        pctx.getOnError().accept(t);
                         return null;
                     }
                 })
@@ -133,75 +136,90 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                 .collect(toList());
     }
 
-    public static List<CobolPreprocessor.CopyBook> parseCopyBooks(
+    public List<CobolPreprocessor.CopyBook> parseCopyBooks(
             List<Parser.Input> inputs,
+            @Nullable Path relativeTo,
             CobolDialect cobolDialect,
             ExecutionContext ctx) {
-        List<CobolPreprocessor.CopyBook> copyBooks = new ArrayList<>();
-        for(Parser.Input input : inputs) {
-            PlainText plainText;
-            try(EncodingDetectingInputStream is = input.getSource(ctx)) {
-                plainText = new PlainText(
-                        randomId(),
-                        input.getPath(),
-                        Markers.EMPTY,
-                        is.getCharset().name(),
-                        is.isCharsetBomMarked(),
-                        null,
-                        null,
-                        is.readFully()
-                );
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+        ParsingExecutionContextView pctx = ParsingExecutionContextView.view(ctx);
+        ParsingEventListener parsingListener = pctx.getParsingListener();
 
-            String preprocessedCobol = new CobolLineReader().readLines(plainText.getText(), cobolDialect);
-            org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
-                    new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
-                            new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(preprocessedCobol))));
+        List<CobolPreprocessor.CopyBook> copyBooks;
+        copyBooks = inputs.stream()
+                .map(sourceFile -> {
+                    Timer.Builder timer = Timer.builder("rewrite.parse")
+                            .description("The time spent parsing a COBOL Copybook file")
+                            .tag("file.copy", "COBOL");
+                    Timer.Sample sample = Timer.start();
+                    try {
+                        EncodingDetectingInputStream is = sourceFile.getSource(ctx);
+                        PlainText plainText = new PlainText(
+                                randomId(),
+                                sourceFile.getPath(),
+                                Markers.EMPTY,
+                                is.getCharset().name(),
+                                is.isCharsetBomMarked(),
+                                null,
+                                null,
+                                is.readFully()
+                        );
 
-            //noinspection ConstantConditions
-            CobolPreprocessorParserVisitor parserVisitor = new CobolPreprocessorParserVisitor(
-                    plainText.getSourcePath(),
-                    plainText.getFileAttributes(),
-                    plainText.getText(),
-                    plainText.getCharset(),
-                    plainText.isCharsetBomMarked(),
-                    cobolDialect
-            );
+                        String preprocessedCobol = new CobolLineReader().readLines(plainText.getText(), cobolDialect);
+                        org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser parser =
+                                new org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser(
+                                        new CommonTokenStream(new CobolPreprocessorLexer(CharStreams.fromString(preprocessedCobol))));
 
-            CobolPreprocessor.CompilationUnit cu = parserVisitor.visitStartRule(parser.startRule());
-            CobolPreprocessor parsedCopySource = cu.getCobols().get(0);
+                        //noinspection ConstantConditions
+                        CobolPreprocessorParserVisitor parserVisitor = new CobolPreprocessorParserVisitor(
+                                plainText.getSourcePath(),
+                                plainText.getFileAttributes(),
+                                plainText.getText(),
+                                plainText.getCharset(),
+                                plainText.isCharsetBomMarked(),
+                                cobolDialect
+                        );
 
-            CobolPreprocessor.CopyBook copyBook = new CobolPreprocessor.CopyBook(
-                    randomId(),
-                    Space.EMPTY,
-                    Markers.EMPTY,
-                    plainText.getSourcePath(),
-                    null,
-                    plainText.getCharsetName(),
-                    plainText.isCharsetBomMarked(),
-                    null,
-                    parsedCopySource,
-                    cu.getEof()
-            );
+                        CobolPreprocessor.CompilationUnit cu = parserVisitor.visitStartRule(parser.startRule());
+                        CobolPreprocessor parsedCopySource = cu.getCobols().get(0);
 
-            copyBooks.add(copyBook);
-        }
+                        CobolPreprocessor.CopyBook copyBook = new CobolPreprocessor.CopyBook(
+                                randomId(),
+                                Space.EMPTY,
+                                Markers.EMPTY,
+                                plainText.getSourcePath(),
+                                null,
+                                plainText.getCharsetName(),
+                                plainText.isCharsetBomMarked(),
+                                null,
+                                parsedCopySource,
+                                cu.getEof()
+                        );
+
+                        sample.stop(MetricsHelper.successTags(timer).register(Metrics.globalRegistry));
+                        parsingListener.parsed(sourceFile, copyBook);
+                        return copyBook;
+                    } catch (Throwable t) {
+                        sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
+                        pctx.parseFailure(sourceFile, relativeTo, this, t);
+                        pctx.getOnError().accept(t);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(toList());
 
         return copyBooks;
     }
 
-    public static List<CobolPreprocessor.CopyBook> parseCopyBooks(
+    public List<CobolPreprocessor.CopyBook> parseCopyBooks(
             List<Path> paths,
-            @Nullable Path relativeTo,
             CobolDialect cobolDialect,
             ExecutionContext ctx) {
         List<Parser.Input> inputs = new ArrayList<>(paths.size());
 
         for (Path path : paths) {
             inputs.add(new Parser.Input(
-                    relativeTo == null ? path : relativeTo.relativize(path),
+                    path,
                     () -> {
                         try {
                             return Files.newInputStream(path);
@@ -212,7 +230,11 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
             ));
         }
 
-        return parseCopyBooks(inputs, cobolDialect, ctx);
+        return parseCopyBooks(inputs, null, cobolDialect, ctx);
+    }
+
+    public void setCopyBooks(List<CobolPreprocessor.CopyBook> copyBooks) {
+        this.copyBooks = copyBooks;
     }
 
     @Override

@@ -52,6 +52,8 @@ class CobolPreprocessorCopyTest : CobolTest() {
                     copyStatement: CobolPreprocessor.CopyStatement,
                     p: ExecutionContext
                 ): CobolPreprocessor {
+                    assertThat(copyStatement.copyBook).isNotNull
+                    assertThat(copyStatement.copyBook!!.sourcePath).isNotNull
                     val copyBook = copyStatement.copyBook
 
                     val output = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
@@ -62,8 +64,9 @@ class CobolPreprocessorCopyTest : CobolTest() {
                         )
                     printer.visit(copyBook, output)
 
-                    val source = getSource(copyBook.sourcePath)
+                    val source = getSource(copyBook!!.sourcePath)
                     assertThat(source).isEqualTo(output.getOut())
+
                     return super.visitCopyStatement(copyStatement, p)
                 }
             }
