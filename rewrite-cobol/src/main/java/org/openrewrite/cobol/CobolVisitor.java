@@ -4301,10 +4301,15 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         Cobol.Word w = word;
         w = w.withPrefix(visitSpace(w.getPrefix(), Space.Location.WORD_PREFIX, p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
+
+        // Column areas.
         w = w.withSequenceArea((Cobol.ColumnArea.SequenceArea) visit(w.getSequenceArea(), p));
         w = w.withIndicatorArea((Cobol.ColumnArea.IndicatorArea) visit(w.getIndicatorArea(), p));
         w = w.withCommentArea((Cobol.ColumnArea.CommentArea) visit(w.getCommentArea(), p));
+
+        // Preprocessed COBOL preservation.
         w = w.withCopyStatement((Cobol.Preprocessor.CopyStatement) visit(w.getCopyStatement(), p));
+        w = w.withReplaceByStatement((Cobol.Preprocessor.ReplaceByStatement) visit(w.getReplaceByStatement(), p));
         return w;
     }
 

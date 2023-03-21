@@ -1066,8 +1066,12 @@ public interface Cobol extends Tree {
         @Nullable
         ColumnArea.CommentArea commentArea;
 
+        // Preprocessor elements
         @Nullable
         Preprocessor.CopyStatement copyStatement;
+
+        @Nullable
+        Preprocessor.ReplaceByStatement replaceByStatement;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {

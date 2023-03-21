@@ -5987,6 +5987,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         IndicatorArea indicatorAreaMarker = null;
         CommentArea commentAreaMarker = null;
         Copy copyMarker = null;
+        ReplaceBy replaceByMarker = null;
         Lines lines = null;
         for (Marker marker : markers) {
             if (marker instanceof SequenceArea) {
@@ -5997,6 +5998,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 commentAreaMarker = (CommentArea) marker;
             } else if (marker instanceof Copy) {
                 copyMarker = (Copy) marker;
+            } else if (marker instanceof ReplaceBy) {
+                replaceByMarker = (ReplaceBy) marker;
             } else if (marker instanceof Lines) {
                 lines = (Lines) marker;
             }
@@ -6044,6 +6047,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.remove(copyMarker);
         }
 
+        Cobol.Preprocessor.ReplaceByStatement replaceByStatement = null;
+        if (replaceByMarker != null) {
+            replaceByStatement = CobolPreprocessorConverter.convertReplaceByStatement(replaceByMarker.getStatement());
+            markers.remove(replaceByMarker);
+        }
+
         List<CobolLine> cobolLines = null;
         if (lines != null) {
             cobolLines = convertLines(lines);
@@ -6059,7 +6068,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 indicatorArea,
                 text,
                 commentArea,
-                copyStatement
+                copyStatement,
+                replaceByStatement
         );
     }
 
@@ -7430,6 +7440,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                                     word.getCommentArea().getComment(),
                                     word.getCommentArea().getEndOfLine(),
                                     word.getCommentArea().isAdded()),
+                    null,
                     null);
         }
 
