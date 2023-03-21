@@ -46,6 +46,13 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
         Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
         lines.ifPresent(value -> visitLines(value, p));
 
+        if (word.getLines() != null) {
+            for (CobolLine cobolLine : word.getLines()) {
+                visitMarkers(cobolLine.getMarkers(), p);
+                cobolLine.printCobolLine(this, getCursor(), p);
+            }
+        }
+
         Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
         if (continuation.isPresent() && printColumns) {
             visitContinuation(word, continuation.get(), p);

@@ -52,12 +52,12 @@ public class Assertions {
         return cobol;
     }
 
-    public static SourceSpecs cobol(@Nullable String before, String after) {
+    public static SourceSpecs cobol(@Nullable String before, @Nullable String after) {
         return cobol(before, after, s -> {
         });
     }
 
-    public static SourceSpecs cobol(@Nullable String before, String after,
+    public static SourceSpecs cobol(@Nullable String before, @Nullable String after,
                                     Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
         SourceSpec<Cobol.CompilationUnit> cobol =
                 new SourceSpec<>(Cobol.CompilationUnit.class,
@@ -90,12 +90,12 @@ public class Assertions {
         return cobol;
     }
 
-    public static SourceSpecs cobolCopy(@Nullable String before, String after) {
+    public static SourceSpecs cobolCopy(@Nullable String before, @Nullable String after) {
         return cobolCopy(before, after, s -> {
         });
     }
 
-    public static SourceSpecs cobolCopy(@Nullable String before, String after,
+    public static SourceSpecs cobolCopy(@Nullable String before, @Nullable String after,
                                     Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
         List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
 
@@ -128,12 +128,12 @@ public class Assertions {
         return cobol;
     }
 
-    public static SourceSpecs cobolPreprocess(@Nullable String before, String after) {
+    public static SourceSpecs cobolPreprocess(@Nullable String before, @Nullable String after) {
         return cobolPreprocess(before, after, s -> {
         });
     }
 
-    public static SourceSpecs cobolPreprocess(@Nullable String before, String after,
+    public static SourceSpecs cobolPreprocess(@Nullable String before, @Nullable String after,
                                               Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
         SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
                 new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
@@ -166,12 +166,12 @@ public class Assertions {
         return cobol;
     }
 
-    public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, String after) {
+    public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, @Nullable String after) {
         return cobolPreprocessorCopy(before, after, s -> {
         });
     }
 
-    public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, String after,
+    public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, @Nullable String after,
                                                     Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
         List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
 

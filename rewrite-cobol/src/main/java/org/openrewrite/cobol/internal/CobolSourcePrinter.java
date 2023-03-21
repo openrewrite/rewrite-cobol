@@ -26,7 +26,6 @@ import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
-import org.openrewrite.marker.SearchResult;
 
 import java.util.*;
 import java.util.function.UnaryOperator;
