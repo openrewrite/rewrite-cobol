@@ -4310,6 +4310,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         // Preprocessed COBOL preservation.
         w = w.withCopyStatement((Cobol.Preprocessor.CopyStatement) visit(w.getCopyStatement(), p));
         w = w.withReplaceByStatement((Cobol.Preprocessor.ReplaceByStatement) visit(w.getReplaceByStatement(), p));
+        w = w.withReplaceOffStatement((Cobol.Preprocessor.ReplaceOffStatement) visit(w.getReplaceOffStatement(), p));
         return w;
     }
 

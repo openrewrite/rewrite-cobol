@@ -4339,6 +4339,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 // TODO remove, in place for backwards compatibility.
                 replaceBy = (ReplaceBy) marker;
             } else if (marker instanceof ReplaceOff) {
+                // TODO remove, in place for backwards compatibility.
                 replaceOff = (ReplaceOff) marker;
             } else if (marker instanceof Replace) {
                 replace = (Replace) marker;
@@ -4359,11 +4360,16 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             visit(word.getReplaceByStatement(), p);
         }
 
+        // TODO remove, in place for backwards compatibility.
         if (replaceOff != null) {
             // Print the original replaceOff
             PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
             printer.visit(replaceOff.getReplaceOff(), output);
             p.append(output.getOut());
+        }
+
+        if (word.getReplaceOffStatement() != null) {
+            visit(word.getReplaceOffStatement(), p);
         }
 
         if (replace != null && word.getCopyStatement() == null) {
