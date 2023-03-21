@@ -4387,9 +4387,19 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
 
         if (printColumns) {
-            for (CobolLine cobolLine : word.getPrefix().getCobolLines()) {
-                visitMarkers(cobolLine.getMarkers(), p);
-                cobolLine.printCobolLine(this, getCursor(), p);
+            // TODO: remove, this exists for old LSTs.
+            if (word.getPrefix().getCobolLines() != null) {
+                for (CobolLine cobolLine : word.getPrefix().getCobolLines()) {
+                    visitMarkers(cobolLine.getMarkers(), p);
+                    cobolLine.printCobolLine(this, getCursor(), p);
+                }
+            }
+
+            if (word.getLines() != null) {
+                for (CobolLine cobolLine : word.getLines()) {
+                    visitMarkers(cobolLine.getMarkers(), p);
+                    cobolLine.printCobolLine(this, getCursor(), p);
+                }
             }
         }
 

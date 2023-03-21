@@ -25,8 +25,11 @@ import org.openrewrite.marker.Markers;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import static java.util.Collections.emptyList;
 
 public interface Cobol extends Tree {
 
@@ -1044,6 +1047,9 @@ public interface Cobol extends Tree {
 
         Space prefix;
         Markers markers;
+
+        @Nullable
+        List<CobolLine> lines;
 
         @Nullable
         ColumnArea.SequenceArea sequenceArea;

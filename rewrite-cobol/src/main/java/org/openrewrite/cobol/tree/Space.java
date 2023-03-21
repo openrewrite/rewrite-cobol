@@ -32,9 +32,8 @@ import static java.util.Collections.emptyList;
 public class Space {
     public static final Space EMPTY = new Space("", emptyList());
 
-    // This may need to move to Cobol$Word ... it's not clear how to handle comments and blanklines in COBOL.
-    // Comments and blanklines will be processed before the sequence and indicator areas, but the Space#whitespace exists after
-    // the indicator area.
+    // TODO: remove, this field is in place for backwards compatibility on old LSTs.
+    @Nullable
     private final List<CobolLine> cobolLines;
 
     @Nullable
@@ -47,14 +46,14 @@ public class Space {
      */
     private static final Map<String, Space> flyweights = new WeakHashMap<>();
 
-    private Space(@Nullable String whitespace, List<CobolLine> cobolLines) {
+    private Space(@Nullable String whitespace, @Nullable List<CobolLine> cobolLines) {
         this.whitespace = whitespace == null || whitespace.isEmpty() ? null : whitespace;
         this.cobolLines = cobolLines;
     }
 
     @JsonCreator
-    public static Space build(@Nullable String whitespace, List<CobolLine> cobolLines) {
-        if (cobolLines.isEmpty()) {
+    public static Space build(@Nullable String whitespace, @Nullable List<CobolLine> cobolLines) {
+        if (cobolLines == null || cobolLines.isEmpty()) {
             if (whitespace == null || whitespace.isEmpty()) {
                 return Space.EMPTY;
             }
@@ -96,15 +95,16 @@ public class Space {
         return build(whitespace, cobolLines);
     }
 
+    @Nullable
     public List<CobolLine> getCobolLines() {
         return cobolLines;
     }
 
-    public Space withCobolLines(List<CobolLine> cobolLines) {
+    public Space withCobolLines(@Nullable List<CobolLine> cobolLines) {
         if (cobolLines == this.cobolLines) {
             return this;
         }
-        if (cobolLines.isEmpty() && (whitespace == null || whitespace.isEmpty())) {
+        if ((cobolLines == null || cobolLines.isEmpty()) && (whitespace == null || whitespace.isEmpty())) {
             return Space.EMPTY;
         }
         return build(whitespace, cobolLines);

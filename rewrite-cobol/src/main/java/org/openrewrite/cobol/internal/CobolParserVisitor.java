@@ -6044,9 +6044,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.remove(copyMarker);
         }
 
+        List<CobolLine> cobolLines = null;
         if (lines != null) {
-            List<CobolLine> cobolLines = convertLines(lines);
-            prefix = prefix.withCobolLines(cobolLines);
+            cobolLines = convertLines(lines);
             markers.remove(lines);
         }
 
@@ -6054,6 +6054,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 randomId(),
                 prefix,
                 markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
+                cobolLines,
                 sequenceArea,
                 indicatorArea,
                 text,
@@ -7143,7 +7144,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         );
     }
 
-    private static List<CobolLine> convertLines(Lines lines) {
+    @Nullable
+    private static List<CobolLine> convertLines(@Nullable Lines lines) {
+        if (lines == null) {
+            return null;
+        }
+
         List<CobolLine> cobolLines = new ArrayList<>(lines.getLines().size());
         for (Lines.Line line : lines.getLines()) {
             CobolLine cobolLine = isCommentIndicator(line.getIndicatorArea()) ?
@@ -7395,17 +7401,13 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 return null;
             }
 
-            Space prefix = word.getPrefix();
             Lines lines = word.getMarkers().findFirst(Lines.class).orElse(null);
-            if (lines != null) {
-                List<CobolLine> cobolLines = convertLines(lines);
-                prefix = prefix.withCobolLines(cobolLines);
-            }
 
             return new Cobol.Word(
                     word.getId(),
-                    prefix,
+                    word.getPrefix(),
                     word.getMarkers(),
+                    convertLines(lines),
                     word.getSequenceArea() == null ? null :
                             new Cobol.ColumnArea.SequenceArea(
                                     word.getSequenceArea().getId(),
