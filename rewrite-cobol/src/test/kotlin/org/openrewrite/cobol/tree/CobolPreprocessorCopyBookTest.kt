@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 the original author or authors.
+ * Copyright 2023 the original author or authors.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,13 @@
  */
 package org.openrewrite.cobol.tree
 
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
-import org.openrewrite.InMemoryExecutionContext
-import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.tree.ParserAssertions.cobolPreprocessorCopy
 import org.openrewrite.cobol.CobolPreprocessorVisitor
-import org.openrewrite.cobol.internal.CobolDialect
-import org.openrewrite.cobol.internal.CobolPreprocessorOutputSourcePrinter
 import org.openrewrite.cobol.internal.CobolPreprocessorPrinter
-import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec
 import org.openrewrite.test.RewriteTest.toRecipe
-import java.nio.file.Files
-import java.nio.file.Path
 
 class CobolPreprocessorCopyBookTest : CobolTest() {
 
