@@ -190,7 +190,7 @@ public class ParserAssertions {
         return cobol;
     }
 
-    private static List<CobolPreprocessor.CopyBook> getCopyBookSources() {
+    public static List<CobolPreprocessor.CopyBook> getCopyBookSources() {
         ResourceParser resourceParser = new ResourceParser(Paths.get("").toAbsolutePath(), emptyList(), emptyList());
 
         try {
