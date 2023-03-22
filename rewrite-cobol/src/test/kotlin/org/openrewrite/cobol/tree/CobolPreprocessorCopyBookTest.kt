@@ -295,6 +295,6 @@ class CobolPreprocessorCopyBookTest : CobolTest() {
 
     @Test
     fun trailingSub() = rewriteRun(
-        cobolPreprocessorCopy(getNistSource("TRAILING_SUB.CPY"))
+        cobolPreprocessorCopy(getNistSource("K1WKA_TRAILING_SUB.CPY"))
     )
 }

@@ -15,70 +15,52 @@
  */
 package org.openrewrite.cobol.tree
 
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
-import org.openrewrite.InMemoryExecutionContext
-import org.openrewrite.PrintOutputCapture
-import org.openrewrite.cobol.CobolParser
 import org.openrewrite.cobol.internal.CobolPrinter
-import org.openrewrite.cobol.tree.ParserAssertions.getCopyBookSources
+import org.openrewrite.cobol.tree.ParserAssertions.cobolCopy
 
 class CobolParserReplaceTest : CobolTest() {
 
     companion object {
         val printer = CobolPrinter<ExecutionContext>(false, false)
-        val copyBooks = getCopyBookSources().sortedBy { it.sourcePath }
-    }
-
-    private fun assertCopyBooksParsed(sourceName: String, lstResult: String) {
-        val source: String = getNistSource(sourceName)
-        val parser = CobolParser.builder().setCopyBooks(copyBooks).build()
-        val cus: List<CobolSourceFile> = parser.parse(source)
-
-        val copiedSources = cus.filterIsInstance<Cobol.Preprocessor.CopyBook>().sortedBy { it.sourcePath }
-        val cu = cus.filterIsInstance<Cobol.CompilationUnit>().sortedBy { it.sourcePath }[0]
-
-        assertThat(copyBooks.size).isEqualTo(copiedSources.size)
-        copyBooks.forEachIndexed { index, copyBook ->
-            assertThat(copyBook.sourcePath).isEqualTo(copiedSources[index].sourcePath)
-            assertThat(copyBook.printAll()).isEqualTo(copiedSources[index].printAll())
-        }
-        val outputCapture = PrintOutputCapture<ExecutionContext>(InMemoryExecutionContext())
-        printer.visit(cu, outputCapture)
-        val result = outputCapture.getOut()
-        assertThat(result).isEqualTo(lstResult)
     }
 
     @Test
-    fun sm201A() {
-        assertCopyBooksParsed("SM201A.CBL", sm201A)
-    }
+    fun sm201A() =
+        rewriteRun(
+            cobolCopy(getNistSource("SM201A.CBL"), sm201A)
+        )
 
     @Test
-    fun sm202A() {
-        assertCopyBooksParsed("SM202A.CBL", sm202A)
-    }
+    fun sm202A() =
+        rewriteRun(
+            cobolCopy(getNistSource("SM202A.CBL"), sm202A)
+        )
 
     @Test
-    fun sm203A() {
-        assertCopyBooksParsed("SM203A.CBL", sm203A)
-    }
+    fun sm203A() =
+        rewriteRun(
+            cobolCopy(getNistSource("SM203A.CBL"), sm203A)
+        )
 
     @Test
-    fun sm205A() {
-        assertCopyBooksParsed("SM205A.CBL", sm205A)
-    }
+    fun sm205A() =
+        rewriteRun(
+            cobolCopy(getNistSource("SM205A.CBL"), sm205A)
+        )
 
     @Test
-    fun sm206A() {
-        assertCopyBooksParsed("SM206A.CBL", sm206A)
-    }
+    fun sm206A() =
+        rewriteRun(
+            cobolCopy(getNistSource("SM206A.CBL"), sm206A)
+        )
 
     @Test
-    fun sm208A() {
-        assertCopyBooksParsed("SM208A.CBL", sm208A)
-    }
+    fun sm208A() =
+        rewriteRun(
+            cobolCopy(getNistSource("SM208A.CBL"), sm208A)
+        )
 
     val sm201A =
         """

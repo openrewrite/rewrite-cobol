@@ -16,9 +16,13 @@
 package org.openrewrite.cobol.tree;
 
 import io.moderne.serialization.TreeSerializer;
+import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.*;
+import org.openrewrite.cobol.internal.CobolPrinter;
 import org.openrewrite.cobol.internal.IbmAnsi85;
+import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.test.SourceSpec;
 import org.openrewrite.test.SourceSpecs;
@@ -33,6 +37,7 @@ import java.util.function.Consumer;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ParserAssertions {
     private ParserAssertions() {
@@ -94,12 +99,12 @@ public class ParserAssertions {
         return cobol;
     }
 
-    public static SourceSpecs cobolCopy(@Nullable String before, @Nullable String after) {
-        return cobolCopy(before, after, s -> {
+    public static SourceSpecs cobolCopy(@Nullable String before, String expectedLst) {
+        return cobolCopy(before, expectedLst, s -> {
         });
     }
 
-    public static SourceSpecs cobolCopy(@Nullable String before, @Nullable String after,
+    public static SourceSpecs cobolCopy(@Nullable String before, String expectedLst,
                                     Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
         List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
 
@@ -109,8 +114,8 @@ public class ParserAssertions {
                         CobolParser.builder()
                                 .setCopyBooks(copyBooks),
                         before,
-                        s -> after);
-        spec.andThen(isFullyParsed()).andThen(isSerializable()).accept(cobol);
+                        null);
+        spec.andThen(isFullyParsed()).andThen(isSerializable()).andThen(isExpectedLst(expectedLst)).accept(cobol);
         return cobol;
     }
 
@@ -238,6 +243,15 @@ public class ParserAssertions {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        });
+    }
+
+    public static Consumer<SourceSpec<Cobol.CompilationUnit>> isExpectedLst(String expectedLst) {
+        return spec -> spec.afterRecipe(cu -> {
+            CobolPrinter<ExecutionContext> printer = new CobolPrinter<>(false, false);
+            PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
+            printer.visit(cu, outputCapture);
+            assertThat(StringUtils.trimIndentPreserveCRLF(outputCapture.getOut())).isEqualTo(expectedLst);
         });
     }
 }

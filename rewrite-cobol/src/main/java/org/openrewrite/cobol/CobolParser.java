@@ -89,8 +89,8 @@ public class CobolParser implements Parser<CobolSourceFile> {
                 .setEnableReplace(enableReplace)
                 .build();
 
-        List<CobolPreprocessor.CopyBook> copyBooks = !this.copyBooks.isEmpty() ? this.copyBooks : cobolPreprocessorParser.parseCopyBooks(copyBookInputs, relativeTo, cobolDialect, ctx);
-        cobolPreprocessorParser.setCopyBooks(copyBooks);
+        List<CobolPreprocessor.CopyBook> copyBooks = cobolPreprocessorParser.parseCopyBooks(copyBookInputs, relativeTo, cobolDialect, ctx);
+        cobolPreprocessorParser.setCopyBooks(!this.copyBooks.isEmpty() ? this.copyBooks : copyBooks);
 
         List<CobolSourceFile> sources;
         sources = cobolInputs.stream()
