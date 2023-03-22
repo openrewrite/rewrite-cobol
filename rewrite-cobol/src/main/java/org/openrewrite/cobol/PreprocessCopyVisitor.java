@@ -2,6 +2,7 @@ package org.openrewrite.cobol;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import org.openrewrite.Tree;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
         CobolPreprocessor.CopyStatement c = super.visitCopyStatement(copyStatement, p);
 
         if (copyBooks.containsKey(copyStatement.getCopySource().getName().getWord())) {
-            c = c.withCopyBook(copyBooks.get(copyStatement.getCopySource().getName().getWord()));
+            c = c.withCopyBook(copyBooks.get(copyStatement.getCopySource().getName().getWord()).withId(Tree.randomId()));
         }
         return c;
     }
