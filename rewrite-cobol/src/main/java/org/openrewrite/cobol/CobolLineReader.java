@@ -36,6 +36,11 @@ public class CobolLineReader {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
 
+            if (isSubstituteCharacter(line)) {
+                processedSource.append(line);
+                continue;
+            }
+
             String indicator = line.substring(indicatorArea, contentAreaAStart);
             String contentArea = line.substring(contentAreaAStart, contentAreaBEnd);
             boolean isValidText = !(" ".equals(indicator) && contentArea.trim().isEmpty());

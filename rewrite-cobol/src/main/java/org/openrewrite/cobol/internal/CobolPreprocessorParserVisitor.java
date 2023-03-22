@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.openrewrite.Tree.randomId;
+import static org.openrewrite.cobol.CobolStringUtils.isSubstituteCharacter;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.END_OF_FILE;
 
@@ -106,6 +107,10 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             for (String part : parts) {
                 boolean isCRLF = part.endsWith("\r");
                 String cleanedPart = isCRLF ? part.substring(0, part.length() - 1) : part;
+                if (isSubstituteCharacter(part)) {
+                    pos += part.length();
+                    continue;
+                }
 
                 String sequenceArea = cleanedPart.substring(columns.getSequenceArea(), columns.getIndicatorArea());
                 sequenceAreas.put(pos, sequenceArea);
@@ -989,7 +994,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             int iterations = 0;
             while (iterations < 250) {
                 // Stop after all the trailing comments have been parsed.
-                if (source.substring(cursor).isEmpty()) {
+                if (source.substring(cursor).isEmpty() || isSubstituteCharacter(source.substring(cursor))) {
                     break;
                 }
 

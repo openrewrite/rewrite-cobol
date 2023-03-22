@@ -18,4 +18,8 @@ public class CobolStringUtils {
     public static String trimTrailingWhitespace(String contentArea) {
         return contentArea.replaceAll("\\s+$", EMPTY_STRING);
     }
+
+    public static boolean isSubstituteCharacter(String text) {
+        return text.length() == 1 && '\u001A' == text.charAt(0);
+    }
 }

@@ -292,4 +292,9 @@ class CobolPreprocessorCopyBookTest : CobolTest() {
     fun ksm41() = rewriteRun(
         cobolPreprocessorCopy(getNistSource("KSM41.CPY"))
     )
+
+    @Test
+    fun trailingSub() = rewriteRun(
+        cobolPreprocessorCopy(getNistSource("TRAILING_SUB.CPY"))
+    )
 }
