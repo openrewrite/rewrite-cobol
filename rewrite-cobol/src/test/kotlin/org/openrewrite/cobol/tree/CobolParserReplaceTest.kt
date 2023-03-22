@@ -62,6 +62,12 @@ class CobolParserReplaceTest : CobolTest() {
             cobolCopy(getNistSource("SM208A.CBL"), sm208A)
         )
 
+    @Test
+    fun sm201ATrailingSub() =
+        rewriteRun(
+            cobolCopy(getNistSource("SM201A_TRAILING_SUB.CBL"), sm201A)
+        )
+
     val sm201A =
         """
         IDENTIFICATION DIVISION.                                         

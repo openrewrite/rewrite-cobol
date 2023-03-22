@@ -994,7 +994,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             int iterations = 0;
             while (iterations < 250) {
                 // Stop after all the trailing comments have been parsed.
-                if (source.substring(cursor).isEmpty() || isSubstituteCharacter(source.substring(cursor))) {
+                if (source.substring(cursor).isEmpty() || isSubstituteCharacter(String.valueOf(source.substring(cursor).charAt(0)))) {
                     break;
                 }
 

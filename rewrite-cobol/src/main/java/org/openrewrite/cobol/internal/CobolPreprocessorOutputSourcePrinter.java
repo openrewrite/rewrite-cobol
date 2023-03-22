@@ -29,14 +29,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.openrewrite.cobol.CobolPrinterUtils.*;
+import static org.openrewrite.cobol.CobolStringUtils.isSubstituteCharacter;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
 
 /**
  * Print the post processed COBOL AST with comments that act like a `JavaTemplate`.
  * The comments are used to link AST elements that contain the original source code to the COBOL AST.
- *
+ * <p>
  * Each key will be added as a comment that is formatted based on the current {@link CobolDialect}.
- *
+ * <p>
  * `printWithColumnAreas`:
  *      true: Print as source code with modifications to distinguish changes during preprocessing like COPY and REPLACE.
  *      false: Print as parser input for the CobolParserVisitor.
@@ -305,7 +306,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
         } else if (replaceAdditiveTypeOptional.isPresent()) {
             replaceAdditiveTemplate(replaceAdditiveTypeOptional.get(), p);
             super.visitWord(word, p);
-        } else {
+        } else if (!isSubstituteCharacter(word.getWord())) {
             super.visitWord(word, p);
         }
         return word;
