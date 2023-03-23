@@ -29,6 +29,7 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
 
     private final boolean printColumns;
     private final boolean printOriginalSource;
+    private Cobol.Preprocessor.Replacement additiveReplacement = null;
 
     public CobolPrinter(boolean printColumns,
                         boolean printOriginalSource) {
@@ -51,6 +52,16 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
                 visitMarkers(cobolLine.getMarkers(), p);
                 cobolLine.printCobolLine(this, getCursor(), p);
             }
+        }
+
+        if (additiveReplacement == null && word.getReplacement() != null && word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.ADDITIVE) {
+            additiveReplacement = word.getReplacement();
+        } else if (additiveReplacement != null && word.getReplacement() != null && word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.ADDITIVE && additiveReplacement.getId() != word.getReplacement().getId()) {
+            additiveReplacement = word.getReplacement();
+            p.append("\n");
+        } else if (additiveReplacement != null && word.getReplacement() == null) {
+            additiveReplacement = null;
+            p.append("\n");
         }
 
         Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);

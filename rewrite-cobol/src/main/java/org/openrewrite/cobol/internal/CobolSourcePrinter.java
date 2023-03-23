@@ -4398,6 +4398,8 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                     originalReplaceLength = 0;
                     return word;
                 }
+            } else if (word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.ADDITIVE) {
+                return word;
             } else if (word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.REDUCTIVE) {
                 if (printedReductiveReplaces.add(word.getReplacement().getId().toString())) {
                     for (Cobol.Preprocessor.Replacement.OriginalWord originalWord : word.getReplacement().getOriginalWords()) {

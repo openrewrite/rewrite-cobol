@@ -266,6 +266,11 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
                     for (Replace additionalWord : replaceAdditiveType.getAdditionalWords()) {
                         visit(additionalWord.getOriginalWord(), p);
                     }
+                    int curIndex = getCurrentIndex(p.getOut());
+                    int contentEnd = cobolDialect.getColumns().getOtherArea();
+                    int untilEndOfLine = curIndex >= contentEnd ? 0 : cobolDialect.getColumns().getOtherArea() - curIndex;
+                    String whitespace = generateWhitespace(untilEndOfLine) + "\n";
+                    p.append(whitespace);
                 }
 
                 visitSpace(word.getPrefix(), Space.Location.WORD_PREFIX, p);
