@@ -68,6 +68,23 @@ class CobolParserReplaceTest : CobolTest() {
             cobolCopy(getNistSource("SM201A_TRAILING_SUB.CBL"), sm201A)
         )
 
+    @Test
+    fun reductiveReplace() =
+        rewriteRun(
+            cobolCopy(getNistSource("REDUCTIVE_REPLACE.CBL"),
+                """
+                IDENTIFICATION DIVISION.                                         
+                PROGRAM-ID. SM208A.                                              
+                ENVIRONMENT DIVISION.                                            
+                DATA DIVISION.                                                   
+                WORKING-STORAGE SECTION.                                         
+                02  B     PICTURE S9(7) COMP.                                    
+                03  C     PICTURE XXBXX/XX.                                      
+                01  D     PICTURE X(7) VALUE "PICTURE".                          
+                """.trimIndent()
+            )
+        )
+
     val sm201A =
         """
         IDENTIFICATION DIVISION.                                         

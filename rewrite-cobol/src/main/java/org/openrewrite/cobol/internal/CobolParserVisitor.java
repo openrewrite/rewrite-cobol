@@ -5990,6 +5990,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         ReplaceBy replaceByMarker = null;
         ReplaceOff replaceOffMarker = null;
         Replace replaceMarker = null;
+        ReplaceAdditiveType replaceAdditiveTypeMarker = null;
+        ReplaceReductiveType replaceReductiveTypeMarker = null;
         Lines lines = null;
         for (Marker marker : markers) {
             if (marker instanceof SequenceArea) {
@@ -6006,6 +6008,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 replaceOffMarker = (ReplaceOff) marker;
             } else if (marker instanceof Replace) {
                 replaceMarker = (Replace) marker;
+            } else if (marker instanceof ReplaceAdditiveType) {
+                replaceAdditiveTypeMarker = (ReplaceAdditiveType) marker;
+            } else if (marker instanceof ReplaceReductiveType) {
+                replaceReductiveTypeMarker = (ReplaceReductiveType) marker;
             } else if (marker instanceof Lines) {
                 lines = (Lines) marker;
             }
@@ -6071,10 +6077,20 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.remove(lines);
         }
 
-        Cobol.Preprocessor.Replace replace = null;
+        Cobol.Preprocessor.Replacement replacement = null;
         if (replaceMarker != null) {
-            replace = CobolPreprocessorConverter.convertEqualReplacement(replaceMarker);
+            replacement = CobolPreprocessorConverter.convertReplace(replaceMarker);
             markers.remove(replaceMarker);
+        }
+
+        if (replaceAdditiveTypeMarker != null) {
+            replacement = CobolPreprocessorConverter.convertAdditiveReplacement(replaceAdditiveTypeMarker);
+            markers.remove(replaceAdditiveTypeMarker);
+        }
+
+        if (replaceReductiveTypeMarker != null) {
+            replacement = CobolPreprocessorConverter.convertReductiveReplacement(replaceReductiveTypeMarker);
+            markers.remove(replaceReductiveTypeMarker);
         }
 
         return new Cobol.Word(
@@ -6089,7 +6105,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 copyStatement,
                 replaceByStatement,
                 replaceOffStatement,
-                replace
+                replacement
         );
     }
 
@@ -7437,6 +7453,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             ReplaceBy replaceByMarker = null;
             ReplaceOff replaceOffMarker = null;
             Replace replaceMarker = null;
+            ReplaceAdditiveType replaceAdditiveTypeMarker = null;
+            ReplaceReductiveType replaceReductiveTypeMarker = null;
             Lines lines = null;
             for (Marker marker : markers) {
                 if (marker instanceof Copy) {
@@ -7447,6 +7465,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     replaceOffMarker = (ReplaceOff) marker;
                 } else if (marker instanceof Replace) {
                     replaceMarker = (Replace) marker;
+                } else if (marker instanceof ReplaceAdditiveType) {
+                    replaceAdditiveTypeMarker = (ReplaceAdditiveType) marker;
+                } else if (marker instanceof ReplaceReductiveType) {
+                    replaceReductiveTypeMarker = (ReplaceReductiveType) marker;
                 } else if (marker instanceof Lines) {
                     lines = (Lines) marker;
                 }
@@ -7454,26 +7476,36 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
 
             Cobol.Preprocessor.CopyStatement copyStatement = null;
             if (copyMarker != null) {
-                copyStatement = CobolPreprocessorConverter.convertCopyStatement(copyMarker.getOriginalStatement());
+                copyStatement = convertCopyStatement(copyMarker.getOriginalStatement());
                 markers.remove(copyMarker);
             }
 
             Cobol.Preprocessor.ReplaceByStatement replaceByStatement = null;
             if (replaceByMarker != null) {
-                replaceByStatement = CobolPreprocessorConverter.convertReplaceByStatement(replaceByMarker.getStatement());
+                replaceByStatement = convertReplaceByStatement(replaceByMarker.getStatement());
                 markers.remove(replaceByMarker);
             }
 
             Cobol.Preprocessor.ReplaceOffStatement replaceOffStatement = null;
             if (replaceOffMarker != null) {
-                replaceOffStatement = CobolPreprocessorConverter.convertReplaceOffStatement(replaceOffMarker.getReplaceOff());
+                replaceOffStatement = convertReplaceOffStatement(replaceOffMarker.getReplaceOff());
                 markers.remove(replaceOffMarker);
             }
 
-            Cobol.Preprocessor.Replace replace = null;
+            Cobol.Preprocessor.Replacement replacement = null;
             if (replaceMarker != null) {
-                replace = CobolPreprocessorConverter.convertEqualReplacement(replaceMarker);
+                replacement = convertReplace(replaceMarker);
                 markers.remove(replaceMarker);
+            }
+
+            if (replaceAdditiveTypeMarker != null) {
+                replacement = convertAdditiveReplacement(replaceAdditiveTypeMarker);
+                markers.remove(replaceAdditiveTypeMarker);
+            }
+
+            if (replaceReductiveTypeMarker != null) {
+                replacement = convertReductiveReplacement(replaceReductiveTypeMarker);
+                markers.remove(replaceReductiveTypeMarker);
             }
 
             List<CobolLine> cobolLines = null;
@@ -7512,17 +7544,45 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     copyStatement,
                     replaceByStatement,
                     replaceOffStatement,
-                    replace);
+                    replacement);
         }
 
         /* COBOL preprocessor replacements */
-        private static Cobol.Preprocessor.EqualReplacement convertEqualReplacement(Replace replace) {
-            return new Cobol.Preprocessor.EqualReplacement(
+        private static Cobol.Preprocessor.Replacement convertReplace(Replace replace) {
+            return new Cobol.Preprocessor.Replacement(
                     replace.getId(),
                     Space.EMPTY,
                     Markers.EMPTY,
-                    convertWord(replace.getOriginalWord()),
-                    replace.isReplacedWithEmpty());
+                    singletonList(new Cobol.Preprocessor.Replacement.OriginalWord(
+                            convertWord(replace.getOriginalWord()),
+                            replace.isReplacedWithEmpty())),
+                    Cobol.Preprocessor.Replacement.Type.EQUAL);
+        }
+
+        private static Cobol.Preprocessor.Replacement convertReductiveReplacement(ReplaceReductiveType replaceReductiveType) {
+            return new Cobol.Preprocessor.Replacement(
+                    replaceReductiveType.getId(),
+                    Space.EMPTY,
+                    Markers.EMPTY,
+                    replaceReductiveType.getOriginalWords().stream()
+                            .map(it -> new Cobol.Preprocessor.Replacement.OriginalWord(
+                                    convertWord(it.getOriginalWord()),
+                                    it.isReplacedWithEmpty()))
+                            .collect(toList()),
+                    Cobol.Preprocessor.Replacement.Type.REDUCTIVE);
+        }
+
+        private static Cobol.Preprocessor.Replacement convertAdditiveReplacement(ReplaceAdditiveType replaceAdditiveType) {
+            return new Cobol.Preprocessor.Replacement(
+                    replaceAdditiveType.getId(),
+                    Space.EMPTY,
+                    Markers.EMPTY,
+                    replaceAdditiveType.getAdditionalWords().stream()
+                            .map(it -> new Cobol.Preprocessor.Replacement.OriginalWord(
+                                    convertWord(it.getOriginalWord()),
+                                    it.isReplacedWithEmpty()))
+                            .collect(toList()),
+                    Cobol.Preprocessor.Replacement.Type.ADDITIVE);
         }
 
         @Nullable

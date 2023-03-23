@@ -1074,7 +1074,7 @@ public interface Cobol extends Tree {
         Preprocessor.ReplaceOffStatement replaceOffStatement;
 
         @Nullable
-        Preprocessor.Replace replace;
+        Preprocessor.Replacement replacement;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -10241,7 +10241,7 @@ public interface Cobol extends Tree {
         @Value
         @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
         @With
-        public static class EqualReplacement implements Replace {
+        public static class Replacement implements Cobol {
 
             @EqualsAndHashCode.Include
             UUID id;
@@ -10249,12 +10249,26 @@ public interface Cobol extends Tree {
             Space prefix;
             Markers markers;
 
-            Word original;
-            boolean replacedWithEmpty;
+            List<OriginalWord> originalWords;
+            Type type;
+
+            @Value
+            @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+            @With
+            public static class OriginalWord {
+                Word original;
+                boolean replacedWithEmpty;
+            }
+
+            public enum Type {
+                ADDITIVE,
+                REDUCTIVE,
+                EQUAL
+            }
 
             @Override
             public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
-                return v.visitEqualReplacement(this, p);
+                return v.visitReplacement(this, p);
             }
         }
 

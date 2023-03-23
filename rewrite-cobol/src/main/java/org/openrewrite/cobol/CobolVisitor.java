@@ -4616,12 +4616,11 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
     }
 
     /* Cobol$Preprocessor$Replace */
-    public Cobol visitEqualReplacement(Cobol.Preprocessor.EqualReplacement equalReplacement, P p) {
-        Cobol.Preprocessor.EqualReplacement e = equalReplacement;
-        // A replacement does not contain a prefix.
-        e = e.withMarkers(visitMarkers(e.getMarkers(), p));
-        e = e.withOriginal((Cobol.Word) visit(e.getOriginal(), p));
-        return e;
+    public Cobol visitReplacement(Cobol.Preprocessor.Replacement replacement, P p) {
+        Cobol.Preprocessor.Replacement r = replacement;
+        r = r.withOriginalWords(ListUtils.map(r.getOriginalWords(), it ->
+                it.withOriginal((Cobol.Word) visit(it.getOriginal(), p))));
+        return r;
     }
 
     /* Misc visits */
