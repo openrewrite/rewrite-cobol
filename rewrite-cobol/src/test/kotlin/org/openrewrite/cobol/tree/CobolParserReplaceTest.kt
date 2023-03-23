@@ -68,6 +68,44 @@ class CobolParserReplaceTest : CobolTest() {
             cobolCopy(getNistSource("SM201A_TRAILING_SUB.CBL"), sm201A)
         )
 
+    @Test
+    fun additiveReplace() =
+        rewriteRun(
+            cobolCopy(getNistSource("ADDITIVE_REPLACE.CBL"),
+                """
+                IDENTIFICATION DIVISION.                                         
+                PROGRAM-ID. SM208A.                                              
+                ENVIRONMENT DIVISION.                                            
+                DATA DIVISION.                                                   
+                WORKING-STORAGE SECTION.                                         
+                01    B     PICTURE                 S9(                                             
+                7) COMP.
+                01  C     PICTURE XXBXX/XX.                                      
+                01  D     PICTURE X(7) VALUE "PICTURE".                          
+                01  WRK-XN-00001  PIC X.                                         
+                01  WRK-XN-00020  PIC X(20).                                     
+                01  WRK-XN-00322  PIC X(322).                                    
+                """.trimIndent()
+            )
+        )
+
+    @Test
+    fun reductiveReplace() =
+        rewriteRun(
+            cobolCopy(getNistSource("REDUCTIVE_REPLACE.CBL"),
+                """
+                IDENTIFICATION DIVISION.                                         
+                PROGRAM-ID. SM208A.                                              
+                ENVIRONMENT DIVISION.                                            
+                DATA DIVISION.                                                   
+                WORKING-STORAGE SECTION.                                         
+                02  B     PICTURE S9(7) COMP.                                    
+                03  C     PICTURE XXBXX/XX.                                      
+                01  D     PICTURE X(7) VALUE "PICTURE".                          
+                """.trimIndent()
+            )
+        )
+
     val sm201A =
         """
         IDENTIFICATION DIVISION.                                         

@@ -47,11 +47,13 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     private final boolean printColumns;
 
     private final Collection<String> printedCopyStatements;
+    private final Collection<String> printedReductiveReplaces;
 
 
     public CobolSourcePrinter(boolean printColumns) {
         this.printColumns = printColumns;
         this.printedCopyStatements = new HashSet<>();
+        this.printedReductiveReplaces = new HashSet<>();
     }
 
     @Override
@@ -4384,16 +4386,29 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             }
         }
 
-        if (word.getReplace() != null && word.getCopyStatement() == null) {
-            if (word.getReplace() instanceof Cobol.Preprocessor.EqualReplacement) {
-                Cobol.Preprocessor.EqualReplacement equalReplacement = (Cobol.Preprocessor.EqualReplacement) word.getReplace();
+        if (word.getReplacement() != null && word.getCopyStatement() == null) {
+            if (word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.EQUAL) {
                 int startLength = p.getOut().length();
-                visit(equalReplacement, p);
+                Cobol.Preprocessor.Replacement.OriginalWord originalWord = word.getReplacement().getOriginalWords().get(0);
+                visit(originalWord.getOriginal(), p);
                 int endLength = p.getOut().length();
-                if (equalReplacement.isReplacedWithEmpty()) {
+                if (originalWord.isReplacedWithEmpty()) {
                     originalReplaceLength = endLength - startLength;
                 } else {
                     originalReplaceLength = 0;
+                    return word;
+                }
+            } else if (word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.ADDITIVE) {
+                return word;
+            } else if (word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.REDUCTIVE) {
+                if (printedReductiveReplaces.add(word.getReplacement().getId().toString())) {
+                    for (Cobol.Preprocessor.Replacement.OriginalWord originalWord : word.getReplacement().getOriginalWords()) {
+                        visit(originalWord.getOriginal(), p);
+                    }
+                    visit(word.getSequenceArea(), p);
+                    visit(word.getIndicatorArea(), p);
+                    beforeSyntax(word, Space.Location.WORD_PREFIX, p);
+                    p.append(word.getWord());
                     return word;
                 }
             }
@@ -4438,9 +4453,9 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             if (replace != null && replace.isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
                 originalReplaceLength = 0;
-            } else if (word.getReplace() != null &&
-                    word.getReplace() instanceof Cobol.Preprocessor.EqualReplacement &&
-                    ((Cobol.Preprocessor.EqualReplacement) word.getReplace()).isReplacedWithEmpty()) {
+            } else if (word.getReplacement() != null &&
+                    word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.EQUAL &&
+                    word.getReplacement().getOriginalWords().get(0).isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
                 originalReplaceLength = 0;
             } else {
@@ -4760,14 +4775,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(titleStatement.getDot(), p);
         afterSyntax(titleStatement, p);
         return titleStatement;
-    }
-
-    /* Cobol$Preprocessor$Replace */
-    @Override
-    public Cobol visitEqualReplacement(Cobol.Preprocessor.EqualReplacement equalReplacement, PrintOutputCapture<P> p) {
-        Cobol.Preprocessor.EqualReplacement e = equalReplacement;
-        e = e.withOriginal((Cobol.Word) visit(e.getOriginal(), p));
-        return e;
     }
 
     /* Misc */
