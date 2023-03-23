@@ -25,11 +25,8 @@ import org.openrewrite.marker.Markers;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-
-import static java.util.Collections.emptyList;
 
 public interface Cobol extends Tree {
 
@@ -1075,6 +1072,9 @@ public interface Cobol extends Tree {
 
         @Nullable
         Preprocessor.ReplaceOffStatement replaceOffStatement;
+
+        @Nullable
+        Preprocessor.Replace replace;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -10236,6 +10236,32 @@ public interface Cobol extends Tree {
             public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
                 return v.visitTitleStatement(this, p);
             }
+        }
+
+        @Value
+        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+        @With
+        public static class EqualReplacement implements Replace {
+
+            @EqualsAndHashCode.Include
+            UUID id;
+
+            Space prefix;
+            Markers markers;
+
+            Word original;
+            boolean replacedWithEmpty;
+
+            @Override
+            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
+                return v.visitEqualReplacement(this, p);
+            }
+        }
+
+        /**
+         * Preserves the original source code before the compiler copy and replace phases.
+         */
+        public interface Replace extends Cobol {
         }
     }
 }

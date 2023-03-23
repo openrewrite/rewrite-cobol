@@ -5989,6 +5989,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         Copy copyMarker = null;
         ReplaceBy replaceByMarker = null;
         ReplaceOff replaceOffMarker = null;
+        Replace replaceMarker = null;
         Lines lines = null;
         for (Marker marker : markers) {
             if (marker instanceof SequenceArea) {
@@ -6003,6 +6004,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 replaceByMarker = (ReplaceBy) marker;
             } else if (marker instanceof ReplaceOff) {
                 replaceOffMarker = (ReplaceOff) marker;
+            } else if (marker instanceof Replace) {
+                replaceMarker = (Replace) marker;
             } else if (marker instanceof Lines) {
                 lines = (Lines) marker;
             }
@@ -6068,6 +6071,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.remove(lines);
         }
 
+        Cobol.Preprocessor.Replace replace = null;
+        if (replaceMarker != null) {
+            replace = CobolPreprocessorConverter.convertEqualReplacement(replaceMarker);
+            markers.remove(replaceMarker);
+        }
+
         return new Cobol.Word(
                 randomId(),
                 prefix,
@@ -6079,7 +6088,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 commentArea,
                 copyStatement,
                 replaceByStatement,
-                replaceOffStatement
+                replaceOffStatement,
+                replace
         );
     }
 
@@ -7415,6 +7425,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     convertWord(titleStatement.getSecond()),
                     convertWord(titleStatement.getDot()));
         }
+
         @Nullable
         private static Cobol.Word convertWord(@Nullable CobolPreprocessor.Word word) {
             if (word == null) {
@@ -7425,6 +7436,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             Copy copyMarker = null;
             ReplaceBy replaceByMarker = null;
             ReplaceOff replaceOffMarker = null;
+            Replace replaceMarker = null;
             Lines lines = null;
             for (Marker marker : markers) {
                 if (marker instanceof Copy) {
@@ -7433,6 +7445,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     replaceByMarker = (ReplaceBy) marker;
                 } else if (marker instanceof ReplaceOff) {
                     replaceOffMarker = (ReplaceOff) marker;
+                } else if (marker instanceof Replace) {
+                    replaceMarker = (Replace) marker;
                 } else if (marker instanceof Lines) {
                     lines = (Lines) marker;
                 }
@@ -7454,6 +7468,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             if (replaceOffMarker != null) {
                 replaceOffStatement = CobolPreprocessorConverter.convertReplaceOffStatement(replaceOffMarker.getReplaceOff());
                 markers.remove(replaceOffMarker);
+            }
+
+            Cobol.Preprocessor.Replace replace = null;
+            if (replaceMarker != null) {
+                replace = CobolPreprocessorConverter.convertEqualReplacement(replaceMarker);
+                markers.remove(replaceMarker);
             }
 
             List<CobolLine> cobolLines = null;
@@ -7491,7 +7511,18 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                                     word.getCommentArea().isAdded()),
                     copyStatement,
                     replaceByStatement,
-                    replaceOffStatement);
+                    replaceOffStatement,
+                    replace);
+        }
+
+        /* COBOL preprocessor replacements */
+        private static Cobol.Preprocessor.EqualReplacement convertEqualReplacement(Replace replace) {
+            return new Cobol.Preprocessor.EqualReplacement(
+                    replace.getId(),
+                    Space.EMPTY,
+                    Markers.EMPTY,
+                    convertWord(replace.getOriginalWord()),
+                    replace.isReplacedWithEmpty());
         }
 
         @Nullable

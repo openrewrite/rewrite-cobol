@@ -4615,16 +4615,25 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return t;
     }
 
+    /* Cobol$Preprocessor$Replace */
+    public Cobol visitEqualReplacement(Cobol.Preprocessor.EqualReplacement equalReplacement, P p) {
+        Cobol.Preprocessor.EqualReplacement e = equalReplacement;
+        // A replacement does not contain a prefix.
+        e = e.withMarkers(visitMarkers(e.getMarkers(), p));
+        e = e.withOriginal((Cobol.Word) visit(e.getOriginal(), p));
+        return e;
+    }
+
     /* Misc visits */
-    public <M extends Marker> M visitSequenceArea(SequenceArea sequenceArea, P p) {
+    @Nullable
+    public <M extends Marker> M visitSequenceArea(@Nullable SequenceArea sequenceArea, P p) {
         //noinspection unchecked
         return (M) sequenceArea;
     }
 
     public <M extends Marker> M visitIndicatorArea(IndicatorArea indicatorArea, P p) {
-        IndicatorArea i = indicatorArea;
         //noinspection unchecked
-        return (M) i;
+        return (M) indicatorArea;
     }
 
     @Nullable

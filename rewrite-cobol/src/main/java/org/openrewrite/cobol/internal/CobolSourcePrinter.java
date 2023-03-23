@@ -2521,9 +2521,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
     @Override
     public Cobol visitProcedureDivisionUsingClause(Cobol.ProcedureDivisionUsingClause procedureDivisionUsingClause, PrintOutputCapture<P> p) {
-        if (procedureDivisionUsingClause == null) {
-            return null;
-        }
         beforeSyntax(procedureDivisionUsingClause, Space.Location.PROCEDURE_DIVISION_USING_CLAUSE_PREFIX, p);
         visit(procedureDivisionUsingClause.getWord(), p);
         visit(procedureDivisionUsingClause.getProcedureDivisionUsingParameter(), p);
@@ -4341,6 +4338,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 // TODO remove, in place for backwards compatibility.
                 replaceOff = (ReplaceOff) marker;
             } else if (marker instanceof Replace) {
+                // TODO remove, in place for backwards compatibility.
                 replace = (Replace) marker;
             } else if (marker instanceof Continuation) {
                 continuation = (Continuation) marker;
@@ -4371,6 +4369,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             visit(word.getReplaceOffStatement(), p);
         }
 
+        // TODO remove, in place for backwards compatibility.
         if (replace != null && word.getCopyStatement() == null) {
             // Print the original replace
             PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
@@ -4382,6 +4381,21 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             } else {
                 originalReplaceLength = 0;
                 return word;
+            }
+        }
+
+        if (word.getReplace() != null && word.getCopyStatement() == null) {
+            if (word.getReplace() instanceof Cobol.Preprocessor.EqualReplacement) {
+                Cobol.Preprocessor.EqualReplacement equalReplacement = (Cobol.Preprocessor.EqualReplacement) word.getReplace();
+                int startLength = p.getOut().length();
+                visit(equalReplacement, p);
+                int endLength = p.getOut().length();
+                if (equalReplacement.isReplacedWithEmpty()) {
+                    originalReplaceLength = endLength - startLength;
+                } else {
+                    originalReplaceLength = 0;
+                    return word;
+                }
             }
         }
 
@@ -4420,7 +4434,13 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             visit(word.getSequenceArea(), p);
             visit(word.getIndicatorArea(), p);
 
+            // TODO: remove, this exists for old LSTs.
             if (replace != null && replace.isReplacedWithEmpty()) {
+                p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
+                originalReplaceLength = 0;
+            } else if (word.getReplace() != null &&
+                    word.getReplace() instanceof Cobol.Preprocessor.EqualReplacement &&
+                    ((Cobol.Preprocessor.EqualReplacement) word.getReplace()).isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
                 originalReplaceLength = 0;
             } else {
@@ -4742,6 +4762,14 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return titleStatement;
     }
 
+    /* Cobol$Preprocessor$Replace */
+    @Override
+    public Cobol visitEqualReplacement(Cobol.Preprocessor.EqualReplacement equalReplacement, PrintOutputCapture<P> p) {
+        Cobol.Preprocessor.EqualReplacement e = equalReplacement;
+        e = e.withOriginal((Cobol.Word) visit(e.getOriginal(), p));
+        return e;
+    }
+
     /* Misc */
 
     @Override
@@ -4821,12 +4849,14 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         return (M) lines;
     }
 
+    @Nullable
     @Override
-    public <M extends Marker> M visitSequenceArea(SequenceArea sequenceArea, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            p.append(sequenceArea.getSequence());
+    public <M extends Marker> M visitSequenceArea(@Nullable SequenceArea sequenceArea, PrintOutputCapture<P> p) {
+        if (sequenceArea != null) {
+            if (printColumns) {
+                p.append(sequenceArea.getSequence());
+            }
         }
-
         //noinspection unchecked
         return (M) sequenceArea;
     }
