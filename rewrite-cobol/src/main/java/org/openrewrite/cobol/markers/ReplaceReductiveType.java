@@ -27,4 +27,5 @@ import java.util.UUID;
 public class ReplaceReductiveType implements Marker {
     UUID id;
     List<Replace> originalWords;
+    boolean isCopiedSource;
 }

@@ -7556,7 +7556,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     singletonList(new Cobol.Preprocessor.Replacement.OriginalWord(
                             convertWord(replace.getOriginalWord()),
                             replace.isReplacedWithEmpty())),
-                    Cobol.Preprocessor.Replacement.Type.EQUAL);
+                    Cobol.Preprocessor.Replacement.Type.EQUAL,
+                    false);
         }
 
         private static Cobol.Preprocessor.Replacement convertReductiveReplacement(ReplaceReductiveType replaceReductiveType) {
@@ -7569,7 +7570,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                                     convertWord(it.getOriginalWord()),
                                     it.isReplacedWithEmpty()))
                             .collect(toList()),
-                    Cobol.Preprocessor.Replacement.Type.REDUCTIVE);
+                    Cobol.Preprocessor.Replacement.Type.REDUCTIVE,
+                    replaceReductiveType.isCopiedSource());
         }
 
         private static Cobol.Preprocessor.Replacement convertAdditiveReplacement(ReplaceAdditiveType replaceAdditiveType) {
@@ -7582,7 +7584,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                                     convertWord(it.getOriginalWord()),
                                     it.isReplacedWithEmpty()))
                             .collect(toList()),
-                    Cobol.Preprocessor.Replacement.Type.ADDITIVE);
+                    Cobol.Preprocessor.Replacement.Type.ADDITIVE,
+                    false);
         }
 
         @Nullable

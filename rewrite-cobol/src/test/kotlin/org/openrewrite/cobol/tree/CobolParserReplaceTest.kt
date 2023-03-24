@@ -1028,10 +1028,12 @@ class CobolParserReplaceTest : CobolTest() {
             MOVE     SPACE TO TOTAL-AREA.                                
         COPY-TEST-17.                                                    
             MOVE        TRUE-Q-04                                        
-         OF TRUE-Q-03                                                 IN TRUE-Q-02 TO AREA-1.                             
+         OF TRUE-Q-03                                                 IN TRUE-Q-02
+         TO AREA-1.                             
             MOVE     " TWO FIVE " TO AREA-2.                             
             MOVE                Z                                        
-         (2, 1, 1) TO AREA-3.                             
+         (2, 1, 1)
+         TO AREA-3.                             
             MOVE       +000004.99 TO AREA-4.                             
             IF       TOTAL-AREA EQUAL TO "TRUE  TWO + 2 =    4"          
                      PERFORM PASS ELSE PERFORM FAIL.                     
@@ -2276,7 +2278,8 @@ class CobolParserReplaceTest : CobolTest() {
                               WRK-XN-00050-O005F-001                     
                                                       IN                 
                                        GRP-006 IN                                          GRP-004                                                 IN                                              GRP-002                                                     IN          
-         GRP-001 (1).         
+         GRP-001 (1)
+        .         
             MOVE    "PST-TEST-002" TO PAR-NAME.                          
             MOVE    01 TO REC-CT.                                        
             IF      WRK-DS-05V00-O005-001 OF GRP-002 (1) EQUAL TO +6     

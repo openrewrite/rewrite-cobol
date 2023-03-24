@@ -10252,6 +10252,8 @@ public interface Cobol extends Tree {
             List<OriginalWord> originalWords;
             Type type;
 
+            boolean isCopiedSource;
+
             @Value
             @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
             @With

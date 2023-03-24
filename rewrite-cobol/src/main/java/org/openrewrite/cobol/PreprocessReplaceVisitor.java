@@ -216,7 +216,8 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                 }
             } else if (ReplacementType.REDUCTIVE == replacementType) {
                 if (!inMatch) {
-                    replaceReductiveType = new ReplaceReductiveType(randomId(), new ArrayList<>());
+                    boolean isCopiedSource = getCursor().dropParentUntil(is -> is instanceof CobolPreprocessor.CopyStatement || is instanceof CobolPreprocessor.ReplaceArea).getValue() instanceof CobolPreprocessor.CopyStatement;
+                    replaceReductiveType = new ReplaceReductiveType(randomId(), new ArrayList<>(), isCopiedSource);
                     if (from.containsKey(word)) {
                         inMatch = true;
                         current = from.get(word);
