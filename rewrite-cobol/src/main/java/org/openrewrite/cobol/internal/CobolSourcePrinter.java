@@ -21,6 +21,10 @@ import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolVisitor;
 import org.openrewrite.cobol.markers.*;
+import org.openrewrite.cobol.markers.CommentArea;
+import org.openrewrite.cobol.markers.Continuation;
+import org.openrewrite.cobol.markers.IndicatorArea;
+import org.openrewrite.cobol.markers.SequenceArea;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
@@ -41,6 +45,8 @@ import java.util.stream.Collectors;
  * Note: All the logic to print column areas exists in visitWord.
  */
 public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
+    public static final UnaryOperator<String> COBOL_MARKER_WRAPPER =
+            out -> "~~" + out + (out.isEmpty() ? "" : "~~") + ">";
 
     private final CobolPreprocessorSourcePrinter<ExecutionContext> printer = new CobolPreprocessorSourcePrinter<>(true);
     private int originalReplaceLength;
@@ -4405,8 +4411,12 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                     for (Cobol.Preprocessor.Replacement.OriginalWord originalWord : word.getReplacement().getOriginalWords()) {
                         visit(originalWord.getOriginal(), p);
                     }
-                    visit(word.getSequenceArea(), p);
-                    visit(word.getIndicatorArea(), p);
+                    if (word.getSequenceArea() != null) {
+                        word.getSequenceArea().printColumnArea(this, getCursor(), printColumns, p);
+                    }
+                    if (word.getIndicatorArea() != null) {
+                        word.getIndicatorArea().printColumnArea(this, getCursor(), printColumns, p);
+                    }
                     beforeSyntax(word, Space.Location.WORD_PREFIX, p);
                     p.append(word.getWord());
                     return word;
@@ -4424,7 +4434,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             // Do not print the AST for the copied source.
             return word;
         }
-
 
         if (printColumns) {
             // TODO: remove, this exists for old LSTs.
@@ -4445,9 +4454,15 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
         if (continuation != null) {
             visitContinuation(word, continuation, p);
+        } else if (word.getContinuation() != null) {
+            word.getContinuation().printContinuation(this, getCursor(), word, printColumns, p);
         } else {
-            visit(word.getSequenceArea(), p);
-            visit(word.getIndicatorArea(), p);
+            if (word.getSequenceArea() != null) {
+                word.getSequenceArea().printColumnArea(this, getCursor(), printColumns, p);
+            }
+            if (word.getIndicatorArea() != null) {
+                word.getIndicatorArea().printColumnArea(this, getCursor(), printColumns, p);
+            }
 
             // TODO: remove, this exists for old LSTs.
             if (replace != null && replace.isReplacedWithEmpty()) {
@@ -4465,7 +4480,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             p.append(word.getWord());
 
             if (word.getCommentArea() != null && !word.getCommentArea().isAdded()) {
-                visitCommentArea(word.getCommentArea(), p);
+                word.getCommentArea().printColumnArea(this, getCursor(), printColumns, p);
             }
         }
 
@@ -4893,9 +4908,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         //noinspection unchecked
         return (M) commentArea;
     }
-
-    private static final UnaryOperator<String> COBOL_MARKER_WRAPPER =
-            out -> "~~" + out + (out.isEmpty() ? "" : "~~") + ">";
 
     protected void beforeSyntax(Cobol c, Space.Location loc, PrintOutputCapture<P> p) {
         beforeSyntax(c.getPrefix(), c.getMarkers(), loc, p);

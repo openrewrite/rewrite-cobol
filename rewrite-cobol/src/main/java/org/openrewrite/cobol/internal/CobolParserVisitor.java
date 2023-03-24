@@ -23,6 +23,10 @@ import org.openrewrite.FileAttributes;
 import org.openrewrite.cobol.internal.grammar.CobolBaseVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolParser;
 import org.openrewrite.cobol.markers.*;
+import org.openrewrite.cobol.markers.CommentArea;
+import org.openrewrite.cobol.markers.Continuation;
+import org.openrewrite.cobol.markers.IndicatorArea;
+import org.openrewrite.cobol.markers.SequenceArea;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
@@ -5993,6 +5997,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
         ReplaceAdditiveType replaceAdditiveTypeMarker = null;
         ReplaceReductiveType replaceReductiveTypeMarker = null;
         Lines lines = null;
+        Continuation continuationMarker = null;
         for (Marker marker : markers) {
             if (marker instanceof SequenceArea) {
                 sequenceAreaMarker = (SequenceArea) marker;
@@ -6014,25 +6019,23 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 replaceReductiveTypeMarker = (ReplaceReductiveType) marker;
             } else if (marker instanceof Lines) {
                 lines = (Lines) marker;
+            } else if (marker instanceof Continuation) {
+                continuationMarker = (Continuation) marker;
             }
         }
 
-        Cobol.ColumnArea.SequenceArea sequenceArea = null;
+        org.openrewrite.cobol.tree.SequenceArea sequenceArea = null;
         if (sequenceAreaMarker != null) {
-            sequenceArea = new Cobol.ColumnArea.SequenceArea(
-                    randomId(),
-                    Space.EMPTY,
+            sequenceArea = new org.openrewrite.cobol.tree.SequenceArea(
                     Markers.EMPTY,
                     sequenceAreaMarker.getSequence()
             );
             markers.remove(sequenceAreaMarker);
         }
 
-        Cobol.ColumnArea.IndicatorArea indicatorArea = null;
+        org.openrewrite.cobol.tree.IndicatorArea indicatorArea = null;
         if (indicatorAreaMarker != null) {
-            indicatorArea = new Cobol.ColumnArea.IndicatorArea(
-                    randomId(),
-                    Space.EMPTY,
+            indicatorArea = new org.openrewrite.cobol.tree.IndicatorArea(
                     Markers.EMPTY,
                     indicatorAreaMarker.getIndicator(),
                     indicatorAreaMarker.getContinuationPrefix()
@@ -6040,10 +6043,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.remove(indicatorAreaMarker);
         }
 
-        Cobol.ColumnArea.CommentArea commentArea = null;
+        org.openrewrite.cobol.tree.CommentArea commentArea = null;
         if (commentAreaMarker != null) {
-            commentArea = new Cobol.ColumnArea.CommentArea(
-                    randomId(),
+            commentArea = new org.openrewrite.cobol.tree.CommentArea(
                     commentAreaMarker.getPrefix(),
                     Markers.EMPTY,
                     commentAreaMarker.getComment(),
@@ -6077,6 +6079,12 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             markers.remove(lines);
         }
 
+        org.openrewrite.cobol.tree.Continuation continuation = null;
+        if (continuationMarker != null) {
+            continuation = convertContinuation(continuationMarker);
+            markers.remove(continuationMarker);
+        }
+
         Cobol.Preprocessor.Replacement replacement = null;
         if (replaceMarker != null) {
             replacement = CobolPreprocessorConverter.convertReplace(replaceMarker);
@@ -6098,6 +6106,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 prefix,
                 markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
                 cobolLines,
+                continuation,
                 sequenceArea,
                 indicatorArea,
                 text,
@@ -7159,19 +7168,15 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     @Nullable
-    private static Cobol.ColumnArea.SequenceArea convertSequenceArea(@Nullable SequenceArea sequenceArea) {
-        return sequenceArea == null ? null : new Cobol.ColumnArea.SequenceArea(
-                randomId(),
-                Space.EMPTY,
+    private static org.openrewrite.cobol.tree.SequenceArea convertSequenceArea(@Nullable SequenceArea sequenceArea) {
+        return sequenceArea == null ? null : new org.openrewrite.cobol.tree.SequenceArea(
                 Markers.EMPTY,
                 sequenceArea.getSequence()
         );
     }
 
-    private static Cobol.ColumnArea.IndicatorArea convertIndicatorArea(IndicatorArea indicatorArea) {
-        return new Cobol.ColumnArea.IndicatorArea(
-                randomId(),
-                Space.EMPTY,
+    private static org.openrewrite.cobol.tree.IndicatorArea convertIndicatorArea(IndicatorArea indicatorArea) {
+        return new org.openrewrite.cobol.tree.IndicatorArea(
                 Markers.EMPTY,
                 indicatorArea.getIndicator(),
                 indicatorArea.getContinuationPrefix()
@@ -7179,14 +7184,37 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
     }
 
     @Nullable
-    private static Cobol.ColumnArea.CommentArea convertCommentArea(@Nullable CommentArea commentArea) {
-        return commentArea == null ? null : new Cobol.ColumnArea.CommentArea(
-                randomId(),
+    private static org.openrewrite.cobol.tree.CommentArea convertCommentArea(@Nullable CommentArea commentArea) {
+        return commentArea == null ? null : new org.openrewrite.cobol.tree.CommentArea(
                 commentArea.getPrefix(),
                 Markers.EMPTY,
                 commentArea.getComment(),
                 commentArea.getEndOfLine(),
                 commentArea.isAdded()
+        );
+    }
+
+    @Nullable
+    private static org.openrewrite.cobol.tree.Continuation convertContinuation(Continuation continuation) {
+        Map<Integer, List<ColumnArea>> columnAreas = new HashMap<>(continuation.getContinuations().size());
+        for (Map.Entry<Integer, Markers> entry : continuation.getContinuations().entrySet()) {
+            Markers markers = entry.getValue();
+            List<ColumnArea> areas = new ArrayList<>(markers.getMarkers().size());
+            for (Marker marker : markers.getMarkers()) {
+                if (marker instanceof SequenceArea) {
+                    areas.add(convertSequenceArea((SequenceArea) marker));
+                } else if (marker instanceof IndicatorArea) {
+                    areas.add(convertIndicatorArea((IndicatorArea) marker));
+                } else if (marker instanceof CommentArea) {
+                    areas.add(convertCommentArea((CommentArea) marker));
+                }
+            }
+            columnAreas.put(entry.getKey(), areas);
+        }
+
+        return new org.openrewrite.cobol.tree.Continuation(
+                Markers.EMPTY,
+                columnAreas
         );
     }
 
@@ -7456,6 +7484,7 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             ReplaceAdditiveType replaceAdditiveTypeMarker = null;
             ReplaceReductiveType replaceReductiveTypeMarker = null;
             Lines lines = null;
+            Continuation continuationMarker = null;
             for (Marker marker : markers) {
                 if (marker instanceof Copy) {
                     copyMarker = (Copy) marker;
@@ -7471,6 +7500,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     replaceReductiveTypeMarker = (ReplaceReductiveType) marker;
                 } else if (marker instanceof Lines) {
                     lines = (Lines) marker;
+                } else if (marker instanceof Continuation) {
+                    continuationMarker = (Continuation) marker;
                 }
             }
 
@@ -7514,28 +7545,30 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 markers.remove(lines);
             }
 
+            org.openrewrite.cobol.tree.Continuation continuation = null;
+            if (continuationMarker != null) {
+                continuation = convertContinuation(continuationMarker);
+                markers.remove(continuationMarker);
+            }
+
             return new Cobol.Word(
                     word.getId(),
                     word.getPrefix(),
                     word.getMarkers().withMarkers(markers),
                     cobolLines,
+                    continuation,
                     word.getSequenceArea() == null ? null :
-                            new Cobol.ColumnArea.SequenceArea(
-                                    word.getSequenceArea().getId(),
-                                    word.getSequenceArea().getPrefix(),
+                            new org.openrewrite.cobol.tree.SequenceArea(
                                     word.getSequenceArea().getMarkers(),
                                     word.getSequenceArea().getSequence()),
                     word.getIndicatorArea() == null ? null :
-                            new Cobol.ColumnArea.IndicatorArea(
-                                    word.getIndicatorArea().getId(),
-                                    word.getIndicatorArea().getPrefix(),
+                            new org.openrewrite.cobol.tree.IndicatorArea(
                                     word.getIndicatorArea().getMarkers(),
                                     word.getIndicatorArea().getIndicator(),
                                     word.getIndicatorArea().getContinuationPrefix()),
                     word.getWord(),
                     word.getCommentArea() == null ? null :
-                            new Cobol.ColumnArea.CommentArea(
-                                    word.getCommentArea().getId(),
+                            new org.openrewrite.cobol.tree.CommentArea(
                                     word.getCommentArea().getPrefix(),
                                     word.getCommentArea().getMarkers(),
                                     word.getCommentArea().getComment(),

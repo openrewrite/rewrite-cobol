@@ -37,6 +37,7 @@ import java.util.UUID;
  *   |000002|-|   P                                        |
  *   |000003|-|    Y                                       |
  */
+@Deprecated
 @With
 @Value
 public class Continuation implements Marker {

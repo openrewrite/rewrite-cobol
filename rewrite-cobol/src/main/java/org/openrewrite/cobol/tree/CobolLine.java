@@ -19,19 +19,19 @@ public interface CobolLine {
     Markers getMarkers();
     <C extends CobolLine> C withMarkers(Markers markers);
 
-    @Nullable
-    Cobol.ColumnArea.SequenceArea getSequenceArea();
-    <C extends CobolLine> C withSequenceArea(Cobol.ColumnArea.SequenceArea sequenceArea);
-
-    Cobol.ColumnArea.IndicatorArea getIndicatorArea();
-    <C extends CobolLine> C withIndicatorArea(Cobol.ColumnArea.IndicatorArea indicatorArea);
-
     String getContentArea();
     <C extends CobolLine> C withContentArea(String contentArea);
 
     @Nullable
-    Cobol.ColumnArea.CommentArea getCommentArea();
-    <C extends CobolLine> C withCommentArea(Cobol.ColumnArea.CommentArea commentArea);
+    SequenceArea getSequenceArea();
+    <C extends CobolLine> C withSequenceArea(SequenceArea sequenceArea);
+
+    IndicatorArea getIndicatorArea();
+    <C extends CobolLine> C withIndicatorArea(IndicatorArea indicatorArea);
+
+    @Nullable
+    CommentArea getCommentArea();
+    <C extends CobolLine> C withCommentArea(CommentArea commentArea);
 
     boolean isCopiedSource();
     <C extends CobolLine> C withCopiedSource(boolean isCopiedSource);

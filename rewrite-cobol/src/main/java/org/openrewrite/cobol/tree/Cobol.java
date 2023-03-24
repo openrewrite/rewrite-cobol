@@ -1049,19 +1049,18 @@ public interface Cobol extends Tree {
         List<CobolLine> lines;
 
         @Nullable
-        ColumnArea.SequenceArea sequenceArea;
+        Continuation continuation;
 
         @Nullable
-        ColumnArea.IndicatorArea indicatorArea;
+        SequenceArea sequenceArea;
 
-        // Add:
-        // Replacements
-        // Continuations
+        @Nullable
+        IndicatorArea indicatorArea;
 
         String word;
 
         @Nullable
-        ColumnArea.CommentArea commentArea;
+        CommentArea commentArea;
 
         // Preprocessor elements
         @Nullable

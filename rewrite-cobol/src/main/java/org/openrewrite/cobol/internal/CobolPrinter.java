@@ -16,7 +16,6 @@
 package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
-import org.openrewrite.cobol.markers.Continuation;
 import org.openrewrite.cobol.markers.Lines;
 import org.openrewrite.cobol.tree.*;
 
@@ -64,19 +63,18 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
             p.append("\n");
         }
 
-        Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
-        if (continuation.isPresent() && printColumns) {
-            visitContinuation(word, continuation.get(), p);
-        } else {
-            visit(word.getSequenceArea(), p);
-            visit(word.getIndicatorArea(), p);
+        if (word.getSequenceArea() != null) {
+            word.getSequenceArea().printColumnArea(this, getCursor(), printColumns, p);
+        }
+        if (word.getIndicatorArea() != null) {
+            word.getIndicatorArea().printColumnArea(this, getCursor(), printColumns, p);
+        }
 
-            beforeSyntax(word, Space.Location.WORD_PREFIX, p);
-            p.append(word.getWord());
+        beforeSyntax(word, Space.Location.WORD_PREFIX, p);
+        p.append(word.getWord());
 
-            if (word.getCommentArea() != null && !word.getCommentArea().isAdded()) {
-                visit(word.getCommentArea(), p);
-            }
+        if (word.getCommentArea() != null && !word.getCommentArea().isAdded()) {
+            word.getCommentArea().printColumnArea(this, getCursor(), printColumns, p);
         }
 
         afterSyntax(word, p);

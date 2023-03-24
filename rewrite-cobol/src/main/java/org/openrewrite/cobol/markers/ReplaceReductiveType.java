@@ -22,6 +22,7 @@ import java.util.UUID;
  * After:
  *  |000001| |                           nextWord|
  */
+@Deprecated
 @With
 @Value
 public class ReplaceReductiveType implements Marker {

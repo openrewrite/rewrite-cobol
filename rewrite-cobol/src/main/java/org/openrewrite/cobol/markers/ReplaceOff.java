@@ -10,6 +10,7 @@ import java.util.UUID;
 /**
  * A {@link org.openrewrite.cobol.tree.CobolPreprocessor.ReplaceOffStatement} from the source code.
  */
+@Deprecated
 @With
 @Value
 public class ReplaceOff implements Marker {

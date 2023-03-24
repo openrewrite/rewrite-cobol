@@ -10,6 +10,7 @@ import java.util.UUID;
 /**
  * This marker preserves the original word before the execution of a {@link org.openrewrite.cobol.tree.CobolPreprocessor.ReplaceClause}.
  */
+@Deprecated
 @With
 @Value
 public class Replace implements Marker {

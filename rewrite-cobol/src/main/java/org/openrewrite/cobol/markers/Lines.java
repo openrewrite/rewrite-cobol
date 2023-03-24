@@ -14,6 +14,7 @@ import java.util.UUID;
  * <p>
  * Line comments are indicated with a `*` (depends on dialect) in the indicator areas.
  */
+@Deprecated
 @With
 @Value
 public class Lines implements Marker {

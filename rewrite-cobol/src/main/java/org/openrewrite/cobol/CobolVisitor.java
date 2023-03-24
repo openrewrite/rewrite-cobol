@@ -17,6 +17,10 @@ package org.openrewrite.cobol;
 
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.cobol.markers.*;
+import org.openrewrite.cobol.markers.CommentArea;
+import org.openrewrite.cobol.markers.Continuation;
+import org.openrewrite.cobol.markers.IndicatorArea;
+import org.openrewrite.cobol.markers.SequenceArea;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.lang.Nullable;
@@ -4303,9 +4307,12 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
 
         // Column areas.
-        w = w.withSequenceArea((Cobol.ColumnArea.SequenceArea) visit(w.getSequenceArea(), p));
-        w = w.withIndicatorArea((Cobol.ColumnArea.IndicatorArea) visit(w.getIndicatorArea(), p));
-        w = w.withCommentArea((Cobol.ColumnArea.CommentArea) visit(w.getCommentArea(), p));
+        w = w.withCommentArea(visitCommentArea(w.getCommentArea(), p));
+        w = w.withIndicatorArea(visitIndicatorArea(w.getIndicatorArea(), p));
+        w = w.withSequenceArea(visitSequenceArea(w.getSequenceArea(), p));
+
+        w = w.withContinuation(visitContinuation(w.getContinuation(), p));
+        w = w.withLines(ListUtils.map(w.getLines(), it -> visitLine(it, p)));
 
         // Preprocessed COBOL preservation.
         w = w.withCopyStatement((Cobol.Preprocessor.CopyStatement) visit(w.getCopyStatement(), p));
@@ -4621,6 +4628,54 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         r = r.withOriginalWords(ListUtils.map(r.getOriginalWords(), it ->
                 it.withOriginal((Cobol.Word) visit(it.getOriginal(), p))));
         return r;
+    }
+
+    @Nullable
+    public org.openrewrite.cobol.tree.Continuation visitContinuation(@Nullable org.openrewrite.cobol.tree.Continuation continuation, P p) {
+        if (continuation == null) {
+            return null;
+        }
+        org.openrewrite.cobol.tree.Continuation c = continuation;
+        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        return c;
+    }
+
+    public org.openrewrite.cobol.tree.CobolLine visitLine(org.openrewrite.cobol.tree.CobolLine line, P p) {
+        org.openrewrite.cobol.tree.CobolLine l = line;
+        l = l.withMarkers(visitMarkers(l.getMarkers(), p));
+        l = l.withSequenceArea(visitSequenceArea(l.getSequenceArea(), p));
+        l = l.withIndicatorArea(visitIndicatorArea(l.getIndicatorArea(), p));
+        l = l.withCommentArea(visitCommentArea(l.getCommentArea(), p));
+        return l;
+    }
+
+    @Nullable
+    public org.openrewrite.cobol.tree.CommentArea visitCommentArea(@Nullable org.openrewrite.cobol.tree.CommentArea commentArea, P p) {
+        if (commentArea == null) {
+            return null;
+        }
+        org.openrewrite.cobol.tree.CommentArea c = commentArea;
+        c = c.withMarkers(visitMarkers(commentArea.getMarkers(), p));
+        return c;
+    }
+
+    @Nullable
+    public org.openrewrite.cobol.tree.IndicatorArea visitIndicatorArea(@Nullable org.openrewrite.cobol.tree.IndicatorArea indicatorArea, P p) {
+        if (indicatorArea == null) {
+            return null;
+        }
+        org.openrewrite.cobol.tree.IndicatorArea i = indicatorArea;
+        i = i.withMarkers(visitMarkers(i.getMarkers(), p));
+        return i;
+    }
+    @Nullable
+    public org.openrewrite.cobol.tree.SequenceArea visitSequenceArea(@Nullable org.openrewrite.cobol.tree.SequenceArea sequenceArea, P p) {
+        if (sequenceArea == null) {
+            return null;
+        }
+        org.openrewrite.cobol.tree.SequenceArea s = sequenceArea;
+        s = s.withMarkers(visitMarkers(s.getMarkers(), p));
+        return s;
     }
 
     /* Misc visits */
