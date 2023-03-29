@@ -53,98 +53,8 @@ public interface CobolPreprocessor extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class CharData implements CobolPreprocessor {
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-
-        List<CobolPreprocessor> cobols;
-
-        @Override
-        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
-            return v.visitCharData(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
-    class CharDataLine implements CobolPreprocessor {
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-
-        List<CobolPreprocessor> words;
-
-        @Override
-        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
-            return v.visitCharDataLine(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
-    class CharDataSql implements CobolPreprocessor {
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-
-        List<CobolPreprocessor> cobols;
-
-        @Override
-        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
-            return v.visitCharDataSql(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
-    class CommentArea implements CobolPreprocessor {
-
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-        String comment;
-        Space endOfLine;
-        boolean isAdded;
-
-        @Override
-        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
-            return v.visitCommentArea(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
-    class CommentEntry implements CobolPreprocessor, Comment {
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-        List<Word> comments;
-
-        @Override
-        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
-            return v.visitCommentEntry(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
     class CompilationUnit implements CobolPreprocessor, SourceFile {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -194,7 +104,103 @@ public interface CobolPreprocessor extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
+    class CharData implements CobolPreprocessor {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+
+        List<CharDataLine> cobols;
+
+        @Override
+        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
+            return v.visitCharData(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class CharDataLine implements CobolPreprocessor {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+
+        List<CobolPreprocessor> words;
+
+        @Override
+        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
+            return v.visitCharDataLine(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class CharDataSql implements CobolPreprocessor {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+
+        List<CobolPreprocessor> cobols;
+
+        @Override
+        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
+            return v.visitCharDataSql(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class CommentArea implements CobolPreprocessor {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        String comment;
+        Space endOfLine;
+        boolean isAdded;
+
+        @Override
+        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
+            return v.visitCommentArea(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class CommentEntry implements CobolPreprocessor, Comment {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        List<Word> comments;
+
+        @Override
+        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
+            return v.visitCommentEntry(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
     class CompilerOption implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -213,6 +219,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CompilerOptions implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -233,6 +240,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CompilerXOpts implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -303,6 +311,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CopySource implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -327,6 +336,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class CopyStatement implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -354,6 +364,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class DirectoryPhrase implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -373,6 +384,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class EjectStatement implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -394,6 +406,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ExecStatement implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -419,6 +432,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class FamilyPhrase implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -463,6 +477,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class PseudoText implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -486,6 +501,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReplaceArea implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -513,6 +529,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReplaceByStatement implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -536,6 +553,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReplaceClause implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -568,6 +586,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReplaceOffStatement implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -591,6 +610,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class ReplacingPhrase implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -609,25 +629,8 @@ public interface CobolPreprocessor extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class SequenceArea implements CobolPreprocessor {
-
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-        String sequence;
-
-        @Override
-        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
-            return v.visitSequenceArea(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
     class SkipStatement implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -649,6 +652,7 @@ public interface CobolPreprocessor extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
     class TitleStatement implements CobolPreprocessor {
+
         @EqualsAndHashCode.Include
         UUID id;
 
@@ -679,7 +683,7 @@ public interface CobolPreprocessor extends Tree {
         Markers markers;
 
         @Nullable
-        CobolPreprocessor.SequenceArea sequenceArea;
+        Cobol.ColumnArea.SequenceArea sequenceArea;
 
         @Nullable
         CobolPreprocessor.IndicatorArea indicatorArea;
