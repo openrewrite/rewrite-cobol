@@ -18,19 +18,14 @@ package org.openrewrite.cobol.internal;
 import org.openrewrite.Cursor;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolPreprocessorVisitor;
-import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
-import org.openrewrite.marker.SearchResult;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 /**
  * Print the original preprocessed COBOL.
@@ -38,11 +33,18 @@ import java.util.stream.Collectors;
  */
 public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<PrintOutputCapture<P>> {
 
+    private final CobolSourcePrinter<P> cobolSourcePrinter;
     private final boolean printColumns;
     private int originalReplaceLength;
 
+    private final Collection<String> printedCopyStatements;
+    private final Collection<String> printedReductiveReplaces;
+
     public CobolPreprocessorSourcePrinter(boolean printColumns) {
+        this.cobolSourcePrinter = new CobolSourcePrinter<>(printColumns);
         this.printColumns = printColumns;
+        this.printedCopyStatements = new HashSet<>();
+        this.printedReductiveReplaces = new HashSet<>();
     }
 
     @Override
@@ -51,17 +53,6 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         visit(charData.getCobols(), p);
         afterSyntax(charData, p);
         return charData;
-    }
-
-    @Override
-    public CobolPreprocessor visitCommentArea(CobolPreprocessor.CommentArea commentArea, PrintOutputCapture<P> p) {
-        beforeSyntax(commentArea, Space.Location.COMMENT_AREA_PREFIX, p);
-        if (printColumns) {
-            p.append(commentArea.getComment());
-        }
-        visitSpace(commentArea.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p);
-        afterSyntax(commentArea, p);
-        return commentArea;
     }
 
     @Override
@@ -191,17 +182,6 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     }
 
     @Override
-    public CobolPreprocessor visitIndicatorArea(CobolPreprocessor.IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            beforeSyntax(indicatorArea, Space.Location.INDICATOR_AREA_PREFIX, p);
-            p.out.append(indicatorArea.getIndicator());
-            afterSyntax(indicatorArea, p);
-        }
-        p.out.append(indicatorArea.getContinuationPrefix());
-        return indicatorArea;
-    }
-
-    @Override
     public CobolPreprocessor visitPseudoText(CobolPreprocessor.PseudoText pseudoText, PrintOutputCapture<P> p) {
         beforeSyntax(pseudoText, Space.Location.PSEUDO_TEXT_PREFIX, p);
         visit(pseudoText.getDoubleEqualOpen(), p);
@@ -263,16 +243,6 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
     }
 
     @Override
-    public CobolPreprocessor visitSequenceArea(CobolPreprocessor.SequenceArea sequenceArea, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            beforeSyntax(sequenceArea, Space.Location.SEQUENCE_AREA_PREFIX, p);
-            p.out.append(sequenceArea.getSequence());
-            afterSyntax(sequenceArea, p);
-        }
-        return sequenceArea;
-    }
-
-    @Override
     public CobolPreprocessor visitSkipStatement(CobolPreprocessor.SkipStatement skipStatement, PrintOutputCapture<P> p) {
         beforeSyntax(skipStatement, Space.Location.SKIP_STATEMENT_PREFIX, p);
         visit(skipStatement.getWord(), p);
@@ -299,161 +269,86 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
 
     @Override
     public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
-        // CobolPreprocessor markers.
-        ReplaceBy replaceBy = null;
-        ReplaceOff replaceOff = null;
-        Replace replace = null;
+        visit(word.getReplaceByStatement(), p);
+        visit(word.getReplaceOffStatement(), p);
 
-        Lines lines = null;
-        Continuation continuation = null;
-
-        for (Marker marker : word.getMarkers().getMarkers()) {
-            if (marker instanceof ReplaceBy) {
-                replaceBy = (ReplaceBy) marker;
-            } else if (marker instanceof ReplaceOff) {
-                replaceOff = (ReplaceOff) marker;
-            } else if (marker instanceof Replace) {
-                replace = (Replace) marker;
-            } else if (marker instanceof Lines) {
-                lines = (Lines) marker;
-            } else if (marker instanceof Continuation) {
-                continuation = (Continuation) marker;
+        if (word.getReplacement() != null && word.getCopyStatement() == null) {
+            if (word.getReplacement().getType() == Replacement.Type.EQUAL) {
+                Replacement.OriginalWord originalWord = word.getReplacement().getOriginalWords().get(0);
+                cobolSourcePrinter.visitWord(originalWord.getOriginal(), p);
+                if (originalWord.isReplacedWithEmpty()) {
+                    originalReplaceLength = word.getPrefix().getWhitespace().length() - word.getWord().length();
+                } else {
+                    originalReplaceLength = 0;
+                    return word;
+                }
+            } else if (word.getReplacement().getType() == Replacement.Type.REDUCTIVE && !word.getReplacement().isCopiedSource()) {
+                if (printedReductiveReplaces.add(word.getReplacement().getId().toString())) {
+                    for (Replacement.OriginalWord originalWord : word.getReplacement().getOriginalWords()) {
+                        cobolSourcePrinter.visitWord(originalWord.getOriginal(), p);
+                    }
+                    if (word.getSequenceArea() != null) {
+                        word.getSequenceArea().printColumnArea(this, getCursor(), printColumns, p);
+                    }
+                    if (word.getIndicatorArea() != null) {
+                        word.getIndicatorArea().printColumnArea(this, getCursor(), printColumns, p);
+                    }
+                    beforeSyntax(word, Space.Location.WORD_PREFIX, p);
+                    p.append(word.getWord());
+                    return word;
+                }
             }
         }
 
-        if (replaceBy != null) {
-            visit(replaceBy.getStatement(), p);
+        // The COBOL word is a product of a copy statement.
+        if (word.getCopyStatement() != null) {
+            // Print the original Copy Statement in place of the first word from the copied source.
+            if (printedCopyStatements.add(word.getCopyStatement().getId().toString())) {
+                visit(word.getCopyStatement(), p);
+            }
+
+            // Do not print the AST for the copied source.
+            return word;
         }
 
-        if (replaceOff != null) {
-            visit(replaceOff.getReplaceOff(), p);
-        }
-
-        if (replace != null) {
-            // Print the original copy
-            visit(replace.getOriginalWord(), p);
-
-            if (replace.isReplacedWithEmpty()) {
-                originalReplaceLength = word.getPrefix().getWhitespace().length() + word.getWord().length();
-            } else {
-                originalReplaceLength = 0;
-                return word;
+        if (printColumns) {
+            if (word.getLines() != null) {
+                for (CobolLine cobolLine : word.getLines()) {
+                    visitMarkers(cobolLine.getMarkers(), p);
+                    cobolLine.printCobolLine(this, getCursor(), p);
+                }
             }
         }
 
-        if (lines != null) {
-            visitLines(lines, p);
-        }
-
-        if (continuation != null) {
-            visitContinuation(word, continuation, p);
+        if (word.getContinuation() != null) {
+            word.getContinuation().printContinuation(this, getCursor(), word, printColumns, p);
         } else {
-            visit(word.getSequenceArea(), p);
-            visit(word.getIndicatorArea(), p);
+            if (word.getSequenceArea() != null) {
+                word.getSequenceArea().printColumnArea(this, getCursor(), printColumns, p);
+            }
 
-            if (replace != null && replace.isReplacedWithEmpty()) {
+            if (word.getIndicatorArea() != null) {
+                word.getIndicatorArea().printColumnArea(this, getCursor(), printColumns, p);
+            }
+
+            if (word.getReplacement() != null &&
+                    word.getReplacement().getType() == Replacement.Type.EQUAL &&
+                    word.getReplacement().getOriginalWords().get(0).isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
                 originalReplaceLength = 0;
             } else {
                 beforeSyntax(word, Space.Location.WORD_PREFIX, p);
             }
+
             p.append(word.getWord());
 
-            visit(word.getCommentArea(), p);
+            if (word.getCommentArea() != null && !word.getCommentArea().isAdded()) {
+                word.getCommentArea().printColumnArea(this, getCursor(), printColumns, p);
+            }
         }
 
         afterSyntax(word, p);
         return word;
-    }
-
-    public void visitContinuation(CobolPreprocessor.Word word, Continuation continuation, PrintOutputCapture<P> p) {
-        visitContinuation(word, continuation, null, p);
-    }
-
-    public void visitContinuation(CobolPreprocessor.Word word, Continuation continuation, @Nullable SearchResult searchResult, PrintOutputCapture<P> p) {
-        if (continuation.getContinuations().containsKey(0)) {
-            Markers markers = continuation.getContinuations().get(0);
-            Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
-            sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
-
-            Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
-        }
-
-        visitSpace(word.getPrefix(), Space.Location.CONTINUATION_PREFIX, p);
-
-        char[] charArray = word.getWord().toCharArray();
-        for (int i = 0; i < charArray.length; i++) {
-            if (i != 0 && continuation.getContinuations().containsKey(i)) {
-                Markers markers = continuation.getContinuations().get(i);
-                Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
-                commentArea.ifPresent(it -> visitCommentArea(it, p));
-
-                Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
-                sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
-
-                Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-                indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
-            }
-            char c = charArray[i];
-            p.append(c);
-        }
-
-        List<Markers> lastMarkers = continuation.getContinuations().entrySet().stream()
-                .filter(it -> it.getKey() > word.getWord().length())
-                .map(Map.Entry::getValue)
-                .collect(Collectors.toList());
-
-        if (!lastMarkers.isEmpty()) {
-            Markers markers = lastMarkers.get(0);
-            Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
-            commentArea.ifPresent(it -> visitCommentArea(it, p));
-        }
-    }
-
-    public void visitLines(Lines lines, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            for (Lines.Line line : lines.getLines()) {
-                if (line.isCopiedSource()) {
-                    continue;
-                }
-
-                if (line.getSequenceArea() != null) {
-                    visitSequenceArea(line.getSequenceArea(), p);
-                }
-
-                if (line.getIndicatorArea() != null) {
-                    visitIndicatorArea(line.getIndicatorArea(), p);
-                }
-
-                p.append(line.getContent());
-                if (line.getCommentArea() != null) {
-                    visitCommentArea(line.getCommentArea(), p);
-                }
-            }
-        }
-    }
-
-    public void visitSequenceArea(SequenceArea sequenceArea, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            p.append(sequenceArea.getSequence());
-        }
-    }
-
-    public void visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            p.append(indicatorArea.getIndicator());
-        }
-
-        p.append(indicatorArea.getContinuationPrefix());
-    }
-
-    public void visitCommentArea(CommentArea commentArea, PrintOutputCapture<P> p) {
-        visitSpace(commentArea.getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p);
-        if (printColumns) {
-            p.append(commentArea.getComment());
-        }
-        visitSpace(commentArea.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p);
     }
 
     private static final UnaryOperator<String> COBOL_MARKER_WRAPPER =

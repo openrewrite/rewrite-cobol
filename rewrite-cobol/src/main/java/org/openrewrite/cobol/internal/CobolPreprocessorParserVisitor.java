@@ -21,10 +21,8 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.openrewrite.FileAttributes;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorBaseVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorParser;
-import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.lang.Nullable;
-import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
 
 import java.nio.charset.Charset;
@@ -33,7 +31,6 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.cobol.CobolStringUtils.isSubstituteCharacter;
@@ -773,68 +770,58 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
     @Override
     public Object visitTerminal(TerminalNode node) {
-        List<Marker> markers = new ArrayList<>();
-        Space prefix = processTokenText(node.getText(), markers);
+        List<Object> objects = new ArrayList<>();
+        Space prefix = processTokenText(node.getText(), objects);
         String text = END_OF_FILE.equals(node.getText()) ? "" :
                 node.getText().startsWith(COMMENT_ENTRY) ? node.getText().substring(COMMENT_ENTRY.length()) : node.getText();
 
-        SequenceArea sequenceAreaMarker = null;
-        IndicatorArea indicatorAreaMarker = null;
-        CommentArea commentAreaMarker = null;
-        for (Marker marker : markers) {
-            if (marker instanceof SequenceArea) {
-                sequenceAreaMarker = (SequenceArea) marker;
-            } else if (marker instanceof IndicatorArea) {
-                indicatorAreaMarker = (IndicatorArea) marker;
-            } else if (marker instanceof CommentArea) {
-                commentAreaMarker = (CommentArea) marker;
+        List<CobolLine> cobolLines = null;
+        Continuation continuation = null;
+        SequenceArea sequenceArea = null;
+        IndicatorArea indicatorArea = null;
+        CommentArea commentArea = null;
+        CobolPreprocessor.CopyStatement copyStatement = null;
+        CobolPreprocessor.ReplaceByStatement replaceByStatement = null;
+        CobolPreprocessor.ReplaceOffStatement replaceOffStatement = null;
+        Replacement replacement = null;
+
+        for (Object object : objects) {
+            if (object instanceof List) {
+                //noinspection unchecked
+                cobolLines = (List<CobolLine>) object;
+            } else if (object instanceof Continuation) {
+                continuation = (Continuation) object;
+            } else if (object instanceof SequenceArea) {
+                sequenceArea = (SequenceArea) object;
+            } else if (object instanceof IndicatorArea) {
+                indicatorArea = (IndicatorArea) object;
+            } else if (object instanceof CommentArea) {
+                commentArea = (CommentArea) object;
+            } else if (object instanceof CobolPreprocessor.CopyStatement) {
+                copyStatement = (CobolPreprocessor.CopyStatement) object;
+            } else if (object instanceof CobolPreprocessor.ReplaceByStatement) {
+                replaceByStatement = (CobolPreprocessor.ReplaceByStatement) object;
+            } else if (object instanceof CobolPreprocessor.ReplaceOffStatement) {
+                replaceOffStatement = (CobolPreprocessor.ReplaceOffStatement) object;
+            } else if (object instanceof Replacement) {
+                replacement = (Replacement) object;
             }
-        }
-
-        CobolPreprocessor.SequenceArea sequenceArea = null;
-        if (sequenceAreaMarker != null) {
-            sequenceArea = new CobolPreprocessor.SequenceArea(
-                    randomId(),
-                    Space.EMPTY,
-                    Markers.EMPTY,
-                    sequenceAreaMarker.getSequence()
-            );
-            markers.remove(sequenceAreaMarker);
-        }
-
-        CobolPreprocessor.IndicatorArea indicatorArea = null;
-        if (indicatorAreaMarker != null) {
-            indicatorArea = new CobolPreprocessor.IndicatorArea(
-                    randomId(),
-                    Space.EMPTY,
-                    Markers.EMPTY,
-                    indicatorAreaMarker.getIndicator(),
-                    indicatorAreaMarker.getContinuationPrefix()
-            );
-            markers.remove(indicatorAreaMarker);
-        }
-
-        CobolPreprocessor.CommentArea commentArea = null;
-        if (commentAreaMarker != null) {
-            commentArea = new CobolPreprocessor.CommentArea(
-                    randomId(),
-                    commentAreaMarker.getPrefix(),
-                    Markers.EMPTY,
-                    commentAreaMarker.getComment(),
-                    commentAreaMarker.getEndOfLine(),
-                    commentAreaMarker.isAdded()
-            );
-            markers.remove(commentAreaMarker);
         }
 
         return new CobolPreprocessor.Word(
                 randomId(),
                 prefix,
-                markers.isEmpty() ? Markers.EMPTY : Markers.build(markers),
+                Markers.EMPTY,
+                cobolLines,
+                continuation,
                 sequenceArea,
                 indicatorArea,
                 text,
-                commentArea
+                commentArea,
+                copyStatement,
+                replaceByStatement,
+                replaceOffStatement,
+                replacement
         );
     }
 
@@ -853,7 +840,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     private Space whitespace() {
         String prefix = source.substring(cursor, indexOfNextNonWhitespace(cursor, source));
         cursor += prefix.length();
-        return Space.build(prefix, emptyList());
+        return Space.build(prefix);
     }
 
     private int indexOfNextNonWhitespace(int cursor, String source) {
@@ -928,9 +915,9 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     /**
      * Return the prefix of the TerminalNode AND collect applicable markers.
      */
-    private Space processTokenText(String text, List<Marker> markers) {
+    private Space processTokenText(String text, List<Object> objects) {
 
-        parseCommentsAndEmptyLines(text, markers);
+        parseCommentsAndEmptyLines(text, objects);
 
         int saveCursor = cursor;
         sequenceArea();
@@ -967,19 +954,19 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         // A literal continued on a new line.
         if (isContinued) {
             return delimiter == null ?
-                    processContinuedText(text, markers) :
-                    processLiteral(text, markers, delimiter);
+                    processContinuedText(text, objects) :
+                    processLiteral(text, objects, delimiter);
         } else if (END_OF_FILE.equals(text) && source.substring(cursor).isEmpty()) {
             return Space.EMPTY;
         }
 
-        return processText(text, markers);
+        return processText(text, objects);
     }
 
     /**
      * Parse the comments and empty lines that precede the COBOL word.
      */
-    private void parseCommentsAndEmptyLines(String text, List<Marker> markers) {
+    private void parseCommentsAndEmptyLines(String text, List<Object> objects) {
         int saveCursor = cursor;
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea();
@@ -989,7 +976,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         boolean isCommentEntry = text.startsWith(COMMENT_ENTRY);
         if (!isCommentEntry && indicatorArea != null) {
 
-            List<Lines.Line> lines = new ArrayList<>();
+            List<CobolLine> lines = new ArrayList<>();
 
             int iterations = 0;
             while (iterations < 250) {
@@ -1005,7 +992,8 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
                 cursor += contentArea.length();
                 CommentArea commentArea = commentArea();
-                Lines.Line line = new Lines.Line(randomId(), sequenceArea, indicatorArea, contentArea, commentArea, false);
+                CobolLine line = indicatorArea != null && "*".equals(indicatorArea.getIndicator()) ? new CommentLine(Markers.EMPTY, sequenceArea, indicatorArea, contentArea, commentArea, false) :
+                        new BlankLine(Markers.EMPTY, sequenceArea, indicatorArea, contentArea, commentArea, false);
                 lines.add(line);
 
                 saveCursor = cursor;
@@ -1014,16 +1002,16 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 iterations++;
             }
             if (!lines.isEmpty()) {
-                markers.add(new Lines(randomId(), lines));
+                objects.add(lines);
             }
         }
 
         cursor = saveCursor;
     }
 
-    private Space processLiteral(String text, List<Marker> markers, Character delimiter) {
-        Map<Integer, Markers> continuations = new HashMap<>();
-        List<Marker> continuation = new ArrayList<>(2);
+    private Space processLiteral(String text, List<Object> objects, Character delimiter) {
+        Map<Integer, List<ColumnArea>> continuations = new HashMap<>();
+        List<ColumnArea> continuation = new ArrayList<>(2);
 
         // Check if the literal starts at the beginning of a line.
         SequenceArea sequenceArea = sequenceArea();
@@ -1042,7 +1030,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
         // Add a continuation at position 0 to print before the literal starts.
         if (!continuation.isEmpty()) {
-            continuations.put(0, Markers.build(continuation));
+            continuations.put(0, continuation);
         }
 
         int matchedCount = 0;
@@ -1072,7 +1060,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
             if (matchedCount == text.length()) {
                 if (!continuation.isEmpty()) {
-                    continuations.put(matchedCount + 1, Markers.build(continuation));
+                    continuations.put(matchedCount + 1, continuation);
                 }
                 break;
             }
@@ -1088,17 +1076,17 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             }
 
             if (!continuation.isEmpty()) {
-                continuations.put(matchedCount, Markers.build(continuation));
+                continuations.put(matchedCount, continuation);
             }
 
             iterations++;
         }
 
-        markers.add(new Continuation(randomId(), continuations));
+        objects.add(new Continuation(Markers.EMPTY, continuations));
         return prefix;
     }
 
-    private Space processText(String text, List<Marker> markers) {
+    private Space processText(String text, List<Object> objects) {
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea();
 
@@ -1113,11 +1101,11 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
 
         if (sequenceArea != null) {
-            markers.add(sequenceArea);
+            objects.add(sequenceArea);
         }
 
         if (indicatorArea != null) {
-            markers.add(indicatorArea);
+            objects.add(indicatorArea);
         }
 
         if (!END_OF_FILE.equals(text)) {
@@ -1125,13 +1113,13 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
             CommentArea commentArea = commentArea();
             if (commentArea != null) {
-                markers.add(commentArea);
+                objects.add(commentArea);
             }
         }
         return prefix;
     }
 
-    private Space processContinuedText(String text, List<Marker> markers) {
+    private Space processContinuedText(String text, List<Object> objects) {
         SequenceArea sequenceArea = sequenceArea();
         IndicatorArea indicatorArea = indicatorArea();
 
@@ -1145,8 +1133,8 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         // An inline comment entry will have a null sequence area.
         Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
 
-        Map<Integer, Markers> continuations = new HashMap<>();
-        List<Marker> continuation = new ArrayList<>(2);
+        Map<Integer, List<ColumnArea>> continuations = new HashMap<>();
+        List<ColumnArea> continuation = new ArrayList<>(2);
 
         if (sequenceArea != null) {
             continuation.add(sequenceArea);
@@ -1157,7 +1145,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         }
 
         if (!continuation.isEmpty()) {
-            continuations.put(0, Markers.build(continuation));
+            continuations.put(0, continuation);
         }
 
         String current;
@@ -1188,7 +1176,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
             if (matchedCount == text.length()) {
                 if (!continuation.isEmpty()) {
-                    continuations.put(matchedCount + 1, Markers.build(continuation));
+                    continuations.put(matchedCount + 1, continuation);
                 }
                 break;
             }
@@ -1204,12 +1192,12 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             }
 
             if (!continuation.isEmpty()) {
-                continuations.put(matchedCount, Markers.build(continuation));
+                continuations.put(matchedCount, continuation);
             }
 
             iterations++;
         }
-        markers.add(new Continuation(randomId(), continuations));
+        objects.add(new Continuation(Markers.EMPTY, continuations));
         return prefix;
     }
 
@@ -1226,7 +1214,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             String sequence = sequenceAreas.get(cursor);
             cursor += sequence.length();
 
-            return new SequenceArea(randomId(), sequence);
+            return new SequenceArea(Markers.EMPTY, sequence);
         }
         return null;
     }
@@ -1265,7 +1253,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 }
             }
 
-            return new IndicatorArea(randomId(), indicatorArea, continuationText);
+            return new IndicatorArea(Markers.EMPTY, indicatorArea, continuationText);
         }
         return null;
     }
@@ -1288,7 +1276,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         }
 
         if (before.getWhitespace().endsWith("\n") || comment != null) {
-            return new CommentArea(randomId(), before, comment == null ? "" : comment, endLine, false);
+            return new CommentArea(before, Markers.EMPTY, comment == null ? "" : comment, endLine, false);
         }
 
         cursor = saveCursor;

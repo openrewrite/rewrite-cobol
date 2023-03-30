@@ -1049,19 +1049,18 @@ public interface Cobol extends Tree {
         List<CobolLine> lines;
 
         @Nullable
-        ColumnArea.SequenceArea sequenceArea;
+        Continuation continuation;
 
         @Nullable
-        ColumnArea.IndicatorArea indicatorArea;
+        SequenceArea sequenceArea;
 
-        // Add:
-        // Replacements
-        // Continuations
+        @Nullable
+        IndicatorArea indicatorArea;
 
         String word;
 
         @Nullable
-        ColumnArea.CommentArea commentArea;
+        CommentArea commentArea;
 
         // Preprocessor elements
         @Nullable
@@ -1074,7 +1073,7 @@ public interface Cobol extends Tree {
         Preprocessor.ReplaceOffStatement replaceOffStatement;
 
         @Nullable
-        Preprocessor.Replacement replacement;
+        Replacement replacement;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
@@ -10236,48 +10235,6 @@ public interface Cobol extends Tree {
             public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
                 return v.visitTitleStatement(this, p);
             }
-        }
-
-        @Value
-        @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-        @With
-        public static class Replacement implements Cobol {
-
-            @EqualsAndHashCode.Include
-            UUID id;
-
-            Space prefix;
-            Markers markers;
-
-            List<OriginalWord> originalWords;
-            Type type;
-
-            boolean isCopiedSource;
-
-            @Value
-            @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-            @With
-            public static class OriginalWord {
-                Word original;
-                boolean replacedWithEmpty;
-            }
-
-            public enum Type {
-                ADDITIVE,
-                REDUCTIVE,
-                EQUAL
-            }
-
-            @Override
-            public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
-                return v.visitReplacement(this, p);
-            }
-        }
-
-        /**
-         * Preserves the original source code before the compiler copy and replace phases.
-         */
-        public interface Replace extends Cobol {
         }
     }
 }

@@ -6,15 +6,9 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.Incubating;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.CobolPrinterUtils;
-import org.openrewrite.cobol.markers.Continuation;
-import org.openrewrite.cobol.markers.Copy;
-import org.openrewrite.cobol.markers.IndicatorArea;
-import org.openrewrite.cobol.markers.Replace;
 import org.openrewrite.cobol.search.FindWords;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
-import org.openrewrite.marker.Marker;
-import org.openrewrite.marker.Markers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,42 +34,29 @@ public class RemoveWords extends CobolIsoVisitor<ExecutionContext> {
     public Cobol.Word visitWord(Cobol.Word word, ExecutionContext executionContext) {
         Cobol.Word w = super.visitWord(word, executionContext);
         if (removeWords.contains(w) && !w.getWord().trim().isEmpty()) {
-            Replace replace = null;
-            Copy copy = null;
-            Continuation continuation = null;
-
-            for (Marker marker : w.getMarkers().getMarkers()) {
-                if (marker instanceof Copy) {
-                    copy = (Copy) marker;
-                } else if (marker instanceof Replace) {
-                    replace = (Replace) marker;
-                } else if (marker instanceof Continuation) {
-                    continuation = (Continuation) marker;
-                }
-            }
-
-            if (copy != null || replace != null) {
+            if (word.getCopyStatement() != null || word.getReplacement() != null) {
                 // The NIST test does not provide examples of these types of transformation, so it hasn't been implemented yet.
                 throw new UnsupportedOperationException("RemoveWords does not support changes on copied sources or replaced words.");
             }
 
-            if (continuation != null) {
-                Map<Integer, Markers> continuations = new HashMap<>();
+            if (word.getContinuation() != null) {
+                org.openrewrite.cobol.tree.Continuation continuation = word.getContinuation();
+                Map<Integer, List<ColumnArea>> continuations = new HashMap<>(continuation.getContinuations().size());
                 AtomicBoolean changed = new AtomicBoolean(false);
-                for (Map.Entry<Integer, Markers> entry : continuation.getContinuations().entrySet()) {
-                    Markers newMarkers = entry.getValue().withMarkers(ListUtils.map(entry.getValue().getMarkers(), it -> {
+                for (Map.Entry<Integer, List<ColumnArea>> entry : continuation.getContinuations().entrySet()) {
+                    List<ColumnArea> columnAreas = ListUtils.map(entry.getValue(), it -> {
                         if (it instanceof IndicatorArea && "-".equals(((IndicatorArea) it).getIndicator())) {
                             it = ((IndicatorArea) it).withIndicator(" ");
                             changed.set(true);
                         }
                         return it;
-                    }));
-                    continuations.put(entry.getKey(), newMarkers);
+                    });
+                    continuations.put(entry.getKey(), columnAreas);
                 }
 
                 if (changed.get()) {
                     continuation = continuation.withContinuations(continuations);
-                    w = w.withMarkers(w.getMarkers().removeByType(Continuation.class).add(continuation));
+                    w = w.withContinuation(continuation);
                 }
             }
             w = w.withWord(CobolPrinterUtils.fillArea(' ', w.getWord().length()));

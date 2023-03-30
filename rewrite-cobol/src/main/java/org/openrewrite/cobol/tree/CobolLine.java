@@ -3,6 +3,7 @@ package org.openrewrite.cobol.tree;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.openrewrite.Cursor;
 import org.openrewrite.PrintOutputCapture;
+import org.openrewrite.cobol.internal.CobolPreprocessorSourcePrinter;
 import org.openrewrite.cobol.internal.CobolSourcePrinter;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Markers;
@@ -19,22 +20,23 @@ public interface CobolLine {
     Markers getMarkers();
     <C extends CobolLine> C withMarkers(Markers markers);
 
-    @Nullable
-    Cobol.ColumnArea.SequenceArea getSequenceArea();
-    <C extends CobolLine> C withSequenceArea(Cobol.ColumnArea.SequenceArea sequenceArea);
-
-    Cobol.ColumnArea.IndicatorArea getIndicatorArea();
-    <C extends CobolLine> C withIndicatorArea(Cobol.ColumnArea.IndicatorArea indicatorArea);
-
     String getContentArea();
     <C extends CobolLine> C withContentArea(String contentArea);
 
     @Nullable
-    Cobol.ColumnArea.CommentArea getCommentArea();
-    <C extends CobolLine> C withCommentArea(Cobol.ColumnArea.CommentArea commentArea);
+    SequenceArea getSequenceArea();
+    <C extends CobolLine> C withSequenceArea(SequenceArea sequenceArea);
+
+    IndicatorArea getIndicatorArea();
+    <C extends CobolLine> C withIndicatorArea(IndicatorArea indicatorArea);
+
+    @Nullable
+    CommentArea getCommentArea();
+    <C extends CobolLine> C withCommentArea(CommentArea commentArea);
 
     boolean isCopiedSource();
     <C extends CobolLine> C withCopiedSource(boolean isCopiedSource);
 
+    <P> void printCobolLine(CobolPreprocessorSourcePrinter<P> sourcePrinter, Cursor cursor, PrintOutputCapture<P> p);
     <P> void printCobolLine(CobolSourcePrinter<P> sourcePrinter, Cursor cursor, PrintOutputCapture<P> p);
 }

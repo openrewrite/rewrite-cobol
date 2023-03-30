@@ -16,12 +16,7 @@
 package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
-import org.openrewrite.cobol.markers.Continuation;
-import org.openrewrite.cobol.markers.Lines;
 import org.openrewrite.cobol.tree.*;
-import org.openrewrite.marker.SearchResult;
-
-import java.util.Optional;
 
 /**
  * Print the original preprocessed COBOL.
@@ -31,6 +26,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
 
     private final boolean printOriginalSource;
     private final boolean printColumns;
+    private Replacement additiveReplacement = null;
 
     public CobolPreprocessorPrinter(boolean printOriginalSource,
                                     boolean printColumns) {
@@ -69,28 +65,35 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
             return super.visitWord(word, p);
         }
 
-        Optional<SearchResult> searchResultOptional = word.getMarkers().getMarkers().stream()
-                .filter(m -> m instanceof SearchResult)
-                .map(m -> (SearchResult) m)
-                .findFirst();
-        SearchResult searchResult = searchResultOptional.orElse(null);
-
-        Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
-        lines.ifPresent(value -> visitLines(value, p));
-
-        Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
-        if (continuation.isPresent() && printColumns) {
-            visitContinuation(word, continuation.get(), searchResult, p);
-        } else {
-            visit(word.getSequenceArea(), p);
-            visit(word.getIndicatorArea(), p);
-
-            beforeSyntax(word, Space.Location.WORD_PREFIX, p);
-            p.append(word.getWord());
-
-            if (word.getCommentArea() != null && !word.getCommentArea().isAdded()) {
-                visit(word.getCommentArea(), p);
+        if (printColumns && word.getLines() != null) {
+            for (CobolLine cobolLine : word.getLines()) {
+                visitMarkers(cobolLine.getMarkers(), p);
+                cobolLine.printCobolLine(this, getCursor(), p);
             }
+        }
+
+        if (additiveReplacement == null && word.getReplacement() != null && word.getReplacement().getType() == Replacement.Type.ADDITIVE) {
+            additiveReplacement = word.getReplacement();
+        } else if (additiveReplacement != null && word.getReplacement() != null && word.getReplacement().getType() == Replacement.Type.ADDITIVE && additiveReplacement.getId() != word.getReplacement().getId()) {
+            additiveReplacement = word.getReplacement();
+            p.append("\n");
+        } else if (additiveReplacement != null && word.getReplacement() == null) {
+            additiveReplacement = null;
+            p.append("\n");
+        }
+
+        if (word.getSequenceArea() != null) {
+            word.getSequenceArea().printColumnArea(this, getCursor(), printColumns, p);
+        }
+        if (word.getIndicatorArea() != null) {
+            word.getIndicatorArea().printColumnArea(this, getCursor(), printColumns, p);
+        }
+
+        beforeSyntax(word, Space.Location.WORD_PREFIX, p);
+        p.append(word.getWord());
+
+        if (word.getCommentArea() != null && !word.getCommentArea().isAdded()) {
+            word.getCommentArea().printColumnArea(this, getCursor(), printColumns, p);
         }
 
         afterSyntax(word, p);

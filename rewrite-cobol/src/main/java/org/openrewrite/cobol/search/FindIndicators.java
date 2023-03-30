@@ -7,6 +7,8 @@ import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.marker.SearchResult;
 
+import static org.openrewrite.Tree.randomId;
+
 @EqualsAndHashCode(callSuper = true)
 @Value
 public class FindIndicators extends Recipe {
@@ -38,13 +40,15 @@ public class FindIndicators extends Recipe {
             this.indicator = indicator;
         }
 
-        @Override
-        public Cobol.ColumnArea.IndicatorArea visitIndicatorArea(Cobol.ColumnArea.IndicatorArea indicatorArea, ExecutionContext executionContext) {
-            if (indicator.equals(indicatorArea.getIndicator())) {
-                return SearchResult.found(indicatorArea);
-            }
 
-            return indicatorArea;
+        @Override
+        public Cobol.Word visitWord(Cobol.Word word, ExecutionContext executionContext) {
+            if (word.getIndicatorArea() != null && word.getIndicatorArea().getIndicator().equals(indicator)) {
+                word = word.withIndicatorArea(
+                        word.getIndicatorArea().withMarkers(
+                                word.getIndicatorArea().getMarkers().addIfAbsent(new SearchResult(randomId(), null))));
+            }
+            return word;
         }
     }
 }

@@ -24,9 +24,6 @@ import org.openrewrite.Parser;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
-import org.openrewrite.cobol.markers.Replace;
-import org.openrewrite.cobol.markers.ReplaceAdditiveType;
-import org.openrewrite.cobol.markers.ReplaceReductiveType;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.MetricsHelper;
@@ -62,9 +59,9 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private Set<CobolPreprocessor.CopyStatement> copyStatements = null;
     private Set<CobolPreprocessor.ReplaceByStatement> replaceRules = null;
     private Set<CobolPreprocessor.ReplaceOffStatement> replaceOffs = null;
-    private Set<Replace> replaces = null;
-    private Set<ReplaceAdditiveType> replaceAdditiveTypes = null;
-    private Set<ReplaceReductiveType> replaceReductiveTypes = null;
+    private Set<Replacement> replaces = null;
+    private Set<Replacement> replaceAdditiveTypes = null;
+    private Set<Replacement> replaceReductiveTypes = null;
 
     public CobolPreprocessorParser(CobolDialect cobolDialect,
                                    List<CobolPreprocessor.CopyBook> copyBooks,
@@ -341,21 +338,21 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
         return replaceOffs;
     }
 
-    public Set<Replace> getReplaces(@Nullable CobolPreprocessor.CompilationUnit cu) {
+    public Set<Replacement> getReplaces(@Nullable CobolPreprocessor.CompilationUnit cu) {
         if (replaces == null) {
             getOriginalSources(cu);
         }
         return replaces;
     }
 
-    public Set<ReplaceAdditiveType> getReplaceAdditiveTypes(@Nullable CobolPreprocessor.CompilationUnit cu) {
+    public Set<Replacement> getReplaceAdditiveTypes(@Nullable CobolPreprocessor.CompilationUnit cu) {
         if (replaceAdditiveTypes == null) {
             getOriginalSources(cu);
         }
         return replaceAdditiveTypes;
     }
 
-    public Set<ReplaceReductiveType> getReplaceReductiveTypes(@Nullable CobolPreprocessor.CompilationUnit cu) {
+    public Set<Replacement> getReplaceReductiveTypes(@Nullable CobolPreprocessor.CompilationUnit cu) {
         if (replaceReductiveTypes == null) {
             getOriginalSources(cu);
         }
@@ -394,14 +391,20 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
             @Override
             public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
-                Optional<Replace> replace = word.getMarkers().findFirst(Replace.class);
-                replace.ifPresent(it -> replaces.add(it));
-
-                Optional<ReplaceAdditiveType> replaceAdditiveType = word.getMarkers().findFirst(ReplaceAdditiveType.class);
-                replaceAdditiveType.ifPresent(it -> replaceAdditiveTypes.add(it));
-
-                Optional<ReplaceReductiveType> replaceReductiveType = word.getMarkers().findFirst(ReplaceReductiveType.class);
-                replaceReductiveType.ifPresent(it -> replaceReductiveTypes.add(it));
+                Replacement replacement = word.getReplacement();
+                if (replacement != null) {
+                    switch (replacement.getType()) {
+                        case EQUAL:
+                            replaces.add(replacement);
+                            break;
+                        case ADDITIVE:
+                            replaceAdditiveTypes.add(replacement);
+                            break;
+                        case REDUCTIVE:
+                            replaceReductiveTypes.add(replacement);
+                            break;
+                    }
+                }
 
                 return super.visitWord(word, executionContext);
             }

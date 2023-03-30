@@ -6,7 +6,6 @@ import org.openrewrite.*;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.format.RemoveWords;
 import org.openrewrite.cobol.format.ShiftSequenceAreas;
-import org.openrewrite.cobol.markers.*;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.lang.Nullable;
 
@@ -73,21 +72,15 @@ public class RemoveWithDebuggingMode extends Recipe {
             public Cobol.SourceComputerDefinition visitSourceComputerDefinition(Cobol.SourceComputerDefinition sourceComputerDefinition,
                                                                                 ExecutionContext executionContext) {
                 Cobol.SourceComputerDefinition s = super.visitSourceComputerDefinition(sourceComputerDefinition, executionContext);
-
                 if (s.getDebuggingMode() != null) {
                     // Do not change copied or replaced code until the transformations are understood.
-                    boolean isSafe = s.getDebuggingMode().stream().anyMatch(it ->
-                            it.getMarkers().getMarkers().stream().noneMatch(m ->
-                                    m instanceof Copy ||
-                                            m instanceof Replace ||
-                                            m instanceof ReplaceAdditiveType ||
-                                            m instanceof ReplaceReductiveType)
-                    );
+                    boolean isSupported = s.getDebuggingMode().stream().noneMatch(it ->
+                            it.getCopyStatement() != null || it.getReplacement() != null);
 
-                    if (isSafe) {
+                    if (isSupported) {
                         if (s.getComputerName().getCommentArea() != null && !s.getComputerName().getCommentArea().getPrefix().getWhitespace().isEmpty()) {
                             List<Cobol.Word> originalWords = s.getDebuggingMode();
-                            Cobol.ColumnArea.CommentArea commentArea = s.getComputerName().getCommentArea();
+                            CommentArea commentArea = s.getComputerName().getCommentArea();
                             commentArea = commentArea.withPrefix(
                                     commentArea.getPrefix().withWhitespace(
                                             commentArea.getPrefix().getWhitespace().substring(1)));

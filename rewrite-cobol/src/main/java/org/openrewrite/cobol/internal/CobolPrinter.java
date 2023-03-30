@@ -16,11 +16,7 @@
 package org.openrewrite.cobol.internal;
 
 import org.openrewrite.PrintOutputCapture;
-import org.openrewrite.cobol.markers.Continuation;
-import org.openrewrite.cobol.markers.Lines;
 import org.openrewrite.cobol.tree.*;
-
-import java.util.Optional;
 
 /**
  * Print the post-processed COBOL AST.
@@ -29,7 +25,7 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
 
     private final boolean printColumns;
     private final boolean printOriginalSource;
-    private Cobol.Preprocessor.Replacement additiveReplacement = null;
+    private Replacement additiveReplacement = null;
 
     public CobolPrinter(boolean printColumns,
                         boolean printOriginalSource) {
@@ -44,9 +40,6 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
             return super.visitWord(word, p);
         }
 
-        Optional<Lines> lines = word.getMarkers().findFirst(Lines.class);
-        lines.ifPresent(value -> visitLines(value, p));
-
         if (printColumns && word.getLines() != null) {
             for (CobolLine cobolLine : word.getLines()) {
                 visitMarkers(cobolLine.getMarkers(), p);
@@ -54,9 +47,9 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
             }
         }
 
-        if (additiveReplacement == null && word.getReplacement() != null && word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.ADDITIVE) {
+        if (additiveReplacement == null && word.getReplacement() != null && word.getReplacement().getType() == Replacement.Type.ADDITIVE) {
             additiveReplacement = word.getReplacement();
-        } else if (additiveReplacement != null && word.getReplacement() != null && word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.ADDITIVE && additiveReplacement.getId() != word.getReplacement().getId()) {
+        } else if (additiveReplacement != null && word.getReplacement() != null && word.getReplacement().getType() == Replacement.Type.ADDITIVE && additiveReplacement.getId() != word.getReplacement().getId()) {
             additiveReplacement = word.getReplacement();
             p.append("\n");
         } else if (additiveReplacement != null && word.getReplacement() == null) {
@@ -64,19 +57,18 @@ public class CobolPrinter<P> extends CobolSourcePrinter<P> {
             p.append("\n");
         }
 
-        Optional<Continuation> continuation = word.getMarkers().findFirst(Continuation.class);
-        if (continuation.isPresent() && printColumns) {
-            visitContinuation(word, continuation.get(), p);
-        } else {
-            visit(word.getSequenceArea(), p);
-            visit(word.getIndicatorArea(), p);
+        if (word.getSequenceArea() != null) {
+            word.getSequenceArea().printColumnArea(this, getCursor(), printColumns, p);
+        }
+        if (word.getIndicatorArea() != null) {
+            word.getIndicatorArea().printColumnArea(this, getCursor(), printColumns, p);
+        }
 
-            beforeSyntax(word, Space.Location.WORD_PREFIX, p);
-            p.append(word.getWord());
+        beforeSyntax(word, Space.Location.WORD_PREFIX, p);
+        p.append(word.getWord());
 
-            if (word.getCommentArea() != null && !word.getCommentArea().isAdded()) {
-                visit(word.getCommentArea(), p);
-            }
+        if (word.getCommentArea() != null && !word.getCommentArea().isAdded()) {
+            word.getCommentArea().printColumnArea(this, getCursor(), printColumns, p);
         }
 
         afterSyntax(word, p);

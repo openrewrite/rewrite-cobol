@@ -7,6 +7,7 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.Incubating;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.tree.Cobol;
+import org.openrewrite.cobol.tree.SequenceArea;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 @Value
 public class ShiftSequenceAreas extends CobolIsoVisitor<ExecutionContext> {
 
-    LinkedList<Cobol.ColumnArea.SequenceArea> originalSequenceAreas;
+    LinkedList<SequenceArea> originalSequenceAreas;
     Cobol.Word startAfter;
 
     @NonFinal
@@ -36,22 +37,16 @@ public class ShiftSequenceAreas extends CobolIsoVisitor<ExecutionContext> {
     }
 
     @Override
-    public Cobol.ColumnArea.SequenceArea visitSequenceArea(Cobol.ColumnArea.SequenceArea sequenceArea, ExecutionContext executionContext) {
-        if (startShift) {
-            originalSequenceAreas.add(sequenceArea);
-            return originalSequenceAreas.removeFirst();
-        }
-        return sequenceArea;
-    }
-
-    @Override
     public Cobol.Word visitWord(Cobol.Word word, ExecutionContext executionContext) {
         Cobol.Word w = super.visitWord(word, executionContext);
+        if (startShift && word.getSequenceArea() != null) {
+            originalSequenceAreas.add(w.getSequenceArea());
+            w = w.withSequenceArea(originalSequenceAreas.removeFirst());
+        }
 
         if (previousWord == startAfter) {
             startShift = true;
         }
-
         previousWord = w;
         return w;
     }
