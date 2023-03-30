@@ -3,6 +3,7 @@ package org.openrewrite.cobol.tree;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.openrewrite.Cursor;
 import org.openrewrite.PrintOutputCapture;
+import org.openrewrite.cobol.internal.CobolPreprocessorSourcePrinter;
 import org.openrewrite.cobol.internal.CobolSourcePrinter;
 import org.openrewrite.marker.Markers;
 
@@ -11,6 +12,8 @@ public interface ColumnArea {
     Markers getMarkers();
 
     <C extends ColumnArea> C withMarkers(Markers markers);
+
+    <P> void printColumnArea(CobolPreprocessorSourcePrinter<P> sourcePrinter, Cursor cursor, boolean printColumns, PrintOutputCapture<P> p);
 
     <P> void printColumnArea(CobolSourcePrinter<P> sourcePrinter, Cursor cursor, boolean printColumns, PrintOutputCapture<P> p);
 }

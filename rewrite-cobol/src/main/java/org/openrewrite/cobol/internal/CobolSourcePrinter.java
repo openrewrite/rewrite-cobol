@@ -16,15 +16,8 @@
 package org.openrewrite.cobol.internal;
 
 import org.openrewrite.Cursor;
-import org.openrewrite.ExecutionContext;
-import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.CobolVisitor;
-import org.openrewrite.cobol.markers.*;
-import org.openrewrite.cobol.markers.CommentArea;
-import org.openrewrite.cobol.markers.Continuation;
-import org.openrewrite.cobol.markers.IndicatorArea;
-import org.openrewrite.cobol.markers.SequenceArea;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
@@ -33,7 +26,6 @@ import org.openrewrite.marker.Markers;
 
 import java.util.*;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 /**
  * Print the original COBOL source code.
@@ -48,7 +40,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public static final UnaryOperator<String> COBOL_MARKER_WRAPPER =
             out -> "~~" + out + (out.isEmpty() ? "" : "~~") + ">";
 
-    private final CobolPreprocessorSourcePrinter<ExecutionContext> printer = new CobolPreprocessorSourcePrinter<>(true);
     private int originalReplaceLength;
     private final boolean printColumns;
 
@@ -4331,71 +4322,13 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
 
     @Override
     public Cobol visitWord(Cobol.Word word, PrintOutputCapture<P> p) {
-        // CobolPreprocessor markers.
-        ReplaceBy replaceBy = null;
-        ReplaceOff replaceOff = null;
-        Replace replace = null;
-
-        Continuation continuation = null;
-
-        for (Marker marker : word.getMarkers().getMarkers()) {
-            if (marker instanceof ReplaceBy) {
-                // TODO remove, in place for backwards compatibility.
-                replaceBy = (ReplaceBy) marker;
-            } else if (marker instanceof ReplaceOff) {
-                // TODO remove, in place for backwards compatibility.
-                replaceOff = (ReplaceOff) marker;
-            } else if (marker instanceof Replace) {
-                // TODO remove, in place for backwards compatibility.
-                replace = (Replace) marker;
-            } else if (marker instanceof Continuation) {
-                continuation = (Continuation) marker;
-            }
-        }
-
-        // TODO remove, in place for backwards compatibility.
-        if (replaceBy != null) {
-            // Print the original replaceBy
-            PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
-            printer.visit(replaceBy.getStatement(), output);
-            p.append(output.getOut());
-        }
-
-        if (word.getReplaceByStatement() != null) {
-            visit(word.getReplaceByStatement(), p);
-        }
-
-        // TODO remove, in place for backwards compatibility.
-        if (replaceOff != null) {
-            // Print the original replaceOff
-            PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
-            printer.visit(replaceOff.getReplaceOff(), output);
-            p.append(output.getOut());
-        }
-
-        if (word.getReplaceOffStatement() != null) {
-            visit(word.getReplaceOffStatement(), p);
-        }
-
-        // TODO remove, in place for backwards compatibility.
-        if (replace != null && word.getCopyStatement() == null) {
-            // Print the original replace
-            PrintOutputCapture<ExecutionContext> output = new PrintOutputCapture<>(new InMemoryExecutionContext());
-            printer.visit(replace.getOriginalWord(), output);
-            p.append(output.getOut());
-
-            if (replace.isReplacedWithEmpty()) {
-                originalReplaceLength = output.getOut().length();
-            } else {
-                originalReplaceLength = 0;
-                return word;
-            }
-        }
+        visit(word.getReplaceByStatement(), p);
+        visit(word.getReplaceOffStatement(), p);
 
         if (word.getReplacement() != null && word.getCopyStatement() == null) {
-            if (word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.EQUAL) {
+            if (word.getReplacement().getType() == Replacement.Type.EQUAL) {
                 int startLength = p.getOut().length();
-                Cobol.Preprocessor.Replacement.OriginalWord originalWord = word.getReplacement().getOriginalWords().get(0);
+                Replacement.OriginalWord originalWord = word.getReplacement().getOriginalWords().get(0);
                 visit(originalWord.getOriginal(), p);
                 int endLength = p.getOut().length();
                 if (originalWord.isReplacedWithEmpty()) {
@@ -4404,11 +4337,11 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                     originalReplaceLength = 0;
                     return word;
                 }
-            } else if (word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.ADDITIVE) {
+            } else if (word.getReplacement().getType() == Replacement.Type.ADDITIVE) {
                 return word;
-            } else if (word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.REDUCTIVE && !word.getReplacement().isCopiedSource()) {
+            } else if (word.getReplacement().getType() == Replacement.Type.REDUCTIVE && !word.getReplacement().isCopiedSource()) {
                 if (printedReductiveReplaces.add(word.getReplacement().getId().toString())) {
-                    for (Cobol.Preprocessor.Replacement.OriginalWord originalWord : word.getReplacement().getOriginalWords()) {
+                    for (Replacement.OriginalWord originalWord : word.getReplacement().getOriginalWords()) {
                         visit(originalWord.getOriginal(), p);
                     }
                     if (word.getSequenceArea() != null) {
@@ -4436,14 +4369,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         }
 
         if (printColumns) {
-            // TODO: remove, this exists for old LSTs.
-            if (word.getPrefix().getCobolLines() != null) {
-                for (CobolLine cobolLine : word.getPrefix().getCobolLines()) {
-                    visitMarkers(cobolLine.getMarkers(), p);
-                    cobolLine.printCobolLine(this, getCursor(), p);
-                }
-            }
-
             if (word.getLines() != null) {
                 for (CobolLine cobolLine : word.getLines()) {
                     visitMarkers(cobolLine.getMarkers(), p);
@@ -4452,9 +4377,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
             }
         }
 
-        if (continuation != null) {
-            visitContinuation(word, continuation, p);
-        } else if (word.getContinuation() != null) {
+        if (word.getContinuation() != null) {
             word.getContinuation().printContinuation(this, getCursor(), word, printColumns, p);
         } else {
             if (word.getSequenceArea() != null) {
@@ -4464,12 +4387,8 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
                 word.getIndicatorArea().printColumnArea(this, getCursor(), printColumns, p);
             }
 
-            // TODO: remove, this exists for old LSTs.
-            if (replace != null && replace.isReplacedWithEmpty()) {
-                p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
-                originalReplaceLength = 0;
-            } else if (word.getReplacement() != null &&
-                    word.getReplacement().getType() == Cobol.Preprocessor.Replacement.Type.EQUAL &&
+            if (word.getReplacement() != null &&
+                    word.getReplacement().getType() == Replacement.Type.EQUAL &&
                     word.getReplacement().getOriginalWords().get(0).isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
                 originalReplaceLength = 0;
@@ -4790,123 +4709,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(titleStatement.getDot(), p);
         afterSyntax(titleStatement, p);
         return titleStatement;
-    }
-
-    /* Misc */
-
-    @Override
-    public <M extends Marker> M visitMarker(Marker marker, PrintOutputCapture<P> p) {
-        if (marker instanceof Continuation || marker instanceof Lines) {
-            //noinspection unchecked
-            return (M) marker;
-        }
-        return super.visitMarker(marker, p);
-    }
-
-    public void visitContinuation(Cobol.Word word, Continuation continuation, PrintOutputCapture<P> p) {
-        if (continuation.getContinuations().containsKey(0)) {
-            Markers markers = continuation.getContinuations().get(0);
-            Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
-            sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
-
-            Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-            indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
-        }
-
-        visitSpace(word.getPrefix(), Space.Location.CONTINUATION_PREFIX, p);
-
-        char[] charArray = word.getWord().toCharArray();
-        for (int i = 0; i < charArray.length; i++) {
-            if (i != 0 && continuation.getContinuations().containsKey(i)) {
-                Markers markers = continuation.getContinuations().get(i);
-                Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
-                commentArea.ifPresent(it -> visitCommentArea(it, p));
-
-                Optional<SequenceArea> sequenceArea = markers.findFirst(SequenceArea.class);
-                sequenceArea.ifPresent(it -> visitSequenceArea(it, p));
-
-                Optional<IndicatorArea> indicatorArea = markers.findFirst(IndicatorArea.class);
-                indicatorArea.ifPresent(it -> visitIndicatorArea(it, p));
-            }
-            char c = charArray[i];
-            p.append(c);
-        }
-
-        List<Markers> lastMarkers = continuation.getContinuations().entrySet().stream()
-                .filter(it -> it.getKey() > word.getWord().length())
-                .map(Map.Entry::getValue)
-                .collect(Collectors.toList());
-
-        if (!lastMarkers.isEmpty()) {
-            Markers markers = lastMarkers.get(0);
-            Optional<CommentArea> commentArea = markers.findFirst(CommentArea.class);
-            commentArea.ifPresent(it -> visitCommentArea(it, p));
-        }
-    }
-
-    @Override
-    public <M extends Marker> M visitLines(Lines lines, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            for (Lines.Line line : lines.getLines()) {
-                if (line.isCopiedSource()) {
-                    continue;
-                }
-
-                if (line.getSequenceArea() != null) {
-                    visitSequenceArea(line.getSequenceArea(), p);
-                }
-
-                if (line.getIndicatorArea() != null) {
-                    visitIndicatorArea(line.getIndicatorArea(), p);
-                }
-
-                p.append(line.getContent());
-                if (line.getCommentArea() != null) {
-                    visitCommentArea(line.getCommentArea(), p);
-                }
-            }
-        }
-
-        //noinspection unchecked
-        return (M) lines;
-    }
-
-    @Nullable
-    @Override
-    public <M extends Marker> M visitSequenceArea(@Nullable SequenceArea sequenceArea, PrintOutputCapture<P> p) {
-        if (sequenceArea != null) {
-            if (printColumns) {
-                p.append(sequenceArea.getSequence());
-            }
-        }
-        //noinspection unchecked
-        return (M) sequenceArea;
-    }
-
-    @Override
-    public <M extends Marker> M visitIndicatorArea(IndicatorArea indicatorArea, PrintOutputCapture<P> p) {
-        if (printColumns) {
-            p.append(indicatorArea.getIndicator());
-        }
-        p.append(indicatorArea.getContinuationPrefix());
-
-        //noinspection unchecked
-        return (M) indicatorArea;
-    }
-
-    @Nullable
-    @Override
-    public <M extends Marker> M visitCommentArea(@Nullable CommentArea commentArea, PrintOutputCapture<P> p) {
-        if (commentArea != null) {
-            visitSpace(commentArea.getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p);
-            if (printColumns) {
-                p.append(commentArea.getComment());
-            }
-            visitSpace(commentArea.getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p);
-        }
-
-        //noinspection unchecked
-        return (M) commentArea;
     }
 
     protected void beforeSyntax(Cobol c, Space.Location loc, PrintOutputCapture<P> p) {

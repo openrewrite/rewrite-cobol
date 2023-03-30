@@ -4,9 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
-import org.openrewrite.cobol.markers.Replace;
-import org.openrewrite.cobol.markers.ReplaceAdditiveType;
-import org.openrewrite.cobol.markers.ReplaceReductiveType;
+import org.openrewrite.cobol.internal.CobolParserVisitor;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.marker.Markers;
@@ -132,7 +130,7 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         private final ReplacementType replacementType;
 
         private List<CobolPreprocessor.Word> current;
-        private ReplaceReductiveType replaceReductiveType = null;
+        private Replacement replaceReductiveType = null;
         private int fromPos = 0;
         private int toPos = 0;
         boolean inMatch = false;
@@ -164,10 +162,17 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
         public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
             if (ReplacementType.SINGLE_WORD == replacementType) {
                 if (from.containsKey(word)) {
+                    boolean isCopiedSource = getCursor().dropParentUntil(is -> is instanceof CobolPreprocessor.CopyStatement ||
+                            is instanceof CobolPreprocessor.ReplaceArea).getValue() instanceof CobolPreprocessor.CopyStatement;
                     CobolPreprocessor.Word toWord = to.get(toPos);
                     boolean isEmpty = toWord.getWord().isEmpty();
-                    Replace replace = new Replace(randomId(), word, isEmpty);
-                    word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                    Replacement replacement = new Replacement(
+                            randomId(),
+                            Markers.EMPTY,
+                            Collections.singletonList(new Replacement.OriginalWord(
+                                    CobolParserVisitor.CobolPreprocessorConverter.convertWord(word), isEmpty)),
+                            Replacement.Type.EQUAL, isCopiedSource);
+                    word = word.withReplacement(replacement);
                     word = word.withWord(toWord.getWord());
                 }
             } else if (ReplacementType.EQUAL == replacementType) {
@@ -180,10 +185,17 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
 
                         // Marks the changed word. Unknown: Should all the words be marked instead??
                         if (!current.get(fromPos).getWord().equals(to.get(toPos).getWord())) {
+                            boolean isCopiedSource = getCursor().dropParentUntil(is -> is instanceof CobolPreprocessor.CopyStatement ||
+                                    is instanceof CobolPreprocessor.ReplaceArea).getValue() instanceof CobolPreprocessor.CopyStatement;
                             CobolPreprocessor.Word toWord = to.get(toPos);
                             boolean isEmpty = toWord.getWord().isEmpty();
-                            Replace replace = new Replace(randomId(), word, isEmpty);
-                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                            Replacement replacement = new Replacement(
+                                    randomId(),
+                                    Markers.EMPTY,
+                                    Collections.singletonList(new Replacement.OriginalWord(
+                                            CobolParserVisitor.CobolPreprocessorConverter.convertWord(word), isEmpty)),
+                                    Replacement.Type.EQUAL, isCopiedSource);
+                            word = word.withReplacement(replacement);
                             word = word.withWord(toWord.getWord());
                         }
                         fromPos++;
@@ -194,10 +206,17 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     if (isSame) {
                         // Marks the changed word. Unknown: Should all the words be marked instead??
                         if (!current.get(fromPos).getWord().equals(to.get(toPos).getWord())) {
+                            boolean isCopiedSource = getCursor().dropParentUntil(is -> is instanceof CobolPreprocessor.CopyStatement ||
+                                    is instanceof CobolPreprocessor.ReplaceArea).getValue() instanceof CobolPreprocessor.CopyStatement;
                             CobolPreprocessor.Word toWord = to.get(toPos);
                             boolean isEmpty = toWord.getWord().isEmpty();
-                            Replace replace = new Replace(randomId(), word, isEmpty);
-                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                            Replacement replacement = new Replacement(
+                                    randomId(),
+                                    Markers.EMPTY,
+                                    Collections.singletonList(new Replacement.OriginalWord(
+                                            CobolParserVisitor.CobolPreprocessorConverter.convertWord(word), isEmpty)),
+                                    Replacement.Type.EQUAL, isCopiedSource);
+                            word = word.withReplacement(replacement);
                             word = word.withWord(toWord.getWord());
                         }
 
@@ -216,8 +235,9 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                 }
             } else if (ReplacementType.REDUCTIVE == replacementType) {
                 if (!inMatch) {
-                    boolean isCopiedSource = getCursor().dropParentUntil(is -> is instanceof CobolPreprocessor.CopyStatement || is instanceof CobolPreprocessor.ReplaceArea).getValue() instanceof CobolPreprocessor.CopyStatement;
-                    replaceReductiveType = new ReplaceReductiveType(randomId(), new ArrayList<>(), isCopiedSource);
+                    boolean isCopiedSource = getCursor().dropParentUntil(is -> is instanceof CobolPreprocessor.CopyStatement ||
+                            is instanceof CobolPreprocessor.ReplaceArea).getValue() instanceof CobolPreprocessor.CopyStatement;
+                    replaceReductiveType = new Replacement(randomId(), Markers.EMPTY, new ArrayList<>(), Replacement.Type.REDUCTIVE, isCopiedSource);
                     if (from.containsKey(word)) {
                         inMatch = true;
                         current = from.get(word);
@@ -228,13 +248,19 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         if (!current.get(fromPos).getWord().equals(to.get(toPos).getWord())) {
                             CobolPreprocessor.Word toWord = to.get(toPos);
                             boolean isEmpty = toWord.getWord().isEmpty();
-                            Replace replace = new Replace(randomId(), word, isEmpty);
+                            Replacement.OriginalWord originalWord = new Replacement.OriginalWord(CobolParserVisitor.CobolPreprocessorConverter.convertWord(word), isEmpty);
                             if (isEmpty) {
-                                replaceReductiveType.getOriginalWords().add(replace);
-                                word = word.withMarkers(word.getMarkers().addIfAbsent(replaceReductiveType));
+                                replaceReductiveType.getOriginalWords().add(originalWord);
+                                word = word.withReplacement(replaceReductiveType);
                                 word = word.withWord(CobolPrinterUtils.fillArea(' ', word.getWord().length()));
                             } else {
-                                word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                                Replacement replacement = new Replacement(
+                                        randomId(),
+                                        Markers.EMPTY,
+                                        Collections.singletonList(originalWord),
+                                        Replacement.Type.EQUAL,
+                                        isCopiedSource);
+                                word = word.withReplacement(replacement);
                                 word = word.withWord(toWord.getWord());
                             }
                         }
@@ -245,9 +271,9 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                     boolean isSame = current.get(fromPos).getWord().equals(word.getWord());
                     if (isSame) {
                         if (toPos >= to.size()) {
-                            Replace replace = new Replace(randomId(), word, true);
-                            replaceReductiveType.getOriginalWords().add(replace);
-                            word = word.withMarkers(word.getMarkers().addIfAbsent(replaceReductiveType));
+                            Replacement.OriginalWord originalWord = new Replacement.OriginalWord(CobolParserVisitor.CobolPreprocessorConverter.convertWord(word), true);
+                            replaceReductiveType.getOriginalWords().add(originalWord);
+                            word = word.withReplacement(replaceReductiveType);
                             word = word.withWord(CobolPrinterUtils.fillArea(' ', word.getWord().length()));
                         }
 
@@ -255,13 +281,20 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         else if (!current.get(fromPos).getWord().equals(to.get(toPos).getWord())) {
                             CobolPreprocessor.Word toWord = to.get(toPos);
                             boolean isEmpty = toWord.getWord().isEmpty();
-                            Replace replace = new Replace(randomId(), word, isEmpty);
+                            Replacement.OriginalWord originalWord = new Replacement.OriginalWord(CobolParserVisitor.CobolPreprocessorConverter.convertWord(word), isEmpty);
                             if (isEmpty) {
-                                replaceReductiveType.getOriginalWords().add(replace);
-                                word = word.withMarkers(word.getMarkers().addIfAbsent(replaceReductiveType));
+                                replaceReductiveType.getOriginalWords().add(originalWord);
+                                word = word.withReplacement(replaceReductiveType);
                                 word = word.withWord(CobolPrinterUtils.fillArea(' ', word.getWord().length()));
                             } else {
-                                word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                                boolean isCopiedSource = getCursor().dropParentUntil(is -> is instanceof CobolPreprocessor.CopyStatement ||
+                                        is instanceof CobolPreprocessor.ReplaceArea).getValue() instanceof CobolPreprocessor.CopyStatement;
+                                Replacement replacement = new Replacement(
+                                        randomId(),
+                                        Markers.EMPTY,
+                                        Collections.singletonList(originalWord),
+                                        Replacement.Type.EQUAL, isCopiedSource);
+                                word = word.withReplacement(replacement);
                                 word = word.withWord(toWord.getWord());
                             }
                         }
@@ -292,9 +325,16 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         if (!current.get(fromPos).getWord().equals(to.get(toPos).getWord())) {
                             CobolPreprocessor.Word toWord = to.get(toPos);
                             boolean isEmpty = toWord.getWord().isEmpty();
-                            Replace replace = new Replace(randomId(), word, isEmpty);
+                            boolean isCopiedSource = getCursor().dropParentUntil(is -> is instanceof CobolPreprocessor.CopyStatement ||
+                                    is instanceof CobolPreprocessor.ReplaceArea).getValue() instanceof CobolPreprocessor.CopyStatement;
+                            Replacement replacement = new Replacement(
+                                    randomId(),
+                                    Markers.EMPTY,
+                                    Collections.singletonList(new Replacement.OriginalWord(
+                                            CobolParserVisitor.CobolPreprocessorConverter.convertWord(word), isEmpty)),
+                                    Replacement.Type.EQUAL, isCopiedSource);
 
-                            word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                            word = word.withReplacement(replacement);
                             word = word.withWord(toWord.getWord());
                         }
                         fromPos++;
@@ -306,10 +346,17 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         if (isSame) {
                             // Marks the changed word. Unknown: Should all the words be marked instead??
                             if (!current.get(fromPos).getWord().equals(to.get(toPos).getWord())) {
+                                boolean isCopiedSource = getCursor().dropParentUntil(is -> is instanceof CobolPreprocessor.CopyStatement ||
+                                        is instanceof CobolPreprocessor.ReplaceArea).getValue() instanceof CobolPreprocessor.CopyStatement;
                                 CobolPreprocessor.Word toWord = to.get(toPos);
                                 boolean isEmpty = toWord.getWord().isEmpty();
-                                Replace replace = new Replace(randomId(), word, isEmpty);
-                                word = word.withMarkers(word.getMarkers().addIfAbsent(replace));
+                                Replacement replacement = new Replacement(
+                                        randomId(),
+                                        Markers.EMPTY,
+                                        Collections.singletonList(new Replacement.OriginalWord(
+                                                CobolParserVisitor.CobolPreprocessorConverter.convertWord(word), isEmpty)),
+                                        Replacement.Type.EQUAL, isCopiedSource);
+                                word = word.withReplacement(replacement);
                                 if (word.getPrefix().isEmpty() && !toWord.getPrefix().isEmpty()) {
                                     // Add the prefix of toWord so that words are separated correctly.
                                     word = word.withPrefix(toWord.getPrefix());
@@ -323,8 +370,9 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         }
                     } else {
                         int difference = to.size() - current.size();
-
-                        List<Replace> additiveReplaces = new ArrayList<>(difference);
+                        boolean isCopiedSource = getCursor().dropParentUntil(is -> is instanceof CobolPreprocessor.CopyStatement ||
+                                is instanceof CobolPreprocessor.ReplaceArea).getValue() instanceof CobolPreprocessor.CopyStatement;
+                        List<Replacement.OriginalWord> additiveReplaces = new ArrayList<>(difference);
                         for (int i = 0; i < difference; i++) {
                             int cur = toPos + i;
                             CobolPreprocessor.Word toWord = to.get(cur);
@@ -334,15 +382,21 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                                     Markers.EMPTY,
                                     null,
                                     null,
+                                    null,
+                                    null,
                                     toWord.getWord(),
+                                    null,
+                                    null,
+                                    null,
+                                    null,
                                     null
                             );
 
-                            Replace replace = new Replace(randomId(), addedWord, false);
-                            additiveReplaces.add(replace);
+                            Replacement.OriginalWord originalWord = new Replacement.OriginalWord(CobolParserVisitor.CobolPreprocessorConverter.convertWord(addedWord), false);
+                            additiveReplaces.add(originalWord);
                         }
-                        ReplaceAdditiveType replaceAdditiveType = new ReplaceAdditiveType(randomId(), additiveReplaces);
-                        word = word.withMarkers(word.getMarkers().addIfAbsent(replaceAdditiveType));
+                        Replacement replaceAdditiveType = new Replacement(randomId(), Markers.EMPTY, additiveReplaces, Replacement.Type.ADDITIVE, isCopiedSource);
+                        word = word.withReplacement(replaceAdditiveType);
 
                         inMatch = false;
                         current = null;
@@ -450,7 +504,13 @@ public class PreprocessReplaceVisitor<P> extends CobolPreprocessorIsoVisitor<P> 
                         Markers.EMPTY,
                         null,
                         null,
+                        null,
+                        null,
                         "",
+                        null,
+                        null,
+                        null,
+                        null,
                         null
                 ));
             }

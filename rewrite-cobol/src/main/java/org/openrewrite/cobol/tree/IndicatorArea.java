@@ -4,6 +4,7 @@ import lombok.Value;
 import lombok.With;
 import org.openrewrite.Cursor;
 import org.openrewrite.PrintOutputCapture;
+import org.openrewrite.cobol.internal.CobolPreprocessorSourcePrinter;
 import org.openrewrite.cobol.internal.CobolSourcePrinter;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.Marker;
@@ -22,6 +23,26 @@ public class IndicatorArea implements ColumnArea {
     String continuationPrefix;
 
     @Override
+    public <P> void printColumnArea(CobolPreprocessorSourcePrinter<P> sourcePrinter, Cursor cursor, boolean printColumns, PrintOutputCapture<P> p) {
+        //noinspection DuplicatedCode
+        if (printColumns) {
+            for (Marker marker : markers.getMarkers()) {
+                p.out.append(p.getMarkerPrinter().beforeSyntax(marker, new Cursor(cursor, marker), COBOL_MARKER_WRAPPER));
+            }
+
+            p.out.append(indicator);
+
+            for (Marker marker : markers.getMarkers()) {
+                p.out.append(p.getMarkerPrinter().afterSyntax(marker, new Cursor(cursor, marker), COBOL_MARKER_WRAPPER));
+            }
+        }
+
+        if (continuationPrefix != null) {
+            p.out.append(continuationPrefix);
+        }
+    }
+
+    @Override
     public <P> void printColumnArea(CobolSourcePrinter<P> sourcePrinter, Cursor cursor, boolean printColumns, PrintOutputCapture<P> p) {
         //noinspection DuplicatedCode
         if (printColumns) {
@@ -35,6 +56,9 @@ public class IndicatorArea implements ColumnArea {
                 p.out.append(p.getMarkerPrinter().afterSyntax(marker, new Cursor(cursor, marker), COBOL_MARKER_WRAPPER));
             }
         }
-        p.out.append(continuationPrefix);
+
+        if (continuationPrefix != null) {
+            p.out.append(continuationPrefix);
+        }
     }
 }

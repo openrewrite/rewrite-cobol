@@ -161,26 +161,6 @@ public interface CobolPreprocessor extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class CommentArea implements CobolPreprocessor {
-
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-        String comment;
-        Space endOfLine;
-        boolean isAdded;
-
-        @Override
-        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
-            return v.visitCommentArea(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
     class CommentEntry implements CobolPreprocessor, Comment {
 
         @EqualsAndHashCode.Include
@@ -451,31 +431,6 @@ public interface CobolPreprocessor extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class IndicatorArea implements CobolPreprocessor {
-
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-        String indicator;
-
-        @Nullable
-        String continuationPrefix;
-
-        public String getContinuationPrefix() {
-            return continuationPrefix == null ? "" : continuationPrefix;
-        }
-
-        @Override
-        public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
-            return v.visitIndicatorArea(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
     class PseudoText implements CobolPreprocessor {
 
         @EqualsAndHashCode.Include
@@ -683,15 +638,34 @@ public interface CobolPreprocessor extends Tree {
         Markers markers;
 
         @Nullable
-        Cobol.ColumnArea.SequenceArea sequenceArea;
+        List<CobolLine> lines;
 
         @Nullable
-        CobolPreprocessor.IndicatorArea indicatorArea;
+        Continuation continuation;
+
+        @Nullable
+        SequenceArea sequenceArea;
+
+        @Nullable
+        IndicatorArea indicatorArea;
 
         String word;
 
         @Nullable
-        CobolPreprocessor.CommentArea commentArea;
+        CommentArea commentArea;
+
+        // Preprocessor elements
+        @Nullable
+        CobolPreprocessor.CopyStatement copyStatement;
+
+        @Nullable
+        CobolPreprocessor.ReplaceByStatement replaceByStatement;
+
+        @Nullable
+        CobolPreprocessor.ReplaceOffStatement replaceOffStatement;
+
+        @Nullable
+        Replacement replacement;
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {
