@@ -19,6 +19,10 @@ import org.openrewrite.cobol.tree.CobolPreprocessor;
 
 public class CobolPreprocessorIsoVisitor<P> extends CobolPreprocessorVisitor<P> {
 
+    public CobolPreprocessorIsoVisitor() {
+        super(new CobolVisitor<>());
+    }
+
     @Override
     public CobolPreprocessor.CharData visitCharData(CobolPreprocessor.CharData charData, P p) {
         return (CobolPreprocessor.CharData) super.visitCharData(charData, p);

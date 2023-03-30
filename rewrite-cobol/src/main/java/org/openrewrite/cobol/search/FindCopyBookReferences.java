@@ -8,6 +8,7 @@ import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.tree.Cobol;
+import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.SearchResult;
 
@@ -53,19 +54,17 @@ public class FindCopyBookReferences extends Recipe {
         }
 
         @Override
-        public Cobol.Preprocessor.CopyStatement visitCopyStatement(Cobol.Preprocessor.CopyStatement copyStatement, ExecutionContext executionContext) {
-            if (!copyIds.containsKey(copyStatement.getId())) {
-                if (bookName == null || bookName.equals(copyStatement.getCopySource().getName().getWord())) {
-                    Cobol.Preprocessor.CopyStatement updated = copyStatement.withCopySource(
-                            copyStatement.getCopySource().withName(
-                                    SearchResult.found(copyStatement.getCopySource().getName(), null)));
-                    copyIds.put(copyStatement.getId(), updated.getId());
-                    return updated;
+        public Cobol.Word visitWord(Cobol.Word word, ExecutionContext executionContext) {
+            if (word.getCopyStatement() != null && !copyIds.containsKey(word.getCopyStatement().getId())) {
+                if (bookName == null || bookName.equals(word.getCopyStatement().getCopySource().getName().getCobolWord().getWord())) {
+                    CobolPreprocessor.CopyStatement updated = word.getCopyStatement().withCopySource(
+                            word.getCopyStatement().getCopySource().withName(
+                                    SearchResult.found(word.getCopyStatement().getCopySource().getName(), null)));
+                    copyIds.put(word.getCopyStatement().getId(), updated.getId());
+                    return word.withCopyStatement(updated);
                 }
-            } else {
-                return copyStatement.withId(copyIds.get(copyStatement.getId()));
             }
-            return super.visitCopyStatement(copyStatement, executionContext);
+            return super.visitWord(word, executionContext);
         }
     }
 }

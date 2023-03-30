@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openrewrite.cobol.tree
+package org.openrewrite.cobol.tree.cobol
 
 import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.cobol.internal.CobolPrinter
+import org.openrewrite.cobol.tree.CobolTest
 import org.openrewrite.cobol.tree.ParserAssertions.cobolCopy
 
 class CobolParserReplaceTest : CobolTest() {

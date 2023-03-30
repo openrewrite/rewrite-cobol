@@ -41,7 +41,7 @@ public class Continuation {
 
         sourcePrinter.visitSpace(word.getPrefix(), Space.Location.CONTINUATION_PREFIX, p);
 
-        char[] charArray = word.getWord().toCharArray();
+        char[] charArray = word.getCobolWord().getWord().toCharArray();
         for (int i = 0; i < charArray.length; i++) {
             if (i != 0 && continuations.containsKey(i)) {
                 for (ColumnArea columnArea : continuations.get(i)) {
@@ -53,7 +53,7 @@ public class Continuation {
         }
 
         List<List<ColumnArea>> lastColumnAreas = continuations.entrySet().stream()
-                .filter(it -> it.getKey() > word.getWord().length())
+                .filter(it -> it.getKey() > word.getCobolWord().getWord().length())
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
 

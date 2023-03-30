@@ -391,7 +391,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
 
             @Override
             public CobolPreprocessor.Word visitWord(CobolPreprocessor.Word word, ExecutionContext executionContext) {
-                Replacement replacement = word.getReplacement();
+                Replacement replacement = word.getCobolWord().getReplacement();
                 if (replacement != null) {
                     switch (replacement.getType()) {
                         case EQUAL:

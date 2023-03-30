@@ -146,7 +146,7 @@ public class CobolParser implements Parser<CobolSourceFile> {
                 .filter(Objects::nonNull)
                 .collect(toList());
 
-        sources.addAll(CobolParserVisitor.CobolPreprocessorConverter.convertAllCopybooks(copyBooks));
+        sources.addAll(copyBooks);
         return sources;
     }
 

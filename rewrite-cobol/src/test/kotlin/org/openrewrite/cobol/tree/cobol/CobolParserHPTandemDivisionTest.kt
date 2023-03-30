@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openrewrite.cobol.tree
+package org.openrewrite.cobol.tree.cobol
 
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.openrewrite.cobol.tree.ParserAssertions.cobol
 import org.openrewrite.cobol.internal.CobolDialect
 import org.openrewrite.cobol.internal.HpTandem
+import org.openrewrite.cobol.tree.CobolTest
 
 @Disabled("Requires adding comments at the first line of each test to prevent trimming the blank indicator.")
 class CobolParserHPTandemDivisionTest : CobolTest() {
