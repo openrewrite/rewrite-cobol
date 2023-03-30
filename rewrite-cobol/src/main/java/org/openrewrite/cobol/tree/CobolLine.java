@@ -20,9 +20,6 @@ public interface CobolLine {
     Markers getMarkers();
     <C extends CobolLine> C withMarkers(Markers markers);
 
-    String getContentArea();
-    <C extends CobolLine> C withContentArea(String contentArea);
-
     @Nullable
     SequenceArea getSequenceArea();
     <C extends CobolLine> C withSequenceArea(SequenceArea sequenceArea);
