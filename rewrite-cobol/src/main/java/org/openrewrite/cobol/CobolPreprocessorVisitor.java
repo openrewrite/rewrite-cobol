@@ -18,9 +18,18 @@ package org.openrewrite.cobol;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.cobol.tree.*;
 import org.openrewrite.internal.ListUtils;
-import org.openrewrite.internal.lang.Nullable;
 
 public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, P> {
+
+    protected CobolVisitor<P> cobolVisitor;
+
+    public CobolPreprocessorVisitor() {
+        this.cobolVisitor = new CobolVisitor<>();
+    }
+
+    public CobolPreprocessorVisitor(CobolVisitor<P> cobolVisitor) {
+        this.cobolVisitor = cobolVisitor;
+    }
 
     public CobolPreprocessor visitCharData(CobolPreprocessor.CharData charData, P p) {
         CobolPreprocessor.CharData c = charData;
@@ -243,77 +252,8 @@ public class CobolPreprocessorVisitor<P> extends TreeVisitor<CobolPreprocessor, 
         CobolPreprocessor.Word w = word;
         w = w.withPrefix(visitSpace(w.getPrefix(), Space.Location.WORD_PREFIX, p));
         w = w.withMarkers(visitMarkers(w.getMarkers(), p));
-
-        // Column areas.
-        w = w.withCommentArea(visitCommentArea(w.getCommentArea(), p));
-        w = w.withIndicatorArea(visitIndicatorArea(w.getIndicatorArea(), p));
-        w = w.withSequenceArea(visitSequenceArea(w.getSequenceArea(), p));
-
-        w = w.withContinuation(visitContinuation(w.getContinuation(), p));
-        w = w.withLines(ListUtils.map(w.getLines(), it -> visitLine(it, p)));
-
-        // Preprocessed COBOL preservation.
-        w = w.withCopyStatement((CobolPreprocessor.CopyStatement) visit(w.getCopyStatement(), p));
-        w = w.withReplaceByStatement((CobolPreprocessor.ReplaceByStatement) visit(w.getReplaceByStatement(), p));
-        w = w.withReplaceOffStatement((CobolPreprocessor.ReplaceOffStatement) visit(w.getReplaceOffStatement(), p));
+        w = w.withCobolWord((Cobol.Word) cobolVisitor.visitWord(w.getCobolWord(), p));
         return w;
-    }
-
-    public CobolLine visitLine(CobolLine line, P p) {
-        CobolLine l = line;
-        l = l.withMarkers(visitMarkers(l.getMarkers(), p));
-        SequenceArea sequenceArea = visitSequenceArea(l.getSequenceArea(), p);
-        if (sequenceArea != null) {
-            l = l.withSequenceArea(sequenceArea);
-        }
-        IndicatorArea indicatorArea = visitIndicatorArea(l.getIndicatorArea(), p);
-        if (indicatorArea != null) {
-            l = l.withIndicatorArea(indicatorArea);
-        }
-        CommentArea commentArea = visitCommentArea(l.getCommentArea(), p);
-        if (commentArea != null) {
-            l = l.withCommentArea(commentArea);
-        }
-        return l;
-    }
-
-    @Nullable
-    public Continuation visitContinuation(@Nullable Continuation continuation, P p) {
-        if (continuation == null) {
-            return null;
-        }
-        org.openrewrite.cobol.tree.Continuation c = continuation;
-        c = c.withMarkers(visitMarkers(c.getMarkers(), p));
-        return c;
-    }
-
-    @Nullable
-    public CommentArea visitCommentArea(@Nullable CommentArea commentArea, P p) {
-        if (commentArea == null) {
-            return null;
-        }
-        CommentArea c = commentArea;
-        c = c.withMarkers(visitMarkers(commentArea.getMarkers(), p));
-        return c;
-    }
-
-    @Nullable
-    public IndicatorArea visitIndicatorArea(@Nullable IndicatorArea indicatorArea, P p) {
-        if (indicatorArea == null) {
-            return null;
-        }
-        IndicatorArea i = indicatorArea;
-        i = i.withMarkers(visitMarkers(i.getMarkers(), p));
-        return i;
-    }
-    @Nullable
-    public SequenceArea visitSequenceArea(@Nullable SequenceArea sequenceArea, P p) {
-        if (sequenceArea == null) {
-            return null;
-        }
-        SequenceArea s = sequenceArea;
-        s = s.withMarkers(visitMarkers(s.getMarkers(), p));
-        return s;
     }
 
     public Space visitSpace(Space space, Space.Location location, P p) {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openrewrite.cobol.tree
+package org.openrewrite.cobol.tree.preprocessor
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -23,6 +23,8 @@ import org.openrewrite.PrintOutputCapture
 import org.openrewrite.cobol.tree.ParserAssertions.cobolPreprocessorCopy
 import org.openrewrite.cobol.internal.CobolPreprocessorOutputSourcePrinter
 import org.openrewrite.cobol.internal.CobolPreprocessorPrinter
+import org.openrewrite.cobol.tree.CobolPreprocessor
+import org.openrewrite.cobol.tree.CobolTest
 
 class CobolPreprocessorReplaceTest : CobolTest() {
 

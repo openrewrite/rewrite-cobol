@@ -185,7 +185,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
         visit(copyStatement.getWord(), p);
 
         // Remove the prefix of and the word COPY, because the statement is replaced by the CopyBook.
-        p.out.delete(p.getOut().length() - copyStatement.getWord().getWord().length() -
+        p.out.delete(p.getOut().length() - copyStatement.getWord().getCobolWord().getWord().length() -
                 copyStatement.getWord().getPrefix().getWhitespace().length(), p.getOut().length());
 
         // Save the current index to ensure the text that follows the COPY will be aligned correctly.
@@ -252,8 +252,8 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
         if (!printColumns) {
             // Do not print words on lines with an unknown indicator until we know how to handle them.
             // Note: Unknown indicators are treated as comments via source code in CobolParserVisitor#isCommentIndicator.
-            if (word.getIndicatorArea() != null) {
-                String indicator = word.getIndicatorArea().getIndicator();
+            if (word.getCobolWord().getIndicatorArea() != null) {
+                String indicator = word.getCobolWord().getIndicatorArea().getIndicator();
                 if ("G".equals(indicator) || "J".equals(indicator) || "P".equals(indicator)) {
                     // TODO: add a form of visibility for an unrecognized indicator.
                     inUnknownIndicator = true;
@@ -261,8 +261,8 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
             }
 
             if (!inUnknownIndicator) {
-                if (word.getReplacement() != null && word.getReplacement().getType() == Replacement.Type.ADDITIVE) {
-                    Replacement replaceAdditiveType = word.getReplacement();
+                if (word.getCobolWord().getReplacement() != null && word.getCobolWord().getReplacement().getType() == Replacement.Type.ADDITIVE) {
+                    Replacement replaceAdditiveType = word.getCobolWord().getReplacement();
                     for (Replacement.OriginalWord additionalWord : replaceAdditiveType.getOriginalWords()) {
                         cobolSourcePrinter.visit(additionalWord.getOriginal(), p);
                     }
@@ -275,15 +275,15 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
 
                 visitSpace(word.getPrefix(), Space.Location.WORD_PREFIX, p);
                 visitMarkers(word.getMarkers(), p);
-                p.append(word.getWord());
+                p.append(word.getCobolWord().getWord());
 
-                if (word.getCommentArea() != null) {
-                    visitSpace(word.getCommentArea().getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p);
-                    visitSpace(word.getCommentArea().getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p);
+                if (word.getCobolWord().getCommentArea() != null) {
+                    visitSpace(word.getCobolWord().getCommentArea().getPrefix(), Space.Location.COMMENT_AREA_PREFIX, p);
+                    visitSpace(word.getCobolWord().getCommentArea().getEndOfLine(), Space.Location.COMMENT_AREA_EOL, p);
                 }
             }
 
-            if (inUnknownIndicator && word.getCommentArea() != null) {
+            if (inUnknownIndicator && word.getCobolWord().getCommentArea() != null) {
                 inUnknownIndicator = false;
             }
             return word;
@@ -291,11 +291,11 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
 
         // Beware all who enter.
         // Replace contains many special cases due to changes in column alignment after a replacement.
-        Replacement replacement = word.getReplacement();
+        Replacement replacement = word.getCobolWord().getReplacement();
         if (replacement != null && replacement.getType() == Replacement.Type.EQUAL) {
             List<CobolLine> lines = replacement.getOriginalWords().get(0).getOriginal().getLines();
             if (lines != null) {
-                ListUtils.map(lines, l -> visitLine(l, p));
+                ListUtils.map(lines, l -> cobolSourcePrinter.visitLine(l, p));
             }
 
             replaceTemplate(word, p, replacement);
@@ -311,7 +311,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
         } else if (replacement != null && replacement.getType() == Replacement.Type.ADDITIVE) {
             replaceAdditiveTemplate(replacement, p);
             super.visitWord(word, p);
-        } else if (!isSubstituteCharacter(word.getWord())) {
+        } else if (!isSubstituteCharacter(word.getCobolWord().getWord())) {
             super.visitWord(word, p);
         }
         return word;
@@ -405,10 +405,10 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
         }
 
         Cobol.Word originalWord = replacement.getOriginalWords().get(0).getOriginal();
-        boolean isLongerWord = word.getWord().length() > originalWord.getWord().length();
-        String replacedWord = isLongerWord ? " " + word.getWord() : word.getWord();
+        boolean isLongerWord = word.getCobolWord().getWord().length() > originalWord.getWord().length();
+        String replacedWord = isLongerWord ? " " + word.getCobolWord().getWord() : word.getCobolWord().getWord();
 
-        boolean isLiteral = word.getWord().startsWith("\"") || word.getWord().startsWith("'");
+        boolean isLiteral = word.getCobolWord().getWord().startsWith("\"") || word.getCobolWord().getWord().startsWith("'");
         int contentAreaLength = getContentAreaLength(cobolDialect);
         boolean isContinuedLiteral = isLiteral && (curIndex + replacedWord.length()) > contentAreaLength;
 
@@ -504,7 +504,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
                 }
                 p.append(end);
             } else {
-                int difference = word.getWord().length() - originalWord.getWord().length();
+                int difference = word.getCobolWord().getWord().length() - originalWord.getWord().length();
                 int alignColumn = curIndex == 0 ? cobolDialect.getColumns().getContentArea() : curIndex;
                 int total = alignColumn + word.getPrefix().getWhitespace().length() - difference;
                 if (total > cobolDialect.getColumns().getOtherArea()) {
@@ -512,7 +512,7 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
                 }
                 String prefix = generateWhitespace(total);
                 p.append(prefix);
-                p.append(word.getWord());
+                p.append(word.getCobolWord().getWord());
             }
         } else {
             PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
@@ -545,30 +545,30 @@ public class CobolPreprocessorOutputSourcePrinter<P> extends CobolPreprocessorSo
              *  After:
              *      |000001| | firstWord     PIC secondWord         |
              */
-            int difference = originalWord.getWord().length() - word.getWord().length();
+            int difference = originalWord.getWord().length() - word.getCobolWord().getWord().length();
             // The difference exceeds the content area.
             if (curIndex + difference > cobolDialect.getColumns().getOtherArea()) {
                 String fullWord = word.print(getCursor());
                 int lastIndex = fullWord.lastIndexOf("\n");
                 fullWord = fullWord.substring(lastIndex + 1);
 
-                if (fullWord.length() - word.getWord().length() < curIndex) {
-                    p.out.delete(p.getOut().length() - (curIndex - (fullWord.length() - word.getWord().length())), p.getOut().length());
+                if (fullWord.length() - word.getCobolWord().getWord().length() < curIndex) {
+                    p.out.delete(p.getOut().length() - (curIndex - (fullWord.length() - word.getCobolWord().getWord().length())), p.getOut().length());
                 } else {
-                    p.append(StringUtils.repeat(" ", fullWord.length() - word.getWord().length() - curIndex));
+                    p.append(StringUtils.repeat(" ", fullWord.length() - word.getCobolWord().getWord().length() - curIndex));
                 }
 
-                p.append(word.getWord());
+                p.append(word.getCobolWord().getWord());
             } else {
                 String additionalPrefix = StringUtils.repeat(" ", difference);
                 p.append(additionalPrefix);
                 visitSpace(word.getPrefix(), Space.Location.WORD_PREFIX, p);
-                p.append(word.getWord());
+                p.append(word.getCobolWord().getWord());
             }
         }
 
-        if (word.getCommentArea() != null) {
-            word.getCommentArea().printColumnArea(this, getCursor(), printColumns, p);
+        if (word.getCobolWord().getCommentArea() != null) {
+            word.getCobolWord().getCommentArea().printColumnArea(this, getCursor(), printColumns, p);
         }
     }
 

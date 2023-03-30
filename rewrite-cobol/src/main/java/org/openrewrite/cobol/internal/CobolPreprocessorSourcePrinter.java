@@ -269,42 +269,42 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
 
     @Override
     public CobolPreprocessor visitWord(CobolPreprocessor.Word word, PrintOutputCapture<P> p) {
-        visit(word.getReplaceByStatement(), p);
-        visit(word.getReplaceOffStatement(), p);
+        visit(word.getCobolWord().getReplaceByStatement(), p);
+        visit(word.getCobolWord().getReplaceOffStatement(), p);
 
-        if (word.getReplacement() != null && word.getCopyStatement() == null) {
-            if (word.getReplacement().getType() == Replacement.Type.EQUAL) {
-                Replacement.OriginalWord originalWord = word.getReplacement().getOriginalWords().get(0);
+        if (word.getCobolWord().getReplacement() != null && word.getCobolWord().getCopyStatement() == null) {
+            if (word.getCobolWord().getReplacement().getType() == Replacement.Type.EQUAL) {
+                Replacement.OriginalWord originalWord = word.getCobolWord().getReplacement().getOriginalWords().get(0);
                 cobolSourcePrinter.visitWord(originalWord.getOriginal(), p);
                 if (originalWord.isReplacedWithEmpty()) {
-                    originalReplaceLength = word.getPrefix().getWhitespace().length() - word.getWord().length();
+                    originalReplaceLength = word.getPrefix().getWhitespace().length() - word.getCobolWord().getWord().length();
                 } else {
                     originalReplaceLength = 0;
                     return word;
                 }
-            } else if (word.getReplacement().getType() == Replacement.Type.REDUCTIVE && !word.getReplacement().isCopiedSource()) {
-                if (printedReductiveReplaces.add(word.getReplacement().getId().toString())) {
-                    for (Replacement.OriginalWord originalWord : word.getReplacement().getOriginalWords()) {
+            } else if (word.getCobolWord().getReplacement().getType() == Replacement.Type.REDUCTIVE && !word.getCobolWord().getReplacement().isCopiedSource()) {
+                if (printedReductiveReplaces.add(word.getCobolWord().getReplacement().getId().toString())) {
+                    for (Replacement.OriginalWord originalWord : word.getCobolWord().getReplacement().getOriginalWords()) {
                         cobolSourcePrinter.visitWord(originalWord.getOriginal(), p);
                     }
-                    if (word.getSequenceArea() != null) {
-                        word.getSequenceArea().printColumnArea(this, getCursor(), printColumns, p);
+                    if (word.getCobolWord().getSequenceArea() != null) {
+                        word.getCobolWord().getSequenceArea().printColumnArea(this, getCursor(), printColumns, p);
                     }
-                    if (word.getIndicatorArea() != null) {
-                        word.getIndicatorArea().printColumnArea(this, getCursor(), printColumns, p);
+                    if (word.getCobolWord().getIndicatorArea() != null) {
+                        word.getCobolWord().getIndicatorArea().printColumnArea(this, getCursor(), printColumns, p);
                     }
                     beforeSyntax(word, Space.Location.WORD_PREFIX, p);
-                    p.append(word.getWord());
+                    p.append(word.getCobolWord().getWord());
                     return word;
                 }
             }
         }
 
         // The COBOL word is a product of a copy statement.
-        if (word.getCopyStatement() != null) {
+        if (word.getCobolWord().getCopyStatement() != null) {
             // Print the original Copy Statement in place of the first word from the copied source.
-            if (printedCopyStatements.add(word.getCopyStatement().getId().toString())) {
-                visit(word.getCopyStatement(), p);
+            if (printedCopyStatements.add(word.getCobolWord().getCopyStatement().getId().toString())) {
+                visit(word.getCobolWord().getCopyStatement(), p);
             }
 
             // Do not print the AST for the copied source.
@@ -312,38 +312,38 @@ public class CobolPreprocessorSourcePrinter<P> extends CobolPreprocessorVisitor<
         }
 
         if (printColumns) {
-            if (word.getLines() != null) {
-                for (CobolLine cobolLine : word.getLines()) {
+            if (word.getCobolWord().getLines() != null) {
+                for (CobolLine cobolLine : word.getCobolWord().getLines()) {
                     visitMarkers(cobolLine.getMarkers(), p);
                     cobolLine.printCobolLine(this, getCursor(), p);
                 }
             }
         }
 
-        if (word.getContinuation() != null) {
-            word.getContinuation().printContinuation(this, getCursor(), word, printColumns, p);
+        if (word.getCobolWord().getContinuation() != null) {
+            word.getCobolWord().getContinuation().printContinuation(this, getCursor(), word, printColumns, p);
         } else {
-            if (word.getSequenceArea() != null) {
-                word.getSequenceArea().printColumnArea(this, getCursor(), printColumns, p);
+            if (word.getCobolWord().getSequenceArea() != null) {
+                word.getCobolWord().getSequenceArea().printColumnArea(this, getCursor(), printColumns, p);
             }
 
-            if (word.getIndicatorArea() != null) {
-                word.getIndicatorArea().printColumnArea(this, getCursor(), printColumns, p);
+            if (word.getCobolWord().getIndicatorArea() != null) {
+                word.getCobolWord().getIndicatorArea().printColumnArea(this, getCursor(), printColumns, p);
             }
 
-            if (word.getReplacement() != null &&
-                    word.getReplacement().getType() == Replacement.Type.EQUAL &&
-                    word.getReplacement().getOriginalWords().get(0).isReplacedWithEmpty()) {
+            if (word.getCobolWord().getReplacement() != null &&
+                    word.getCobolWord().getReplacement().getType() == Replacement.Type.EQUAL &&
+                    word.getCobolWord().getReplacement().getOriginalWords().get(0).isReplacedWithEmpty()) {
                 p.append(StringUtils.repeat(" ", word.getPrefix().getWhitespace().length() - originalReplaceLength));
                 originalReplaceLength = 0;
             } else {
                 beforeSyntax(word, Space.Location.WORD_PREFIX, p);
             }
 
-            p.append(word.getWord());
+            p.append(word.getCobolWord().getWord());
 
-            if (word.getCommentArea() != null && !word.getCommentArea().isAdded()) {
-                word.getCommentArea().printColumnArea(this, getCursor(), printColumns, p);
+            if (word.getCobolWord().getCommentArea() != null && !word.getCobolWord().getCommentArea().isAdded()) {
+                word.getCobolWord().getCommentArea().printColumnArea(this, getCursor(), printColumns, p);
             }
         }
 

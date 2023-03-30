@@ -241,7 +241,7 @@ public interface CobolPreprocessor extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class CopyBook implements CobolPreprocessor, SourceFile {
+    class CopyBook implements CobolPreprocessor, CobolSourceFile {
 
         UUID id;
         Space prefix;
@@ -626,46 +626,36 @@ public interface CobolPreprocessor extends Tree {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
     class Word implements CobolPreprocessor {
 
         @EqualsAndHashCode.Include
+        @With
         UUID id;
 
         Space prefix;
         Markers markers;
 
-        @Nullable
-        List<CobolLine> lines;
+        @With
+        Cobol.Word cobolWord;
 
-        @Nullable
-        Continuation continuation;
+        public Space getPrefix() {
+            return cobolWord.getPrefix();
+        }
 
-        @Nullable
-        SequenceArea sequenceArea;
+        public Word withPrefix(Space prefix) {
+            return cobolWord.getPrefix() == prefix ? this : withCobolWord(cobolWord.withPrefix(prefix));
+        }
 
-        @Nullable
-        IndicatorArea indicatorArea;
+        public Markers getMarkers() {
+            return cobolWord.getMarkers();
+        }
 
-        String word;
-
-        @Nullable
-        CommentArea commentArea;
-
-        // Preprocessor elements
-        @Nullable
-        CobolPreprocessor.CopyStatement copyStatement;
-
-        @Nullable
-        CobolPreprocessor.ReplaceByStatement replaceByStatement;
-
-        @Nullable
-        CobolPreprocessor.ReplaceOffStatement replaceOffStatement;
-
-        @Nullable
-        Replacement replacement;
+        public Word withMarkers(Markers markers) {
+            return cobolWord.getMarkers() == markers ? this : withCobolWord(cobolWord.withMarkers(markers));
+        }
 
         @Override
         public <P> CobolPreprocessor acceptCobolPreprocessor(CobolPreprocessorVisitor<P> v, P p) {

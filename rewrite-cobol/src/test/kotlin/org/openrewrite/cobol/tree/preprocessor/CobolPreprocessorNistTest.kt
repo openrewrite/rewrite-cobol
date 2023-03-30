@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openrewrite.cobol.tree
+package org.openrewrite.cobol.tree.preprocessor
 
 import org.junit.jupiter.api.Test
+import org.openrewrite.cobol.tree.CobolTest
 import org.openrewrite.cobol.tree.ParserAssertions.cobolPreprocess
 
 class CobolPreprocessorNistTest : CobolTest() {

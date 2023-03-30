@@ -27,8 +27,8 @@ public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
     public CobolPreprocessor.CopyStatement visitCopyStatement(CobolPreprocessor.CopyStatement copyStatement, P p) {
         CobolPreprocessor.CopyStatement c = super.visitCopyStatement(copyStatement, p);
 
-        if (copyBooks.containsKey(copyStatement.getCopySource().getName().getWord())) {
-            c = c.withCopyBook(copyBooks.get(copyStatement.getCopySource().getName().getWord()).withId(Tree.randomId()));
+        if (copyBooks.containsKey(copyStatement.getCopySource().getName().getCobolWord().getWord())) {
+            c = c.withCopyBook(copyBooks.get(copyStatement.getCopySource().getName().getCobolWord().getWord()).withId(Tree.randomId()));
         }
         return c;
     }

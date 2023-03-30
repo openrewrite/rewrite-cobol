@@ -36,6 +36,7 @@ import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.cobol.CobolStringUtils.isSubstituteCharacter;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.COMMENT_ENTRY;
 import static org.openrewrite.cobol.internal.CobolGrammarToken.END_OF_FILE;
+import static org.openrewrite.cobol.tree.Space.EMPTY;
 
 public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor<Object> {
 
@@ -141,7 +142,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitCharData(CobolPreprocessorParser.CharDataContext ctx) {
         return new CobolPreprocessor.CharData(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 convertAll(ctx.charDataLine())
         );
@@ -157,7 +158,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitCharDataLine(CobolPreprocessorParser.CharDataLineContext ctx) {
         return new CobolPreprocessor.CharDataLine(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 convertAllList(ctx.cobolWord(), ctx.literal(), ctx.filename(), ctx.commentEntry(), ctx.TEXT(), ctx.DOT(), ctx.LPARENCHAR(), ctx.RPARENCHAR())
         );
@@ -167,7 +168,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitCharDataLineNoDot(CobolPreprocessorParser.CharDataLineNoDotContext ctx) {
         return new CobolPreprocessor.CharDataLine(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 convertAllList(ctx.cobolWord(), ctx.literal(), ctx.filename(), ctx.commentEntry(), ctx.TEXT(), ctx.LPARENCHAR(), ctx.RPARENCHAR())
         );
@@ -177,7 +178,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitCharDataSql(CobolPreprocessorParser.CharDataSqlContext ctx) {
         return new CobolPreprocessor.CharDataSql(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 convertAllList(ctx.charDataLine())
         );
@@ -193,7 +194,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitCommentEntry(CobolPreprocessorParser.CommentEntryContext ctx) {
         return new CobolPreprocessor.CommentEntry(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 convertAll(ctx.COMMENTENTRYLINE())
         );
@@ -203,7 +204,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitCompilerOption(CobolPreprocessorParser.CompilerOptionContext ctx) {
         return new CobolPreprocessor.CompilerOption(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 convertAllList(
                         // Each item is listed in alphabetical order to reduce risk of typos, and make it simpler to
@@ -503,7 +504,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitCompilerOptions(CobolPreprocessorParser.CompilerOptionsContext ctx) {
         return new CobolPreprocessor.CompilerOptions(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 visit(ctx.PROCESS(), ctx.CBL()),
                 convertAllList(ctx.COMMACHAR(), ctx.compilerOption(), ctx.compilerXOpts())
@@ -514,7 +515,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitCompilerXOpts(CobolPreprocessorParser.CompilerXOptsContext ctx) {
         return new CobolPreprocessor.CompilerXOpts(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 (CobolPreprocessor.Word) visit(ctx.XOPTS()),
                 (CobolPreprocessor.Word) visit(ctx.LPARENCHAR()),
@@ -531,7 +532,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 randomId(),
                 path,
                 fileAttributes,
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 charset.name(),
                 charsetBomMarked,
@@ -561,7 +562,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitCopySource(CobolPreprocessorParser.CopySourceContext ctx) {
         return new CobolPreprocessor.CopySource(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 visit(ctx.literal(), ctx.cobolWord(), ctx.filename()),
                 ctx.OF() == null && ctx.IN() == null ? null : visit(ctx.OF(), ctx.IN()),
@@ -573,7 +574,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitCopyStatement(CobolPreprocessorParser.CopyStatementContext ctx) {
         return new CobolPreprocessor.CopyStatement(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 (CobolPreprocessor.Word) visit(ctx.COPY()),
                 (CobolPreprocessor.CopySource) visit(ctx.copySource()),
@@ -587,7 +588,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitDirectoryPhrase(CobolPreprocessorParser.DirectoryPhraseContext ctx) {
         return new CobolPreprocessor.DirectoryPhrase(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 visit(ctx.OF(), ctx.IN()),
                 visit(ctx.literal(), ctx.cobolWord())
@@ -598,7 +599,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitEjectStatement(CobolPreprocessorParser.EjectStatementContext ctx) {
         return new CobolPreprocessor.EjectStatement(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 (CobolPreprocessor.Word) visit(ctx.EJECT()),
                 visitNullable(ctx.DOT())
@@ -609,7 +610,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitExecCicsStatement(CobolPreprocessorParser.ExecCicsStatementContext ctx) {
         return new CobolPreprocessor.ExecStatement(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 wordsList(ctx.EXEC(), ctx.CICS()),
                 (CobolPreprocessor) visit(ctx.charData()),
@@ -622,7 +623,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitExecSqlStatement(CobolPreprocessorParser.ExecSqlStatementContext ctx) {
         return new CobolPreprocessor.ExecStatement(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 wordsList(ctx.EXEC(), ctx.SQL()),
                 (CobolPreprocessor) visit(ctx.charDataSql()),
@@ -635,7 +636,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitExecSqlImsStatement(CobolPreprocessorParser.ExecSqlImsStatementContext ctx) {
         return new CobolPreprocessor.ExecStatement(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 wordsList(ctx.EXEC(), ctx.SQLIMS()),
                 (CobolPreprocessor) visit(ctx.charData()),
@@ -648,7 +649,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitFamilyPhrase(CobolPreprocessorParser.FamilyPhraseContext ctx) {
         return new CobolPreprocessor.FamilyPhrase(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 (CobolPreprocessor.Word) visit(ctx.ON()),
                 visit(ctx.literal(), ctx.cobolWord())
@@ -671,7 +672,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitPseudoText(CobolPreprocessorParser.PseudoTextContext ctx) {
         return new CobolPreprocessor.PseudoText(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 (CobolPreprocessor.Word) visit(ctx.DOUBLEEQUALCHAR().get(0)),
                 visitNullable(ctx.charData()),
@@ -689,7 +690,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitReplaceArea(CobolPreprocessorParser.ReplaceAreaContext ctx) {
         return new CobolPreprocessor.ReplaceArea(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 (CobolPreprocessor.ReplaceByStatement) visit(ctx.replaceByStatement()),
                 convertAllList(ctx.copyStatement(), ctx.charData()),
@@ -701,7 +702,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitReplaceByStatement(CobolPreprocessorParser.ReplaceByStatementContext ctx) {
         return new CobolPreprocessor.ReplaceByStatement(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 (CobolPreprocessor.Word) visit(ctx.REPLACE()),
                 convertAll(ctx.replaceClause()),
@@ -713,7 +714,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitReplaceClause(CobolPreprocessorParser.ReplaceClauseContext ctx) {
         return new CobolPreprocessor.ReplaceClause(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 (CobolPreprocessor) visit(ctx.replaceable()),
                 (CobolPreprocessor.Word) visit(ctx.BY()),
@@ -734,7 +735,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitReplaceOffStatement(CobolPreprocessorParser.ReplaceOffStatementContext ctx) {
         return new CobolPreprocessor.ReplaceOffStatement(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 wordsList(ctx.REPLACE(), ctx.OFF()),
                 (CobolPreprocessor.Word) visit(ctx.DOT())
@@ -745,7 +746,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitReplacingPhrase(CobolPreprocessorParser.ReplacingPhraseContext ctx) {
         return new CobolPreprocessor.ReplacingPhrase(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 (CobolPreprocessor.Word) visit(ctx.REPLACING()),
                 convertAll(ctx.replaceClause())
@@ -756,7 +757,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitSkipStatement(CobolPreprocessorParser.SkipStatementContext ctx) {
         return new CobolPreprocessor.SkipStatement(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 visit(ctx.SKIP1(), ctx.SKIP2(), ctx.SKIP3()),
                 visitNullable(ctx.DOT())
@@ -810,18 +811,22 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
         return new CobolPreprocessor.Word(
                 randomId(),
-                prefix,
+                EMPTY,
                 Markers.EMPTY,
-                cobolLines,
-                continuation,
-                sequenceArea,
-                indicatorArea,
-                text,
-                commentArea,
-                copyStatement,
-                replaceByStatement,
-                replaceOffStatement,
-                replacement
+                new Cobol.Word(
+                        randomId(),
+                        prefix,
+                        Markers.EMPTY,
+                        cobolLines,
+                        continuation,
+                        sequenceArea,
+                        indicatorArea,
+                        text,
+                        commentArea,
+                        copyStatement,
+                        replaceByStatement,
+                        replaceOffStatement,
+                        replacement)
         );
     }
 
@@ -829,7 +834,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
     public Object visitTitleStatement(CobolPreprocessorParser.TitleStatementContext ctx) {
         return new CobolPreprocessor.TitleStatement(
                 randomId(),
-                Space.EMPTY,
+                EMPTY,
                 Markers.EMPTY,
                 (CobolPreprocessor.Word) visit(ctx.TITLE()),
                 (CobolPreprocessor.Word) visit(ctx.literal()),
@@ -957,7 +962,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                     processContinuedText(text, objects) :
                     processLiteral(text, objects, delimiter);
         } else if (END_OF_FILE.equals(text) && source.substring(cursor).isEmpty()) {
-            return Space.EMPTY;
+            return EMPTY;
         }
 
         return processText(text, objects);
@@ -1098,7 +1103,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         }
 
         // An inline comment entry will have a null sequence area.
-        Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
+        Space prefix = isCommentEntry ? EMPTY : whitespace();
 
         if (sequenceArea != null) {
             objects.add(sequenceArea);
@@ -1131,7 +1136,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
         }
 
         // An inline comment entry will have a null sequence area.
-        Space prefix = isCommentEntry ? Space.EMPTY : whitespace();
+        Space prefix = isCommentEntry ? EMPTY : whitespace();
 
         Map<Integer, List<ColumnArea>> continuations = new HashMap<>();
         List<ColumnArea> continuation = new ArrayList<>(2);
@@ -1267,7 +1272,7 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
 
         Space before = whitespace();
         String comment = null;
-        Space endLine = Space.EMPTY;
+        Space endLine = EMPTY;
 
         if (commentAreas.containsKey(cursor)) {
             comment = commentAreas.get(cursor);
