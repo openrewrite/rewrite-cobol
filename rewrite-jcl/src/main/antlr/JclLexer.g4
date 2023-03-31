@@ -61,6 +61,80 @@ THEN : T H E N;
 XEQ : X E Q;
 XMIT : X M I T;
 
+
+/* Info on parameter field ...
+Parameter field
+The parameter field consists of two types of parameters: positional parameters and keyword
+parameters. All positional parameters must precede all keyword parameters. Keyword parameters follow
+the positional parameters.
+Commas: Use commas to separate positional parameters, keyword parameters, and subparameters in
+the parameter field.
+Positional Parameters: A positional parameter consists of:
+• Characters that appear in uppercase in the syntax and must be coded as shown
+• Variable information, or
+• A combination.
+For example, DATA on a DD statement, programmer's-name on a JOB statement, and PGM=programname
+on an EXEC statement.
+Code positional parameters first in the parameter field in the order shown in the syntax. If you omit a
+positional parameter and code a following positional parameter, code a comma to indicate the omitted
+parameter. Do not code the replacing comma if:
+• The omitted positional parameter is the last positional parameter.
+• All following positional parameters are also omitted.
+• Only keyword parameters follow.
+• All positional parameters are omitted.
+Keyword parameters: A keyword consists of characters that appear in uppercase in the syntax and must
+be coded as shown followed by an equals sign followed by either characters that must be coded as shown
+or variable information. For example, RD=R and MSGCLASS=class-name on the JOB statement.
+Code any of the keyword parameters for a statement in any order in the parameter field after the
+positional parameters. Because of this positional independence, never code a comma to indicate the
+absence of a keyword parameter.
+Multiple subparameters: A positional parameter or the variable information in a keyword parameter
+sometimes consists of more than one item, called a subparameter list. A subparameter list can consist of
+both positional and keyword subparameters. These subparameters follow the same rules as positional
+and keyword parameters.
+When a parameter contains more than one subparameter, separate the subparameters by commas and
+enclose the subparameter list in parentheses or, if indicated in the syntax, by apostrophes. If the list is a
+single keyword subparameter or a single positional subparameter with no omitted preceding
+subparameters, omit the parentheses or apostrophes.
+Null positional subparameters: You are allowed to specify null (that is, omitted) positional subparameters
+except where the Syntax section of a particular parameter states otherwise. (For example, null positional
+subparameters are not allowed on a COND parameter of an EXEC statement or on an AMP parameter of a
+DD statement.) You specify a null positi
+*/
+PARAMETER
+    : ACCODE | ACCT | ADDRESS | ADDRSPC | AFF | AMP | AVGREC
+    | BLKSIZE | BLKSZLIM | BUFND | BUFNI | BUFNO | BUFSP | BUILDING | BURST | BYTES
+    | CCSID | CHARS | CHKPT | CKPTLINE | CKPTPAGE | CKPTSEC | CLASS | CNTL
+    | COLORMAP | COMMAND | COMPACT | COMSETUP | COND | CONTROL | COPIES | CROPS
+    | DATA | DATACK | DATACLAS | DCB | DDNAME | DEFAULT | DEN | DEPT | DEST | DISP | DLM
+    | DPAGELBL | DSN | DSNTYPE | DSORG | DUMMY | DUPLEX | DYNAMNBR
+    | ENDCNTL | EXEC | EXPDT
+    | FCB | FILEDATA | FLASH | FORMDEF | FORMLEN | FORMS | FREE
+    | GROUP | GROUPID
+    | HOLD
+    | IF | THEN | ELSE | ENDIF
+    | INDEX
+    | JCLLIB | JESDS | JOB | JOBCAT | JOBLIB
+    | KEYOFF
+    | LABEL | LGSTREAM | LIKE | LINDEX | LINECT | LINES | LRECL
+    | MEMLIMIT | MGMTCLAS | MODIFY | MGSCLASS | MGSLEVEL
+    | NAME | NOTIFY | NULLFILE
+    | OFFSET | OPTCD | OUTBIN | OUTDISP | OUTLIM | OUTPUT | OVERLAY | OVFL
+    | PAGEDEF | PAGES | PARM | PASSWORD | PATH | PATHDISP | PATHMODE | PATHOPTS | PEND
+    | PERFORM | PGM | PIMSG | PRMODE | PROC | PROTECT | PRTERROR | PRTNO | PRTOPTNS | PRTQUEUE | PRTSP | PRTY
+    | QNAME
+    | RD | RECFM | RECORG | REF | REFDD | REGION | RESFMT | RESTART | RETAIN | RETRY | RETPD | RLS | ROOM
+    | SCHENV | SECLABEL | SECMODEL | SEGMENT | SER | SORTCKPT | SPIN | SPACE | STEPCAT | STEPLIB
+    | STORCLAS | STRNO | SUBSYS | SYNAD | SYMNAMES | SYSABEND | SYSAREA | SYSCHK | SYSCKEOV | SYSIN
+    | SYSMDUMP | SYSOUT | SYSUDUMP
+    | TERM | THRESHLD | TIME | TITLE | TRC | TRTCH | TYPRUN
+    | UNIT | USER | USERDATA | USERLIB
+    | VIO | VOL
+    | WRITER
+    | XMIT
+    | ASTERISK
+    ;
+
 // parameter names
 ACCODE : A C C O D E;
 ACCT : A C C T;
@@ -69,6 +143,8 @@ ADDRSPC : A D D R S P C;
 AFF : A F F;
 AMP : A M P;
 AVGREC : A V G R E C;
+BLKSIZE : B L K S I Z E;
+BLKSZLIM : B L K S Z L I M;
 BUFND : B U F N D;
 BUFNI : B U F N I;
 BUFNO : B U F N O;
@@ -77,7 +153,7 @@ BUILDING : B U I L D I N G;
 BURST : B U R S T;
 BYTES : B Y T E S;
 CCSID : C C S I D;
-CHARSET : C H A R S E T;
+CHARS : C H A R S E T;
 CHKPT : C H K P T;
 CKPTLINE : C K P T L I N E;
 CKPTPAGE : C K P T P A G E;
@@ -228,52 +304,13 @@ R_BRACKET : ']';
 L_PAREN : '(';
 R_PAREN : ')';
 
+ASTERISK : '*';
+
 // names
 NAME_FIELD : NAME_CHAR (DOT NAME_CHAR)?;
 DOT : '.';
 COMMA : ',';
 NAME_CHAR : [a-zA-Z0-9$#@]+;
-
-PARAMETER : [0-9]; // TODO: find parameter spec
-/* Info on parameter field ...
-Parameter field
-The parameter field consists of two types of parameters: positional parameters and keyword
-parameters. All positional parameters must precede all keyword parameters. Keyword parameters follow
-the positional parameters.
-Commas: Use commas to separate positional parameters, keyword parameters, and subparameters in
-the parameter field.
-Positional Parameters: A positional parameter consists of:
-• Characters that appear in uppercase in the syntax and must be coded as shown
-• Variable information, or
-• A combination.
-For example, DATA on a DD statement, programmer's-name on a JOB statement, and PGM=programname
-on an EXEC statement.
-Code positional parameters first in the parameter field in the order shown in the syntax. If you omit a
-positional parameter and code a following positional parameter, code a comma to indicate the omitted
-parameter. Do not code the replacing comma if:
-• The omitted positional parameter is the last positional parameter.
-• All following positional parameters are also omitted.
-• Only keyword parameters follow.
-• All positional parameters are omitted.
-Keyword parameters: A keyword consists of characters that appear in uppercase in the syntax and must
-be coded as shown followed by an equals sign followed by either characters that must be coded as shown
-or variable information. For example, RD=R and MSGCLASS=class-name on the JOB statement.
-Code any of the keyword parameters for a statement in any order in the parameter field after the
-positional parameters. Because of this positional independence, never code a comma to indicate the
-absence of a keyword parameter.
-Multiple subparameters: A positional parameter or the variable information in a keyword parameter
-sometimes consists of more than one item, called a subparameter list. A subparameter list can consist of
-both positional and keyword subparameters. These subparameters follow the same rules as positional
-and keyword parameters.
-When a parameter contains more than one subparameter, separate the subparameters by commas and
-enclose the subparameter list in parentheses or, if indicated in the syntax, by apostrophes. If the list is a
-single keyword subparameter or a single positional subparameter with no omitted preceding
-subparameters, omit the parentheses or apostrophes.
-Null positional subparameters: You are allowed to specify null (that is, omitted) positional subparameters
-except where the Syntax section of a particular parameter states otherwise. (For example, null positional
-subparameters are not allowed on a COND parameter of an EXEC statement or on an AMP parameter of a
-DD statement.) You specify a null positi
-*/
 
 // add lexer rule for names
 // JOB accounting
