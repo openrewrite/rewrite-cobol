@@ -41,7 +41,7 @@ numbers.
 xx [comments]
 */
 jclStatement
-    : JCL_STATEMENT (jobStatement || ddStatement || procStatement || pendStatement)
+    : JCL_STATEMENT (jobStatement | ddStatement | execStatement | outputStatement | procStatement | pendStatement)
     ;
 
 /*
@@ -49,7 +49,7 @@ jclStatement
 // //jobname JOB
 */
 jobStatement
-    : JOB // Add parameters and comments ...
+    : JOB (parameter+)? // Add parameters and comments ...
     ;
 
 /*
@@ -57,7 +57,18 @@ jobStatement
 //[ddname] DD
 */
 ddStatement
-    : DD // Add parameters and comments ...
+    : DD (parameter+)? // Add comments ...
+    ;
+
+/*
+//[stepname] EXEC parameter [comments]
+*/
+execStatement
+    : EXEC parameter // Add comments ...
+    ;
+
+outputStatement
+    : OUTPUT (parameter+)?
     ;
 
 /*
@@ -111,7 +122,11 @@ xmitStatement
     ;
 
 parameter
-    : PARAMETER // Define parameter based on spec
+    : PARAMETER
+    | NAME_FIELD
+    | COMMA parameter
+    | parameter EQUAL parameter
+    | L_PAREN parameter+ R_PAREN
     ;
 
 //conditionStatement
@@ -133,9 +148,6 @@ parameter
 //    ;
 //
 //
-
-// add EXEC
-// //[stepname] EXEC parameter [comments] :: Note find definition for step name.
 
 // TODO: add statements with labels.
 /*
