@@ -1,8 +1,14 @@
 lexer grammar JclLexer;
 
 UTF_8_BOM : '\uFEFF' -> skip;
+WS : [ \t\f;]+ -> channel(HIDDEN);
+NEWLINE : '\r'? '\n' -> channel(HIDDEN);
 
-WS : [ \t]+ -> skip;
+// statement identifiers
+JCL_STATEMENT : '//'NAME_FIELD;
+JECL_STATEMENT : '/*' ('$' || JOBPARM || MESSAGE || NETACCT || NOTIFY || OUTPUT || PRIORITY || ROUTE || SETUP);
+DELIMITER : '/*';
+
 
 LF : '\n';
 CR : '\r';
@@ -12,9 +18,9 @@ EOL : LF | CR | CRLF | FORM_FEED;
 
 COMMENT : '//*' .*? EOL;
 
-JCL_STATEMENT : '//';
-JECL_STATEMENT : '/*' ('$' || JOBPARM || MESSAGE || NETACCT || NOTIFY || OUTPUT || PRIORITY || ROUTE || SETUP);
-DELIMITER : '/*';
+//OPERATION_FIELD
+//    : // TODO add operation keywords.
+//    ;
 
 // keywords
 CNTL : C N T L;
@@ -54,6 +60,23 @@ SIGNON : S I G N O N;
 THEN : T H E N;
 XEQ : X E Q;
 XMIT : X M I T;
+
+// symbols
+EQUAL : '=';
+L_BRACE : '{';
+R_BRACE : '}';
+
+L_BRACKET : '[';
+R_BRACKET : ']';
+
+L_PAREN : '(';
+R_PAREN : ')';
+
+// names
+NAME_FIELD : NAME_CHAR (DOT NAME_CHAR)?;
+DOT : '.';
+COMMA : ',';
+NAME_CHAR : [a-zA-Z0-9$#@]+;
 
 // case insensitive chars
 fragment A:('a'|'A');

@@ -31,10 +31,12 @@ val latest = if (project.hasProperty("releasing")) {
 }
 
 dependencies {
+    annotationProcessor("org.projectlombok:lombok:latest.release")
+
     compileOnly("org.projectlombok:lombok:latest.release")
     compileOnly("com.google.code.findbugs:jsr305:latest.release")
     compileOnly("org.openrewrite:rewrite-test")
-    annotationProcessor("org.projectlombok:lombok:latest.release")
+
     implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${latest}"))
     implementation("org.openrewrite:rewrite-core")
     implementation("org.antlr:antlr4:4.11.1")
@@ -42,10 +44,10 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:latest.release")
     testImplementation("org.junit.jupiter:junit-jupiter-params:latest.release")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:latest.release")
-
     testImplementation("org.openrewrite:rewrite-test")
     testImplementation("io.moderne:moderne-ast-write:${latest}")
+
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:latest.release")
 }
 
 tasks.getByName<Test>("test") {
