@@ -9,8 +9,8 @@ description = "Rewrite support for the JCL language"
 tasks.register<JavaExec>("generateAntlrSources") {
     mainClass.set("org.antlr.v4.Tool")
     args = listOf(
-        "-o", "src/main/java/org/openrewrite/cobol/internal/grammar",
-        "-package", "org.openrewrite.cobol.internal.grammar",
+        "-o", "src/main/java/org/openrewrite/jcl/internal/grammar",
+        "-package", "org.openrewrite.jcl.internal.grammar",
         "-visitor"
     ) + fileTree("src/main/antlr").matching { include("**/*.g4") }.map { it.path }
 

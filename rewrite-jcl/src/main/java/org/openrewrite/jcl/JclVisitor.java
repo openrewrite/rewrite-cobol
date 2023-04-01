@@ -1,6 +1,7 @@
 package org.openrewrite.jcl;
 
 import org.openrewrite.TreeVisitor;
+import org.openrewrite.internal.ListUtils;
 import org.openrewrite.jcl.tree.Jcl;
 import org.openrewrite.jcl.tree.Space;
 
@@ -10,6 +11,8 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         Jcl.CompilationUnit c = compilationUnit;
         c = c.withPrefix(visitSpace(c.getPrefix(), Space.Location.COMPILATION_UNIT_PREFIX, p));
         c = c.withMarkers(visitMarkers(c.getMarkers(), p));
+        c = c.withStatements(ListUtils.map(c.getStatements(), e -> visitAndCast(e, p)));
+        c = c.withEof(visitSpace(c.getEof(), Space.Location.COMPILATION_UNIT_EOF, p));
         return c;
     }
 

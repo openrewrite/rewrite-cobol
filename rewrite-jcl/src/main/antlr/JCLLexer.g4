@@ -1,4 +1,4 @@
-lexer grammar JclLexer;
+lexer grammar JCLLexer;
 
 UTF_8_BOM : '\uFEFF' -> skip;
 WS : [ \t\f;]+ -> channel(HIDDEN);

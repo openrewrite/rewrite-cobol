@@ -1,6 +1,6 @@
-parser grammar JclParser;
+parser grammar JCLParser;
 
-options { tokenVocab=JclLexer; }
+options { tokenVocab=JCLLexer; }
 
 compilationUnit
     : statement* EOF

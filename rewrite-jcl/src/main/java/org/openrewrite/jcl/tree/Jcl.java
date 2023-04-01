@@ -1,9 +1,6 @@
 package org.openrewrite.jcl.tree;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Value;
-import lombok.With;
+import lombok.*;
 import org.openrewrite.*;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.JclVisitor;
@@ -74,6 +71,9 @@ public interface Jcl extends Tree {
         public SourceFile withCharset(Charset charset) {
             return withCharsetName(charset.name());
         }
+
+        List<Statement> statements;
+        Space eof;
 
         @Override
         public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
