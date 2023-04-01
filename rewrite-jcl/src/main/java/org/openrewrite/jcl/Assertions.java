@@ -1,15 +1,14 @@
-package org.openrewrite.jcl.tree;
+package org.openrewrite.jcl;
 
 import org.openrewrite.internal.lang.Nullable;
-import org.openrewrite.jcl.JclParser;
+import org.openrewrite.jcl.tree.Jcl;
 import org.openrewrite.test.SourceSpec;
 import org.openrewrite.test.SourceSpecs;
 
 import java.util.function.Consumer;
 
-public class ParserAssertions {
-
-    private ParserAssertions() {
+public class Assertions {
+    private Assertions() {
     }
 
     public static SourceSpecs jcl(@Nullable String before) {
@@ -34,7 +33,7 @@ public class ParserAssertions {
     }
 
     public static SourceSpecs jcl(@Nullable String before, @Nullable String after,
-                                  Consumer<SourceSpec<Jcl.CompilationUnit>> spec) {
+                                    Consumer<SourceSpec<Jcl.CompilationUnit>> spec) {
         SourceSpec<Jcl.CompilationUnit> jcl =
                 new SourceSpec<>(Jcl.CompilationUnit.class,
                         null,
