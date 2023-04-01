@@ -1,4 +1,4 @@
 @NonNullApi
-package org.openrewrite.jcl.markers;
+package org.openrewrite.jcl.internal.grammar;
 
 import org.openrewrite.internal.lang.NonNullApi;
