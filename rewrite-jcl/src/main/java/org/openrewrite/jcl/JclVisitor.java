@@ -16,6 +16,23 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         return c;
     }
 
+    public Jcl visitJclStatement(Jcl.JclStatement jclStatement, P p) {
+        Jcl.JclStatement j = jclStatement;
+        j = j.withPrefix(visitSpace(j.getPrefix(), Space.Location.JCL_STATEMENT_PREFIX, p));
+        j = j.withMarkers(visitMarkers(j.getMarkers(), p));
+        j = j.withName(visitAndCast(j.getName(), p));
+        j = j.withStatement(visitAndCast(j.getStatement(), p));
+        return j;
+    }
+
+    public Jcl visitJobStatement(Jcl.JobStatement jobStatement, P p) {
+        Jcl.JobStatement j = jobStatement;
+        j = j.withPrefix(visitSpace(j.getPrefix(), Space.Location.JCL_STATEMENT_PREFIX, p));
+        j = j.withMarkers(visitMarkers(j.getMarkers(), p));
+        j = j.withName(visitAndCast(j.getName(), p));
+        return j;
+    }
+
     public Space visitSpace(Space space, Space.Location location, P p) {
         return space;
     }

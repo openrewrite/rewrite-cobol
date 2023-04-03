@@ -11,8 +11,20 @@ public class JobTest implements RewriteTest {
     void job() {
         rewriteRun(
           jcl(
-              """
-              """
+            """
+            //JobName JOB
+            """
+          )
+        );
+    }
+
+    @Test
+    void jobWithParameters() {
+        rewriteRun(
+          jcl(
+            """
+            //JobName JOB 'jobname',CLASS=A,MSGCLASS=X
+            """
           )
         );
     }

@@ -1,18 +1,22 @@
 package org.openrewrite.jcl.internal;
 
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.openrewrite.FileAttributes;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.internal.grammar.JCLParser;
 import org.openrewrite.jcl.internal.grammar.JCLParserBaseVisitor;
 import org.openrewrite.jcl.tree.Jcl;
 import org.openrewrite.jcl.tree.Space;
+import org.openrewrite.jcl.tree.Statement;
 import org.openrewrite.marker.Markers;
 
 import java.nio.charset.Charset;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
-import static java.util.Collections.emptyList;
 import static org.openrewrite.Tree.randomId;
+import static org.openrewrite.internal.StringUtils.indexOfNextNonWhitespace;
 import static org.openrewrite.jcl.tree.Space.EMPTY;
 
 public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
@@ -40,6 +44,11 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
 
     @Override
     public Jcl.CompilationUnit visitCompilationUnit(JCLParser.CompilationUnitContext ctx) {
+        List<Statement> statements = new ArrayList<>(ctx.statement().size());
+        for (JCLParser.StatementContext statement : ctx.statement()) {
+            visitStatement(statement);
+        }
+
         return new Jcl.CompilationUnit(
                 randomId(),
                 path,
@@ -49,8 +58,34 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 charset.name(),
                 charsetBomMarked,
                 null,
-                emptyList(),
+                statements,
                 Space.build(source.substring(cursor))
         );
+    }
+
+    @Override
+    public Jcl visitJclStatement(JCLParser.JclStatementContext ctx) {
+        String name = ctx.JCL_STATEMENT().getText().substring(2);
+        // TODO: create identifier for name
+        return new Jcl.JclStatement(
+                randomId(),
+                EMPTY,
+                Markers.EMPTY,
+                name,
+                (Jcl) visitJobStatement(ctx.jobStatement())
+        );
+        return super.visitJclStatement(ctx);
+    }
+
+    @Override
+    public Jcl visitJobStatement(JCLParser.JobStatementContext ctx) {
+        return super.visitJobStatement(ctx);
+    }
+
+    private Space whitespace() {
+        int endIndex = indexOfNextNonWhitespace(cursor, source); // TODO: apply whitespace rules in JCL.
+        String prefix = source.substring(cursor, endIndex);
+        cursor += prefix.length();
+        return Space.build(prefix);
     }
 }

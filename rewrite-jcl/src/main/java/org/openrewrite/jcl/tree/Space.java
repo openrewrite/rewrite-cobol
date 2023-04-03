@@ -111,6 +111,7 @@ public class Space {
 
     public enum Location {
         COMPILATION_UNIT_PREFIX,
-        COMPILATION_UNIT_EOF
+        COMPILATION_UNIT_EOF,
+        JCL_STATEMENT_PREFIX
     }
 }
