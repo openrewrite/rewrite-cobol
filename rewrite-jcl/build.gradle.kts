@@ -42,6 +42,7 @@ dependencies {
     implementation("org.antlr:antlr4:4.11.1")
     implementation("io.micrometer:micrometer-core:1.9.+")
 
+    testImplementation("org.assertj:assertj-core:latest.release")
     testImplementation("org.junit.jupiter:junit-jupiter-api:latest.release")
     testImplementation("org.junit.jupiter:junit-jupiter-params:latest.release")
     testImplementation("org.junit-pioneer:junit-pioneer:2.0.0")
