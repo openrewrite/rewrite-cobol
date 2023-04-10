@@ -126,4 +126,26 @@ public interface Jcl extends Tree {
             return v.visitJobStatement(this, p);
         }
     }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class Identifier implements Jcl, Name {
+        @Getter
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        @Getter
+        Space prefix;
+
+        @Getter
+        Markers markers;
+
+        String simpleName;
+
+        @Override
+        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
+            return v.visitIdentifier(this, p);
+        }
+    }
 }

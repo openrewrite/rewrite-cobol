@@ -1,6 +1,5 @@
 package org.openrewrite.jcl.internal;
 
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.openrewrite.FileAttributes;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.internal.grammar.JCLParser;
@@ -46,7 +45,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
     public Jcl.CompilationUnit visitCompilationUnit(JCLParser.CompilationUnitContext ctx) {
         List<Statement> statements = new ArrayList<>(ctx.statement().size());
         for (JCLParser.StatementContext statement : ctx.statement()) {
-            visitStatement(statement);
+            statements.add((Statement) visitStatement(statement));
         }
 
         return new Jcl.CompilationUnit(
@@ -65,21 +64,41 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
 
     @Override
     public Jcl visitJclStatement(JCLParser.JclStatementContext ctx) {
-        String name = ctx.JCL_STATEMENT().getText().substring(2);
-        // TODO: create identifier for name
+        skip("//");
         return new Jcl.JclStatement(
                 randomId(),
-                EMPTY,
+                whitespace(),
                 Markers.EMPTY,
-                name,
-                (Jcl) visitJobStatement(ctx.jobStatement())
+                createIdentifier(ctx.JCL_STATEMENT().getText().substring(2)),
+                visitJobStatement(ctx.jobStatement())
         );
-        return super.visitJclStatement(ctx);
     }
 
     @Override
     public Jcl visitJobStatement(JCLParser.JobStatementContext ctx) {
-        return super.visitJobStatement(ctx);
+        return new Jcl.JobStatement(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                createIdentifier(ctx.JOB().getText())
+        );
+    }
+
+    private Jcl.Identifier createIdentifier(@Nullable String name) {
+        Space prefix = whitespace();
+        skip(name);
+        return new Jcl.Identifier(
+                randomId(),
+                prefix,
+                Markers.EMPTY,
+                name
+        );
+    }
+
+    private void skip(@Nullable String token) {
+        if (token != null && source.startsWith(token, cursor)) {
+            cursor += token.length();
+        }
     }
 
     private Space whitespace() {
