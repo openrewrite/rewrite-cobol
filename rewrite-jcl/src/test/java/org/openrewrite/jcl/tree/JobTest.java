@@ -19,6 +19,17 @@ public class JobTest implements RewriteTest {
         );
     }
 
+    @Test
+    void parameterLiteral() {
+        rewriteRun(
+                jcl(
+                        """
+                        //JobName JOB 'jobname'
+                        """
+                )
+        );
+    }
+
     @ExpectedToFail("Formalize parameters in the grammar, add parameters to the LST element, parse/print")
     @Test
     void jobWithParameters() {

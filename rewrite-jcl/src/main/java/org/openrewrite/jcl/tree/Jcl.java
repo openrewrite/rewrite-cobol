@@ -1,12 +1,14 @@
 package org.openrewrite.jcl.tree;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.openrewrite.*;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.JclVisitor;
 import org.openrewrite.jcl.internal.JclPrinter;
 import org.openrewrite.marker.Markers;
 
+import java.beans.Transient;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -119,7 +121,8 @@ public interface Jcl extends Tree {
 
         Name name;
 
-        // add parameters ...
+        @Nullable
+        List<Parameter> parameters;
 
         @Override
         public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
@@ -146,6 +149,34 @@ public interface Jcl extends Tree {
         @Override
         public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
             return v.visitIdentifier(this, p);
+        }
+    }
+
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @Data
+    final class Literal implements Jcl, Parameter {
+        @With
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        @With
+        Space prefix;
+
+        @With
+        Markers markers;
+
+        @With
+        @Nullable
+        Object value;
+
+        @With
+        @Nullable
+        String valueSource;
+
+        @Override
+        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
+            return v.visitLiteral(this, p);
         }
     }
 }

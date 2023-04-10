@@ -88,4 +88,10 @@ public interface JCLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParameter(JCLParser.ParameterContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JCLParser#parameterLiteral}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParameterLiteral(JCLParser.ParameterLiteralContext ctx);
 }

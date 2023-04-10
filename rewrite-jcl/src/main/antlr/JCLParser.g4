@@ -124,9 +124,15 @@ xmitStatement
 parameter
     : PARAMETER
     | NAME_FIELD
+    | parameterLiteral
     | COMMA parameter
     | parameter EQUAL parameter
     | L_PAREN parameter+ R_PAREN
+    ;
+
+// Force a separate visit on parameter literals since 'some , literal' may be comma separated.
+parameterLiteral
+    : PARAMETER_LITERAL
     ;
 
 //conditionStatement

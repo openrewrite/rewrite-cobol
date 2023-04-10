@@ -25,8 +25,16 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
     }
 
     @Override
+    public Jcl visitIdentifier(Jcl.Identifier identifier, PrintOutputCapture<P> p) {
+        beforeSyntax(identifier, Space.Location.IDENTIFIER_PREFIX, p);
+        p.append(identifier.getSimpleName());
+        afterSyntax(identifier, p);
+        return identifier;
+    }
+
+    @Override
     public Jcl visitJclStatement(Jcl.JclStatement jclStatement, PrintOutputCapture<P> p) {
-        beforeSyntax(jclStatement, Space.Location.COMPILATION_UNIT_PREFIX, p);
+        beforeSyntax(jclStatement, Space.Location.JCL_STATEMENT_PREFIX, p);
         p.append("//");
         visit(jclStatement.getName(), p);
         visit(jclStatement.getStatement(), p);
@@ -36,18 +44,19 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
 
     @Override
     public Jcl visitJobStatement(Jcl.JobStatement jobStatement, PrintOutputCapture<P> p) {
-        beforeSyntax(jobStatement, Space.Location.COMPILATION_UNIT_PREFIX, p);
+        beforeSyntax(jobStatement, Space.Location.JOB_STATEMENT_PREFIX, p);
         visit(jobStatement.getName(), p);
+        visit(jobStatement.getParameters(), p);
         afterSyntax(jobStatement, p);
         return jobStatement;
     }
 
     @Override
-    public Jcl visitIdentifier(Jcl.Identifier identifier, PrintOutputCapture<P> p) {
-        beforeSyntax(identifier, Space.Location.IDENTIFIER_PREFIX, p);
-        p.append(identifier.getSimpleName());
-        afterSyntax(identifier, p);
-        return identifier;
+    public Jcl visitLiteral(Jcl.Literal literal, PrintOutputCapture<P> p) {
+        beforeSyntax(literal, Space.Location.LITERAL_PREFIX, p);
+        p.append(literal.getValueSource());
+        afterSyntax(literal, p);
+        return literal;
     }
 
     @Override

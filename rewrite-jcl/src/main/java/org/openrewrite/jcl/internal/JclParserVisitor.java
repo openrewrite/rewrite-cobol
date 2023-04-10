@@ -1,5 +1,6 @@
 package org.openrewrite.jcl.internal;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.openrewrite.FileAttributes;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.internal.grammar.JCLParser;
@@ -13,6 +14,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.internal.StringUtils.indexOfNextNonWhitespace;
@@ -80,7 +82,23 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                createIdentifier(ctx.JOB().getText())
+                createIdentifier(ctx.JOB().getText()),
+                convertAll(ctx.parameter())
+        );
+    }
+
+    @Override
+    public Jcl visitParameterLiteral(JCLParser.ParameterLiteralContext ctx) {
+        Space prefix = whitespace();
+        String value = ctx.getText();
+        String sourceText = source.substring(ctx.start.getStartIndex(), ctx.stop.getStopIndex() + 1);
+        skip(sourceText);
+        return new Jcl.Literal(
+                randomId(),
+                prefix,
+                Markers.EMPTY,
+                value,
+                sourceText
         );
     }
 
@@ -93,6 +111,19 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 Markers.EMPTY,
                 name
         );
+    }
+
+    private <C extends Jcl, T extends ParseTree> List<C> convertAll(List<T> trees) {
+        //noinspection unchecked
+        return convertAll(trees, t -> (C) visit(t));
+    }
+
+    private <C, T extends ParseTree> List<C> convertAll(List<T> trees, Function<T, C> convert) {
+        List<C> converted = new ArrayList<>(trees.size());
+        for (T tree : trees) {
+            converted.add(convert.apply(tree));
+        }
+        return converted;
     }
 
     private void skip(@Nullable String token) {

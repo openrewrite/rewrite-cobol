@@ -23,4 +23,9 @@ public class JclIsoVisitor<P> extends JclVisitor<P> {
     public Jcl.JobStatement visitJobStatement(Jcl.JobStatement jobStatement, P p) {
         return (Jcl.JobStatement) super.visitJobStatement(jobStatement, p);
     }
+
+    @Override
+    public Jcl.Literal visitLiteral(Jcl.Literal literal, P p) {
+        return (Jcl.Literal) super.visitLiteral(literal, p);
+    }
 }

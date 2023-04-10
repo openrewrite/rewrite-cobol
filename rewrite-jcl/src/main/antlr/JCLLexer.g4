@@ -133,7 +133,10 @@ PARAMETER
     | WRITER
     | XMIT
     | ASTERISK
-    | SINGLEQUOTE .*? SINGLEQUOTE
+    ;
+
+PARAMETER_LITERAL
+    : SINGLEQUOTE .*? SINGLEQUOTE
     ;
 
 // parameter names

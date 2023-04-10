@@ -168,6 +168,18 @@ public class JCLParserBaseListener implements JCLParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitParameter(JCLParser.ParameterContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParameterLiteral(JCLParser.ParameterLiteralContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParameterLiteral(JCLParser.ParameterLiteralContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
