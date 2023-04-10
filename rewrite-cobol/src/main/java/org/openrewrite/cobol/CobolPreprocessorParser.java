@@ -125,7 +125,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
                         pctx.parseFailure(sourceFile, relativeTo, this, t);
-                        pctx.getOnError().accept(t);
+                        ctx.getOnError().accept(t);
                         return null;
                     }
                 })

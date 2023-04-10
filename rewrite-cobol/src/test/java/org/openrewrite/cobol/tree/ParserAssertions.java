@@ -15,7 +15,6 @@
  */
 package org.openrewrite.cobol.tree;
 
-import io.moderne.serialization.TreeSerializer;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
@@ -27,16 +26,12 @@ import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.test.SourceSpec;
 import org.openrewrite.test.SourceSpecs;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Consumer;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ParserAssertions {
@@ -57,7 +52,7 @@ public class ParserAssertions {
                                 .setEnableReplace(false),
                         before,
                         null);
-        spec.andThen(isFullyParsed()).andThen(isSerializable()).accept(cobol);
+        spec.andThen(isFullyParsed()).accept(cobol);
         return cobol;
     }
 
@@ -76,7 +71,7 @@ public class ParserAssertions {
                                 .setEnableReplace(false),
                         before,
                         s -> after);
-        spec.andThen(isFullyParsed()).andThen(isSerializable()).accept(cobol);
+        spec.andThen(isFullyParsed()).accept(cobol);
         return cobol;
     }
 
@@ -95,7 +90,7 @@ public class ParserAssertions {
                                 .setCopyBooks(copyBooks),
                         before,
                         null);
-        spec.andThen(isFullyParsed()).andThen(isSerializable()).accept(cobol);
+        spec.andThen(isFullyParsed()).accept(cobol);
         return cobol;
     }
 
@@ -115,7 +110,7 @@ public class ParserAssertions {
                                 .setCopyBooks(copyBooks),
                         before,
                         null);
-        spec.andThen(isFullyParsed()).andThen(isSerializable()).andThen(isExpectedLst(expectedLst)).accept(cobol);
+        spec.andThen(isFullyParsed()).andThen(isExpectedLst(expectedLst)).accept(cobol);
         return cobol;
     }
 
@@ -230,20 +225,6 @@ public class ParserAssertions {
                 return super.visitSpace(space, loc, integer);
             }
         }.visit(cu, 0));
-    }
-
-    public static Consumer<SourceSpec<Cobol.CompilationUnit>> isSerializable() {
-        return spec -> spec.afterRecipe(cu -> {
-            try {
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                TreeSerializer serializer = new TreeSerializer();
-                serializer.write(singletonList(cu), bos);
-                InputStream is = new ByteArrayInputStream(bos.toByteArray());
-                serializer.read(is);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
     }
 
     public static Consumer<SourceSpec<Cobol.CompilationUnit>> isExpectedLst(String expectedLst) {

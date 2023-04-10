@@ -64,7 +64,6 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:latest.release")
 
     testImplementation("org.openrewrite:rewrite-test")
-    testImplementation("io.moderne:moderne-ast-write:${latest}")
     testImplementation("org.assertj:assertj-core:latest.release")
     testImplementation("io.github.classgraph:classgraph:latest.release")
 
