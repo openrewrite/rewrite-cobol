@@ -12,7 +12,7 @@ import java.util.function.UnaryOperator;
 import static java.util.Collections.emptyList;
 
 /**
- * AST elements that contain lists of trees with some delimiter like function call arguments.
+ * LST elements that contain lists of trees with some delimiter like function call arguments.
  *
  * @param <T> The type of the inner list of elements.
  */

@@ -17,7 +17,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 /**
- * A COBOL element that could have trailing space.
+ * A JCL element that could have trailing space.
  *
  * @param <T>
  */
