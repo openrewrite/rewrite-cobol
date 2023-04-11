@@ -130,7 +130,7 @@ parameter
     ;
 
 parameterParentheses
-    : L_PAREN parameter (COMMA parameter)* R_PAREN
+    : L_PAREN parameter? (COMMA parameter)* R_PAREN
     ;
 
 parameterAssignment

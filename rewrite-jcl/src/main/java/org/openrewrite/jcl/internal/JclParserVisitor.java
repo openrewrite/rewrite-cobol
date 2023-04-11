@@ -138,9 +138,20 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
     @Override
     public Jcl visitParameterParentheses(JCLParser.ParameterParenthesesContext ctx) {
         Space prefix = whitespace();
+        Boolean omitFirstParam = null;
         skip("(");
         List<JclRightPadded<Jcl>> padded = new ArrayList<>(ctx.parameter().size());
         for (int i = 0; i < ctx.parameter().size(); i++) {
+            if (i == 0) {
+                int saveCursor = cursor;
+                whitespace();
+                if (source.startsWith(",", cursor)) {
+                    omitFirstParam = true;
+                    skip(",");
+                } else {
+                    cursor = saveCursor;
+                }
+            }
             Jcl tree = visit(ctx.parameter().get(i));
             padded.add(padRight(tree, i < ctx.parameter().size() - 1 ?
                     sourceBefore(",") : sourceBefore(")"))
@@ -150,7 +161,8 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 randomId(),
                 prefix,
                 Markers.EMPTY,
-                padded
+                padded,
+                omitFirstParam
         );
     }
 

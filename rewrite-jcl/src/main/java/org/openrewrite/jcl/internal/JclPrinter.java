@@ -75,6 +75,9 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
     public <T extends Jcl> Jcl visitParentheses(Jcl.Parentheses<T> parentheses, PrintOutputCapture<P> p) {
         beforeSyntax(parentheses, Space.Location.PARENTHESES_PREFIX, p);
         p.append("(");
+        if (parentheses.omitFirstParam()) {
+            p.append(",");
+        }
         visitRightPadded(parentheses.getPadding().getTrees(), JclRightPadded.Location.PARENTHESES, ",", p);
         p.append(")");
         afterSyntax(parentheses, p);
