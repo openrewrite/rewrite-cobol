@@ -110,6 +110,9 @@ public class Space {
     }
 
     public enum Location {
+        TODO, // REMOVE
+        ASSIGNMENT,
+        ASSIGNMENT_PREFIX,
         COMPILATION_UNIT_PREFIX,
         COMPILATION_UNIT_EOF,
         IDENTIFIER_PREFIX,

@@ -38,6 +38,20 @@ public class JclRightPadded<T> {
         return withElement(map.apply(element));
     }
 
+    public enum Location {
+        TODO(Space.Location.TODO);  // REMOVE
+
+        private final Space.Location afterLocation;
+
+        Location(Space.Location afterLocation) {
+            this.afterLocation = afterLocation;
+        }
+
+        public Space.Location getAfterLocation() {
+            return afterLocation;
+        }
+    }
+
     public static <T> List<T> getElements(List<JclRightPadded<T>> ls) {
         List<T> list = new ArrayList<>();
         for (JclRightPadded<T> l : ls) {

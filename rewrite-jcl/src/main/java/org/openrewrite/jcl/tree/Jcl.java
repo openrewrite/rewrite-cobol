@@ -2,13 +2,14 @@ package org.openrewrite.jcl.tree;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.openrewrite.*;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.JclVisitor;
 import org.openrewrite.jcl.internal.JclPrinter;
 import org.openrewrite.marker.Markers;
 
-import java.beans.Transient;
+import java.lang.ref.WeakReference;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -133,7 +134,7 @@ public interface Jcl extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class Identifier implements Jcl, Name {
+    class Identifier implements Jcl, Expression, Name {
         @Getter
         @EqualsAndHashCode.Include
         UUID id;
@@ -154,23 +155,87 @@ public interface Jcl extends Tree {
 
     @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @Data
-    final class Literal implements Jcl, Parameter {
+    @RequiredArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Assignment implements Jcl, Parameter {
+        @Nullable
+        @NonFinal
+        transient WeakReference<Padding> padding;
+
         @With
         @EqualsAndHashCode.Include
+        @Getter
         UUID id;
 
         @With
+        @Getter
         Space prefix;
 
         @With
+        @Getter
         Markers markers;
 
         @With
+        @Getter
+        Expression variable;
+
+        JclLeftPadded<Expression> assignment;
+
+        public Expression getAssignment() {
+            return assignment.getElement();
+        }
+
+        public Assignment withAssignment(Expression assignment) {
+            return getPadding().withAssignment(this.assignment.withElement(assignment));
+        }
+
+        @Override
+        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
+            return v.visitAssignment(this, p);
+        }
+
+        public Padding getPadding() {
+            Padding p;
+            if (this.padding == null) {
+                p = new Padding(this);
+                this.padding = new WeakReference<>(p);
+            } else {
+                p = this.padding.get();
+                if (p == null || p.t != this) {
+                    p = new Padding(this);
+                    this.padding = new WeakReference<>(p);
+                }
+            }
+            return p;
+        }
+
+        @RequiredArgsConstructor
+        public static class Padding {
+            private final Assignment t;
+
+            public JclLeftPadded<Expression> getAssignment() {
+                return t.assignment;
+            }
+
+            public Assignment withAssignment(JclLeftPadded<Expression> assignment) {
+                return t.assignment == assignment ? t : new Assignment(t.id, t.prefix, t.markers, t.variable, assignment);
+            }
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class Literal implements Jcl, Parameter {
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+
         @Nullable
         Object value;
 
-        @With
         @Nullable
         String valueSource;
 

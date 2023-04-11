@@ -11,22 +11,29 @@ public class JobTest implements RewriteTest {
     @Test
     void job() {
         rewriteRun(
-          jcl(
-            """
-            //JobName JOB
-            """
-          )
+          jcl("//JobName JOB")
         );
     }
 
     @Test
     void parameterLiteral() {
         rewriteRun(
-                jcl(
-                        """
-                        //JobName JOB 'jobname'
-                        """
-                )
+          jcl("//JobName JOB 'jobname'")
+        );
+    }
+
+    @Test
+    void parameterAssignment() {
+        rewriteRun(
+                jcl("//JobName JOB CLASS=A")
+        );
+    }
+
+    @ExpectedToFail("Add support for parens")
+    @Test
+    void parensAssignment() {
+        rewriteRun(
+                jcl("//JobName JOB MSGLEVEL=(1,1)")
         );
     }
 
@@ -34,11 +41,7 @@ public class JobTest implements RewriteTest {
     @Test
     void jobWithParameters() {
         rewriteRun(
-          jcl(
-            """
-            //JobName JOB 'jobname',CLASS=A,MSGCLASS=X
-            """
-          )
+          jcl("//JobName JOB 'jobname',CLASS=A,MSGCLASS=X")
         );
     }
 }

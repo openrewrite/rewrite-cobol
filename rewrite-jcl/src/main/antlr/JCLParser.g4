@@ -49,7 +49,7 @@ jclStatement
 // //jobname JOB
 */
 jobStatement
-    : JOB (parameter+)? // Add parameters and comments ...
+    : JOB (parameter (COMMA parameter)*)? // comments ...
     ;
 
 /*
@@ -57,7 +57,7 @@ jobStatement
 //[ddname] DD
 */
 ddStatement
-    : DD (parameter+)? // Add comments ...
+    : DD (parameter (COMMA parameter)*)? // Add comments ...
     ;
 
 /*
@@ -125,15 +125,23 @@ parameter
     : PARAMETER
     | NAME_FIELD
     | parameterLiteral
-    | COMMA parameter
-    | parameter EQUAL parameter
-    | L_PAREN parameter+ R_PAREN
+    | parameterAssignment
+    | parameterParentheses
+    ;
+
+parameterParentheses
+    : L_PAREN parameter (COMMA parameter)* R_PAREN
+    ;
+
+parameterAssignment
+    : (PARAMETER | NAME_FIELD) EQUAL parameter
     ;
 
 // Force a separate visit on parameter literals since 'some , literal' may be comma separated.
 parameterLiteral
     : PARAMETER_LITERAL
     ;
+
 
 //conditionStatement
 //    : ifStatement

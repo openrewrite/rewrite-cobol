@@ -20,6 +20,20 @@ public class JclLeftPadded<T> {
         return withElement(map.apply(element));
     }
 
+    public enum Location {
+        ASSIGNMENT(Space.Location.ASSIGNMENT);
+
+        private final Space.Location beforeLocation;
+
+        Location(Space.Location beforeLocation) {
+            this.beforeLocation = beforeLocation;
+        }
+
+        public Space.Location getBeforeLocation() {
+            return beforeLocation;
+        }
+    }
+
     @Nullable
     public static <T> JclLeftPadded<T> withElement(@Nullable JclLeftPadded<T> before, @Nullable T elements) {
         if (before == null) {

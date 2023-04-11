@@ -5,6 +5,8 @@ import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.JclVisitor;
 import org.openrewrite.jcl.tree.Jcl;
+import org.openrewrite.jcl.tree.JclLeftPadded;
+import org.openrewrite.jcl.tree.JclRightPadded;
 import org.openrewrite.jcl.tree.Space;
 import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
@@ -22,6 +24,15 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
         afterSyntax(cu, p);
         visitSpace(cu.getEof(), Space.Location.COMPILATION_UNIT_EOF, p);
         return cu;
+    }
+
+    @Override
+    public Jcl visitAssignment(Jcl.Assignment assignment, PrintOutputCapture<P> p) {
+        beforeSyntax(assignment, Space.Location.ASSIGNMENT_PREFIX, p);
+        visit(assignment.getVariable(), p);
+        visitLeftPadded("=", assignment.getPadding().getAssignment(), JclLeftPadded.Location.ASSIGNMENT, p);
+        afterSyntax(assignment, p);
+        return assignment;
     }
 
     @Override
@@ -63,6 +74,29 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
     public Space visitSpace(Space space, Space.Location location, PrintOutputCapture<P> p) {
         p.append(space.getWhitespace());
         return space;
+    }
+
+    protected void visitLeftPadded(@Nullable String prefix, @Nullable JclLeftPadded<? extends Jcl> leftPadded, JclLeftPadded.Location location, PrintOutputCapture<P> p) {
+        if (leftPadded != null) {
+            beforeSyntax(leftPadded.getBefore(), leftPadded.getMarkers(), location.getBeforeLocation(), p);
+            if (prefix != null) {
+                p.append(prefix);
+            }
+            visit(leftPadded.getElement(), p);
+            afterSyntax(leftPadded.getMarkers(), p);
+        }
+    }
+
+    protected void visitRightPadded(@Nullable JclRightPadded<? extends Jcl> rightPadded, JclRightPadded.Location location, @Nullable String suffix, PrintOutputCapture<P> p) {
+        if (rightPadded != null) {
+            beforeSyntax(Space.EMPTY, rightPadded.getMarkers(), null, p);
+            visit(rightPadded.getElement(), p);
+            afterSyntax(rightPadded.getMarkers(), p);
+            visitSpace(rightPadded.getAfter(), location.getAfterLocation(), p);
+            if (suffix != null) {
+                p.append(suffix);
+            }
+        }
     }
 
     protected void beforeSyntax(Jcl c, Space.Location loc, PrintOutputCapture<P> p) {

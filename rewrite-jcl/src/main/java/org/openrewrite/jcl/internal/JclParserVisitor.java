@@ -1,13 +1,12 @@
 package org.openrewrite.jcl.internal;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.openrewrite.FileAttributes;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.internal.grammar.JCLParser;
 import org.openrewrite.jcl.internal.grammar.JCLParserBaseVisitor;
-import org.openrewrite.jcl.tree.Jcl;
-import org.openrewrite.jcl.tree.Space;
-import org.openrewrite.jcl.tree.Statement;
+import org.openrewrite.jcl.tree.*;
 import org.openrewrite.marker.Markers;
 
 import java.nio.charset.Charset;
@@ -88,6 +87,17 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
     }
 
     @Override
+    public Jcl visitParameterAssignment(JCLParser.ParameterAssignmentContext ctx) {
+        return new Jcl.Assignment(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                visit(ctx.PARAMETER(), ctx.NAME_FIELD()),
+                padLeft(sourceBefore("="), (Expression) visit(ctx.parameter()))
+        );
+    }
+
+    @Override
     public Jcl visitParameterLiteral(JCLParser.ParameterLiteralContext ctx) {
         Space prefix = whitespace();
         String value = ctx.getText();
@@ -102,6 +112,11 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
         );
     }
 
+    @Override
+    public Jcl visitTerminal(TerminalNode node) {
+        return createIdentifier(node.getText());
+    }
+
     private Jcl.Identifier createIdentifier(@Nullable String name) {
         Space prefix = whitespace();
         skip(name);
@@ -111,6 +126,25 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 Markers.EMPTY,
                 name
         );
+    }
+
+    public <T> T visit(@Nullable ParseTree... trees) {
+        for (ParseTree tree : trees) {
+            if (tree != null) {
+                //noinspection unchecked
+                return (T) visit(tree);
+            }
+        }
+        throw new IllegalStateException("Expected one of the supplied trees to be non-null");
+    }
+
+    public <T> T visitNullable(@Nullable ParseTree tree) {
+        if (tree == null) {
+            //noinspection ConstantConditions
+            return null;
+        }
+        //noinspection unchecked
+        return (T) super.visit(tree);
     }
 
     private <C extends Jcl, T extends ParseTree> List<C> convertAll(List<T> trees) {
@@ -133,9 +167,59 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
     }
 
     private Space whitespace() {
-        int endIndex = indexOfNextNonWhitespace(cursor, source); // TODO: apply whitespace rules in JCL.
+        int endIndex = indexOfNextNonWhitespace(cursor, source);
         String prefix = source.substring(cursor, endIndex);
         cursor += prefix.length();
         return Space.build(prefix);
+    }
+
+    // TODO: update ... this does not work 100% for JCL.
+    // NOTE: this may require revisions to work similar to COBOL when introducing continuations...
+    private Space sourceBefore(String untilDelim) {
+        Space prefix = whitespace();
+        skip(untilDelim);
+        return Space.build(prefix.getWhitespace());
+    }
+
+    // TODO: update ... this does not work for JCL.
+    public static int indexOfNextNonWhitespace(int cursor, String source) {
+        boolean inMultiLineComment = false;
+        boolean inSingleLineComment = false;
+
+        int delimIndex = cursor;
+        for (; delimIndex < source.length(); delimIndex++) {
+            if (inSingleLineComment) {
+                if (source.charAt(delimIndex) == '\n') {
+                    inSingleLineComment = false;
+                }
+            } else {
+                if (source.length() > delimIndex + 1) {
+                    switch (source.substring(delimIndex, delimIndex + 2)) {
+                        case "//":
+                            inSingleLineComment = true;
+                            delimIndex++;
+                            continue;
+                        case "/*":
+                            inMultiLineComment = true;
+                            delimIndex++;
+                            continue;
+                        case "*/":
+                            inMultiLineComment = false;
+                            delimIndex++;
+                            continue;
+                    }
+                }
+            }
+            if (!inMultiLineComment && !inSingleLineComment) {
+                if (!Character.isWhitespace(source.substring(delimIndex, delimIndex + 1).charAt(0))) {
+                    break; // found it!
+                }
+            }
+        }
+        return delimIndex;
+    }
+
+    private <T> JclLeftPadded<T> padLeft(Space left, T tree) {
+        return new JclLeftPadded<>(left, tree, Markers.EMPTY);
     }
 }

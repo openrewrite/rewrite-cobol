@@ -1,8 +1,11 @@
 package org.openrewrite.jcl;
 
+import org.openrewrite.Cursor;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.ListUtils;
+import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.tree.Jcl;
+import org.openrewrite.jcl.tree.JclLeftPadded;
 import org.openrewrite.jcl.tree.Space;
 
 public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
@@ -14,6 +17,15 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         c = c.withStatements(ListUtils.map(c.getStatements(), e -> visitAndCast(e, p)));
         c = c.withEof(visitSpace(c.getEof(), Space.Location.COMPILATION_UNIT_EOF, p));
         return c;
+    }
+
+    public Jcl visitAssignment(Jcl.Assignment assignment, P p ) {
+        Jcl.Assignment a = assignment;
+        a = a.withPrefix(visitSpace(a.getPrefix(), Space.Location.ASSIGNMENT_PREFIX, p));
+        a = a.withMarkers(visitMarkers(a.getMarkers(), p));
+        a = a.withVariable(visitAndCast(a.getVariable(), p));
+        a = a.getPadding().withAssignment(visitLeftPadded(a.getPadding().getAssignment(), JclLeftPadded.Location.ASSIGNMENT, p));
+        return a;
     }
 
     public Jcl visitIdentifier(Jcl.Identifier identifier, P p) {
@@ -46,6 +58,35 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         l = l.withPrefix(visitSpace(l.getPrefix(), Space.Location.JCL_STATEMENT_PREFIX, p));
         l = l.withMarkers(visitMarkers(l.getMarkers(), p));
         return l;
+    }
+
+    public <T> JclLeftPadded<T> visitLeftPadded(@Nullable JclLeftPadded<T> left, JclLeftPadded.Location loc, P p) {
+        if (left == null) {
+            //noinspection ConstantConditions
+            return null;
+        }
+
+        setCursor(new Cursor(getCursor(), left));
+
+        Space before = visitSpace(left.getBefore(), loc.getBeforeLocation(), p);
+        T t = left.getElement();
+
+        if (t instanceof Jcl) {
+            //noinspection unchecked
+            t = visitAndCast((Jcl) left.getElement(), p);
+        }
+
+        setCursor(getCursor().getParent());
+        if (t == null) {
+            // If nothing changed leave AST node the same
+            if (left.getElement() == null && before == left.getBefore()) {
+                return left;
+            }
+            //noinspection ConstantConditions
+            return null;
+        }
+
+        return (before == left.getBefore() && t == left.getElement()) ? left : new JclLeftPadded<>(before, t, left.getMarkers());
     }
 
     public Space visitSpace(Space space, Space.Location location, P p) {
