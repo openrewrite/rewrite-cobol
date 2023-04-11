@@ -48,6 +48,9 @@ val nistAsts = tasks.register<JavaExec>("nistAsts") {
     args(astFile.toString())
     classpath = runtimeClasspath
     mainClass.set("io.moderne.cobol.CreateNistAstJar")
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    })
 }
 
 val nistJar = tasks.register<Jar>("nistJar") {
