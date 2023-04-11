@@ -118,6 +118,8 @@ public class Space {
         IDENTIFIER_PREFIX,
         JCL_STATEMENT_PREFIX,
         JOB_STATEMENT_PREFIX,
-        LITERAL_PREFIX
+        LITERAL_PREFIX,
+        PARENTHESES,
+        PARENTHESES_PREFIX
     }
 }

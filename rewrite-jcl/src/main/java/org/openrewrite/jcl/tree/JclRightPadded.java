@@ -39,7 +39,7 @@ public class JclRightPadded<T> {
     }
 
     public enum Location {
-        TODO(Space.Location.TODO);  // REMOVE
+        PARENTHESES(Space.Location.PARENTHESES);
 
         private final Space.Location afterLocation;
 

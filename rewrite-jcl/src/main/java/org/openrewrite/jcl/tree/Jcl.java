@@ -89,69 +89,6 @@ public interface Jcl extends Tree {
         }
     }
 
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
-    class JclStatement implements Jcl, Statement {
-
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-
-        Name name;
-        Jcl statement;
-
-        @Override
-        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
-            return v.visitJclStatement(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
-    class JobStatement implements Jcl {
-
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-
-        Name name;
-
-        @Nullable
-        List<Parameter> parameters;
-
-        @Override
-        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
-            return v.visitJobStatement(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
-    class Identifier implements Jcl, Expression, Name {
-        @Getter
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        @Getter
-        Space prefix;
-
-        @Getter
-        Markers markers;
-
-        String simpleName;
-
-        @Override
-        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
-            return v.visitIdentifier(this, p);
-        }
-    }
 
     @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
@@ -226,6 +163,70 @@ public interface Jcl extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
+    class Identifier implements Jcl, Expression, Name {
+        @Getter
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        @Getter
+        Space prefix;
+
+        @Getter
+        Markers markers;
+
+        String simpleName;
+
+        @Override
+        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
+            return v.visitIdentifier(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class JclStatement implements Jcl, Statement {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+
+        Name name;
+        Jcl statement;
+
+        @Override
+        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
+            return v.visitJclStatement(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class JobStatement implements Jcl {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+
+        Name name;
+
+        @Nullable
+        List<Parameter> parameters;
+
+        @Override
+        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
+            return v.visitJobStatement(this, p);
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
     class Literal implements Jcl, Parameter {
         @EqualsAndHashCode.Include
         UUID id;
@@ -242,6 +243,72 @@ public interface Jcl extends Tree {
         @Override
         public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
             return v.visitLiteral(this, p);
+        }
+    }
+
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @RequiredArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Parentheses<J2 extends Jcl> implements Jcl, Expression {
+        @Nullable
+        @NonFinal
+        transient WeakReference<Padding> padding;
+
+        @With
+        @EqualsAndHashCode.Include
+        @Getter
+        UUID id;
+
+        @With
+        @Getter
+        Space prefix;
+
+        @With
+        @Getter
+        Markers markers;
+
+        List<JclRightPadded<J2>> trees;
+
+        public List<J2> getTrees() {
+            return JclRightPadded.getElements(trees);
+        }
+
+        Parentheses<J2> withTrees(List<J2> trees) {
+            return getPadding().withTrees(JclRightPadded.withElements(this.trees, trees));
+        }
+
+        @Override
+        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
+            return v.visitParentheses(this, p);
+        }
+
+        public Padding<J2> getPadding() {
+            Padding<J2> p;
+            if (this.padding == null) {
+                p = new Padding(this);
+                this.padding = new WeakReference<>(p);
+            } else {
+                p = this.padding.get();
+                if (p == null || p.t != this) {
+                    p = new Padding(this);
+                    this.padding = new WeakReference<>(p);
+                }
+            }
+            return p;
+        }
+
+        @RequiredArgsConstructor
+        public static class Padding<J2 extends Jcl> {
+            private final Parentheses<J2> t;
+
+            public List<JclRightPadded<J2>> getTrees() {
+                return t.trees;
+            }
+
+            public Parentheses<J2> withTrees(List<JclRightPadded<J2>> trees) {
+                return t.trees == trees ? t : new Parentheses<>(t.id, t.prefix, t.markers, trees);
+            }
         }
     }
 }

@@ -41,6 +41,24 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
         this.charsetBomMarked = charsetBomMarked;
     }
 
+    public <T> T visit(@Nullable ParseTree... trees) {
+        for (ParseTree tree : trees) {
+            if (tree != null) {
+                //noinspection unchecked
+                return (T) visit(tree);
+            }
+        }
+        throw new IllegalStateException("Expected one of the supplied trees to be non-null");
+    }
+
+    public <T> T visitNullable(@Nullable ParseTree tree) {
+        if (tree == null) {
+            //noinspection ConstantConditions
+            return null;
+        }
+        //noinspection unchecked
+        return (T) super.visit(tree);
+    }
 
     @Override
     public Jcl.CompilationUnit visitCompilationUnit(JCLParser.CompilationUnitContext ctx) {
@@ -87,6 +105,11 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
     }
 
     @Override
+    public Jcl visitParameter(JCLParser.ParameterContext ctx) {
+        return super.visitParameter(ctx);
+    }
+
+    @Override
     public Jcl visitParameterAssignment(JCLParser.ParameterAssignmentContext ctx) {
         return new Jcl.Assignment(
                 randomId(),
@@ -113,6 +136,25 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
     }
 
     @Override
+    public Jcl visitParameterParentheses(JCLParser.ParameterParenthesesContext ctx) {
+        Space prefix = whitespace();
+        skip("(");
+        List<JclRightPadded<Jcl>> padded = new ArrayList<>(ctx.parameter().size());
+        for (int i = 0; i < ctx.parameter().size(); i++) {
+            Jcl tree = visit(ctx.parameter().get(i));
+            padded.add(padRight(tree, i < ctx.parameter().size() - 1 ?
+                    sourceBefore(",") : sourceBefore(")"))
+            );
+        }
+        return new Jcl.Parentheses<>(
+                randomId(),
+                prefix,
+                Markers.EMPTY,
+                padded
+        );
+    }
+
+    @Override
     public Jcl visitTerminal(TerminalNode node) {
         return createIdentifier(node.getText());
     }
@@ -126,25 +168,6 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 Markers.EMPTY,
                 name
         );
-    }
-
-    public <T> T visit(@Nullable ParseTree... trees) {
-        for (ParseTree tree : trees) {
-            if (tree != null) {
-                //noinspection unchecked
-                return (T) visit(tree);
-            }
-        }
-        throw new IllegalStateException("Expected one of the supplied trees to be non-null");
-    }
-
-    public <T> T visitNullable(@Nullable ParseTree tree) {
-        if (tree == null) {
-            //noinspection ConstantConditions
-            return null;
-        }
-        //noinspection unchecked
-        return (T) super.visit(tree);
     }
 
     private <C extends Jcl, T extends ParseTree> List<C> convertAll(List<T> trees) {
@@ -221,5 +244,10 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
 
     private <T> JclLeftPadded<T> padLeft(Space left, T tree) {
         return new JclLeftPadded<>(left, tree, Markers.EMPTY);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private <T> JclRightPadded<T> padRight(T tree, @Nullable Space right) {
+        return new JclRightPadded<>(tree, right == null ? EMPTY : right, Markers.EMPTY);
     }
 }

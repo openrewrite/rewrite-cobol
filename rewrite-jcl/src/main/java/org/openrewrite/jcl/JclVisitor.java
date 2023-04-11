@@ -1,12 +1,15 @@
 package org.openrewrite.jcl;
 
 import org.openrewrite.Cursor;
+import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.tree.Jcl;
 import org.openrewrite.jcl.tree.JclLeftPadded;
+import org.openrewrite.jcl.tree.JclRightPadded;
 import org.openrewrite.jcl.tree.Space;
+import org.openrewrite.marker.Markers;
 
 public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
 
@@ -60,6 +63,14 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         return l;
     }
 
+    public <T extends Jcl> Jcl visitParentheses(Jcl.Parentheses<T> parentheses, P p) {
+        Jcl.Parentheses<T> pa = parentheses;
+        pa = pa.withPrefix(visitSpace(pa.getPrefix(), Space.Location.JCL_STATEMENT_PREFIX, p));
+        pa = pa.getPadding().withTrees(ListUtils.map(pa.getPadding().getTrees(), t -> visitRightPadded(t, JclRightPadded.Location.PARENTHESES, p)));
+        pa = pa.withMarkers(visitMarkers(pa.getMarkers(), p));
+        return pa;
+    }
+
     public <T> JclLeftPadded<T> visitLeftPadded(@Nullable JclLeftPadded<T> left, JclLeftPadded.Location loc, P p) {
         if (left == null) {
             //noinspection ConstantConditions
@@ -87,6 +98,32 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         }
 
         return (before == left.getBefore() && t == left.getElement()) ? left : new JclLeftPadded<>(before, t, left.getMarkers());
+    }
+
+    public <T> JclRightPadded<T> visitRightPadded(@Nullable JclRightPadded<T> right, JclRightPadded.Location loc, P p) {
+        if (right == null) {
+            //noinspection ConstantConditions
+            return null;
+        }
+
+        setCursor(new Cursor(getCursor(), right));
+
+        T t = right.getElement();
+        if (t instanceof Jcl) {
+            //noinspection unchecked
+            t = visitAndCast((Jcl) right.getElement(), p);
+        }
+
+        setCursor(getCursor().getParent());
+        if (t == null) {
+            //noinspection ConstantConditions
+            return null;
+        }
+
+        Space after = visitSpace(right.getAfter(), loc.getAfterLocation(), p);
+        Markers markers = visitMarkers(right.getMarkers(), p);
+        return (after == right.getAfter() && t == right.getElement() && markers == right.getMarkers()) ?
+                right : new JclRightPadded<>(t, after, markers);
     }
 
     public Space visitSpace(Space space, Space.Location location, P p) {

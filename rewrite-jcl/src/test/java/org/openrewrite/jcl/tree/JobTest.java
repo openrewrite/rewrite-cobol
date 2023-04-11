@@ -29,7 +29,6 @@ public class JobTest implements RewriteTest {
         );
     }
 
-    @ExpectedToFail("Add support for parens")
     @Test
     void parensAssignment() {
         rewriteRun(
@@ -39,9 +38,9 @@ public class JobTest implements RewriteTest {
 
     @ExpectedToFail("Formalize parameters in the grammar, add parameters to the LST element, parse/print")
     @Test
-    void jobWithParameters() {
+    void multipleParameterTypes() {
         rewriteRun(
-          jcl("//JobName JOB 'jobname',CLASS=A,MSGCLASS=X")
+          jcl("//JobName JOB 'jobname',CLASS=A,MSGLEVEL=(1,1)")
         );
     }
 }

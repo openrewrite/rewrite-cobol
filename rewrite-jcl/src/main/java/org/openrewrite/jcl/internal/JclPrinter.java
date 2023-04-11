@@ -11,6 +11,7 @@ import org.openrewrite.jcl.tree.Space;
 import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
 
+import java.util.List;
 import java.util.function.UnaryOperator;
 
 public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
@@ -71,6 +72,16 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
     }
 
     @Override
+    public <T extends Jcl> Jcl visitParentheses(Jcl.Parentheses<T> parentheses, PrintOutputCapture<P> p) {
+        beforeSyntax(parentheses, Space.Location.PARENTHESES_PREFIX, p);
+        p.append("(");
+        visitRightPadded(parentheses.getPadding().getTrees(), JclRightPadded.Location.PARENTHESES, ",", p);
+        p.append(")");
+        afterSyntax(parentheses, p);
+        return parentheses;
+    }
+
+    @Override
     public Space visitSpace(Space space, Space.Location location, PrintOutputCapture<P> p) {
         p.append(space.getWhitespace());
         return space;
@@ -87,14 +98,14 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
         }
     }
 
-    protected void visitRightPadded(@Nullable JclRightPadded<? extends Jcl> rightPadded, JclRightPadded.Location location, @Nullable String suffix, PrintOutputCapture<P> p) {
-        if (rightPadded != null) {
-            beforeSyntax(Space.EMPTY, rightPadded.getMarkers(), null, p);
-            visit(rightPadded.getElement(), p);
-            afterSyntax(rightPadded.getMarkers(), p);
-            visitSpace(rightPadded.getAfter(), location.getAfterLocation(), p);
-            if (suffix != null) {
-                p.append(suffix);
+    protected void visitRightPadded(List<? extends JclRightPadded<? extends Jcl>> nodes, JclRightPadded.Location location, String suffixBetween, PrintOutputCapture<P> p) {
+        for (int i = 0; i < nodes.size(); i++) {
+            JclRightPadded<? extends Jcl> node = nodes.get(i);
+            visit(node.getElement(), p);
+            visitSpace(node.getAfter(), location.getAfterLocation(), p);
+            visitMarkers(node.getMarkers(), p);
+            if (i < nodes.size() - 1) {
+                p.append(suffixBetween);
             }
         }
     }
