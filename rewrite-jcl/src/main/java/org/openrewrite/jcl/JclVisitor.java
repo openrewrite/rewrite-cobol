@@ -1,15 +1,13 @@
 package org.openrewrite.jcl;
 
 import org.openrewrite.Cursor;
-import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.lang.Nullable;
-import org.openrewrite.jcl.tree.Jcl;
-import org.openrewrite.jcl.tree.JclLeftPadded;
-import org.openrewrite.jcl.tree.JclRightPadded;
-import org.openrewrite.jcl.tree.Space;
+import org.openrewrite.jcl.tree.*;
 import org.openrewrite.marker.Markers;
+
+import java.util.List;
 
 public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
 
@@ -52,7 +50,7 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         j = j.withPrefix(visitSpace(j.getPrefix(), Space.Location.JCL_STATEMENT_PREFIX, p));
         j = j.withMarkers(visitMarkers(j.getMarkers(), p));
         j = j.withName(visitAndCast(j.getName(), p));
-        j = j.withParameters(ListUtils.map(j.getParameters(), e -> visitAndCast(e, p)));
+        j = j.getPadding().withParameters(visitContainer(j.getPadding().getParameters(), JclContainer.Location.PARAMETERS, p));
         return j;
     }
 
@@ -69,6 +67,28 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         pa = pa.getPadding().withTrees(ListUtils.map(pa.getPadding().getTrees(), t -> visitRightPadded(t, JclRightPadded.Location.PARENTHESES, p)));
         pa = pa.withMarkers(visitMarkers(pa.getMarkers(), p));
         return pa;
+    }
+
+    public Space visitSpace(Space space, Space.Location location, P p) {
+        return space;
+    }
+
+    public <J2 extends Jcl> JclContainer<J2> visitContainer(@Nullable JclContainer<J2> container,
+                                                            JclContainer.Location loc, P p) {
+        if (container == null) {
+            //noinspection ConstantConditions
+            return null;
+        }
+        setCursor(new Cursor(getCursor(), container));
+
+        Space before = visitSpace(container.getBefore(), loc.getBeforeLocation(), p);
+        List<JclRightPadded<J2>> js = ListUtils.map(container.getPadding().getElements(), t -> visitRightPadded(t, loc.getElementLocation(), p));
+
+        setCursor(getCursor().getParent());
+
+        return js == container.getPadding().getElements() && before == container.getBefore() ?
+                container :
+                JclContainer.build(before, js, container.getMarkers());
     }
 
     public <T> JclLeftPadded<T> visitLeftPadded(@Nullable JclLeftPadded<T> left, JclLeftPadded.Location loc, P p) {
@@ -124,9 +144,5 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         Markers markers = visitMarkers(right.getMarkers(), p);
         return (after == right.getAfter() && t == right.getElement() && markers == right.getMarkers()) ?
                 right : new JclRightPadded<>(t, after, markers);
-    }
-
-    public Space visitSpace(Space space, Space.Location location, P p) {
-        return space;
     }
 }

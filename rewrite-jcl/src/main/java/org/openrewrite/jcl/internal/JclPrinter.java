@@ -4,10 +4,7 @@ import org.openrewrite.Cursor;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.JclVisitor;
-import org.openrewrite.jcl.tree.Jcl;
-import org.openrewrite.jcl.tree.JclLeftPadded;
-import org.openrewrite.jcl.tree.JclRightPadded;
-import org.openrewrite.jcl.tree.Space;
+import org.openrewrite.jcl.tree.*;
 import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
 
@@ -58,7 +55,7 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
     public Jcl visitJobStatement(Jcl.JobStatement jobStatement, PrintOutputCapture<P> p) {
         beforeSyntax(jobStatement, Space.Location.JOB_STATEMENT_PREFIX, p);
         visit(jobStatement.getName(), p);
-        visit(jobStatement.getParameters(), p);
+        visitContainer("", jobStatement.getPadding().getParameters(), JclContainer.Location.TODO, ",", "", p);
         afterSyntax(jobStatement, p);
         return jobStatement;
     }
@@ -88,6 +85,18 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
     public Space visitSpace(Space space, Space.Location location, PrintOutputCapture<P> p) {
         p.append(space.getWhitespace());
         return space;
+    }
+
+    protected void visitContainer(String before, @Nullable JclContainer<? extends Jcl> container, JclContainer.Location location,
+                                  String suffixBetween, @Nullable String after, PrintOutputCapture<P> p) {
+        if (container == null) {
+            return;
+        }
+        beforeSyntax(container.getBefore(), container.getMarkers(), location.getBeforeLocation(), p);
+        p.append(before);
+        visitRightPadded(container.getPadding().getElements(), location.getElementLocation(), suffixBetween, p);
+        afterSyntax(container.getMarkers(), p);
+        p.append(after == null ? "" : after);
     }
 
     protected void visitLeftPadded(@Nullable String prefix, @Nullable JclLeftPadded<? extends Jcl> leftPadded, JclLeftPadded.Location location, PrintOutputCapture<P> p) {

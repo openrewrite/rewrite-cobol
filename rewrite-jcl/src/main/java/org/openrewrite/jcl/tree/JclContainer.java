@@ -19,35 +19,29 @@ import static java.util.Collections.emptyList;
 public class JclContainer<T> {
     private transient Padding<T> padding;
 
-    private static final JclContainer<?> EMPTY = new JclContainer<>(Space.EMPTY, null, emptyList(), Markers.EMPTY);
+    private static final JclContainer<?> EMPTY = new JclContainer<>(Space.EMPTY, emptyList(), Markers.EMPTY);
 
     private final Space before;
-
-    @Nullable
-    private final JclLeftPadded<String> preposition;
 
     private final List<JclRightPadded<T>> elements;
     private final Markers markers;
 
-    private JclContainer(Space before, @Nullable JclLeftPadded<String> preposition,
-                         List<JclRightPadded<T>> elements, Markers markers) {
+    private JclContainer(Space before, List<JclRightPadded<T>> elements, Markers markers) {
         this.before = before;
-        this.preposition = preposition;
         this.elements = elements;
         this.markers = markers;
     }
 
     public static <T> JclContainer<T> build(List<JclRightPadded<T>> elements) {
-        return build(Space.EMPTY, null, elements, Markers.EMPTY);
+        return build(Space.EMPTY, elements, Markers.EMPTY);
     }
 
     @JsonCreator
-    public static <T> JclContainer<T> build(Space before, @Nullable JclLeftPadded<String> preposition,
-                                            List<JclRightPadded<T>> elements, Markers markers) {
+    public static <T> JclContainer<T> build(Space before, List<JclRightPadded<T>> elements, Markers markers) {
         if (before.isEmpty() && elements.isEmpty()) {
             return empty();
         }
-        return new JclContainer<>(before, preposition, elements, markers);
+        return new JclContainer<>(before, elements, markers);
     }
 
     @SuppressWarnings("unchecked")
@@ -55,25 +49,16 @@ public class JclContainer<T> {
         return (JclContainer<T>) EMPTY;
     }
 
-    public JclContainer<T> withPreposition(@Nullable JclLeftPadded<String> preposition) {
-        return this.preposition == preposition ? this : build(before, preposition, elements, markers);
-    }
-
     public JclContainer<T> withBefore(Space before) {
-        return this.before == before ? this : build(before, preposition, elements, markers);
+        return this.before == before ? this : build(before, elements, markers);
     }
 
     public JclContainer<T> withElements(List<JclRightPadded<T>> elements) {
-        return this.elements == elements ? this : build(before, preposition, elements, markers);
+        return this.elements == elements ? this : build(before, elements, markers);
     }
 
     public JclContainer<T> withMarkers(Markers markers) {
-        return this.markers == markers ? this : build(before, preposition, elements, markers);
-    }
-
-    @Nullable
-    public JclLeftPadded<String> getPreposition() {
-        return preposition;
+        return this.markers == markers ? this : build(before, elements, markers);
     }
 
     public Markers getMarkers() {
@@ -100,6 +85,28 @@ public class JclContainer<T> {
         return withElements(ListUtils.mapLast(elements, elem -> elem.withAfter(after)));
     }
 
+
+    public enum Location {
+        TODO(Space.Location.TODO, JclRightPadded.Location.TODO),
+        PARAMETERS(Space.Location.PARAMETERS, JclRightPadded.Location.PARAMETERS);
+
+        private final Space.Location beforeLocation;
+        private final JclRightPadded.Location elementLocation;
+
+        Location(Space.Location beforeLocation, JclRightPadded.Location elementLocation) {
+            this.beforeLocation = beforeLocation;
+            this.elementLocation = elementLocation;
+        }
+
+        public Space.Location getBeforeLocation() {
+            return beforeLocation;
+        }
+
+        public JclRightPadded.Location getElementLocation() {
+            return elementLocation;
+        }
+    }
+
     public Padding<T> getPadding() {
         if (padding == null) {
             this.padding = new Padding<>(this);
@@ -116,7 +123,7 @@ public class JclContainer<T> {
         }
 
         public JclContainer<T> withElements(List<JclRightPadded<T>> elements) {
-            return c.elements == elements ? c : build(c.before, c.preposition, elements, c.markers);
+            return c.elements == elements ? c : build(c.before, elements, c.markers);
         }
     }
 
@@ -126,7 +133,7 @@ public class JclContainer<T> {
             if (elements == null || elements.isEmpty()) {
                 return null;
             }
-            return JclContainer.build(Space.EMPTY, null, JclRightPadded.withElements(emptyList(), elements), Markers.EMPTY);
+            return JclContainer.build(Space.EMPTY, JclRightPadded.withElements(emptyList(), elements), Markers.EMPTY);
         }
         if (elements == null || elements.isEmpty()) {
             return null;

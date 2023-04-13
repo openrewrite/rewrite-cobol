@@ -25,25 +25,24 @@ public class JobTest implements RewriteTest {
     @Test
     void parameterAssignment() {
         rewriteRun(
-                jcl("//JobName JOB CLASS=A")
+          jcl("//JobName JOB CLASS=A")
         );
     }
 
     @Test
     void parensAssignment() {
         rewriteRun(
-                jcl("//JobName JOB MSGLEVEL=(1,1)")
+          jcl("//JobName JOB MSGLEVEL=(1,1)")
         );
     }
 
     @Test
     void startsWithComma() {
         rewriteRun(
-                jcl("//JobName JOB (,DEPTD58,921)")
+          jcl("//JobName JOB (,DEPTD58,921)")
         );
     }
 
-    @ExpectedToFail("Formalize parameters in the grammar, add parameters to the LST element, parse/print")
     @Test
     void multipleParameterTypes() {
         rewriteRun(

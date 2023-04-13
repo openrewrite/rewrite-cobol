@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static java.util.Collections.emptyList;
 import static org.openrewrite.Tree.randomId;
-import static org.openrewrite.internal.StringUtils.indexOfNextNonWhitespace;
 import static org.openrewrite.jcl.tree.Space.EMPTY;
 
 public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
@@ -100,7 +100,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.JOB().getText()),
-                convertAll(ctx.parameter())
+                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
         );
     }
 
@@ -193,6 +193,28 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
             converted.add(convert.apply(tree));
         }
         return converted;
+    }
+
+    private final Function<ParseTree, Space> commaDelim = ignored -> sourceBefore(",");
+    private final Function<ParseTree, Space> noDelim = ignored -> EMPTY;
+
+    private <J2 extends Jcl> List<JclRightPadded<J2>> convertAll(List<JCLParser.ParameterContext> elements,
+                                                                                      Function<ParseTree, Space> innerSuffix,
+                                                                                      Function<ParseTree, Space> suffix) {
+        if (elements.isEmpty()) {
+            return emptyList();
+        }
+
+        List<JclRightPadded<J2>> converted = new ArrayList<>(elements.size());
+        for (int i = 0; i < elements.size(); i++) {
+            ParseTree element = elements.get(i);
+            //noinspection unchecked
+            J2 j = (J2) visit(element);
+            Space after = i == elements.size() - 1 ? suffix.apply(element) : innerSuffix.apply(element);
+            JclRightPadded<J2> rightPadded = padRight(j, after);
+            converted.add(rightPadded);
+        }
+        return converted.isEmpty() ? emptyList() : converted;
     }
 
     private void skip(@Nullable String token) {

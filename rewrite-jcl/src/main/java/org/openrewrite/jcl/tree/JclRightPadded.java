@@ -39,6 +39,8 @@ public class JclRightPadded<T> {
     }
 
     public enum Location {
+        TODO(Space.Location.TODO),
+        PARAMETERS(Space.Location.PARAMETERS),
         PARENTHESES(Space.Location.PARENTHESES);
 
         private final Space.Location afterLocation;

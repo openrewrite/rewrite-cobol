@@ -119,6 +119,7 @@ public class Space {
         JCL_STATEMENT_PREFIX,
         JOB_STATEMENT_PREFIX,
         LITERAL_PREFIX,
+        PARAMETERS,
         PARENTHESES,
         PARENTHESES_PREFIX
     }

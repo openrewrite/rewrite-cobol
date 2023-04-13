@@ -16,6 +16,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.Objects.requireNonNull;
+
 public interface Jcl extends Tree {
 
     @SuppressWarnings("unchecked")
@@ -202,25 +204,73 @@ public interface Jcl extends Tree {
         }
     }
 
-    @Value
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
+    @RequiredArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     class JobStatement implements Jcl {
+        @Nullable
+        @NonFinal
+        transient WeakReference<JobStatement.Padding> padding;
 
+        @With
         @EqualsAndHashCode.Include
+        @Getter
         UUID id;
 
+        @With
+        @Getter
         Space prefix;
+
+        @With
+        @Getter
         Markers markers;
 
+        @With
+        @Getter
         Name name;
 
-        @Nullable
-        List<Parameter> parameters;
+        JclContainer<Parameter> parameters;
+
+        public List<Parameter> getParameters() {
+            return parameters.getElements();
+        }
+
+        public JobStatement withParameters(List<Parameter> parameters) {
+            return getPadding().withParameters(requireNonNull(JclContainer.withElementsNullable(this.parameters, parameters)));
+        }
 
         @Override
         public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
             return v.visitJobStatement(this, p);
+        }
+
+        public JobStatement.Padding getPadding() {
+            JobStatement.Padding p;
+            if (this.padding == null) {
+                p = new JobStatement.Padding(this);
+                this.padding = new WeakReference<>(p);
+            } else {
+                p = this.padding.get();
+                if (p == null || p.t != this) {
+                    p = new JobStatement.Padding(this);
+                    this.padding = new WeakReference<>(p);
+                }
+            }
+            return p;
+        }
+
+        @RequiredArgsConstructor
+        public static class Padding {
+            private final JobStatement t;
+
+            public JclContainer<Parameter> getParameters() {
+                return t.parameters;
+            }
+
+            public JobStatement withParameters(JclContainer<Parameter> parameters) {
+                return t.parameters == parameters ? t : new JobStatement(t.id, t.prefix, t.markers, t.name, parameters);
+            }
         }
     }
 
