@@ -135,6 +135,15 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
     }
 
     @Override
+    public Jcl visitSetStatement(Jcl.SetStatement setStatement, PrintOutputCapture<P> p) {
+        beforeSyntax(setStatement, Space.Location.SET_STATEMENT_PREFIX, p);
+        visit(setStatement.getName(), p);
+        visitContainer("", setStatement.getPadding().getParameters(), JclContainer.Location.PARAMETERS, ",", "", p);
+        afterSyntax(setStatement, p);
+        return setStatement;
+    }
+
+    @Override
     public Space visitSpace(Space space, Space.Location location, PrintOutputCapture<P> p) {
         p.append(space.getWhitespace());
         return space;

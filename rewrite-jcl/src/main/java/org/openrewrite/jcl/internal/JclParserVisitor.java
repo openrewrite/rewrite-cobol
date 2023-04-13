@@ -143,6 +143,17 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
     }
 
     @Override
+    public Jcl visitOutputStatement(JCLParser.OutputStatementContext ctx) {
+        return new Jcl.JobStatement(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                createIdentifier(ctx.OUTPUT().getText()),
+                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+        );
+    }
+
+    @Override
     public Jcl visitParameter(JCLParser.ParameterContext ctx) {
         return super.visitParameter(ctx);
     }
@@ -221,6 +232,17 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.PROC().getText()),
+                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+        );
+    }
+
+    @Override
+    public Jcl visitSetStatement(JCLParser.SetStatementContext ctx) {
+        return new Jcl.SetStatement(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                createIdentifier(ctx.SET().getText()),
                 ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
         );
     }

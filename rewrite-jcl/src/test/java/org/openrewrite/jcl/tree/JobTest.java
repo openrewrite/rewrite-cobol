@@ -10,7 +10,7 @@ public class JobTest implements RewriteTest {
     @Test
     void job() {
         rewriteRun(
-          jcl("//NAME JOB")
+          jcl("//Name JOB")
         );
     }
 

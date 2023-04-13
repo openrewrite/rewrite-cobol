@@ -119,6 +119,15 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         return pr;
     }
 
+    public Jcl visitSetStatement(Jcl.SetStatement setStatement, P p) {
+        Jcl.SetStatement s = setStatement;
+        s = s.withPrefix(visitSpace(s.getPrefix(), Space.Location.SET_STATEMENT_PREFIX, p));
+        s = s.withMarkers(visitMarkers(s.getMarkers(), p));
+        s = s.withName(visitAndCast(s.getName(), p));
+        s = s.getPadding().withParameters(visitContainer(s.getPadding().getParameters(), JclContainer.Location.PARAMETERS, p));
+        return s;
+    }
+
     public Space visitSpace(Space space, Space.Location location, P p) {
         return space;
     }

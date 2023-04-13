@@ -125,18 +125,6 @@ public class JCLParserBaseListener implements JCLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterScheduleStatement(JCLParser.ScheduleStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitScheduleStatement(JCLParser.ScheduleStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterSetStatement(JCLParser.SetStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}

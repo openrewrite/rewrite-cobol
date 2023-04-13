@@ -65,12 +65,6 @@ public interface JCLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProcStatement(JCLParser.ProcStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JCLParser#scheduleStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitScheduleStatement(JCLParser.ScheduleStatementContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link JCLParser#setStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

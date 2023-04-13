@@ -5,7 +5,7 @@ import org.openrewrite.test.RewriteTest;
 
 import static org.openrewrite.jcl.tree.ParserAssertions.jcl;
 
-public class ExecTest implements RewriteTest {
+public class SetTest implements RewriteTest {
 
     @Test
     void exec() {

@@ -69,4 +69,9 @@ public class JclIsoVisitor<P> extends JclVisitor<P> {
     public Jcl.ProcStatement visitProcStatement(Jcl.ProcStatement procStatement, P p) {
         return (Jcl.ProcStatement) super.visitProcStatement(procStatement, p);
     }
+
+    @Override
+    public Jcl.SetStatement visitSetStatement(Jcl.SetStatement setStatement, P p) {
+        return (Jcl.SetStatement) super.visitSetStatement(setStatement, p);
+    }
 }

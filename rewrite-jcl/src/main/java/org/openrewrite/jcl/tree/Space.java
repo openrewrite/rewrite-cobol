@@ -127,6 +127,7 @@ public class Space {
         PARENTHESES,
         PARENTHESES_PREFIX,
         PEND_PREFIX,
-        PROC_STATEMENT_PREFIX
+        PROC_STATEMENT_PREFIX,
+        SET_STATEMENT_PREFIX
     }
 }

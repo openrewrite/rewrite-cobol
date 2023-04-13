@@ -692,4 +692,74 @@ public interface Jcl extends Tree {
             }
         }
     }
+
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @RequiredArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class SetStatement implements Jcl, Parameter {
+        @Nullable
+        @NonFinal
+        transient WeakReference<SetStatement.Padding> padding;
+
+        @With
+        @EqualsAndHashCode.Include
+        @Getter
+        UUID id;
+
+        @With
+        @Getter
+        Space prefix;
+
+        @With
+        @Getter
+        Markers markers;
+
+        @With
+        @Getter
+        Name name;
+
+        JclContainer<Parameter> parameters;
+
+        public List<Parameter> getParameters() {
+            return parameters.getElements();
+        }
+
+        public SetStatement withParameters(List<Parameter> parameters) {
+            return getPadding().withParameters(requireNonNull(JclContainer.withElementsNullable(this.parameters, parameters)));
+        }
+
+        @Override
+        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
+            return v.visitSetStatement(this, p);
+        }
+
+        public SetStatement.Padding getPadding() {
+            SetStatement.Padding p;
+            if (this.padding == null) {
+                p = new SetStatement.Padding(this);
+                this.padding = new WeakReference<>(p);
+            } else {
+                p = this.padding.get();
+                if (p == null || p.t != this) {
+                    p = new SetStatement.Padding(this);
+                    this.padding = new WeakReference<>(p);
+                }
+            }
+            return p;
+        }
+
+        @RequiredArgsConstructor
+        public static class Padding {
+            private final SetStatement t;
+
+            public JclContainer<Parameter> getParameters() {
+                return t.parameters;
+            }
+
+            public SetStatement withParameters(JclContainer<Parameter> parameters) {
+                return t.parameters == parameters ? t : new SetStatement(t.id, t.prefix, t.markers, t.name, parameters);
+            }
+        }
+    }
 }

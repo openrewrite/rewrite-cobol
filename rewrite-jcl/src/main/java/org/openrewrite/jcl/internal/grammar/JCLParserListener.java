@@ -98,16 +98,6 @@ public interface JCLParserListener extends ParseTreeListener {
 	 */
 	void exitProcStatement(JCLParser.ProcStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JCLParser#scheduleStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterScheduleStatement(JCLParser.ScheduleStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link JCLParser#scheduleStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitScheduleStatement(JCLParser.ScheduleStatementContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link JCLParser#setStatement}.
 	 * @param ctx the parse tree
 	 */
