@@ -49,8 +49,9 @@ public class JCLParser extends Parser {
 		SYSOUT=192, SYSUDUMP=193, TERM=194, THRESHLD=195, TIME=196, TITLE=197, 
 		TRC=198, TRTCH=199, TYPRUN=200, UNIT=201, USER=202, USERDATA=203, USERLIB=204, 
 		VIO=205, VOL=206, WRITER=207, EQUAL=208, L_BRACE=209, R_BRACE=210, L_BRACKET=211, 
-		R_BRACKET=212, L_PAREN=213, R_PAREN=214, ASTERISK=215, SINGLEQUOTE=216, 
-		DOUBLEQUOTE=217, NAME_FIELD=218, DOT=219, COMMA=220, NAME_CHAR=221;
+		R_BRACKET=212, L_PAREN=213, R_PAREN=214, AMPERSAND=215, ASTERISK=216, 
+		PLUS=217, MINUS=218, SINGLEQUOTE=219, DOUBLEQUOTE=220, NAME_FIELD=221, 
+		PERIOD=222, COMMA=223, NAME_CHAR=224;
 	public static final int
 		RULE_compilationUnit = 0, RULE_statement = 1, RULE_jclStatement = 2, RULE_jobStatement = 3, 
 		RULE_ddStatement = 4, RULE_execStatement = 5, RULE_outputStatement = 6, 
@@ -87,7 +88,8 @@ public class JCLParser extends Parser {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, "'='", "'{'", "'}'", 
-			"'['", "']'", "'('", "')'", "'*'", "'''", "'\"'", null, "'.'", "','"
+			"'['", "']'", "'('", "')'", "'&'", "'*'", "'+'", "'-'", "'''", "'\"'", 
+			null, "'.'", "','"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -122,8 +124,8 @@ public class JCLParser extends Parser {
 			"SYSMDUMP", "SYSOUT", "SYSUDUMP", "TERM", "THRESHLD", "TIME", "TITLE", 
 			"TRC", "TRTCH", "TYPRUN", "UNIT", "USER", "USERDATA", "USERLIB", "VIO", 
 			"VOL", "WRITER", "EQUAL", "L_BRACE", "R_BRACE", "L_BRACKET", "R_BRACKET", 
-			"L_PAREN", "R_PAREN", "ASTERISK", "SINGLEQUOTE", "DOUBLEQUOTE", "NAME_FIELD", 
-			"DOT", "COMMA", "NAME_CHAR"
+			"L_PAREN", "R_PAREN", "AMPERSAND", "ASTERISK", "PLUS", "MINUS", "SINGLEQUOTE", 
+			"DOUBLEQUOTE", "NAME_FIELD", "PERIOD", "COMMA", "NAME_CHAR"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -1174,7 +1176,7 @@ public class JCLParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u00dd|\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u00e0|\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -1193,7 +1195,7 @@ public class JCLParser extends Parser {
 		"\r\u0001\r\u0005\ro\b\r\n\r\f\rr\t\r\u0001\r\u0001\r\u0001\u000e\u0001"+
 		"\u000e\u0001\u000e\u0001\u000e\u0001\u000f\u0001\u000f\u0001\u000f\u0000"+
 		"\u0000\u0010\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016"+
-		"\u0018\u001a\u001c\u001e\u0000\u0001\u0002\u000022\u00da\u00da}\u0000"+
+		"\u0018\u001a\u001c\u001e\u0000\u0001\u0002\u000022\u00dd\u00dd}\u0000"+
 		"#\u0001\u0000\u0000\u0000\u0002(\u0001\u0000\u0000\u0000\u0004*\u0001"+
 		"\u0000\u0000\u0000\u00063\u0001\u0000\u0000\u0000\b>\u0001\u0000\u0000"+
 		"\u0000\nI\u0001\u0000\u0000\u0000\fL\u0001\u0000\u0000\u0000\u000eT\u0001"+
@@ -1210,12 +1212,12 @@ public class JCLParser extends Parser {
 		"\u0007\u00001+\u0001\u0000\u0000\u00001,\u0001\u0000\u0000\u00001-\u0001"+
 		"\u0000\u0000\u00001.\u0001\u0000\u0000\u00001/\u0001\u0000\u0000\u0000"+
 		"10\u0001\u0000\u0000\u00002\u0005\u0001\u0000\u0000\u00003<\u0005\u001b"+
-		"\u0000\u000049\u0003\u0018\f\u000056\u0005\u00dc\u0000\u000068\u0003\u0018"+
+		"\u0000\u000049\u0003\u0018\f\u000056\u0005\u00df\u0000\u000068\u0003\u0018"+
 		"\f\u000075\u0001\u0000\u0000\u00008;\u0001\u0000\u0000\u000097\u0001\u0000"+
 		"\u0000\u00009:\u0001\u0000\u0000\u0000:=\u0001\u0000\u0000\u0000;9\u0001"+
 		"\u0000\u0000\u0000<4\u0001\u0000\u0000\u0000<=\u0001\u0000\u0000\u0000"+
 		"=\u0007\u0001\u0000\u0000\u0000>G\u0005\u000f\u0000\u0000?D\u0003\u0018"+
-		"\f\u0000@A\u0005\u00dc\u0000\u0000AC\u0003\u0018\f\u0000B@\u0001\u0000"+
+		"\f\u0000@A\u0005\u00df\u0000\u0000AC\u0003\u0018\f\u0000B@\u0001\u0000"+
 		"\u0000\u0000CF\u0001\u0000\u0000\u0000DB\u0001\u0000\u0000\u0000DE\u0001"+
 		"\u0000\u0000\u0000EH\u0001\u0000\u0000\u0000FD\u0001\u0000\u0000\u0000"+
 		"G?\u0001\u0000\u0000\u0000GH\u0001\u0000\u0000\u0000H\t\u0001\u0000\u0000"+
@@ -1228,13 +1230,13 @@ public class JCLParser extends Parser {
 		"\u0000\u0000XY\u0005*\u0000\u0000YZ\u0003\u0018\f\u0000Z\u0013\u0001\u0000"+
 		"\u0000\u0000[\\\u0005+\u0000\u0000\\]\u0003\u0018\f\u0000]\u0015\u0001"+
 		"\u0000\u0000\u0000^_\u00051\u0000\u0000_`\u0003\u0018\f\u0000`\u0017\u0001"+
-		"\u0000\u0000\u0000ag\u00052\u0000\u0000bg\u0005\u00da\u0000\u0000cg\u0003"+
+		"\u0000\u0000\u0000ag\u00052\u0000\u0000bg\u0005\u00dd\u0000\u0000cg\u0003"+
 		"\u001e\u000f\u0000dg\u0003\u001c\u000e\u0000eg\u0003\u001a\r\u0000fa\u0001"+
 		"\u0000\u0000\u0000fb\u0001\u0000\u0000\u0000fc\u0001\u0000\u0000\u0000"+
 		"fd\u0001\u0000\u0000\u0000fe\u0001\u0000\u0000\u0000g\u0019\u0001\u0000"+
 		"\u0000\u0000hj\u0005\u00d5\u0000\u0000ik\u0003\u0018\f\u0000ji\u0001\u0000"+
 		"\u0000\u0000jk\u0001\u0000\u0000\u0000kp\u0001\u0000\u0000\u0000lm\u0005"+
-		"\u00dc\u0000\u0000mo\u0003\u0018\f\u0000nl\u0001\u0000\u0000\u0000or\u0001"+
+		"\u00df\u0000\u0000mo\u0003\u0018\f\u0000nl\u0001\u0000\u0000\u0000or\u0001"+
 		"\u0000\u0000\u0000pn\u0001\u0000\u0000\u0000pq\u0001\u0000\u0000\u0000"+
 		"qs\u0001\u0000\u0000\u0000rp\u0001\u0000\u0000\u0000st\u0005\u00d6\u0000"+
 		"\u0000t\u001b\u0001\u0000\u0000\u0000uv\u0007\u0000\u0000\u0000vw\u0005"+

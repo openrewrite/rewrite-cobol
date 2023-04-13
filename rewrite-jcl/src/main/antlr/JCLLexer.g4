@@ -9,7 +9,6 @@ JCL_STATEMENT : '//'NAME_FIELD;
 JECL_STATEMENT : '/*' ('$' || JOBPARM || MESSAGE || NETACCT || NOTIFY || OUTPUT || PRIORITY || ROUTE || SETUP);
 DELIMITER : '/*';
 
-
 LF : '\n';
 CR : '\r';
 CRLF : CR LF;
@@ -308,14 +307,17 @@ R_BRACKET : ']';
 L_PAREN : '(';
 R_PAREN : ')';
 
+AMPERSAND : '&';
 ASTERISK : '*';
+PLUS : '+';
+MINUS : '-';
 
 SINGLEQUOTE : '\'';
 DOUBLEQUOTE : '"';
 
 // names
-NAME_FIELD : NAME_CHAR ((DOT NAME_CHAR)+)?;
-DOT : '.';
+NAME_FIELD : NAME_CHAR ((PERIOD NAME_CHAR)+)?;
+PERIOD : '.';
 COMMA : ',';
 NAME_CHAR : [a-zA-Z0-9$#@]+;
 
