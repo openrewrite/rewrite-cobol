@@ -18,7 +18,7 @@ public class JobTest implements RewriteTest {
     @Test
     void parameterLiteral() {
         rewriteRun(
-          jcl("//JobName JOB 'jobname'")
+          jcl("//JobName JOB 'name'")
         );
     }
 
@@ -46,7 +46,7 @@ public class JobTest implements RewriteTest {
     @Test
     void multipleParameterTypes() {
         rewriteRun(
-          jcl("//JobName JOB 'jobname',CLASS=A,MSGLEVEL=(1,1)")
+          jcl("//JobName JOB 'name',CLASS=A,MSGLEVEL=(1,1)")
         );
     }
 }

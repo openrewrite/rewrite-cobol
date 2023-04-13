@@ -29,11 +29,27 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         return a;
     }
 
+    public Jcl visitDataDefinitionStatement(Jcl.DataDefinitionStatement dataDefinitionStatement, P p) {
+        Jcl.DataDefinitionStatement d = dataDefinitionStatement;
+        d = d.withPrefix(visitSpace(d.getPrefix(), Space.Location.DATA_DEFINITION_STATEMENT_PREFIX, p));
+        d = d.withMarkers(visitMarkers(d.getMarkers(), p));
+        d = d.withName(visitAndCast(d.getName(), p));
+        d = d.getPadding().withParameters(visitContainer(d.getPadding().getParameters(), JclContainer.Location.PARAMETERS, p));
+        return d;
+    }
+
     public Jcl visitIdentifier(Jcl.Identifier identifier, P p) {
         Jcl.Identifier i = identifier;
         i = i.withPrefix(visitSpace(i.getPrefix(), Space.Location.JCL_STATEMENT_PREFIX, p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
         return i;
+    }
+
+    public Jcl visitJclName (Jcl.JclName jclName, P p) {
+        Jcl.JclName j = jclName;
+        j = j.withPrefix(visitSpace(j.getPrefix(), Space.Location.JCL_NAME_PREFIX, p));
+        j = j.withMarkers(visitMarkers(j.getMarkers(), p));
+        return j;
     }
 
     public Jcl visitJclStatement(Jcl.JclStatement jclStatement, P p) {

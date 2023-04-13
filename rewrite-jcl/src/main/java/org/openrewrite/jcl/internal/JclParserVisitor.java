@@ -82,6 +82,17 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
     }
 
     @Override
+    public Jcl visitDdStatement(JCLParser.DdStatementContext ctx) {
+        return new Jcl.JobStatement(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                createIdentifier(ctx.DD().getText()),
+                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+        );
+    }
+
+    @Override
     public Jcl visitJclStatement(JCLParser.JclStatementContext ctx) {
         skip("//");
         return new Jcl.JclStatement(
@@ -89,7 +100,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.JCL_STATEMENT().getText().substring(2)),
-                visitJobStatement(ctx.jobStatement())
+                visit(ctx.jobStatement(), ctx.ddStatement(), ctx.execStatement(), ctx.outputStatement(), ctx.procStatement(), ctx.pendStatement())
         );
     }
 
@@ -101,6 +112,17 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 Markers.EMPTY,
                 createIdentifier(ctx.JOB().getText()),
                 ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+        );
+    }
+
+    @Override
+    public Jcl visitName(JCLParser.NameContext ctx) {
+        return new Jcl.JclName(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                (Jcl.Identifier) visit(ctx.NAME_FIELD()),
+                visitNullable(ctx.parameterParentheses())
         );
     }
 

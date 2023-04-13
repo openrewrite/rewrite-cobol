@@ -122,8 +122,7 @@ xmitStatement
     ;
 
 parameter
-    : PARAMETER
-    | NAME_FIELD
+    : name
     | parameterLiteral
     | parameterAssignment
     | parameterParentheses
@@ -142,6 +141,9 @@ parameterLiteral
     : PARAMETER_LITERAL
     ;
 
+name
+    : (PARAMETER | NAME_FIELD) parameterParentheses?
+    ;
 
 //conditionStatement
 //    : ifStatement

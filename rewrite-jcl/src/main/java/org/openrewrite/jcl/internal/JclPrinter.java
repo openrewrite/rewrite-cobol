@@ -34,11 +34,29 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
     }
 
     @Override
+    public Jcl visitDataDefinitionStatement(Jcl.DataDefinitionStatement dataDefinitionStatement, PrintOutputCapture<P> p) {
+        beforeSyntax(dataDefinitionStatement, Space.Location.DATA_DEFINITION_STATEMENT_PREFIX, p);
+        visit(dataDefinitionStatement.getName(), p);
+        visitContainer("", dataDefinitionStatement.getPadding().getParameters(), JclContainer.Location.PARAMETERS, ",", "", p);
+        afterSyntax(dataDefinitionStatement, p);
+        return dataDefinitionStatement;
+    }
+
+    @Override
     public Jcl visitIdentifier(Jcl.Identifier identifier, PrintOutputCapture<P> p) {
         beforeSyntax(identifier, Space.Location.IDENTIFIER_PREFIX, p);
         p.append(identifier.getSimpleName());
         afterSyntax(identifier, p);
         return identifier;
+    }
+
+    @Override
+    public Jcl visitJclName(Jcl.JclName jclName, PrintOutputCapture<P> p) {
+        beforeSyntax(jclName, Space.Location.JCL_NAME_PREFIX, p);
+        visit(jclName.getName(), p);
+        visit(jclName.getParentheses(), p);
+        afterSyntax(jclName, p);
+        return jclName;
     }
 
     @Override
@@ -55,7 +73,7 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
     public Jcl visitJobStatement(Jcl.JobStatement jobStatement, PrintOutputCapture<P> p) {
         beforeSyntax(jobStatement, Space.Location.JOB_STATEMENT_PREFIX, p);
         visit(jobStatement.getName(), p);
-        visitContainer("", jobStatement.getPadding().getParameters(), JclContainer.Location.TODO, ",", "", p);
+        visitContainer("", jobStatement.getPadding().getParameters(), JclContainer.Location.PARAMETERS, ",", "", p);
         afterSyntax(jobStatement, p);
         return jobStatement;
     }
