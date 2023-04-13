@@ -5,54 +5,54 @@ import org.openrewrite.test.RewriteTest;
 
 import static org.openrewrite.jcl.tree.ParserAssertions.jcl;
 
-public class JobTest implements RewriteTest {
+public class ExecTest implements RewriteTest {
 
     @Test
-    void job() {
+    void exec() {
         rewriteRun(
-          jcl("//JobName JOB")
-        );
-    }
-
-    @Test
-    void parameterLiteral() {
-        rewriteRun(
-          jcl("//JobName JOB 'name'")
+          jcl("//PSTEP1 EXEC")
         );
     }
 
     @Test
     void parameterAssignment() {
         rewriteRun(
-          jcl("//JobName JOB CLASS=A")
+          jcl("//PSTEP1 EXEC PGM=WT1")
         );
     }
 
     @Test
     void specialCharacters() {
         rewriteRun(
-          jcl("//JobName JOB CLASS='3400-6'")
+          jcl("//PSTEP1 EXEC PGM='3400-6'")
         );
     }
 
     @Test
     void parensAssignment() {
         rewriteRun(
-          jcl("//JobName JOB MSGLEVEL=(1,1)")
+          jcl("//PSTEP1 EXEC COND.PSTEP3=(4,GT,PSTEP1)")
         );
     }
 
     @Test
     void startsWithComma() {
         rewriteRun(
-          jcl("//JobName JOB (,DEPTD58,921)")
+          jcl("//PSTEP1 EXEC TIME=(,50)")
         );
     }
 
     @Test
     void multipleParameterTypes() {
         rewriteRun(
-          jcl("//JobName JOB 'name',CLASS=A,MSGLEVEL=(1,1)")
+          jcl("//STEPB EXEC COND.PSTEP3=(4,GT,PSTEP1),RD=R")
+        );
+    }
+
+    @Test
+    void procParameter() {
+        rewriteRun(
+          jcl("//STEPB EXEC PROC=WRIT35")
         );
     }
 }

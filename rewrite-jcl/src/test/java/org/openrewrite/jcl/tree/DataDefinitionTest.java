@@ -23,6 +23,13 @@ public class DataDefinitionTest  implements RewriteTest {
     }
 
     @Test
+    void specialCharacters() {
+        rewriteRun(
+          jcl("//DDSMS1 DD DSNAME='3400-6'")
+        );
+    }
+
+    @Test
     void multiAssignment() {
         rewriteRun(
           jcl("//DDSMS1 DD VOLUME=SER=389984")

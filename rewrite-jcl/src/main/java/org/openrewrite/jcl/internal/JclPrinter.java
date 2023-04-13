@@ -43,6 +43,15 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
     }
 
     @Override
+    public Jcl visitExecStatement(Jcl.ExecStatement execStatement, PrintOutputCapture<P> p) {
+        beforeSyntax(execStatement, Space.Location.EXEC_STATEMENT_PREFIX, p);
+        visit(execStatement.getName(), p);
+        visitContainer("", execStatement.getPadding().getParameters(), JclContainer.Location.PARAMETERS, ",", "", p);
+        afterSyntax(execStatement, p);
+        return execStatement;
+    }
+
+    @Override
     public Jcl visitIdentifier(Jcl.Identifier identifier, PrintOutputCapture<P> p) {
         beforeSyntax(identifier, Space.Location.IDENTIFIER_PREFIX, p);
         p.append(identifier.getSimpleName());
@@ -97,6 +106,15 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
         p.append(")");
         afterSyntax(parentheses, p);
         return parentheses;
+    }
+
+    @Override
+    public Jcl visitProcStatement(Jcl.ProcStatement procStatement, PrintOutputCapture<P> p) {
+        beforeSyntax(procStatement, Space.Location.PROC_STATEMENT_PREFIX, p);
+        visit(procStatement.getName(), p);
+        visitContainer("", procStatement.getPadding().getParameters(), JclContainer.Location.PARAMETERS, ",", "", p);
+        afterSyntax(procStatement, p);
+        return procStatement;
     }
 
     @Override

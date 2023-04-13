@@ -64,7 +64,7 @@ ddStatement
 //[stepname] EXEC parameter [comments]
 */
 execStatement
-    : EXEC parameter // Add comments ...
+    : EXEC (parameter (COMMA parameter)*)? // Add comments ...
     ;
 
 outputStatement
@@ -97,7 +97,7 @@ pendStatement
 //[name] PROC
 */
 procStatement
-    : PROC // Add parameters and comments ...
+    : PROC (parameter (COMMA parameter)*)? // Add comments ...
     ;
 
 /*
@@ -133,7 +133,7 @@ parameterParentheses
     ;
 
 parameterAssignment
-    : (PARAMETER | NAME_FIELD) EQUAL parameter
+    : (PARAMETER | NAME_FIELD | PROC) EQUAL parameter
     ;
 
 // Force a separate visit on parameter literals since 'some , literal' may be comma separated.

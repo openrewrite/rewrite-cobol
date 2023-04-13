@@ -83,11 +83,22 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
 
     @Override
     public Jcl visitDdStatement(JCLParser.DdStatementContext ctx) {
-        return new Jcl.JobStatement(
+        return new Jcl.DataDefinitionStatement(
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.DD().getText()),
+                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+        );
+    }
+
+    @Override
+    public Jcl visitExecStatement(JCLParser.ExecStatementContext ctx) {
+        return new Jcl.ExecStatement(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                createIdentifier(ctx.EXEC().getText()),
                 ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
         );
     }
@@ -137,7 +148,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                visit(ctx.PARAMETER(), ctx.NAME_FIELD()),
+                visit(ctx.PROC(), ctx.PARAMETER(), ctx.NAME_FIELD()),
                 padLeft(sourceBefore("="), (Expression) visit(ctx.parameter()))
         );
     }
@@ -185,6 +196,17 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 Markers.EMPTY,
                 padded,
                 omitFirstParam
+        );
+    }
+
+    @Override
+    public Jcl visitProcStatement(JCLParser.ProcStatementContext ctx) {
+        return new Jcl.ProcStatement(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                createIdentifier(ctx.PROC().getText()),
+                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
         );
     }
 
