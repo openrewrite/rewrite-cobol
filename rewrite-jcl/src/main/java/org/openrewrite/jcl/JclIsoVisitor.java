@@ -50,9 +50,19 @@ public class JclIsoVisitor<P> extends JclVisitor<P> {
     }
 
     @Override
+    public Jcl.OutputStatement visitOutputStatement(Jcl.OutputStatement outputStatement, P p) {
+        return (Jcl.OutputStatement) super.visitOutputStatement(outputStatement, p);
+    }
+
+    @Override
     public <T extends Jcl> Jcl.Parentheses<T> visitParentheses(Jcl.Parentheses<T> parentheses, P p) {
         //noinspection unchecked
         return (Jcl.Parentheses<T>) super.visitParentheses(parentheses, p);
+    }
+
+    @Override
+    public Jcl.Pend visitPend(Jcl.Pend pend, P p) {
+        return (Jcl.Pend) super.visitPend(pend, p);
     }
 
     @Override

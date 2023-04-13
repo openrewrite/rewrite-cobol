@@ -319,7 +319,7 @@ DOUBLEQUOTE : '"';
 NAME_FIELD : NAME_CHAR ((PERIOD NAME_CHAR)+)?;
 PERIOD : '.';
 COMMA : ',';
-NAME_CHAR : [a-zA-Z0-9$#@]+;
+NAME_CHAR : ([a-zA-Z0-9$#@]+ | ASTERISK);
 
 // add lexer rule for names
 // JOB accounting

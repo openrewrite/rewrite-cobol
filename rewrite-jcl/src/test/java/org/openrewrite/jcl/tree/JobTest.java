@@ -10,49 +10,49 @@ public class JobTest implements RewriteTest {
     @Test
     void job() {
         rewriteRun(
-          jcl("//JobName JOB")
+          jcl("//NAME JOB")
         );
     }
 
     @Test
     void parameterLiteral() {
         rewriteRun(
-          jcl("//JobName JOB 'name'")
+          jcl("//Name JOB 'name'")
         );
     }
 
     @Test
     void parameterAssignment() {
         rewriteRun(
-          jcl("//JobName JOB CLASS=A")
+          jcl("//Name JOB CLASS=A")
         );
     }
 
     @Test
     void specialCharacters() {
         rewriteRun(
-          jcl("//JobName JOB CLASS='3400-6'")
+          jcl("//Name JOB CLASS='3400-6'")
         );
     }
 
     @Test
     void parensAssignment() {
         rewriteRun(
-          jcl("//JobName JOB MSGLEVEL=(1,1)")
+          jcl("//Name JOB MSGLEVEL=(1,1)")
         );
     }
 
     @Test
     void startsWithComma() {
         rewriteRun(
-          jcl("//JobName JOB (,DEPTD58,921)")
+          jcl("//Name JOB (,DEPTD58,921)")
         );
     }
 
     @Test
     void multipleParameterTypes() {
         rewriteRun(
-          jcl("//JobName JOB 'name',CLASS=A,MSGLEVEL=(1,1)")
+          jcl("//Name JOB 'name',CLASS=A,MSGLEVEL=(1,1)")
         );
     }
 }

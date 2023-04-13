@@ -111,7 +111,12 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.JCL_STATEMENT().getText().substring(2)),
-                visit(ctx.jobStatement(), ctx.ddStatement(), ctx.execStatement(), ctx.outputStatement(), ctx.procStatement(), ctx.pendStatement())
+                visit(ctx.jobStatement(),
+                        ctx.ddStatement(),
+                        ctx.execStatement(),
+                        ctx.outputStatement(),
+                        ctx.procStatement(),
+                        ctx.pendStatement())
         );
     }
 
@@ -148,7 +153,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                visit(ctx.PROC(), ctx.PARAMETER(), ctx.NAME_FIELD()),
+                visit(ctx.PARAMETER(), ctx.NAME_FIELD(), ctx.EXEC(), ctx.OUTPUT(), ctx.PROC()),
                 padLeft(sourceBefore("="), (Expression) visit(ctx.parameter()))
         );
     }
@@ -196,6 +201,16 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 Markers.EMPTY,
                 padded,
                 omitFirstParam
+        );
+    }
+
+    @Override
+    public Jcl visitPendStatement(JCLParser.PendStatementContext ctx) {
+        return new Jcl.Pend(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                createIdentifier(ctx.PEND().getText())
         );
     }
 

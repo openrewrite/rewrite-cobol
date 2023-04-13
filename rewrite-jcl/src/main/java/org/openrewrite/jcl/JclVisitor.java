@@ -86,12 +86,28 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         return l;
     }
 
+    public Jcl visitOutputStatement(Jcl.OutputStatement outputStatement, P p) {
+        Jcl.OutputStatement o = outputStatement;
+        o = o.withPrefix(visitSpace(o.getPrefix(), Space.Location.OUTPUT_STATEMENT_PREFIX, p));
+        o = o.withMarkers(visitMarkers(o.getMarkers(), p));
+        o = o.withName(visitAndCast(o.getName(), p));
+        o = o.getPadding().withParameters(visitContainer(o.getPadding().getParameters(), JclContainer.Location.PARAMETERS, p));
+        return o;
+    }
+
     public <T extends Jcl> Jcl visitParentheses(Jcl.Parentheses<T> parentheses, P p) {
         Jcl.Parentheses<T> pa = parentheses;
         pa = pa.withPrefix(visitSpace(pa.getPrefix(), Space.Location.PARENTHESES_PREFIX, p));
         pa = pa.getPadding().withTrees(ListUtils.map(pa.getPadding().getTrees(), t -> visitRightPadded(t, JclRightPadded.Location.PARENTHESES, p)));
         pa = pa.withMarkers(visitMarkers(pa.getMarkers(), p));
         return pa;
+    }
+
+    public Jcl visitPend(Jcl.Pend pend, P p) {
+        Jcl.Pend pe = pend;
+        pe = pe.withPrefix(visitSpace(pe.getPrefix(), Space.Location.PEND_PREFIX, p));
+        pe = pe.withMarkers(visitMarkers(pe.getMarkers(), p));
+        return pe;
     }
 
     public Jcl visitProcStatement(Jcl.ProcStatement procStatement, P p) {

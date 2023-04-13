@@ -122,9 +122,11 @@ public class Space {
         JOB_STATEMENT_PREFIX,
         JCL_NAME_PREFIX,
         LITERAL_PREFIX,
+        OUTPUT_STATEMENT_PREFIX,
         PARAMETERS,
         PARENTHESES,
         PARENTHESES_PREFIX,
+        PEND_PREFIX,
         PROC_STATEMENT_PREFIX
     }
 }

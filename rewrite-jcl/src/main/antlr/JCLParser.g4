@@ -34,41 +34,42 @@ comment before column 72. Columns 73-80 are ignored by z/OS and are typically us
 numbers.
 */
 
-
-// add delimiter:
-/*
-/* [comments]
-xx [comments]
-*/
 jclStatement
     : JCL_STATEMENT (jobStatement | ddStatement | execStatement | outputStatement | procStatement | pendStatement)
     ;
 
 /*
 //jobname JOB [parameter [comments]]
-// //jobname JOB
+//jobname JOB
 */
 jobStatement
     : JOB (parameter (COMMA parameter)*)? // comments ...
     ;
 
-/*
-//[ddname] DD [parameter [comments]]
-//[ddname] DD
+/* Syntax
+// [ddname ] DD [positional-parameter][,keyword-parameter]...[comments]
+[procstepname.ddname]
+
+// [ddname ] DD
+[procstepname.ddname]
 */
 ddStatement
     : DD (parameter (COMMA parameter)*)? // Add comments ...
     ;
 
-/*
-//[stepname] EXEC parameter [comments]
+/* Syntax
+//[stepname] EXEC positional-parm[,keyword-parm]...[,symbolic-parm=value]...
+[comments]
 */
 execStatement
     : EXEC (parameter (COMMA parameter)*)? // Add comments ...
     ;
 
+/* Syntax
+//name OUTPUT parameter[,parameter]... [comments]
+*/
 outputStatement
-    : OUTPUT (parameter+)?
+    : OUTPUT (parameter (COMMA parameter)*)? // Add comments ...
     ;
 
 /*
@@ -87,6 +88,8 @@ PARM=&DECK&CODE
 
 /*
 //[name] PEND [comments]
+The PEND statement consists of the characters // in columns 1 and 2 and three fields:
+name, operation (PEND), and comments. Do not continue a PEND statement.
 */
 pendStatement
     : PEND // Add comments
@@ -101,17 +104,10 @@ procStatement
     ;
 
 /*
-//[name] SCHEDULE parameter [comments]
-*/
-scheduleStatement
-    : SCHEDULE parameter // add comments
-    ;
-
-/*
-//[name] SET parameter [comments]
+//[name] SET symbolic-parameter=value [,symbolic-parameter=value]... [comments]
 */
 setStatement
-    : SET parameter // add comments
+    : SET (parameter (COMMA parameter)*)? // Add comments ...
     ;
 
 /*
@@ -133,7 +129,7 @@ parameterParentheses
     ;
 
 parameterAssignment
-    : (PARAMETER | NAME_FIELD | PROC) EQUAL parameter
+    : (PARAMETER | NAME_FIELD | EXEC | OUTPUT | PROC) EQUAL parameter
     ;
 
 // Force a separate visit on parameter literals since 'some , literal' may be comma separated.

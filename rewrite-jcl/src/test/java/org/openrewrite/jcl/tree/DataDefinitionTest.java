@@ -11,55 +11,62 @@ public class DataDefinitionTest  implements RewriteTest {
     @Test
     void dd() {
         rewriteRun(
-          jcl("//INOUT4 DD")
+          jcl("//Name DD")
         );
     }
 
     @Test
     void parameterAssignment() {
         rewriteRun(
-          jcl("//DDSMS1 DD DSNAME=ALPHA.PGM")
+          jcl("//Name DD DSNAME=ALPHA.PGM")
         );
     }
 
     @Test
     void specialCharacters() {
         rewriteRun(
-          jcl("//DDSMS1 DD DSNAME='3400-6'")
+          jcl("//Name DD DSNAME='3400-6'")
         );
     }
 
     @Test
     void multiAssignment() {
         rewriteRun(
-          jcl("//DDSMS1 DD VOLUME=SER=389984")
+          jcl("//Name DD VOLUME=SER=389984")
         );
     }
     @Test
     void nameWithParameter() {
         rewriteRun(
-          jcl("//DDSMS1 DD DSNAME=REPORT.THREE(WEEK3)")
+          jcl("//Name DD DSNAME=REPORT.THREE(WEEK3)")
         );
     }
 
     @Test
     void parensAssignment() {
         rewriteRun(
-          jcl("//DDSMS1 DD DISP=(NEW,KEEP)")
+          jcl("//Name DD DISP=(NEW,KEEP)")
         );
     }
 
     @Test
     void startsWithComma() {
         rewriteRun(
-          jcl("//DDSMS1 DD DISP=(,KEEP)")
+          jcl("//Name DD DISP=(,KEEP)")
         );
     }
 
     @Test
     void multipleParameterTypes() {
         rewriteRun(
-          jcl("//INOUT4 DD DSNAME=DS4,DISP=(NEW,KEEP),SPACE=(TRK,(5,1,2))")
+          jcl("//Name DD DSNAME=DS4,DISP=(NEW,KEEP),SPACE=(TRK,(5,1,2))")
+        );
+    }
+
+    @Test
+    void outputParameter() {
+        rewriteRun(
+          jcl("//Name DD OUTPUT=(*.OUT1,*.OUT2)")
         );
     }
 
@@ -69,7 +76,7 @@ public class DataDefinitionTest  implements RewriteTest {
         rewriteRun(
           jcl(
             """
-            //INOUT4 DD DSNAME=DS4,UNIT=3380,VOL=SER=111112,
+            //Name DD DSNAME=DS4,UNIT=3380,VOL=SER=111112,
             // DISP=(NEW,KEEP),SPACE=(TRK,(5,1,2))
             """
           )

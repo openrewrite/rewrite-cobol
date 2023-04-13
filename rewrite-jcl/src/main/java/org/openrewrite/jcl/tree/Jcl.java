@@ -465,6 +465,76 @@ public interface Jcl extends Tree {
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @RequiredArgsConstructor
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class OutputStatement implements Jcl, Parameter {
+        @Nullable
+        @NonFinal
+        transient WeakReference<OutputStatement.Padding> padding;
+
+        @With
+        @EqualsAndHashCode.Include
+        @Getter
+        UUID id;
+
+        @With
+        @Getter
+        Space prefix;
+
+        @With
+        @Getter
+        Markers markers;
+
+        @With
+        @Getter
+        Name name;
+
+        JclContainer<Parameter> parameters;
+
+        public List<Parameter> getParameters() {
+            return parameters.getElements();
+        }
+
+        public OutputStatement withParameters(List<Parameter> parameters) {
+            return getPadding().withParameters(requireNonNull(JclContainer.withElementsNullable(this.parameters, parameters)));
+        }
+
+        @Override
+        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
+            return v.visitOutputStatement(this, p);
+        }
+
+        public OutputStatement.Padding getPadding() {
+            OutputStatement.Padding p;
+            if (this.padding == null) {
+                p = new OutputStatement.Padding(this);
+                this.padding = new WeakReference<>(p);
+            } else {
+                p = this.padding.get();
+                if (p == null || p.t != this) {
+                    p = new OutputStatement.Padding(this);
+                    this.padding = new WeakReference<>(p);
+                }
+            }
+            return p;
+        }
+
+        @RequiredArgsConstructor
+        public static class Padding {
+            private final OutputStatement t;
+
+            public JclContainer<Parameter> getParameters() {
+                return t.parameters;
+            }
+
+            public OutputStatement withParameters(JclContainer<Parameter> parameters) {
+                return t.parameters == parameters ? t : new OutputStatement(t.id, t.prefix, t.markers, t.name, parameters);
+            }
+        }
+    }
+
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @RequiredArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     class Parentheses<J2 extends Jcl> implements Jcl, Expression, Parameter {
         @Nullable
         @NonFinal
@@ -532,6 +602,24 @@ public interface Jcl extends Tree {
             public Parentheses<J2> withTrees(List<JclRightPadded<J2>> trees) {
                 return t.trees == trees ? t : new Parentheses<>(t.id, t.prefix, t.markers, trees, t.omitFirstParam);
             }
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class Pend implements Jcl, Parameter {
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+
+        Name name;
+
+        @Override
+        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
+            return v.visitPend(this, p);
         }
     }
 
