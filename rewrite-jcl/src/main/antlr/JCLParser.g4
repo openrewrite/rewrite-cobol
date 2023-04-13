@@ -35,10 +35,10 @@ numbers.
 */
 
 jclStatement
-    : JCL_STATEMENT (jobStatement | ddStatement | execStatement | outputStatement | procStatement | pendStatement)
+    : JCL_STATEMENT (jobStatement |ddStatement | execStatement | outputStatement | pendStatement | procStatement | setStatement | xmitStatement)
     ;
 
-/*
+/* Syntax
 //jobname JOB [parameter [comments]]
 //jobname JOB
 */
@@ -72,21 +72,7 @@ outputStatement
     : OUTPUT (parameter (COMMA parameter)*)? // Add comments ...
     ;
 
-/*
-Using symbols as positional parameters
-When a symbol is a positional parameter followed by other parameters in the statement, follow the
-symbol with a period instead of a comma. For example:
-//DS1 DD &POSPARM.DSNAME=ATLAS,DISP=OLD
-If &POSPARM is nullified, the statement appears as:
-//DS1 DD DSNAME=ATLAS,DISP=OLD
-When assigning a substitution text to &POSPARM, include the comma:
-POSPARM='DUMMY,'
-Using two or more symbols in succession
-Code two or more symbols in succession without including a comma. For example:
-PARM=&DECK&CODE
-*/
-
-/*
+/* Syntax
 //[name] PEND [comments]
 The PEND statement consists of the characters // in columns 1 and 2 and three fields:
 name, operation (PEND), and comments. Do not continue a PEND statement.
@@ -95,7 +81,7 @@ pendStatement
     : PEND // Add comments
     ;
 
-/*
+/* Syntax
 //[name] PROC [parameter [comments]]
 //[name] PROC
 */
@@ -103,18 +89,21 @@ procStatement
     : PROC (parameter (COMMA parameter)*)? // Add comments ...
     ;
 
-/*
+/* Syntax
 //[name] SET symbolic-parameter=value [,symbolic-parameter=value]... [comments]
 */
 setStatement
     : SET (parameter (COMMA parameter)*)? // Add comments ...
     ;
 
-/*
-//[name] XMIT parameter[,parameter] [comments]
+/* Syntax
+//[name] XMIT parameter[,parameter]... [comments]
+
+The XMIT JCL statement consists of the characters // in columns 1 and 2 and four fields:
+name, operation (XMIT), parameter, and comments.
 */
 xmitStatement
-    : XMIT parameter // add comma delimited parameters and comments
+    : XMIT (parameter (COMMA parameter)*)? // Add comments ...
     ;
 
 parameter

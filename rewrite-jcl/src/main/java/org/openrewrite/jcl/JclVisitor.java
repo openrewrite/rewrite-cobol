@@ -128,6 +128,15 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         return s;
     }
 
+    public Jcl visitXmitStatement(Jcl.XmitStatement xmitStatement, P p) {
+        Jcl.XmitStatement x = xmitStatement;
+        x = x.withPrefix(visitSpace(x.getPrefix(), Space.Location.XMIT_STATEMENT_PREFIX, p));
+        x = x.withMarkers(visitMarkers(x.getMarkers(), p));
+        x = x.withName(visitAndCast(x.getName(), p));
+        x = x.getPadding().withParameters(visitContainer(x.getPadding().getParameters(), JclContainer.Location.PARAMETERS, p));
+        return x;
+    }
+
     public Space visitSpace(Space space, Space.Location location, P p) {
         return space;
     }

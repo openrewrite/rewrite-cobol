@@ -115,8 +115,10 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                         ctx.ddStatement(),
                         ctx.execStatement(),
                         ctx.outputStatement(),
+                        ctx.pendStatement(),
                         ctx.procStatement(),
-                        ctx.pendStatement())
+                        ctx.setStatement(),
+                        ctx.xmitStatement())
         );
     }
 
@@ -243,6 +245,17 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.SET().getText()),
+                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+        );
+    }
+
+    @Override
+    public Jcl visitXmitStatement(JCLParser.XmitStatementContext ctx) {
+        return new Jcl.XmitStatement(
+                randomId(),
+                whitespace(),
+                Markers.EMPTY,
+                createIdentifier(ctx.XMIT().getText()),
                 ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
         );
     }

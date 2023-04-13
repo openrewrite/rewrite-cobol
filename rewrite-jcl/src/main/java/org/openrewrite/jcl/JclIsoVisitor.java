@@ -74,4 +74,9 @@ public class JclIsoVisitor<P> extends JclVisitor<P> {
     public Jcl.SetStatement visitSetStatement(Jcl.SetStatement setStatement, P p) {
         return (Jcl.SetStatement) super.visitSetStatement(setStatement, p);
     }
+
+    @Override
+    public Jcl.XmitStatement visitXmitStatement(Jcl.XmitStatement xmitStatement, P p) {
+        return (Jcl.XmitStatement) super.visitXmitStatement(xmitStatement, p);
+    }
 }
