@@ -6,6 +6,7 @@ import org.openrewrite.FileAttributes;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.internal.grammar.JCLParser;
 import org.openrewrite.jcl.internal.grammar.JCLParserBaseVisitor;
+import org.openrewrite.jcl.markers.OmitFirstParam;
 import org.openrewrite.jcl.tree.*;
 import org.openrewrite.marker.Markers;
 
@@ -88,7 +89,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.DD().getText()),
-                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+                createParameters(ctx.parameter())
         );
     }
 
@@ -99,16 +100,17 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.EXEC().getText()),
-                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+                createParameters(ctx.parameter())
         );
     }
 
     @Override
     public Jcl visitJclStatement(JCLParser.JclStatementContext ctx) {
+        Space prefix = whitespace();
         skip("//");
         return new Jcl.JclStatement(
                 randomId(),
-                whitespace(),
+                prefix,
                 Markers.EMPTY,
                 createIdentifier(ctx.JCL_STATEMENT().getText().substring(2)),
                 visit(ctx.jobStatement(),
@@ -129,7 +131,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.JOB().getText()),
-                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+                createParameters(ctx.parameter())
         );
     }
 
@@ -139,7 +141,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 randomId(),
                 whitespace(),
                 Markers.EMPTY,
-                (Jcl.Identifier) visit(ctx.NAME_FIELD()),
+                visit(ctx.PARAMETER(), ctx.NAME_FIELD()),
                 visitNullable(ctx.parameterParentheses())
         );
     }
@@ -151,7 +153,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.OUTPUT().getText()),
-                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+                createParameters(ctx.parameter())
         );
     }
 
@@ -189,7 +191,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
     @Override
     public Jcl visitParameterParentheses(JCLParser.ParameterParenthesesContext ctx) {
         Space prefix = whitespace();
-        Boolean omitFirstParam = null;
+        Markers markers = Markers.EMPTY;
         skip("(");
         List<JclRightPadded<Jcl>> padded = new ArrayList<>(ctx.parameter().size());
         for (int i = 0; i < ctx.parameter().size(); i++) {
@@ -197,7 +199,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 int saveCursor = cursor;
                 whitespace();
                 if (source.startsWith(",", cursor)) {
-                    omitFirstParam = true;
+                    markers = markers.addIfAbsent(new OmitFirstParam(randomId()));
                     skip(",");
                 } else {
                     cursor = saveCursor;
@@ -211,9 +213,8 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
         return new Jcl.Parentheses<>(
                 randomId(),
                 prefix,
-                Markers.EMPTY,
-                padded,
-                omitFirstParam
+                markers,
+                padded
         );
     }
 
@@ -234,7 +235,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.PROC().getText()),
-                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+                createParameters(ctx.parameter())
         );
     }
 
@@ -245,7 +246,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.SET().getText()),
-                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+                createParameters(ctx.parameter())
         );
     }
 
@@ -256,7 +257,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 whitespace(),
                 Markers.EMPTY,
                 createIdentifier(ctx.XMIT().getText()),
-                ctx.parameter().isEmpty() ? null : JclContainer.build(EMPTY, convertAll(ctx.parameter(), commaDelim, t -> EMPTY), Markers.EMPTY)
+                createParameters(ctx.parameter())
         );
     }
 
@@ -276,6 +277,17 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
         );
     }
 
+    private JclContainer<Parameter> createParameters(List<JCLParser.ParameterContext> parameters) {
+        Space before = whitespace();
+        Markers markers = Markers.EMPTY;
+        if (source.startsWith(",", cursor)) {
+            skip(",");
+            markers = markers.addIfAbsent(new OmitFirstParam(randomId()));
+        }
+        return JclContainer.build(before, parameters.isEmpty() ? emptyList() :
+                convertAll(parameters, commaDelim, t -> EMPTY), markers);
+    }
+
     private <C extends Jcl, T extends ParseTree> List<C> convertAll(List<T> trees) {
         //noinspection unchecked
         return convertAll(trees, t -> (C) visit(t));
@@ -293,8 +305,8 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
     private final Function<ParseTree, Space> noDelim = ignored -> EMPTY;
 
     private <J2 extends Jcl> List<JclRightPadded<J2>> convertAll(List<JCLParser.ParameterContext> elements,
-                                                                                      Function<ParseTree, Space> innerSuffix,
-                                                                                      Function<ParseTree, Space> suffix) {
+                                                                 Function<ParseTree, Space> innerSuffix,
+                                                                 Function<ParseTree, Space> suffix) {
         if (elements.isEmpty()) {
             return emptyList();
         }
@@ -339,32 +351,8 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
 
         int delimIndex = cursor;
         for (; delimIndex < source.length(); delimIndex++) {
-            if (inSingleLineComment) {
-                if (source.charAt(delimIndex) == '\n') {
-                    inSingleLineComment = false;
-                }
-            } else {
-                if (source.length() > delimIndex + 1) {
-                    switch (source.substring(delimIndex, delimIndex + 2)) {
-                        case "//":
-                            inSingleLineComment = true;
-                            delimIndex++;
-                            continue;
-                        case "/*":
-                            inMultiLineComment = true;
-                            delimIndex++;
-                            continue;
-                        case "*/":
-                            inMultiLineComment = false;
-                            delimIndex++;
-                            continue;
-                    }
-                }
-            }
-            if (!inMultiLineComment && !inSingleLineComment) {
-                if (!Character.isWhitespace(source.substring(delimIndex, delimIndex + 1).charAt(0))) {
-                    break; // found it!
-                }
+            if (!Character.isWhitespace(source.substring(delimIndex, delimIndex + 1).charAt(0))) {
+                break; // found it!
             }
         }
         return delimIndex;

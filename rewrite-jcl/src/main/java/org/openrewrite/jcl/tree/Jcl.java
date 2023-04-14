@@ -563,14 +563,6 @@ public interface Jcl extends Tree {
             return getPadding().withTrees(JclRightPadded.withElements(this.trees, trees));
         }
 
-        @Nullable
-        @With
-        Boolean omitFirstParam;
-
-        public Boolean omitFirstParam() {
-            return omitFirstParam != null && omitFirstParam;
-        }
-
         @Override
         public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
             return v.visitParentheses(this, p);
@@ -600,7 +592,7 @@ public interface Jcl extends Tree {
             }
 
             public Parentheses<J2> withTrees(List<JclRightPadded<J2>> trees) {
-                return t.trees == trees ? t : new Parentheses<>(t.id, t.prefix, t.markers, trees, t.omitFirstParam);
+                return t.trees == trees ? t : new Parentheses<>(t.id, t.prefix, t.markers, trees);
             }
         }
     }

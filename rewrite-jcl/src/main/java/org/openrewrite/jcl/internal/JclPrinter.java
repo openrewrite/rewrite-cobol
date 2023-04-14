@@ -4,6 +4,7 @@ import org.openrewrite.Cursor;
 import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.JclVisitor;
+import org.openrewrite.jcl.markers.OmitFirstParam;
 import org.openrewrite.jcl.tree.*;
 import org.openrewrite.marker.Marker;
 import org.openrewrite.marker.Markers;
@@ -108,7 +109,7 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
     public <T extends Jcl> Jcl visitParentheses(Jcl.Parentheses<T> parentheses, PrintOutputCapture<P> p) {
         beforeSyntax(parentheses, Space.Location.PARENTHESES_PREFIX, p);
         p.append("(");
-        if (parentheses.omitFirstParam()) {
+        if (parentheses.getMarkers().findFirst(OmitFirstParam.class).isPresent()) {
             p.append(",");
         }
         visitRightPadded(parentheses.getPadding().getTrees(), JclRightPadded.Location.PARENTHESES, ",", p);
@@ -165,6 +166,9 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
         }
         beforeSyntax(container.getBefore(), container.getMarkers(), location.getBeforeLocation(), p);
         p.append(before);
+        if (container.getMarkers().findFirst(OmitFirstParam.class).isPresent()) {
+            p.append(",");
+        }
         visitRightPadded(container.getPadding().getElements(), location.getElementLocation(), suffixBetween, p);
         afterSyntax(container.getMarkers(), p);
         p.append(after == null ? "" : after);

@@ -6,7 +6,7 @@ import org.openrewrite.test.RewriteTest;
 
 import static org.openrewrite.jcl.tree.ParserAssertions.jcl;
 
-public class DataDefinitionTest  implements RewriteTest {
+public class DataDefinitionTest implements RewriteTest {
 
     @Test
     void dd() {

@@ -22,6 +22,13 @@ public class JobTest implements RewriteTest {
     }
 
     @Test
+    void parameterLiteralStartsWithComma() {
+        rewriteRun(
+                jcl("//JOB1 JOB ,'H.H. MORRILL'")
+        );
+    }
+
+    @Test
     void parameterAssignment() {
         rewriteRun(
           jcl("//Name JOB CLASS=A")

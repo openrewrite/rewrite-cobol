@@ -1,13 +1,20 @@
 lexer grammar JCLLexer;
 
 UTF_8_BOM : '\uFEFF' -> skip;
-WS : [ \t\f;]+ -> channel(HIDDEN);
-NEWLINE : '\r'? '\n' -> channel(HIDDEN);
 
 // statement identifiers
 JCL_STATEMENT : '//'NAME_FIELD;
-JECL_STATEMENT : '/*' ('$' || JOBPARM || MESSAGE || NETACCT || NOTIFY || OUTPUT || PRIORITY || ROUTE || SETUP);
-DELIMITER : '/*';
+// JES2: Job Entry Control Language (JECL)
+JES2_STATEMENT : '/*' ('$' | JOBPARM | MESSAGE | NETACCT | NOTIFY | OUTPUT | PRIORITY | ROUTE | SETUP | SIGNOFF | SIGNON | XEQ | XMIT);
+
+// JES3: Job Entry Control Language (JECL)
+JES3_STATEMENT : '//*' (DATASET | ENDDATASET | ENDPROCESS | FORMAT | MAIN | NET | NETACCT | OPERATOR | PAUSE | PROCESS | ROUTE);
+
+// Any non-JES3 statement is a comment.
+COMMENT_STATEMENT : '//*' .*?;
+
+WS : [ \t\f;]+ -> channel(HIDDEN);
+NEWLINE : CR? LF -> channel(HIDDEN);
 
 LF : '\n';
 CR : '\r';

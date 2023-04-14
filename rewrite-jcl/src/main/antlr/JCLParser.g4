@@ -43,7 +43,7 @@ jclStatement
 //jobname JOB
 */
 jobStatement
-    : JOB (parameter (COMMA parameter)*)? // comments ...
+    : JOB (COMMA? parameter)* // comments ...
     ;
 
 /* Syntax
@@ -54,7 +54,7 @@ jobStatement
 [procstepname.ddname]
 */
 ddStatement
-    : DD (parameter (COMMA parameter)*)? // Add comments ...
+    : DD (COMMA? parameter)* // Add comments ...
     ;
 
 /* Syntax
@@ -62,14 +62,14 @@ ddStatement
 [comments]
 */
 execStatement
-    : EXEC (parameter (COMMA parameter)*)? // Add comments ...
+    : EXEC (COMMA? parameter)* // Add comments ...
     ;
 
 /* Syntax
 //name OUTPUT parameter[,parameter]... [comments]
 */
 outputStatement
-    : OUTPUT (parameter (COMMA parameter)*)? // Add comments ...
+    : OUTPUT (COMMA? parameter)* // Add comments ...
     ;
 
 /* Syntax
@@ -86,14 +86,14 @@ pendStatement
 //[name] PROC
 */
 procStatement
-    : PROC (parameter (COMMA parameter)*)? // Add comments ...
+    : PROC (COMMA? parameter)* // Add comments ...
     ;
 
 /* Syntax
 //[name] SET symbolic-parameter=value [,symbolic-parameter=value]... [comments]
 */
 setStatement
-    : SET (parameter (COMMA parameter)*)? // Add comments ...
+    : SET (COMMA? parameter)* // Add comments ...
     ;
 
 /* Syntax
@@ -103,7 +103,7 @@ The XMIT JCL statement consists of the characters // in columns 1 and 2 and four
 name, operation (XMIT), parameter, and comments.
 */
 xmitStatement
-    : XMIT (parameter (COMMA parameter)*)? // Add comments ...
+    : XMIT (COMMA? parameter)* // Add comments ...
     ;
 
 parameter
@@ -114,7 +114,7 @@ parameter
     ;
 
 parameterParentheses
-    : L_PAREN parameter? (COMMA parameter)* R_PAREN
+    : L_PAREN (COMMA? parameter)* R_PAREN
     ;
 
 parameterAssignment
