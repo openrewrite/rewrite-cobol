@@ -79,7 +79,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 charsetBomMarked,
                 null,
                 statements,
-                Space.build(source.substring(cursor))
+                Space.build(source.substring(cursor), false)
         );
     }
 
@@ -107,7 +107,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
 
     @Override
     public Jcl visitJclStatement(JCLParser.JclStatementContext ctx) {
-        Space prefix = whitespace();
+        Space prefix = whitespace(true);
         skip("//");
         return new Jcl.JclStatement(
                 randomId(),
@@ -266,7 +266,7 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
     @SuppressWarnings("ConstantValue")
     @Override
     public Jcl visitUnsupportedStatement(JCLParser.UnsupportedStatementContext ctx) {
-        Space prefix = whitespace();
+        Space prefix = whitespace(true);
         String text;
         if (ctx.JES2() != null) {
             text = ctx.JES2().getText() + ctx.JES2_TEXT().getText();
@@ -350,26 +350,29 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
         }
     }
 
-    private Space whitespace() {
+    private Space whitespace(boolean skipContinuations) {
+        boolean isContinued = false;
+        if (!skipContinuations && source.startsWith("//", cursor)) {
+            skip("//");
+            isContinued = true;
+        }
         int endIndex = indexOfNextNonWhitespace(cursor, source);
         String prefix = source.substring(cursor, endIndex);
         cursor += prefix.length();
-        return Space.build(prefix);
+        return Space.build(prefix, isContinued);
     }
 
-    // TODO: update ... this does not work 100% for JCL.
-    // NOTE: this may require revisions to work similar to COBOL when introducing continuations...
+    private Space whitespace() {
+        return whitespace(false);
+    }
+
     private Space sourceBefore(String untilDelim) {
         Space prefix = whitespace();
         skip(untilDelim);
-        return Space.build(prefix.getWhitespace());
+        return Space.build(prefix.getWhitespace(), prefix.isContinued());
     }
 
-    // TODO: update ... this does not work for JCL.
     public static int indexOfNextNonWhitespace(int cursor, String source) {
-        boolean inMultiLineComment = false;
-        boolean inSingleLineComment = false;
-
         int delimIndex = cursor;
         for (; delimIndex < source.length(); delimIndex++) {
             if (!Character.isWhitespace(source.substring(delimIndex, delimIndex + 1).charAt(0))) {

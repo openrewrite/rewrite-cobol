@@ -5,6 +5,8 @@ UTF_8_BOM : '\uFEFF' -> skip;
 WS : [ \t\f;]+ -> channel(HIDDEN);
 NEWLINE : EOL -> channel(HIDDEN);
 
+CONTINUATION : ',' NEWLINE '//' -> channel(HIDDEN);
+
 // statement identifiers
 JCL_STATEMENT : '//' ~[*] NAME_FIELD?;
 

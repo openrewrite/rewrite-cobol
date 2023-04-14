@@ -15,10 +15,13 @@ import java.util.WeakHashMap;
 @EqualsAndHashCode
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@ref")
 public class Space {
-    public static final Space EMPTY = new Space("");
+    public static final Space EMPTY = new Space("", false);
 
     @Nullable
     private final String whitespace;
+
+    @Nullable
+    private final Boolean isContinued;
 
     /*
      * Most occurrences of spaces will have no comments or markers and will be repeated frequently throughout a source file.
@@ -27,16 +30,18 @@ public class Space {
      */
     private static final Map<String, Space> flyweights = new WeakHashMap<>();
 
-    private Space(@Nullable String whitespace) {
+    private Space(@Nullable String whitespace, @Nullable Boolean isContinued) {
         this.whitespace = whitespace == null || whitespace.isEmpty() ? null : whitespace;
+        this.isContinued = isContinued;
     }
 
     @JsonCreator
-    public static Space build(@Nullable String whitespace) {
-        if (whitespace == null || whitespace.isEmpty()) {
+    public static Space build(@Nullable String whitespace, @Nullable Boolean isContinued) {
+        if (!Boolean.TRUE.equals(isContinued) && (whitespace == null || whitespace.isEmpty())) {
             return Space.EMPTY;
         }
-        return flyweights.computeIfAbsent(whitespace, k -> new Space(whitespace));
+        String key = (whitespace == null ? "" : whitespace) + (isContinued == null ? "" : isContinued);
+        return flyweights.computeIfAbsent(key, k -> new Space(whitespace, isContinued));
     }
 
     public String getIndent() {
@@ -69,7 +74,18 @@ public class Space {
         if (this.whitespace == null || whitespace.equals(this.whitespace)) {
             return this;
         }
-        return build(whitespace);
+        return build(whitespace, isContinued);
+    }
+
+    public Boolean isContinued() {
+        return isContinued != null && isContinued;
+    }
+
+    public Space withContinued(boolean continued) {
+        if (this.isContinued == null || continued == this.isContinued) {
+            return this;
+        }
+        return build(whitespace, continued);
     }
 
     public boolean isEmpty() {

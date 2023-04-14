@@ -1,30 +1,39 @@
 package org.openrewrite.jcl.tree;
 
 import org.junit.jupiter.api.Test;
+import org.junitpioneer.jupiter.ExpectedToFail;
 import org.openrewrite.test.RewriteTest;
 
 import static org.openrewrite.jcl.tree.ParserAssertions.jcl;
 
-public class JclTest implements RewriteTest {
+public class ContinuationTest implements RewriteTest {
 
     @Test
-    void example() {
+    void splitByParam() {
         rewriteRun(
           jcl(
             """
-            //JOB1 JOB ,'H.H. MORRILL'
-            //ADD1 OUTPUT COPIES=2
-            //STEPA EXEC PROC=P
-            //PS1.OUTA OUTPUT CONTROL=DOUBLE,COPIES=5
-            //PS1.DSB DD OUTPUT=*.ADD1
-            //PS1.DSE DD *
+            //Name DD DSNAME=DS4,UNIT=3380,VOL=SER=111112,
+            //      DISP=(NEW,KEEP),SPACE=(TRK,(5,1,2))
             """
           )
         );
     }
 
     @Test
-    void blankLabels() {
+    void endCommaWithWhitespace() {
+        rewriteRun(
+          jcl(
+            """
+            //Name DD DSNAME=DS4,UNIT=3380,VOL=SER=111112         ,
+            //      DISP=(NEW,KEEP),SPACE=(TRK,(5,1,2))
+            """
+          )
+        );
+    }
+
+    @Test
+    void blankLabelsAndContinuations() {
         rewriteRun(
           jcl(
             """
@@ -35,6 +44,8 @@ public class JclTest implements RewriteTest {
             //CDS      DD DSN=DATAMGT.CDS,DISP=SHR
             //         DD DSN=DATAMGT.CDS.CLEAR,DISP=SHR
             //         DD DSN=DATAMGT.CDS.Y43DUMPS,DISP=SHR
+            //Name DD DSNAME=DS4,UNIT=3380,VOL=SER=111112,
+            //      DISP=(NEW,KEEP),SPACE=(TRK,(5,1,2))
             //LOG      DD DSN=SYS1.TSODUMP.LOG,DISP=SHR
             //SYSPRINT DD SYSOUT=*
             //         PEND
@@ -44,18 +55,18 @@ public class JclTest implements RewriteTest {
         );
     }
 
+    @ExpectedToFail("Requires preprocessing. Note: the comma exists in ''")
     @Test
-    void mixed() {
+    void referenceReplacement() {
         rewriteRun(
           jcl(
             """
-            //*some comment
-            //Name JOB
-            //*DATASET
-            //Name JOB
-            /*JOBPARM
+            //SET1 SET VAL1=’ABC,’
+            //S1 EXEC PGM=IEFBR14,PARM=&VAL1
+            //    TIME=30
             """
           )
         );
     }
+
 }

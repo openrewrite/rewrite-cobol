@@ -1,7 +1,6 @@
 package org.openrewrite.jcl.tree;
 
 import org.junit.jupiter.api.Test;
-import org.junitpioneer.jupiter.ExpectedToFail;
 import org.openrewrite.test.RewriteTest;
 
 import static org.openrewrite.jcl.tree.ParserAssertions.jcl;
@@ -67,19 +66,6 @@ public class DataDefinitionTest implements RewriteTest {
     void outputParameter() {
         rewriteRun(
           jcl("//Name DD OUTPUT=(*.OUT1,*.OUT2)")
-        );
-    }
-
-    @ExpectedToFail("Add support for continuations ...")
-    @Test
-    void continuation() {
-        rewriteRun(
-          jcl(
-            """
-            //Name DD DSNAME=DS4,UNIT=3380,VOL=SER=111112,
-            // DISP=(NEW,KEEP),SPACE=(TRK,(5,1,2))
-            """
-          )
         );
     }
 }

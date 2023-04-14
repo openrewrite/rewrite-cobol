@@ -163,6 +163,9 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
 
     @Override
     public Space visitSpace(Space space, Space.Location location, PrintOutputCapture<P> p) {
+        if (space.isContinued()) {
+            p.append("//");
+        }
         p.append(space.getWhitespace());
         return space;
     }
