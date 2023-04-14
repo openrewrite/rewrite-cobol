@@ -24,11 +24,13 @@ import org.openrewrite.cobol.tree.*;
  */
 public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<P> {
 
+    private final CobolPrinter<P> cobolPrinter;
     private final boolean printOriginalSource;
 
     public CobolPreprocessorPrinter(boolean printOriginalSource,
                                     boolean printColumns) {
         super(printColumns);
+        this.cobolPrinter = new CobolPrinter<>(printColumns, printOriginalSource);
         this.printOriginalSource = printOriginalSource;
     }
 
@@ -62,7 +64,7 @@ public class CobolPreprocessorPrinter<P> extends CobolPreprocessorSourcePrinter<
             return super.visitWord(word, p);
         }
 
-        cobolVisitor.visitWord(word.getCobolWord(), p);
+        cobolPrinter.visitWord(word.getCobolWord(), p);
 
         afterSyntax(word, p);
         return word;
