@@ -106,4 +106,10 @@ public interface JCLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitName(JCLParser.NameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JCLParser#unsupportedStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnsupportedStatement(JCLParser.UnsupportedStatementContext ctx);
 }

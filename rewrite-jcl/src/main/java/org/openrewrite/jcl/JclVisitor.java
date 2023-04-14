@@ -137,6 +137,13 @@ public class JclVisitor<P> extends TreeVisitor<Jcl, P> {
         return x;
     }
 
+    public Jcl visitUnsupported(Jcl.Unsupported unsupported, P p) {
+        Jcl.Unsupported u = unsupported;
+        u = u.withPrefix(visitSpace(u.getPrefix(), Space.Location.UNSUPPORTED_PREFIX, p));
+        u = u.withMarkers(visitMarkers(u.getMarkers(), p));
+        return u;
+    }
+
     public Space visitSpace(Space space, Space.Location location, P p) {
         return space;
     }

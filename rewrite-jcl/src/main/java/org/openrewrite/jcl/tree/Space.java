@@ -129,6 +129,7 @@ public class Space {
         PEND_PREFIX,
         PROC_STATEMENT_PREFIX,
         SET_STATEMENT_PREFIX,
-        XMIT_STATEMENT_PREFIX
+        XMIT_STATEMENT_PREFIX,
+        UNSUPPORTED_PREFIX
     }
 }

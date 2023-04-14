@@ -22,4 +22,19 @@ public class JclTest implements RewriteTest {
           )
         );
     }
+
+    @Test
+    void mixed() {
+        rewriteRun(
+          jcl(
+            """
+            //*some comment
+            //Name JOB
+            //*DATASET
+            //Name JOB
+            /*JOBPARM
+            """
+          )
+        );
+    }
 }

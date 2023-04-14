@@ -154,6 +154,14 @@ public class JclPrinter<P> extends JclVisitor<PrintOutputCapture<P>> {
     }
 
     @Override
+    public Jcl visitUnsupported(Jcl.Unsupported unsupported, PrintOutputCapture<P> p) {
+        beforeSyntax(unsupported, Space.Location.UNSUPPORTED_PREFIX, p);
+        p.append(unsupported.getText());
+        afterSyntax(unsupported, p);
+        return unsupported;
+    }
+
+    @Override
     public Space visitSpace(Space space, Space.Location location, PrintOutputCapture<P> p) {
         p.append(space.getWhitespace());
         return space;

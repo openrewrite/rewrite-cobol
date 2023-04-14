@@ -824,4 +824,22 @@ public interface Jcl extends Tree {
             }
         }
     }
+
+    @Value
+    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+    @With
+    class Unsupported implements Jcl, Statement, Parameter, Expression, Name {
+
+        @EqualsAndHashCode.Include
+        UUID id;
+
+        Space prefix;
+        Markers markers;
+        String text;
+
+        @Override
+        public <P> Jcl acceptJcl(JclVisitor<P> v, P p) {
+            return v.visitUnsupported(this, p);
+        }
+    }
 }

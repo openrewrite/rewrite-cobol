@@ -261,6 +261,25 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
         );
     }
 
+    @SuppressWarnings("ConstantValue")
+    @Override
+    public Jcl visitUnsupportedStatement(JCLParser.UnsupportedStatementContext ctx) {
+        Space prefix = whitespace();
+        String text;
+        if (ctx.JES2() != null) {
+            text = ctx.JES2().getText() + ctx.JES2_TEXT().getText();
+        } else {
+            text = ctx.UNSUPPORTED().getText() + ctx.UNSUPPORTED_TEXT().getText();
+        }
+        skip(text);
+        return new Jcl.Unsupported(
+                randomId(),
+                prefix,
+                Markers.EMPTY,
+                text
+        );
+    }
+
     @Override
     public Jcl visitTerminal(TerminalNode node) {
         return createIdentifier(node.getText());

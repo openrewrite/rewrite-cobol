@@ -8,6 +8,7 @@ compilationUnit
 
 statement
     : jclStatement
+    | unsupportedStatement
     ;
 
 // add JCL COMMAND:
@@ -128,6 +129,11 @@ parameterLiteral
 
 name
     : (PARAMETER | NAME_FIELD) parameterParentheses?
+    ;
+
+unsupportedStatement
+    : UNSUPPORTED UNSUPPORTED_TEXT?
+    | JES2 JES2_TEXT?
     ;
 
 //conditionStatement

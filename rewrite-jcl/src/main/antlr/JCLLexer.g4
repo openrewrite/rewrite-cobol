@@ -2,27 +2,23 @@ lexer grammar JCLLexer;
 
 UTF_8_BOM : '\uFEFF' -> skip;
 
-// statement identifiers
-JCL_STATEMENT : '//'NAME_FIELD;
-// JES2: Job Entry Control Language (JECL)
-JES2_STATEMENT : '/*' ('$' | JOBPARM | MESSAGE | NETACCT | NOTIFY | OUTPUT | PRIORITY | ROUTE | SETUP | SIGNOFF | SIGNON | XEQ | XMIT);
-
-// JES3: Job Entry Control Language (JECL)
-JES3_STATEMENT : '//*' (DATASET | ENDDATASET | ENDPROCESS | FORMAT | MAIN | NET | NETACCT | OPERATOR | PAUSE | PROCESS | ROUTE);
-
-// Any non-JES3 statement is a comment.
-COMMENT_STATEMENT : '//*' .*?;
-
 WS : [ \t\f;]+ -> channel(HIDDEN);
-NEWLINE : CR? LF -> channel(HIDDEN);
+NEWLINE : EOL -> channel(HIDDEN);
+
+// statement identifiers
+JCL_STATEMENT : '//'~[*]NAME_FIELD;
+
+// JES3 and Comments.
+UNSUPPORTED : '//*' -> pushMode(INSIDE_UNSUPPORTED);
+
+JES2 : '/*' -> pushMode(INSIDE_JES2);
+
 
 LF : '\n';
 CR : '\r';
 CRLF : CR LF;
 FORM_FEED : '\u000C';
 EOL : LF | CR | CRLF | FORM_FEED;
-
-COMMENT : '//*' .*? EOL;
 
 //OPERATION_FIELD
 //    : // TODO add operation keywords.
@@ -382,6 +378,16 @@ NAME_CHAR : ([a-zA-Z0-9$#@]+ | ASTERISK);
 //@ as X'7C'; $ as X'5B'; and # as X'7B'. In countries other than the U.S., the U.S. National characters
 //represented on terminal keyboards might generate a different hexadecimal representation and cause an
 //error. For example, in some countries the $ character may generate a X'4A'.
+
+mode INSIDE_JES2;
+JES2_NEWLINE : NEWLINE -> type(NEWLINE), channel(HIDDEN), popMode;
+
+JES2_TEXT : ~[\r\n]+;
+
+mode INSIDE_UNSUPPORTED;
+UNSUPPORTED_NEWLINE : NEWLINE -> type(NEWLINE), channel(HIDDEN), popMode;
+
+UNSUPPORTED_TEXT : ~[\r\n]+;
 
 // case insensitive chars
 fragment A:('a'|'A');

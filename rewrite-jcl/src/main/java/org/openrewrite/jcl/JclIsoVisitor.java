@@ -79,4 +79,9 @@ public class JclIsoVisitor<P> extends JclVisitor<P> {
     public Jcl.XmitStatement visitXmitStatement(Jcl.XmitStatement xmitStatement, P p) {
         return (Jcl.XmitStatement) super.visitXmitStatement(xmitStatement, p);
     }
+
+    @Override
+    public Jcl.Unsupported visitUnsupported(Jcl.Unsupported unsupported, P p) {
+        return (Jcl.Unsupported) super.visitUnsupported(unsupported, p);
+    }
 }
