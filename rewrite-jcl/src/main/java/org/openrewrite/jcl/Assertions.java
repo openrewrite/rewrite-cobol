@@ -1,5 +1,6 @@
 package org.openrewrite.jcl;
 
+import org.openrewrite.ExecutionContext;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.tree.Jcl;
 import org.openrewrite.test.SourceSpec;
@@ -11,19 +12,20 @@ public class Assertions {
     private Assertions() {
     }
 
+    static void customizeExecutionContext(ExecutionContext ctx) {
+    }
+
     public static SourceSpecs jcl(@Nullable String before) {
         return jcl(before, s -> {
         });
     }
 
     public static SourceSpecs jcl(@Nullable String before, Consumer<SourceSpec<Jcl.CompilationUnit>> spec) {
-        SourceSpec<Jcl.CompilationUnit> jcl =
-                new SourceSpec<>(Jcl.CompilationUnit.class,
-                        null,
-                        JclParser.builder(),
-                        before,
-                        null);
-        spec.accept(jcl);
+        SourceSpec<Jcl.CompilationUnit> jcl = new SourceSpec<>(
+                Jcl.CompilationUnit.class, null, JclParser.builder(), before,
+                SourceSpec.EachResult.noop,
+                Assertions::customizeExecutionContext);
+        acceptSpec(spec, jcl);
         return jcl;
     }
 
@@ -34,13 +36,17 @@ public class Assertions {
 
     public static SourceSpecs jcl(@Nullable String before, @Nullable String after,
                                     Consumer<SourceSpec<Jcl.CompilationUnit>> spec) {
-        SourceSpec<Jcl.CompilationUnit> jcl =
-                new SourceSpec<>(Jcl.CompilationUnit.class,
-                        null,
-                        JclParser.builder(),
-                        before,
-                        s -> after);
-        spec.accept(jcl);
+        SourceSpec<Jcl.CompilationUnit> jcl = new SourceSpec<>(
+                Jcl.CompilationUnit.class, null, JclParser.builder(), before,
+                        SourceSpec.EachResult.noop,
+                        Assertions::customizeExecutionContext).after(s -> after);
+        acceptSpec(spec, jcl);
         return jcl;
+    }
+
+    private static void acceptSpec(Consumer<SourceSpec<Jcl.CompilationUnit>> spec, SourceSpec<Jcl.CompilationUnit> kotlin) {
+        Consumer<Jcl.CompilationUnit> userSuppliedAfterRecipe = kotlin.getAfterRecipe();
+        kotlin.afterRecipe(userSuppliedAfterRecipe::accept);
+        spec.accept(kotlin);
     }
 }

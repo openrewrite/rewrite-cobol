@@ -9,7 +9,7 @@ public class Jes2Test implements RewriteTest {
     @Test
     void statement() {
         rewriteRun(
-          jcl(" /*JOBPARM")
+          jcl("/*JOBPARM")
         );
     }
 }

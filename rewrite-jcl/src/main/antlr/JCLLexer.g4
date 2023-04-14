@@ -6,7 +6,7 @@ WS : [ \t\f;]+ -> channel(HIDDEN);
 NEWLINE : EOL -> channel(HIDDEN);
 
 // statement identifiers
-JCL_STATEMENT : '//'~[*]NAME_FIELD;
+JCL_STATEMENT : '//' ~[*] NAME_FIELD?;
 
 // JES3 and Comments.
 UNSUPPORTED : '//*' -> pushMode(INSIDE_UNSUPPORTED);

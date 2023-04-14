@@ -20,13 +20,13 @@ import org.junit.jupiter.api.Test
 import org.openrewrite.ExecutionContext
 import org.openrewrite.InMemoryExecutionContext
 import org.openrewrite.PrintOutputCapture
-import org.openrewrite.cobol.tree.ParserAssertions.cobolPreprocessorCopy
 import org.openrewrite.cobol.CobolPreprocessorVisitor
 import org.openrewrite.cobol.internal.CobolDialect
 import org.openrewrite.cobol.internal.CobolPreprocessorOutputSourcePrinter
 import org.openrewrite.cobol.internal.CobolPreprocessorPrinter
 import org.openrewrite.cobol.tree.CobolPreprocessor
 import org.openrewrite.cobol.tree.CobolTest
+import org.openrewrite.cobol.tree.PreprocessorParserAssertions.cobolPreprocessorCopy
 import org.openrewrite.cobol.tree.Space
 import org.openrewrite.internal.EncodingDetectingInputStream
 import org.openrewrite.test.RecipeSpec

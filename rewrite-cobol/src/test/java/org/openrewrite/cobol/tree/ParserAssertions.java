@@ -23,6 +23,7 @@ import org.openrewrite.cobol.internal.CobolPrinter;
 import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
+import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.SourceSpec;
 import org.openrewrite.test.SourceSpecs;
 
@@ -38,21 +39,24 @@ public class ParserAssertions {
     private ParserAssertions() {
     }
 
+    static void customizeExecutionContext(ExecutionContext ctx) {
+    }
+
     public static SourceSpecs cobol(@Nullable String before) {
         return cobol(before, s -> {
         });
     }
 
     public static SourceSpecs cobol(@Nullable String before, Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
-        SourceSpec<Cobol.CompilationUnit> cobol =
-                new SourceSpec<>(Cobol.CompilationUnit.class,
-                        null,
-                        CobolParser.builder()
-                                .setEnableCopy(false)
-                                .setEnableReplace(false),
-                        before,
-                        null);
-        spec.andThen(isFullyParsed()).accept(cobol);
+        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(
+                Cobol.CompilationUnit.class, null,
+                CobolParser.builder()
+                        .setEnableCopy(false)
+                        .setEnableReplace(false),
+                before,
+                SourceSpec.EachResult.noop,
+                ParserAssertions::customizeExecutionContext);
+        acceptSpec(spec, cobol);
         return cobol;
     }
 
@@ -70,8 +74,9 @@ public class ParserAssertions {
                                 .setEnableCopy(false)
                                 .setEnableReplace(false),
                         before,
-                        s -> after);
-        spec.andThen(isFullyParsed()).accept(cobol);
+                        SourceSpec.EachResult.noop,
+                        ParserAssertions::customizeExecutionContext).after(s -> after);
+        acceptSpec(spec, cobol);
         return cobol;
     }
 
@@ -83,14 +88,14 @@ public class ParserAssertions {
     public static SourceSpecs cobolCopy(@Nullable String before, Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
         List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
 
-        SourceSpec<Cobol.CompilationUnit> cobol =
-                new SourceSpec<>(Cobol.CompilationUnit.class,
-                        null,
-                        CobolParser.builder()
-                                .setCopyBooks(copyBooks),
-                        before,
-                        null);
-        spec.andThen(isFullyParsed()).accept(cobol);
+        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(
+                Cobol.CompilationUnit.class, null,
+                CobolParser.builder()
+                        .setCopyBooks(copyBooks),
+                before,
+                SourceSpec.EachResult.noop,
+                ParserAssertions::customizeExecutionContext);
+        acceptSpec(spec, cobol);
         return cobol;
     }
 
@@ -103,90 +108,17 @@ public class ParserAssertions {
                                     Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
         List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
 
-        SourceSpec<Cobol.CompilationUnit> cobol =
-                new SourceSpec<>(Cobol.CompilationUnit.class,
-                        null,
-                        CobolParser.builder()
-                                .setCopyBooks(copyBooks),
-                        before,
-                        null);
-        spec.andThen(isFullyParsed()).andThen(isExpectedLst(expectedLst)).accept(cobol);
-        return cobol;
-    }
-
-    public static SourceSpecs cobolPreprocess(@Nullable String before) {
-        return cobolPreprocess(before, s -> {
-        });
-    }
-
-    public static SourceSpecs cobolPreprocess(@Nullable String before, Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
-                new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
-                        null,
-                        CobolPreprocessorParser.builder()
-                                .setEnableCopy(false)
-                                .setEnableReplace(false),
-                        before,
-                        null);
-        spec.andThen(isPreprocessorFullyParsed()).accept(cobol);
-        return cobol;
-    }
-
-    public static SourceSpecs cobolPreprocess(@Nullable String before, @Nullable String after) {
-        return cobolPreprocess(before, after, s -> {
-        });
-    }
-
-    public static SourceSpecs cobolPreprocess(@Nullable String before, @Nullable String after,
-                                              Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
-                new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
-                        null,
-                        CobolPreprocessorParser.builder()
-                                .setEnableCopy(false)
-                                .setEnableReplace(false),
-                        before,
-                        s -> after);
-        spec.andThen(isPreprocessorFullyParsed()).accept(cobol);
-        return cobol;
-    }
-
-    public static SourceSpecs cobolPreprocessorCopy(@Nullable String before) {
-        return cobolPreprocessorCopy(before, s -> {
-        });
-    }
-
-    public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
-
-        SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
-                new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
-                        null,
-                        CobolPreprocessorParser.builder()
-                                .setCopyBooks(copyBooks),
-                        before,
-                        null);
-        spec.andThen(isPreprocessorFullyParsed()).accept(cobol);
-        return cobol;
-    }
-
-    public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, @Nullable String after) {
-        return cobolPreprocessorCopy(before, after, s -> {
-        });
-    }
-
-    public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, @Nullable String after,
-                                                    Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
-
-        SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
-                new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
-                        null,
-                        CobolPreprocessorParser.builder()
-                                .setCopyBooks(copyBooks),
-                        before,
-                        s -> after);
-        spec.andThen(isPreprocessorFullyParsed()).accept(cobol);
+        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(
+                Cobol.CompilationUnit.class, null,
+                CobolParser.builder()
+                        .setCopyBooks(copyBooks),
+                before,
+                SourceSpec.EachResult.noop,
+                ParserAssertions::customizeExecutionContext);
+        spec
+                .andThen(isFullyParsed())
+                .andThen(isExpectedLst(expectedLst))
+                .accept(cobol);
         return cobol;
     }
 
@@ -201,17 +133,10 @@ public class ParserAssertions {
         }
     }
 
-    public static Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> isPreprocessorFullyParsed() {
-        return spec -> spec.afterRecipe(cu -> new CobolPreprocessorIsoVisitor<Integer>() {
-            @Override
-            public Space visitSpace(Space space, Space.Location loc, Integer integer) {
-                String whitespace = space.getWhitespace().trim();
-                if (!(IbmAnsi85.getInstance().getSeparators().contains(whitespace + " ") || whitespace.isEmpty())) {
-                    return space.withWhitespace("(~~>" + whitespace + "<~~)");
-                }
-                return super.visitSpace(space, loc, integer);
-            }
-        }.visit(cu, 0));
+    private static void acceptSpec(Consumer<SourceSpec<Cobol.CompilationUnit>> spec, SourceSpec<Cobol.CompilationUnit> cobol) {
+        Consumer<Cobol.CompilationUnit> userSuppliedAfterRecipe = cobol.getAfterRecipe();
+        cobol.afterRecipe(userSuppliedAfterRecipe::accept);
+        isFullyParsed().andThen(spec).accept(cobol);
     }
 
     public static Consumer<SourceSpec<Cobol.CompilationUnit>> isFullyParsed() {

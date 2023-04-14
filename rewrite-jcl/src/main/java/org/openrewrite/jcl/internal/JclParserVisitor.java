@@ -3,6 +3,7 @@ package org.openrewrite.jcl.internal;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.openrewrite.FileAttributes;
+import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.internal.grammar.JCLParser;
 import org.openrewrite.jcl.internal.grammar.JCLParserBaseVisitor;
@@ -112,7 +113,8 @@ public class JclParserVisitor extends JCLParserBaseVisitor<Jcl> {
                 randomId(),
                 prefix,
                 Markers.EMPTY,
-                createIdentifier(ctx.JCL_STATEMENT().getText().substring(2)),
+                createIdentifier(StringUtils.isBlank(ctx.JCL_STATEMENT().getText().substring(2)) ? "" :
+                        ctx.JCL_STATEMENT().getText().substring(2)),
                 visit(ctx.jobStatement(),
                         ctx.ddStatement(),
                         ctx.execStatement(),

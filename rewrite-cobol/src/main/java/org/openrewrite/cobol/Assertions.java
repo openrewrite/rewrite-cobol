@@ -15,6 +15,7 @@
  */
 package org.openrewrite.cobol;
 
+import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.tree.Cobol;
@@ -34,21 +35,24 @@ public class Assertions {
     private Assertions() {
     }
 
+    static void customizeExecutionContext(ExecutionContext ctx) {
+    }
+
     public static SourceSpecs cobol(@Nullable String before) {
         return cobol(before, s -> {
         });
     }
 
     public static SourceSpecs cobol(@Nullable String before, Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
-        SourceSpec<Cobol.CompilationUnit> cobol =
-                new SourceSpec<>(Cobol.CompilationUnit.class,
-                        null,
-                        CobolParser.builder()
-                                .setEnableCopy(false)
-                                .setEnableReplace(false),
-                        before,
-                        null);
-        spec.accept(cobol);
+        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(
+                Cobol.CompilationUnit.class, null,
+                CobolParser.builder()
+                        .setEnableCopy(false)
+                        .setEnableReplace(false),
+                before,
+                SourceSpec.EachResult.noop,
+                Assertions::customizeExecutionContext);
+        acceptSpec(spec, cobol);
         return cobol;
     }
 
@@ -66,8 +70,9 @@ public class Assertions {
                                 .setEnableCopy(false)
                                 .setEnableReplace(false),
                         before,
-                        s -> after);
-        spec.accept(cobol);
+                        SourceSpec.EachResult.noop,
+                        Assertions::customizeExecutionContext).after(s -> after);
+        acceptSpec(spec, cobol);
         return cobol;
     }
 
@@ -79,14 +84,14 @@ public class Assertions {
     public static SourceSpecs cobolCopy(@Nullable String before, Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
         List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
 
-        SourceSpec<Cobol.CompilationUnit> cobol =
-                new SourceSpec<>(Cobol.CompilationUnit.class,
-                        null,
-                        CobolParser.builder()
-                                .setCopyBooks(copyBooks),
-                        before,
-                        null);
-        spec.accept(cobol);
+        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(
+                Cobol.CompilationUnit.class, null,
+                CobolParser.builder()
+                        .setCopyBooks(copyBooks),
+                before,
+                SourceSpec.EachResult.noop,
+                Assertions::customizeExecutionContext);
+        acceptSpec(spec, cobol);
         return cobol;
     }
 
@@ -96,94 +101,24 @@ public class Assertions {
     }
 
     public static SourceSpecs cobolCopy(@Nullable String before, @Nullable String after,
-                                    Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
+                                        Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
         List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
 
-        SourceSpec<Cobol.CompilationUnit> cobol =
-                new SourceSpec<>(Cobol.CompilationUnit.class,
-                        null,
-                        CobolParser.builder()
-                                .setCopyBooks(copyBooks),
-                        before,
-                        s -> after);
-        spec.accept(cobol);
+        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(
+                Cobol.CompilationUnit.class, null,
+                CobolParser.builder()
+                        .setCopyBooks(copyBooks),
+                before,
+                SourceSpec.EachResult.noop,
+                Assertions::customizeExecutionContext).after(s -> after);
+        acceptSpec(spec, cobol);
         return cobol;
     }
 
-    public static SourceSpecs cobolPreprocess(@Nullable String before) {
-        return cobolPreprocess(before, s -> {
-        });
-    }
-
-    public static SourceSpecs cobolPreprocess(@Nullable String before, Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
-                new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
-                        null,
-                        CobolPreprocessorParser.builder()
-                                .setEnableCopy(false)
-                                .setEnableReplace(false),
-                        before,
-                        null);
+    private static void acceptSpec(Consumer<SourceSpec<Cobol.CompilationUnit>> spec, SourceSpec<Cobol.CompilationUnit> cobol) {
+        Consumer<Cobol.CompilationUnit> userSuppliedAfterRecipe = cobol.getAfterRecipe();
+        cobol.afterRecipe(userSuppliedAfterRecipe::accept);
         spec.accept(cobol);
-        return cobol;
-    }
-
-    public static SourceSpecs cobolPreprocess(@Nullable String before, @Nullable String after) {
-        return cobolPreprocess(before, after, s -> {
-        });
-    }
-
-    public static SourceSpecs cobolPreprocess(@Nullable String before, @Nullable String after,
-                                              Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
-                new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
-                        null,
-                        CobolPreprocessorParser.builder()
-                                .setEnableCopy(false)
-                                .setEnableReplace(false),
-                        before,
-                        s -> after);
-        spec.accept(cobol);
-        return cobol;
-    }
-
-    public static SourceSpecs cobolPreprocessorCopy(@Nullable String before) {
-        return cobolPreprocessorCopy(before, s -> {
-        });
-    }
-
-    public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
-
-        SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
-                new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
-                        null,
-                        CobolPreprocessorParser.builder()
-                                .setCopyBooks(copyBooks),
-                        before,
-                        null);
-        spec.accept(cobol);
-        return cobol;
-    }
-
-    public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, @Nullable String after) {
-        return cobolPreprocessorCopy(before, after, s -> {
-        });
-    }
-
-    public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, @Nullable String after,
-                                                    Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
-
-        SourceSpec<CobolPreprocessor.CompilationUnit> cobol =
-                new SourceSpec<>(CobolPreprocessor.CompilationUnit.class,
-                        null,
-                        CobolPreprocessorParser.builder()
-                                .setCopyBooks(copyBooks),
-                        before,
-                        s -> after);
-        spec.accept(cobol);
-        return cobol;
     }
 
     private static List<CobolPreprocessor.CopyBook> getCopyBookSources() {

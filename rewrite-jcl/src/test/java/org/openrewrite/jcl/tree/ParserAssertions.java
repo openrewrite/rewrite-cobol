@@ -1,8 +1,10 @@
 package org.openrewrite.jcl.tree;
 
+import org.openrewrite.ExecutionContext;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.jcl.JclIsoVisitor;
 import org.openrewrite.jcl.JclParser;
+import org.openrewrite.jcl.JclVisitor;
 import org.openrewrite.test.SourceSpec;
 import org.openrewrite.test.SourceSpecs;
 
@@ -15,18 +17,19 @@ public class ParserAssertions {
     private ParserAssertions() {
     }
 
+    static void customizeExecutionContext(ExecutionContext ctx) {
+    }
+
     public static SourceSpecs jcl(@Nullable String before) {
         return jcl(before, s -> {
         });
     }
 
     public static SourceSpecs jcl(@Nullable String before, Consumer<SourceSpec<Jcl.CompilationUnit>> spec) {
-        SourceSpec<Jcl.CompilationUnit> jcl =
-                new SourceSpec<>(Jcl.CompilationUnit.class,
-                        null,
-                        JclParser.builder(),
-                        before,
-                        null);
+        SourceSpec<Jcl.CompilationUnit> jcl = new SourceSpec<>(
+                Jcl.CompilationUnit.class, null, JclParser.builder(), before,
+                SourceSpec.EachResult.noop,
+                ParserAssertions::customizeExecutionContext);
         acceptSpec(spec, jcl);
         return jcl;
     }
@@ -38,12 +41,10 @@ public class ParserAssertions {
 
     public static SourceSpecs jcl(@Nullable String before, @Nullable String after,
                                   Consumer<SourceSpec<Jcl.CompilationUnit>> spec) {
-        SourceSpec<Jcl.CompilationUnit> jcl =
-                new SourceSpec<>(Jcl.CompilationUnit.class,
-                        null,
-                        JclParser.builder(),
-                        before,
-                        s -> after);
+        SourceSpec<Jcl.CompilationUnit> jcl = new SourceSpec<>(
+                Jcl.CompilationUnit.class, null, JclParser.builder(), before,
+                SourceSpec.EachResult.noop,
+                ParserAssertions::customizeExecutionContext).after(s -> after);
         acceptSpec(spec, jcl);
         return jcl;
     }
@@ -51,7 +52,7 @@ public class ParserAssertions {
     private static void acceptSpec(Consumer<SourceSpec<Jcl.CompilationUnit>> spec, SourceSpec<Jcl.CompilationUnit> jcl) {
         Consumer<Jcl.CompilationUnit> userSuppliedAfterRecipe = jcl.getAfterRecipe();
         jcl.afterRecipe(userSuppliedAfterRecipe::accept);
-        spec.andThen(isFullyParsed()).accept(jcl);
+        isFullyParsed().andThen(spec).accept(jcl);
     }
 
     public static Consumer<SourceSpec<Jcl.CompilationUnit>> isFullyParsed() {

@@ -11,30 +11,6 @@ statement
     | unsupportedStatement
     ;
 
-// add JCL COMMAND:
-// // command [parameter] [comments]
-
-// add command:
-// //[name] COMMAND ‘command command-operand’ [comments]
-
-// add comments:
-// //* comments
-
-/*
-NOTE about comments:
-JES3 control statement fields start with the SAME delimiter as COMMENTS ...
-
-The rules for coding JES3 control statements are the same as the rules for JCL statements, with the
-following additions:
-• Columns 1, 2, and 3 generally contain the characters //* (slash-slash-asterisk). Some JES3 control
-statements may contain, and certain other JES3 control statements must contain only a single slashasterisk
-(/*) in columns 1 and 2.
-• Columns 3 and 4 must not be blank.
-• To code a comment on a JES3 control statement, code a blank after the control statement, and end the
-comment before column 72. Columns 73-80 are ignored by z/OS and are typically used for sequence
-numbers.
-*/
-
 jclStatement
     : JCL_STATEMENT (jobStatement |ddStatement | execStatement | outputStatement | pendStatement | procStatement | setStatement | xmitStatement)
     ;

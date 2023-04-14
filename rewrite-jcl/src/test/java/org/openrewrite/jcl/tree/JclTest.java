@@ -3,6 +3,7 @@ package org.openrewrite.jcl.tree;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.test.RewriteTest;
 
+import static org.openrewrite.jcl.tree.ParserAssertions.isFullyParsed;
 import static org.openrewrite.jcl.tree.ParserAssertions.jcl;
 
 public class JclTest implements RewriteTest {
@@ -18,6 +19,27 @@ public class JclTest implements RewriteTest {
             //PS1.OUTA OUTPUT CONTROL=DOUBLE,COPIES=5
             //PS1.DSB DD OUTPUT=*.ADD1
             //PS1.DSE DD *
+            """
+          )
+        );
+    }
+
+    @Test
+    void blankLabels() {
+        rewriteRun(
+          jcl(
+            """
+            //DUMPCHK  JOB 'accounting_info',MSGLEVEL=(1,1)
+            //DUMPCHK  PROC
+            //DUMPCHK  EXEC PGM=DMPCHKO,REGION=5M,PARM='/&SG,&JDATE,&DAY'
+            //STEPLIB  DD DSN=JCR.PGM.LOAD,DISP=SHR
+            //CDS      DD DSN=DATAMGT.CDS,DISP=SHR
+            //         DD DSN=DATAMGT.CDS.CLEAR,DISP=SHR
+            //         DD DSN=DATAMGT.CDS.Y43DUMPS,DISP=SHR
+            //LOG      DD DSN=SYS1.TSODUMP.LOG,DISP=SHR
+            //SYSPRINT DD SYSOUT=*
+            //         PEND
+            //         EXEC DUMPCHK
             """
           )
         );
