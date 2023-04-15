@@ -5,19 +5,9 @@ import org.openrewrite.internal.ListUtils;
 
 public class NameVisitor<P> extends CobolIsoVisitor<P> {
 
-    boolean searchInComments;
-
-    public NameVisitor(boolean searchInComments) {
-        this.searchInComments = searchInComments;
-    }
-
     @Override
     public Cobol.CommentEntry visitCommentEntry(Cobol.CommentEntry commentEntry, P p) {
-        Cobol.CommentEntry c = commentEntry;
-        if (searchInComments) {
-            c = c.withComments(ListUtils.map(c.getComments(), it -> visitAndCast(it, p)));
-        }
-        return c;
+        return commentEntry;
     }
 
     @Override
@@ -200,5 +190,266 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         Cobol.BlockContainsTo b = blockContainsTo;
         b = b.withIntegerLiteral(visitAndCast(b.getIntegerLiteral(), p));
         return b;
+    }
+
+    @Override
+    public Cobol.Call visitCall(Cobol.Call call, P p) {
+        Cobol.Call c = call;
+        c = c.withIdentifier(visitAndCast(c.getIdentifier(), p));
+        c = c.withCallUsingPhrase(visitAndCast(c.getCallUsingPhrase(), p));
+        c = c.withCallGivingPhrase(visitAndCast(c.getCallGivingPhrase(), p));
+        c = c.withOnOverflowPhrase(visitAndCast(c.getOnOverflowPhrase(), p));
+        c = c.withOnExceptionClause(visitAndCast(c.getOnExceptionClause(), p));
+        c = c.withNotOnExceptionClause(visitAndCast(c.getNotOnExceptionClause(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.CallBy visitCallBy(Cobol.CallBy callBy, P p) {
+        Cobol.CallBy c = callBy;
+        c = c.withIdentifier(visitAndCast(c.getIdentifier(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.CallGivingPhrase visitCallGivingPhrase(Cobol.CallGivingPhrase callGivingPhrase, P p) {
+        Cobol.CallGivingPhrase c = callGivingPhrase;
+        c = c.withIdentifier(visitAndCast(c.getIdentifier(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.CallPhrase visitCallPhrase(Cobol.CallPhrase callPhrase, P p) {
+        Cobol.CallPhrase c = callPhrase;
+        c = c.withParameters(ListUtils.map(c.getParameters(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.Cancel visitCancel(Cobol.Cancel cancel, P p) {
+        Cobol.Cancel c = cancel;
+        c = c.withCancelCalls(ListUtils.map(c.getCancelCalls(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.CancelCall visitCancelCall(Cobol.CancelCall cancelCall, P p) {
+        Cobol.CancelCall c = cancelCall;
+        c = c.withLibraryName(visitAndCast(c.getLibraryName(), p));
+        c = c.withIdentifier(visitAndCast(c.getIdentifier(), p));
+        c = c.withLiteral(visitAndCast(c.getLiteral(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.ChannelClause visitChannelClause(Cobol.ChannelClause channelClause, P p) {
+        Cobol.ChannelClause c = channelClause;
+        c = c.withLiteral(visitAndCast(c.getLiteral(), p));
+        c = c.withMnemonicName(visitAndCast(c.getMnemonicName(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.ClassClause visitClassClause(Cobol.ClassClause classClause, P p) {
+        Cobol.ClassClause c = classClause;
+        c = c.withClassName(visitAndCast(c.getClassName(), p));
+        c = c.withThroughs(ListUtils.map(c.getThroughs(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.ClassClauseThrough visitClassClauseThrough(Cobol.ClassClauseThrough classClauseThrough, P p) {
+        Cobol.ClassClauseThrough c = classClauseThrough;
+        c = c.withFrom(visitAndCast(c.getFrom(), p));
+        c = c.withTo(visitAndCast(c.getTo(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.ClassCondition visitClassCondition(Cobol.ClassCondition classCondition, P p) {
+        Cobol.ClassCondition c = classCondition;
+        c = c.withName(visitAndCast(c.getName(), p));
+        c = c.withType(visitAndCast(c.getType(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.Close visitClose(Cobol.Close close, P p) {
+        Cobol.Close c = close;
+        c = c.withCloseFiles(ListUtils.map(c.getCloseFiles(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.CloseFile visitCloseFile(Cobol.CloseFile closeFile, P p) {
+        Cobol.CloseFile c = closeFile;
+        c = c.withFileName(visitAndCast(c.getFileName(), p));
+        c = c.withCloseStatement(visitAndCast(c.getCloseStatement(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.ClosePortFileIOStatement visitClosePortFileIOStatement(Cobol.ClosePortFileIOStatement closePortFileIOStatement, P p) {
+        Cobol.ClosePortFileIOStatement c = closePortFileIOStatement;
+        c = c.withClosePortFileIOUsing(ListUtils.map(c.getClosePortFileIOUsing(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.ClosePortFileIOUsingAssociatedData visitClosePortFileIOUsingAssociatedData(Cobol.ClosePortFileIOUsingAssociatedData closePortFileIOUsingAssociatedData, P p) {
+        Cobol.ClosePortFileIOUsingAssociatedData c = closePortFileIOUsingAssociatedData;
+        c = c.withIdentifier(visitAndCast(c.getIdentifier(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.ClosePortFileIOUsingAssociatedDataLength visitClosePortFileIOUsingAssociatedDataLength(Cobol.ClosePortFileIOUsingAssociatedDataLength closePortFileIOUsingAssociatedDataLength, P p) {
+        Cobol.ClosePortFileIOUsingAssociatedDataLength c = closePortFileIOUsingAssociatedDataLength;
+        c = c.withIdentifier(visitAndCast(c.getIdentifier(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.ClosePortFileIOUsingCloseDisposition visitClosePortFileIOUsingCloseDisposition(Cobol.ClosePortFileIOUsingCloseDisposition closePortFileIOUsingCloseDisposition, P p) {
+        return closePortFileIOUsingCloseDisposition;
+    }
+
+    @Override
+    public Cobol.CloseReelUnitStatement visitCloseReelUnitStatement(Cobol.CloseReelUnitStatement closeReelUnitStatement, P p) {
+        return closeReelUnitStatement;
+    }
+
+    @Override
+    public Cobol.CloseRelativeStatement visitCloseRelativeStatement(Cobol.CloseRelativeStatement closeRelativeStatement, P p) {
+        return closeRelativeStatement;
+    }
+
+    @Override
+    public Cobol.CodeSetClause visitCodeSetClause(Cobol.CodeSetClause codeSetClause, P p) {
+        Cobol.CodeSetClause c = codeSetClause;
+        c = c.withAlphabetName(visitAndCast(c.getAlphabetName(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.CollatingSequenceAlphabet visitCollatingSequenceAlphabet(Cobol.CollatingSequenceAlphabet collatingSequenceAlphabet, P p) {
+        Cobol.CollatingSequenceAlphabet c = collatingSequenceAlphabet;
+        c = c.withAlphabetName(visitAndCast(c.getAlphabetName(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.CollatingSequenceClause visitCollatingSequenceClause(Cobol.CollatingSequenceClause collatingSequenceClause, P p) {
+        Cobol.CollatingSequenceClause c = collatingSequenceClause;
+        c = c.withAlphabetName(ListUtils.map(c.getAlphabetName(), it -> visitAndCast(it, p)));
+        c = c.withAlphanumeric(visitAndCast(c.getAlphanumeric(), p));
+        c = c.withNational(visitAndCast(c.getNational(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.CombinableCondition visitCombinableCondition(Cobol.CombinableCondition combinableCondition, P p) {
+        Cobol.CombinableCondition c = combinableCondition;
+        c = c.withSimpleCondition(visitAndCast(c.getSimpleCondition(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.CommitmentControlClause visitCommitmentControlClause(Cobol.CommitmentControlClause commitmentControlClause, P p) {
+        Cobol.CommitmentControlClause c = commitmentControlClause;
+        c = c.withFileName(visitAndCast(c.getFileName(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.CommunicationDescriptionEntryFormat1 visitCommunicationDescriptionEntryFormat1(Cobol.CommunicationDescriptionEntryFormat1 communicationDescriptionEntryFormat1, P p) {
+        Cobol.CommunicationDescriptionEntryFormat1 c = communicationDescriptionEntryFormat1;
+        c = c.withName(visitAndCast(c.getName(), p));
+        c = c.withInputs(ListUtils.map(c.getInputs(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.CommunicationDescriptionEntryFormat2 visitCommunicationDescriptionEntryFormat2(Cobol.CommunicationDescriptionEntryFormat2 communicationDescriptionEntryFormat2, P p) {
+        Cobol.CommunicationDescriptionEntryFormat2 c = communicationDescriptionEntryFormat2;
+        c = c.withName(visitAndCast(c.getName(), p));
+        c = c.withOutputs(ListUtils.map(c.getOutputs(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.CommunicationDescriptionEntryFormat3 visitCommunicationDescriptionEntryFormat3(Cobol.CommunicationDescriptionEntryFormat3 communicationDescriptionEntryFormat3, P p) {
+        Cobol.CommunicationDescriptionEntryFormat3 c = communicationDescriptionEntryFormat3;
+        c = c.withName(visitAndCast(c.getName(), p));
+        c = c.withInitialIOs(ListUtils.map(c.getInitialIOs(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.CommunicationSection visitCommunicationSection(Cobol.CommunicationSection communicationSection, P p) {
+        Cobol.CommunicationSection c = communicationSection;
+        c = c.withEntries(ListUtils.map(c.getEntries(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.CompilationUnit visitCompilationUnit(Cobol.CompilationUnit compilationUnit, P p) {
+        return super.visitCompilationUnit(compilationUnit, p);
+    }
+
+    @Override
+    public Cobol.Compute visitCompute(Cobol.Compute compute, P p) {
+        Cobol.Compute c = compute;
+        c = c.withRoundables(ListUtils.map(c.getRoundables(), it -> visitAndCast(it, p)));
+        c = c.withArithmeticExpression(visitAndCast(c.getArithmeticExpression(), p));
+        c = c.withOnSizeErrorPhrase(visitAndCast(c.getOnSizeErrorPhrase(), p));
+        c = c.withNotOnSizeErrorPhrase(visitAndCast(c.getNotOnSizeErrorPhrase(), p));
+        return c;
+    }
+
+    @Override
+    public Cobol.Condition visitCondition(Cobol.Condition condition, P p) {
+        Cobol.Condition c = condition;
+        c = c.withCombinableCondition(visitAndCast(c.getCombinableCondition(), p));
+        c = c.withAndOrConditions(ListUtils.map(c.getAndOrConditions(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.ConditionNameReference visitConditionNameReference(Cobol.ConditionNameReference conditionNameReference, P p) {
+        Cobol.ConditionNameReference c = conditionNameReference;
+        c = c.withName(visitAndCast(c.getName(), p));
+        c = c.withInDatas(ListUtils.map(c.getInDatas(), it -> visitAndCast(it, p)));
+        c = c.withInFile(visitAndCast(c.getInFile(), p));
+        c = c.withReferences(ListUtils.map(c.getReferences(), it -> visitAndCast(it, p)));
+        c = c.withInMnemonics(ListUtils.map(c.getInMnemonics(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.ConditionNameSubscriptReference visitConditionNameSubscriptReference(Cobol.ConditionNameSubscriptReference conditionNameSubscriptReference, P p) {
+        Cobol.ConditionNameSubscriptReference c = conditionNameSubscriptReference;
+        c = c.withSubscripts(ListUtils.map(c.getSubscripts(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.ConfigurationSection visitConfigurationSection(Cobol.ConfigurationSection configurationSection, P p) {
+        Cobol.ConfigurationSection c = configurationSection;
+        c = c.withParagraphs(ListUtils.map(c.getParagraphs(), it -> visitAndCast(it, p)));
+        return c;
+    }
+
+    @Override
+    public Cobol.Continue visitContinue(Cobol.Continue continuez, P p) {
+        return continuez;
+    }
+
+    @Override
+    public Cobol.CurrencyClause visitCurrencyClause(Cobol.CurrencyClause currencyClause, P p) {
+        Cobol.CurrencyClause c = currencyClause;
+        c = c.withLiteral(visitAndCast(c.getLiteral(), p));
+        c = c.withPictureSymbolLiteral(visitAndCast(c.getPictureSymbolLiteral(), p));
+        return c;
     }
 }
