@@ -1937,4 +1937,50 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         return pp;
     }
 
+    @Override
+    public Cobol.QualifiedDataName visitQualifiedDataName(Cobol.QualifiedDataName qualifiedDataName, P p) {
+        Cobol.QualifiedDataName q = qualifiedDataName;
+        q = q.withDataName(visitAndCast(q.getDataName(), p));
+        return q;
+    }
+
+    @Override
+    public Cobol.QualifiedDataNameFormat1 visitQualifiedDataNameFormat1(Cobol.QualifiedDataNameFormat1 qualifiedDataNameFormat1, P p) {
+        Cobol.QualifiedDataNameFormat1 q = qualifiedDataNameFormat1;
+        q = q.withName(visitAndCast(q.getName(), p));
+        q = q.withQualifiedInData(ListUtils.map(q.getQualifiedInData(), it -> visitAndCast(it, p)));
+        q = q.withInFile(visitAndCast(q.getInFile(), p));
+        return q;
+    }
+
+    @Override
+    public Cobol.QualifiedDataNameFormat2 visitQualifiedDataNameFormat2(Cobol.QualifiedDataNameFormat2 qualifiedDataNameFormat2, P p) {
+        Cobol.QualifiedDataNameFormat2 q = qualifiedDataNameFormat2;
+        q = q.withParagraphName(visitAndCast(q.getParagraphName(), p));
+        q = q.withInSection(visitAndCast(q.getInSection(), p));
+        return q;
+    }
+
+    @Override
+    public Cobol.QualifiedDataNameFormat3 visitQualifiedDataNameFormat3(Cobol.QualifiedDataNameFormat3 qualifiedDataNameFormat3, P p) {
+        Cobol.QualifiedDataNameFormat3 q = qualifiedDataNameFormat3;
+        q = q.withTextName(visitAndCast(q.getTextName(), p));
+        q = q.withInLibrary(visitAndCast(q.getInLibrary(), p));
+        return q;
+    }
+
+    @Override
+    public Cobol.QualifiedDataNameFormat4 visitQualifiedDataNameFormat4(Cobol.QualifiedDataNameFormat4 qualifiedDataNameFormat4, P p) {
+        Cobol.QualifiedDataNameFormat4 q = qualifiedDataNameFormat4;
+        q = q.withInFile(visitAndCast(q.getInFile(), p));
+        return q;
+    }
+
+    @Override
+    public Cobol.QualifiedInData visitQualifiedInData(Cobol.QualifiedInData qualifiedInData, P p) {
+        Cobol.QualifiedInData q = qualifiedInData;
+        q = q.withIn(visitAndCast(q.getIn(), p));
+        return q;
+    }
+
 }
