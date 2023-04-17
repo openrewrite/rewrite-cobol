@@ -982,4 +982,36 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         return f;
     }
 
+    @Override
+    public Cobol.Generate visitGenerate(Cobol.Generate generate, P p) {
+        Cobol.Generate g = generate;
+        g = g.withReportName(visitAndCast(g.getReportName(), p));
+        return g;
+    }
+
+    @Override
+    public Cobol.GlobalClause visitGlobalClause(Cobol.GlobalClause globalClause, P p) {
+        return globalClause;
+    }
+
+    @Override
+    public Cobol.GoBack visitGoBack(Cobol.GoBack goBack, P p) {
+        return goBack;
+    }
+
+    @Override
+    public Cobol.GoTo visitGoTo(Cobol.GoTo _goTo, P p) {
+        Cobol.GoTo g = _goTo;
+        g = g.withStatement(visitAndCast(g.getStatement(), p));
+        return g;
+    }
+
+    @Override
+    public Cobol.GoToDependingOnStatement visitGoToDependingOnStatement(Cobol.GoToDependingOnStatement goToDependingOnStatement, P p) {
+        Cobol.GoToDependingOnStatement g = goToDependingOnStatement;
+        g = g.withProcedureNames(ListUtils.map(g.getProcedureNames(), it -> visitAndCast(it, p)));
+        g = g.withIdentifier(visitAndCast(g.getIdentifier(), p));
+        return g;
+    }
+
 }
