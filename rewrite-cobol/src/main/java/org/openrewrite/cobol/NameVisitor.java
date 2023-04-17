@@ -452,4 +452,326 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         c = c.withPictureSymbolLiteral(visitAndCast(c.getPictureSymbolLiteral(), p));
         return c;
     }
+
+    @Override
+    public Cobol.DataAlignedClause visitDataAlignedClause(Cobol.DataAlignedClause dataAlignedClause, P p) {
+        return dataAlignedClause;
+    }
+
+    @Override
+    public Cobol.DataBaseSection visitDataBaseSection(Cobol.DataBaseSection dataBaseSection, P p) {
+        Cobol.DataBaseSection d = dataBaseSection;
+        d = d.withEntries(ListUtils.map(d.getEntries(), it -> visitAndCast(it, p)));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataBaseSectionEntry visitDataBaseSectionEntry(Cobol.DataBaseSectionEntry dataBaseSectionEntry, P p) {
+        Cobol.DataBaseSectionEntry d = dataBaseSectionEntry;
+        d = d.withDb(visitAndCast(d.getDb(), p));
+        d = d.withFrom(visitAndCast(d.getFrom(), p));
+        d = d.withTo(visitAndCast(d.getTo(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataBlankWhenZeroClause visitDataBlankWhenZeroClause(Cobol.DataBlankWhenZeroClause dataBlankWhenZeroClause, P p) {
+        return dataBlankWhenZeroClause;
+    }
+
+    @Override
+    public Cobol.DataCommonOwnLocalClause visitDataCommonOwnLocalClause(Cobol.DataCommonOwnLocalClause dataCommonOwnLocalClause, P p) {
+        return dataCommonOwnLocalClause;
+    }
+
+    @Override
+    public Cobol.DataDescriptionEntry visitDataDescriptionEntry(Cobol.DataDescriptionEntry dataDescriptionEntry, P p) {
+        Cobol.DataDescriptionEntry d = dataDescriptionEntry;
+        d = d.withName(visitAndCast(d.getName(), p));
+        d = d.withClauses(ListUtils.map(d.getClauses(), it -> visitAndCast(it, p)));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataDivision visitDataDivision(Cobol.DataDivision dataDivision, P p) {
+        Cobol.DataDivision d = dataDivision;
+        d = d.withSections(ListUtils.map(d.getSections(), it -> visitAndCast(it, p)));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataExternalClause visitDataExternalClause(Cobol.DataExternalClause dataExternalClause, P p) {
+        Cobol.DataExternalClause d = dataExternalClause;
+        d = d.withLiteral(visitAndCast(d.getLiteral(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataGlobalClause visitDataGlobalClause(Cobol.DataGlobalClause dataGlobalClause, P p) {
+        return dataGlobalClause;
+    }
+
+    @Override
+    public Cobol.DataIntegerStringClause visitDataIntegerStringClause(Cobol.DataIntegerStringClause dataIntegerStringClause, P p) {
+        return dataIntegerStringClause;
+    }
+
+    @Override
+    public Cobol.DataJustifiedClause visitDataJustifiedClause(Cobol.DataJustifiedClause dataJustifiedClause, P p) {
+        return dataJustifiedClause;
+    }
+
+    @Override
+    public Cobol.DataOccursClause visitDataOccursClause(Cobol.DataOccursClause dataOccursClause, P p) {
+        Cobol.DataOccursClause d = dataOccursClause;
+        d = d.withName(visitAndCast(d.getName(), p));
+        d = d.withDataOccursTo(visitAndCast(d.getDataOccursTo(), p));
+        d = d.withDataOccursDepending(visitAndCast(d.getDataOccursDepending(), p));
+        d = d.withSortIndexed(ListUtils.map(d.getSortIndexed(), it -> visitAndCast(it, p)));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataOccursDepending visitDataOccursDepending(Cobol.DataOccursDepending dataOccursDepending, P p) {
+        Cobol.DataOccursDepending d = dataOccursDepending;
+        d = d.withQualifiedDataName(visitAndCast(d.getQualifiedDataName(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataOccursIndexed visitDataOccursIndexed(Cobol.DataOccursIndexed dataOccursIndexed, P p) {
+        Cobol.DataOccursIndexed d = dataOccursIndexed;
+        d = d.withIndexNames(ListUtils.map(d.getIndexNames(), it -> visitAndCast(it, p)));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataOccursSort visitDataOccursSort(Cobol.DataOccursSort dataOccursSort, P p) {
+        Cobol.DataOccursSort d = dataOccursSort;
+        d = d.withQualifiedDataNames(ListUtils.map(d.getQualifiedDataNames(), it -> visitAndCast(it, p)));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataOccursTo visitDataOccursTo(Cobol.DataOccursTo dataOccursTo, P p) {
+        Cobol.DataOccursTo d = dataOccursTo;
+        d = d.withIntegerLiteral(visitAndCast(d.getIntegerLiteral(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataPictureClause visitDataPictureClause(Cobol.DataPictureClause dataPictureClause, P p) {
+        Cobol.DataPictureClause d = dataPictureClause;
+        d = d.withPictures(ListUtils.map(d.getPictures(), it -> visitAndCast(it, p)));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataReceivedByClause visitDataReceivedByClause(Cobol.DataReceivedByClause dataReceivedByClause, P p) {
+        return dataReceivedByClause;
+    }
+
+    @Override
+    public Cobol.DataRecordAreaClause visitDataRecordAreaClause(Cobol.DataRecordAreaClause dataRecordAreaClause, P p) {
+        return dataRecordAreaClause;
+    }
+
+    @Override
+    public Cobol.DataRecordsClause visitDataRecordsClause(Cobol.DataRecordsClause dataRecordsClause, P p) {
+        Cobol.DataRecordsClause d = dataRecordsClause;
+        d = d.withDataName(ListUtils.map(d.getDataName(), it -> visitAndCast(it, p)));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataRedefinesClause visitDataRedefinesClause(Cobol.DataRedefinesClause dataRedefinesClause, P p) {
+        Cobol.DataRedefinesClause d = dataRedefinesClause;
+        d = d.withDataName(visitAndCast(d.getDataName(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataRenamesClause visitDataRenamesClause(Cobol.DataRenamesClause dataRenamesClause, P p) {
+        Cobol.DataRenamesClause d = dataRenamesClause;
+        d = d.withFromName(visitAndCast(d.getFromName(), p));
+        d = d.withToName(visitAndCast(d.getToName(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataSignClause visitDataSignClause(Cobol.DataSignClause dataSignClause, P p) {
+        return dataSignClause;
+    }
+
+    @Override
+    public Cobol.DataSynchronizedClause visitDataSynchronizedClause(Cobol.DataSynchronizedClause dataSynchronizedClause, P p) {
+        return dataSynchronizedClause;
+    }
+
+    @Override
+    public Cobol.DataThreadLocalClause visitDataThreadLocalClause(Cobol.DataThreadLocalClause dataThreadLocalClause, P p) {
+        return dataThreadLocalClause;
+    }
+
+    @Override
+    public Cobol.DataTypeClause visitDataTypeClause(Cobol.DataTypeClause dataTypeClause, P p) {
+        Cobol.DataTypeClause d = dataTypeClause;
+        d = d.withParenthesized(visitAndCast(d.getParenthesized(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataTypeDefClause visitDataTypeDefClause(Cobol.DataTypeDefClause dataTypeDefClause, P p) {
+        return dataTypeDefClause;
+    }
+
+    @Override
+    public Cobol.DataUsageClause visitDataUsageClause(Cobol.DataUsageClause dataUsageClause, P p) {
+        return dataUsageClause;
+    }
+
+    @Override
+    public Cobol.DataUsingClause visitDataUsingClause(Cobol.DataUsingClause dataUsingClause, P p) {
+        Cobol.DataUsingClause d = dataUsingClause;
+        d = d.withName(visitAndCast(d.getName(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataValueClause visitDataValueClause(Cobol.DataValueClause dataValueClause, P p) {
+        Cobol.DataValueClause d = dataValueClause;
+        d = d.withCobols(ListUtils.map(d.getCobols(), it -> visitAndCast(it, p)));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataValueInterval visitDataValueInterval(Cobol.DataValueInterval dataValueInterval, P p) {
+        Cobol.DataValueInterval d = dataValueInterval;
+        d = d.withFrom(visitAndCast(d.getFrom(), p));
+        d = d.withTo(visitAndCast(d.getTo(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataValueIntervalTo visitDataValueIntervalTo(Cobol.DataValueIntervalTo dataValueIntervalTo, P p) {
+        Cobol.DataValueIntervalTo d = dataValueIntervalTo;
+        d = d.withLiteral(visitAndCast(d.getLiteral(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DataWithLowerBoundsClause visitDataWithLowerBoundsClause(Cobol.DataWithLowerBoundsClause dataWithLowerBoundsClause, P p) {
+        return dataWithLowerBoundsClause;
+    }
+
+    @Override
+    public Cobol.DecimalPointClause visitDecimalPointClause(Cobol.DecimalPointClause decimalPointClause, P p) {
+        return decimalPointClause;
+    }
+
+    @Override
+    public Cobol.DefaultComputationalSignClause visitDefaultComputationalSignClause(Cobol.DefaultComputationalSignClause defaultComputationalSignClause, P p) {
+        return defaultComputationalSignClause;
+    }
+
+    @Override
+    public Cobol.DefaultDisplaySignClause visitDefaultDisplaySignClause(Cobol.DefaultDisplaySignClause defaultDisplaySignClause, P p) {
+        return defaultDisplaySignClause;
+    }
+
+    @Override
+    public Cobol.Delete visitDelete(Cobol.Delete delete, P p) {
+        Cobol.Delete d = delete;
+        d = d.withFileName(visitAndCast(d.getFileName(), p));
+        d = d.withInvalidKey(visitAndCast(d.getInvalidKey(), p));
+        d = d.withNotInvalidKey(visitAndCast(d.getNotInvalidKey(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DestinationCountClause visitDestinationCountClause(Cobol.DestinationCountClause destinationCountClause, P p) {
+        Cobol.DestinationCountClause d = destinationCountClause;
+        d = d.withDataDescName(visitAndCast(d.getDataDescName(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DestinationTableClause visitDestinationTableClause(Cobol.DestinationTableClause destinationTableClause, P p) {
+        Cobol.DestinationTableClause d = destinationTableClause;
+        d = d.withIntegerLiteral(visitAndCast(d.getIntegerLiteral(), p));
+        d = d.withIndexNames(ListUtils.map(d.getIndexNames(), it -> visitAndCast(it, p)));
+        return d;
+    }
+
+    @Override
+    public Cobol.Disable visitDisable(Cobol.Disable disable, P p) {
+        Cobol.Disable d = disable;
+        d = d.withCdName(visitAndCast(d.getCdName(), p));
+        d = d.withKeyName(visitAndCast(d.getKeyName(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.Display visitDisplay(Cobol.Display display, P p) {
+        Cobol.Display d = display;
+        d = d.withOperands(ListUtils.map(d.getOperands(), it -> visitAndCast(it, p)));
+        d = d.withDisplayAt(visitAndCast(d.getDisplayAt(), p));
+        d = d.withDisplayUpon(visitAndCast(d.getDisplayUpon(), p));
+        d = d.withOnExceptionClause(visitAndCast(d.getOnExceptionClause(), p));
+        d = d.withNotOnExceptionClause(visitAndCast(d.getNotOnExceptionClause(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DisplayAt visitDisplayAt(Cobol.DisplayAt displayAt, P p) {
+        Cobol.DisplayAt d = displayAt;
+        d = d.withName(visitAndCast(d.getName(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DisplayUpon visitDisplayUpon(Cobol.DisplayUpon displayUpon, P p) {
+        Cobol.DisplayUpon d = displayUpon;
+        d = d.withName(visitAndCast(d.getName(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.Divide visitDivide(Cobol.Divide divide, P p) {
+        Cobol.Divide d = divide;
+        d = d.withName(visitAndCast(d.getName(), p));
+        d = d.withAction(visitAndCast(d.getAction(), p));
+        d = d.withDivideRemainder(visitAndCast(d.getDivideRemainder(), p));
+        d = d.withOnSizeErrorPhrase(visitAndCast(d.getOnSizeErrorPhrase(), p));
+        d = d.withNotOnSizeErrorPhrase(visitAndCast(d.getNotOnSizeErrorPhrase(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DivideGiving visitDivideGiving(Cobol.DivideGiving divideGiving, P p) {
+        Cobol.DivideGiving d = divideGiving;
+        d = d.withName(visitAndCast(d.getName(), p));
+        return d;
+    }
+
+    @Override
+    public Cobol.DivideGivingPhrase visitDivideGivingPhrase(Cobol.DivideGivingPhrase divideGivingPhrase, P p) {
+        Cobol.DivideGivingPhrase d = divideGivingPhrase;
+        d = d.withRoundables(ListUtils.map(d.getRoundables(), it -> visitAndCast(it, p)));
+        return d;
+    }
+
+    @Override
+    public Cobol.DivideInto visitDivideInto(Cobol.DivideInto divideInto, P p) {
+        Cobol.DivideInto d = divideInto;
+        d = d.withRoundables(ListUtils.map(d.getRoundables(), it -> visitAndCast(it, p)));
+        return d;
+    }
+
+    @Override
+    public Cobol.DivideRemainder visitDivideRemainder(Cobol.DivideRemainder divideRemainder, P p) {
+        Cobol.DivideRemainder d = divideRemainder;
+        d = d.withName(visitAndCast(d.getName(), p));
+        return d;
+    }
 }
