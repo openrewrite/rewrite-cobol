@@ -927,4 +927,59 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
     public Cobol.ExternalClause visitExternalClause(Cobol.ExternalClause externalClause, P p) {
         return externalClause;
     }
+
+    @Override
+    public Cobol.FigurativeConstant visitFigurativeConstant(Cobol.FigurativeConstant figurativeConstant, P p) {
+        Cobol.FigurativeConstant f = figurativeConstant;
+        f = f.withLiteral(visitAndCast(f.getLiteral(), p));
+        return f;
+    }
+
+    @Override
+    public Cobol.FileControlEntry visitFileControlEntry(Cobol.FileControlEntry fileControlEntry, P p) {
+        Cobol.FileControlEntry f = fileControlEntry;
+        f = f.withSelectClause(visitAndCast(f.getSelectClause(), p));
+        f = f.withControlClauses(ListUtils.map(f.getControlClauses(), it -> visitAndCast(it, p)));
+        return f;
+    }
+
+    @Override
+    public Cobol.FileControlParagraph visitFileControlParagraph(Cobol.FileControlParagraph fileControlParagraph, P p) {
+        Cobol.FileControlParagraph f = fileControlParagraph;
+        f = f.withControlEntries(ListUtils.map(f.getControlEntries(), it -> visitAndCast(it, p)));
+        return f;
+    }
+
+    @Override
+    public Cobol.FileDescriptionEntry visitFileDescriptionEntry(Cobol.FileDescriptionEntry fileDescriptionEntry, P p) {
+        Cobol.FileDescriptionEntry f = fileDescriptionEntry;
+        f = f.withName(visitAndCast(f.getName(), p));
+        f = f.withClauses(ListUtils.map(f.getClauses(), it -> visitAndCast(it, p)));
+        f = f.withDataDescriptions(ListUtils.map(f.getDataDescriptions(), it -> visitAndCast(it, p)));
+        return f;
+    }
+
+    @Override
+    public Cobol.FileSection visitFileSection(Cobol.FileSection fileSection, P p) {
+        Cobol.FileSection f = fileSection;
+        f = f.withFileDescriptionEntry(ListUtils.map(f.getFileDescriptionEntry(), it -> visitAndCast(it, p)));
+        return f;
+    }
+
+    @Override
+    public Cobol.FileStatusClause visitFileStatusClause(Cobol.FileStatusClause fileStatusClause, P p) {
+        Cobol.FileStatusClause f = fileStatusClause;
+        f = f.withQualifiedDataNames(ListUtils.map(f.getQualifiedDataNames(), it -> visitAndCast(it, p)));
+        return f;
+    }
+
+    @Override
+    public Cobol.FunctionCall visitFunctionCall(Cobol.FunctionCall functionCall, P p) {
+        Cobol.FunctionCall f = functionCall;
+        f = f.withFunctionName(visitAndCast(f.getFunctionName(), p));
+        f = f.withArguments(ListUtils.map(f.getArguments(), it -> visitAndCast(it, p)));
+        f = f.withReferenceModifier(visitAndCast(f.getReferenceModifier(), p));
+        return f;
+    }
+
 }
