@@ -1587,8 +1587,75 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
 
     @Override
     public Cobol.NextSentence visitNextSentence(Cobol.NextSentence nextSentence, P p) {
-        Cobol.NextSentence m = nextSentence;
-        m = m.withWords(ListUtils.map(m.getWords(), it -> visitAndCast(it, p)));
-        return m;
+        Cobol.NextSentence n = nextSentence;
+        n = n.withWords(ListUtils.map(n.getWords(), it -> visitAndCast(it, p)));
+        return n;
     }
+
+    @Override
+    public Cobol.Return visitReturn(Cobol.Return returnz, P p) {
+        Cobol.Return r = returnz;
+        r = r.withFileName(visitAndCast(r.getFileName(), p));
+        r = r.withInto(visitAndCast(r.getInto(), p));
+        r = r.withAtEndPhrase(visitAndCast(r.getAtEndPhrase(), p));
+        r = r.withNotAtEndPhrase(visitAndCast(r.getNotAtEndPhrase(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ObjectComputer visitObjectComputer(Cobol.ObjectComputer objectComputer, P p) {
+        Cobol.ObjectComputer o = objectComputer;
+        o = o.withComputer(visitAndCast(o.getComputer(), p));
+        return o;
+    }
+
+    @Override
+    public Cobol.ObjectComputerDefinition visitObjectComputerDefinition(Cobol.ObjectComputerDefinition objectComputerDefinition, P p) {
+        Cobol.ObjectComputerDefinition o = objectComputerDefinition;
+        o = o.withComputerName(visitAndCast(o.getComputerName(), p));
+        o = o.withSpecifications(ListUtils.map(o.getSpecifications(), it -> visitAndCast(it, p)));
+        return o;
+    }
+
+    @Override
+    public Cobol.OdtClause visitOdtClause(Cobol.OdtClause odtClause, P p) {
+        Cobol.OdtClause o = odtClause;
+        o = o.withMnemonicName(visitAndCast(o.getMnemonicName(), p));
+        return o;
+    }
+
+    @Override
+    public Cobol.Open visitOpen(Cobol.Open open, P p) {
+        Cobol.Open o = open;
+        o = o.withOpen(ListUtils.map(o.getOpen(), it -> visitAndCast(it, p)));
+        return o;
+    }
+
+    @Override
+    public Cobol.Openable visitOpenable(Cobol.Openable openable, P p) {
+        Cobol.Openable o = openable;
+        o = o.withFileName(visitAndCast(o.getFileName(), p));
+        o = o.withFileName(visitAndCast(o.getFileName(), p));
+        return o;
+    }
+
+    @Override
+    public Cobol.OpenInputOutputStatement visitOpenInputOutputStatement(Cobol.OpenInputOutputStatement openInputOutputStatement, P p) {
+        Cobol.OpenInputOutputStatement o = openInputOutputStatement;
+        o = o.withOpenInput(ListUtils.map(o.getOpenInput(), it -> visitAndCast(it, p)));
+        return o;
+    }
+
+    @Override
+    public Cobol.OpenIOExtendStatement visitOpenIOExtendStatement(Cobol.OpenIOExtendStatement openIOExtendStatement, P p) {
+        Cobol.OpenIOExtendStatement o = openIOExtendStatement;
+        o = o.withFileNames(ListUtils.map(o.getFileNames(), it -> visitAndCast(it, p)));
+        return o;
+    }
+
+    @Override
+    public Cobol.OrganizationClause visitOrganizationClause(Cobol.OrganizationClause organizationClause, P p) {
+        return organizationClause;
+    }
+
 }
