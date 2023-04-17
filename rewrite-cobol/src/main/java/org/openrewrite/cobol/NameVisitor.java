@@ -1253,4 +1253,165 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         return i;
     }
 
+    @Override
+    public Cobol.LabelRecordsClause visitLabelRecordsClause(Cobol.LabelRecordsClause labelRecordsClause, P p) {
+        Cobol.LabelRecordsClause l = labelRecordsClause;
+        l = l.withDataNames(ListUtils.map(l.getDataNames(), it -> visitAndCast(it, p)));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryAttributeClauseFormat1 visitLibraryAttributeClauseFormat1(Cobol.LibraryAttributeClauseFormat1 libraryAttributeClauseFormat1, P p) {
+        return libraryAttributeClauseFormat1;
+    }
+
+    @Override
+    public Cobol.LibraryAttributeClauseFormat2 visitLibraryAttributeClauseFormat2(Cobol.LibraryAttributeClauseFormat2 libraryAttributeClauseFormat2, P p) {
+        Cobol.LibraryAttributeClauseFormat2 l = libraryAttributeClauseFormat2;
+        l = l.withLibraryAttributeFunction(visitAndCast(l.getLibraryAttributeFunction(), p));
+        l = l.withLibraryAttributeParameter(visitAndCast(l.getLibraryAttributeParameter(), p));
+        l = l.withLibraryAttributeTitle(visitAndCast(l.getLibraryAttributeTitle(), p));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryAttributeFunction visitLibraryAttributeFunction(Cobol.LibraryAttributeFunction libraryAttributeFunction, P p) {
+        Cobol.LibraryAttributeFunction l = libraryAttributeFunction;
+        l = l.withLiteral(visitAndCast(l.getLiteral(), p));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryAttributeParameter visitLibraryAttributeParameter(Cobol.LibraryAttributeParameter libraryAttributeParameter, P p) {
+        Cobol.LibraryAttributeParameter l = libraryAttributeParameter;
+        l = l.withLiteral(visitAndCast(l.getLiteral(), p));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryAttributeTitle visitLibraryAttributeTitle(Cobol.LibraryAttributeTitle libraryAttributeTitle, P p) {
+        Cobol.LibraryAttributeTitle l = libraryAttributeTitle;
+        l = l.withLiteral(visitAndCast(l.getLiteral(), p));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryDescriptionEntryFormat1 visitLibraryDescriptionEntryFormat1(Cobol.LibraryDescriptionEntryFormat1 libraryDescriptionEntryFormat1, P p) {
+        Cobol.LibraryDescriptionEntryFormat1 l = libraryDescriptionEntryFormat1;
+        l = l.withLibraryName(visitAndCast(l.getLibraryName(), p));
+        l = l.withLibraryAttributeClauseFormat1(visitAndCast(l.getLibraryAttributeClauseFormat1(), p));
+        l = l.withLibraryEntryProcedureClauseFormat1(visitAndCast(l.getLibraryEntryProcedureClauseFormat1(), p));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryDescriptionEntryFormat2 visitLibraryDescriptionEntryFormat2(Cobol.LibraryDescriptionEntryFormat2 libraryDescriptionEntryFormat2, P p) {
+        Cobol.LibraryDescriptionEntryFormat2 l = libraryDescriptionEntryFormat2;
+        l = l.withLibraryName(visitAndCast(l.getLibraryName(), p));
+        l = l.withLibraryIsGlobalClause(visitAndCast(l.getLibraryIsGlobalClause(), p));
+        l = l.withLibraryIsCommonClause(visitAndCast(l.getLibraryIsCommonClause(), p));
+        l = l.withClauseFormats(ListUtils.map(l.getClauseFormats(), it -> visitAndCast(it, p)));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryEntryProcedureClauseFormat1 visitLibraryEntryProcedureClauseFormat1(Cobol.LibraryEntryProcedureClauseFormat1 libraryEntryProcedureClauseFormat1, P p) {
+        Cobol.LibraryEntryProcedureClauseFormat1 l = libraryEntryProcedureClauseFormat1;
+        l = l.withProgramName(visitAndCast(l.getProgramName(), p));
+        l = l.withLibraryEntryProcedureForClause(visitAndCast(l.getLibraryEntryProcedureForClause(), p));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryEntryProcedureClauseFormat2 visitLibraryEntryProcedureClauseFormat2(Cobol.LibraryEntryProcedureClauseFormat2 libraryEntryProcedureClauseFormat2, P p) {
+        Cobol.LibraryEntryProcedureClauseFormat2 l = libraryEntryProcedureClauseFormat2;
+        l = l.withProgramName(visitAndCast(l.getProgramName(), p));
+        l = l.withLibraryEntryProcedureForClause(visitAndCast(l.getLibraryEntryProcedureForClause(), p));
+        l = l.withLibraryEntryProcedureWithClause(visitAndCast(l.getLibraryEntryProcedureWithClause(), p));
+        l = l.withLibraryEntryProcedureUsingClause(visitAndCast(l.getLibraryEntryProcedureUsingClause(), p));
+        l = l.withLibraryEntryProcedureGivingClause(visitAndCast(l.getLibraryEntryProcedureGivingClause(), p));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryEntryProcedureForClause visitLibraryEntryProcedureForClause(Cobol.LibraryEntryProcedureForClause libraryEntryProcedureForClause, P p) {
+        Cobol.LibraryEntryProcedureForClause l = libraryEntryProcedureForClause;
+        l = l.withLiteral(visitAndCast(l.getLiteral(), p));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryEntryProcedureGivingClause visitLibraryEntryProcedureGivingClause(Cobol.LibraryEntryProcedureGivingClause libraryEntryProcedureGivingClause, P p) {
+        Cobol.LibraryEntryProcedureGivingClause l = libraryEntryProcedureGivingClause;
+        l = l.withDataName(visitAndCast(l.getDataName(), p));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryEntryProcedureUsingClause visitLibraryEntryProcedureUsingClause(Cobol.LibraryEntryProcedureUsingClause libraryEntryProcedureUsingClause, P p) {
+        Cobol.LibraryEntryProcedureUsingClause l = libraryEntryProcedureUsingClause;
+        l = l.withNames(ListUtils.map(l.getNames(), it -> visitAndCast(it, p)));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryEntryProcedureWithClause visitLibraryEntryProcedureWithClause(Cobol.LibraryEntryProcedureWithClause libraryEntryProcedureWithClause, P p) {
+        Cobol.LibraryEntryProcedureWithClause l = libraryEntryProcedureWithClause;
+        l = l.withNames(ListUtils.map(l.getNames(), it -> visitAndCast(it, p)));
+        return l;
+    }
+
+    @Override
+    public Cobol.LibraryIsCommonClause visitLibraryIsCommonClause(Cobol.LibraryIsCommonClause libraryIsCommonClause, P p) {
+        return libraryIsCommonClause;
+    }
+
+    @Override
+    public Cobol.LibraryIsGlobalClause visitLibraryIsGlobalClause(Cobol.LibraryIsGlobalClause libraryIsGlobalClause, P p) {
+        return libraryIsGlobalClause;
+    }
+
+    @Override
+    public Cobol.LinageClause visitLinageClause(Cobol.LinageClause linageClause, P p) {
+        Cobol.LinageClause l = linageClause;
+        l = l.withName(visitAndCast(l.getName(), p));
+        l = l.withLinageAt(ListUtils.map(l.getLinageAt(), it -> visitAndCast(it, p)));
+        return l;
+    }
+
+    @Override
+    public Cobol.LinageFootingAt visitLinageFootingAt(Cobol.LinageFootingAt linageFootingAt, P p) {
+        Cobol.LinageFootingAt l = linageFootingAt;
+        l = l.withName(visitAndCast(l.getName(), p));
+        return l;
+    }
+
+    @Override
+    public Cobol.LinageLinesAtBottom visitLinageLinesAtBottom(Cobol.LinageLinesAtBottom linageLinesAtBottom, P p) {
+        Cobol.LinageLinesAtBottom l = linageLinesAtBottom;
+        l = l.withName(visitAndCast(l.getName(), p));
+        return l;
+    }
+
+    @Override
+    public Cobol.LinageLinesAtTop visitLinageLinesAtTop(Cobol.LinageLinesAtTop linageLinesAtTop, P p) {
+        Cobol.LinageLinesAtTop l = linageLinesAtTop;
+        l = l.withName(visitAndCast(l.getName(), p));
+        return l;
+    }
+
+    @Override
+    public Cobol.LinkageSection visitLinkageSection(Cobol.LinkageSection linkageSection, P p) {
+        Cobol.LinkageSection l = linkageSection;
+        l = l.withDataDescriptions(ListUtils.map(l.getDataDescriptions(), it -> visitAndCast(it, p)));
+        return l;
+    }
+
+    @Override
+    public Cobol.LocalStorageSection visitLocalStorageSection(Cobol.LocalStorageSection localStorageSection, P p) {
+        Cobol.LocalStorageSection l = localStorageSection;
+        l = l.withLocalName(visitAndCast(l.getLocalName(), p));
+        l = l.withDataDescriptions(ListUtils.map(l.getDataDescriptions(), it -> visitAndCast(it, p)));
+        return l;
+    }
 }
