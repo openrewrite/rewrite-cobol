@@ -630,11 +630,6 @@ public class CobolIsoVisitor<P> extends CobolVisitor<P> {
     }
 
     @Override
-    public Cobol.EvaluateValueThrough visitEvaluateValueThrough(Cobol.EvaluateValueThrough evaluateValueThrough, P p) {
-        return (Cobol.EvaluateValueThrough) super.visitEvaluateValueThrough(evaluateValueThrough, p);
-    }
-
-    @Override
     public Cobol.EvaluateWhen visitEvaluateWhen(Cobol.EvaluateWhen evaluateWhen, P p) {
         return (Cobol.EvaluateWhen) super.visitEvaluateWhen(evaluateWhen, p);
     }

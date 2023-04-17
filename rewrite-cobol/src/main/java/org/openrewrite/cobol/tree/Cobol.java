@@ -2728,31 +2728,6 @@ public interface Cobol extends Tree {
     @Value
     @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
     @With
-    class EvaluateValueThrough implements Cobol {
-
-        @EqualsAndHashCode.Include
-        UUID id;
-
-        Space prefix;
-        Markers markers;
-
-        @Nullable
-        Word not;
-
-        Cobol value;
-
-        @Nullable
-        EvaluateThrough evaluateThrough;
-
-        @Override
-        public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
-            return v.visitEvaluateValueThrough(this, p);
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-    @With
     class EvaluateWhen implements Cobol {
 
         @EqualsAndHashCode.Include

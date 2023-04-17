@@ -1219,16 +1219,6 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         return e;
     }
 
-    public Cobol visitEvaluateValueThrough(Cobol.EvaluateValueThrough evaluateValueThrough, P p) {
-        Cobol.EvaluateValueThrough e = evaluateValueThrough;
-        e = e.withPrefix(visitSpace(e.getPrefix(), Space.Location.EVALUATE_VALUE_THROUGH_PREFIX, p));
-        e = e.withMarkers(visitMarkers(e.getMarkers(), p));
-        e = e.withNot((Cobol.Word) visit(e.getNot(), p));
-        e = e.withValue(visit(e.getValue(), p));
-        e = e.withEvaluateThrough((Cobol.EvaluateThrough) visit(e.getEvaluateThrough(), p));
-        return e;
-    }
-
     public Cobol visitEvaluateWhen(Cobol.EvaluateWhen evaluateWhen, P p) {
         Cobol.EvaluateWhen e = evaluateWhen;
         e = e.withPrefix(visitSpace(e.getPrefix(), Space.Location.EVALUATE_WHEN_PREFIX, p));

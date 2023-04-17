@@ -774,4 +774,157 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         d = d.withName(visitAndCast(d.getName(), p));
         return d;
     }
+
+    @Override
+    public Cobol.Enable visitEnable(Cobol.Enable enable, P p) {
+        Cobol.Enable e = enable;
+        e = e.withCdName(visitAndCast(e.getCdName(), p));
+        e = e.withKeyName(visitAndCast(e.getKeyName(), p));
+        return e;
+    }
+
+    @Override
+    public Cobol.EndKeyClause visitEndKeyClause(Cobol.EndKeyClause endKeyClause, P p) {
+        Cobol.EndKeyClause e = endKeyClause;
+        e = e.withName(visitAndCast(e.getName(), p));
+        return e;
+    }
+
+    @Override
+    public Cobol.EndProgram visitEndProgram(Cobol.EndProgram endProgram, P p) {
+        Cobol.EndProgram e = endProgram;
+        e = e.withProgramName(visitAndCast(e.getProgramName(), p));
+        return e;
+    }
+
+    @Override
+    public Cobol.Entry visitEntry(Cobol.Entry entry, P p) {
+        Cobol.Entry e = entry;
+        e = e.withLiteral(visitAndCast(e.getLiteral(), p));
+        e = e.withIdentifiers(ListUtils.map(e.getIdentifiers(), it -> visitAndCast(it, p)));
+        return e;
+    }
+
+    @Override
+    public Cobol.EnvironmentDivision visitEnvironmentDivision(Cobol.EnvironmentDivision environmentDivision, P p) {
+        Cobol.EnvironmentDivision e = environmentDivision;
+        e = e.withBody(ListUtils.map(e.getBody(), it -> visitAndCast(it, p)));
+        return e;
+    }
+
+    @Override
+    public Cobol.EnvironmentSwitchNameClause visitEnvironmentSwitchNameClause(Cobol.EnvironmentSwitchNameClause environmentSwitchNameClause, P p) {
+        Cobol.EnvironmentSwitchNameClause e = environmentSwitchNameClause;
+        e = e.withEnvironmentName(visitAndCast(e.getEnvironmentName(), p));
+        e = e.withMnemonicName(visitAndCast(e.getMnemonicName(), p));
+        e = e.withEnvironmentSwitchNameSpecialNamesStatusPhrase(visitAndCast(e.getEnvironmentSwitchNameSpecialNamesStatusPhrase(), p));
+        return e;
+    }
+
+    @Override
+    public Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase visitEnvironmentSwitchNameSpecialNamesStatusPhrase(Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase environmentSwitchNameSpecialNamesStatusPhrase, P p) {
+        Cobol.EnvironmentSwitchNameSpecialNamesStatusPhrase e = environmentSwitchNameSpecialNamesStatusPhrase;
+        e = e.withCobols(ListUtils.map(e.getCobols(), it -> visitAndCast(it, p)));
+        return e;
+    }
+
+    @Override
+    public Cobol.ErrorKeyClause visitErrorKeyClause(Cobol.ErrorKeyClause errorKeyClause, P p) {
+        Cobol.ErrorKeyClause e = errorKeyClause;
+        e = e.withName(visitAndCast(e.getName(), p));
+        return e;
+    }
+
+    @Override
+    public Cobol.Evaluate visitEvaluate(Cobol.Evaluate evaluate, P p) {
+        Cobol.Evaluate e = evaluate;
+        e = e.withSelect(visitAndCast(e.getSelect(), p));
+        e = e.withAlsoSelect(ListUtils.map(e.getAlsoSelect(), it -> visitAndCast(it, p)));
+        e = e.withWhenPhrase(ListUtils.map(e.getWhenPhrase(), it -> visitAndCast(it, p)));
+        e = e.withWhenOther(visitAndCast(e.getWhenOther(), p));
+        return e;
+    }
+
+    @Override
+    public Cobol.EvaluateAlso visitEvaluateAlso(Cobol.EvaluateAlso evaluateAlso, P p) {
+        Cobol.EvaluateAlso e = evaluateAlso;
+        e = e.withSelect(visitAndCast(e.getSelect(), p));
+        return e;
+    }
+
+    @Override
+    public Cobol.EvaluateAlsoCondition visitEvaluateAlsoCondition(Cobol.EvaluateAlsoCondition evaluateAlsoCondition, P p) {
+        Cobol.EvaluateAlsoCondition e = evaluateAlsoCondition;
+        e = e.withCondition(visitAndCast(e.getCondition(), p));
+        return e;
+    }
+
+    @Override
+    public Cobol.EvaluateCondition visitEvaluateCondition(Cobol.EvaluateCondition evaluateCondition, P p) {
+        Cobol.EvaluateCondition e = evaluateCondition;
+        e = e.withCondition(visitAndCast(e.getCondition(), p));
+        e = e.withEvaluateThrough(visitAndCast(e.getEvaluateThrough(), p));
+        return e;
+    }
+
+    @Override
+    public Cobol.EvaluateThrough visitEvaluateThrough(Cobol.EvaluateThrough evaluateThrough, P p) {
+        Cobol.EvaluateThrough e = evaluateThrough;
+        e = e.withValue(visitAndCast(e.getValue(), p));
+        return e;
+    }
+
+    @Override
+    public Cobol.EvaluateWhen visitEvaluateWhen(Cobol.EvaluateWhen evaluateWhen, P p) {
+        Cobol.EvaluateWhen e = evaluateWhen;
+        e = e.withCondition(visitAndCast(e.getCondition(), p));
+        e = e.withAlsoCondition(ListUtils.map(e.getAlsoCondition(), it -> visitAndCast(it, p)));
+        return e;
+    }
+
+    @Override
+    public Cobol.EvaluateWhenPhrase visitEvaluateWhenPhrase(Cobol.EvaluateWhenPhrase evaluateWhenPhrase, P p) {
+        Cobol.EvaluateWhenPhrase e = evaluateWhenPhrase;
+        e = e.withWhens(ListUtils.map(e.getWhens(), it -> visitAndCast(it, p)));
+        e = e.withStatements(ListUtils.map(e.getStatements(), it -> visitAndCast(it, p)));
+        return e;
+    }
+
+    @Override
+    public Cobol.ExecCicsStatement visitExecCicsStatement(Cobol.ExecCicsStatement execCicsStatement, P p) {
+        // TODO: https://github.com/moderneinc/rewrite-cobol/issues/70.
+        // The grammar rule means that the ExecCicsStatement is a single token.
+        return execCicsStatement;
+    }
+
+    @Override
+    public Cobol.ExecSqlImsStatement visitExecSqlImsStatement(Cobol.ExecSqlImsStatement execSqlImsStatement, P p) {
+        // TODO: https://github.com/moderneinc/rewrite-cobol/issues/70.
+        // The grammar rule means that the ExecCicsStatement is a single token.
+        return execSqlImsStatement;
+    }
+
+    @Override
+    public Cobol.ExecSqlStatement visitExecSqlStatement(Cobol.ExecSqlStatement execSqlStatement, P p) {
+        // TODO: https://github.com/moderneinc/rewrite-cobol/issues/70.
+        // The grammar rule means that the ExecCicsStatement is a single token.
+        return execSqlStatement;
+    }
+
+    @Override
+    public Cobol.Exhibit visitExhibit(Cobol.Exhibit exhibit, P p) {
+        Cobol.Exhibit e = exhibit;
+        e = e.withOperands(ListUtils.map(e.getOperands(), it -> visitAndCast(it, p)));
+        return e;
+    }
+
+    @Override
+    public Cobol.Exit visitExit(Cobol.Exit exit, P p) {
+        return exit;
+    }
+
+    @Override
+    public Cobol.ExternalClause visitExternalClause(Cobol.ExternalClause externalClause, P p) {
+        return externalClause;
+    }
 }

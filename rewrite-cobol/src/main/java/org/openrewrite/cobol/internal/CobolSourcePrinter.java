@@ -1246,16 +1246,6 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     }
 
     @Override
-    public Cobol visitEvaluateValueThrough(Cobol.EvaluateValueThrough evaluateValueThrough, PrintOutputCapture<P> p) {
-        beforeSyntax(evaluateValueThrough, Space.Location.EVALUATE_VALUE_THROUGH_PREFIX, p);
-        visit(evaluateValueThrough.getNot(), p);
-        visit(evaluateValueThrough.getValue(), p);
-        visit(evaluateValueThrough.getEvaluateThrough(), p);
-        afterSyntax(evaluateValueThrough, p);
-        return evaluateValueThrough;
-    }
-
-    @Override
     public Cobol visitEvaluateWhen(Cobol.EvaluateWhen evaluateWhen, PrintOutputCapture<P> p) {
         beforeSyntax(evaluateWhen, Space.Location.EVALUATE_WHEN_PREFIX, p);
         visit(evaluateWhen.getWhen(), p);
