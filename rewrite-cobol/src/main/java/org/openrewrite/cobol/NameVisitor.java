@@ -1658,4 +1658,283 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         return organizationClause;
     }
 
+    @Override
+    public Cobol.PaddingCharacterClause visitPaddingCharacterClause(Cobol.PaddingCharacterClause paddingCharacterClause, P p) {
+        Cobol.PaddingCharacterClause pp = paddingCharacterClause;
+        pp = pp.withName(visitAndCast(pp.getName(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.Paragraph visitParagraph(Cobol.Paragraph paragraph, P p) {
+        Cobol.Paragraph pp = paragraph;
+        pp = pp.withParagraphName(visitAndCast(pp.getParagraphName(), p));
+        pp = pp.withAlteredGoTo(visitAndCast(pp.getAlteredGoTo(), p));
+        pp = pp.withSentences(ListUtils.map(pp.getSentences(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.Paragraphs visitParagraphs(Cobol.Paragraphs paragraphs, P p) {
+        Cobol.Paragraphs pp = paragraphs;
+        pp = pp.withSentences(ListUtils.map(pp.getSentences(), it -> visitAndCast(it, p)));
+        pp = pp.withParagraphs(ListUtils.map(pp.getParagraphs(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.Parenthesized visitParenthesized(Cobol.Parenthesized parenthesized, P p) {
+        Cobol.Parenthesized pp = parenthesized;
+        pp = pp.withContents(ListUtils.map(pp.getContents(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.PasswordClause visitPasswordClause(Cobol.PasswordClause passwordClause, P p) {
+        Cobol.PasswordClause pp = passwordClause;
+        pp = pp.withDataName(visitAndCast(pp.getDataName(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.Perform visitPerform(Cobol.Perform perform, P p) {
+        Cobol.Perform pp = perform;
+        pp = pp.withStatement(visitAndCast(pp.getStatement(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.Performable visitPerformable(Cobol.Performable performable, P p) {
+        Cobol.Performable pp = performable;
+        pp = pp.withExpression(visitAndCast(pp.getExpression(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.PerformInlineStatement visitPerformInlineStatement(Cobol.PerformInlineStatement performInlineStatement, P p) {
+        Cobol.PerformInlineStatement pp = performInlineStatement;
+        pp = pp.withPerformType(visitAndCast(pp.getPerformType(), p));
+        pp = pp.withStatements(ListUtils.map(pp.getStatements(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.PerformProcedureStatement visitPerformProcedureStatement(Cobol.PerformProcedureStatement performProcedureStatement, P p) {
+        Cobol.PerformProcedureStatement pp = performProcedureStatement;
+        pp = pp.withProcedureName(visitAndCast(pp.getProcedureName(), p));
+        pp = pp.withThroughProcedure(visitAndCast(pp.getThroughProcedure(), p));
+        pp = pp.withPerformType(visitAndCast(pp.getPerformType(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.PerformTestClause visitPerformTestClause(Cobol.PerformTestClause performTestClause, P p) {
+        return performTestClause;
+    }
+
+    @Override
+    public Cobol.PerformTimes visitPerformTimes(Cobol.PerformTimes performTimes, P p) {
+        Cobol.PerformTimes pp = performTimes;
+        pp = pp.withValue(visitAndCast(pp.getValue(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.PerformUntil visitPerformUntil(Cobol.PerformUntil performUntil, P p) {
+        Cobol.PerformUntil pp = performUntil;
+        pp = pp.withPerformTestClause(visitAndCast(pp.getPerformTestClause(), p));
+        pp = pp.withCondition(visitAndCast(pp.getCondition(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.PerformVarying visitPerformVarying(Cobol.PerformVarying performVarying, P p) {
+        Cobol.PerformVarying pp = performVarying;
+        pp = pp.withCobols(ListUtils.map(pp.getCobols(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.PerformVaryingClause visitPerformVaryingClause(Cobol.PerformVaryingClause performVaryingClause, P p) {
+        Cobol.PerformVaryingClause pp = performVaryingClause;
+        pp = pp.withPerformVaryingPhrase(visitAndCast(pp.getPerformVaryingPhrase(), p));
+        pp = pp.withPerformAfter(ListUtils.map(pp.getPerformAfter(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.PerformVaryingPhrase visitPerformVaryingPhrase(Cobol.PerformVaryingPhrase performVaryingPhrase, P p) {
+        Cobol.PerformVaryingPhrase pp = performVaryingPhrase;
+        pp = pp.withName(visitAndCast(pp.getName(), p));
+        pp = pp.withFrom(visitAndCast(pp.getFrom(), p));
+        pp = pp.withBy(visitAndCast(pp.getBy(), p));
+        pp = pp.withUntil(visitAndCast(pp.getUntil(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.Picture visitPicture(Cobol.Picture picture, P p) {
+        Cobol.Picture pp = picture;
+        pp = pp.withWords(ListUtils.map(pp.getWords(), it -> visitAndCast(it, p)));
+        pp = pp.withParenthesized(visitAndCast(pp.getParenthesized(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.PictureString visitPictureString(Cobol.PictureString pictureString, P p) {
+        Cobol.PictureString pp = pictureString;
+        pp = pp.withPictures(ListUtils.map(pp.getPictures(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.PlusMinus visitPlusMinus(Cobol.PlusMinus plusMinus, P p) {
+        Cobol.PlusMinus pp = plusMinus;
+        pp = pp.withMultDivs(visitAndCast(pp.getMultDivs(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.Power visitPower(Cobol.Power power, P p) {
+        Cobol.Power pp = power;
+        pp = pp.withExpression(visitAndCast(pp.getExpression(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.Powers visitPowers(Cobol.Powers powers, P p) {
+        Cobol.Powers pp = powers;
+        pp = pp.withExpression(visitAndCast(pp.getExpression(), p));
+        pp = pp.withPowers(ListUtils.map(pp.getPowers(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProcedureDeclarative visitProcedureDeclarative(Cobol.ProcedureDeclarative procedureDeclarative, P p) {
+        Cobol.ProcedureDeclarative pp = procedureDeclarative;
+        pp = pp.withProcedureSectionHeader(visitAndCast(pp.getProcedureSectionHeader(), p));
+        pp = pp.withUseStatement(visitAndCast(pp.getUseStatement(), p));
+        pp = pp.withParagraphs(visitAndCast(pp.getParagraphs(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProcedureDeclaratives visitProcedureDeclaratives(Cobol.ProcedureDeclaratives procedureDeclaratives, P p) {
+        Cobol.ProcedureDeclaratives pp = procedureDeclaratives;
+        pp = pp.withProcedureDeclarative(ListUtils.map(pp.getProcedureDeclarative(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProcedureDivision visitProcedureDivision(Cobol.ProcedureDivision procedureDivision, P p) {
+        Cobol.ProcedureDivision pp = procedureDivision;
+        pp = pp.withProcedureDivisionUsingClause(visitAndCast(pp.getProcedureDivisionUsingClause(), p));
+        pp = pp.withProcedureDivisionGivingClause(visitAndCast(pp.getProcedureDivisionGivingClause(), p));
+        pp = pp.withProcedureDeclaratives(visitAndCast(pp.getProcedureDeclaratives(), p));
+        pp = pp.withBody(visitAndCast(pp.getBody(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProcedureDivisionBody visitProcedureDivisionBody(Cobol.ProcedureDivisionBody procedureDivisionBody, P p) {
+        Cobol.ProcedureDivisionBody pp = procedureDivisionBody;
+        pp = pp.withParagraphs(visitAndCast(pp.getParagraphs(), p));
+        pp = pp.withProcedureSection(ListUtils.map(pp.getProcedureSection(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProcedureDivisionByReference visitProcedureDivisionByReference(Cobol.ProcedureDivisionByReference procedureDivisionByReference, P p) {
+        Cobol.ProcedureDivisionByReference pp = procedureDivisionByReference;
+        pp = pp.withReference(visitAndCast(pp.getReference(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProcedureDivisionByReferencePhrase visitProcedureDivisionByReferencePhrase(Cobol.ProcedureDivisionByReferencePhrase procedureDivisionByReferencePhrase, P p) {
+        Cobol.ProcedureDivisionByReferencePhrase pp = procedureDivisionByReferencePhrase;
+        pp = pp.withProcedureDivisionByReference(ListUtils.map(pp.getProcedureDivisionByReference(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProcedureDivisionByValuePhrase visitProcedureDivisionByValuePhrase(Cobol.ProcedureDivisionByValuePhrase procedureDivisionByValuePhrase, P p) {
+        Cobol.ProcedureDivisionByValuePhrase pp = procedureDivisionByValuePhrase;
+        pp = pp.withPhrases(ListUtils.map(pp.getPhrases(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProcedureDivisionGivingClause visitProcedureDivisionGivingClause(Cobol.ProcedureDivisionGivingClause procedureDivisionGivingClause, P p) {
+        Cobol.ProcedureDivisionGivingClause pp = procedureDivisionGivingClause;
+        pp = pp.withDataName(visitAndCast(pp.getDataName(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProcedureDivisionUsingClause visitProcedureDivisionUsingClause(Cobol.ProcedureDivisionUsingClause procedureDivisionUsingClause, P p) {
+        Cobol.ProcedureDivisionUsingClause pp = procedureDivisionUsingClause;
+        pp = pp.withProcedureDivisionUsingParameter(ListUtils.map(pp.getProcedureDivisionUsingParameter(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProcedureName visitProcedureName(Cobol.ProcedureName procedureName, P p) {
+        Cobol.ProcedureName pp = procedureName;
+        pp = pp.withParagraphName(visitAndCast(pp.getParagraphName(), p));
+        pp = pp.withInSection(visitAndCast(pp.getInSection(), p));
+        pp = pp.withSectionName(visitAndCast(pp.getSectionName(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProcedureSection visitProcedureSection(Cobol.ProcedureSection procedureSection, P p) {
+        Cobol.ProcedureSection pp = procedureSection;
+        pp = pp.withProcedureSectionHeader(visitAndCast(pp.getProcedureSectionHeader(), p));
+        pp = pp.withParagraphs(visitAndCast(pp.getParagraphs(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProcedureSectionHeader visitProcedureSectionHeader(Cobol.ProcedureSectionHeader procedureSectionHeader, P p) {
+        Cobol.ProcedureSectionHeader pp = procedureSectionHeader;
+        pp = pp.withSectionName(visitAndCast(pp.getSectionName(), p));
+        pp = pp.withIdentifier(visitAndCast(pp.getIdentifier(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProgramIdParagraph visitProgramIdParagraph(Cobol.ProgramIdParagraph programIdParagraph, P p) {
+        Cobol.ProgramIdParagraph pp = programIdParagraph;
+        pp = pp.withProgramName(visitAndCast(pp.getProgramName(), p));
+        pp = pp.withCommentEntry(visitAndCast(pp.getCommentEntry(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProgramLibrarySection visitProgramLibrarySection(Cobol.ProgramLibrarySection programLibrarySection, P p) {
+        Cobol.ProgramLibrarySection pp = programLibrarySection;
+        pp = pp.withLibraryDescriptionEntries(ListUtils.map(pp.getLibraryDescriptionEntries(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
+    @Override
+    public Cobol.ProgramUnit visitProgramUnit(Cobol.ProgramUnit programUnit, P p) {
+        Cobol.ProgramUnit pp = programUnit;
+        pp = pp.withIdentificationDivision(visitAndCast(pp.getIdentificationDivision(), p));
+        pp = pp.withEnvironmentDivision(visitAndCast(pp.getEnvironmentDivision(), p));
+        pp = pp.withDataDivision(visitAndCast(pp.getDataDivision(), p));
+        pp = pp.withProcedureDivision(visitAndCast(pp.getProcedureDivision(), p));
+        pp = pp.withProgramUnits(ListUtils.map(pp.getProgramUnits(), it -> visitAndCast(it, p)));
+        pp = pp.withEndProgram(visitAndCast(pp.getEndProgram(), p));
+        return pp;
+    }
+
+    @Override
+    public Cobol.Purge visitPurge(Cobol.Purge purge, P p) {
+        Cobol.Purge pp = purge;
+        pp = pp.withNames(ListUtils.map(pp.getNames(), it -> visitAndCast(it, p)));
+        return pp;
+    }
+
 }

@@ -2561,6 +2561,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         visit(programIdParagraph.getProgramName(), p);
         visit(programIdParagraph.getProgramAttributes(), p);
         visit(programIdParagraph.getDot2(), p);
+        visit(programIdParagraph.getCommentEntry(), p);
         afterSyntax(programIdParagraph, p);
         return programIdParagraph;
     }

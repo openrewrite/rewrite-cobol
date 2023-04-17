@@ -2538,6 +2538,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         pp = pp.withProgramName((Name) visit(pp.getProgramName(), p));
         pp = pp.withProgramAttributes(ListUtils.map(pp.getProgramAttributes(), it -> (Cobol.Word) visit(it, p)));
         pp = pp.withDot2((Cobol.Word) visit(pp.getDot2(), p));
+        pp = pp.withCommentEntry((Cobol.CommentEntry) visit(pp.getCommentEntry(), p));
         return pp;
     }
 

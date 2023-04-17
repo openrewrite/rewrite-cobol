@@ -5611,6 +5611,9 @@ public interface Cobol extends Tree {
         @Nullable
         Word dot2;
 
+        @Nullable
+        CommentEntry commentEntry;
+
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {
             return v.visitProgramIdParagraph(this, p);
