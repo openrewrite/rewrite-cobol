@@ -67,7 +67,7 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         Cobol.AddCorresponding a = addCorresponding;
         a = a.withIdentifier(visitAndCast(a.getIdentifier(), p));
         a = a.withRoundable(visitAndCast(a.getRoundable(), p));
-        return addCorresponding;
+        return a;
     }
 
     @Override
@@ -1413,5 +1413,182 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         l = l.withLocalName(visitAndCast(l.getLocalName(), p));
         l = l.withDataDescriptions(ListUtils.map(l.getDataDescriptions(), it -> visitAndCast(it, p)));
         return l;
+    }
+
+    @Override
+    public Cobol.Merge visitMerge(Cobol.Merge merge, P p) {
+        Cobol.Merge m = merge;
+        m = m.withFileName(visitAndCast(m.getFileName(), p));
+        m = m.withMergeOnKeyClause(ListUtils.map(m.getMergeOnKeyClause(), it -> visitAndCast(it, p)));
+        m = m.withMergeCollatingSequencePhrase(visitAndCast(m.getMergeCollatingSequencePhrase(), p));
+        m = m.withMergeUsing(ListUtils.map(m.getMergeUsing(), it -> visitAndCast(it, p)));
+        m = m.withMergeOutputProcedurePhrase(visitAndCast(m.getMergeOutputProcedurePhrase(), p));
+        m = m.withMergeGivingPhrase(ListUtils.map(m.getMergeGivingPhrase(), it -> visitAndCast(it, p)));
+        return m;
+    }
+
+    @Override
+    public Cobol.Mergeable visitMergeable(Cobol.Mergeable mergeable, P p) {
+        Cobol.Mergeable m = mergeable;
+        m = m.withName(visitAndCast(m.getName(), p));
+        return m;
+    }
+
+    @Override
+    public Cobol.MergeCollatingSequencePhrase visitMergeCollatingSequencePhrase(Cobol.MergeCollatingSequencePhrase mergeCollatingSequencePhrase, P p) {
+        Cobol.MergeCollatingSequencePhrase m = mergeCollatingSequencePhrase;
+        m = m.withName(ListUtils.map(m.getName(), it -> visitAndCast(it, p)));
+        m = m.withMergeCollatingAlphanumeric(visitAndCast(m.getMergeCollatingAlphanumeric(), p));
+        m = m.withMergeCollatingNational(visitAndCast(m.getMergeCollatingNational(), p));
+        return m;
+    }
+
+    @Override
+    public Cobol.MergeGiving visitMergeGiving(Cobol.MergeGiving mergeGiving, P p) {
+        Cobol.MergeGiving m = mergeGiving;
+        m = m.withName(visitAndCast(m.getName(), p));
+        return m;
+    }
+
+    @Override
+    public Cobol.MergeGivingPhrase visitMergeGivingPhrase(Cobol.MergeGivingPhrase mergeGivingPhrase, P p) {
+        Cobol.MergeGivingPhrase m = mergeGivingPhrase;
+        m = m.withMergeGiving(ListUtils.map(m.getMergeGiving(), it -> visitAndCast(it, p)));
+        return m;
+    }
+
+    @Override
+    public Cobol.MergeOnKeyClause visitMergeOnKeyClause(Cobol.MergeOnKeyClause mergeOnKeyClause, P p) {
+        Cobol.MergeOnKeyClause m = mergeOnKeyClause;
+        m = m.withQualifiedDataName(ListUtils.map(m.getQualifiedDataName(), it -> visitAndCast(it, p)));
+        return m;
+    }
+
+    @Override
+    public Cobol.MergeOutputProcedurePhrase visitMergeOutputProcedurePhrase(Cobol.MergeOutputProcedurePhrase mergeOutputProcedurePhrase, P p) {
+        Cobol.MergeOutputProcedurePhrase m = mergeOutputProcedurePhrase;
+        m = m.withProcedureName(visitAndCast(m.getProcedureName(), p));
+        m = m.withMergeOutputThrough(visitAndCast(m.getMergeOutputThrough(), p));
+        return m;
+    }
+
+    @Override
+    public Cobol.MergeOutputThrough visitMergeOutputThrough(Cobol.MergeOutputThrough mergeOutputThrough, P p) {
+        Cobol.MergeOutputThrough m = mergeOutputThrough;
+        m = m.withProcedureName(visitAndCast(m.getProcedureName(), p));
+        return m;
+    }
+
+    @Override
+    public Cobol.MergeUsing visitMergeUsing(Cobol.MergeUsing mergeUsing, P p) {
+        Cobol.MergeUsing m = mergeUsing;
+        m = m.withFileNames(ListUtils.map(m.getFileNames(), it -> visitAndCast(it, p)));
+        return m;
+    }
+
+    @Override
+    public Cobol.MessageCountClause visitMessageCountClause(Cobol.MessageCountClause messageCountClause, P p) {
+        Cobol.MessageCountClause m = messageCountClause;
+        m = m.withDataDescName(visitAndCast(m.getDataDescName(), p));
+        return m;
+    }
+
+    @Override
+    public Cobol.MessageDateClause visitMessageDateClause(Cobol.MessageDateClause messageDateClause, P p) {
+        Cobol.MessageDateClause m = messageDateClause;
+        m = m.withDataDescName(visitAndCast(m.getDataDescName(), p));
+        return m;
+    }
+
+    @Override
+    public Cobol.MessageTimeClause visitMessageTimeClause(Cobol.MessageTimeClause messageTimeClause, P p) {
+        Cobol.MessageTimeClause m = messageTimeClause;
+        m = m.withDataDescName(visitAndCast(m.getDataDescName(), p));
+        return m;
+    }
+
+    @Override
+    public Cobol.MoveCorrespondingToStatement visitMoveCorrespondingToStatement(Cobol.MoveCorrespondingToStatement moveCorrespondingToStatement, P p) {
+        Cobol.MoveCorrespondingToStatement m = moveCorrespondingToStatement;
+        m = m.withMoveCorrespondingToSendingArea(visitAndCast(m.getMoveCorrespondingToSendingArea(), p));
+        m = m.withIdentifiers(ListUtils.map(m.getIdentifiers(), it -> visitAndCast(it, p)));
+        return m;
+    }
+
+    @Override
+    public Cobol.MoveStatement visitMoveStatement(Cobol.MoveStatement moveStatement, P p) {
+        Cobol.MoveStatement m = moveStatement;
+        m = m.withMoveToStatement(visitAndCast(m.getMoveToStatement(), p));
+        return m;
+    }
+
+    @Override
+    public Cobol.MoveToStatement visitMoveToStatement(Cobol.MoveToStatement moveToStatement, P p) {
+        Cobol.MoveToStatement m = moveToStatement;
+        m = m.withFrom(visitAndCast(m.getFrom(), p));
+        m = m.withNames(ListUtils.map(m.getNames(), it -> visitAndCast(it, p)));
+        return m;
+    }
+
+    @Override
+    public Cobol.MultDiv visitMultDiv(Cobol.MultDiv multDiv, P p) {
+        Cobol.MultDiv m = multDiv;
+        m = m.withPowers(visitAndCast(m.getPowers(), p));
+        return m;
+    }
+
+    @Override
+    public Cobol.MultDivs visitMultDivs(Cobol.MultDivs multDivs, P p) {
+        Cobol.MultDivs m = multDivs;
+        m = m.withPowers(visitAndCast(m.getPowers(), p));
+        m = m.withMultDivs(ListUtils.map(m.getMultDivs(), it -> visitAndCast(it, p)));
+        return m;
+    }
+
+    @Override
+    public Cobol.MultipleFileClause visitMultipleFileClause(Cobol.MultipleFileClause multipleFileClause, P p) {
+        Cobol.MultipleFileClause m = multipleFileClause;
+        m = m.withFilePositions(ListUtils.map(m.getFilePositions(), it -> visitAndCast(it, p)));
+        return m;
+    }
+
+    @Override
+    public Cobol.MultipleFilePosition visitMultipleFilePosition(Cobol.MultipleFilePosition multipleFilePosition, P p) {
+        Cobol.MultipleFilePosition m = multipleFilePosition;
+        m = m.withFileName(visitAndCast(m.getFileName(), p));
+        m = m.withIntegerLiteral(visitAndCast(m.getIntegerLiteral(), p));
+        return m;
+    }
+
+    @Override
+    public Cobol.Multiply visitMultiply(Cobol.Multiply multiply, P p) {
+        Cobol.Multiply m = multiply;
+        m = m.withMultiplicand(visitAndCast(m.getMultiplicand(), p));
+        m = m.withMultiply(visitAndCast(m.getMultiply(), p));
+        m = m.withOnSizeErrorPhrase(visitAndCast(m.getOnSizeErrorPhrase(), p));
+        m = m.withNotOnSizeErrorPhrase(visitAndCast(m.getNotOnSizeErrorPhrase(), p));
+        return m;
+    }
+
+    @Override
+    public Cobol.MultiplyGiving visitMultiplyGiving(Cobol.MultiplyGiving multiplyGiving, P p) {
+        Cobol.MultiplyGiving m = multiplyGiving;
+        m = m.withOperand(visitAndCast(m.getOperand(), p));
+        m = m.withResult(ListUtils.map(m.getResult(), it -> visitAndCast(it, p)));
+        return m;
+    }
+
+    @Override
+    public Cobol.MultiplyRegular visitMultiplyRegular(Cobol.MultiplyRegular multiplyRegular, P p) {
+        Cobol.MultiplyRegular m = multiplyRegular;
+        m = m.withOperand(ListUtils.map(m.getOperand(), it -> visitAndCast(it, p)));
+        return m;
+    }
+
+    @Override
+    public Cobol.NextSentence visitNextSentence(Cobol.NextSentence nextSentence, P p) {
+        Cobol.NextSentence m = nextSentence;
+        m = m.withWords(ListUtils.map(m.getWords(), it -> visitAndCast(it, p)));
+        return m;
     }
 }
