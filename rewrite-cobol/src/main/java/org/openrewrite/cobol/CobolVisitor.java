@@ -1503,6 +1503,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         i = i.withPrefix(visitSpace(i.getPrefix(), Space.Location.IN_TABLE_PREFIX, p));
         i = i.withMarkers(visitMarkers(i.getMarkers(), p));
         i = i.withWord((Cobol.Word) visit(i.getWord(), p));
+        i = i.withTableCall((Cobol.TableCall) visit(i.getTableCall(), p));
         return i;
     }
 

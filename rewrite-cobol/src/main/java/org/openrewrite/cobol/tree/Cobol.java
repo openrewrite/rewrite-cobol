@@ -3763,6 +3763,7 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         Word word;
+        TableCall tableCall;
 
         @Override
         public <P> Cobol acceptCobol(CobolVisitor<P> v, P p) {

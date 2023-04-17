@@ -1014,4 +1014,243 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         return g;
     }
 
+    @Override
+    public Cobol.IdentificationDivision visitIdentificationDivision(Cobol.IdentificationDivision identificationDivision, P p) {
+        Cobol.IdentificationDivision i = identificationDivision;
+        i = i.withProgramIdParagraph(visitAndCast(i.getProgramIdParagraph(), p));
+        i = i.withParagraphs(ListUtils.map(i.getParagraphs(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.IdentificationDivisionParagraph visitIdentificationDivisionParagraph(Cobol.IdentificationDivisionParagraph identificationDivisionParagraph, P p) {
+        Cobol.IdentificationDivisionParagraph i = identificationDivisionParagraph;
+        i = i.withCommentEntry(visitAndCast(i.getCommentEntry(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.If visitIf(Cobol.If _if, P p) {
+        Cobol.If i = _if;
+        i = i.withCondition(visitAndCast(i.getCondition(), p));
+        i = i.withIfThen(visitAndCast(i.getIfThen(), p));
+        i = i.withIfElse(visitAndCast(i.getIfElse(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.IfElse visitIfElse(Cobol.IfElse ifElse, P p) {
+        Cobol.IfElse i = ifElse;
+        i = i.withStatements(ListUtils.map(i.getStatements(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.IfThen visitIfThen(Cobol.IfThen ifThen, P p) {
+        Cobol.IfThen i = ifThen;
+        i = i.withStatements(ListUtils.map(i.getStatements(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InData visitInData(Cobol.InData inData, P p) {
+        Cobol.InData i = inData;
+        i = i.withName(visitAndCast(i.getName(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.InFile visitInFile(Cobol.InFile inFile, P p) {
+        Cobol.InFile i = inFile;
+        i = i.withName(visitAndCast(i.getName(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.Initialize visitInitialize(Cobol.Initialize initialize, P p) {
+        Cobol.Initialize i = initialize;
+        i = i.withIdentifiers(ListUtils.map(i.getIdentifiers(), it -> visitAndCast(it, p)));
+        i = i.withInitializeReplacingPhrase(visitAndCast(i.getInitializeReplacingPhrase(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.InitializeReplacingBy visitInitializeReplacingBy(Cobol.InitializeReplacingBy initializeReplacingBy, P p) {
+        Cobol.InitializeReplacingBy i = initializeReplacingBy;
+        i = i.withIdentifier(visitAndCast(i.getIdentifier(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.InitializeReplacingPhrase visitInitializeReplacingPhrase(Cobol.InitializeReplacingPhrase initializeReplacingPhrase, P p) {
+        Cobol.InitializeReplacingPhrase i = initializeReplacingPhrase;
+        i = i.withInitializeReplacingBy(ListUtils.map(i.getInitializeReplacingBy(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.Initiate visitInitiate(Cobol.Initiate initiate, P p) {
+        Cobol.Initiate i = initiate;
+        i = i.withReportNames(ListUtils.map(i.getReportNames(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InLibrary visitInLibrary(Cobol.InLibrary inLibrary, P p) {
+        Cobol.InLibrary i = inLibrary;
+        i = i.withWord(visitAndCast(i.getWord(), p));
+        i = i.withName(visitAndCast(i.getName(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.InMnemonic visitInMnemonic(Cobol.InMnemonic inMnemonic, P p) {
+        Cobol.InMnemonic i = inMnemonic;
+        i = i.withName(visitAndCast(i.getName(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.InputOutputSection visitInputOutputSection(Cobol.InputOutputSection inputOutputSection, P p) {
+        Cobol.InputOutputSection i = inputOutputSection;
+        i = i.withParagraphs(ListUtils.map(i.getParagraphs(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InSection visitInSection(Cobol.InSection inSection, P p) {
+        Cobol.InSection i = inSection;
+        i = i.withName(visitAndCast(i.getName(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.Inspect visitInspect(Cobol.Inspect inspect, P p) {
+        Cobol.Inspect i = inspect;
+        i = i.withIdentifier(visitAndCast(i.getIdentifier(), p));
+        i = i.withPhrase(visitAndCast(i.getPhrase(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectAllLeading visitInspectAllLeading(Cobol.InspectAllLeading inspectAllLeading, P p) {
+        Cobol.InspectAllLeading i = inspectAllLeading;
+        i = i.withName(visitAndCast(i.getName(), p));
+        i = i.withInspections(ListUtils.map(i.getInspections(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectAllLeadings visitInspectAllLeadings(Cobol.InspectAllLeadings inspectAllLeadings, P p) {
+        Cobol.InspectAllLeadings i = inspectAllLeadings;
+        i = i.withLeadings(ListUtils.map(i.getLeadings(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectBeforeAfter visitInspectBeforeAfter(Cobol.InspectBeforeAfter inspectBeforeAfter, P p) {
+        Cobol.InspectBeforeAfter i = inspectBeforeAfter;
+        i = i.withIdentifier(visitAndCast(i.getIdentifier(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectBy visitInspectBy(Cobol.InspectBy inspectBy, P p) {
+        Cobol.InspectBy i = inspectBy;
+        i = i.withIdentifier(visitAndCast(i.getIdentifier(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectCharacters visitInspectCharacters(Cobol.InspectCharacters inspectCharacters, P p) {
+        Cobol.InspectCharacters i = inspectCharacters;
+        i = i.withInspections(ListUtils.map(i.getInspections(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectConvertingPhrase visitInspectConvertingPhrase(Cobol.InspectConvertingPhrase inspectConvertingPhrase, P p) {
+        Cobol.InspectConvertingPhrase i = inspectConvertingPhrase;
+        i = i.withIdentifier(visitAndCast(i.getIdentifier(), p));
+        i = i.withInspectTo(visitAndCast(i.getInspectTo(), p));
+        i = i.withInspections(ListUtils.map(i.getInspections(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectFor visitInspectFor(Cobol.InspectFor inspectFor, P p) {
+        Cobol.InspectFor i = inspectFor;
+        i = i.withIdentifier(visitAndCast(i.getIdentifier(), p));
+        i = i.withInspects(ListUtils.map(i.getInspects(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectReplacingAllLeading visitInspectReplacingAllLeading(Cobol.InspectReplacingAllLeading inspectReplacingAllLeading, P p) {
+        Cobol.InspectReplacingAllLeading i = inspectReplacingAllLeading;
+        i = i.withIdentifier(visitAndCast(i.getIdentifier(), p));
+        i = i.withInspectBy(visitAndCast(i.getInspectBy(), p));
+        i = i.withInspections(ListUtils.map(i.getInspections(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectReplacingAllLeadings visitInspectReplacingAllLeadings(Cobol.InspectReplacingAllLeadings inspectReplacingAllLeadings, P p) {
+        Cobol.InspectReplacingAllLeadings i = inspectReplacingAllLeadings;
+        i = i.withInspections(ListUtils.map(i.getInspections(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectReplacingCharacters visitInspectReplacingCharacters(Cobol.InspectReplacingCharacters inspectReplacingCharacters, P p) {
+        Cobol.InspectReplacingCharacters i = inspectReplacingCharacters;
+        i = i.withInspectBy(visitAndCast(i.getInspectBy(), p));
+        i = i.withInspections(ListUtils.map(i.getInspections(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectReplacingPhrase visitInspectReplacingPhrase(Cobol.InspectReplacingPhrase inspectReplacingPhrase, P p) {
+        Cobol.InspectReplacingPhrase i = inspectReplacingPhrase;
+        i = i.withInspections(ListUtils.map(i.getInspections(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectTallyingPhrase visitInspectTallyingPhrase(Cobol.InspectTallyingPhrase inspectTallyingPhrase, P p) {
+        Cobol.InspectTallyingPhrase i = inspectTallyingPhrase;
+        i = i.withInspectFors(ListUtils.map(i.getInspectFors(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectTallyingReplacingPhrase visitInspectTallyingReplacingPhrase(Cobol.InspectTallyingReplacingPhrase inspectTallyingReplacingPhrase, P p) {
+        Cobol.InspectTallyingReplacingPhrase i = inspectTallyingReplacingPhrase;
+        i = i.withInspectFors(ListUtils.map(i.getInspectFors(), it -> visitAndCast(it, p)));
+        i = i.withReplacingPhrases(ListUtils.map(i.getReplacingPhrases(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
+    @Override
+    public Cobol.InspectTo visitInspectTo(Cobol.InspectTo inspectTo, P p) {
+        Cobol.InspectTo i = inspectTo;
+        i = i.withIdentifier(visitAndCast(i.getIdentifier(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.InTable visitInTable(Cobol.InTable inTable, P p) {
+        Cobol.InTable i = inTable;
+        i = i.withTableCall(visitAndCast(i.getTableCall(), p));
+        return i;
+    }
+
+    @Override
+    public Cobol.IoControlParagraph visitIoControlParagraph(Cobol.IoControlParagraph ioControlParagraph, P p) {
+        Cobol.IoControlParagraph i = ioControlParagraph;
+        i = i.withFileName(visitAndCast(i.getFileName(), p));
+        i = i.withClauses(ListUtils.map(i.getClauses(), it -> visitAndCast(it, p)));
+        return i;
+    }
+
 }

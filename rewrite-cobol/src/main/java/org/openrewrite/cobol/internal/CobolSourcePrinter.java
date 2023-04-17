@@ -1527,6 +1527,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
     public Cobol visitInTable(Cobol.InTable inTable, PrintOutputCapture<P> p) {
         beforeSyntax(inTable, Space.Location.IN_TABLE_PREFIX, p);
         visit(inTable.getWord(), p);
+        visit(inTable.getTableCall(), p);
         afterSyntax(inTable, p);
         return inTable;
     }
