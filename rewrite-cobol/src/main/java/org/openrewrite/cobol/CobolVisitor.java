@@ -3986,7 +3986,7 @@ public class CobolVisitor<P> extends TreeVisitor<Cobol, P> {
         s = s.withMarkers(visitMarkers(s.getMarkers(), p));
         s = s.withCorresponding((Cobol.Word) visit(s.getCorresponding(), p));
         s = s.withQualifiedDataName((Cobol.QualifiedDataName) visit(s.getQualifiedDataName(), p));
-        s = s.withGiving((Cobol.Word) visit(s.getGiving(), p));
+        s = s.withFrom((Cobol.Word) visit(s.getFrom(), p));
         s = s.withSubtractMinuendCorresponding((Cobol.SubtractMinuendCorresponding) visit(s.getSubtractMinuendCorresponding(), p));
         return s;
     }

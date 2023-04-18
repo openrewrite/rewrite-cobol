@@ -4014,7 +4014,7 @@ public class CobolSourcePrinter<P> extends CobolVisitor<PrintOutputCapture<P>> {
         beforeSyntax(subtractCorrespondingStatement, Space.Location.SUBTRACT_CORRESPONDING_STATEMENT_PREFIX, p);
         visit(subtractCorrespondingStatement.getCorresponding(), p);
         visit(subtractCorrespondingStatement.getQualifiedDataName(), p);
-        visit(subtractCorrespondingStatement.getGiving(), p);
+        visit(subtractCorrespondingStatement.getFrom(), p);
         visit(subtractCorrespondingStatement.getSubtractMinuendCorresponding(), p);
         afterSyntax(subtractCorrespondingStatement, p);
         return subtractCorrespondingStatement;

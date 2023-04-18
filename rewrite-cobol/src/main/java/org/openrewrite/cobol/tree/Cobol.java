@@ -8595,6 +8595,8 @@ public interface Cobol extends Tree {
         Space prefix;
         Markers markers;
         List<Word> words;
+
+        @Nullable
         Cobol statement;
 
         @Override
@@ -8812,7 +8814,7 @@ public interface Cobol extends Tree {
         Markers markers;
         Word corresponding;
         QualifiedDataName qualifiedDataName;
-        Word giving;
+        Word from;
         SubtractMinuendCorresponding subtractMinuendCorresponding;
 
         @Override

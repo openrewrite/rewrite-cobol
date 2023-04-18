@@ -2519,4 +2519,559 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         r = r.withIdentifier(visitAndCast(r.getIdentifier(), p));
         return r;
     }
+
+    @Override
+    public Cobol.SameClause visitSameClause(Cobol.SameClause sameClause, P p) {
+        Cobol.SameClause s = sameClause;
+        s = s.withFileNames(ListUtils.map(s.getFileNames(), f -> visitAndCast(f, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionAutoClause visitScreenDescriptionAutoClause(Cobol.ScreenDescriptionAutoClause screenDescriptionAutoClause, P p) {
+        return screenDescriptionAutoClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionBackgroundColorClause visitScreenDescriptionBackgroundColorClause(Cobol.ScreenDescriptionBackgroundColorClause screenDescriptionBackgroundColorClause, P p) {
+        Cobol.ScreenDescriptionBackgroundColorClause s = screenDescriptionBackgroundColorClause;
+        s = s.withValue(visitAndCast(s.getValue(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionBellClause visitScreenDescriptionBellClause(Cobol.ScreenDescriptionBellClause screenDescriptionBellClause, P p) {
+        return screenDescriptionBellClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionBlankClause visitScreenDescriptionBlankClause(Cobol.ScreenDescriptionBlankClause screenDescriptionBlankClause, P p) {
+        return screenDescriptionBlankClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionBlankWhenZeroClause visitScreenDescriptionBlankWhenZeroClause(Cobol.ScreenDescriptionBlankWhenZeroClause screenDescriptionBlankWhenZeroClause, P p) {
+        return screenDescriptionBlankWhenZeroClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionBlinkClause visitScreenDescriptionBlinkClause(Cobol.ScreenDescriptionBlinkClause screenDescriptionBlinkClause, P p) {
+        return screenDescriptionBlinkClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionColumnClause visitScreenDescriptionColumnClause(Cobol.ScreenDescriptionColumnClause screenDescriptionColumnClause, P p) {
+        Cobol.ScreenDescriptionColumnClause s = screenDescriptionColumnClause;
+        s = s.withValue(visitAndCast(s.getValue(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionControlClause visitScreenDescriptionControlClause(Cobol.ScreenDescriptionControlClause screenDescriptionControlClause, P p) {
+        Cobol.ScreenDescriptionControlClause s = screenDescriptionControlClause;
+        s = s.withValue(visitAndCast(s.getValue(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionEntry visitScreenDescriptionEntry(Cobol.ScreenDescriptionEntry screenDescriptionEntry, P p) {
+        Cobol.ScreenDescriptionEntry s = screenDescriptionEntry;
+        s = s.withName(visitAndCast(s.getName(), p));
+        s = s.withClauses(ListUtils.map(s.getClauses(), c -> visitAndCast(c, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionEraseClause visitScreenDescriptionEraseClause(Cobol.ScreenDescriptionEraseClause screenDescriptionEraseClause, P p) {
+        return screenDescriptionEraseClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionForegroundColorClause visitScreenDescriptionForegroundColorClause(Cobol.ScreenDescriptionForegroundColorClause screenDescriptionForegroundColorClause, P p) {
+        Cobol.ScreenDescriptionForegroundColorClause s = screenDescriptionForegroundColorClause;
+        s = s.withValue(visitAndCast(s.getValue(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionFromClause visitScreenDescriptionFromClause(Cobol.ScreenDescriptionFromClause screenDescriptionFromClause, P p) {
+        Cobol.ScreenDescriptionFromClause s = screenDescriptionFromClause;
+        s = s.withValue(visitAndCast(s.getValue(), p));
+        s = s.withScreenDescriptionToClause(visitAndCast(s.getScreenDescriptionToClause(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionFullClause visitScreenDescriptionFullClause(Cobol.ScreenDescriptionFullClause screenDescriptionFullClause, P p) {
+        return screenDescriptionFullClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionGridClause visitScreenDescriptionGridClause(Cobol.ScreenDescriptionGridClause screenDescriptionGridClause, P p) {
+        return screenDescriptionGridClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionJustifiedClause visitScreenDescriptionJustifiedClause(Cobol.ScreenDescriptionJustifiedClause screenDescriptionJustifiedClause, P p) {
+        return screenDescriptionJustifiedClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionLightClause visitScreenDescriptionLightClause(Cobol.ScreenDescriptionLightClause screenDescriptionLightClause, P p) {
+        return screenDescriptionLightClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionLineClause visitScreenDescriptionLineClause(Cobol.ScreenDescriptionLineClause screenDescriptionLineClause, P p) {
+        Cobol.ScreenDescriptionLineClause s = screenDescriptionLineClause;
+        s = s.withValue(visitAndCast(s.getValue(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionPictureClause visitScreenDescriptionPictureClause(Cobol.ScreenDescriptionPictureClause screenDescriptionPictureClause, P p) {
+        Cobol.ScreenDescriptionPictureClause s = screenDescriptionPictureClause;
+        s = s.withPictureString(visitAndCast(s.getPictureString(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionReverseVideoClause visitScreenDescriptionReverseVideoClause(Cobol.ScreenDescriptionReverseVideoClause screenDescriptionReverseVideoClause, P p) {
+        return screenDescriptionReverseVideoClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionPromptClause visitScreenDescriptionPromptClause(Cobol.ScreenDescriptionPromptClause screenDescriptionPromptClause, P p) {
+        Cobol.ScreenDescriptionPromptClause s = screenDescriptionPromptClause;
+        s = s.withName(visitAndCast(s.getName(), p));
+        s = s.withScreenDescriptionPromptOccursClause(visitAndCast(s.getScreenDescriptionPromptOccursClause(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionPromptOccursClause visitScreenDescriptionPromptOccursClause(Cobol.ScreenDescriptionPromptOccursClause screenDescriptionPromptOccursClause, P p) {
+        Cobol.ScreenDescriptionPromptOccursClause s = screenDescriptionPromptOccursClause;
+        s = s.withInteger(visitAndCast(s.getInteger(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionRequiredClause visitScreenDescriptionRequiredClause(Cobol.ScreenDescriptionRequiredClause screenDescriptionRequiredClause, P p) {
+        return screenDescriptionRequiredClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionSecureClause visitScreenDescriptionSecureClause(Cobol.ScreenDescriptionSecureClause screenDescriptionSecureClause, P p) {
+        return screenDescriptionSecureClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionSignClause visitScreenDescriptionSignClause(Cobol.ScreenDescriptionSignClause screenDescriptionSignClause, P p) {
+        return screenDescriptionSignClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionSizeClause visitScreenDescriptionSizeClause(Cobol.ScreenDescriptionSizeClause screenDescriptionSizeClause, P p) {
+        Cobol.ScreenDescriptionSizeClause s = screenDescriptionSizeClause;
+        s = s.withValue(visitAndCast(s.getValue(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionToClause visitScreenDescriptionToClause(Cobol.ScreenDescriptionToClause screenDescriptionToClause, P p) {
+        Cobol.ScreenDescriptionToClause s = screenDescriptionToClause;
+        s = s.withIdentifier(visitAndCast(s.getIdentifier(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionValueClause visitScreenDescriptionValueClause(Cobol.ScreenDescriptionValueClause screenDescriptionValueClause, P p) {
+        Cobol.ScreenDescriptionValueClause s = screenDescriptionValueClause;
+        s = s.withValue(visitAndCast(s.getValue(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionUnderlineClause visitScreenDescriptionUnderlineClause(Cobol.ScreenDescriptionUnderlineClause screenDescriptionUnderlineClause, P p) {
+        return screenDescriptionUnderlineClause;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionUsageClause visitScreenDescriptionUsageClause(Cobol.ScreenDescriptionUsageClause screenDescriptionUsageClause, P p) {
+        return screenDescriptionUsageClause;
+    }
+
+    @Override
+    public Cobol.SearchVarying visitSearchVarying(Cobol.SearchVarying searchVarying, P p) {
+        Cobol.SearchVarying s = searchVarying;
+        s = s.withQualifiedDataName(visitAndCast(s.getQualifiedDataName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionUsingClause visitScreenDescriptionUsingClause(Cobol.ScreenDescriptionUsingClause screenDescriptionUsingClause, P p) {
+        Cobol.ScreenDescriptionUsingClause s = screenDescriptionUsingClause;
+        s = s.withIdentifier(visitAndCast(s.getIdentifier(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.Search visitSearch(Cobol.Search search, P p) {
+        Cobol.Search s = search;
+        s = s.withQualifiedDataName(visitAndCast(s.getQualifiedDataName(), p));
+        s = s.withSearchVarying(visitAndCast(s.getSearchVarying(), p));
+        s = s.withAtEndPhrase(visitAndCast(s.getAtEndPhrase(), p));
+        s = s.withSearchWhen(ListUtils.map(s.getSearchWhen(), e -> visitAndCast(e, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.ScreenDescriptionZeroFillClause visitScreenDescriptionZeroFillClause(Cobol.ScreenDescriptionZeroFillClause screenDescriptionZeroFillClause, P p) {
+        return screenDescriptionZeroFillClause;
+    }
+
+    @Override
+    public Cobol.ScreenSection visitScreenSection(Cobol.ScreenSection screenSection, P p) {
+        Cobol.ScreenSection s = screenSection;
+        s = s.withDescriptions(ListUtils.map(s.getDescriptions(), e -> visitAndCast(e, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.SearchWhen visitSearchWhen(Cobol.SearchWhen searchWhen, P p) {
+        Cobol.SearchWhen s = searchWhen;
+        s = s.withCondition(visitAndCast(s.getCondition(), p));
+        s = s.withStatements(ListUtils.map(s.getStatements(), e -> visitAndCast(e, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.Send visitSend(Cobol.Send send, P p) {
+        Cobol.Send s = send;
+        s = s.withStatement(visitAndCast(s.getStatement(), p));
+        s = s.withOnExceptionClause(visitAndCast(s.getOnExceptionClause(), p));
+        s = s.withNotOnExceptionClause(visitAndCast(s.getNotOnExceptionClause(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SelectClause visitSelectClause(Cobol.SelectClause selectClause, P p) {
+        Cobol.SelectClause s = selectClause;
+        s = s.withFileName(visitAndCast(s.getFileName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SendAdvancingLines visitSendAdvancingLines(Cobol.SendAdvancingLines sendAdvancingLines, P p) {
+        Cobol.SendAdvancingLines s = sendAdvancingLines;
+        s = s.withName(visitAndCast(s.getName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SendPhrase visitSendPhrase(Cobol.SendPhrase sendPhrase, P p) {
+        Cobol.SendPhrase s = sendPhrase;
+        s = s.withTarget(visitAndCast(s.getTarget(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.Sentence visitSentence(Cobol.Sentence sentence, P p) {
+        Cobol.Sentence s = sentence;
+        s = s.withStatements(ListUtils.map(s.getStatements(), e -> visitAndCast(e, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.Set visitSet(Cobol.Set set, P p) {
+        Cobol.Set s = set;
+        s = s.withTo(ListUtils.map(s.getTo(), e -> visitAndCast(e, p)));
+        s = s.withUpDown(visitAndCast(s.getUpDown(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SetTo visitSetTo(Cobol.SetTo setTo, P p) {
+        Cobol.SetTo s = setTo;
+        s = s.withIdentifiers(ListUtils.map(s.getIdentifiers(), e -> visitAndCast(e, p)));
+        s = s.withValues(ListUtils.map(s.getValues(), e -> visitAndCast(e, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.Sort visitSort(Cobol.Sort sort, P p) {
+        Cobol.Sort s = sort;
+        s = s.withFileName(visitAndCast(s.getFileName(), p));
+        s = s.withSortOnKeyClause(ListUtils.map(s.getSortOnKeyClause(), e -> visitAndCast(e, p)));
+        s = s.withSortDuplicatesPhrase(visitAndCast(s.getSortDuplicatesPhrase(), p));
+        s = s.withSortCollatingSequencePhrase(visitAndCast(s.getSortCollatingSequencePhrase(), p));
+        s = s.withSortInputProcedurePhrase(visitAndCast(s.getSortInputProcedurePhrase(), p));
+        s = s.withSortUsing(ListUtils.map(s.getSortUsing(), e -> visitAndCast(e, p)));
+        s = s.withSortOutputProcedurePhrase(visitAndCast(s.getSortOutputProcedurePhrase(), p));
+        s = s.withSortGiving(ListUtils.map(s.getSortGiving(), e -> visitAndCast(e, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.Sortable visitSortable(Cobol.Sortable sortable, P p) {
+        Cobol.Sortable s = sortable;
+        s = s.withNames(ListUtils.map(s.getNames(), e -> visitAndCast(e, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.SendStatementSync visitSendStatementSync(Cobol.SendStatementSync sendStatementSync, P p) {
+        Cobol.SendStatementSync s = sendStatementSync;
+        s = s.withName(visitAndCast(s.getName(), p));
+        s = s.withSendFromPhrase(visitAndCast(s.getSendFromPhrase(), p));
+        s = s.withSendWithPhrase(visitAndCast(s.getSendWithPhrase(), p));
+        s = s.withSendReplacingPhrase(visitAndCast(s.getSendReplacingPhrase(), p));
+        s = s.withSendAdvancingPhrase(visitAndCast(s.getSendAdvancingPhrase(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SetUpDown visitSetUpDown(Cobol.SetUpDown setUpDown, P p) {
+        Cobol.SetUpDown s = setUpDown;
+        s = s.withTo(ListUtils.map(s.getTo(), e -> visitAndCast(e, p)));
+        s = s.withValue(visitAndCast(s.getValue(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SpecialNames visitSpecialNames(Cobol.SpecialNames specialNames, P p) {
+        Cobol.SpecialNames s = specialNames;
+        s = s.withClauses(ListUtils.map(s.getClauses(), e -> visitAndCast(e, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.SortCollatingSequencePhrase visitSortCollatingSequencePhrase(Cobol.SortCollatingSequencePhrase sortCollatingSequencePhrase, P p) {
+        Cobol.SortCollatingSequencePhrase s = sortCollatingSequencePhrase;
+        s = s.withAlphabetNames(ListUtils.map(s.getAlphabetNames(), e -> visitAndCast(e, p)));
+        s = s.withSortCollatingAlphanumeric(visitAndCast(s.getSortCollatingAlphanumeric(), p));
+        s = s.withSortCollatingNational(visitAndCast(s.getSortCollatingNational(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SortGiving visitSortGiving(Cobol.SortGiving sortGiving, P p) {
+        Cobol.SortGiving s = sortGiving;
+        s = s.withFileName(visitAndCast(s.getFileName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SortProcedurePhrase visitSortProcedurePhrase(Cobol.SortProcedurePhrase sortProcedurePhrase, P p) {
+        Cobol.SortProcedurePhrase s = sortProcedurePhrase;
+        s = s.withProcedureName(visitAndCast(s.getProcedureName(), p));
+        s = s.withSortInputThrough(visitAndCast(s.getSortInputThrough(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.Start visitStart(Cobol.Start start, P p) {
+        Cobol.Start s = start;
+        s = s.withFileName(visitAndCast(s.getFileName(), p));
+        s = s.withStartKey(visitAndCast(s.getStartKey(), p));
+        s = s.withInvalidKeyPhrase(visitAndCast(s.getInvalidKeyPhrase(), p));
+        s = s.withNotInvalidKeyPhrase(visitAndCast(s.getNotInvalidKeyPhrase(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SourceComputer visitSourceComputer(Cobol.SourceComputer sourceComputer, P p) {
+        Cobol.SourceComputer s = sourceComputer;
+        s = s.withComputer(visitAndCast(s.getComputer(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.StartKey visitStartKey(Cobol.StartKey startKey, P p) {
+        Cobol.StartKey s = startKey;
+        s = s.withQualifiedDataName(visitAndCast(s.getQualifiedDataName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SourceComputerDefinition visitSourceComputerDefinition(Cobol.SourceComputerDefinition sourceComputerDefinition, P p) {
+        Cobol.SourceComputerDefinition s = sourceComputerDefinition;
+        s = s.withComputerName(visitAndCast(s.getComputerName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.Stop visitStop(Cobol.Stop stop, P p) {
+        Cobol.Stop s = stop;
+        s = s.withStatement(visitAndCast(s.getStatement(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.StatementPhrase visitStatementPhrase(Cobol.StatementPhrase statementPhrase, P p) {
+        Cobol.StatementPhrase s = statementPhrase;
+        s = s.withStatements(ListUtils.map(s.getStatements(), e -> visitAndCast(e, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.StatusKeyClause visitStatusKeyClause(Cobol.StatusKeyClause statusKeyClause, P p) {
+        Cobol.StatusKeyClause s = statusKeyClause;
+        s = s.withName(visitAndCast(s.getName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.StopStatementGiving visitStopStatementGiving(Cobol.StopStatementGiving stopStatementGiving, P p) {
+        Cobol.StopStatementGiving s = stopStatementGiving;
+        s = s.withName(visitAndCast(s.getName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.StringDelimitedByPhrase visitStringDelimitedByPhrase(Cobol.StringDelimitedByPhrase stringDelimitedByPhrase, P p) {
+        Cobol.StringDelimitedByPhrase s = stringDelimitedByPhrase;
+        s = s.withIdentifier(visitAndCast(s.getIdentifier(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.StringForPhrase visitStringForPhrase(Cobol.StringForPhrase stringForPhrase, P p) {
+        Cobol.StringForPhrase s = stringForPhrase;
+        s = s.withIdentifier(visitAndCast(s.getIdentifier(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.StringIntoPhrase visitStringIntoPhrase(Cobol.StringIntoPhrase stringIntoPhrase, P p) {
+        Cobol.StringIntoPhrase s = stringIntoPhrase;
+        s = s.withIdentifier(visitAndCast(s.getIdentifier(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.StringSendingPhrase visitStringSendingPhrase(Cobol.StringSendingPhrase stringSendingPhrase, P p) {
+        Cobol.StringSendingPhrase s = stringSendingPhrase;
+        s = s.withSendings(ListUtils.map(s.getSendings(), e -> visitAndCast(e, p)));
+        s = s.withPhrase(visitAndCast(s.getPhrase(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.StringStatement visitStringStatement(Cobol.StringStatement stringStatement, P p) {
+        Cobol.StringStatement s = stringStatement;
+        s = s.withStringSendingPhrases(ListUtils.map(s.getStringSendingPhrases(), e -> visitAndCast(e, p)));
+        s = s.withStringIntoPhrase(visitAndCast(s.getStringIntoPhrase(), p));
+        s = s.withStringWithPointerPhrase(visitAndCast(s.getStringWithPointerPhrase(), p));
+        s = s.withOnOverflowPhrase(visitAndCast(s.getOnOverflowPhrase(), p));
+        s = s.withNotOnOverflowPhrase(visitAndCast(s.getNotOnOverflowPhrase(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.Subscript visitSubscript(Cobol.Subscript subscript, P p) {
+        Cobol.Subscript s = subscript;
+        s = s.withFirst(visitAndCast(s.getFirst(), p));
+        s = s.withSecond(visitAndCast(s.getSecond(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.Subtract visitSubtract(Cobol.Subtract subtract, P p) {
+        Cobol.Subtract s = subtract;
+        s = s.withOperation(visitAndCast(s.getOperation(), p));
+        s = s.withOnSizeErrorPhrase(visitAndCast(s.getOnSizeErrorPhrase(), p));
+        s = s.withNotOnSizeErrorPhrase(visitAndCast(s.getOnSizeErrorPhrase(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.StringWithPointerPhrase visitStringWithPointerPhrase(Cobol.StringWithPointerPhrase stringWithPointerPhrase, P p) {
+        Cobol.StringWithPointerPhrase s = stringWithPointerPhrase;
+        s = s.withQualifiedDataName(visitAndCast(s.getQualifiedDataName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SubtractCorrespondingStatement visitSubtractCorrespondingStatement(Cobol.SubtractCorrespondingStatement subtractCorrespondingStatement, P p) {
+        Cobol.SubtractCorrespondingStatement s = subtractCorrespondingStatement;
+        s = s.withQualifiedDataName(visitAndCast(s.getQualifiedDataName(), p));
+        s = s.withSubtractMinuendCorresponding(visitAndCast(s.getSubtractMinuendCorresponding(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SubtractFromGivingStatement visitSubtractFromGivingStatement(Cobol.SubtractFromGivingStatement subtractFromGivingStatement, P p) {
+        Cobol.SubtractFromGivingStatement s = subtractFromGivingStatement;
+        s = s.withSubtractSubtrahend(ListUtils.map(s.getSubtractSubtrahend(), e -> visitAndCast(e, p)));
+        s = s.withSubtractMinuendGiving(visitAndCast(s.getSubtractMinuendGiving(), p));
+        s = s.withSubtractGiving(ListUtils.map(s.getSubtractGiving(), e -> visitAndCast(e, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.SubtractFromStatement visitSubtractFromStatement(Cobol.SubtractFromStatement subtractFromStatement, P p) {
+        Cobol.SubtractFromStatement s = subtractFromStatement;
+        s = s.withSubtractSubtrahend(ListUtils.map(s.getSubtractSubtrahend(), e -> visitAndCast(e, p)));
+        s = s.withSubtractMinuend(ListUtils.map(s.getSubtractMinuend(), e -> visitAndCast(e, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.SubtractMinuendCorresponding visitSubtractMinuendCorresponding(Cobol.SubtractMinuendCorresponding subtractMinuendCorresponding, P p) {
+        Cobol.SubtractMinuendCorresponding s = subtractMinuendCorresponding;
+        s = s.withQualifiedDataName(visitAndCast(s.getQualifiedDataName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SymbolicCharacter visitSymbolicCharacter(Cobol.SymbolicCharacter symbolicCharacter, P p) {
+        Cobol.SymbolicCharacter s = symbolicCharacter;
+        s = s.withSymbols(ListUtils.map(s.getSymbols(), e -> visitAndCast(e, p)));
+        s = s.withLiterals(ListUtils.map(s.getLiterals(), e -> visitAndCast(e, p)));
+        return s;
+    }
+
+    @Override
+    public Cobol.SymbolicCharactersClause visitSymbolicCharactersClause(Cobol.SymbolicCharactersClause symbolicCharactersClause, P p) {
+        Cobol.SymbolicCharactersClause s = symbolicCharactersClause;
+        s = s.withSymbols(ListUtils.map(s.getSymbols(), e -> visitAndCast(e, p)));
+        s = s.withAlphabetName(visitAndCast(s.getAlphabetName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SymbolicDestinationClause visitSymbolicDestinationClause(Cobol.SymbolicDestinationClause symbolicDestinationClause, P p) {
+        Cobol.SymbolicDestinationClause s = symbolicDestinationClause;
+        s = s.withDataDescName(visitAndCast(s.getDataDescName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SymbolicQueueClause visitSymbolicQueueClause(Cobol.SymbolicQueueClause symbolicQueueClause, P p) {
+        Cobol.SymbolicQueueClause s = symbolicQueueClause;
+        s = s.withDataDescName(visitAndCast(s.getDataDescName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SymbolicSourceClause visitSymbolicSourceClause(Cobol.SymbolicSourceClause symbolicSourceClause, P p) {
+        Cobol.SymbolicSourceClause s = symbolicSourceClause;
+        s = s.withDataDescName(visitAndCast(s.getDataDescName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SymbolicSubQueueClause visitSymbolicSubQueueClause(Cobol.SymbolicSubQueueClause symbolicSubQueueClause, P p) {
+        Cobol.SymbolicSubQueueClause s = symbolicSubQueueClause;
+        s = s.withDataDescName(visitAndCast(s.getDataDescName(), p));
+        return s;
+    }
+
+    @Override
+    public Cobol.SymbolicTerminalClause visitSymbolicTerminalClause(Cobol.SymbolicTerminalClause symbolicTerminalClause, P p) {
+        Cobol.SymbolicTerminalClause s = symbolicTerminalClause;
+        s = s.withDataDescName(visitAndCast(s.getDataDescName(), p));
+        return s;
+    }
 }

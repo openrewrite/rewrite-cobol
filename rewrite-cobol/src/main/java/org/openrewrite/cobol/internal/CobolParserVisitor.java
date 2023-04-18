@@ -3788,7 +3788,8 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 (Cobol.Word) visit(ctx.DOT_FS(0)),
                 (Name) visit(ctx.programName()),
                 wordsList(ctx.IS(), ctx.COMMON(), ctx.INITIAL(), ctx.LIBRARY(), ctx.DEFINITION(), ctx.RECURSIVE(), ctx.PROGRAM()),
-                ctx.DOT_FS().size() == 1 ? null : visitNullable(ctx.DOT_FS(1))
+                ctx.DOT_FS().size() == 1 ? null : visitNullable(ctx.DOT_FS(1)),
+                visitNullable(ctx.commentEntry())
         );
     }
 
