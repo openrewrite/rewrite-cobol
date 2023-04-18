@@ -1,9 +1,5 @@
 package org.openrewrite.cobol;
 
-import org.openrewrite.ExecutionContext;
-import org.openrewrite.cobol.internal.CobolDialect;
-import org.openrewrite.cobol.tree.CobolPreprocessor;
-
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -51,28 +47,6 @@ public class ResourceParser {
         });
 
         return paths;
-    }
-
-    /**
-     *
-     * @param alreadyParsed collection of paths that have already been parsed as resources.
-     * @param cobolDialect COBOL dialect to parse the copy books with.
-     * @param fileExtensions file extensions to search, collect, and parse as copy books.
-     * @return parsed copy books.
-     * @throws IOException an exception occurred attempting to walk the file tree.
-     */
-    public List<CobolPreprocessor.CopyBook> parseCopyBooks(
-            Collection<Path> alreadyParsed,
-            CobolDialect cobolDialect,
-            List<String> fileExtensions,
-            ExecutionContext ctx
-    ) throws IOException {
-
-        List<Path> copyBooks = getResourcesByExtension(alreadyParsed, fileExtensions);
-        CobolPreprocessorParser parser = CobolPreprocessorParser.builder()
-                .setCobolDialect(cobolDialect)
-                .build();
-        return parser.parseCopyBooks(copyBooks, cobolDialect, ctx);
     }
 
     private boolean isIgnoredDirectory(Path searchDir, Path path) {

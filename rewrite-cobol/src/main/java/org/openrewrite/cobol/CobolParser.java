@@ -83,13 +83,14 @@ public class CobolParser implements Parser<CobolSourceFile> {
             }
         }
 
+        CopyBookParser copyBookParser = new CopyBookParser(cobolDialect);
+        List<CobolPreprocessor.CopyBook> copyBooks = copyBookParser.parseInputs(copyBookInputs, relativeTo, ctx);
+
         CobolPreprocessorParser cobolPreprocessorParser = CobolPreprocessorParser.builder()
                 .setCobolDialect(cobolDialect)
                 .setEnableCopy(enableCopy)
                 .setEnableReplace(enableReplace)
                 .build();
-
-        List<CobolPreprocessor.CopyBook> copyBooks = cobolPreprocessorParser.parseCopyBooks(copyBookInputs, relativeTo, cobolDialect, ctx);
         cobolPreprocessorParser.setCopyBooks(!this.copyBooks.isEmpty() ? this.copyBooks : copyBooks);
 
         List<CobolSourceFile> sources;

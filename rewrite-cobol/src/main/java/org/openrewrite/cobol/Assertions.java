@@ -17,7 +17,6 @@ package org.openrewrite.cobol;
 
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
-import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.internal.lang.Nullable;
@@ -25,11 +24,13 @@ import org.openrewrite.test.SourceSpec;
 import org.openrewrite.test.SourceSpecs;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Consumer;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 public class Assertions {
     private Assertions() {
@@ -125,8 +126,8 @@ public class Assertions {
         ResourceParser resourceParser = new ResourceParser(Paths.get("").toAbsolutePath(), emptyList(), emptyList());
 
         try {
-            return resourceParser.parseCopyBooks(emptyList(), IbmAnsi85.getInstance(),
-                    CobolPreprocessorParser.COPYBOOK_FILE_EXTENSIONS, new InMemoryExecutionContext());
+            List<Path> paths = resourceParser.getResourcesByExtension(emptyList(), singletonList(".cpy"));
+            return CopyBookParser.builder().build().parse(paths, null, new InMemoryExecutionContext());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
