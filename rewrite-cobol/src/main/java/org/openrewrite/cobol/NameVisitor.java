@@ -1593,16 +1593,6 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
     }
 
     @Override
-    public Cobol.Return visitReturn(Cobol.Return returnz, P p) {
-        Cobol.Return r = returnz;
-        r = r.withFileName(visitAndCast(r.getFileName(), p));
-        r = r.withInto(visitAndCast(r.getInto(), p));
-        r = r.withAtEndPhrase(visitAndCast(r.getAtEndPhrase(), p));
-        r = r.withNotAtEndPhrase(visitAndCast(r.getNotAtEndPhrase(), p));
-        return r;
-    }
-
-    @Override
     public Cobol.ObjectComputer visitObjectComputer(Cobol.ObjectComputer objectComputer, P p) {
         Cobol.ObjectComputer o = objectComputer;
         o = o.withComputer(visitAndCast(o.getComputer(), p));
@@ -1983,4 +1973,550 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         return q;
     }
 
+    @Override
+    public Cobol.Read visitRead(Cobol.Read read, P p) {
+        Cobol.Read r = read;
+        r = r.withFileName(visitAndCast(r.getFileName(), p));
+        r = r.withReadInto(visitAndCast(r.getReadInto(), p));
+        r = r.withReadWith(visitAndCast(r.getReadWith(), p));
+        r = r.withReadKey(visitAndCast(r.getReadKey(), p));
+        r = r.withInvalidKeyPhrase(visitAndCast(r.getInvalidKeyPhrase(), p));
+        r = r.withNotInvalidKeyPhrase(visitAndCast(r.getNotInvalidKeyPhrase(), p));
+        r = r.withAtEndPhrase(visitAndCast(r.getAtEndPhrase(), p));
+        r = r.withNotAtEndPhrase(visitAndCast(r.getNotAtEndPhrase(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReadInto visitReadInto(Cobol.ReadInto readInto, P p) {
+        Cobol.ReadInto r = readInto;
+        r = r.withIdentifier(visitAndCast(r.getIdentifier(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReadKey visitReadKey(Cobol.ReadKey readKey, P p) {
+        Cobol.ReadKey r = readKey;
+        r = r.withQualifiedDataName(visitAndCast(r.getQualifiedDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReadWith visitReadWith(Cobol.ReadWith readWith, P p) {
+        return readWith;
+    }
+
+    @Override
+    public Cobol.Receivable visitReceivable(Cobol.Receivable receivable, P p) {
+        Cobol.Receivable r = receivable;
+        r = r.withValue(visitAndCast(r.getValue(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.Receive visitReceive(Cobol.Receive receive, P p) {
+        Cobol.Receive r = receive;
+        r = r.withFromOrInto(visitAndCast(r.getFromOrInto(), p));
+        r = r.withOnExceptionClause(visitAndCast(r.getOnExceptionClause(), p));
+        r = r.withNotOnExceptionClause(visitAndCast(r.getNotOnExceptionClause(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReceiveFrom visitReceiveFrom(Cobol.ReceiveFrom receiveFrom, P p) {
+        Cobol.ReceiveFrom r = receiveFrom;
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReceiveFromStatement visitReceiveFromStatement(Cobol.ReceiveFromStatement receiveFromStatement, P p) {
+        Cobol.ReceiveFromStatement r = receiveFromStatement;
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        r = r.withReceiveFrom(visitAndCast(r.getReceiveFrom(), p));
+        r = r.withBeforeWithThreadSizeStatus(ListUtils.map(r.getBeforeWithThreadSizeStatus(), it -> visitAndCast(it, p)));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReceiveIntoStatement visitReceiveIntoStatement(Cobol.ReceiveIntoStatement receiveIntoStatement, P p) {
+        Cobol.ReceiveIntoStatement r = receiveIntoStatement;
+        r = r.withCdName(visitAndCast(r.getCdName(), p));
+        r = r.withIdentifier(visitAndCast(r.getIdentifier(), p));
+        r = r.withReceiveNoData(visitAndCast(r.getReceiveNoData(), p));
+        r = r.withReceiveWithData(visitAndCast(r.getReceiveWithData(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReceiveWith visitReceiveWith(Cobol.ReceiveWith receiveWith, P p) {
+        return receiveWith;
+    }
+
+    @Override
+    public Cobol.RecordContainsClause visitRecordContainsClause(Cobol.RecordContainsClause recordContainsClause, P p) {
+        Cobol.RecordContainsClause r = recordContainsClause;
+        r = r.withClause(visitAndCast(r.getClause(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RecordContainsClauseFormat1 visitRecordContainsClauseFormat1(Cobol.RecordContainsClauseFormat1 recordContainsClauseFormat1, P p) {
+        Cobol.RecordContainsClauseFormat1 r = recordContainsClauseFormat1;
+        r = r.withIntegerLiteral(visitAndCast(r.getIntegerLiteral(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RecordContainsClauseFormat2 visitRecordContainsClauseFormat2(Cobol.RecordContainsClauseFormat2 recordContainsClauseFormat2, P p) {
+        Cobol.RecordContainsClauseFormat2 r = recordContainsClauseFormat2;
+        r = r.withFromClause(ListUtils.map(r.getFromClause(), it -> visitAndCast(it, p)));
+        r = r.withQualifiedDataName(ListUtils.map(r.getQualifiedDataName(), it -> visitAndCast(it, p)));
+        return r;
+    }
+
+    @Override
+    public Cobol.RecordContainsClauseFormat3 visitRecordContainsClauseFormat3(Cobol.RecordContainsClauseFormat3 recordContainsClauseFormat3, P p) {
+        Cobol.RecordContainsClauseFormat3 r = recordContainsClauseFormat3;
+        r = r.withIntegerLiteral(visitAndCast(r.getIntegerLiteral(), p));
+        r = r.withRecordContainsTo(visitAndCast(r.getRecordContainsTo(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RecordContainsTo visitRecordContainsTo(Cobol.RecordContainsTo recordContainsTo, P p) {
+        Cobol.RecordContainsTo r = recordContainsTo;
+        r = r.withIntegerLiteral(visitAndCast(r.getIntegerLiteral(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RecordDelimiterClause visitRecordDelimiterClause(Cobol.RecordDelimiterClause recordDelimiterClause, P p) {
+        Cobol.RecordDelimiterClause r = recordDelimiterClause;
+        r = r.withName(visitAndCast(r.getName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RecordingModeClause visitRecordingModeClause(Cobol.RecordingModeClause recordingModeClause, P p) {
+        Cobol.RecordingModeClause r = recordingModeClause;
+        r = r.withMode(visitAndCast(r.getMode(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RecordKeyClause visitRecordKeyClause(Cobol.RecordKeyClause recordKeyClause, P p) {
+        Cobol.RecordKeyClause r = recordKeyClause;
+        r = r.withQualifiedDataName(visitAndCast(r.getQualifiedDataName(), p));
+        r = r.withPasswordClause(visitAndCast(r.getPasswordClause(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReferenceModifier visitReferenceModifier(Cobol.ReferenceModifier referenceModifier, P p) {
+        Cobol.ReferenceModifier r = referenceModifier;
+        r = r.withCharacterPosition(visitAndCast(r.getCharacterPosition(), p));
+        r = r.withLength(visitAndCast(r.getLength(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RelationalOperator visitRelationalOperator(Cobol.RelationalOperator relationalOperator, P p) {
+        return relationalOperator;
+    }
+
+    @Override
+    public Cobol.RelationArithmeticComparison visitRelationArithmeticComparison(Cobol.RelationArithmeticComparison relationArithmeticComparison, P p) {
+        Cobol.RelationArithmeticComparison r = relationArithmeticComparison;
+        r = r.withArithmeticExpressionA(visitAndCast(r.getArithmeticExpressionA(), p));
+        r = r.withRelationalOperator(visitAndCast(r.getRelationalOperator(), p));
+        r = r.withArithmeticExpressionB(visitAndCast(r.getArithmeticExpressionB(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RelationCombinedComparison visitRelationCombinedComparison(Cobol.RelationCombinedComparison relationCombinedComparison, P p) {
+        Cobol.RelationCombinedComparison r = relationCombinedComparison;
+        r = r.withArithmeticExpression(visitAndCast(r.getArithmeticExpression(), p));
+        r = r.withRelationalOperator(visitAndCast(r.getRelationalOperator(), p));
+        r = r.withCombinedCondition(visitAndCast(r.getCombinedCondition(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RelationCombinedCondition visitRelationCombinedCondition(Cobol.RelationCombinedCondition relationCombinedCondition, P p) {
+        Cobol.RelationCombinedCondition r = relationCombinedCondition;
+        r = r.withRelationalArithmeticExpressions(ListUtils.map(r.getRelationalArithmeticExpressions(), it -> visitAndCast(it, p)));
+        return r;
+    }
+
+    @Override
+    public Cobol.RelationSignCondition visitRelationSignCondition(Cobol.RelationSignCondition relationSignCondition, P p) {
+        Cobol.RelationSignCondition r = relationSignCondition;
+        r = r.withArithmeticExpression(visitAndCast(r.getArithmeticExpression(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RelativeKeyClause visitRelativeKeyClause(Cobol.RelativeKeyClause relativeKeyClause, P p) {
+        Cobol.RelativeKeyClause r = relativeKeyClause;
+        r = r.withQualifiedDataName(visitAndCast(r.getQualifiedDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.Release visitRelease(Cobol.Release release, P p) {
+        Cobol.Release r = release;
+        r = r.withRecordName(visitAndCast(r.getRecordName(), p));
+        r = r.withQualifiedDataName(visitAndCast(r.getQualifiedDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportClause visitReportClause(Cobol.ReportClause reportClause, P p) {
+        Cobol.ReportClause r = reportClause;
+        r = r.withReportName(ListUtils.map(r.getReportName(), it -> visitAndCast(it, p)));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportDescription visitReportDescription(Cobol.ReportDescription reportDescription, P p) {
+        Cobol.ReportDescription r = reportDescription;
+        r = r.withReportDescriptionEntry(visitAndCast(r.getReportDescriptionEntry(), p));
+        r = r.withGroupDescriptionEntries(ListUtils.map(r.getGroupDescriptionEntries(), it -> visitAndCast(it, p)));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportDescriptionEntry visitReportDescriptionEntry(Cobol.ReportDescriptionEntry reportDescriptionEntry, P p) {
+        Cobol.ReportDescriptionEntry r = reportDescriptionEntry;
+        r = r.withQualifiedDataName(visitAndCast(r.getQualifiedDataName(), p));
+        r = r.withReportDescriptionGlobalClause(visitAndCast(r.getReportDescriptionGlobalClause(), p));
+        r = r.withReportDescriptionPageLimitClause(visitAndCast(r.getReportDescriptionPageLimitClause(), p));
+        r = r.withReportDescriptionHeadingClause(visitAndCast(r.getReportDescriptionHeadingClause(), p));
+        r = r.withReportDescriptionFirstDetailClause(visitAndCast(r.getReportDescriptionFirstDetailClause(), p));
+        r = r.withReportDescriptionLastDetailClause(visitAndCast(r.getReportDescriptionLastDetailClause(), p));
+        r = r.withReportDescriptionFootingClause(visitAndCast(r.getReportDescriptionFootingClause(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportDescriptionFirstDetailClause visitReportDescriptionFirstDetailClause(Cobol.ReportDescriptionFirstDetailClause reportDescriptionFirstDetailClause, P p) {
+        Cobol.ReportDescriptionFirstDetailClause r = reportDescriptionFirstDetailClause;
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportDescriptionFootingClause visitReportDescriptionFootingClause(Cobol.ReportDescriptionFootingClause reportDescriptionFootingClause, P p) {
+        Cobol.ReportDescriptionFootingClause r = reportDescriptionFootingClause;
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportDescriptionGlobalClause visitReportDescriptionGlobalClause(Cobol.ReportDescriptionGlobalClause reportDescriptionGlobalClause, P p) {
+        return reportDescriptionGlobalClause;
+    }
+
+    @Override
+    public Cobol.ReportDescriptionHeadingClause visitReportDescriptionHeadingClause(Cobol.ReportDescriptionHeadingClause reportDescriptionHeadingClause, P p) {
+        Cobol.ReportDescriptionHeadingClause r = reportDescriptionHeadingClause;
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportDescriptionLastDetailClause visitReportDescriptionLastDetailClause(Cobol.ReportDescriptionLastDetailClause reportDescriptionLastDetailClause, P p) {
+        Cobol.ReportDescriptionLastDetailClause r = reportDescriptionLastDetailClause;
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportDescriptionPageLimitClause visitReportDescriptionPageLimitClause(Cobol.ReportDescriptionPageLimitClause reportDescriptionPageLimitClause, P p) {
+        Cobol.ReportDescriptionPageLimitClause r = reportDescriptionPageLimitClause;
+        r = r.withIntegerLiteral(visitAndCast(r.getIntegerLiteral(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupBlankWhenZeroClause visitReportGroupBlankWhenZeroClause(Cobol.ReportGroupBlankWhenZeroClause reportGroupBlankWhenZeroClause, P p) {
+        return reportGroupBlankWhenZeroClause;
+    }
+
+    @Override
+    public Cobol.ReportGroupColumnNumberClause visitReportGroupColumnNumberClause(Cobol.ReportGroupColumnNumberClause reportGroupColumnNumberClause, P p) {
+        Cobol.ReportGroupColumnNumberClause r = reportGroupColumnNumberClause;
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupDescriptionEntryFormat1 visitReportGroupDescriptionEntryFormat1(Cobol.ReportGroupDescriptionEntryFormat1 reportGroupDescriptionEntryFormat1, P p) {
+        Cobol.ReportGroupDescriptionEntryFormat1 r = reportGroupDescriptionEntryFormat1;
+        r = r.withIntegerLiteral(visitAndCast(r.getIntegerLiteral(), p));
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        r = r.withGroupLineNumberClause(visitAndCast(r.getGroupLineNumberClause(), p));
+        r = r.withGroupNextGroupClause(visitAndCast(r.getGroupNextGroupClause(), p));
+        r = r.withGroupTypeClause(visitAndCast(r.getGroupTypeClause(), p));
+        r = r.withGroupUsageClause(visitAndCast(r.getGroupUsageClause(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupDescriptionEntryFormat2 visitReportGroupDescriptionEntryFormat2(Cobol.ReportGroupDescriptionEntryFormat2 reportGroupDescriptionEntryFormat2, P p) {
+        Cobol.ReportGroupDescriptionEntryFormat2 r = reportGroupDescriptionEntryFormat2;
+        r = r.withIntegerLiteral(visitAndCast(r.getIntegerLiteral(), p));
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        r = r.withReportGroupLineNumberClause(visitAndCast(r.getReportGroupLineNumberClause(), p));
+        r = r.withGroupUsageClause(visitAndCast(r.getGroupUsageClause(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupDescriptionEntryFormat3 visitReportGroupDescriptionEntryFormat3(Cobol.ReportGroupDescriptionEntryFormat3 reportGroupDescriptionEntryFormat3, P p) {
+        Cobol.ReportGroupDescriptionEntryFormat3 r = reportGroupDescriptionEntryFormat3;
+        r = r.withIntegerLiteral(visitAndCast(r.getIntegerLiteral(), p));
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        r = r.withClauses(ListUtils.map(r.getClauses(), c -> visitAndCast(c, p)));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupIndicateClause visitReportGroupIndicateClause(Cobol.ReportGroupIndicateClause reportGroupIndicateClause, P p) {
+        return reportGroupIndicateClause;
+    }
+
+    @Override
+    public Cobol.ReportGroupJustifiedClause visitReportGroupJustifiedClause(Cobol.ReportGroupJustifiedClause reportGroupJustifiedClause, P p) {
+        return reportGroupJustifiedClause;
+    }
+
+    @Override
+    public Cobol.ReportGroupLineNumberClause visitReportGroupLineNumberClause(Cobol.ReportGroupLineNumberClause reportGroupLineNumberClause, P p) {
+        Cobol.ReportGroupLineNumberClause r = reportGroupLineNumberClause;
+        r = r.withClause(visitAndCast(r.getClause(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupLineNumberNextPage visitReportGroupLineNumberNextPage(Cobol.ReportGroupLineNumberNextPage reportGroupLineNumberNextPage, P p) {
+        Cobol.ReportGroupLineNumberNextPage r = reportGroupLineNumberNextPage;
+        r = r.withIntegerLiteral(visitAndCast(r.getIntegerLiteral(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupLineNumberPlus visitReportGroupLineNumberPlus(Cobol.ReportGroupLineNumberPlus reportGroupLineNumberPlus, P p) {
+        Cobol.ReportGroupLineNumberPlus r = reportGroupLineNumberPlus;
+        r = r.withIntegerLiteral(visitAndCast(r.getIntegerLiteral(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupNextGroupClause visitReportGroupNextGroupClause(Cobol.ReportGroupNextGroupClause reportGroupNextGroupClause, P p) {
+        Cobol.ReportGroupNextGroupClause r = reportGroupNextGroupClause;
+        r = r.withClause(visitAndCast(r.getClause(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupNextGroupNextPage visitReportGroupNextGroupNextPage(Cobol.ReportGroupNextGroupNextPage reportGroupNextGroupNextPage, P p) {
+        return reportGroupNextGroupNextPage;
+    }
+
+    @Override
+    public Cobol.ReportGroupNextGroupPlus visitReportGroupNextGroupPlus(Cobol.ReportGroupNextGroupPlus reportGroupNextGroupPlus, P p) {
+        Cobol.ReportGroupNextGroupPlus r = reportGroupNextGroupPlus;
+        r = r.withIntegerLiteral(visitAndCast(r.getIntegerLiteral(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupPictureClause visitReportGroupPictureClause(Cobol.ReportGroupPictureClause reportGroupPictureClause, P p) {
+        Cobol.ReportGroupPictureClause r = reportGroupPictureClause;
+        r = r.withPictureString(visitAndCast(r.getPictureString(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupResetClause visitReportGroupResetClause(Cobol.ReportGroupResetClause reportGroupResetClause, P p) {
+        Cobol.ReportGroupResetClause r = reportGroupResetClause;
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupSignClause visitReportGroupSignClause(Cobol.ReportGroupSignClause reportGroupSignClause, P p) {
+        return reportGroupSignClause;
+    }
+
+    @Override
+    public Cobol.ReportGroupSourceClause visitReportGroupSourceClause(Cobol.ReportGroupSourceClause reportGroupSourceClause, P p) {
+        Cobol.ReportGroupSourceClause r = reportGroupSourceClause;
+        r = r.withIdentifier(visitAndCast(r.getIdentifier(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupSumClause visitReportGroupSumClause(Cobol.ReportGroupSumClause reportGroupSumClause, P p) {
+        Cobol.ReportGroupSumClause r = reportGroupSumClause;
+        r = r.withCobols(ListUtils.map(r.getCobols(), c -> visitAndCast(c, p)));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupTypeClause visitReportGroupTypeClause(Cobol.ReportGroupTypeClause reportGroupTypeClause, P p) {
+        Cobol.ReportGroupTypeClause r = reportGroupTypeClause;
+        r = r.withType(visitAndCast(r.getType(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupTypeControlFooting visitReportGroupTypeControlFooting(Cobol.ReportGroupTypeControlFooting reportGroupTypeControlFooting, P p) {
+        Cobol.ReportGroupTypeControlFooting r = reportGroupTypeControlFooting;
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupTypeControlHeading visitReportGroupTypeControlHeading(Cobol.ReportGroupTypeControlHeading reportGroupTypeControlHeading, P p) {
+        Cobol.ReportGroupTypeControlHeading r = reportGroupTypeControlHeading;
+        r = r.withDataName(visitAndCast(r.getDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportGroupTypeDetail visitReportGroupTypeDetail(Cobol.ReportGroupTypeDetail reportGroupTypeDetail, P p) {
+        return reportGroupTypeDetail;
+    }
+
+    @Override
+    public Cobol.ReportGroupTypePageFooting visitReportGroupTypePageFooting(Cobol.ReportGroupTypePageFooting reportGroupTypePageFooting, P p) {
+        return reportGroupTypePageFooting;
+    }
+
+    @Override
+    public Cobol.ReportGroupTypePageHeading visitReportGroupTypePageHeading(Cobol.ReportGroupTypePageHeading reportGroupTypePageHeading, P p) {
+        return reportGroupTypePageHeading;
+    }
+
+    @Override
+    public Cobol.ReportGroupTypeReportFooting visitReportGroupTypeReportFooting(Cobol.ReportGroupTypeReportFooting reportGroupTypeReportFooting, P p) {
+        return reportGroupTypeReportFooting;
+    }
+
+    @Override
+    public Cobol.ReportGroupTypeReportHeading visitReportGroupTypeReportHeading(Cobol.ReportGroupTypeReportHeading reportGroupTypeReportHeading, P p) {
+        return reportGroupTypeReportHeading;
+    }
+
+    @Override
+    public Cobol.ReportGroupUsageClause visitReportGroupUsageClause(Cobol.ReportGroupUsageClause reportGroupUsageClause, P p) {
+        return reportGroupUsageClause;
+    }
+
+    @Override
+    public Cobol.ReportGroupValueClause visitReportGroupValueClause(Cobol.ReportGroupValueClause reportGroupValueClause, P p) {
+        Cobol.ReportGroupValueClause r = reportGroupValueClause;
+        r = r.withLiteral(visitAndCast(r.getLiteral(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportName visitReportName(Cobol.ReportName reportName, P p) {
+        Cobol.ReportName r = reportName;
+        r = r.withQualifiedDataName(visitAndCast(r.getQualifiedDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReportSection visitReportSection(Cobol.ReportSection reportSection, P p) {
+        Cobol.ReportSection r = reportSection;
+        r = r.withDescriptions(ListUtils.map(r.getDescriptions(), d -> visitAndCast(d, p)));
+        return r;
+    }
+
+    @Override
+    public Cobol.RerunClause visitRerunClause(Cobol.RerunClause rerunClause, P p) {
+        Cobol.RerunClause r = rerunClause;
+        r = r.withName(visitAndCast(r.getName(), p));
+        r = r.withAction(visitAndCast(r.getAction(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RerunEveryClock visitRerunEveryClock(Cobol.RerunEveryClock rerunEveryClock, P p) {
+        Cobol.RerunEveryClock r = rerunEveryClock;
+        r = r.withIntegerLiteral(visitAndCast(r.getIntegerLiteral(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RerunEveryOf visitRerunEveryOf(Cobol.RerunEveryOf rerunEveryOf, P p) {
+        Cobol.RerunEveryOf r = rerunEveryOf;
+        r = r.withFileName(visitAndCast(r.getFileName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RerunEveryRecords visitRerunEveryRecords(Cobol.RerunEveryRecords rerunEveryRecords, P p) {
+        Cobol.RerunEveryRecords r = rerunEveryRecords;
+        r = r.withIntegerLiteral(visitAndCast(r.getIntegerLiteral(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReserveClause visitReserveClause(Cobol.ReserveClause reserveClause, P p) {
+        Cobol.ReserveClause r = reserveClause;
+        r = r.withWords(ListUtils.map(r.getWords(), w -> visitAndCast(w, p)));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReserveNetworkClause visitReserveNetworkClause(Cobol.ReserveNetworkClause reserveNetworkClause, P p) {
+        return reserveNetworkClause;
+    }
+
+    @Override
+    public Cobol.Return visitReturn(Cobol.Return returnz, P p) {
+        Cobol.Return r = returnz;
+        r = r.withFileName(visitAndCast(r.getFileName(), p));
+        r = r.withInto(visitAndCast(r.getInto(), p));
+        r = r.withAtEndPhrase(visitAndCast(r.getAtEndPhrase(), p));
+        r = r.withNotAtEndPhrase(visitAndCast(r.getNotAtEndPhrase(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.ReturnInto visitReturnInto(Cobol.ReturnInto returnInto, P p) {
+        Cobol.ReturnInto r = returnInto;
+        r = r.withQualifiedDataName(visitAndCast(r.getQualifiedDataName(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.Rewrite visitRewrite(Cobol.Rewrite rewrite, P p) {
+        Cobol.Rewrite r = rewrite;
+        r = r.withRecordName(visitAndCast(r.getRecordName(), p));
+        r = r.withRewriteFrom(visitAndCast(r.getRewriteFrom(), p));
+        r = r.withInvalidKeyPhrase(visitAndCast(r.getInvalidKeyPhrase(), p));
+        r = r.withNotInvalidKeyPhrase(visitAndCast(r.getNotInvalidKeyPhrase(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.RewriteFrom visitRewriteFrom(Cobol.RewriteFrom rewriteFrom, P p) {
+        Cobol.RewriteFrom r = rewriteFrom;
+        r = r.withIdentifier(visitAndCast(r.getIdentifier(), p));
+        return r;
+    }
+
+    @Override
+    public Cobol.Roundable visitRoundable(Cobol.Roundable roundable, P p) {
+        Cobol.Roundable r = roundable;
+        r = r.withIdentifier(visitAndCast(r.getIdentifier(), p));
+        return r;
+    }
 }
