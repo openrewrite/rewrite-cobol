@@ -3074,4 +3074,190 @@ public class NameVisitor<P> extends CobolIsoVisitor<P> {
         s = s.withDataDescName(visitAndCast(s.getDataDescName(), p));
         return s;
     }
+
+    @Override
+    public Cobol.TableCall visitTableCall(Cobol.TableCall tableCall, P p) {
+        Cobol.TableCall t = tableCall;
+        t = t.withQualifiedDataName(visitAndCast(t.getQualifiedDataName(), p));
+        t = t.withSubscripts(ListUtils.map(t.getSubscripts(), e -> visitAndCast(e, p)));
+        t = t.withReferenceModifier(visitAndCast(t.getReferenceModifier(), p));
+        return t;
+    }
+
+    @Override
+    public Cobol.Terminate visitTerminate(Cobol.Terminate terminate, P p) {
+        Cobol.Terminate t = terminate;
+        t = t.withReportName(visitAndCast(t.getReportName(), p));
+        return t;
+    }
+
+    @Override
+    public Cobol.TextLengthClause visitTextLengthClause(Cobol.TextLengthClause textLengthClause, P p) {
+        Cobol.TextLengthClause t = textLengthClause;
+        t = t.withDataDescName(visitAndCast(t.getDataDescName(), p));
+        return t;
+    }
+
+    @Override
+    public Cobol.UnstringTallyingPhrase visitUnstringTallyingPhrase(Cobol.UnstringTallyingPhrase unstringTallyingPhrase, P p) {
+        Cobol.UnstringTallyingPhrase u = unstringTallyingPhrase;
+        u = u.withQualifiedDataName(visitAndCast(u.getQualifiedDataName(), p));
+        return u;
+    }
+
+    @Override
+    public Cobol.UnString visitUnString(Cobol.UnString unString, P p) {
+        Cobol.UnString u = unString;
+        u = u.withUnstringSendingPhrase(visitAndCast(u.getUnstringSendingPhrase(), p));
+        u = u.withUnstringIntoPhrase(visitAndCast(u.getUnstringIntoPhrase(), p));
+        u = u.withUnstringWithPointerPhrase(visitAndCast(u.getUnstringWithPointerPhrase(), p));
+        u = u.withUnstringTallyingPhrase(visitAndCast(u.getUnstringTallyingPhrase(), p));
+        u = u.withOnOverflowPhrase(visitAndCast(u.getOnOverflowPhrase(), p));
+        u = u.withNotOnOverflowPhrase(visitAndCast(u.getNotOnOverflowPhrase(), p));
+        return u;
+    }
+
+    @Override
+    public Cobol.UnstringCountIn visitUnstringCountIn(Cobol.UnstringCountIn unstringCountIn, P p) {
+        Cobol.UnstringCountIn u = unstringCountIn;
+        u = u.withIdentifier(visitAndCast(u.getIdentifier(), p));
+        return u;
+    }
+
+    @Override
+    public Cobol.UnstringDelimitedByPhrase visitUnstringDelimitedByPhrase(Cobol.UnstringDelimitedByPhrase unstringDelimitedByPhrase, P p) {
+        Cobol.UnstringDelimitedByPhrase u = unstringDelimitedByPhrase;
+        u = u.withName(visitAndCast(u.getName(), p));
+        return u;
+    }
+
+    @Override
+    public Cobol.UnstringDelimiterIn visitUnstringDelimiterIn(Cobol.UnstringDelimiterIn unstringDelimiterIn, P p) {
+        Cobol.UnstringDelimiterIn u = unstringDelimiterIn;
+        u = u.withIdentifier(visitAndCast(u.getIdentifier(), p));
+        return u;
+    }
+
+    @Override
+    public Cobol.UnstringInto visitUnstringInto(Cobol.UnstringInto unstringInto, P p) {
+        Cobol.UnstringInto u = unstringInto;
+        u = u.withIdentifier(visitAndCast(u.getIdentifier(), p));
+        u = u.withUnstringDelimiterIn(visitAndCast(u.getUnstringDelimiterIn(), p));
+        u = u.withUnstringCountIn(visitAndCast(u.getUnstringCountIn(), p));
+        return u;
+    }
+
+    @Override
+    public Cobol.UnstringIntoPhrase visitUnstringIntoPhrase(Cobol.UnstringIntoPhrase unstringIntoPhrase, P p) {
+        Cobol.UnstringIntoPhrase u = unstringIntoPhrase;
+        u = u.withUnstringIntos(ListUtils.map(u.getUnstringIntos(), e -> visitAndCast(e, p)));
+        return u;
+    }
+
+    @Override
+    public Cobol.UnstringOrAllPhrase visitUnstringOrAllPhrase(Cobol.UnstringOrAllPhrase unstringOrAllPhrase, P p) {
+        Cobol.UnstringOrAllPhrase u = unstringOrAllPhrase;
+        u = u.withName(visitAndCast(u.getName(), p));
+        return u;
+    }
+
+    @Override
+    public Cobol.UnstringSendingPhrase visitUnstringSendingPhrase(Cobol.UnstringSendingPhrase unstringSendingPhrase, P p) {
+        Cobol.UnstringSendingPhrase u = unstringSendingPhrase;
+        u = u.withIdentifier(visitAndCast(u.getIdentifier(), p));
+        u = u.withUnstringDelimitedByPhrase(visitAndCast(u.getUnstringDelimitedByPhrase(), p));
+        u = u.withUnstringOrAllPhrases(ListUtils.map(u.getUnstringOrAllPhrases(), e -> visitAndCast(e, p)));
+        return u;
+    }
+
+    @Override
+    public Cobol.UnstringWithPointerPhrase visitUnstringWithPointerPhrase(Cobol.UnstringWithPointerPhrase unstringWithPointerPhrase, P p) {
+        Cobol.UnstringWithPointerPhrase u = unstringWithPointerPhrase;
+        u = u.withQualifiedDataName(visitAndCast(u.getQualifiedDataName(), p));
+        return u;
+    }
+
+    @Override
+    public Cobol.UseAfterClause visitUseAfterClause(Cobol.UseAfterClause useAfterClause, P p) {
+        Cobol.UseAfterClause u = useAfterClause;
+        u = u.withUseAfterOn(visitAndCast(u.getUseAfterOn(), p));
+        return u;
+    }
+
+    @Override
+    public Cobol.UseAfterOn visitUseAfterOn(Cobol.UseAfterOn useAfterOn, P p) {
+        Cobol.UseAfterOn u = useAfterOn;
+        u = u.withFileNames(ListUtils.map(u.getFileNames(), e -> visitAndCast(e, p)));
+        return u;
+    }
+
+    @Override
+    public Cobol.UseDebugClause visitUseDebugClause(Cobol.UseDebugClause useDebugClause, P p) {
+        Cobol.UseDebugClause u = useDebugClause;
+        u = u.withUseDebugs(ListUtils.map(u.getUseDebugs(), e -> visitAndCast(e, p)));
+        return u;
+    }
+
+    @Override
+    public Cobol.UseDebugOn visitUseDebugOn(Cobol.UseDebugOn useDebugOn, P p) {
+        Cobol.UseDebugOn u = useDebugOn;
+        u = u.withName(visitAndCast(u.getName(), p));
+        return u;
+    }
+
+    @Override
+    public Cobol.UseStatement visitUseStatement(Cobol.UseStatement useStatement, P p) {
+        Cobol.UseStatement u = useStatement;
+        u = u.withClause(visitAndCast(u.getClause(), p));
+        return u;
+    }
+
+    @Override
+    public Cobol.ValuedObjectComputerClause visitValuedObjectComputerClause(Cobol.ValuedObjectComputerClause valuedObjectComputerClause, P p) {
+        Cobol.ValuedObjectComputerClause v = valuedObjectComputerClause;
+        v = v.withValue(visitAndCast(v.getValue(), p));
+        return v;
+    }
+
+    @Override
+    public Cobol.ValueOfClause visitValueOfClause(Cobol.ValueOfClause valueOfClause, P p) {
+        Cobol.ValueOfClause v = valueOfClause;
+        v = v.withValuePairs(ListUtils.map(v.getValuePairs(), e -> visitAndCast(e, p)));
+        return v;
+    }
+
+    @Override
+    public Cobol.ValuePair visitValuePair(Cobol.ValuePair valuePair, P p) {
+        Cobol.ValuePair v = valuePair;
+        v = v.withSystemName(visitAndCast(v.getSystemName(), p));
+        v = v.withName(visitAndCast(v.getName(), p));
+        return v;
+    }
+
+    @Override
+    public Cobol.Write visitWrite(Cobol.Write write, P p) {
+        Cobol.Write w = write;
+        w = w.withRecordName(visitAndCast(w.getRecordName(), p));
+        w = w.withWriteFromPhrase(visitAndCast(w.getWriteFromPhrase(), p));
+        w = w.withWriteAdvancingPhrase(visitAndCast(w.getWriteAdvancingPhrase(), p));
+        w = w.withWriteAtEndOfPagePhrase(visitAndCast(w.getWriteAtEndOfPagePhrase(), p));
+        w = w.withWriteNotAtEndOfPagePhrase(visitAndCast(w.getWriteNotAtEndOfPagePhrase(), p));
+        w = w.withInvalidKeyPhrase(visitAndCast(w.getInvalidKeyPhrase(), p));
+        w = w.withNotInvalidKeyPhrase(visitAndCast(w.getNotInvalidKeyPhrase(), p));
+        return w;
+    }
+
+    @Override
+    public Cobol.WorkingStorageSection visitWorkingStorageSection(Cobol.WorkingStorageSection workingStorageSection, P p) {
+        Cobol.WorkingStorageSection w = workingStorageSection;
+        w = w.withDataDescriptions(ListUtils.map(w.getDataDescriptions(), e -> visitAndCast(e, p)));
+        return w;
+    }
+
+    @Override
+    public Cobol.WriteAdvancingLines visitWriteAdvancingLines(Cobol.WriteAdvancingLines writeAdvancingLines, P p) {
+        Cobol.WriteAdvancingLines w = writeAdvancingLines;
+        w = w.withName(visitAndCast(w.getName(), p));
+        return w;
+    }
 }
