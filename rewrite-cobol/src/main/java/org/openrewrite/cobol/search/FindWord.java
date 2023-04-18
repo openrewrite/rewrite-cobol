@@ -6,7 +6,7 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.Option;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
-import org.openrewrite.cobol.CobolIsoVisitor;
+import org.openrewrite.cobol.NameVisitor;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.marker.SearchResult;
@@ -43,7 +43,7 @@ public class FindWord extends Recipe {
         return new SearchForWord(searchTerm, exactMatch);
     }
 
-    private static class SearchForWord extends CobolIsoVisitor<ExecutionContext> {
+    private static class SearchForWord extends NameVisitor<ExecutionContext> {
         private final String searchTerm;
 
         @Nullable
