@@ -158,7 +158,8 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                                 is.isCharsetBomMarked(),
                                 null,
                                 null,
-                                is.readFully()
+                                is.readFully(),
+                                emptyList()
                         );
 
                         String preprocessedCobol = new CobolLineReader().readLines(plainText.getText(), cobolDialect);
