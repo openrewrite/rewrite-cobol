@@ -8,4 +8,5 @@ include("rewrite-cobol")
 include("publish-nist-asts")
 include("publish-nist-asts:src:main:test")
 include("rewrite-jcl")
+include("cobol-analysis")
 findProject(":publish-nist-asts:src:main:test")?.name = "test"
