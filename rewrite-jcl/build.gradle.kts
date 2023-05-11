@@ -1,9 +1,10 @@
 plugins {
-    `java-library`
     id("io.moderne.java-project")
+    id("org.openrewrite.build.language-library") version("latest.release")
 }
+plugins.apply(org.openrewrite.gradle.RewriteLicensePlugin::class.java)
 
-description = "Rewrite support for the JCL language"
+description = "Rewrite support for Job Control Language (JCL)"
 
 // run manually with -x compileKotlin when you need to regenerate
 tasks.register<JavaExec>("generateAntlrSources") {

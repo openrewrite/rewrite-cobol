@@ -1,8 +1,8 @@
+import nebula.plugin.contacts.Contact
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import nebula.plugin.contacts.Contact
 import nebula.plugin.contacts.ContactsExtension
 
 plugins {

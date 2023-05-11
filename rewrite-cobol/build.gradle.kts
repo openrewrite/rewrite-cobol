@@ -1,9 +1,8 @@
-import org.tmatesoft.svn.core.internal.util.jna.SVNGnomeKeyring.setPassword
-
 plugins {
-    `java-library`
     id("io.moderne.java-project")
+    id("org.openrewrite.build.publish") version("latest.release")
 }
+plugins.apply(org.openrewrite.gradle.RewriteLicensePlugin::class.java)
 
 description = "Rewrite support for the COBOL language"
 
@@ -86,18 +85,3 @@ artifacts {
     add(testConf.name, testJar)
 }
 
-artifactory {
-    publish {
-        setContextUrl("https://artifactory.moderne.ninja/artifactory")
-        repository {
-            setRepoKey("moderne-private")
-            setUsername(System.getenv("AST_PUBLISH_USERNAME"))
-            setPassword(System.getenv("AST_PUBLISH_PASSWORD"))
-        }
-        defaults {
-            publications("nebula")
-            setPublishArtifacts(true)
-            setPublishPom(true)
-        }
-    }
-}

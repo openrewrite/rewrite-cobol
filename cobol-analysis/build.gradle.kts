@@ -1,7 +1,8 @@
 plugins {
-    `java-library`
     id("io.moderne.java-project")
+    id("org.openrewrite.build.language-library") version("latest.release")
 }
+plugins.apply(org.openrewrite.gradle.RewriteLicensePlugin::class.java)
 
 val latest = if (project.hasProperty("releasing")) {
     "latest.release"
