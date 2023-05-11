@@ -45,7 +45,7 @@ public class FindReference extends Recipe {
     }
 
     @Override
-    protected TreeVisitor<?, ExecutionContext> getVisitor() {
+    public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new TreeVisitor<Tree, ExecutionContext>() {
             private final CobolReference cobolReference = new CobolReference();
             private final CopyBookReference copyBookReference = new CopyBookReference();

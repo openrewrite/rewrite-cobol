@@ -34,7 +34,7 @@ public class FindIndicators extends Recipe {
     }
 
     @Override
-    protected TreeVisitor<?, ExecutionContext> getVisitor() {
+    public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new AddSearchResult(indicator);
     }
 

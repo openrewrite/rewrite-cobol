@@ -47,7 +47,8 @@ public class GenerateModel {
                         null,
                         ctx
                 )
-                .get(0)
+                .findFirst()
+                .get()
                 .getClasses()
                 .get(0)
                 .getBody()

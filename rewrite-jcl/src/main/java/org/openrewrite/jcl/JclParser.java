@@ -24,13 +24,12 @@ import org.openrewrite.tree.ParsingExecutionContextView;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
-
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Stream;
 
 public class JclParser implements Parser<Jcl.CompilationUnit> {
 
     @Override
-    public List<Jcl.CompilationUnit> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
+    public Stream<Jcl.CompilationUnit> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
         ParsingExecutionContextView pctx = ParsingExecutionContextView.view(ctx);
         ParsingEventListener parsingListener = pctx.getParsingListener();
         List<Input> accepted = acceptedInputs(sourceFiles);
@@ -70,12 +69,11 @@ public class JclParser implements Parser<Jcl.CompilationUnit> {
                         return null;
                     }
                 })
-                .filter(Objects::nonNull)
-                .collect(toList());
+                .filter(Objects::nonNull);
     }
 
     @Override
-    public List<Jcl.CompilationUnit> parse(String... sources) {
+    public Stream<Jcl.CompilationUnit> parse(String... sources) {
         return parse(new InMemoryExecutionContext(), sources);
     }
 

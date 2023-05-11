@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -117,7 +118,7 @@ public class Assertions {
 
         try {
             List<Path> paths = resourceParser.getResourcesByExtension(emptyList(), singletonList(".cpy"));
-            return CopyBookParser.builder().build().parse(paths, null, new InMemoryExecutionContext());
+            return CopyBookParser.builder().build().parse(paths, null, new InMemoryExecutionContext()).collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

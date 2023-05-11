@@ -22,6 +22,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CreateNistAstJar {
     public static void main(String[] args) {
@@ -58,7 +59,7 @@ public class CreateNistAstJar {
         sources.addAll(rawCopybooks);
         System.out.println("Parsing " + sources.size() + " COBOL sources");
         start = Instant.now();
-        List<CobolSourceFile> cus =  cp.parseInputs(sources, null, ctx);
+        List<CobolSourceFile> cus =  cp.parseInputs(sources, null, ctx).collect(Collectors.toList());
         System.out.println("Parsed sources into " + cus.size() + " Compilation Units in " +
                 prettyPrint(Duration.between(start, Instant.now())));
 

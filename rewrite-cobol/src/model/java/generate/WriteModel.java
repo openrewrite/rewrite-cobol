@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.StringJoiner;
-import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public class WriteModel extends Recipe {
@@ -36,7 +35,7 @@ public class WriteModel extends Recipe {
         return "Expand the model into an AST with Lombok annotations, Padding classes, etc.";
     }
 
-    Supplier<JavaParser> parser = () -> JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath()).build();
+    JavaParser.Builder<?, ?> parser = JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath());
 
     JavaVisitor<ExecutionContext> writeModelClass = new JavaIsoVisitor<ExecutionContext>() {
         final JavaTemplate valueModel = JavaTemplate.builder(this::getCursor, "" +
@@ -254,7 +253,7 @@ public class WriteModel extends Recipe {
     };
 
     @Override
-    protected JavaVisitor<ExecutionContext> getVisitor() {
+    public JavaVisitor<ExecutionContext> getVisitor() {
         return new JavaIsoVisitor<ExecutionContext>() {
             @Override
             public J.Block visitBlock(J.Block block, ExecutionContext ctx) {

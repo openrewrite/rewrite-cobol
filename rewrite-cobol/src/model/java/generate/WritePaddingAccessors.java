@@ -20,7 +20,6 @@ import org.openrewrite.java.tree.Statement;
 import org.openrewrite.java.tree.TypeUtils;
 
 import java.util.StringJoiner;
-import java.util.function.Supplier;
 
 /**
  * TODO Unable to add accessors in the first phase due to some bug in JavaTemplate.
@@ -32,7 +31,7 @@ public class WritePaddingAccessors extends Recipe {
         return "Write accessors for padded parts of the model";
     }
 
-    Supplier<JavaParser> parser = () -> JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath()).build();
+    JavaParser.Builder<?, ?> parser = JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath());
 
     @RequiredArgsConstructor
     class WritePaddingAccessorsVisitor extends JavaIsoVisitor<ExecutionContext> {
@@ -123,7 +122,7 @@ public class WritePaddingAccessors extends Recipe {
     }
 
     @Override
-    protected JavaVisitor<ExecutionContext> getVisitor() {
+    public JavaVisitor<ExecutionContext> getVisitor() {
         return new JavaIsoVisitor<ExecutionContext>() {
             @Override
             public J.Block visitBlock(J.Block block, ExecutionContext ctx) {
