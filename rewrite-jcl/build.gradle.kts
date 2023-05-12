@@ -48,7 +48,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:latest.release")
     testImplementation("org.junit-pioneer:junit-pioneer:2.0.0")
     testImplementation("org.openrewrite:rewrite-test")
-    testImplementation("io.moderne:moderne-ast-write:${latest}")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:latest.release")
 }

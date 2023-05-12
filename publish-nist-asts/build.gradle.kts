@@ -1,6 +1,14 @@
 plugins {
     id("io.moderne.java-project")
     id("io.moderne.rewrite")
+    id("com.google.cloud.artifactregistry.gradle-plugin")
+}
+
+repositories {
+    maven {
+        name = "gcp"
+        url = uri("artifactregistry://us-west1-maven.pkg.dev/moderne-dev/moderne-releases")
+    }
 }
 
 dependencies {
