@@ -6,19 +6,6 @@ on:
     tags:
       - v[0-9]+.[0-9]+.[0-9]+
       - v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+
-  workflow_call:
-    secrets:
-      gradle_enterprise_access_key:
-        description: Value of the Gradle Enterprise access token to use.
-        required: false
-      ossrh_username:
-        required: true
-      ossrh_token:
-        required: true
-      ossrh_signing_key:
-        required: true
-      ossrh_signing_password:
-        required: true
 
 env:
   GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
@@ -71,3 +58,8 @@ jobs:
             final
             publish
             closeAndReleaseSonatypeStagingRepository
+        env:
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_TOKEN }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.OSSRH_SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
