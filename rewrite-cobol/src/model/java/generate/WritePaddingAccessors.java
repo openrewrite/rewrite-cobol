@@ -31,6 +31,11 @@ public class WritePaddingAccessors extends Recipe {
         return "Write accessors for padded parts of the model";
     }
 
+    @Override
+    public String getDescription() {
+        return "Write accessors for padded parts of the model.";
+    }
+
     JavaParser.Builder<?, ?> parser = JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath());
 
     @RequiredArgsConstructor
@@ -40,14 +45,14 @@ public class WritePaddingAccessors extends Recipe {
         /**
          * The accessors in the Padding class that return the padding wrapped element.
          */
-        final JavaTemplate paddedGetterWither = JavaTemplate.builder(this::getCursor, "" +
+        final JavaTemplate paddedGetterWither = JavaTemplate.builder("" +
                 "#{}" +
                 "public Cobol#{}<#{}> get#{}() {" +
                 "    return t.#{};" +
                 "}" +
                 "public #{} with#{}(#{}Cobol#{}<#{}> #{}) {" +
                 "    return t.#{} == #{} ? t : new #{}(#{});" +
-                "}").javaParser(parser).build();
+                "}").context(this::getCursor).javaParser(parser).build();
 
         @Override
         public J.ClassDeclaration visitClassDeclaration(J.ClassDeclaration classDecl, ExecutionContext ctx) {
@@ -105,7 +110,7 @@ public class WritePaddingAccessors extends Recipe {
                 }
             }
 
-            c = c.withTemplate(paddedGetterWither, c.getBody().getCoordinates().lastStatement(),
+            c = c.withTemplate(paddedGetterWither, getCursor(), c.getBody().getCoordinates().lastStatement(),
                     nullable ? "@Nullable " : "", leftOrRight, elementTypeName, capitalizedName,
                     name, modelTypeName, capitalizedName,
                     nullable ? "@Nullable " : "", leftOrRight,

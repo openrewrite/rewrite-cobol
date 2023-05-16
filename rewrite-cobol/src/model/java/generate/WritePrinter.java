@@ -98,7 +98,7 @@ public class WritePrinter extends Recipe {
 
                     StringBuilder template = new StringBuilder();
 
-                    JavaTemplate visitMethod = JavaTemplate.builder(this::getCursor, "" +
+                    JavaTemplate visitMethod = JavaTemplate.builder("" +
                                     "public Cobol visit#{}(Cobol.#{} #{}, PrintOutputCapture<P> p) {" +
                                     "    visitSpace(#{}.getPrefix(), p);" +
                                     "    visitMarkers(#{}.getMarkers(), p);" +
@@ -106,13 +106,14 @@ public class WritePrinter extends Recipe {
                                     "    return #{};" +
                                     "}"
                             )
+                            .context(this::getCursor)
                             .javaParser(parser)
 //                            .doAfterVariableSubstitution(System.out::println)
                             .doBeforeParseTemplate(template::append)
                             .build();
 
                     try {
-                        c = c.withTemplate(visitMethod, c.getBody().getCoordinates().lastStatement(),
+                        c = c.withTemplate(visitMethod, getCursor(), c.getBody().getCoordinates().lastStatement(),
                                 modelTypeName, modelTypeName, paramName,
                                 paramName,
                                 paramName,
