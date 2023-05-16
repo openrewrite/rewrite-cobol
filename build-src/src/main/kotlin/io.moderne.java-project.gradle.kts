@@ -20,17 +20,9 @@ plugins {
 
     id("nebula.javadoc-jar")
     id("nebula.source-jar")
-    id("com.google.cloud.artifactregistry.gradle-plugin")
     id("com.jfrog.artifactory")
 }
 apply(plugin = "nebula.publish-verification")
-
-repositories {
-    maven {
-        name = "gcp"
-        url = uri("artifactregistry://us-west1-maven.pkg.dev/moderne-dev/moderne-releases")
-    }
-}
 
 java {
     toolchain {
