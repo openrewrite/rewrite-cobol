@@ -50,6 +50,8 @@ dependencies {
     implementation("org.antlr:antlr4:4.11.1")
     implementation("io.micrometer:micrometer-core:1.9.+")
 
+    runtimeOnly("org.openrewrite.tools:java-object-diff:latest.release")
+
     modelImplementation("org.openrewrite:rewrite-java-17")
     modelAnnotationProcessor("org.projectlombok:lombok:latest.release")
     modelCompileOnly("org.projectlombok:lombok:latest.release")

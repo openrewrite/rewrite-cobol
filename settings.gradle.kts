@@ -1,3 +1,10 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
+
 rootProject.name = "rewrite-cobol-organizer"
 
 enableFeaturePreview("VERSION_ORDERING_V2")

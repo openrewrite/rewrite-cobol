@@ -38,6 +38,8 @@ dependencies {
     compileOnly("com.google.code.findbugs:jsr305:latest.release")
     compileOnly("org.openrewrite:rewrite-test")
 
+    runtimeOnly("org.openrewrite.tools:java-object-diff:latest.release")
+
     implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${latest}"))
     implementation("org.openrewrite:rewrite-core")
     implementation("org.antlr:antlr4:4.11.1")
