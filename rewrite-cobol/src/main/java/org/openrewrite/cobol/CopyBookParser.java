@@ -15,7 +15,9 @@ import org.openrewrite.Parser;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
-import org.openrewrite.cobol.tree.*;
+import org.openrewrite.cobol.tree.Cobol;
+import org.openrewrite.cobol.tree.CobolPreprocessor;
+import org.openrewrite.cobol.tree.Space;
 import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.MetricsHelper;
 import org.openrewrite.internal.lang.Nullable;
@@ -25,10 +27,12 @@ import org.openrewrite.tree.ParsingEventListener;
 import org.openrewrite.tree.ParsingExecutionContextView;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
 import static org.openrewrite.Tree.randomId;
 
 /**
@@ -44,7 +48,7 @@ public class CopyBookParser implements Parser<CobolPreprocessor.CopyBook> {
     }
 
     @Override
-    public List<CobolPreprocessor.CopyBook> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
+    public Stream<CobolPreprocessor.CopyBook> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
         ParsingExecutionContextView pctx = ParsingExecutionContextView.view(ctx);
         ParsingEventListener parsingListener = pctx.getParsingListener();
         return acceptedInputs(sourceFiles).stream()
@@ -109,12 +113,11 @@ public class CopyBookParser implements Parser<CobolPreprocessor.CopyBook> {
                         return null;
                     }
                 })
-                .filter(Objects::nonNull)
-                .collect(toList());
+                .filter(Objects::nonNull);
     }
 
     @Override
-    public List<CobolPreprocessor.CopyBook> parse(String... sources) {
+    public Stream<CobolPreprocessor.CopyBook> parse(String... sources) {
         return parse(new InMemoryExecutionContext(), sources);
     }
 

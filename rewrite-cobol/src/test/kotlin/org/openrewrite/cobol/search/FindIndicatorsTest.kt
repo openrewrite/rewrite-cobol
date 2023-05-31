@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 import org.openrewrite.*
 import org.openrewrite.cobol.Assertions.cobolCopy
 import org.openrewrite.cobol.tree.CobolTest
+import org.openrewrite.config.CompositeRecipe
 import org.openrewrite.marker.Marker
 import org.openrewrite.marker.SearchResult
 import org.openrewrite.test.RecipeSpec
@@ -34,8 +35,8 @@ class FindIndicatorsTest : CobolTest() {
 
     @Test
     fun sm206a() = rewriteRun(
-        { spec -> spec.recipe(FindIndicators("S")
-            .doNext(FindIndicators("Y")))
+        { spec ->
+            spec.recipe(CompositeRecipe(listOf(FindIndicators("S"), FindIndicators("Y"))))
         },
         cobolCopy(getNistSource("SM206A.CBL"),
             """

@@ -7,25 +7,28 @@ package org.openrewrite.cobol;
 
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Timer;
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Parser;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
-import org.openrewrite.cobol.tree.*;
+import org.openrewrite.cobol.tree.Cobol;
+import org.openrewrite.cobol.tree.CobolPreprocessor;
+import org.openrewrite.cobol.tree.Replacement;
 import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.MetricsHelper;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.tree.ParsingEventListener;
 import org.openrewrite.tree.ParsingExecutionContextView;
 
-import java.nio.file.*;
+import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Read preprocessed COBOL and execute preprocessor commands.
@@ -59,7 +62,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     }
 
     @Override
-    public List<CobolPreprocessor.CompilationUnit> parseInputs(Iterable<org.openrewrite.Parser.Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
+    public Stream<CobolPreprocessor.CompilationUnit> parseInputs(Iterable<org.openrewrite.Parser.Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
         ParsingExecutionContextView pctx = ParsingExecutionContextView.view(ctx);
         ParsingEventListener parsingListener = pctx.getParsingListener();
         return acceptedInputs(sourceFiles).stream()
@@ -114,8 +117,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         return null;
                     }
                 })
-                .filter(Objects::nonNull)
-                .collect(toList());
+                .filter(Objects::nonNull);
     }
 
     public void setCopyBooks(List<CobolPreprocessor.CopyBook> copyBooks) {
@@ -123,7 +125,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     }
 
     @Override
-    public List<CobolPreprocessor.CompilationUnit> parse(String... sources) {
+    public Stream<CobolPreprocessor.CompilationUnit> parse(String... sources) {
         return parse(new InMemoryExecutionContext(), sources);
     }
 

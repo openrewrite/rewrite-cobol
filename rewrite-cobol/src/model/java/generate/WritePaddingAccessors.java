@@ -20,7 +20,6 @@ import org.openrewrite.java.tree.Statement;
 import org.openrewrite.java.tree.TypeUtils;
 
 import java.util.StringJoiner;
-import java.util.function.Supplier;
 
 /**
  * TODO Unable to add accessors in the first phase due to some bug in JavaTemplate.
@@ -32,7 +31,12 @@ public class WritePaddingAccessors extends Recipe {
         return "Write accessors for padded parts of the model";
     }
 
-    Supplier<JavaParser> parser = () -> JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath()).build();
+    @Override
+    public String getDescription() {
+        return "Write accessors for padded parts of the model.";
+    }
+
+    JavaParser.Builder<?, ?> parser = JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath());
 
     @RequiredArgsConstructor
     class WritePaddingAccessorsVisitor extends JavaIsoVisitor<ExecutionContext> {
@@ -41,14 +45,14 @@ public class WritePaddingAccessors extends Recipe {
         /**
          * The accessors in the Padding class that return the padding wrapped element.
          */
-        final JavaTemplate paddedGetterWither = JavaTemplate.builder(this::getCursor, "" +
+        final JavaTemplate paddedGetterWither = JavaTemplate.builder("" +
                 "#{}" +
                 "public Cobol#{}<#{}> get#{}() {" +
                 "    return t.#{};" +
                 "}" +
                 "public #{} with#{}(#{}Cobol#{}<#{}> #{}) {" +
                 "    return t.#{} == #{} ? t : new #{}(#{});" +
-                "}").javaParser(parser).build();
+                "}").context(this::getCursor).javaParser(parser).build();
 
         @Override
         public J.ClassDeclaration visitClassDeclaration(J.ClassDeclaration classDecl, ExecutionContext ctx) {
@@ -106,7 +110,7 @@ public class WritePaddingAccessors extends Recipe {
                 }
             }
 
-            c = c.withTemplate(paddedGetterWither, c.getBody().getCoordinates().lastStatement(),
+            c = c.withTemplate(paddedGetterWither, getCursor(), c.getBody().getCoordinates().lastStatement(),
                     nullable ? "@Nullable " : "", leftOrRight, elementTypeName, capitalizedName,
                     name, modelTypeName, capitalizedName,
                     nullable ? "@Nullable " : "", leftOrRight,
@@ -123,7 +127,7 @@ public class WritePaddingAccessors extends Recipe {
     }
 
     @Override
-    protected JavaVisitor<ExecutionContext> getVisitor() {
+    public JavaVisitor<ExecutionContext> getVisitor() {
         return new JavaIsoVisitor<ExecutionContext>() {
             @Override
             public J.Block visitBlock(J.Block block, ExecutionContext ctx) {

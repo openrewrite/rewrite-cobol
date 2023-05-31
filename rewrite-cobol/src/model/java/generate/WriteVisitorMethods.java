@@ -14,11 +14,13 @@ import org.openrewrite.java.JavaParser;
 import org.openrewrite.java.JavaTemplate;
 import org.openrewrite.java.JavaVisitor;
 import org.openrewrite.java.search.FindAnnotations;
-import org.openrewrite.java.tree.*;
+import org.openrewrite.java.tree.J;
+import org.openrewrite.java.tree.JavaType;
+import org.openrewrite.java.tree.Statement;
+import org.openrewrite.java.tree.TypeUtils;
 
 import java.util.List;
 import java.util.StringJoiner;
-import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
@@ -32,7 +34,12 @@ public class WriteVisitorMethods extends Recipe {
     }
 
     @Override
-    protected JavaVisitor<ExecutionContext> getVisitor() {
+    public String getDescription() {
+        return "Write the boilerplate for `CobolVisitor` and `CobolIsoVisitor`.";
+    }
+
+    @Override
+    public JavaVisitor<ExecutionContext> getVisitor() {
         return new JavaVisitor<ExecutionContext>() {
             @Override
             public J visitClassDeclaration(J.ClassDeclaration classDecl, ExecutionContext ctx) {
@@ -48,17 +55,17 @@ public class WriteVisitorMethods extends Recipe {
         };
     }
 
-    Supplier<JavaParser> parser = () -> JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath()).build();
+    JavaParser.Builder<?, ?> parser = JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath());
 
     private final JavaVisitor<ExecutionContext> writeVisitorMethods = new JavaIsoVisitor<ExecutionContext>() {
-        final JavaTemplate visitMethod = JavaTemplate.builder(this::getCursor, "" +
+        final JavaTemplate visitMethod = JavaTemplate.builder("" +
                 "public Cobol visit#{}(Cobol.#{} #{}, P p) {" +
                 "    Cobol.#{} #{} = #{};" +
                 "    #{} = #{}.withPrefix(visitSpace(#{}.getPrefix(), p));" +
                 "    #{} = #{}.withMarkers(visitMarkers(#{}.getMarkers(), p));" +
                 "    #{}" +
                 "    return #{};" +
-                "}").javaParser(parser).build();
+                "}").context(this::getCursor).javaParser(parser).build();
 
         @Override
         public J.ClassDeclaration visitClassDeclaration(J.ClassDeclaration classDecl, ExecutionContext ctx) {
@@ -122,7 +129,7 @@ public class WriteVisitorMethods extends Recipe {
                     }
                 }
 
-                c = c.withTemplate(visitMethod, c.getBody().getCoordinates().lastStatement(),
+                c = c.withTemplate(visitMethod, getCursor(), c.getBody().getCoordinates().lastStatement(),
                         modelTypeName, modelTypeName, paramName,
                         modelTypeName, varName, paramName,
                         varName, varName, varName,
@@ -136,12 +143,12 @@ public class WriteVisitorMethods extends Recipe {
     };
 
     private final JavaVisitor<ExecutionContext> writeIsoVisitorMethods = new JavaIsoVisitor<ExecutionContext>() {
-        final JavaTemplate isoVisitMethod = JavaTemplate.builder(this::getCursor, "" +
+        final JavaTemplate isoVisitMethod = JavaTemplate.builder("" +
                 "@Override " +
                 "public Cobol.#{} visit#{}(Cobol.#{} #{}, P p) {" +
                 "    return (Cobol.#{}) super.visit#{}(#{}, p);" +
                 "}"
-        ).javaParser(parser).build();
+        ).context(this::getCursor).javaParser(parser).build();
 
         @Override
         public J.ClassDeclaration visitClassDeclaration(J.ClassDeclaration classDecl, ExecutionContext ctx) {
@@ -151,7 +158,7 @@ public class WriteVisitorMethods extends Recipe {
                 String modelTypeName = modelClass.getSimpleName();
                 String paramName = modelTypeName.substring(0, 1).toLowerCase() + modelTypeName.substring(1);
 
-                c = c.withTemplate(isoVisitMethod, c.getBody().getCoordinates().lastStatement(),
+                c = c.withTemplate(isoVisitMethod, getCursor(), c.getBody().getCoordinates().lastStatement(),
                         modelTypeName, modelTypeName, modelTypeName, paramName,
                         modelTypeName, modelTypeName, paramName);
             }

@@ -7,10 +7,7 @@ package org.openrewrite.cobol.search;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import org.openrewrite.ExecutionContext;
-import org.openrewrite.Option;
-import org.openrewrite.Recipe;
-import org.openrewrite.TreeVisitor;
+import org.openrewrite.*;
 import org.openrewrite.cobol.CobolIsoVisitor;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
@@ -41,13 +38,8 @@ public class FindCopyBookReferences extends Recipe {
     }
 
     @Override
-    protected TreeVisitor<?, ExecutionContext> getSingleSourceApplicableTest() {
-        return new UsesCopyBook(copyBookName);
-    }
-
-    @Override
-    protected TreeVisitor<?, ExecutionContext> getVisitor() {
-        return new MarkCopyBook(copyBookName);
+    public TreeVisitor<?, ExecutionContext> getVisitor() {
+        return Preconditions.check(new UsesCopyBook(copyBookName), new MarkCopyBook(copyBookName));
     }
 
     private static class MarkCopyBook extends CobolIsoVisitor<ExecutionContext> {

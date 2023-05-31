@@ -13,11 +13,13 @@ import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.JavaParser;
 import org.openrewrite.java.JavaTemplate;
 import org.openrewrite.java.JavaVisitor;
-import org.openrewrite.java.tree.*;
+import org.openrewrite.java.tree.J;
+import org.openrewrite.java.tree.JavaType;
+import org.openrewrite.java.tree.Statement;
+import org.openrewrite.java.tree.TypeUtils;
 
 import java.util.List;
 import java.util.StringJoiner;
-import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
@@ -37,10 +39,10 @@ public class WritePrinter extends Recipe {
                 "where keywords are grammatically required.";
     }
 
-    Supplier<JavaParser> parser = () -> JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath()).build();
+    JavaParser.Builder<?, ?> parser = JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath());
 
     @Override
-    protected JavaVisitor<ExecutionContext> getVisitor() {
+    public JavaVisitor<ExecutionContext> getVisitor() {
         return new JavaIsoVisitor<ExecutionContext>() {
             @Override
             public J.ClassDeclaration visitClassDeclaration(J.ClassDeclaration classDecl, ExecutionContext ctx) {
@@ -96,7 +98,7 @@ public class WritePrinter extends Recipe {
 
                     StringBuilder template = new StringBuilder();
 
-                    JavaTemplate visitMethod = JavaTemplate.builder(this::getCursor, "" +
+                    JavaTemplate visitMethod = JavaTemplate.builder("" +
                                     "public Cobol visit#{}(Cobol.#{} #{}, PrintOutputCapture<P> p) {" +
                                     "    visitSpace(#{}.getPrefix(), p);" +
                                     "    visitMarkers(#{}.getMarkers(), p);" +
@@ -104,13 +106,14 @@ public class WritePrinter extends Recipe {
                                     "    return #{};" +
                                     "}"
                             )
+                            .context(this::getCursor)
                             .javaParser(parser)
 //                            .doAfterVariableSubstitution(System.out::println)
                             .doBeforeParseTemplate(template::append)
                             .build();
 
                     try {
-                        c = c.withTemplate(visitMethod, c.getBody().getCoordinates().lastStatement(),
+                        c = c.withTemplate(visitMethod, getCursor(), c.getBody().getCoordinates().lastStatement(),
                                 modelTypeName, modelTypeName, paramName,
                                 paramName,
                                 paramName,
