@@ -1,3 +1,4 @@
 plugins {
-    id("io.moderne.root-project")
+    id("org.openrewrite.build.root") version("latest.release")
+    id("org.openrewrite.build.java-base") version("latest.release")
 }

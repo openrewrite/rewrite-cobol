@@ -1,8 +1,6 @@
 plugins {
-    id("io.moderne.java-project")
-    id("org.openrewrite.build.publish") version("latest.release")
+    id("org.openrewrite.build.language-library")
 }
-plugins.apply(org.openrewrite.gradle.RewriteLicensePlugin::class.java)
 
 description = "Rewrite support for the COBOL language"
 
@@ -45,7 +43,7 @@ dependencies {
     compileOnly("com.google.code.findbugs:jsr305:latest.release")
     compileOnly("org.openrewrite:rewrite-test")
     annotationProcessor("org.projectlombok:lombok:latest.release")
-    implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${latest}"))
+    implementation(platform("org.openrewrite:rewrite-bom:${latest}"))
     implementation("org.openrewrite:rewrite-core")
     implementation("org.antlr:antlr4:4.11.1")
     implementation("io.micrometer:micrometer-core:1.9.+")

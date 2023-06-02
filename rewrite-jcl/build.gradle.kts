@@ -1,8 +1,6 @@
 plugins {
-    id("io.moderne.java-project")
-    id("org.openrewrite.build.language-library") version("latest.release")
+    id("org.openrewrite.build.language-library")
 }
-plugins.apply(org.openrewrite.gradle.RewriteLicensePlugin::class.java)
 
 description = "Rewrite support for Job Control Language (JCL)"
 
@@ -30,7 +28,6 @@ val latest = if (project.hasProperty("releasing")) {
 } else {
     "latest.integration"
 }
-
 dependencies {
     annotationProcessor("org.projectlombok:lombok:latest.release")
 
@@ -40,7 +37,7 @@ dependencies {
 
     runtimeOnly("org.openrewrite.tools:java-object-diff:latest.release")
 
-    implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${latest}"))
+    implementation(platform("org.openrewrite:rewrite-bom:${latest}"))
     implementation("org.openrewrite:rewrite-core")
     implementation("org.antlr:antlr4:4.11.1")
     implementation("io.micrometer:micrometer-core:1.9.+")
