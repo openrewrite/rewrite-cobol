@@ -33,9 +33,6 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: "gradle"
-      - uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ secrets.ARTIFACT_REGISTRY_KEY }}
       - name: build
         run: ./gradlew ${GRADLE_SWITCHES} build test
 
