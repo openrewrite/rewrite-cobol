@@ -56,7 +56,7 @@ jobs:
       - uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.ARTIFACT_REGISTRY_KEY }}
-      - uses: google-github-actions/setup-gcloud@v1.0.1
+      - uses: google-github-actions/setup-gcloud@v1.1.1
       - name: publish-snapshots
         if: github.event_name != 'pull_request' && github.repository_owner == 'moderneinc'
         uses: gradle/gradle-build-action@v2
