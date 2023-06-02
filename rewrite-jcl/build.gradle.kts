@@ -2,6 +2,7 @@ plugins {
     id("org.openrewrite.build.language-library")
 }
 
+group = "org.openrewrite"
 description = "Rewrite support for Job Control Language (JCL)"
 
 // run manually with -x compileKotlin when you need to regenerate

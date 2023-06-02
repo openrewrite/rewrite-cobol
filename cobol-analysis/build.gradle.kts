@@ -2,6 +2,9 @@ plugins {
     id("org.openrewrite.build.language-library")
 }
 
+group = "org.openrewrite.recipe"
+description = "OpenRewrite recipes for analyzing COBOL sources"
+
 val latest = if (project.hasProperty("releasing")) {
     "latest.release"
 } else {
