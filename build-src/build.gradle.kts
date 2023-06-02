@@ -12,10 +12,8 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation(kotlin("script-runtime"))
     implementation(kotlin("gradle-plugin"))
-    implementation("org.gradle:test-retry-gradle-plugin:1.2.1")
     implementation("com.gradle:gradle-enterprise-gradle-plugin:3.10.1")
-    // Manage jackson versions through BOM, to ignore 2.15.0-rc1
-    implementation(platform("com.fasterxml.jackson:jackson-bom:2.14.+"))
+    implementation(platform("com.fasterxml.jackson:jackson-bom:2.15.1"))
     implementation("org.owasp:dependency-check-gradle:latest.release")
     implementation("com.github.jk1:gradle-license-report:2.0")
     implementation("com.netflix.nebula:gradle-contacts-plugin:6.0.0")
@@ -24,7 +22,6 @@ dependencies {
     implementation("com.netflix.nebula:nebula-publishing-plugin:18.4.0")
     implementation("com.netflix.nebula:nebula-project-plugin:9.6.3")
     implementation("io.github.gradle-nexus:publish-plugin:1.0.0")
-    implementation("gradle.plugin.com.google.cloud.artifactregistry:artifactregistry-gradle-plugin:2.2.0")
     implementation("io.moderne:moderne-gradle-plugin:latest.release") {
         exclude(group = "com.fasterxml.jackson.datatype")
     }

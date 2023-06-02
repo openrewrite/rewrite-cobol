@@ -2,7 +2,7 @@ plugins {
     base
 }
 
-group = "io.moderne"
+group = "org.openrewrite"
 
 repositories {
     if (!project.hasProperty("releasing")) {
