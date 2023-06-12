@@ -9,9 +9,7 @@ import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Timer;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.openrewrite.ExecutionContext;
-import org.openrewrite.InMemoryExecutionContext;
-import org.openrewrite.Parser;
+import org.openrewrite.*;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
@@ -38,7 +36,7 @@ import static org.openrewrite.Tree.randomId;
 /**
  * Read preprocessed COBOL and execute preprocessor commands.
  */
-public class CopyBookParser implements Parser<CobolPreprocessor.CopyBook> {
+public class CopyBookParser implements Parser {
     public static final List<String> COPYBOOK_FILE_EXTENSIONS = Collections.singletonList(".cpy");
 
     private final CobolDialect cobolDialect;
@@ -48,10 +46,10 @@ public class CopyBookParser implements Parser<CobolPreprocessor.CopyBook> {
     }
 
     @Override
-    public Stream<CobolPreprocessor.CopyBook> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
+    public Stream<SourceFile> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
         ParsingExecutionContextView pctx = ParsingExecutionContextView.view(ctx);
         ParsingEventListener parsingListener = pctx.getParsingListener();
-        return acceptedInputs(sourceFiles).stream()
+        return acceptedInputs(sourceFiles)
                 .map(sourceFile -> {
                     Timer.Builder timer = Timer.builder("rewrite.parse")
                             .description("The time spent parsing a COBOL file")
@@ -108,16 +106,15 @@ public class CopyBookParser implements Parser<CobolPreprocessor.CopyBook> {
                         return copyBook;
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
-                        pctx.parseFailure(sourceFile, relativeTo, this, t);
                         ctx.getOnError().accept(t);
-                        return null;
+                        return ParseError.build(this, sourceFile, relativeTo, ctx, t);
                     }
                 })
                 .filter(Objects::nonNull);
     }
 
     @Override
-    public Stream<CobolPreprocessor.CopyBook> parse(String... sources) {
+    public Stream<SourceFile> parse(String... sources) {
         return parse(new InMemoryExecutionContext(), sources);
     }
 

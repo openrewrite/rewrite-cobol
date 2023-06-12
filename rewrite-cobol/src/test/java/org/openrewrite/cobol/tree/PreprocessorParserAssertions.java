@@ -7,6 +7,7 @@ package org.openrewrite.cobol.tree;
 
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.SourceFile;
 import org.openrewrite.cobol.*;
 import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.internal.lang.Nullable;
@@ -19,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -72,7 +74,7 @@ public class PreprocessorParserAssertions {
     }
 
     public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
+        List<SourceFile> copyBooks = getCopyBookSources();
 
         SourceSpec<CobolPreprocessor.CompilationUnit> cobol = new SourceSpec<>(CobolPreprocessor.CompilationUnit.class, null,
                 CobolPreprocessorParser.builder()
@@ -91,7 +93,7 @@ public class PreprocessorParserAssertions {
 
     public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, @Nullable String after,
                                                     Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
+        List<SourceFile> copyBooks = getCopyBookSources();
 
         SourceSpec<CobolPreprocessor.CompilationUnit> cobol = new SourceSpec<>(CobolPreprocessor.CompilationUnit.class, null,
                 CobolPreprocessorParser.builder()
@@ -103,12 +105,13 @@ public class PreprocessorParserAssertions {
         return cobol;
     }
 
-    public static List<CobolPreprocessor.CopyBook> getCopyBookSources() {
+    public static List<SourceFile> getCopyBookSources() {
         ResourceParser resourceParser = new ResourceParser(Paths.get("").toAbsolutePath(), emptyList(), emptyList());
 
         try {
             List<Path> paths = resourceParser.getResourcesByExtension(emptyList(), singletonList(".cpy"));
-            return CopyBookParser.builder().build().parse(paths, null, new InMemoryExecutionContext()).collect(Collectors.toList());
+            return CopyBookParser.builder().build().parse(paths, null, new InMemoryExecutionContext())
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

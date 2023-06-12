@@ -7,6 +7,7 @@ package org.openrewrite.cobol;
 
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.SourceFile;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.internal.lang.Nullable;
@@ -19,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -74,7 +76,7 @@ public class Assertions {
     }
 
     public static SourceSpecs cobolCopy(@Nullable String before, Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
+        List<SourceFile> copyBooks = getCopyBookSources();
 
         SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(
                 Cobol.CompilationUnit.class, null,
@@ -94,7 +96,7 @@ public class Assertions {
 
     public static SourceSpecs cobolCopy(@Nullable String before, @Nullable String after,
                                         Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
+        List<SourceFile> copyBooks = getCopyBookSources();
 
         SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(
                 Cobol.CompilationUnit.class, null,
@@ -113,7 +115,7 @@ public class Assertions {
         spec.accept(cobol);
     }
 
-    private static List<CobolPreprocessor.CopyBook> getCopyBookSources() {
+    private static List<SourceFile> getCopyBookSources() {
         ResourceParser resourceParser = new ResourceParser(Paths.get("").toAbsolutePath(), emptyList(), emptyList());
 
         try {

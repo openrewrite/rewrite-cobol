@@ -9,9 +9,7 @@ import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Timer;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.openrewrite.ExecutionContext;
-import org.openrewrite.InMemoryExecutionContext;
-import org.openrewrite.Parser;
+import org.openrewrite.*;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolPreprocessorParserVisitor;
 import org.openrewrite.cobol.internal.grammar.CobolPreprocessorLexer;
@@ -33,7 +31,7 @@ import static java.util.Collections.emptyList;
 /**
  * Read preprocessed COBOL and execute preprocessor commands.
  */
-public class CobolPreprocessorParser implements Parser<CobolPreprocessor.CompilationUnit> {
+public class CobolPreprocessorParser implements Parser {
     public static final List<String> COPYBOOK_FILE_EXTENSIONS = Collections.singletonList(".cpy");
     private static final List<String> COBOL_FILE_EXTENSIONS = Collections.singletonList(".cbl");
 
@@ -41,7 +39,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private final boolean enableCopy;
     private final boolean enableReplace;
 
-    private List<CobolPreprocessor.CopyBook> copyBooks;
+    private List<SourceFile> copyBooks;
 
     // Lazily loaded sets of the original source objects.
     private Set<CobolPreprocessor.CopyStatement> copyStatements = null;
@@ -52,7 +50,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     private Set<Replacement> replaceReductiveTypes = null;
 
     public CobolPreprocessorParser(CobolDialect cobolDialect,
-                                   List<CobolPreprocessor.CopyBook> copyBooks,
+                                   List<SourceFile> copyBooks,
                                    boolean enableCopy,
                                    boolean enableReplace) {
         this.cobolDialect = cobolDialect;
@@ -62,10 +60,10 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     }
 
     @Override
-    public Stream<CobolPreprocessor.CompilationUnit> parseInputs(Iterable<org.openrewrite.Parser.Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
+    public Stream<SourceFile> parseInputs(Iterable<org.openrewrite.Parser.Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
         ParsingExecutionContextView pctx = ParsingExecutionContextView.view(ctx);
         ParsingEventListener parsingListener = pctx.getParsingListener();
-        return acceptedInputs(sourceFiles).stream()
+        return acceptedInputs(sourceFiles)
                 .map(sourceFile -> {
                     Timer.Builder timer = Timer.builder("rewrite.parse")
                             .description("The time spent parsing a COBOL file")
@@ -112,20 +110,19 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
                         return preprocessedCU;
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
-                        pctx.parseFailure(sourceFile, relativeTo, this, t);
                         ctx.getOnError().accept(t);
-                        return null;
+                        return ParseError.build(this, sourceFile, relativeTo, ctx, t);
                     }
                 })
                 .filter(Objects::nonNull);
     }
 
-    public void setCopyBooks(List<CobolPreprocessor.CopyBook> copyBooks) {
+    public void setCopyBooks(List<SourceFile> copyBooks) {
         this.copyBooks = copyBooks;
     }
 
     @Override
-    public Stream<CobolPreprocessor.CompilationUnit> parse(String... sources) {
+    public Stream<SourceFile> parse(String... sources) {
         return parse(new InMemoryExecutionContext(), sources);
     }
 
@@ -141,7 +138,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     }
 
     @Override
-    public Parser<CobolPreprocessor.CompilationUnit> reset() {
+    public Parser reset() {
         this.copyStatements = null;
         this.replaceRules = null;
         this.replaceOffs = null;
@@ -163,7 +160,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
     public static class Builder extends org.openrewrite.Parser.Builder {
 
         private CobolDialect cobolDialect = CobolDialect.ibmAnsi85();
-        private List<CobolPreprocessor.CopyBook> copyBooks = emptyList();
+        private List<SourceFile> copyBooks = emptyList();
         private boolean enableCopy = true;
         private boolean enableReplace = true;
 
@@ -186,7 +183,7 @@ public class CobolPreprocessorParser implements Parser<CobolPreprocessor.Compila
             return this;
         }
 
-        public Builder setCopyBooks(List<CobolPreprocessor.CopyBook> copyBooks) {
+        public Builder setCopyBooks(List<SourceFile> copyBooks) {
             this.copyBooks = copyBooks;
             return this;
         }

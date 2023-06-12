@@ -7,6 +7,7 @@ package org.openrewrite.cobol;
 
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.SourceFile;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.test.SourceSpec;
@@ -18,6 +19,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -71,7 +73,7 @@ public class PreprocessorAssertions {
     }
 
     public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
+        List<SourceFile> copyBooks = getCopyBookSources();
 
         SourceSpec<CobolPreprocessor.CompilationUnit> cobol = new SourceSpec<>(CobolPreprocessor.CompilationUnit.class, null,
                 CobolPreprocessorParser.builder()
@@ -90,7 +92,7 @@ public class PreprocessorAssertions {
 
     public static SourceSpecs cobolPreprocessorCopy(@Nullable String before, @Nullable String after,
                                                     Consumer<SourceSpec<CobolPreprocessor.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
+        List<SourceFile> copyBooks = getCopyBookSources();
 
         SourceSpec<CobolPreprocessor.CompilationUnit> cobol = new SourceSpec<>(CobolPreprocessor.CompilationUnit.class, null,
                 CobolPreprocessorParser.builder()
@@ -108,7 +110,7 @@ public class PreprocessorAssertions {
         spec.accept(cobol);
     }
 
-    private static List<CobolPreprocessor.CopyBook> getCopyBookSources() {
+    private static List<SourceFile> getCopyBookSources() {
         ResourceParser resourceParser = new ResourceParser(Paths.get("").toAbsolutePath(), emptyList(), emptyList());
 
         try {
