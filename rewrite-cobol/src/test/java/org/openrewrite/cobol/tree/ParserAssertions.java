@@ -8,6 +8,7 @@ package org.openrewrite.cobol.tree;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.PrintOutputCapture;
+import org.openrewrite.SourceFile;
 import org.openrewrite.cobol.*;
 import org.openrewrite.cobol.internal.CobolPrinter;
 import org.openrewrite.cobol.internal.IbmAnsi85;
@@ -22,6 +23,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -78,7 +80,7 @@ public class ParserAssertions {
     }
 
     public static SourceSpecs cobolCopy(@Nullable String before, Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
+        List<SourceFile> copyBooks = getCopyBookSources();
 
         SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(
                 Cobol.CompilationUnit.class, null,
@@ -98,7 +100,7 @@ public class ParserAssertions {
 
     public static SourceSpecs cobolCopy(@Nullable String before, String expectedLst,
                                     Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
-        List<CobolPreprocessor.CopyBook> copyBooks = getCopyBookSources();
+        List<SourceFile> copyBooks = getCopyBookSources();
 
         SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(
                 Cobol.CompilationUnit.class, null,
@@ -114,12 +116,13 @@ public class ParserAssertions {
         return cobol;
     }
 
-    public static List<CobolPreprocessor.CopyBook> getCopyBookSources() {
+    public static List<SourceFile> getCopyBookSources() {
         ResourceParser resourceParser = new ResourceParser(Paths.get("").toAbsolutePath(), emptyList(), emptyList());
 
         try {
             List<Path> paths = resourceParser.getResourcesByExtension(emptyList(), singletonList(".cpy"));
-            return CopyBookParser.builder().build().parse(paths, null, new InMemoryExecutionContext()).collect(Collectors.toList());
+            return CopyBookParser.builder().build().parse(paths, null, new InMemoryExecutionContext())
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

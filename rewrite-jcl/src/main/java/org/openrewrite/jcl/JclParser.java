@@ -8,8 +8,7 @@ package org.openrewrite.jcl;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Timer;
 import org.antlr.v4.runtime.*;
-import org.openrewrite.ExecutionContext;
-import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.*;
 import org.openrewrite.Parser;
 import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.MetricsHelper;
@@ -26,15 +25,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class JclParser implements Parser<Jcl.CompilationUnit> {
+public class JclParser implements Parser {
 
     @Override
-    public Stream<Jcl.CompilationUnit> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
+    public Stream<SourceFile> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
         ParsingExecutionContextView pctx = ParsingExecutionContextView.view(ctx);
         ParsingEventListener parsingListener = pctx.getParsingListener();
-        List<Input> accepted = acceptedInputs(sourceFiles);
+        Stream<Input> accepted = acceptedInputs(sourceFiles);
 
-        return accepted.stream()
+        return accepted
                 .map(sourceFile -> {
                     Timer.Builder timer = Timer.builder("rewrite.parse")
                             .description("The time spent parsing a JCL file")
@@ -64,17 +63,9 @@ public class JclParser implements Parser<Jcl.CompilationUnit> {
                         return cu;
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
-                        pctx.parseFailure(sourceFile, relativeTo, this, t);
-                        pctx.getOnError().accept(t);
-                        return null;
+                        return ParseError.build(this, sourceFile, relativeTo, pctx, t);
                     }
-                })
-                .filter(Objects::nonNull);
-    }
-
-    @Override
-    public Stream<Jcl.CompilationUnit> parse(String... sources) {
-        return parse(new InMemoryExecutionContext(), sources);
+                });
     }
 
     @Override

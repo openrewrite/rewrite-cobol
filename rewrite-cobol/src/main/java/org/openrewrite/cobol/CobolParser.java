@@ -8,17 +8,14 @@ package org.openrewrite.cobol;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Timer;
 import org.antlr.v4.runtime.*;
-import org.openrewrite.ExecutionContext;
-import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.*;
 import org.openrewrite.Parser;
-import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.cobol.internal.CobolDialect;
 import org.openrewrite.cobol.internal.CobolParserVisitor;
 import org.openrewrite.cobol.internal.CobolPreprocessorOutputSourcePrinter;
 import org.openrewrite.cobol.internal.grammar.CobolLexer;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
-import org.openrewrite.cobol.tree.CobolSourceFile;
 import org.openrewrite.internal.EncodingDetectingInputStream;
 import org.openrewrite.internal.MetricsHelper;
 import org.openrewrite.internal.lang.Nullable;
@@ -33,17 +30,17 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
-public class CobolParser implements Parser<CobolSourceFile> {
+public class CobolParser implements Parser {
     public static final List<String> COPYBOOK_FILE_EXTENSIONS = Collections.singletonList(".cpy");
     public static final List<String> COBOL_FILE_EXTENSIONS = singletonList(".cbl");
 
     private final CobolDialect cobolDialect;
-    private final List<CobolPreprocessor.CopyBook> copyBooks;
+    private final List<SourceFile> copyBooks;
     private final boolean enableCopy;
     private final boolean enableReplace;
 
     public CobolParser(CobolDialect cobolDialect,
-                       List<CobolPreprocessor.CopyBook> copyBooks,
+                       List<SourceFile> copyBooks,
                        boolean enableCopy,
                        boolean enableReplace) {
         this.cobolDialect = cobolDialect;
@@ -53,10 +50,10 @@ public class CobolParser implements Parser<CobolSourceFile> {
     }
 
     @Override
-    public Stream<CobolSourceFile> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
+    public Stream<SourceFile> parseInputs(Iterable<Input> sourceFiles, @Nullable Path relativeTo, ExecutionContext ctx) {
         ParsingExecutionContextView pctx = ParsingExecutionContextView.view(ctx);
         ParsingEventListener parsingListener = pctx.getParsingListener();
-        List<Input> accepted = acceptedInputs(sourceFiles);
+        List<Input> accepted = acceptedInputs(sourceFiles).collect(toList());
         List<Input> copyBookInputs = new ArrayList<>();
         List<Input> cobolInputs = new ArrayList<>();
 
@@ -75,7 +72,7 @@ public class CobolParser implements Parser<CobolSourceFile> {
         }
 
         CopyBookParser copyBookParser = new CopyBookParser(cobolDialect);
-        List<CobolPreprocessor.CopyBook> copyBooks = copyBookParser.parseInputs(copyBookInputs, relativeTo, ctx).collect(toList());
+        List<SourceFile> copyBooks = copyBookParser.parseInputs(copyBookInputs, relativeTo, ctx).collect(toList());
 
         CobolPreprocessorParser cobolPreprocessorParser = CobolPreprocessorParser.builder()
                 .setCobolDialect(cobolDialect)
@@ -84,7 +81,7 @@ public class CobolParser implements Parser<CobolSourceFile> {
                 .build();
         cobolPreprocessorParser.setCopyBooks(!this.copyBooks.isEmpty() ? this.copyBooks : copyBooks);
 
-        Stream<CobolSourceFile> sources;
+        Stream<SourceFile> sources;
         sources = cobolInputs.stream()
                 .map(sourceFile -> {
                     Timer.Builder timer = Timer.builder("rewrite.parse")
@@ -94,7 +91,7 @@ public class CobolParser implements Parser<CobolSourceFile> {
                     try {
                         EncodingDetectingInputStream is = sourceFile.getSource(ctx);
 
-                        CobolPreprocessor.CompilationUnit preprocessedCU = cobolPreprocessorParser.parseInputs(singletonList(sourceFile), relativeTo, ctx).findFirst().get();
+                        CobolPreprocessor.CompilationUnit preprocessedCU = (CobolPreprocessor.CompilationUnit) cobolPreprocessorParser.parseInputs(singletonList(sourceFile), relativeTo, ctx).findFirst().get();
 
                         // Print processed code to parse COBOL.
                         PrintOutputCapture<ExecutionContext> cobolParserOutput = new PrintOutputCapture<>(new InMemoryExecutionContext());
@@ -127,12 +124,11 @@ public class CobolParser implements Parser<CobolSourceFile> {
 
                         sample.stop(MetricsHelper.successTags(timer).register(Metrics.globalRegistry));
                         parsingListener.parsed(sourceFile, compilationUnit);
-                        return (CobolSourceFile) compilationUnit;
+                        return compilationUnit;
                     } catch (Throwable t) {
                         sample.stop(MetricsHelper.errorTags(timer, t).register(Metrics.globalRegistry));
-                        pctx.parseFailure(sourceFile, relativeTo, this, t);
                         pctx.getOnError().accept(t);
-                        return null;
+                        return ParseError.build(this, sourceFile, relativeTo, ctx, t);
                     }
                 })
                 .filter(Objects::nonNull);
@@ -141,7 +137,7 @@ public class CobolParser implements Parser<CobolSourceFile> {
     }
 
     @Override
-    public Stream<CobolSourceFile> parse(String... sources) {
+    public Stream<SourceFile> parse(String... sources) {
         return parse(new InMemoryExecutionContext(), sources);
     }
 
@@ -173,7 +169,7 @@ public class CobolParser implements Parser<CobolSourceFile> {
     public static class Builder extends org.openrewrite.Parser.Builder {
 
         private CobolDialect cobolDialect = CobolDialect.ibmAnsi85();
-        private List<CobolPreprocessor.CopyBook> copyBooks = emptyList();
+        private List<SourceFile> copyBooks = emptyList();
         private boolean enableCopy = true;
         private boolean enableReplace = true;
 
@@ -195,7 +191,7 @@ public class CobolParser implements Parser<CobolSourceFile> {
             return this;
         }
 
-        public Builder setCopyBooks(List<CobolPreprocessor.CopyBook> copyBooks) {
+        public Builder setCopyBooks(List<SourceFile> copyBooks) {
             this.copyBooks = copyBooks;
             return this;
         }

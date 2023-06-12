@@ -7,20 +7,22 @@ package org.openrewrite.cobol;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import org.openrewrite.SourceFile;
 import org.openrewrite.Tree;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
 public class PreprocessCopyVisitor<P> extends CobolPreprocessorIsoVisitor<P> {
 
-    Map<String, CobolPreprocessor.CopyBook> copyBooks = new HashMap<>();
+    Map<String, SourceFile> copyBooks = new HashMap<>();
 
-    public PreprocessCopyVisitor(List<CobolPreprocessor.CopyBook> copyBooks) {
+    public PreprocessCopyVisitor(List<SourceFile> copyBooks) {
         copyBooks.forEach(it -> {
             // Note: this implementation ASSUMES CopyBooks are resolved by FileName and will require changes.
             String fileName = it.getSourcePath().getFileName().toString();
