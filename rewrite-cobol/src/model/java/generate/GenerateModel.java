@@ -47,6 +47,7 @@ public class GenerateModel {
                         null,
                         ctx
                 )
+                .map(J.CompilationUnit.class::cast)
                 .findFirst()
                 .get()
                 .getClasses()

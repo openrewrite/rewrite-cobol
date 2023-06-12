@@ -52,7 +52,7 @@ public class WritePaddingAccessors extends Recipe {
                 "}" +
                 "public #{} with#{}(#{}Cobol#{}<#{}> #{}) {" +
                 "    return t.#{} == #{} ? t : new #{}(#{});" +
-                "}").context(this::getCursor).javaParser(parser).build();
+                "}").contextSensitive().javaParser(parser).build();
 
         @Override
         public J.ClassDeclaration visitClassDeclaration(J.ClassDeclaration classDecl, ExecutionContext ctx) {
@@ -110,7 +110,7 @@ public class WritePaddingAccessors extends Recipe {
                 }
             }
 
-            c = c.withTemplate(paddedGetterWither, getCursor(), c.getBody().getCoordinates().lastStatement(),
+            c = paddedGetterWither.apply(updateCursor(c), c.getBody().getCoordinates().lastStatement(),
                     nullable ? "@Nullable " : "", leftOrRight, elementTypeName, capitalizedName,
                     name, modelTypeName, capitalizedName,
                     nullable ? "@Nullable " : "", leftOrRight,

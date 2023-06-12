@@ -106,14 +106,14 @@ public class WritePrinter extends Recipe {
                                     "    return #{};" +
                                     "}"
                             )
-                            .context(this::getCursor)
+                            .contextSensitive()
                             .javaParser(parser)
 //                            .doAfterVariableSubstitution(System.out::println)
                             .doBeforeParseTemplate(template::append)
                             .build();
 
                     try {
-                        c = c.withTemplate(visitMethod, getCursor(), c.getBody().getCoordinates().lastStatement(),
+                        c = visitMethod.apply(updateCursor(c), c.getBody().getCoordinates().lastStatement(),
                                 modelTypeName, modelTypeName, paramName,
                                 paramName,
                                 paramName,

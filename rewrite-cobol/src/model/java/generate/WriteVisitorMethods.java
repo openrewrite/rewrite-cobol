@@ -65,7 +65,7 @@ public class WriteVisitorMethods extends Recipe {
                 "    #{} = #{}.withMarkers(visitMarkers(#{}.getMarkers(), p));" +
                 "    #{}" +
                 "    return #{};" +
-                "}").context(this::getCursor).javaParser(parser).build();
+                "}").contextSensitive().javaParser(parser).build();
 
         @Override
         public J.ClassDeclaration visitClassDeclaration(J.ClassDeclaration classDecl, ExecutionContext ctx) {
@@ -129,7 +129,7 @@ public class WriteVisitorMethods extends Recipe {
                     }
                 }
 
-                c = c.withTemplate(visitMethod, getCursor(), c.getBody().getCoordinates().lastStatement(),
+                c = visitMethod.apply(updateCursor(c), c.getBody().getCoordinates().lastStatement(),
                         modelTypeName, modelTypeName, paramName,
                         modelTypeName, varName, paramName,
                         varName, varName, varName,
@@ -142,13 +142,13 @@ public class WriteVisitorMethods extends Recipe {
         }
     };
 
-    private final JavaVisitor<ExecutionContext> writeIsoVisitorMethods = new JavaIsoVisitor<ExecutionContext>() {
+    private final JavaVisitor<ExecutionContext> writeIsoVisitorMethods = new JavaIsoVisitor<>() {
         final JavaTemplate isoVisitMethod = JavaTemplate.builder("" +
-                "@Override " +
-                "public Cobol.#{} visit#{}(Cobol.#{} #{}, P p) {" +
-                "    return (Cobol.#{}) super.visit#{}(#{}, p);" +
-                "}"
-        ).context(this::getCursor).javaParser(parser).build();
+                                                                 "@Override " +
+                                                                 "public Cobol.#{} visit#{}(Cobol.#{} #{}, P p) {" +
+                                                                 "    return (Cobol.#{}) super.visit#{}(#{}, p);" +
+                                                                 "}"
+        ).contextSensitive().javaParser(parser).build();
 
         @Override
         public J.ClassDeclaration visitClassDeclaration(J.ClassDeclaration classDecl, ExecutionContext ctx) {
@@ -158,7 +158,7 @@ public class WriteVisitorMethods extends Recipe {
                 String modelTypeName = modelClass.getSimpleName();
                 String paramName = modelTypeName.substring(0, 1).toLowerCase() + modelTypeName.substring(1);
 
-                c = c.withTemplate(isoVisitMethod, getCursor(), c.getBody().getCoordinates().lastStatement(),
+                c = isoVisitMethod.apply(updateCursor(c), c.getBody().getCoordinates().lastStatement(),
                         modelTypeName, modelTypeName, modelTypeName, paramName,
                         modelTypeName, modelTypeName, paramName);
             }
