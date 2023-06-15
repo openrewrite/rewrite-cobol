@@ -1105,6 +1105,7 @@ class CobolPreprocessorAnsi85DivisionTest extends CobolTest {
           preprocessor(
             """
               000001 IDENTIFICATION  DIVISION .                                       C_AREA.01
+              
               000002 PROGRAM-ID    . HELLO     .                                      C_AREA.02
               """
           )
