@@ -257,6 +257,7 @@ class CobolParserAnsi85DivisionTest : CobolTest() {
     @Test
     fun fileSection() = rewriteRun(
         cobol("""
+            |    |
             000001 IDENTIFICATION DIVISION.                                         C_AREA.01
             000002 PROGRAM-ID.                                                      C_AREA.02
             000003     IC109A.                                                      C_AREA.03

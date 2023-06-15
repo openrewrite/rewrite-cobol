@@ -6,6 +6,7 @@
 package org.openrewrite.cobol.tree.preprocessor;
 
 import org.junit.jupiter.api.Test;
+import org.openrewrite.Issue;
 import org.openrewrite.cobol.CobolTest;
 
 import static org.openrewrite.cobol.Assertions.preprocessor;
@@ -936,4 +937,34 @@ class CobolPreprocessorAnsi85DivisionTest extends CobolTest {
 //            000009         BYFUNCTION LIBPARAMETER IS ZERO                          C_AREA.09
 //        """)
 //    )
+
+    @Issue("https://github.com/openrewrite/rewrite-cobol/issues/4")
+    @Test
+    void noTrailingWhitespace() {
+        rewriteRun(
+          preprocessor(
+            """
+              000001 IDENTIFICATION  DIVISION  .
+              000002 PROGRAM-ID    . HELLO     .
+              000003 PROCEDURE DIVISION        .
+              000004 DISPLAY 'Hello world!'    .
+              000005 STOP RUN                  .
+              """
+          )
+        );
+    }
+
+    @Issue("https://github.com/openrewrite/rewrite-cobol/issues/4")
+    @Test
+    void emptyNewLines() {
+        rewriteRun(
+          preprocessor(
+            """
+              000001 IDENTIFICATION  DIVISION .                                       C_AREA.01
+              
+              000002 PROGRAM-ID    . HELLO     .                                      C_AREA.02
+              """
+          )
+        );
+    }
 }
