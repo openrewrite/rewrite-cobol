@@ -10,7 +10,6 @@ import org.openrewrite.cobol.CobolTest;
 import org.openrewrite.test.RecipeSpec;
 
 import static org.openrewrite.cobol.Assertions.cobol;
-import static org.openrewrite.cobol.Assertions.cobolCopy;
 
 public class RemoveWithDebuggingModeTest extends CobolTest {
 
@@ -22,7 +21,7 @@ public class RemoveWithDebuggingModeTest extends CobolTest {
     @Test
     public void noChange() {
         rewriteRun(
-          cobolCopy(getNistResource("CM101M.CBL"))
+          cobol(getNistResource("CM101M.CBL"), true)
         );
     }
 
