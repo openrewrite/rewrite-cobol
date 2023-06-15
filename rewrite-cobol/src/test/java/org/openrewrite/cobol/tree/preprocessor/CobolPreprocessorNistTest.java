@@ -3,15 +3,14 @@
  * For everyone else, this is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International.
  * See: https://creativecommons.org/licenses/by-nc-sa/4.0/
  */
-package org.openrewrite.cobol.tree.cobol;
+package org.openrewrite.cobol.tree.preprocessor;
 
 import org.junit.jupiter.api.Test;
 import org.openrewrite.cobol.CobolTest;
 
-import static org.openrewrite.cobol.Assertions.cobol;
 import static org.openrewrite.cobol.Assertions.preprocessor;
 
-public class CobolPreprocessorNistTest extends CobolTest {
+class CobolPreprocessorNistTest extends CobolTest {
 
     @Test
     void cm101M() {
