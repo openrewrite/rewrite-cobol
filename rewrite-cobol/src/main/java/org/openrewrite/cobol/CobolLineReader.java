@@ -46,8 +46,23 @@ public class CobolLineReader {
                 continue;
             }
 
-            String indicator = line.substring(indicatorArea, contentAreaAStart);
-            String contentArea = line.substring(contentAreaAStart, contentAreaBEnd);
+            String indicator;
+            if (line.length() < indicatorArea + 1) {
+                indicator = "";
+            } else if (line.length() == indicatorArea + 1) {
+                indicator = line.substring(indicatorArea);
+            } else {
+                indicator = line.substring(indicatorArea, contentAreaAStart);
+            }
+
+            String contentArea;
+            if (line.length() < contentAreaAStart + 1) {
+                contentArea = "";
+            } else if (line.length() == contentAreaAStart + 1) {
+                contentArea = line.substring(contentAreaAStart);
+            } else {
+                contentArea = line.substring(contentAreaAStart, Math.min(line.length(), contentAreaBEnd));
+            }
             boolean isValidText = !(" ".equals(indicator) && contentArea.trim().isEmpty());
 
             if (inCommentEntry) {
@@ -70,7 +85,7 @@ public class CobolLineReader {
                 }
             }
 
-            if (!inCommentEntry && (cobolDialect.getCommentIndicators().contains(indicator.charAt(0)))) {
+            if (!inCommentEntry && (indicator.length() == 1 && cobolDialect.getCommentIndicators().contains(indicator.charAt(0)))) {
                 // Mark in-line comments.
                 processedSource.append("*> ");
             }

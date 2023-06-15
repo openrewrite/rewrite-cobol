@@ -160,6 +160,11 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
             for (String part : parts) {
                 boolean isCRLF = part.endsWith("\r");
                 String cleanedPart = isCRLF ? part.substring(0, part.length() - 1) : part;
+                if (cleanedPart.isEmpty()) {
+                    // Increment the pos passed the new line characters.
+                    pos += isCRLF ? 2 : 1;
+                    continue;
+                }
 
                 String sequenceArea = cleanedPart.substring(columns.getSequenceArea(), columns.getIndicatorArea());
                 sequenceAreas.put(pos, sequenceArea);
@@ -169,10 +174,10 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                 indicatorAreas.put(pos, indicatorArea);
                 pos += indicatorArea.length();
 
-                String contentArea = cleanedPart.substring(columns.getContentArea(), columns.getOtherArea());
+                String contentArea = cleanedPart.substring(columns.getContentArea(), Math.min(cleanedPart.length(), columns.getOtherArea()));
                 pos += contentArea.length();
 
-                String otherArea = cleanedPart.length() > columns.getContentArea() ? cleanedPart.substring(columns.getOtherArea()) : "";
+                String otherArea = cleanedPart.length() > columns.getOtherArea() ? cleanedPart.substring(columns.getOtherArea()) : "";
                 if (!otherArea.isEmpty()) {
                     commentAreas.put(pos, otherArea);
                     pos += otherArea.length();

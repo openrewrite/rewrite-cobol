@@ -95,6 +95,12 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
             for (String part : parts) {
                 boolean isCRLF = part.endsWith("\r");
                 String cleanedPart = isCRLF ? part.substring(0, part.length() - 1) : part;
+                if (cleanedPart.isEmpty()) {
+                    // Increment the pos passed the new line characters.
+                    pos += isCRLF ? 2 : 1;
+                    continue;
+                }
+
                 if (isSubstituteCharacter(part)) {
                     pos += part.length();
                     continue;
@@ -108,10 +114,10 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                 indicatorAreas.put(pos, indicatorArea);
                 pos += indicatorArea.length();
 
-                String contentArea = cleanedPart.substring(columns.getContentArea(), columns.getOtherArea());
+                String contentArea = cleanedPart.substring(columns.getContentArea(), Math.min(cleanedPart.length(), columns.getOtherArea()));
                 pos += contentArea.length();
 
-                String otherArea = cleanedPart.length() > columns.getContentArea() ? cleanedPart.substring(columns.getOtherArea()) : "";
+                String otherArea = cleanedPart.length() > columns.getOtherArea() ? cleanedPart.substring(columns.getOtherArea()) : "";
                 if (!otherArea.isEmpty()) {
                     commentAreas.put(pos, otherArea);
                     pos += otherArea.length();
@@ -980,7 +986,9 @@ public class CobolPreprocessorParserVisitor extends CobolPreprocessorBaseVisitor
                     break;
                 }
 
-                String contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
+                int newLinePos = cursor + (source.substring(cursor).contains("\n") ? source.substring(cursor).indexOf("\n") : source.substring(cursor).length());
+                int endOfContentArea = cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea();
+                String contentArea = source.substring(cursor, Math.min(newLinePos, endOfContentArea));
                 if (!(isCommentIndicator(indicatorArea) || contentArea.trim().isEmpty())) {
                     break;
                 }
