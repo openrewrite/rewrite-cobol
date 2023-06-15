@@ -7,11 +7,14 @@ package org.openrewrite.cobol;
 
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.PrintOutputCapture;
 import org.openrewrite.SourceFile;
+import org.openrewrite.cobol.internal.CobolPrinter;
 import org.openrewrite.cobol.internal.IbmAnsi85;
 import org.openrewrite.cobol.tree.Cobol;
 import org.openrewrite.cobol.tree.CobolPreprocessor;
 import org.openrewrite.cobol.tree.Space;
+import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.test.SourceSpec;
 import org.openrewrite.test.SourceSpecs;
@@ -194,6 +197,43 @@ public class Assertions {
         return cobol;
     }
 
+    public static SourceSpecs cobolPostProcess(@Nullable String before, @Nullable String after) {
+        return cobolPostProcess(before, after, false);
+    }
+
+    public static SourceSpecs cobolPostProcess(@Nullable String before, @Nullable String after, boolean enableCopyAndReplace) {
+        return cobolPostProcess(before, after, s -> {
+        }, enableCopyAndReplace);
+    }
+
+    public static SourceSpecs cobolPostProcess(@Nullable String before, @Nullable String after,
+                                    Consumer<SourceSpec<Cobol.CompilationUnit>> spec) {
+        return cobolPostProcess(before, after, spec, false);
+    }
+
+    public static SourceSpecs cobolPostProcess(@Nullable String before, @Nullable String after,
+                                    Consumer<SourceSpec<Cobol.CompilationUnit>> spec, boolean enableCopyAndReplace) {
+        CobolParser.Builder builder;
+        if (enableCopyAndReplace) {
+            List<SourceFile> copyBooks = getCopyBookSources();
+            builder = CobolParser.builder()
+                    .setCopyBooks(copyBooks);
+        } else {
+            builder = CobolParser.builder()
+                    .setEnableCopy(false)
+                    .setEnableReplace(false);
+        }
+
+        SourceSpec<Cobol.CompilationUnit> cobol = new SourceSpec<>(
+                Cobol.CompilationUnit.class, null,
+                builder,
+                before,
+                SourceSpec.EachResult.noop,
+                Assertions::customizeExecutionContext);
+        isFullyParsed().andThen(isPostProcessedLst(after)).andThen(spec).accept(cobol);
+        return cobol;
+    }
+
     private static void acceptSpec(Consumer<SourceSpec<Cobol.CompilationUnit>> spec, SourceSpec<Cobol.CompilationUnit> cobol) {
         Consumer<Cobol.CompilationUnit> userSuppliedAfterRecipe = cobol.getAfterRecipe();
         cobol.afterRecipe(userSuppliedAfterRecipe::accept);
@@ -211,6 +251,15 @@ public class Assertions {
                 return super.visitSpace(space, loc, integer);
             }
         }.visit(cu, 0));
+    }
+
+    public static Consumer<SourceSpec<Cobol.CompilationUnit>> isPostProcessedLst(@Nullable String expectedLst) {
+        return spec -> spec.afterRecipe(cu -> {
+            CobolPrinter<ExecutionContext> printer = new CobolPrinter<>(false, false);
+            PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
+            printer.visit(cu, outputCapture);
+            assert StringUtils.trimIndentPreserveCRLF(outputCapture.getOut()).equals(expectedLst);
+        });
     }
 
     private static List<SourceFile> getCopyBookSources() {

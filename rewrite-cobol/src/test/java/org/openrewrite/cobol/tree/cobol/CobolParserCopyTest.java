@@ -6,69 +6,65 @@
 package org.openrewrite.cobol.tree.cobol;
 
 import org.junit.jupiter.api.Test;
-import org.openrewrite.ExecutionContext;
 import org.openrewrite.cobol.CobolTest;
-import org.openrewrite.cobol.internal.CobolPrinter;
 
-import static org.openrewrite.cobol.Assertions.cobol;
+import static org.openrewrite.cobol.Assertions.cobolPostProcess;
 
 class CobolParserCopyTest extends CobolTest {
-    private static CobolPrinter<ExecutionContext> printer = new CobolPrinter<>(false, false);
 
-    // TODO, fix failing tests, and then remove `CobolParserCopyTest.kt`
     @Test
     void sm101A() {
         rewriteRun(
-          cobol(getNistResource("SM101A.CBL"), sm101A)
+          cobolPostProcess(getNistResource("SM101A.CBL"), sm101A, true)
         );
     }
 
     @Test
     void sm103A() {
         rewriteRun(
-          cobol(getNistResource("SM103A.CBL"), sm103A)
+          cobolPostProcess(getNistResource("SM103A.CBL"), sm103A, true)
         );
     }
 
     @Test
     void sm105A() {
         rewriteRun(
-          cobol(getNistResource("SM105A.CBL"), sm105A)
+          cobolPostProcess(getNistResource("SM105A.CBL"), sm105A, true)
         );
     }
 
     @Test
     void sm106A() {
         rewriteRun(
-          cobol(getNistResource("SM106A.CBL"), sm106A)
+          cobolPostProcess(getNistResource("SM106A.CBL"), sm106A, true)
         );
     }
 
     @Test
     void sm107A() {
         rewriteRun(
-          cobol(getNistResource("SM107A.CBL"), sm107A)
+          cobolPostProcess(getNistResource("SM107A.CBL"), sm107A, true)
         );
     }
 
     @Test
     void sm207A() {
         rewriteRun(
-          cobol(getNistResource("SM207A.CBL"), sm207A)
+          cobolPostProcess(getNistResource("SM207A.CBL"), sm207A, true)
         );
     }
 
     @Test
     void sm301M() {
         rewriteRun(
-          cobol(getNistResource("SM301M.CBL"), sm301M)
+          cobolPostProcess(getNistResource("SM301M.CBL"), sm301M, true)
         );
     }
 
     @Test
     void sm401M() {
         rewriteRun(
-          cobol(getNistResource("SM401M.CBL"), sm401M)
+          cobolPostProcess(getNistResource("SM401M.CBL"), sm401M, true)
         );
     }
 
