@@ -6502,7 +6502,9 @@ public class CobolParserVisitor extends CobolBaseVisitor<Object> {
                     break;
                 }
 
-                String contentArea = source.substring(cursor, cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea());
+                int newLinePos = cursor + (source.substring(cursor).contains("\n") ? source.substring(cursor).indexOf("\n") : source.substring(cursor).length());
+                int endOfContentArea = cursor - cobolDialect.getColumns().getIndicatorArea() - 1 + cobolDialect.getColumns().getOtherArea();
+                String contentArea = source.substring(cursor, Math.min(newLinePos, endOfContentArea));
                 if (!(isCommentIndicator(indicatorArea) || contentArea.trim().isEmpty() || templateKeys.contains(contentArea))) {
                     break;
                 }
