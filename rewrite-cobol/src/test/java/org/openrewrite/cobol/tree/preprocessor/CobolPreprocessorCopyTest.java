@@ -29,16 +29,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.cobol.Assertions.preprocessor;
 import static org.openrewrite.test.RewriteTest.toRecipe;
 
-// TODO: Fix failing tests
 public class CobolPreprocessorCopyTest extends CobolTest {
     private static final CobolDialect DIALECT = CobolDialect.ibmAnsi85();
     public static CobolPreprocessorPrinter<ExecutionContext> printer = new CobolPreprocessorPrinter<>(false, true);
 
     @Override
     public void defaults(RecipeSpec spec) {
-        spec
-          // .parser(CobolParser.builder().setEnableCopy(false).setEnableReplace(false).setCobolDialect(CobolDialect.hpTandem()))
-          .recipe(toRecipe(context -> new CobolPreprocessorVisitor<ExecutionContext>() {
+        spec.recipe(toRecipe(context -> new CobolPreprocessorVisitor<>() {
             @Override
             public Space visitSpace(Space space, Space.Location location, ExecutionContext p) {
                 String whitespace = space.getWhitespace().trim();
@@ -83,56 +80,56 @@ public class CobolPreprocessorCopyTest extends CobolTest {
     @Test
     void sm101A() {
         rewriteRun(
-          preprocessor(getNistResource("SM101A.CBL"))
+          preprocessor(getNistResource("SM101A.CBL"), true)
         );
     }
 
     @Test
     void sm103A() {
         rewriteRun(
-      preprocessor(getNistResource("SM103A.CBL"))
+          preprocessor(getNistResource("SM103A.CBL"), true)
         );
     }
 
     @Test
     void sm105A() {
         rewriteRun(
-      preprocessor(getNistResource("SM105A.CBL"))
+          preprocessor(getNistResource("SM105A.CBL"), true)
         );
     }
 
     @Test
     void sm106A() {
         rewriteRun(
-      preprocessor(getNistResource("SM106A.CBL"))
+          preprocessor(getNistResource("SM106A.CBL"), true)
         );
     }
 
     @Test
     void sm107A() {
         rewriteRun(
-      preprocessor(getNistResource("SM107A.CBL"))
+          preprocessor(getNistResource("SM107A.CBL"), true)
         );
     }
 
     @Test
     void sm207A() {
         rewriteRun(
-      preprocessor(getNistResource("SM207A.CBL"))
+          preprocessor(getNistResource("SM207A.CBL"), true)
         );
     }
 
     @Test
     void sm301M() {
         rewriteRun(
-      preprocessor(getNistResource("SM301M.CBL"))
+          preprocessor(getNistResource("SM301M.CBL"), true)
         );
     }
 
     @Test
     void sm401M() {
         rewriteRun(
-          preprocessor(getNistResource("SM401M.CBL"))
+          preprocessor(getNistResource("SM401M.CBL"), true)
         );
     }
 }
