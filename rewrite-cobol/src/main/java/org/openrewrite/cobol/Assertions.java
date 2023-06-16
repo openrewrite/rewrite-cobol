@@ -262,6 +262,7 @@ public class Assertions {
         });
     }
 
+    // Trim trailing whitespaces for each line
     public static String trimTrailingSpaces(String input) {
         StringBuilder result = new StringBuilder();
         String[] lines = input.split("\\r?\\n");
