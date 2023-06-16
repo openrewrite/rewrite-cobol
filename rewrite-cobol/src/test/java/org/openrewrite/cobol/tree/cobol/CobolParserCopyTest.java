@@ -6,6 +6,7 @@
 package org.openrewrite.cobol.tree.cobol;
 
 import org.junit.jupiter.api.Test;
+import org.openrewrite.Issue;
 import org.openrewrite.cobol.CobolTest;
 
 import static org.openrewrite.cobol.Assertions.cobolPostProcess;
@@ -65,6 +66,28 @@ class CobolParserCopyTest extends CobolTest {
     void sm401M() {
         rewriteRun(
           cobolPostProcess(getNistResource("SM401M.CBL"), sm401M, true)
+        );
+    }
+
+    @Issue("https://github.com/openrewrite/rewrite-cobol/issues/4")
+    @Test
+    void newLineInContentArea() {
+        rewriteRun(
+          cobolPostProcess(getNistResource("NEWLINE_IN_CONTENTAREA.CBL"),
+            """
+              IDENTIFICATION DIVISION.
+              PROGRAM-ID.
+                   NEWLINE_IN_CONTENTAREA.
+              PROCEDURE DIVISION.
+              
+              SM301M-CONTROL.
+                  PERFORM SM301M-COPY.
+                  STOP RUN.
+              
+              SM301M-COPY.
+                  DISPLAY " ".
+              """,
+            true)
         );
     }
 
