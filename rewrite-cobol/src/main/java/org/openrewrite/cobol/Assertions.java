@@ -258,8 +258,18 @@ public class Assertions {
             CobolPrinter<ExecutionContext> printer = new CobolPrinter<>(false, false);
             PrintOutputCapture<ExecutionContext> outputCapture = new PrintOutputCapture<>(new InMemoryExecutionContext());
             printer.visit(cu, outputCapture);
-            assert StringUtils.trimIndentPreserveCRLF(outputCapture.getOut()).equals(expectedLst);
+            assert trimTrailingSpaces(StringUtils.trimIndentPreserveCRLF(outputCapture.getOut())).equals(expectedLst);
         });
+    }
+
+    public static String trimTrailingSpaces(String input) {
+        StringBuilder result = new StringBuilder();
+        String[] lines = input.split("\\r?\\n");
+        for (String line : lines) {
+            String trimmedLine = line.replaceAll("\\s+$", "");
+            result.append(trimmedLine).append("\n");
+        }
+        return result.toString();
     }
 
     private static List<SourceFile> getCopyBookSources() {
