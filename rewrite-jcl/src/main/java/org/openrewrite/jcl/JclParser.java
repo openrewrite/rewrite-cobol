@@ -17,6 +17,7 @@ import org.openrewrite.jcl.internal.JclParserVisitor;
 import org.openrewrite.jcl.internal.grammar.JCLLexer;
 import org.openrewrite.jcl.internal.grammar.JCLParser;
 import org.openrewrite.jcl.tree.Jcl;
+import org.openrewrite.tree.ParseError;
 import org.openrewrite.tree.ParsingEventListener;
 import org.openrewrite.tree.ParsingExecutionContextView;
 
